@@ -1,12 +1,14 @@
 ---
 id: mempalace_with_milvus.md
 summary: >-
-  이 튜토리얼에서는 MemPalace CLI를 사용하여 공개된 Milvus 문서의 실제 일부를 추출하고 이를 Milvus에 저장해 보겠습니다.
-  이 코퍼스에는 분석기, 토큰화기 및 토큰 필터에 관한 문서가 포함되어 있습니다. 서로 밀접하게 관련된 이 페이지들은 검색 예제를 의미 있게
-  만들기에 충분한 방해 요소를 제공합니다.
-title: Milvus와 함께하는 MemPalace
+  In this tutorial, we will use the MemPalace CLI to mine a real subset of the
+  public Milvus documentation and store it in Milvus. The corpus contains
+  documentation about analyzers, tokenizers, and token filters. These closely
+  related pages provide enough distractors to make the retrieval examples
+  meaningful.
+title: MemPalace with Milvus
 ---
-<h1 id="MemPalace-with-Milvus" class="common-anchor-header">Milvus와 함께하는 MemPalace<button data-href="#MemPalace-with-Milvus" class="anchor-icon" translate="no">
+<h1 id="MemPalace-with-Milvus" class="common-anchor-header">MemPalace with Milvus<button data-href="#MemPalace-with-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -21,10 +23,10 @@ title: Milvus와 함께하는 MemPalace
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p><a href="https://github.com/MemPalace/mempalace">MemPalace는</a> 코딩 에이전트 및 장시간 실행되는 개발 워크플로우를 위한 메모리 레이어입니다. 이 도구는 프로젝트 지식을 '윙(wings)', '룸(rooms)', '서랍(drawers)'으로 체계화한 후, 세션을 넘나들며 원본 콘텐츠를 검색할 수 있게 해줍니다.</p>
-<p>이 튜토리얼에서는 MemPalace CLI를 사용하여 공개된 <a href="https://github.com/milvus-io/milvus-docs">Milvus 문서의</a> 실제 하위 집합을 추출하고 이를 <a href="https://milvus.io/">Milvus에</a> 저장해 보겠습니다. 이 코퍼스에는 분석기(analyzers), 토큰화기(tokenizers), 토큰 필터(token filters)에 대한 문서가 포함되어 있습니다. 서로 밀접하게 연관된 이 페이지들은 검색 예제를 의미 있게 만들기에 충분한 방해 요소를 제공합니다.</p>
-<p>이 예제에서는 Milvus Lite를 사용하므로 Docker나 별도의 데이터베이스 서버 없이 로컬에서 실행됩니다. 동일한 MemPalace 구성을 사용하여 공유 배포를 위해 Milvus 서버나 Zilliz Cloud를 지정할 수도 있습니다.</p>
-<h2 id="Prerequisites" class="common-anchor-header">필수 조건<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+    </button></h1><p><a href="https://github.com/MemPalace/mempalace">MemPalace</a> is a memory layer for coding agents and long-running development workflows. It organizes project knowledge into wings, rooms, and drawers, then makes the original content searchable across sessions.</p>
+<p>In this tutorial, we will use the MemPalace CLI to mine a real subset of the public <a href="https://github.com/milvus-io/milvus-docs">Milvus documentation</a> and store it in <a href="https://milvus.io/">Milvus</a>. The corpus contains documentation about analyzers, tokenizers, and token filters. These closely related pages provide enough distractors to make the retrieval examples meaningful.</p>
+<p>The example uses Milvus Lite, so it runs locally without Docker or a separate database server. The same MemPalace configuration can also point to Milvus server or Zilliz Cloud for shared deployments.</p>
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -39,12 +41,12 @@ title: Milvus와 함께하는 MemPalace
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>PyPI에서 MemPalace와 선택적 Milvus 종속성을 함께 설치하십시오. 이 명령어는 의도적으로 버전을 고정하지 않으므로, 새로 설치할 경우 사용 가능한 최신 릴리스가 적용됩니다.</p>
+    </button></h2><p>Install MemPalace with its optional Milvus dependencies from PyPI. The command intentionally does not pin a version, so a new installation resolves the latest available release.</p>
 <pre><code translate="no" class="language-shell">uv tool install &quot;mempalace[milvus]&quot;
 <button class="copy-code-btn"></button></code></pre>
-<p>또한 문서 코퍼스를 다운로드하려면 Git이 필요합니다.</p>
-<p>이 튜토리얼은 MemPalace의 로컬 MiniLM 임베딩 모델을 사용하므로, 외부 모델 API 키가 필요하지 않습니다. 첫 번째 마이닝 또는 검색 명령을 실행하면 소규모 ONNX 임베딩 모델이 다운로드될 수 있습니다.</p>
-<h2 id="Configure-the-workspace" class="common-anchor-header">작업 공간 구성<button data-href="#Configure-the-workspace" class="anchor-icon" translate="no">
+<p>You also need Git to download the documentation corpus.</p>
+<p>This tutorial uses MemPalace’s local MiniLM embedding model, so it does not require an external model API key. The first mining or search command may download a small ONNX embedding model.</p>
+<h2 id="Configure-the-workspace" class="common-anchor-header">Configure the workspace<button data-href="#Configure-the-workspace" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -59,7 +61,7 @@ title: Milvus와 함께하는 MemPalace
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>문서용과 MemPalace용 디렉터리가 분리된 작업 공간을 생성합니다:</p>
+    </button></h2><p>Create a workspace with separate directories for the documentation and the palace:</p>
 <pre><code translate="no" class="language-shell">mkdir -p mempalace-milvus-demo
 cd mempalace-milvus-demo
 
@@ -70,16 +72,16 @@ export MEMPALACE_EMBEDDING_MODEL=&quot;minilm&quot;
 export MEMPALACE_EMBEDDING_DEVICE=&quot;cpu&quot;
 export MEMPALACE_EMBEDDING_THREADS=&quot;2&quot;
 <button class="copy-code-btn"></button></code></pre>
-<p>아래 MemPalace 명령어에 <code translate="no">--backend milvus</code> 를 전달합니다. 원격 Milvus URI가 구성되지 않았으므로, MemPalace는 <code translate="no">$PALACE_DIR/milvus.db</code> 에 로컬 Milvus Lite 데이터베이스를 생성합니다.</p>
+<p>We pass <code translate="no">--backend milvus</code> to the MemPalace commands below. Because no remote Milvus URI is configured, MemPalace creates a local Milvus Lite database at <code translate="no">$PALACE_DIR/milvus.db</code>.</p>
 <blockquote>
-<p>백엔드에서 사용하는 <code translate="no">MilvusClient</code> 인자에 대해서는 다음과 같습니다:</p>
+<p>As for the argument of <code translate="no">MilvusClient</code> used by the backend:</p>
 <ul>
-<li><code translate="no">uri</code> 를 <code translate="no">./milvus.db</code> 와 같은 로컬 경로로 설정하는 것이 가장 편리한 방법입니다. 이렇게 하면 <a href="https://milvus.io/docs/milvus_lite.md">Milvus Lite를</a> 자동으로 사용하여 데이터를 로컬에 저장합니다.</li>
-<li>더 큰 규모의 배포 환경에서는 <a href="https://milvus.io/docs/quickstart.md">Milvus 서버를</a> 사용하고 URI를 <code translate="no">http://localhost:19530</code> 와 같은 해당 서버의 엔드포인트로 설정할 수 있습니다.</li>
-<li><a href="https://zilliz.com/cloud">Zilliz Cloud를</a> 사용하려면 URI와 토큰을 클러스터의 <a href="https://docs.zilliz.com/docs/on-zilliz-cloud-console#free-cluster-details">공개 엔드포인트와 API 키</a>로 설정하십시오.</li>
+<li>Setting the <code translate="no">uri</code> to a local path, such as <code translate="no">./milvus.db</code>, is the most convenient option. It automatically uses <a href="https://milvus.io/docs/milvus_lite.md">Milvus Lite</a> to store data locally.</li>
+<li>For a larger deployment, you can use a <a href="https://milvus.io/docs/quickstart.md">Milvus server</a> and set the URI to its endpoint, such as <code translate="no">http://localhost:19530</code>.</li>
+<li>To use <a href="https://zilliz.com/cloud">Zilliz Cloud</a>, set the URI and token to the cluster’s <a href="https://docs.zilliz.com/docs/on-zilliz-cloud-console#free-cluster-details">Public Endpoint and API key</a>.</li>
 </ul>
 </blockquote>
-<h2 id="Download-the-Milvus-documentation-corpus" class="common-anchor-header">Milvus 문서 코퍼스 다운로드<button data-href="#Download-the-Milvus-documentation-corpus" class="anchor-icon" translate="no">
+<h2 id="Download-the-Milvus-documentation-corpus" class="common-anchor-header">Download the Milvus documentation corpus<button data-href="#Download-the-Milvus-documentation-corpus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -94,7 +96,7 @@ export MEMPALACE_EMBEDDING_THREADS=&quot;2&quot;
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus 문서 저장소는 이 예제에서 필요한 것보다 훨씬 방대합니다. Git 스파스 체크아웃을 사용하여 <code translate="no">v3.0.x</code> 브랜치에서 Analyzer 문서 디렉토리만 다운로드하세요:</p>
+    </button></h2><p>The Milvus documentation repository is much larger than this example needs. Use Git sparse checkout to download only the Analyzer documentation directory from the <code translate="no">v3.0.x</code> branch:</p>
 <pre><code translate="no" class="language-shell">git clone \
   --depth 1 \
   --filter=blob:none \
@@ -110,21 +112,21 @@ cp -R \
   &quot;$DOCS_REPO/site/en/userGuide/schema/analyzer&quot; \
   &quot;$PROJECT_DIR&quot;
 <button class="copy-code-btn"></button></code></pre>
-<p>이 글을 작성하는 시점에서 이 디렉토리에는 31개의 마크다운 페이지가 포함되어 있습니다. 여기에는 일반적인 Analyzer 가이드와 밀접하게 관련된 세 그룹의 페이지가 포함되어 있습니다:</p>
+<p>At the time of writing, this directory contains 31 Markdown pages. They include general Analyzer guides and three groups of closely related pages:</p>
 <pre><code translate="no" class="language-text">milvus-analyzer-docs/
 ├── analyzer/       # Built-in language analyzers
 ├── filter/         # Token filters
 ├── tokenizer/      # Tokenizers
 └── *.md            # Analyzer overviews and selection guides
 <button class="copy-code-btn"></button></code></pre>
-<p>소스 페이지 수 확인:</p>
+<p>Confirm the number of source pages:</p>
 <pre><code translate="no" class="language-shell">find &quot;$PROJECT_DIR&quot; -type f -name &quot;*.md&quot; | wc -l
 <button class="copy-code-btn"></button></code></pre>
-<p>참조 출력:</p>
+<p>Reference output:</p>
 <pre><code translate="no" class="language-text">31
 <button class="copy-code-btn"></button></code></pre>
-<p>Milvus 문서 브랜치가 업데이트됨에 따라 정확한 개수는 변경될 수 있습니다.</p>
-<h2 id="Define-the-MemPalace-rooms" class="common-anchor-header">MemPalace 룸 정의<button data-href="#Define-the-MemPalace-rooms" class="anchor-icon" translate="no">
+<p>The exact count may change as the Milvus documentation branch is updated.</p>
+<h2 id="Define-the-MemPalace-rooms" class="common-anchor-header">Define the MemPalace rooms<button data-href="#Define-the-MemPalace-rooms" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -139,8 +141,8 @@ cp -R \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>MemPalace는 ` <code translate="no">mempalace init</code>` 과정에서 룸을 감지할 수 있지만, 초기화 흐름에서는 프로젝트 전체에 걸친 휴리스틱 엔티티 분류를 수행하고 승인된 결과를 엔티티 레지스트리에 기록합니다. 이 문서 코퍼스를 정의하는 데는 해당 분류 단계가 필요하지 않으므로, 소규모 분류 체계를 직접 제공합니다. 마이닝 과정에서 MemPalace는 여전히 결정론적 휴리스틱 엔티티 메타데이터를 연결하고 내부 복도 링크를 구축할 수 있습니다. 이러한 연관성은 파일이 어느 룸으로 전달될지를 결정하지 않으며, 아래의 룸 단위 검색 결과에도 영향을 미치지 않습니다.</p>
-<p>다음 내용을 포함하여 ` <code translate="no">$PROJECT_DIR/mempalace.yaml</code> ` 파일을 생성하십시오:</p>
+    </button></h2><p>MemPalace can detect rooms during <code translate="no">mempalace init</code>, but its initialization flow also performs project-wide heuristic entity classification and writes the accepted results to an entity registry. That classification step is not needed to define this documentation corpus, so we provide the small taxonomy directly. During mining, MemPalace may still attach deterministic heuristic entity metadata and build internal hallway links; those associations do not decide which room receives a file or change the room-scoped searches below.</p>
+<p>Create <code translate="no">$PROJECT_DIR/mempalace.yaml</code> with the following content:</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">wing:</span> <span class="hljs-string">milvus_analyzer_docs</span>
 <span class="hljs-attr">rooms:</span>
   <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">analyzer</span>
@@ -159,9 +161,9 @@ cp -R \
     <span class="hljs-attr">description:</span> <span class="hljs-string">Analyzer</span> <span class="hljs-string">documentation</span> <span class="hljs-string">that</span> <span class="hljs-string">does</span> <span class="hljs-string">not</span> <span class="hljs-string">fit</span> <span class="hljs-string">another</span> <span class="hljs-string">room</span>
     <span class="hljs-attr">keywords:</span> []
 <button class="copy-code-btn"></button></code></pre>
-<p>'wing'은 전체 문서 코퍼스를 나타냅니다. 'room'은 주제 영역을 나타냅니다. MemPalace는 파일을 라우팅할 때 먼저 디렉터리를 확인한 다음, 파일 이름을 확인하고, 마지막으로 파일 내용의 룸 키워드를 확인합니다. 예를 들어, <code translate="no">filter/</code> 아래에 있는 파일은 <code translate="no">filter</code> 룸으로 직접 이동합니다.</p>
-<p>그런 다음 각 파일은 서로 겹치는 텍스트 청크로 분할됩니다. 모든 청크는 원문 그대로의 마크다운과 <code translate="no">wing</code>, <code translate="no">room</code>, <code translate="no">source_file</code>, <code translate="no">chunk_index</code>, 소스 줄 번호와 같은 메타데이터를 포함하는 ‘서랍(drawer)’이 됩니다. 룸과 서랍은 MemPalace의 Milvus 컬렉션 내에서 논리적 메타데이터로 유지되며, MemPalace는 룸마다 별도의 Milvus 컬렉션을 생성하지 않습니다.</p>
-<h2 id="Mine-the-documentation-into-Milvus" class="common-anchor-header">문서를 Milvus로 마이닝하기<button data-href="#Mine-the-documentation-into-Milvus" class="anchor-icon" translate="no">
+<p>The wing represents the whole documentation corpus. A room represents a topic area. MemPalace routes a file by checking its directory first, then its filename, then room keywords in its content. A file under <code translate="no">filter/</code>, for example, goes directly to the <code translate="no">filter</code> room.</p>
+<p>Each file is then split into overlapping text chunks. Every chunk becomes a drawer containing the verbatim Markdown and metadata such as <code translate="no">wing</code>, <code translate="no">room</code>, <code translate="no">source_file</code>, <code translate="no">chunk_index</code>, and source line numbers. The rooms and drawers remain logical metadata inside MemPalace’s Milvus collections; MemPalace does not create a separate Milvus collection for every room.</p>
+<h2 id="Mine-the-documentation-into-Milvus" class="common-anchor-header">Mine the documentation into Milvus<button data-href="#Mine-the-documentation-into-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -176,13 +178,13 @@ cp -R \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus 백엔드를 사용하여 프로젝트 마이닝:</p>
+    </button></h2><p>Mine the project with the Milvus backend:</p>
 <pre><code translate="no" class="language-shell">mempalace \
   --palace &quot;$PALACE_DIR&quot; \
   mine &quot;$PROJECT_DIR&quot; \
   --backend milvus
 <button class="copy-code-btn"></button></code></pre>
-<p>검증된 문서 스냅샷의 출력 참조:</p>
+<p>Reference output from the validated documentation snapshot:</p>
 <pre><code translate="no" class="language-text">=======================================================
   Done.
   Files processed: 31
@@ -195,11 +197,11 @@ cp -R \
     tokenizer             7 files
 =======================================================
 <button class="copy-code-btn"></button></code></pre>
-<p>MemPalace는 마크다운을 요약하거나 재작성하지 않고 그대로 읽어들이며, 로컬 임베딩을 계산하고 서랍을 Milvus에 저장합니다. 테스트된 문서 스냅샷에서 31개의 파일이 473개의 서랍을 생성했습니다.</p>
-<p>결과로 생성된 룸과 서랍 수를 확인하세요:</p>
+<p>MemPalace reads the Markdown without summarizing or rewriting it, computes local embeddings, and stores the drawers in Milvus. On the tested documentation snapshot, 31 files produced 473 drawers.</p>
+<p>Check the resulting rooms and drawer counts:</p>
 <pre><code translate="no" class="language-shell">mempalace --palace &quot;$PALACE_DIR&quot; status --backend milvus
 <button class="copy-code-btn"></button></code></pre>
-<p>참조 출력:</p>
+<p>Reference output:</p>
 <pre><code translate="no" class="language-text">=======================================================
   MemPalace Status -- 473 drawers
 =======================================================
@@ -211,8 +213,8 @@ cp -R \
 
 =======================================================
 <button class="copy-code-btn"></button></code></pre>
-<p>업스트림 문서가 변경되면 더 긴 페이지는 더 많은 청크를 생성하므로 정확한 드로어 수는 달라질 수 있습니다.</p>
-<h2 id="Semantic-search" class="common-anchor-header">의미 기반 검색<button data-href="#Semantic-search" class="anchor-icon" translate="no">
+<p>The exact drawer count can change when the upstream documentation changes because longer pages produce more chunks.</p>
+<h2 id="Semantic-search" class="common-anchor-header">Semantic search<button data-href="#Semantic-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -227,7 +229,7 @@ cp -R \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">mempalace search</code> 를 사용하여 의미에 따라 문서를 검색할 수 있습니다. 다음 질문은 특정 파일이나 Analyzer 기능을 명시하지 않습니다:</p>
+    </button></h2><p>Use <code translate="no">mempalace search</code> to retrieve documentation by meaning. The following question does not name a specific file or Analyzer feature:</p>
 <pre><code translate="no" class="language-shell">mempalace \
   --palace &quot;$PALACE_DIR&quot; \
   search &quot;How should I analyze documents that mix several languages?&quot; \
@@ -235,7 +237,7 @@ cp -R \
   --wing milvus_analyzer_docs \
   --results 3
 <button class="copy-code-btn"></button></code></pre>
-<p>참조 출력 (점수는 다를 수 있음):</p>
+<p>Reference output (scores may vary):</p>
 <pre><code translate="no" class="language-text">Results for: &quot;How should I analyze documents that mix several languages?&quot;
 Wing: milvus_analyzer_docs
 
@@ -247,8 +249,8 @@ Wing: milvus_analyzer_docs
 [3] milvus_analyzer_docs / analyzer
     Source: multi-language-analyzers.md
 <button class="copy-code-btn"></button></code></pre>
-<p>검증된 실행 결과에서, 코퍼스에는 개별 언어 분석기, 토큰화기 및 필터에 대한 페이지도 포함되어 있었음에도 불구하고 세 결과 모두 <code translate="no">multi-language-analyzers.md</code> 에서 나왔습니다.</p>
-<h2 id="Search-within-a-room" class="common-anchor-header">룸 내 검색<button data-href="#Search-within-a-room" class="anchor-icon" translate="no">
+<p>In the validated run, all three results came from <code translate="no">multi-language-analyzers.md</code>, even though the corpus also contained pages for individual language analyzers, tokenizers, and filters.</p>
+<h2 id="Search-within-a-room" class="common-anchor-header">Search within a room<button data-href="#Search-within-a-room" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -263,7 +265,7 @@ Wing: milvus_analyzer_docs
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>관련 개념이 코퍼스 전반에 걸쳐 나타나는 경우, 룸 필터를 사용하면 유용합니다. 다음 쿼리는 <code translate="no">filter</code> 룸에서만 동등한 용어가 일치하도록 하는 방법을 검색합니다:</p>
+    </button></h2><p>Room filters are useful when related concepts appear throughout the corpus. The following query searches only the <code translate="no">filter</code> room for a way to make equivalent terms match:</p>
 <pre><code translate="no" class="language-shell">mempalace \
   --palace &quot;$PALACE_DIR&quot; \
   search &quot;How can equivalent terms such as USA and United States match one another?&quot; \
@@ -272,7 +274,7 @@ Wing: milvus_analyzer_docs
   --room filter \
   --results 3
 <button class="copy-code-btn"></button></code></pre>
-<p>참조 결과(점수는 달라질 수 있음):</p>
+<p>Reference output (scores may vary):</p>
 <pre><code translate="no" class="language-text">Results for: &quot;How can equivalent terms such as USA and United States match one another?&quot;
 Wing: milvus_analyzer_docs
 Room: filter
@@ -285,8 +287,8 @@ Room: filter
 [3] milvus_analyzer_docs / filter
     Source: stop-filter.md
 <button class="copy-code-btn"></button></code></pre>
-<p>최상위 결과는 <code translate="no">synonym-filter.md</code> 에서 나와야 합니다. 룸 제약 조건은 벡터 검색 전에 드로어 메타데이터를 통해 적용되므로, 토큰화기 및 언어 분석기 드로어는 이 검색에서 제외됩니다.</p>
-<h2 id="Search-for-exact-terms" class="common-anchor-header">정확한 용어 검색<button data-href="#Search-for-exact-terms" class="anchor-icon" translate="no">
+<p>The top result should come from <code translate="no">synonym-filter.md</code>. The room constraint is applied through drawer metadata before the vector search, so tokenizer and language-analyzer drawers are excluded from this search.</p>
+<h2 id="Search-for-exact-terms" class="common-anchor-header">Search for exact terms<button data-href="#Search-for-exact-terms" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -301,7 +303,7 @@ Room: filter
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>MemPalace CLI는 벡터 검색 후보를 순위 매길 때 의미적 유사성과 BM25 신호를 결합합니다. 따라서 정확한 구성 이름과 기능 이름을 사용하면 별도의 CLI 검색 모드로 전환하지 않고도 순위를 향상시킬 수 있습니다.</p>
+    </button></h2><p>The MemPalace CLI combines semantic similarity with BM25 signals when ranking the vector-search candidates. Exact configuration names and feature names can therefore improve the ranking without switching to a separate CLI search mode.</p>
 <pre><code translate="no" class="language-shell">mempalace \
   --palace &quot;$PALACE_DIR&quot; \
   search &quot;language_identifier tokenizer&quot; \
@@ -310,7 +312,7 @@ Room: filter
   --room tokenizer \
   --results 3
 <button class="copy-code-btn"></button></code></pre>
-<p>참조 출력 (점수는 달라질 수 있음):</p>
+<p>Reference output (scores may vary):</p>
 <pre><code translate="no" class="language-text">Results for: &quot;language_identifier tokenizer&quot;
 Wing: milvus_analyzer_docs
 Room: tokenizer
@@ -323,8 +325,8 @@ Room: tokenizer
 [3] milvus_analyzer_docs / tokenizer
     Source: lindera-tokenizer.md
 <button class="copy-code-btn"></button></code></pre>
-<p>결과에서는 <code translate="no">language-identifier.md</code> 가 우선적으로 표시되어야 하며, 이 문서에는 감지된 언어를 기반으로 분석기를 선택하는 데 사용되는 <code translate="no">language_identifier</code> 토큰화기가 설명되어 있습니다.</p>
-<h2 id="Inspect-the-Milvus-collections" class="common-anchor-header">Milvus 컬렉션 확인<button data-href="#Inspect-the-Milvus-collections" class="anchor-icon" translate="no">
+<p>The results should favor <code translate="no">language-identifier.md</code>, which documents the <code translate="no">language_identifier</code> tokenizer used to select analyzers based on detected language.</p>
+<h2 id="Inspect-the-Milvus-collections" class="common-anchor-header">Inspect the Milvus collections<button data-href="#Inspect-the-Milvus-collections" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -339,7 +341,7 @@ Room: tokenizer
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>MemPalace는 Milvus 스키마를 자동으로 관리합니다. 저장된 내용을 확인하려면 다음 스크립트를 <code translate="no">inspect_milvus.py</code> 로 저장하십시오. 이 스크립트는 동일한 Milvus Lite 데이터베이스를 열고, 컬렉션을 검사하며, 방별 서랍 수를 집계합니다:</p>
+    </button></h2><p>MemPalace manages its Milvus schema automatically. To confirm what was stored, save the following script as <code translate="no">inspect_milvus.py</code>. It opens the same Milvus Lite database, inspects the collections, and counts drawers by room:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> os
 <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> Counter
 
@@ -364,18 +366,18 @@ rows = client.query(
 room_counts = Counter(row[<span class="hljs-string">&quot;metadata&quot;</span>][<span class="hljs-string">&quot;room&quot;</span>] <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> rows)
 <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Drawers by room:&quot;</span>, <span class="hljs-built_in">dict</span>(<span class="hljs-built_in">sorted</span>(room_counts.items())))
 <button class="copy-code-btn"></button></code></pre>
-<p>CLI에서 사용하는 것과 동일한 선택적 종속성 세트를 사용하여 스크립트를 실행하십시오:</p>
+<p>Run the script with the same optional dependency set used by the CLI:</p>
 <pre><code translate="no" class="language-shell">export MEMPALACE_MILVUS_LITE_PATH=&quot;$PALACE_DIR/milvus.db&quot;
 uv run --with &quot;mempalace[milvus]&quot; inspect_milvus.py
 <button class="copy-code-btn"></button></code></pre>
-<p>참조 출력:</p>
+<p>Reference output:</p>
 <pre><code translate="no" class="language-text">mempalace_closets: rows=74, fields=[&#x27;id&#x27;, &#x27;document&#x27;, &#x27;metadata&#x27;, &#x27;vector&#x27;, &#x27;sparse&#x27;]
 mempalace_drawers: rows=473, fields=[&#x27;id&#x27;, &#x27;document&#x27;, &#x27;metadata&#x27;, &#x27;vector&#x27;, &#x27;sparse&#x27;]
 Drawers by room: {&#x27;analyzer&#x27;: 212, &#x27;filter&#x27;: 156, &#x27;tokenizer&#x27;: 105}
 <button class="copy-code-btn"></button></code></pre>
-<p>테스트된 문서 스냅샷의 경우, ` <code translate="no">mempalace_drawers</code> `에는 473개의 행이 포함되어 있었고 ` <code translate="no">mempalace_closets</code> `에는 74개의 내부 탐색 레코드가 포함되어 있었습니다. 옷장과 서랍의 개수가 일치할 필요는 없습니다. 서랍 메타데이터에 따르면 ` <code translate="no">analyzer</code>`에는 212개의 서랍, ` <code translate="no">filter</code>`에는 156개, ` <code translate="no">tokenizer</code>`에는 105개가 표시되었습니다.</p>
-<p>이 검사는 새로운 프로세스에서 실행되며 CLI가 생성한 데이터베이스를 다시 열게 되는데, 이는 명령어 간에도 데이터가 유지됨을 확인해 줍니다.</p>
-<h2 id="Optional-use-Milvus-server-or-Zilliz-Cloud" class="common-anchor-header">선택 사항: Milvus 서버 또는 Zilliz Cloud 사용<button data-href="#Optional-use-Milvus-server-or-Zilliz-Cloud" class="anchor-icon" translate="no">
+<p>For the tested documentation snapshot, <code translate="no">mempalace_drawers</code> contained 473 rows and <code translate="no">mempalace_closets</code> contained 74 internal navigation records. Closet and drawer counts do not need to match. The drawer metadata showed 212 drawers in <code translate="no">analyzer</code>, 156 in <code translate="no">filter</code>, and 105 in <code translate="no">tokenizer</code>.</p>
+<p>This inspection runs in a new process and reopens the database created by the CLI, which also confirms that the data persists across commands.</p>
+<h2 id="Optional-use-Milvus-server-or-Zilliz-Cloud" class="common-anchor-header">Optional: use Milvus server or Zilliz Cloud<button data-href="#Optional-use-Milvus-server-or-Zilliz-Cloud" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -390,20 +392,20 @@ Drawers by room: {&#x27;analyzer&#x27;: 212, &#x27;filter&#x27;: 156, &#x27;toke
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>공유 배포 환경에서는 동일한 MemPalace CLI 명령을 실행하기 전에 Milvus 연결 환경 변수를 설정하십시오. 위에서 보여준 로컬 Milvus Lite 데이터베이스를 사용하려면 해당 변수를 설정하지 마십시오.</p>
-<p>Milvus 서버의 경우:</p>
+    </button></h2><p>For a shared deployment, set the Milvus connection environment variables before running the same MemPalace CLI commands. Leave them unset to use the local Milvus Lite database shown above.</p>
+<p>For Milvus server:</p>
 <pre><code translate="no" class="language-shell">export MEMPALACE_MILVUS_URI=&quot;http://localhost:19530&quot;
 export MEMPALACE_MILVUS_DB_NAME=&quot;default&quot;
 export MEMPALACE_MILVUS_NAMESPACE=&quot;team-memory&quot;
 <button class="copy-code-btn"></button></code></pre>
-<p>Zilliz Cloud의 경우:</p>
+<p>For Zilliz Cloud:</p>
 <pre><code translate="no" class="language-shell">export MEMPALACE_MILVUS_URI=&quot;https://your-cluster.api.region.zillizcloud.com&quot;
 export MEMPALACE_MILVUS_TOKEN=&quot;your-api-key&quot;
 export MEMPALACE_MILVUS_DB_NAME=&quot;default&quot;
 export MEMPALACE_MILVUS_NAMESPACE=&quot;team-memory&quot;
 <button class="copy-code-btn"></button></code></pre>
-<p>이 튜토리얼에 소개된 전체 명령어 흐름은 Milvus Lite를 사용하여 검증되었습니다. 위의 서버 및 클라우드 설정은 선택적 배포 구성이며, 로컬 검증에는 필요하지 않았습니다.</p>
-<h2 id="Conclusion" class="common-anchor-header">결론<button data-href="#Conclusion" class="anchor-icon" translate="no">
+<p>The end-to-end commands in this tutorial were validated with Milvus Lite. The server and cloud settings above are optional deployment configurations and were not required for the local validation.</p>
+<h2 id="Conclusion" class="common-anchor-header">Conclusion<button data-href="#Conclusion" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -418,4 +420,4 @@ export MEMPALACE_MILVUS_NAMESPACE=&quot;team-memory&quot;
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>MemPalace는 에이전트가 프로젝트 지식을 체계적으로 보존할 수 있는 방법을 제공합니다. ‘윙(wing)’은 코퍼스를 구분하고, ‘룸(room)’은 주제 수준의 범위를 제공하며, ‘서랍(drawer)’은 원본 소스 텍스트를 보관합니다. 이 예시에서, 밀접하게 관련된 31개의 Milvus 문서 페이지는 소수의 수기 기록이 아닌 수백 개의 검색 가능한 서랍으로 변환됩니다. Milvus는 이러한 구조의 기반이 되는 벡터, 스파스, 텍스트 및 메타데이터를 지속적으로 저장합니다.</p>
+    </button></h2><p>MemPalace gives agents a structured way to preserve project knowledge: a wing separates the corpus, rooms provide topic-level scope, and drawers retain the original source text. In this example, 31 closely related Milvus documentation pages become hundreds of searchable drawers rather than a few hand-written records. Milvus provides persistent vector, sparse, text, and metadata storage behind that structure.</p>

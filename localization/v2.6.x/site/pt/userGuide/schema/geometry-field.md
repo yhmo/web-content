@@ -1,15 +1,14 @@
 ---
 id: geometry-field.md
-title: Campo GeométricoCompatible with Milvus 2.6.4+
+title: Geometry FieldCompatible with Milvus 2.6.4+
 summary: >-
-  Ao criar aplicações como os Sistemas de Informação Geográfica (SIG),
-  ferramentas de cartografia ou serviços baseados na localização, é
-  frequentemente necessário armazenar e consultar dados geométricos. O tipo de
-  dados GEOMETRY em Milvus resolve este desafio fornecendo uma forma nativa de
-  armazenar e consultar dados geométricos flexíveis.
+  When building applications like Geographic Information Systems (GIS), mapping
+  tools, or location-based services, you often need to store and query geometric
+  data. The GEOMETRY data type in Milvus solves this challenge by providing a
+  native way to store and query flexible geometric data.
 beta: Milvus 2.6.4+
 ---
-<h1 id="Geometry-Field" class="common-anchor-header">Campo Geométrico<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.4+</span><button data-href="#Geometry-Field" class="anchor-icon" translate="no">
+<h1 id="Geometry-Field" class="common-anchor-header">Geometry Field<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.4+</span><button data-href="#Geometry-Field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -24,17 +23,17 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Ao criar aplicações como Sistemas de Informação Geográfica (SIG), ferramentas de mapeamento ou serviços baseados em localização, é frequentemente necessário armazenar e consultar dados geométricos. O tipo de dados <code translate="no">GEOMETRY</code> em Milvus resolve este desafio fornecendo uma forma nativa de armazenar e consultar dados geométricos flexíveis.</p>
-<p>Utilize um campo GEOMETRY quando precisar de combinar a semelhança de vectores com restrições espaciais, por exemplo:</p>
+    </button></h1><p>When building applications like Geographic Information Systems (GIS), mapping tools, or location-based services, you often need to store and query geometric data. The <code translate="no">GEOMETRY</code> data type in Milvus solves this challenge by providing a native way to store and query flexible geometric data.</p>
+<p>Use a GEOMETRY field when you need to combine vector similarity with spatial constraints, for example:</p>
 <ul>
-<li><p>Serviço de base de localização (LBS): "encontrar POIs semelhantes <strong>dentro</strong> deste quarteirão"</p></li>
-<li><p>Pesquisa multimodal: "encontrar fotografias semelhantes <strong>num</strong> raio <strong>de 1 km</strong> deste ponto"</p></li>
-<li><p>Mapas e logística: "activos <strong>dentro de</strong> uma região" ou "rotas <strong>que intersectam</strong> um caminho"</p></li>
+<li><p>Location-Base Service (LBS): “find similar POIs <strong>within</strong> this city block”</p></li>
+<li><p>Multi‑modal search: “retrieve similar photos <strong>within 1km</strong> of this point”</p></li>
+<li><p>Maps & logistics: “assets <strong>inside</strong> a region” or “routes <strong>intersecting</strong> a path”</p></li>
 </ul>
 <div class="alert note">
-<p>Para utilizar o campo GEOMETRY, actualize o seu SDK para a versão mais recente.</p>
+<p>To use the GEOMETRY field, upgrade your SDK to the latest version.</p>
 </div>
-<h2 id="What-is-a-GEOMETRY-field" class="common-anchor-header">O que é um campo GEOMETRY?<button data-href="#What-is-a-GEOMETRY-field" class="anchor-icon" translate="no">
+<h2 id="What-is-a-GEOMETRY-field" class="common-anchor-header">What is a GEOMETRY field?<button data-href="#What-is-a-GEOMETRY-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -49,18 +48,18 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Um campo GEOMETRY é um tipo de dados definido pelo esquema (<code translate="no">DataType.GEOMETRY</code>) no Milvus que armazena dados geométricos. Quando se trabalha com campos geométricos, interage-se com os dados utilizando o formato <a href="https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry">Well-Known Text (WKT)</a>, uma representação legível por humanos utilizada tanto para a inserção de dados como para a consulta. Internamente, o Milvus converte WKT em <a href="https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry#Well-known_binary">Well-Known Binary (WKB)</a> para um armazenamento e processamento eficientes, mas não é necessário manipular WKB diretamente.</p>
-<p>O tipo de dados <code translate="no">GEOMETRY</code> suporta os seguintes objectos geométricos:</p>
+    </button></h2><p>A GEOMETRY field is a schema-defined data type (<code translate="no">DataType.GEOMETRY</code>) in Milvus that stores geometric data. When working with geometry fields, you interact with the data using the <a href="https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry">Well-Known Text (WKT)</a> format, a human-readable representation used for both inserting data and querying. Internally, Milvus converts WKT to <a href="https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry#Well-known_binary">Well-Known Binary (WKB)</a> for efficient storage and processing, but you do not need to handle WKB directly.</p>
+<p>The <code translate="no">GEOMETRY</code> data type supports the following geometric objects:</p>
 <ul>
-<li><p><strong>POINT</strong>: <code translate="no">POINT (x y)</code>; por exemplo, <code translate="no">POINT (13.403683 52.520711)</code> onde <code translate="no">x</code> = longitude e <code translate="no">y</code> = latitude</p></li>
-<li><p><strong>LINESTRING</strong>: <code translate="no">LINESTRING (x1 y1, x2 y2, …)</code>; por exemplo, <code translate="no">LINESTRING (13.40 52.52, 13.41 52.51)</code></p></li>
-<li><p><strong>POLYGON</strong>: <code translate="no">POLYGON ((x1 y1, x2 y2, x3 y3, x1 y1))</code>; por exemplo, <code translate="no">POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))</code></p></li>
-<li><p><strong>MULTIPOINT</strong>: <code translate="no">MULTIPOINT ((x1 y1), (x2 y2), …)</code>, por exemplo, <code translate="no">MULTIPOINT ((10 40), (40 30), (20 20), (30 10))</code></p></li>
-<li><p><strong>MULTILINESTRING</strong>: <code translate="no">MULTILINESTRING ((x1 y1, …), (xk yk, …))</code>, por exemplo, <code translate="no">MULTILINESTRING ((10 10, 20 20, 10 40), (40 40, 30 30, 40 20, 30 10))</code></p></li>
-<li><p><strong>MULTIPOLYGON</strong>: <code translate="no">MULTIPOLYGON (((outer ring ...)), ((outer ring ...)))</code>, por exemplo, <code translate="no">MULTIPOLYGON (((30 20, 45 40, 10 40, 30 20)), ((15 5, 40 10, 10 20, 5 10, 15 5)))</code></p></li>
-<li><p><strong>GEOMETRYCOLLECTION</strong>: <code translate="no">GEOMETRYCOLLECTION(POINT(x y), LINESTRING(x1 y1, x2 y2), ...)</code>, por exemplo, <code translate="no">GEOMETRYCOLLECTION (POINT (40 10), LINESTRING (10 10, 20 20, 10 40), POLYGON ((40 40, 20 45, 45 30, 40 40)))</code></p></li>
+<li><p><strong>POINT</strong>: <code translate="no">POINT (x y)</code>; for example, <code translate="no">POINT (13.403683 52.520711)</code> where <code translate="no">x</code> = longitude and <code translate="no">y</code> = latitude</p></li>
+<li><p><strong>LINESTRING</strong>: <code translate="no">LINESTRING (x1 y1, x2 y2, …)</code>; for example, <code translate="no">LINESTRING (13.40 52.52, 13.41 52.51)</code></p></li>
+<li><p><strong>POLYGON</strong>: <code translate="no">POLYGON ((x1 y1, x2 y2, x3 y3, x1 y1))</code>; for example, <code translate="no">POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))</code></p></li>
+<li><p><strong>MULTIPOINT</strong>: <code translate="no">MULTIPOINT ((x1 y1), (x2 y2), …)</code>, for example, <code translate="no">MULTIPOINT ((10 40), (40 30), (20 20), (30 10))</code></p></li>
+<li><p><strong>MULTILINESTRING</strong>: <code translate="no">MULTILINESTRING ((x1 y1, …), (xk yk, …))</code>, for example, <code translate="no">MULTILINESTRING ((10 10, 20 20, 10 40), (40 40, 30 30, 40 20, 30 10))</code></p></li>
+<li><p><strong>MULTIPOLYGON</strong>: <code translate="no">MULTIPOLYGON (((outer ring ...)), ((outer ring ...)))</code>, for example, <code translate="no">MULTIPOLYGON (((30 20, 45 40, 10 40, 30 20)), ((15 5, 40 10, 10 20, 5 10, 15 5)))</code></p></li>
+<li><p><strong>GEOMETRYCOLLECTION</strong>: <code translate="no">GEOMETRYCOLLECTION(POINT(x y), LINESTRING(x1 y1, x2 y2), ...)</code>, for example, <code translate="no">GEOMETRYCOLLECTION (POINT (40 10), LINESTRING (10 10, 20 20, 10 40), POLYGON ((40 40, 20 45, 45 30, 40 40)))</code></p></li>
 </ul>
-<h2 id="Basic-operations" class="common-anchor-header">Operações básicas<button data-href="#Basic-operations" class="anchor-icon" translate="no">
+<h2 id="Basic-operations" class="common-anchor-header">Basic operations<button data-href="#Basic-operations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -75,8 +74,8 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>O fluxo de trabalho para utilizar um campo <code translate="no">GEOMETRY</code> envolve a sua definição no esquema da coleção, a inserção de dados geométricos e, em seguida, a consulta dos dados utilizando expressões de filtro específicas.</p>
-<h3 id="Step-1-Define-a-GEOMETRY-field" class="common-anchor-header">Passo 1: Definir um campo GEOMETRY<button data-href="#Step-1-Define-a-GEOMETRY-field" class="anchor-icon" translate="no">
+    </button></h2><p>The workflow for using a <code translate="no">GEOMETRY</code> field involves defining it in your collection schema, inserting geometric data, and then querying the data using specific filter expressions.</p>
+<h3 id="Step-1-Define-a-GEOMETRY-field" class="common-anchor-header">Step 1: Define a GEOMETRY field<button data-href="#Step-1-Define-a-GEOMETRY-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -91,9 +90,14 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Para utilizar um campo <code translate="no">GEOMETRY</code>, defina-o explicitamente no esquema da coleção ao criar a coleção. O exemplo a seguir demonstra como criar uma coleção com um campo <code translate="no">geo</code> do tipo <code translate="no">DataType.GEOMETRY</code>.</p>
+    </button></h3><p>To use a <code translate="no">GEOMETRY</code> field, explicitly define it in your collection schema when creating the collection. The following example demonstrates how to create a collection with a <code translate="no">geo</code> field of type <code translate="no">DataType.GEOMETRY</code>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
 <span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
 
@@ -175,9 +179,9 @@ client.createCollection(requestCreate);
 
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>Neste exemplo, o campo <code translate="no">GEOMETRY</code> definido no esquema de coleção permite valores nulos com <code translate="no">nullable=True</code>. Para obter detalhes, consulte <a href="/docs/pt/nullable-and-default.md">Nullable &amp; Default</a>.</p>
+<p>In this example, the <code translate="no">GEOMETRY</code> field defined in the collection schema allows null values with <code translate="no">nullable=True</code>. For details, refer to <a href="/docs/pt/v2.6.x/nullable-and-default.md">Nullable & Default</a>.</p>
 </div>
-<h3 id="Step-2-Insert-data" class="common-anchor-header">Passo 2: Inserir dados<button data-href="#Step-2-Insert-data" class="anchor-icon" translate="no">
+<h3 id="Step-2-Insert-data" class="common-anchor-header">Step 2: Insert data<button data-href="#Step-2-Insert-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -192,9 +196,14 @@ client.createCollection(requestCreate);
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Insira entidades com dados geométricos no formato <a href="https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry">WKT</a>. Aqui está um exemplo com vários pontos geográficos:</p>
+    </button></h3><p>Insert entities with geometry data in <a href="https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry">WKT</a> format. Here’s an example with several geo points:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">rng = np.random.default_rng(seed=<span class="hljs-number">19530</span>)
 geo_points = [
     <span class="hljs-string">&#x27;POINT(13.399710 52.518010)&#x27;</span>,
@@ -282,7 +291,7 @@ client.insert(InsertReq.builder()
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Step-3-Filtering-operations" class="common-anchor-header">Passo 3: Operações de filtragem<button data-href="#Step-3-Filtering-operations" class="anchor-icon" translate="no">
+<h3 id="Step-3-Filtering-operations" class="common-anchor-header">Step 3: Filtering operations<button data-href="#Step-3-Filtering-operations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -297,15 +306,20 @@ client.insert(InsertReq.builder()
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Antes de poder efetuar operações de filtragem nos campos <code translate="no">GEOMETRY</code>, certifique-se de que:</p>
+    </button></h3><p>Before you can perform filtering operations on <code translate="no">GEOMETRY</code> fields, make sure:</p>
 <ul>
-<li><p>Criou um índice em cada campo vetorial.</p></li>
-<li><p>A coleção está carregada na memória.</p></li>
+<li><p>You have created an index on each vector field.</p></li>
+<li><p>The collection is loaded into memory.</p></li>
 </ul>
 <p><details></p>
-<p><summary>Mostrar código</summary></p>
+<p><summary>Show code</summary></p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">index_params = milvus_client.prepare_index_params()
 index_params.add_index(field_name=<span class="hljs-string">&quot;embeddings&quot;</span>, metric_type=<span class="hljs-string">&quot;L2&quot;</span>)
 
@@ -349,22 +363,27 @@ client.createIndex(CreateIndexReq.builder()
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<p>Uma vez cumpridos estes requisitos, pode utilizar expressões com operadores de geometria dedicados para filtrar a sua coleção com base nos valores geométricos.</p>
-<h4 id="Define-filter-expressions" class="common-anchor-header">Definir expressões de filtro</h4><p>Para filtrar num campo <code translate="no">GEOMETRY</code>, utilize um operador de geometria numa expressão:</p>
+<p>Once these requirements are met, you can use expressions with dedicated geometry operators to filter your collection based on the geometric values.</p>
+<h4 id="Define-filter-expressions" class="common-anchor-header">Define filter expressions</h4><p>To filter on a <code translate="no">GEOMETRY</code> field, use a geometry operator in an expression:</p>
 <ul>
-<li><p>Geral: <code translate="no">{operator}(geo_field, '{wkt}')</code></p></li>
-<li><p>Baseado em distância: <code translate="no">ST_DWITHIN(geo_field, '{wkt}', distance)</code></p></li>
+<li><p>General: <code translate="no">{operator}(geo_field, '{wkt}')</code></p></li>
+<li><p>Distance-based: <code translate="no">ST_DWITHIN(geo_field, '{wkt}', distance)</code></p></li>
 </ul>
-<p>Onde:</p>
+<p>Where:</p>
 <ul>
-<li><p><code translate="no">operator</code> é um dos operadores de geometria suportados (por exemplo, <code translate="no">ST_CONTAINS</code>, <code translate="no">ST_INTERSECTS</code>). Os nomes dos operadores devem estar todos em maiúsculas ou minúsculas. Para obter uma lista dos operadores suportados, consulte <a href="/docs/pt/geometry-operators.md#Supported-geometry-operators">Operadores de geometria suportados</a>.</p></li>
-<li><p><code translate="no">geo_field</code> é o nome do seu campo <code translate="no">GEOMETRY</code>.</p></li>
-<li><p><code translate="no">'{wkt}'</code> é a representação WKT da geometria a consultar.</p></li>
-<li><p><code translate="no">distance</code> é o limiar específico para <code translate="no">ST_DWITHIN</code>.</p></li>
+<li><p><code translate="no">operator</code> is one of the supported geometry operators (e.g., <code translate="no">ST_CONTAINS</code>, <code translate="no">ST_INTERSECTS</code>). Operator names must be all uppercase or all lowercase. For a list of supported operators, refer to <a href="/docs/pt/v2.6.x/geometry-operators.md#Supported-geometry-operators">Supported geometry operators</a>.</p></li>
+<li><p><code translate="no">geo_field</code> is the name of your <code translate="no">GEOMETRY</code> field.</p></li>
+<li><p><code translate="no">'{wkt}'</code> is the WKT representation of the geometry to query.</p></li>
+<li><p><code translate="no">distance</code> is the threshold specifically for <code translate="no">ST_DWITHIN</code>.</p></li>
 </ul>
-<p>Os exemplos seguintes demonstram como utilizar diferentes operadores específicos da geometria numa expressão de filtro:</p>
-<h4 id="Example-1-Find-entities-within-a-rectangular-area" class="common-anchor-header">Exemplo 1: Encontrar entidades dentro de uma área retangular</h4><div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+<p>The following examples demonstrate how to use different geometry-specific operators in a filter expression:</p>
+<h4 id="Example-1-Find-entities-within-a-rectangular-area" class="common-anchor-header">Example 1: Find entities within a rectangular area</h4><div class="multipleCode">
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">top_left_lon, top_left_lat = <span class="hljs-number">13.403683</span>, <span class="hljs-number">52.520711</span>
 bottom_right_lon, bottom_right_lat = <span class="hljs-number">13.455868</span>, <span class="hljs-number">52.495862</span>
 bounding_box_wkt = <span class="hljs-string">f&quot;POLYGON((<span class="hljs-subst">{top_left_lon}</span> <span class="hljs-subst">{top_left_lat}</span>, <span class="hljs-subst">{bottom_right_lon}</span> <span class="hljs-subst">{top_left_lat}</span>, <span class="hljs-subst">{bottom_right_lon}</span> <span class="hljs-subst">{bottom_right_lat}</span>, <span class="hljs-subst">{top_left_lon}</span> <span class="hljs-subst">{bottom_right_lat}</span>, <span class="hljs-subst">{top_left_lon}</span> <span class="hljs-subst">{top_left_lat}</span>))&quot;</span>
@@ -429,8 +448,13 @@ System.out.println(<span class="hljs-string">&quot;Query results:&quot;</span>);
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h4 id="Example-2-Find-entities-within-1km-of-a-central-point" class="common-anchor-header">Exemplo 2: Encontrar entidades num raio de 1 km de um ponto central</h4><div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+<h4 id="Example-2-Find-entities-within-1km-of-a-central-point" class="common-anchor-header">Example 2: Find entities within 1km of a central point</h4><div class="multipleCode">
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">center_point_lon, center_point_lat = <span class="hljs-number">13.403683</span>, <span class="hljs-number">52.520711</span>
 radius_meters = <span class="hljs-number">1000.0</span>
 central_point_wkt = <span class="hljs-string">f&quot;POINT(<span class="hljs-subst">{center_point_lon}</span> <span class="hljs-subst">{center_point_lat}</span>)&quot;</span>
@@ -483,8 +507,13 @@ System.out.println(<span class="hljs-string">&quot;Query results:&quot;</span>);
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h4 id="Example-3-Combine-vector-similarity-with-a-spatial-filter" class="common-anchor-header">Exemplo 3: Combinar a similaridade vetorial com um filtro espacial</h4><div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+<h4 id="Example-3-Combine-vector-similarity-with-a-spatial-filter" class="common-anchor-header">Example 3: Combine vector similarity with a spatial filter</h4><div class="multipleCode">
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">vectors_to_search = rng.random((<span class="hljs-number">1</span>, dim))
 result = milvus_client.search(
     collection_name,
@@ -543,7 +572,7 @@ List&lt;List&lt;SearchResp.SearchResult&gt;&gt; searchResults = statusR.getSearc
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Next-Accelerate-queries" class="common-anchor-header">Seguinte: Acelerar as consultas<button data-href="#Next-Accelerate-queries" class="anchor-icon" translate="no">
+<h2 id="Next-Accelerate-queries" class="common-anchor-header">Next: Accelerate queries<button data-href="#Next-Accelerate-queries" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -558,9 +587,9 @@ List&lt;List&lt;SearchResp.SearchResult&gt;&gt; searchResults = statusR.getSearc
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Por padrão, as consultas em <code translate="no">GEOMETRY</code> campos sem um índice executarão uma varredura completa de todas as linhas, o que pode ser lento em grandes conjuntos de dados. Para acelerar as consultas geométricas, crie um índice <code translate="no">RTREE</code> no seu campo GEOMETRY.</p>
-<p>Para obter detalhes, consulte <a href="/docs/pt/rtree.md">RTREE</a>.</p>
-<h2 id="FAQ" class="common-anchor-header">PERGUNTAS FREQUENTES<button data-href="#FAQ" class="anchor-icon" translate="no">
+    </button></h2><p>By default, queries on <code translate="no">GEOMETRY</code> fields without an index will perform a full scan of all rows, which can be slow on large datasets. To accelerate geometric queries, create an <code translate="no">RTREE</code> index on your GEOMETRY field.</p>
+<p>For details, refer to <a href="/docs/pt/v2.6.x/rtree.md">RTREE</a>.</p>
+<h2 id="FAQ" class="common-anchor-header">FAQ<button data-href="#FAQ" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -575,7 +604,7 @@ List&lt;List&lt;SearchResp.SearchResult&gt;&gt; searchResults = statusR.getSearc
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="If-Ive-enabled-the-dynamic-field-feature-for-my-collection-can-I-insert-geometric-data-into-a-dynamic-field-key" class="common-anchor-header">Se eu tiver ativado a funcionalidade de campo dinâmico para a minha coleção, posso inserir dados geométricos numa chave de campo dinâmico?<button data-href="#If-Ive-enabled-the-dynamic-field-feature-for-my-collection-can-I-insert-geometric-data-into-a-dynamic-field-key" class="anchor-icon" translate="no">
+    </button></h2><h3 id="If-Ive-enabled-the-dynamic-field-feature-for-my-collection-can-I-insert-geometric-data-into-a-dynamic-field-key" class="common-anchor-header">If I’ve enabled the dynamic field feature for my collection, can I insert geometric data into a dynamic field key?<button data-href="#If-Ive-enabled-the-dynamic-field-feature-for-my-collection-can-I-insert-geometric-data-into-a-dynamic-field-key" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -590,8 +619,8 @@ List&lt;List&lt;SearchResp.SearchResult&gt;&gt; searchResults = statusR.getSearc
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Não, os dados geométricos não podem ser inseridos num campo dinâmico. Antes de inserir dados geométricos, certifique-se de que o campo <code translate="no">GEOMETRY</code> foi explicitamente definido no esquema da sua coleção.</p>
-<h3 id="Does-the-GEOMETRY-field-support-the-mmap-feature" class="common-anchor-header">O campo GEOMETRY suporta a funcionalidade mmap?<button data-href="#Does-the-GEOMETRY-field-support-the-mmap-feature" class="anchor-icon" translate="no">
+    </button></h3><p>No, geometry data cannot be inserted into a dynamic field. Before inserting geometric data, make sure the <code translate="no">GEOMETRY</code> field has been explicitly defined in your collection schema.</p>
+<h3 id="Does-the-GEOMETRY-field-support-the-mmap-feature" class="common-anchor-header">Does the GEOMETRY field support the mmap feature?<button data-href="#Does-the-GEOMETRY-field-support-the-mmap-feature" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -606,8 +635,8 @@ List&lt;List&lt;SearchResp.SearchResult&gt;&gt; searchResults = statusR.getSearc
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Sim, o campo <code translate="no">GEOMETRY</code> suporta mmap. Para obter mais informações, consulte <a href="https://zilliverse.feishu.cn/wiki/P3wrwSMNNihy8Vkf9p6cTsWYnTb">Utilizar mmap</a>.</p>
-<h3 id="Can-I-define-the-GEOMETRY-field-as-nullable-or-set-a-default-value" class="common-anchor-header">Posso definir o campo GEOMETRY como anulável ou definir um valor predefinido?<button data-href="#Can-I-define-the-GEOMETRY-field-as-nullable-or-set-a-default-value" class="anchor-icon" translate="no">
+    </button></h3><p>Yes, the <code translate="no">GEOMETRY</code> field supports mmap. For more information, refer to <a href="https://zilliverse.feishu.cn/wiki/P3wrwSMNNihy8Vkf9p6cTsWYnTb">Use mmap</a>.</p>
+<h3 id="Can-I-define-the-GEOMETRY-field-as-nullable-or-set-a-default-value" class="common-anchor-header">Can I define the GEOMETRY field as nullable or set a default value?<button data-href="#Can-I-define-the-GEOMETRY-field-as-nullable-or-set-a-default-value" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -622,4 +651,4 @@ List&lt;List&lt;SearchResp.SearchResult&gt;&gt; searchResults = statusR.getSearc
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Sim, o campo GEOMETRY suporta o atributo <code translate="no">nullable</code> e um valor predefinido no formato WKT. Para obter mais informações, consulte <a href="/docs/pt/nullable-and-default.md">Nullable &amp; Default</a>.</p>
+    </button></h3><p>Yes, the GEOMETRY field supports the <code translate="no">nullable</code> attribute and a default value in WKT format. For more information, refer to <a href="/docs/pt/v2.6.x/nullable-and-default.md">Nullable & Default</a>.</p>

@@ -1,9 +1,9 @@
 ---
 id: data_processing.md
-summary: Milvus의 데이터 처리 절차에 대해 알아보세요.
-title: 데이터 처리
+summary: Learn about the data processing procedure in Milvus.
+title: Data Processing
 ---
-<h1 id="Data-Processing" class="common-anchor-header">데이터 처리<button data-href="#Data-Processing" class="anchor-icon" translate="no">
+<h1 id="Data-Processing" class="common-anchor-header">Data Processing<button data-href="#Data-Processing" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,8 +18,8 @@ title: 데이터 처리
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>이 문서에서는 Milvus에서 데이터 삽입, 인덱스 생성 및 데이터 쿼리 구현에 대해 자세히 설명합니다.</p>
-<h2 id="Data-insertion" class="common-anchor-header">데이터 삽입<button data-href="#Data-insertion" class="anchor-icon" translate="no">
+    </button></h1><p>This article provides a detailed description of the implementation of data insertion, index building, and data query in Milvus.</p>
+<h2 id="Data-insertion" class="common-anchor-header">Data insertion<button data-href="#Data-insertion" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -34,35 +34,35 @@ title: 데이터 처리
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus에서 컬렉션이 사용할 샤드 수를 선택할 수 있으며, 각 샤드는 가상 채널(<em>vchannel</em>)에 매핑됩니다. 아래 그림에서 볼 수 있듯이, Milvus는 모든 <em>vchannel을</em> 물리적 채널(<em>pchannel</em>)에 할당하며, 각 <em>pchannel은</em> 특정 스트리밍 노드에 바인딩됩니다.</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="/docs/v3.0.x/assets/pvchannel_wal.png" alt="VChannel, PChannel, and Streaming Node" class="doc-image" id="vchannel,-pchannel,-and-streaming-node" /> 
-   <span>VChannel, PChannel 및 스트리밍 노드</span>
-  
- </span></p>
-<p>데이터 검증 후, 프록시는 지정된 샤드 라우팅 규칙에 따라 기록된 메시지를 여러 샤드의 데이터 패키지로 분할합니다.</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/channels_1.png" alt="Channels 1" class="doc-image" id="channels-1" /> 
-   <span>채널 1</span>
-  
- </span></p>
-<p>그런 다음 하나의 샤드(<em>vchannel</em>)에 대한 기록된 데이터는 <em>pchannel의</em> 해당 스트리밍 노드로 전송됩니다.</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/written_data_flow.png" alt="write flow" class="doc-image" id="write-flow" /> 
-   <span>쓰기 흐름</span>
-  
- </span></p>
-<p>스트리밍 노드는 각 데이터 패킷에 타임스탬프 오라클(TSO)을 할당하여 작업의 전체 순서를 정립합니다. 또한 페이로드에 대한 일관성 검사를 수행한 후, 이를 기본 쓰기 선행 로그(WAL)에 기록합니다. 데이터가 WAL에 영구적으로 커밋되면 데이터가 손실되지 않는 것이 보장됩니다. 심지어 크래시가 발생하더라도 스트리밍 노드는 WAL을 재실행하여 모든 보류 중인 작업을 완전히 복구할 수 있습니다.</p>
-<p>한편, 스트리밍 노드는 커밋된 WAL 항목을 비동기적으로 개별 세그먼트로 분할합니다. 세그먼트에는 두 가지 유형이 있습니다.</p>
+    </button></h2><p>You can choose how many shards a collection uses in Milvus—each shard maps to a virtual channel (<em>vchannel</em>). As illustrated below, Milvus then assigns every <em>vchannel</em> to a physical channel (<em>pchannel</em>), and each <em>pchannel</em> is bound to a specific Streaming Node.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v3.0.x/assets/pvchannel_wal.png" alt="VChannel, PChannel, and Streaming Node" class="doc-image" id="vchannel,-pchannel,-and-streaming-node" />
+    <span>VChannel, PChannel, and Streaming Node</span>
+  </span>
+</p>
+<p>After data verification, the proxy will split the written message into various data package of shards according to the specified shard routing rules.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/channels_1.png" alt="Channels 1" class="doc-image" id="channels-1" />
+    <span>Channels 1</span>
+  </span>
+</p>
+<p>Then the written data of one shard (<em>vchannel</em>) is sent to the corresponding Streaming Node of <em>pchannel</em>.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/written_data_flow.png" alt="write flow" class="doc-image" id="write-flow" />
+    <span>write flow</span>
+  </span>
+</p>
+<p>The Streaming Node assigns a Timestamp Oracle (TSO) to each data packet to establish a total ordering of operations. It performs consistency checks on the payload before writing it into the underlying write-ahead log (WAL). Once data is durably committed to the WAL, it’s guaranteed not to be lost—even in the event of a crash, the Streaming Node can replay the WAL to fully recover all pending operations.</p>
+<p>Meanwhile, the StreamingNode also asynchronously chops the committed WAL entries into discrete segments. There are two segment types:</p>
 <ul>
-<li><strong>증가형 세그먼트(Growing segment</strong>): 오브젝트 스토리지에 아직 영구 저장되지 않은 모든 데이터.</li>
-<li><strong>봉인된 세그먼트</strong>: 모든 데이터가 오브젝트 스토리지에 영구 저장된 것으로, 봉인된 세그먼트의 데이터는 변경 불가능합니다.</li>
+<li><strong>Growing segment</strong>: any data that has not been presisted into the object storage.</li>
+<li><strong>Sealed segment</strong>: all data has been persisted into the object storage, the data of sealed segment is immutable.</li>
 </ul>
-<p>성장 중인 세그먼트가 봉인된 세그먼트로 전환되는 과정을 플러시(flush)라고 합니다. 스트리밍 노드는 해당 세그먼트에 대한 사용 가능한 모든 WAL 항목을 수집하고 기록한 즉시, 즉 기본 쓰기 선행 로그(WAL)에 더 이상 보류 중인 레코드가 없을 때 플러시를 트리거하며, 이 시점에서 세그먼트는 최종 확정되어 읽기 최적화 상태가 됩니다.</p>
-<h2 id="Index-building" class="common-anchor-header">인덱스 구축<button data-href="#Index-building" class="anchor-icon" translate="no">
+<p>The transition of a growing segment into a sealed segment is called a flush. The Streaming Node triggers a flush as soon as it has ingested and written all available WAL entries for that segment—i.e., when there are no more pending records in the underlying write-ahead log—at which point the segment is finalized and made read-optimized.</p>
+<h2 id="Index-building" class="common-anchor-header">Index building<button data-href="#Index-building" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -77,18 +77,18 @@ title: 데이터 처리
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>인덱스 생성은 데이터 노드에서 수행됩니다. 데이터 업데이트로 인한 빈번한 인덱스 생성을 방지하기 위해, Milvus의 컬렉션은 세그먼트로 더 세분화되며, 각 세그먼트는 고유한 인덱스를 갖습니다.</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/index_building.png" alt="Index building" class="doc-image" id="index-building" /> 
-   <span>인덱스 생성</span>
-  
- </span></p>
-<p>Milvus는 각 벡터 필드, 스칼라 필드 및 기본 필드에 대한 인덱스 생성을 지원합니다. 인덱스 구축의 입력과 출력 모두 오브젝트 스토리지와 연동됩니다. 데이터 노드는 인덱싱할 로그 스냅샷을 (오브젝트 스토리지에 있는) 세그먼트에서 메모리로 불러오고, 해당 데이터와 메타데이터를 역직렬화하여 인덱스를 구축한 뒤, 인덱스 구축이 완료되면 인덱스를 직렬화하여 오브젝트 스토리지에 다시 기록합니다.</p>
-<p>인덱스 생성은 주로 벡터 및 행렬 연산을 포함하므로 계산 및 메모리 집약적입니다. 벡터는 고차원적 특성으로 인해 기존의 트리 기반 인덱스로는 효율적으로 인덱싱할 수 없지만, 클러스터 기반 또는 그래프 기반 인덱스와 같이 이 분야에서 더 성숙한 기술을 사용하여 인덱싱할 수 있습니다. 유형에 관계없이, 인덱스 구축에는 K-means나 그래프 탐색과 같은 대규모 벡터에 대한 방대한 반복 계산이 수반됩니다.</p>
-<p>스칼라 데이터 인덱싱과 달리, 벡터 인덱스 구축은 SIMD(단일 명령어, 다중 데이터) 가속화를 최대한 활용해야 합니다. Milvus는 SSE, AVX2, AVX512와 같은 SIMD 명령어 세트를 기본적으로 지원합니다. 벡터 인덱스 구축의 “지연”과 자원 집약적인 특성을 고려할 때, 경제적인 측면에서 탄력성은 Milvus에 있어 매우 중요합니다. 향후 Milvus 릴리스에서는 관련 비용을 절감하기 위해 이기종 컴퓨팅 및 서버리스 컴퓨팅에 대한 연구를 더욱 심화할 예정입니다.</p>
-<p>또한 Milvus는 스칼라 필터링 및 기본 필드 쿼리도 지원합니다. 쿼리 효율성을 높이기 위해 블룸 필터 인덱스, 해시 인덱스, 트리 기반 인덱스, 역인덱스 등의 내장 인덱스를 갖추고 있으며, 비트맵 인덱스 및 러프 인덱스와 같은 외부 인덱스를 추가로 도입할 계획입니다.</p>
-<h2 id="Data-query" class="common-anchor-header">데이터 쿼리<button data-href="#Data-query" class="anchor-icon" translate="no">
+    </button></h2><p>Index building is performed by data node. To avoid frequent index building for data updates, a collection in Milvus is divided further into segments, each with its own index.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/index_building.png" alt="Index building" class="doc-image" id="index-building" />
+    <span>Index building</span>
+  </span>
+</p>
+<p>Milvus supports building index for each vector field, scalar field and primary field. Both the input and output of index building engage with object storage: The data node loads the log snapshots to index from a segment (which is in object storage) to memory, deserializes the corresponding data and metadata to build index, serializes the index when index building completes, and writes it back to object storage.</p>
+<p>Index building mainly involves vector and matrix operations and hence is computation- and memory-intensive. Vectors cannot be efficiently indexed with traditional tree-based indexes due to their high-dimensional nature, but can be indexed with techniques that are more mature in this subject, such as cluster- or graph-based indexes. Regardless its type, building index involves massive iterative calculations for large-scale vectors, such as Kmeans or graph traverse.</p>
+<p>Unlike indexing for scalar data, building vector index has to take full advantage of SIMD (single instruction, multiple data) acceleration. Milvus has innate support for SIMD instruction sets, e.g., SSE, AVX2, and AVX512. Given the “hiccup” and resource-intensive nature of vector index building, elasticity becomes crucially important to Milvus in economical terms. Future Milvus releases will further explorations in heterogeneous computing and serverless computation to bring down the related costs.</p>
+<p>Besides, Milvus also supports scalar filtering and primary field query. It has inbuilt indexes to improve query efficiency, e.g., Bloom filter indexes, hash indexes, tree-based indexes, and inverted indexes, and plans to introduce more external indexes, e.g., bitmap indexes and rough indexes.</p>
+<h2 id="Data-query" class="common-anchor-header">Data query<button data-href="#Data-query" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -103,26 +103,26 @@ title: 데이터 처리
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>데이터 쿼리란 지정된 컬렉션에서 대상 벡터에 가장 가까운 <em>k개의</em> 벡터나, 해당 벡터로부터 지정된 거리 범위 내에 있는 <em>모든</em> 벡터를 검색하는 과정을 의미합니다. 벡터는 해당 주키 및 필드와 함께 반환됩니다.</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/data_query.jpg" alt="Data query" class="doc-image" id="data-query" /> 
-   <span>데이터 쿼리</span>
-  
- </span></p>
-<p>Milvus의 컬렉션은 여러 세그먼트로 분할됩니다. 스트리밍 노드는 성장 중인 세그먼트를 로드하여 실시간 데이터를 유지하는 반면, 쿼리 노드는 봉인된 세그먼트를 로드합니다.</p>
-<p>쿼리/검색 요청이 도착하면 프록시는 관련 샤드를 담당하는 모든 스트리밍 노드에 요청을 브로드캐스트하여 동시 검색을 수행합니다.</p>
-<p>쿼리 요청이 도착하면 프록시는 해당 샤드를 보유한 스트리밍 노드에 검색을 실행하도록 동시 요청을 보냅니다.</p>
-<p>각 스트리밍 노드는 쿼리 계획을 생성하고, 로컬의 증가 중인 데이터를 검색하며, 동시에 원격 쿼리 노드에 연락하여 과거 결과를 가져온 다음, 이를 단일 샤드 결과로 집계합니다.</p>
-<p>마지막으로, 프록시는 모든 샤드 결과를 수집하여 최종 결과로 병합한 후 클라이언트에 반환합니다.</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/handoff.png" alt="Handoff" class="doc-image" id="handoff" /> 
-   <span>핸드오프</span>
-  
- </span></p>
-<p>스트리밍 노드의 성장 중인 세그먼트가 봉인된 세그먼트로 플러시되거나, 데이터 노드가 압축을 완료하면 코디네이터는 해당 성장 중인 데이터를 과거 데이터로 변환하기 위한 핸드오프 작업을 시작합니다. 그런 다음 코디네이터는 메모리 사용량, CPU 오버헤드 및 세그먼트 수를 균형 있게 조정하여 봉인된 세그먼트를 모든 쿼리 노드에 고르게 분배하고, 중복된 세그먼트를 해제합니다.</p>
-<h2 id="Whats-next" class="common-anchor-header">다음 단계<button data-href="#Whats-next" class="anchor-icon" translate="no">
+    </button></h2><p>Data query refers to the process of searching a specified collection for <em>k</em> number of vectors nearest to a target vector or for <em>all</em> vectors within a specified distance range to the vector. Vectors are returned together with their corresponding primary key and fields.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/data_query.jpg" alt="Data query" class="doc-image" id="data-query" />
+    <span>Data query</span>
+  </span>
+</p>
+<p>A collection in Milvus is split into multiple segments; the Streaming Node loads growing segments and maintains real-time data, while the Query Nodes load sealed segments.</p>
+<p>When a query/search request arrives, the proxy broadcasts the request to all Streaming Nodes responsible for the related shards for concurrent search.</p>
+<p>When a query request arrives, the proxy concurrently requests the Streaming Nodes that hold the corresponding shards to execute the search.</p>
+<p>Each Streaming Node generates a query plan, searches its local growing data, and simultaneously contacts remote Query Nodes to retrieve historical results, then aggregates these into a single shard result.</p>
+<p>Finally, the proxy collects all shard results, merges them into the final outcome, and returns it to the client.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/handoff.png" alt="Handoff" class="doc-image" id="handoff" />
+    <span>Handoff</span>
+  </span>
+</p>
+<p>When the growing segment on a Streaming Node is flushed into a sealed segment—or when a Data Node completes a compaction—the Coordinator initiates a handoff operation to convert that growing data into historical data. The Coordinator then evenly distributes the sealed segments across all Query Nodes, balancing memory usage, CPU overhead, and segment count, and releases any redundant segment.</p>
+<h2 id="Whats-next" class="common-anchor-header">What’s next<button data-href="#Whats-next" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -138,7 +138,7 @@ title: 데이터 처리
         ></path>
       </svg>
     </button></h2><ul>
-<li><a href="https://milvus.io/blog/deep-dive-5-real-time-query.md">실시간 쿼리를 위해 Milvus 벡터 데이터베이스를 사용하는</a> 방법에 대해 알아보세요.</li>
-<li><a href="https://milvus.io/blog/deep-dive-4-data-insertion-and-data-persistence.md">Milvus의 데이터 삽입 및 데이터 영구 저장에</a> 대해 알아보세요.</li>
-<li><a href="https://milvus.io/blog/deep-dive-3-data-processing.md">Milvus에서 데이터가</a> 어떻게 <a href="https://milvus.io/blog/deep-dive-3-data-processing.md">처리되는지</a> 알아보세요.</li>
+<li>Learn about how to <a href="https://milvus.io/blog/deep-dive-5-real-time-query.md">use the Milvus vector database for real-time query</a>.</li>
+<li>Learn about <a href="https://milvus.io/blog/deep-dive-4-data-insertion-and-data-persistence.md">data insertion and data persistence in Milvus</a>.</li>
+<li>Learn how <a href="https://milvus.io/blog/deep-dive-3-data-processing.md">data is processed in Milvus</a>.</li>
 </ul>

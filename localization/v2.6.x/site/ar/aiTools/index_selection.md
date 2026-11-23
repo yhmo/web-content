@@ -1,9 +1,9 @@
 ---
 id: index_selection.md
-title: 'الموجه: اختيار مؤشر ميلفوس'
-summary: قواعد لمساعدي ترميز الذكاء الاصطناعي لاختيار فهارس Milvus وتكوينها.
+title: 'Prompt: Milvus Index Selection'
+summary: Rules for AI coding assistants to choose and configure Milvus indexes.
 ---
-<h1 id="Index-Selection" class="common-anchor-header">اختيار الفهرس<button data-href="#Index-Selection" class="anchor-icon" translate="no">
+<h1 id="Index-Selection" class="common-anchor-header">Index Selection<button data-href="#Index-Selection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,8 +18,8 @@ summary: قواعد لمساعدي ترميز الذكاء الاصطناعي ل
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>أدلة القرار وقواعد التكوين لاختيار فهارس Milvus وضبطها، بما في ذلك فهارس AUTOINDEX وHNSW وDiskANN وIVF والفهارس المتفرقة. انسخ المطالبة الكاملة أدناه إلى أداة الذكاء الاصطناعي لتطبيق هذه القواعد تلقائيًا. للحصول على نظرة عامة على جميع المطالبات، راجع <a href="/docs/ar/milvus_for_agents.md">موجهات الذكاء الاصطناعي</a>.</p>
-<h2 id="How-to-use-this-prompt" class="common-anchor-header">كيفية استخدام هذه المطالبة<button data-href="#How-to-use-this-prompt" class="anchor-icon" translate="no">
+    </button></h1><p>Decision guides and configuration rules for choosing and tuning Milvus indexes, including AUTOINDEX, HNSW, DiskANN, IVF, and sparse indexes. Copy the full prompt below into your AI tool to apply these rules automatically. For an overview of all prompts, see <a href="/docs/ar/v2.6.x/milvus_for_agents.md">AI Prompts</a>.</p>
+<h2 id="How-to-use-this-prompt" class="common-anchor-header">How to use this prompt<button data-href="#How-to-use-this-prompt" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -35,12 +35,12 @@ summary: قواعد لمساعدي ترميز الذكاء الاصطناعي ل
         ></path>
       </svg>
     </button></h2><ol>
-<li><strong>انسخ</strong> المطالبة الكاملة من قسم <a href="#full-prompt">المطالبة الكاملة</a> أدناه.</li>
-<li>قم<strong>بحفظها</strong> في الموقع الذي تتوقعه أداة الذكاء الاصطناعي لديك - راجع <a href="/docs/ar/milvus_for_agents.md">جدول البيئة</a> للحصول على تفاصيل الموضع.</li>
-<li>سوف يطبق مساعد الذكاء الاصطناعي الخاص بك هذه القواعد تلقائيًا عند إنشاء أو مراجعة كود Milvus.</li>
+<li><strong>Copy</strong> the full prompt from the <a href="#full-prompt">Full prompt</a> section below.</li>
+<li><strong>Save</strong> it to the location your AI tool expects — see the <a href="/docs/ar/v2.6.x/milvus_for_agents.md">environment table</a> for placement details.</li>
+<li>Your AI assistant will automatically apply these rules when generating or reviewing Milvus code.</li>
 </ol>
-<p>بالنسبة لمستخدمي <strong>Cursor</strong>: انسخ المطالبة من قسم المطالبة <a href="#full-prompt">الكاملة</a> واحفظها تحت <code translate="no">.cursor/rules/</code> في مشروعك.</p>
-<h2 id="Full-prompt" class="common-anchor-header">المطالبة الكاملة<button data-href="#Full-prompt" class="anchor-icon" translate="no">
+<p>For <strong>Cursor</strong> users: copy the prompt from the <a href="#full-prompt">Full prompt</a> section and save it under <code translate="no">.cursor/rules/</code> in your project.</p>
+<h2 id="Full-prompt" class="common-anchor-header">Full prompt<button data-href="#Full-prompt" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"

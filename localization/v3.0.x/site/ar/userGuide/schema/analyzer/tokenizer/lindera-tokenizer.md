@@ -1,12 +1,12 @@
 ---
 id: lindera-tokenizer.md
-title: لينديرا
+title: Lindera
 summary: >-
-  يقوم أداة تحليل الكلمات «لينديرا» بإجراء تحليل صرفي يعتمد على القاموس. وقد
-  صُممت هذه الأداة لللغتين اليابانية والكورية — وهما لغتان لا تُفصل فيهما
-  الكلمات بمسافات، وتُرفق العلامات النحوية (الجسيمات) مباشرةً بالكلمات.
+  The lindera tokenizer performs dictionary-based morphological analysis. It is
+  designed for Japanese and Korean—languages where words are not separated by
+  spaces and grammatical markers (particles) attach directly to words.
 ---
-<h1 id="Lindera" class="common-anchor-header">لينديرا<button data-href="#Lindera" class="anchor-icon" translate="no">
+<h1 id="Lindera" class="common-anchor-header">Lindera<button data-href="#Lindera" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -21,11 +21,11 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>يقوم أداة تحليل الكلمات " <code translate="no">lindera</code> " بإجراء تحليل صرفي قائم على القاموس. وهي مصممة للغتين اليابانية والكورية — وهما لغتان لا تفصل بين كلماتهما مسافات، وتُرفق العلامات النحوية (الجسيمات) مباشرةً بالكلمات.</p>
+    </button></h1><p>The <code translate="no">lindera</code> tokenizer performs dictionary-based morphological analysis. It is designed for Japanese and Korean—languages where words are not separated by spaces and grammatical markers (particles) attach directly to words.</p>
 <div class="alert note">
-<p><strong>بالنسبة للنص الصيني</strong>: على الرغم من أن <code translate="no">lindera</code> يدعم اللغة الصينية عبر قاموس <code translate="no">cc-cedict</code> ، فإننا نوصي باستخدام <a href="/docs/ar/jieba-tokenizer.md"><code translate="no">jieba</code></a> أداة تجزئة الكلمات بدلاً من ذلك. فقد صُمم Jieba خصيصًا لتجزئة الكلمات الصينية ويقدم نتائج أفضل.</p>
+<p><strong>For Chinese text</strong>: While <code translate="no">lindera</code> supports Chinese via the <code translate="no">cc-cedict</code> dictionary, we recommend using the <a href="/docs/ar/jieba-tokenizer.md"><code translate="no">jieba</code></a> tokenizer instead. Jieba is specifically designed for Chinese word segmentation and provides better results.</p>
 </div>
-<h2 id="Overview" class="common-anchor-header">نظرة عامة<button data-href="#Overview" class="anchor-icon" translate="no">
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -40,38 +40,38 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>اللغتان اليابانية والكورية لغتان ترابطيتان: حيث ترتبط العلامات النحوية التي تُسمى الجسيمات مباشرةً بالأسماء، مما يشكل تركيبات عديدة. على سبيل المثال:</p>
+    </button></h2><p>Japanese and Korean are agglutinative languages: grammatical markers called particles attach directly to nouns, forming numerous combinations. For example:</p>
 <table>
    <tr>
-     <th><p>اللغة</p></th>
-     <th><p>جذر الكلمة</p></th>
-     <th><p>+ الجسيم</p></th>
-     <th><p>= الصيغة المركبة</p></th>
-     <th><p>المعنى</p></th>
+     <th><p>Language</p></th>
+     <th><p>Root word</p></th>
+     <th><p>+ Particle</p></th>
+     <th><p>= Combined form</p></th>
+     <th><p>Meaning</p></th>
    </tr>
    <tr>
-     <td><p>الكورية</p></td>
-     <td><p>서울 (سيول)</p></td>
-     <td><p>من</p></td>
-     <td><p>في سيول</p></td>
-     <td><p>في سيول</p></td>
+     <td><p>Korean</p></td>
+     <td><p>서울 (Seoul)</p></td>
+     <td><p>에서</p></td>
+     <td><p>서울에서</p></td>
+     <td><p>in Seoul</p></td>
    </tr>
    <tr>
-     <td><p>اليابانية</p></td>
-     <td><p>طوكيو (Tokyo)</p></td>
-     <td><p>إلى</p></td>
-     <td><p>إلى طوكيو</p></td>
-     <td><p>إلى طوكيو</p></td>
+     <td><p>Japanese</p></td>
+     <td><p>東京 (Tokyo)</p></td>
+     <td><p>に</p></td>
+     <td><p>東京に</p></td>
+     <td><p>to Tokyo</p></td>
    </tr>
 </table>
-<p>أداة تحليل النص " <code translate="no">lindera</code> ":</p>
+<p>The <code translate="no">lindera</code> tokenizer:</p>
 <ol>
-<li><p><strong>يقسم النص</strong> إلى مورفيمات فردية (كلمات وجزيئات)</p></li>
-<li><p><strong>يُصنف كل وحدة</strong> بمعلومات عن فئة الكلمة (POS) من القاموس</p></li>
-<li><p><strong>يطبق مرشحات</strong> لإزالة الرموز غير المرغوب فيها (مثل الحروف الصغيرة وعلامات الترقيم)</p></li>
+<li><p><strong>Segments text</strong> into individual morphemes (words and particles)</p></li>
+<li><p><strong>Tags each token</strong> with part-of-speech (POS) information from the dictionary</p></li>
+<li><p><strong>Applies filters</strong> to remove unwanted tokens (e.g., particles, punctuation)</p></li>
 </ol>
-<p>تتيح هذه العملية المكونة من مرحلتين —التقسيم ثم التصفية بناءً على فئة الكلمة— التحكم الدقيق في العناصر التي يتم فهرستها لأغراض البحث.</p>
-<h2 id="Prerequisites" class="common-anchor-header">المتطلبات الأساسية<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+<p>This two-stage process—segmentation followed by POS-based filtering—enables precise control over which tokens are indexed for search.</p>
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -86,51 +86,51 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يتضمن Milvus 2.6 والإصدارات الأحدث جميع القواميس المُجمَّعة مسبقًا في الإصدار الرسمي.</p>
+    </button></h2><p>Milvus 2.6 and later include all dictionaries pre-compiled in the official release.</p>
 <p><details>
-<summary>Milvus 2.5.x: تجميع Milvus مع القواميس</summary></p>
-<p>بالنسبة إلى Milvus 2.5.x، تحتاج إلى تجميع Milvus مع تمكين قواميس محددة. يجب تضمين جميع القواميس بشكل صريح أثناء التجميع.</p>
-<p>لتفعيل قواميس محددة، قم بتضمينها في أمر التجميع:</p>
+<summary>Milvus 2.5.x: Compile Milvus with dictionaries</summary></p>
+<p>For Milvus 2.5.x, you need to compile Milvus with specific dictionaries enabled. All dictionaries must be explicitly included during compilation.</p>
+<p>To enable specific dictionaries, include them in the compilation command:</p>
 <pre><code translate="no" class="language-bash">make milvus TANTIVY_FEATURES=lindera-ipadic,lindera-ko-dic
 <button class="copy-code-btn"></button></code></pre>
-<p>القائمة الكاملة للقواميس المتاحة:</p>
+<p>The complete list of available dictionaries:</p>
 <table>
    <tr>
-     <th><p><strong>القاموس</strong></p></th>
-     <th><p><strong>اللغة</strong></p></th>
-     <th><p><strong>الوصف</strong></p></th>
+     <th><p><strong>Dictionary</strong></p></th>
+     <th><p><strong>Language</strong></p></th>
+     <th><p><strong>Description</strong></p></th>
    </tr>
    <tr>
      <td><p>lindera-ko-dic</p></td>
-     <td><p>الكورية</p></td>
-     <td><p>القاموس الصرفي الكوري (<a href="https://bitbucket.org/eunjeon/mecab-ko-dic">MeCab Ko-dic</a>)</p></td>
+     <td><p>Korean</p></td>
+     <td><p>Korean morphological dictionary (<a href="https://bitbucket.org/eunjeon/mecab-ko-dic">MeCab Ko-dic</a>)</p></td>
    </tr>
    <tr>
      <td><p>lindera-ipadic</p></td>
-     <td><p>اليابانية</p></td>
-     <td><p>القاموس الصرفي القياسي (<a href="https://taku910.github.io/mecab/">MeCab IPADIC</a>)</p></td>
+     <td><p>Japanese</p></td>
+     <td><p>Standard morphological dictionary (<a href="https://taku910.github.io/mecab/">MeCab IPADIC</a>)</p></td>
    </tr>
    <tr>
      <td><p>lindera-ipadic-neologd</p></td>
-     <td><p>اليابانية</p></td>
-     <td><p>قاموس موسع يتضمن كلمات جديدة وأسماء علم (<a href="https://github.com/neologd/mecab-ipadic-neologd">IPADIC NEologd</a>)</p></td>
+     <td><p>Japanese</p></td>
+     <td><p>Extended dictionary with new words and proper nouns (<a href="https://github.com/neologd/mecab-ipadic-neologd">IPADIC NEologd</a>)</p></td>
    </tr>
    <tr>
      <td><p>lindera-unidic</p></td>
-     <td><p>اليابانية</p></td>
-     <td><p>قاموس أكاديمي قياسي (<a href="https://clrd.ninjal.ac.jp/unidic/">UniDic</a>)</p></td>
+     <td><p>Japanese</p></td>
+     <td><p>Academic standard dictionary (<a href="https://clrd.ninjal.ac.jp/unidic/">UniDic</a>)</p></td>
    </tr>
    <tr>
      <td><p>lindera-cc-cedict</p></td>
-     <td><p>الصينية</p></td>
-     <td><p>قام المجتمع بصيانة القاموس الصيني-الإنجليزي (<a href="https://cc-cedict.org/wiki/">CC-CEDICT</a>)</p></td>
+     <td><p>Chinese</p></td>
+     <td><p>Community-maintained Chinese-English dictionary (<a href="https://cc-cedict.org/wiki/">CC-CEDICT</a>)</p></td>
    </tr>
 </table>
-<p>على سبيل المثال، لتمكين جميع القواميس:</p>
+<p>For example, to enable all dictionaries:</p>
 <pre><code translate="no" class="language-bash">make milvus TANTIVY_FEATURES=lindera-ipadic,lindera-ipadic-neologd,lindera-unidic,lindera-ko-dic,lindera-cc-cedict
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<h2 id="Configuration" class="common-anchor-header">التكوين<button data-href="#Configuration" class="anchor-icon" translate="no">
+<h2 id="Configuration" class="common-anchor-header">Configuration<button data-href="#Configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -145,16 +145,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>لتكوين محلل باستخدام أداة التقطيع " <code translate="no">lindera</code> "، اضبط " <code translate="no">tokenizer.type</code> " على " <code translate="no">lindera</code>"، واختر قاموسًا باستخدام " <code translate="no">dict_kind</code>"، وقم بتطبيق المرشحات اختياريًا.</p>
+    </button></h2><p>To configure an analyzer using the <code translate="no">lindera</code> tokenizer, set <code translate="no">tokenizer.type</code> to <code translate="no">lindera</code>, choose a dictionary with <code translate="no">dict_kind</code>, and optionally apply filters.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: {
@@ -274,24 +274,24 @@ curl --request POST \
 <button class="copy-code-btn"></button></code></pre>
 <table>
    <tr>
-     <th><p>المعلمة</p></th>
-     <th><p>الوصف</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Description</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">type</code></p></td>
-     <td><p>نوع أداة التقطيع. هذا ثابت على <code translate="no">"lindera"</code>.</p></td>
+     <td><p>The type of tokenizer. This is fixed to <code translate="no">"lindera"</code>.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">dict_kind</code></p></td>
-     <td><p>قاموس يُستخدم لتعريف المفردات. القيم الممكنة:</p><ul><li><p><code translate="no">ko-dic</code>: Korean - قاموس صرفي كوري (<a href="https://bitbucket.org/eunjeon/mecab-ko-dic">MeCab Ko-dic</a>)</p></li><li><p><code translate="no">ipadic</code>: اليابانية - قاموس صرفي قياسي (<a href="https://taku910.github.io/mecab/">MeCab IPADIC</a>)</p></li><li><p><code translate="no">ipadic-neologd</code>: اليابانية مع قاموس المصطلحات الحديثة (موسع) - يتضمن كلمات جديدة وأسماء علم (<a href="https://github.com/neologd/mecab-ipadic-neologd">IPADIC NEologd</a>)</p></li><li><p><code translate="no">unidic</code>: اليابانية UniDic (موسع) - قاموس أكاديمي قياسي يحتوي على معلومات لغوية مفصلة (<a href="https://clrd.ninjal.ac.jp/unidic/">UniDic</a>)</p></li><li><p><code translate="no">cc-cedict</code>: الصينية الماندرين (التقليدية/المبسطة) - قاموس صيني-إنجليزي تديره المجتمع (<a href="https://cc-cedict.org/wiki/">CC-CEDICT</a>)</p></li></ul></td>
+     <td><p>A dictionary used to define vocabulary. Possible values:</p><ul><li><p><code translate="no">ko-dic</code>: Korean - Korean morphological dictionary (<a href="https://bitbucket.org/eunjeon/mecab-ko-dic">MeCab Ko-dic</a>)</p></li><li><p><code translate="no">ipadic</code>: Japanese - Standard morphological dictionary (<a href="https://taku910.github.io/mecab/">MeCab IPADIC</a>)</p></li><li><p><code translate="no">ipadic-neologd</code>: Japanese with neologism dictionary (extended) - Includes new words and proper nouns (<a href="https://github.com/neologd/mecab-ipadic-neologd">IPADIC NEologd</a>)</p></li><li><p><code translate="no">unidic</code>: Japanese UniDic (extended) - Academic standard dictionary with detailed linguistic information (<a href="https://clrd.ninjal.ac.jp/unidic/">UniDic</a>)</p></li><li><p><code translate="no">cc-cedict</code>: Mandarin Chinese (traditional/simplified) - Community-maintained Chinese-English dictionary (<a href="https://cc-cedict.org/wiki/">CC-CEDICT</a>)</p></li></ul></td>
    </tr>
    <tr>
      <td><p><code translate="no">filter</code></p></td>
-     <td><p>قائمة بالمرشحات على مستوى أداة التقطيع لتطبيقها بعد التقطيع. كل مرشح هو كائن يحتوي على:</p><ul><li><p><code translate="no">kind</code>: نوع المرشح. القيم المدعومة:</p><ul><li><p><code translate="no">korean_stop_tags</code>: إزالة الرموز التي تتطابق مع علامات أجزاء الكلام الكورية المحددة.</p></li><li><p><code translate="no">japanese_stop_tags</code>: إزالة الرموز التي تتطابق مع علامات أجزاء الكلام اليابانية المحددة.</p></li></ul></li><li><p><code translate="no">tags</code>: قائمة بعلامات أجزاء الكلام المراد تصفية. تعتمد العلامات المتاحة على <code translate="no">kind</code>:</p><ul><li><p>بالنسبة لـ <code translate="no">korean_stop_tags</code>: استخدم رموز العلامات الدقيقة (على سبيل المثال، <code translate="no">JKS</code> ، <code translate="no">JKO</code> ، <code translate="no">SF</code>). تتطلب العلامات الكورية مطابقة دقيقة. للاطلاع على القائمة الكاملة المستندة إلى مجموعة علامات سيجونغ، راجع <a href="https://docs.rs/lindera/latest/src/lindera/token_filter/korean_stop_tags.rs.html">مصدر علامات التوقف الكورية من Lindera</a>.</p></li><li><p>بالنسبة إلى <code translate="no">japanese_stop_tags</code>: استخدم رموز العلامات الدقيقة (على سبيل المثال، <code translate="no">助詞,格助詞</code> ، <code translate="no">助詞,係助詞</code> ، <code translate="no">助動詞</code>). تتطلب العلامات اليابانية مطابقة دقيقة. للاطلاع على القائمة الكاملة (IPADIC)، راجع <a href="https://github.com/taku910/mecab/blob/master/mecab-ipadic/pos-id.def">مرجع علامات POS اليابانية</a>.</p></li></ul></li></ul></td>
+     <td><p>A list of tokenizer-level filters to apply after segmentation. Each filter is an object with:</p><ul><li><p><code translate="no">kind</code>: The filter type. Supported values:</p><ul><li><p><code translate="no">korean_stop_tags</code>: Remove tokens matching specified Korean POS tags.</p></li><li><p><code translate="no">japanese_stop_tags</code>: Remove tokens matching specified Japanese POS tags.</p></li></ul></li><li><p><code translate="no">tags</code>: A list of POS tags to filter out. The available tags depend on the <code translate="no">kind</code>:</p><ul><li><p>For <code translate="no">korean_stop_tags</code>: Use exact tag codes (e.g., <code translate="no">JKS</code>, <code translate="no">JKO</code>, <code translate="no">SF</code>). Korean tags require exact matching. For the complete list based on the Sejong tagset, see the <a href="https://docs.rs/lindera/latest/src/lindera/token_filter/korean_stop_tags.rs.html">Lindera Korean stop tags source</a>.</p></li><li><p>For <code translate="no">japanese_stop_tags</code>: Use exact tag codes (e.g., <code translate="no">助詞,格助詞</code>, <code translate="no">助詞,係助詞</code>, <code translate="no">助動詞</code>). Japanese tags require exact matching. For the complete list (IPADIC), see <a href="https://github.com/taku910/mecab/blob/master/mecab-ipadic/pos-id.def">Japanese POS tags reference</a>.</p></li></ul></li></ul></td>
    </tr>
 </table>
-<p>بعد تعريف <code translate="no">analyzer_params</code> ، يمكنك تطبيقها على حقل <code translate="no">VARCHAR</code> عند تعريف مخطط المجموعة. وهذا يسمح لـ Milvus بمعالجة النص في هذا الحقل باستخدام المحلل المحدد من أجل التقطيع والتصفية بكفاءة. لمزيد من التفاصيل، راجع <a href="/docs/ar/analyzer-overview.md#Example-use">مثال الاستخدام</a>.</p>
-<h2 id="Examples" class="common-anchor-header">أمثلة<button data-href="#Examples" class="anchor-icon" translate="no">
+<p>After defining <code translate="no">analyzer_params</code>, you can apply them to a <code translate="no">VARCHAR</code> field when defining a collection schema. This allows Milvus to process the text in that field using the specified analyzer for efficient tokenization and filtering. For details, refer to <a href="/docs/ar/analyzer-overview.md#Example-use">Example use</a>.</p>
+<h2 id="Examples" class="common-anchor-header">Examples<button data-href="#Examples" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -306,8 +306,8 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>قبل تطبيق تكوين المحلل على مخطط المجموعة الخاص بك، تحقق من سلوكه باستخدام طريقة <code translate="no">run_analyzer</code>.</p>
-<h3 id="Korean-example" class="common-anchor-header">مثال باللغة الكورية<button data-href="#Korean-example" class="anchor-icon" translate="no">
+    </button></h2><p>Before applying the analyzer configuration to your collection schema, verify its behavior using the <code translate="no">run_analyzer</code> method.</p>
+<h3 id="Korean-example" class="common-anchor-header">Korean example<button data-href="#Korean-example" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -323,14 +323,14 @@ curl --request POST \
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -596,11 +596,11 @@ curl --request POST \
     &quot;text&quot;: [&quot;서울에서 맛있는 음식을 먹었습니다&quot;]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>الناتج المتوقع</strong>:</p>
+<p><strong>Expected output</strong>:</p>
 <pre><code translate="no" class="language-plaintext">[&#x27;서울&#x27;, &#x27;맛있&#x27;, &#x27;음식&#x27;, &#x27;먹&#x27;, &#x27;습니다&#x27;]
 <button class="copy-code-btn"></button></code></pre>
-<p>بدون استخدام ` <code translate="no">korean_stop_tags</code>`، ستتضمن النتيجة جزيئات مثل ` <code translate="no">에서</code> ` (in) و` <code translate="no">는</code> ` (علامة الموضوع) و` <code translate="no">을</code> ` (علامة الكائن)، والتي لا تكون عادةً مفيدة في البحث.</p>
-<h3 id="Japanese-example" class="common-anchor-header">مثال باللغة اليابانية<button data-href="#Japanese-example" class="anchor-icon" translate="no">
+<p>Without <code translate="no">korean_stop_tags</code>, the output would include particles like <code translate="no">에서</code> (in), <code translate="no">는</code> (topic marker), and <code translate="no">을</code> (object marker), which are typically not useful for search.</p>
+<h3 id="Japanese-example" class="common-anchor-header">Japanese example<button data-href="#Japanese-example" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -616,14 +616,14 @@ curl --request POST \
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -866,7 +866,7 @@ curl --request POST \
     &quot;text&quot;: [&quot;東京スカイツリーの最寄り駅はとうきょうスカイツリー駅です&quot;]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>الناتج المتوقع:</strong></p>
+<p><strong>Expected output:</strong></p>
 <pre><code translate="no" class="language-plaintext">[&#x27;東京&#x27;, &#x27;スカイ&#x27;, &#x27;ツリー&#x27;, &#x27;最寄り駅&#x27;, &#x27;とう&#x27;, &#x27;きょう&#x27;, &#x27;スカイ&#x27;, &#x27;ツリー&#x27;, &#x27;駅&#x27;]
 <button class="copy-code-btn"></button></code></pre>
-<p>بدون استخدام <code translate="no">japanese_stop_tags</code> ، ستتضمن النتيجة جزيئات مثل <code translate="no">の</code> (صيغة الملكية)، و <code translate="no">は</code> (علامة الموضوع)، و <code translate="no">です</code> (حرف الربط).</p>
+<p>Without <code translate="no">japanese_stop_tags</code>, the output would include particles like <code translate="no">の</code> (possessive), <code translate="no">は</code> (topic marker), and <code translate="no">です</code> (copula).</p>

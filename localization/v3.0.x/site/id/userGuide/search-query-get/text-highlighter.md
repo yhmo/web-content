@@ -2,10 +2,10 @@
 id: text-highlighter.md
 title: Text HighlighterCompatible with Milvus 2.6.8+
 summary: >-
-  Fitur Penyorot di Milvus menandai istilah yang cocok dalam bidang teks dengan
-  membungkusnya menggunakan tag yang dapat disesuaikan. Penyorotan ini membantu
-  menjelaskan alasan kecocokan suatu dokumen, meningkatkan keterbacaan hasil,
-  serta mendukung tampilan yang kaya dalam aplikasi pencarian dan RAG.
+  The Highlighter in Milvus annotates matched terms in text fields by wrapping
+  them with customizable tags. Highlighting helps explain why a document
+  matches, improves result readability, and supports rich rendering in search
+  and RAG applications.
 beta: Milvus 2.6.8+
 ---
 <h1 id="Text-Highlighter" class="common-anchor-header">Text Highlighter<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.8+</span><button data-href="#Text-Highlighter" class="anchor-icon" translate="no">

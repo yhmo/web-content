@@ -1,16 +1,15 @@
 ---
 id: filtered-search.md
-title: Recherche filtrée
+title: Filtered Search
 summary: >-
-  Une recherche par réseau neuronal artificiel (ANN) permet de trouver les
-  représentations vectorielles les plus proches de celles spécifiées. Cependant,
-  les résultats de la recherche ne sont pas toujours corrects. Vous pouvez
-  inclure des conditions de filtrage dans une requête de recherche afin que
-  Milvus effectue un filtrage des métadonnées avant de lancer les recherches par
-  ANN, ce qui réduit le champ de recherche de l'ensemble de la collection aux
-  seules entités correspondant aux conditions de filtrage spécifiées.
+  An ANN search finds vector embeddings most similar to specified vector
+  embeddings. However, the search results may not always be correct. You can
+  include filtering conditions in a search request so that Milvus conducts
+  metadata filtering before conducting ANN searches, reducing the search scope
+  from the whole collection to only the entities matching the specified
+  filtering conditions.
 ---
-<h1 id="Filtered-Search" class="common-anchor-header">Recherche filtrée<button data-href="#Filtered-Search" class="anchor-icon" translate="no">
+<h1 id="Filtered-Search" class="common-anchor-header">Filtered Search<button data-href="#Filtered-Search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -25,8 +24,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Une recherche par réseau neuronal artificiel (RNA) identifie les représentations vectorielles les plus similaires à celles spécifiées. Cependant, les résultats de recherche ne sont pas toujours corrects. Vous pouvez inclure des conditions de filtrage dans une requête de recherche afin que Milvus effectue un filtrage des métadonnées avant de lancer les recherches par RNA, ce qui réduit le champ de recherche de l’ensemble de la collection aux seules entités correspondant aux conditions de filtrage spécifiées.</p>
-<h2 id="Overview" class="common-anchor-header">Présentation<button data-href="#Overview" class="anchor-icon" translate="no">
+    </button></h1><p>An ANN search finds vector embeddings most similar to specified vector embeddings. However, the search results may not always be correct. You can include filtering conditions in a search request so that Milvus conducts metadata filtering before conducting ANN searches, reducing the search scope from the whole collection to only the entities matching the specified filtering conditions.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -41,8 +40,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Dans Milvus, les recherches filtrées sont classées en deux types — <strong>le filtrage standard</strong> et <strong>le filtrage itératif</strong> — en fonction de l’étape à laquelle le filtrage est appliqué.</p>
-<h3 id="Standard-filtering" class="common-anchor-header">Filtrage standard<button data-href="#Standard-filtering" class="anchor-icon" translate="no">
+    </button></h2><p>In Milvus, filtered searches are categorized into two types — <strong>standard filtering</strong> and <strong>iterative filtering</strong> — depending on the stage at which the filtering is applied.</p>
+<h3 id="Standard-filtering" class="common-anchor-header">Standard filtering<button data-href="#Standard-filtering" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -57,20 +56,25 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Si une collection contient à la fois des représentations vectorielles et leurs métadonnées, vous pouvez filtrer les métadonnées avant la recherche ANN afin d’améliorer la pertinence des résultats. Dès que Milvus reçoit une requête de recherche comportant une condition de filtrage, il limite le champ de recherche aux entités correspondant à la condition de filtrage spécifiée.</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/filtered-search.png" alt="Filtered Search" class="doc-image" id="filtered-search" /> 
-   <span>Recherche filtrée</span>
-  
- </span></p>
-<p>Comme le montre le schéma ci-dessus, la requête de recherche comporte l’ <code translate="no">chunk like &quot;%red%&quot;</code> comme condition de filtrage, indiquant que Milvus doit effectuer la recherche ANN parmi toutes les entités dont le champ « <code translate="no">chunk</code> » contient le mot « <code translate="no">red</code> ». Plus précisément, Milvus procède comme suit :</p>
+    </button></h3><p>If a collection contains both vector embeddings and their metadata, you can filter metadata before ANN search to improve the relevancy of the search result. Once Milvus receives a search request carrying a filtering condition, it restricts the search scope within the entities matching the specified filtering condition.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/filtered-search.png" alt="Filtered Search" class="doc-image" id="filtered-search" />
+    <span>Filtered Search</span>
+  </span>
+</p>
+<p>As shown in the above diagram, the search request carries <code translate="no">chunk like &quot;%red%&quot;</code> as the filtering condition, indicating that Milvus should conduct the ANN search within all the entities that have the word <code translate="no">red</code> in the <code translate="no">chunk</code> field. Specifically, Milvus does the following:</p>
 <ul>
-<li><p>Filtrer les entités qui correspondent aux conditions de filtrage incluses dans la requête de recherche.</p></li>
-<li><p>Effectue la recherche ANN parmi les entités filtrées.</p></li>
-<li><p>Renvoie les K premières entités.</p></li>
+<li><p>Filter entities that match the filtering conditions carried in the search request.</p></li>
+<li><p>Conduct the ANN search within the filtered entities.</p></li>
+<li><p>Returns top-K entities.</p></li>
 </ul>
-<h3 id="Iterative-filtering" class="common-anchor-header">Filtrage itératif<button data-href="#Iterative-filtering" class="anchor-icon" translate="no">
+<div class="alert note">
+<p>Starting in Milvus 3.0.3, you can use <code translate="no">IS NULL</code> and <code translate="no">IS NOT NULL</code> in query and search filters on ordinary vector fields to select entities whose vector field is NULL or non-NULL, respectively.</p>
+<p>To find entities whose <code translate="no">embedding</code> field is NULL, use <code translate="no">query()</code> with the filter <code translate="no">embedding IS NULL</code>. This filter is also valid in <code translate="no">search()</code>. However, searching on <code translate="no">embedding</code> with this filter returns no hits: entities without an <code translate="no">embedding</code> value have no vector to compare with the query vector.</p>
+<p>For supported types, syntax, and examples, see <a href="/docs/fr/basic-operators.md#IS-NULL-and-IS-NOT-NULL-operators">IS NULL and IS NOT NULL operators</a>.</p>
+</div>
+<h3 id="Iterative-filtering" class="common-anchor-header">Iterative filtering<button data-href="#Iterative-filtering" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -85,17 +89,17 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Le processus de filtrage standard réduit efficacement le champ de recherche à une petite plage. Cependant, des expressions de filtrage trop complexes peuvent entraîner une latence de recherche très élevée. Dans de tels cas, le filtrage itératif peut constituer une alternative, contribuant à réduire la charge de travail liée au filtrage scalaire.</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/iterative-filtering.png" alt="Iterative Filtering" class="doc-image" id="iterative-filtering" /> 
-   <span>Filtrage itératif</span>
-  
- </span></p>
-<p>Comme l’illustre le schéma ci-dessus, une recherche avec filtrage itératif effectue la recherche vectorielle par itérations. Chaque entité renvoyée par l’itérateur est soumise à un filtrage scalaire, et ce processus se poursuit jusqu’à ce que les K premiers résultats spécifiés soient obtenus.</p>
-<p>Cette méthode réduit considérablement le nombre d’entités soumises au filtrage scalaire, ce qui la rend particulièrement avantageuse pour traiter des expressions de filtrage très complexes.</p>
-<p>Il est toutefois important de noter que l’itérateur traite les entités une par une. Cette approche séquentielle peut entraîner des temps de traitement plus longs ou des problèmes de performances potentiels, en particulier lorsqu’un grand nombre d’entités est soumis au filtrage scalaire.</p>
-<h2 id="Examples" class="common-anchor-header">Exemples<button data-href="#Examples" class="anchor-icon" translate="no">
+    </button></h3><p>The standard filtering process effectively narrows the search scope to a small range. However, overly complex filtering expressions may result in very high search latency. In such cases, iterative filtering can serve as an alternative, helping to reduce the workload of scalar filtering.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/iterative-filtering.png" alt="Iterative Filtering" class="doc-image" id="iterative-filtering" />
+    <span>Iterative Filtering</span>
+  </span>
+</p>
+<p>As illustrated in the diagram above, a search with iterative filtering performs the vector search in iterations. Each entity returned by the iterator undergoes scalar filtering, and this process continues until the specified topK results are achieved.</p>
+<p>This method significantly reduces the number of entities subjected to scalar filtering, making it especially beneficial for handling highly complex filtering expressions.</p>
+<p>However, it’s important to note that the iterator processes entities one at a time. This sequential approach can lead to longer processing times or potential performance issues, especially when a large number of entities are subjected to scalar filtering.</p>
+<h2 id="Examples" class="common-anchor-header">Examples<button data-href="#Examples" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -110,7 +114,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Cette section montre comment effectuer une recherche filtrée. Les extraits de code présentés ici partent du principe que votre collection contient déjà les entités suivantes. Chaque entité comporte quatre champs : <strong>id</strong>, <strong>vector</strong>, <strong>color</strong> et <strong>likes</strong>. Les exemples utilisent une collection chargée nommée « <code translate="no">my_collection</code> », dont le champ « <code translate="no">vector</code> » à cinq dimensions est indexé à l’aide de la métrique « <code translate="no">COSINE</code> ».</p>
+    </button></h2><p>This section demonstrates how to conduct a filtered search. Code snippets in this section assume you already have the following entities in your collection. Each entity has four fields, namely <strong>id</strong>, <strong>vector</strong>, <strong>color</strong>, and <strong>likes</strong>. The examples use a loaded collection named <code translate="no">my_collection</code> with a five-dimensional <code translate="no">vector</code> field indexed with the <code translate="no">COSINE</code> metric.</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">[</span>
     <span class="hljs-punctuation">{</span><span class="hljs-attr">&quot;id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;vector&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-number">0.3580376395471989</span><span class="hljs-punctuation">,</span> <span class="hljs-number">-0.6023495712049978</span><span class="hljs-punctuation">,</span> <span class="hljs-number">0.18414012509913835</span><span class="hljs-punctuation">,</span> <span class="hljs-number">-0.26286205330961354</span><span class="hljs-punctuation">,</span> <span class="hljs-number">0.9029438446296592</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;color&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;pink_8682&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;likes&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">165</span><span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
     <span class="hljs-punctuation">{</span><span class="hljs-attr">&quot;id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;vector&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-number">0.19886812562848388</span><span class="hljs-punctuation">,</span> <span class="hljs-number">0.06023560599112088</span><span class="hljs-punctuation">,</span> <span class="hljs-number">0.6976963061752597</span><span class="hljs-punctuation">,</span> <span class="hljs-number">0.2614474506242501</span><span class="hljs-punctuation">,</span> <span class="hljs-number">0.838729485096104</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;color&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;red_7025&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;likes&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">25</span><span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
@@ -125,10 +129,10 @@ summary: >-
 <span class="hljs-punctuation">]</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>Si les vecteurs de requête existent déjà dans la collection cible, envisagez d’utiliser <code translate="no">ids</code> plutôt que de les récupérer avant les recherches. Pour plus de détails, reportez-vous à la section « <a href="/docs/fr/primary-key-search.md">Recherche par clé primaire</a> ».</p>
+<p>If the query vectors already exist in the target collection, consider using <code translate="no">ids</code> instead of retrieving them before searches. For details, refer to <a href="/docs/fr/primary-key-search.md">Primary-Key Search</a>.</p>
 </div>
-<p>Les exemples utilisent PyMilvus 3.0.2, le SDK Java 3.0.10, le SDK Go 3.0.0 (<code translate="no">client/v3</code>), le SDK Rust 3.0.2, le SDK C++ 3.0.4, le SDK NodeJS 3.0.6 et le SDK C# 3.0.0.</p>
-<h3 id="Search-with-standard-filtering" class="common-anchor-header">Recherche avec filtrage standard<button data-href="#Search-with-standard-filtering" class="anchor-icon" translate="no">
+<p>The examples use PyMilvus 3.0.2, Java SDK 3.0.10, Go SDK 3.0.0 (<code translate="no">client/v3</code>), Rust SDK 3.0.2, C++ SDK 3.0.4, NodeJS SDK 3.0.6, and C# SDK 3.0.0.</p>
+<h3 id="Search-with-standard-filtering" class="common-anchor-header">Search with standard filtering<button data-href="#Search-with-standard-filtering" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -143,16 +147,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Les extraits de code suivants illustrent une recherche avec filtrage standard ; la requête présentée dans l’extrait de code ci-dessous comporte une condition de filtrage et plusieurs champs de sortie.</p>
+    </button></h3><p>The following code snippets demonstrate a search with standard filtering, and the request in the following code snippet carries a filtering condition and several output fields.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -396,8 +400,8 @@ curl --request POST \
 <span class="hljs-comment"># Illustrative response; scores and cost can vary.</span>
 <span class="hljs-comment"># {&quot;code&quot;:0,&quot;cost&quot;:0,&quot;data&quot;:[{&quot;color&quot;:&quot;red_4794&quot;,&quot;distance&quot;:0.5975796,&quot;id&quot;:4,&quot;likes&quot;:122},{&quot;color&quot;:&quot;red_9392&quot;,&quot;distance&quot;:-0.2499619,&quot;id&quot;:6,&quot;likes&quot;:58}],&quot;topks&quot;:[2]}</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>La condition de filtrage incluse dans la requête de recherche est la suivante : <code translate="no">color like &quot;red%&quot; and likes &gt; 50</code>. Elle utilise l’opérateur « and » pour inclure deux conditions : la première recherche les entités dont la valeur du champ « <code translate="no">color</code> » commence par « <code translate="no">red</code> », et la seconde recherche les entités dont la valeur du champ « <code translate="no">likes</code> » est supérieure à « <code translate="no">50</code> ». Seules deux entités répondent à ces critères. Le paramètre « top-K » étant défini sur « <code translate="no">5</code> », Milvus calculera la distance entre ces deux entités et le vecteur de requête, puis les renverra comme résultats de recherche.</p>
-<p>L’exemple suivant illustre le format des résultats en Python avec des scores cosinus à titre d’exemple. Les scores peuvent varier en fonction de la précision en virgule flottante. Seuls les champs de sortie demandés apparaissent dans <code translate="no">entity</code>; les exemples REST renvoient ces champs au niveau supérieur de chaque résultat.</p>
+<p>The filtering condition carried in the search request reads <code translate="no">color like &quot;red%&quot; and likes &gt; 50</code>. It uses the and operator to include two conditions: the first one asks for entities that have a value starting with <code translate="no">red</code> in the <code translate="no">color</code> field, and the other asks for entities with a value greater than <code translate="no">50</code> in the <code translate="no">likes</code> field. There are only two entities meeting these requirements. With the top-K set to <code translate="no">5</code>, Milvus will calculate the distance between these two entities to the query vector and return them as the search results.</p>
+<p>The following example shows the shape of the Python results with illustrative cosine scores. Scores can vary with floating-point precision. Only the requested output fields appear in <code translate="no">entity</code>; the REST examples return those fields at the top level of each hit.</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">[</span>
     <span class="hljs-punctuation">{</span>
         <span class="hljs-attr">&quot;id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">4</span><span class="hljs-punctuation">,</span>
@@ -417,8 +421,8 @@ curl --request POST \
     <span class="hljs-punctuation">}</span>
 <span class="hljs-punctuation">]</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Pour plus d’informations sur les opérateurs que vous pouvez utiliser dans le filtrage des métadonnées, consultez la section « <a href="/docs/fr/boolean.md">Explication du filtrage</a> ».</p>
-<h3 id="Search-with-iterative-filtering" class="common-anchor-header">Recherche avec filtrage itératif<button data-href="#Search-with-iterative-filtering" class="anchor-icon" translate="no">
+<p>For more information on the operators you can use in metadata filtering, refer to <a href="/docs/fr/boolean.md">Filtering Explained</a>.</p>
+<h3 id="Search-with-iterative-filtering" class="common-anchor-header">Search with iterative filtering<button data-href="#Search-with-iterative-filtering" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -433,16 +437,16 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Pour effectuer une recherche filtrée avec filtrage itératif, procédez comme suit :</p>
+    </button></h3><p>To conduct a filtered search with iterative filtering, you can do as follows:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 

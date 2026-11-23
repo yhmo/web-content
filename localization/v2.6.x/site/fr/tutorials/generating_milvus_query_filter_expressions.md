@@ -1,17 +1,14 @@
 ---
 id: generating_milvus_query_filter_expressions.md
 summary: >-
-  Dans ce tutoriel, nous allons montrer comment utiliser les grands modèles de
-  langage (LLM) pour générer automatiquement des expressions de filtre Milvus à
-  partir de requêtes en langage naturel. Cette approche rend l'interrogation des
-  bases de données vectorielles plus accessible en permettant aux utilisateurs
-  d'exprimer des conditions de filtrage complexes en anglais simple, qui sont
-  ensuite converties en syntaxe Milvus appropriée.
-title: >-
-  Génération d'expressions de filtre de requête Milvus à l'aide de grands
-  modèles de langage
+  In this tutorial, we will demonstrate how to use Large Language Models (LLMs)
+  to automatically generate Milvus filter expressions from natural language
+  queries. This approach makes vector database querying more accessible by
+  allowing users to express complex filtering conditions in plain English, which
+  are then converted to proper Milvus syntax.
+title: Generating Milvus Query Filter Expressions with Large Language Models
 ---
-<h1 id="Generating-Milvus-Query-Filter-Expressions-with-Large-Language-Models" class="common-anchor-header">Génération d'expressions de filtre de requête Milvus à l'aide de grands modèles de langage<button data-href="#Generating-Milvus-Query-Filter-Expressions-with-Large-Language-Models" class="anchor-icon" translate="no">
+<h1 id="Generating-Milvus-Query-Filter-Expressions-with-Large-Language-Models" class="common-anchor-header">Generating Milvus Query Filter Expressions with Large Language Models<button data-href="#Generating-Milvus-Query-Filter-Expressions-with-Large-Language-Models" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -26,17 +23,17 @@ title: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Dans ce tutoriel, nous allons montrer comment utiliser les grands modèles de langage (LLM) pour générer automatiquement des expressions de filtre Milvus à partir de requêtes en langage naturel. Cette approche rend l'interrogation des bases de données vectorielles plus accessible en permettant aux utilisateurs d'exprimer des conditions de filtrage complexes en anglais simple, qui sont ensuite converties en syntaxe Milvus appropriée.</p>
-<p>Milvus prend en charge des capacités de filtrage sophistiquées, notamment</p>
+    </button></h1><p>In this tutorial, we will demonstrate how to use Large Language Models (LLMs) to automatically generate Milvus filter expressions from natural language queries. This approach makes vector database querying more accessible by allowing users to express complex filtering conditions in plain English, which are then converted to proper Milvus syntax.</p>
+<p>Milvus supports sophisticated filtering capabilities including:</p>
 <ul>
-<li><strong>Opérateurs de base</strong>: Opérateurs de comparaison tels que <code translate="no">==</code>, <code translate="no">!=</code>, <code translate="no">&gt;</code>, <code translate="no">&lt;</code>, <code translate="no">&gt;=</code>, <code translate="no">&lt;=</code></li>
-<li><strong>Opérateurs booléens</strong>: Opérateurs logiques tels que <code translate="no">and</code>, <code translate="no">or</code>, <code translate="no">not</code> pour les conditions complexes.</li>
-<li><strong>Opérations sur les chaînes de caractères</strong>: Correspondance de motifs avec <code translate="no">like</code> et autres fonctions de chaînes de caractères</li>
-<li><strong>Opérations sur les tableaux</strong>: Travailler avec des champs de type tableau en utilisant <code translate="no">array_contains</code>, <code translate="no">array_length</code>, etc.</li>
-<li><strong>Opérations JSON</strong>: Interrogation des champs JSON à l'aide d'opérateurs spécialisés</li>
+<li><strong>Basic Operators</strong>: Comparison operators like <code translate="no">==</code>, <code translate="no">!=</code>, <code translate="no">&gt;</code>, <code translate="no">&lt;</code>, <code translate="no">&gt;=</code>, <code translate="no">&lt;=</code></li>
+<li><strong>Boolean Operators</strong>: Logical operators like <code translate="no">and</code>, <code translate="no">or</code>, <code translate="no">not</code> for complex conditions</li>
+<li><strong>String Operations</strong>: Pattern matching with <code translate="no">like</code> and other string functions</li>
+<li><strong>Array Operations</strong>: Working with array fields using <code translate="no">array_contains</code>, <code translate="no">array_length</code>, etc.</li>
+<li><strong>JSON Operations</strong>: Querying JSON fields with specialized operators</li>
 </ul>
-<p>En intégrant les LLM à la documentation Milvus, nous pouvons créer un système intelligent qui comprend les requêtes en langage naturel et génère des expressions de filtre syntaxiquement correctes. Ce tutoriel décrit le processus de mise en place de ce système, en soulignant son efficacité dans divers scénarios de filtrage.</p>
-<h2 id="Dependencies-and-Environment" class="common-anchor-header">Dépendances et environnement<button data-href="#Dependencies-and-Environment" class="anchor-icon" translate="no">
+<p>By integrating LLMs with Milvus documentation, we can create an intelligent system that understands natural language queries and generates syntactically correct filter expressions. This tutorial will walk through the process of setting up this system, highlighting its effectiveness in various filtering scenarios.</p>
+<h2 id="Dependencies-and-Environment" class="common-anchor-header">Dependencies and Environment<button data-href="#Dependencies-and-Environment" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -54,7 +51,7 @@ title: >-
     </button></h2><pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">pip install --upgrade pymilvus openai requests docling beautifulsoup4</span>
 print(&quot;Environment setup complete!&quot;)
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Set-up-environment-variables" class="common-anchor-header">Configurer les variables d'environnement<button data-href="#Set-up-environment-variables" class="anchor-icon" translate="no">
+<h2 id="Set-up-environment-variables" class="common-anchor-header">Set up environment variables<button data-href="#Set-up-environment-variables" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -69,7 +66,7 @@ print(&quot;Environment setup complete!&quot;)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Configurez vos identifiants API OpenAI pour permettre la génération d'embedding et la création d'expressions de filtrage basées sur LLM. Remplacez <code translate="no">'your_openai_api_key'</code> par votre véritable clé API OpenAI.</p>
+    </button></h2><p>Configure your OpenAI API credentials to enable embedding generation and LLM-based filter expression creation. Replace <code translate="no">'your_openai_api_key'</code> with your actual OpenAI API key.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> os
 <span class="hljs-keyword">import</span> openai
 
@@ -82,7 +79,7 @@ api_key = os.getenv(<span class="hljs-string">&quot;OPENAI_API_KEY&quot;</span>)
 openai.api_key = api_key
 <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;API key loaded.&quot;</span>)
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Create-a-Sample-Collection" class="common-anchor-header">Créer une collection d'échantillons<button data-href="#Create-a-Sample-Collection" class="anchor-icon" translate="no">
+<h2 id="Create-a-Sample-Collection" class="common-anchor-header">Create a Sample Collection<button data-href="#Create-a-Sample-Collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -97,7 +94,7 @@ openai.api_key = api_key
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Créons maintenant un échantillon de collection Milvus avec des données utilisateur. Cette collection contiendra à la fois des champs scalaires (pour le filtrage) et des embeddings vectoriels (pour la recherche sémantique). Nous utiliserons le modèle d'intégration de texte d'OpenAI pour générer des représentations vectorielles des informations de l'utilisateur.</p>
+    </button></h2><p>Now let’s create a sample Milvus collection with user data. This collection will contain both scalar fields (for filtering) and vector embeddings (for semantic search). We’ll use OpenAI’s text embedding model to generate vector representations of user information.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, FieldSchema, CollectionSchema, DataType
 <span class="hljs-keyword">import</span> os
 <span class="hljs-keyword">from</span> openai <span class="hljs-keyword">import</span> OpenAI
@@ -188,7 +185,7 @@ client.insert(collection_name=collection_name, data=insert_data)
 
 <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Collection &#x27;<span class="hljs-subst">{collection_name}</span>&#x27; has been created and data has been inserted.&quot;</span>)
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Print-3-sample-data" class="common-anchor-header">Imprimer 3 exemples de données<button data-href="#Print-3-sample-data" class="anchor-icon" translate="no">
+<h2 id="Print-3-sample-data" class="common-anchor-header">Print 3 sample data<button data-href="#Print-3-sample-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -203,16 +200,16 @@ client.insert(collection_name=collection_name, data=insert_data)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Le code ci-dessus crée une collection Milvus avec la structure suivante :</p>
+    </button></h2><p>The code above creates a Milvus collection with the following structure:</p>
 <ul>
-<li><strong>pk</strong>: Champ de clé primaire (VARCHAR)</li>
-<li><strong>name</strong>: Nom de l'utilisateur (VARCHAR)</li>
-<li><strong>age</strong>: âge de l'utilisateur (INT64)</li>
-<li><strong>city : Ville de l'</strong>utilisateur (VARCHAR) ville de l'utilisateur (VARCHAR)</li>
-<li><strong>hobby</strong>: hobby de l'utilisateur (VARCHAR)</li>
-<li><strong>embedding</strong>: Intégration vectorielle (FLOAT_VECTOR, 1536 dimensions)</li>
+<li><strong>pk</strong>: Primary key field (VARCHAR)</li>
+<li><strong>name</strong>: User name (VARCHAR)</li>
+<li><strong>age</strong>: User age (INT64)</li>
+<li><strong>city</strong>: User city (VARCHAR)</li>
+<li><strong>hobby</strong>: User hobby (VARCHAR)</li>
+<li><strong>embedding</strong>: Vector embedding (FLOAT_VECTOR, 1536 dimensions)</li>
 </ul>
-<p>Nous avons inséré 11 exemples d'utilisateurs avec leurs informations personnelles et nous avons généré des embeddings pour les capacités de recherche sémantique. Les informations de chaque utilisateur sont converties en un texte descriptif qui contient son nom, sa localisation, son âge et ses centres d'intérêt avant d'être intégré. Vérifions que notre collection a été créée avec succès et qu'elle contient les données attendues en interrogeant quelques enregistrements échantillons.</p>
+<p>We have inserted 11 sample users with their personal information and generate embeddings for semantic search capabilities. Each user’s information is converted into a descriptive text that captures their name, location, age, and interests before being embedded. Let’s verify that our collection was created successfully and contains the expected data by querying a few sample records.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 <span class="hljs-keyword">import</span> os
 <span class="hljs-keyword">from</span> openai <span class="hljs-keyword">import</span> OpenAI
@@ -232,7 +229,7 @@ result = client.query(
 <span class="hljs-keyword">for</span> record <span class="hljs-keyword">in</span> result:
     <span class="hljs-built_in">print</span>(record)
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Collecting-Milvus-Filter-Expression-Documentation" class="common-anchor-header">Collecte de la documentation sur l'expression du filtre Milvus<button data-href="#Collecting-Milvus-Filter-Expression-Documentation" class="anchor-icon" translate="no">
+<h2 id="Collecting-Milvus-Filter-Expression-Documentation" class="common-anchor-header">Collecting Milvus Filter Expression Documentation<button data-href="#Collecting-Milvus-Filter-Expression-Documentation" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -247,15 +244,15 @@ result = client.query(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Pour aider le grand modèle de langage à mieux comprendre la syntaxe des expressions de filtre de Milvus, nous devons lui fournir une documentation officielle pertinente. Nous utiliserons la bibliothèque <code translate="no">docling</code> pour récupérer plusieurs pages clés du site Web officiel de Milvus.</p>
-<p>Ces pages contiennent des informations détaillées sur</p>
+    </button></h2><p>To help the large language model better understand Milvus’s filter expression syntax, we need to provide it with relevant official documentation. We’ll use the <code translate="no">docling</code> library to scrape several key pages from the official Milvus website.</p>
+<p>These pages contain detailed information about:</p>
 <ul>
-<li><strong>les opérateurs booléens</strong>: <code translate="no">and</code>, <code translate="no">or</code>, <code translate="no">not</code> pour les conditions logiques complexes</li>
-<li><strong>Les opérateurs de base</strong>: Opérateurs de comparaison comme <code translate="no">==</code>, <code translate="no">!=</code>, <code translate="no">&gt;</code>, <code translate="no">&lt;</code>, <code translate="no">&gt;=</code>, <code translate="no">&lt;=</code></li>
-<li><strong>Modèles de filtrage</strong>: Modèles de filtrage avancés et syntaxe</li>
-<li><strong>Correspondance de chaînes</strong>: Correspondance de motifs avec <code translate="no">like</code> et autres opérations sur les chaînes.</li>
+<li><strong>Boolean operators</strong>: <code translate="no">and</code>, <code translate="no">or</code>, <code translate="no">not</code> for complex logical conditions</li>
+<li><strong>Basic operators</strong>: Comparison operators like <code translate="no">==</code>, <code translate="no">!=</code>, <code translate="no">&gt;</code>, <code translate="no">&lt;</code>, <code translate="no">&gt;=</code>, <code translate="no">&lt;=</code></li>
+<li><strong>Filtering templates</strong>: Advanced filtering patterns and syntax</li>
+<li><strong>String matching</strong>: Pattern matching with <code translate="no">like</code> and other string operations</li>
 </ul>
-<p>Cette documentation servira de base de connaissances à notre LLM pour générer des expressions de filtrage précises.</p>
+<p>This documentation will serve as the knowledge base for our LLM to generate accurate filter expressions.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> docling
 <span class="hljs-keyword">from</span> docling.document_converter <span class="hljs-keyword">import</span> DocumentConverter
 
@@ -272,8 +269,8 @@ docs = [
 <span class="hljs-keyword">for</span> doc <span class="hljs-keyword">in</span> docs[:<span class="hljs-number">3</span>]:
     <span class="hljs-built_in">print</span>(doc.document.export_to_markdown())
 <button class="copy-code-btn"></button></code></pre>
-<p>La documentation scraping fournit une couverture complète de la syntaxe de filtrage Milvus. Cette base de connaissances permettra à notre LLM de comprendre les nuances de la construction des expressions de filtre, y compris l'utilisation correcte des opérateurs, le référencement des champs et les combinaisons de conditions complexes.</p>
-<h2 id="LLM-Powered-Filter-Generation" class="common-anchor-header">Génération de filtres par le LLM<button data-href="#LLM-Powered-Filter-Generation" class="anchor-icon" translate="no">
+<p>The documentation scraping provides comprehensive coverage of Milvus filter syntax. This knowledge base will enable our LLM to understand the nuances of filter expression construction, including proper operator usage, field referencing, and complex condition combinations.</p>
+<h2 id="LLM-Powered-Filter-Generation" class="common-anchor-header">LLM-Powered Filter Generation<button data-href="#LLM-Powered-Filter-Generation" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -288,15 +285,15 @@ docs = [
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Maintenant que nous disposons du contexte de documentation, configurons le système LLM pour générer des expressions de filtre. Nous allons créer une invite structurée qui combine la documentation récupérée avec les requêtes de l'utilisateur pour produire des expressions de filtre Milvus syntaxiquement correctes.</p>
-<p>Notre système de génération de filtres utilise une invite soigneusement conçue qui :</p>
+    </button></h2><p>Now that we have the documentation context, let’s set up the LLM system to generate filter expressions. We’ll create a structured prompt that combines the scraped documentation with user queries to produce syntactically correct Milvus filter expressions.</p>
+<p>Our filter generation system uses a carefully crafted prompt that:</p>
 <ol>
-<li><strong>Fournit un contexte</strong>: inclut la documentation complète de Milvus comme matériel de référence</li>
-<li><strong>Fixe des contraintes</strong>: garantit que le MLD n'utilise que la syntaxe et les fonctionnalités documentées</li>
-<li><strong>assure la précision</strong>: Exige des expressions syntaxiquement correctes</li>
-<li><strong>Maintient l'attention</strong>: Renvoie uniquement l'expression du filtre sans explications</li>
+<li><strong>Provides context</strong>: Includes the complete Milvus documentation as reference material</li>
+<li><strong>Sets constraints</strong>: Ensures the LLM only uses documented syntax and features</li>
+<li><strong>Enforces accuracy</strong>: Requires syntactically correct expressions</li>
+<li><strong>Maintains focus</strong>: Returns only the filter expression without explanations</li>
 </ol>
-<p>Testons ceci avec une requête en langage naturel et voyons les performances du LLM.</p>
+<p>Let’s test this with a natural language query and see how well the LLM performs.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> openai <span class="hljs-keyword">import</span> OpenAI
 <span class="hljs-keyword">import</span> json
 <span class="hljs-keyword">from</span> IPython.display <span class="hljs-keyword">import</span> display, Markdown
@@ -348,14 +345,14 @@ filter_expr = generate_filter_expr(user_query)
 
 <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Generated filter expression: <span class="hljs-subst">{filter_expr}</span>&quot;</span>)
 <button class="copy-code-btn"></button></code></pre>
-<p>Le LLM a généré avec succès une expression de filtrage qui combine plusieurs conditions :</p>
+<p>The LLM successfully generated a filter expression that combines multiple conditions:</p>
 <ul>
-<li>Comparaison d'âge à l'aide de l'opérateur <code translate="no">&gt;</code></li>
-<li>Comparaison de plusieurs villes à l'aide de l'opérateur <code translate="no">in</code> </li>
-<li>Référencement des champs et syntaxe appropriés</li>
+<li>Age comparison using <code translate="no">&gt;</code></li>
+<li>Multiple city matching using <code translate="no">in</code> operator</li>
+<li>Proper field referencing and syntax</li>
 </ul>
-<p>Ceci démontre la puissance de la fourniture d'un contexte de documentation complet pour guider la génération de filtres LLM.</p>
-<h2 id="Test-the-Generated-Filter" class="common-anchor-header">Test du filtre généré<button data-href="#Test-the-Generated-Filter" class="anchor-icon" translate="no">
+<p>This demonstrates the power of providing comprehensive documentation context to guide LLM filter generation.</p>
+<h2 id="Test-the-Generated-Filter" class="common-anchor-header">Test the Generated Filter<button data-href="#Test-the-Generated-Filter" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -370,7 +367,7 @@ filter_expr = generate_filter_expr(user_query)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Testons maintenant notre expression de filtre générée en l'utilisant dans une opération de recherche Milvus réelle. Nous allons combiner la recherche sémantique avec un filtrage précis pour trouver les utilisateurs qui correspondent à la fois à l'intention de la requête et aux critères spécifiques.</p>
+    </button></h2><p>Now let’s test our generated filter expression by using it in an actual Milvus search operation. We’ll combine semantic search with precise filtering to find users that match both the query intent and the specific criteria.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 <span class="hljs-keyword">from</span> openai <span class="hljs-keyword">import</span> OpenAI
 <span class="hljs-keyword">import</span> os
@@ -410,7 +407,7 @@ search_results = client.search(
         <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;  - <span class="hljs-subst">{hit}</span>&quot;</span>)
     <span class="hljs-built_in">print</span>()
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Results-Analysis" class="common-anchor-header">Analyse des résultats<button data-href="#Results-Analysis" class="anchor-icon" translate="no">
+<h2 id="Results-Analysis" class="common-anchor-header">Results Analysis<button data-href="#Results-Analysis" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -425,10 +422,10 @@ search_results = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Les résultats de la recherche démontrent l'intégration réussie des filtres générés par LLM avec la recherche vectorielle Milvus. Le filtre a correctement identifié les utilisateurs qui :</p>
+    </button></h2><p>The search results demonstrate successful integration of LLM-generated filters with Milvus vector search. The filter correctly identified users who:</p>
 <ul>
-<li>sont âgés de plus de 30 ans</li>
-<li>vivent à Londres, Tokyo ou Toronto</li>
-<li>correspondent au contexte sémantique de la requête.</li>
+<li>Are older than 30 years</li>
+<li>Live in London, Tokyo, or Toronto</li>
+<li>Match the semantic context of the query</li>
 </ul>
-<p>Cette approche combine la précision du filtrage structuré avec la flexibilité de la saisie en langage naturel, ce qui rend les bases de données vectorielles plus accessibles aux utilisateurs qui ne sont pas nécessairement familiarisés avec la syntaxe spécifique des requêtes.</p>
+<p>This approach combines the precision of structured filtering with the flexibility of natural language input, making vector databases more accessible to users who may not be familiar with specific query syntax.</p>

@@ -3,19 +3,22 @@ id: home.md
 ---
 <div class="doc-h1-wrapper">
 <p><h1 class="title">
-Milvusドキュメントへようこそ！</h1></p>
+Welcome to Milvus Docs!
+</h1></p>
 <p><h2 class="sub-title">
-ここでは、Milvusとは何か、Milvusをどのようにインストールし、どのように使用し、どのようにデプロイし、どのようにビジネスニーズに合ったアプリケーションを構築するかについて学びます。</h2></p>
+Here you will learn about what Milvus is, and how to install, use, and deploy Milvus to build an application according to your business need.
+</h2></p>
 </div>
 <div class="doc-home-promotion-wrapper">
   <div class="promotion-content">
-    <h2 class="promotion-title">マネージドMilvusを無料でお試しください！</h2>
-    <p class="promotion-desc">Zillizクラウドは手間がかからず、Milvusを搭載し、10倍高速です。</p>
+    <h2 class="promotion-title">Try Managed Milvus For Free!</h2>
+    <p class="promotion-desc">Zilliz Cloud is hassle-free, powered by Milvus and 10x faster.</p>
   </div>
   <div class="cta-wrapper">
-   <a class="cta-global" href="https://cloud.zilliz.com/signup?utm_source=partner&utm_medium=referral&utm_campaign=2025-02-24_doc_home_milvus.io">Zillizクラウド</a></div>
+    <a class="cta-global" href="https://cloud.zilliz.com/signup?utm_source=partner&utm_medium=referral&utm_campaign=2025-02-24_doc_home_milvus.io">Zilliz Cloud</a>
+  </div>
 </div>
-<h2 id="Get-Started" class="common-anchor-header">始める<button data-href="#Get-Started" class="anchor-icon" translate="no">
+<h2 id="Get-Started" class="common-anchor-header">Get Started<button data-href="#Get-Started" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -32,23 +35,30 @@ Milvusドキュメントへようこそ！</h1></p>
       </svg>
     </button></h2><div class="card-wrapper">
 <div class="start_card_container">
-  
-   <a href="/docs/ja/install_standalone-docker.md"> <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/home_install.svg" alt="icon" />
-   </a> <a href="/docs/ja/install_standalone-docker.md"> <p class="link-btn">Milvusのインストール</p> </a><p>Docker ComposeまたはKubernetesを使用してMilvusをインストールする方法をご紹介します。</p>
+  <a href="/docs/ja/install_standalone-docker.md">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/home_install.svg" alt="icon" />
+    <p class="link-btn">Install Milvus</p>
+  </a>
+  <p>Learn how to install Milvus using either Docker Compose or on Kubernetes.</p>
 </div>
 <div class="start_card_container">
-  
-   <a href="/docs/ja/quickstart.md"> <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/home_quick_start.svg" alt="icon" />
-   </a> <a href="/docs/ja/quickstart.md"> <p class="link-btn">クイックスタート</p> </a><p>サンプルコードを使ってMilvusを素早く実行する方法をご紹介します。</p>
+  <a href="/docs/ja/quickstart.md">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/home_quick_start.svg" alt="icon" />
+    <p class="link-btn">Quick Start</p>
+  </a>
+  <p>Learn how to quickly run Milvus with sample code.</p>
 </div>
 <div class="start_card_container">
-  
-   <a href="/bootcamp"> <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/home_bootcamp.svg" alt="icon" />
-   </a> <a href="/bootcamp"> <p class="link-btn">ブートキャンプ</p> </a><p>
-  Milvusでベクトル類似検索アプリケーションを構築する方法を学びます。  </p>
+  <a href="/bootcamp">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/home_bootcamp.svg" alt="icon" />
+    <p class="link-btn">Bootcamp</p>
+  </a>
+  <p>
+  Learn how to build vector similarity search applications with Milvus.
+  </p>
 </div>
 </div>
-<h2 id="Recommended-articles" class="common-anchor-header">おすすめ記事<button data-href="#Recommended-articles" class="anchor-icon" translate="no">
+<h2 id="Recommended-articles" class="common-anchor-header">Recommended articles<button data-href="#Recommended-articles" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -65,39 +75,39 @@ Milvusドキュメントへようこそ！</h1></p>
       </svg>
     </button></h2><div class="doc-home-recommend-section">
 <div class="recomment-item">
-  <p>使用方法</p>
+  <p>Use</p>
 <ul>
-<li><a href="/docs/ja/manage-collections.md">コレクションの管理</a></li>
-<li><a href="/docs/ja/insert-update-delete.md">挿入、アップサート、削除</a></li>
-<li><a href="/docs/ja/single-vector-search.md">単一ベクトル検索</a></li>
-<li><a href="/docs/ja/multi-vector-search.md">ハイブリッド検索</a></li>
-<li><a href="/docs/ja/get-and-scalar-query.md">取得とスカラークエリ</a></li>
-<li><a href="/docs/ja/milvus_for_agents.md">AIエージェントのためのMilvus</a></li>
+<li><a href="/docs/ja/manage-collections.md">Manage Collections</a></li>
+<li><a href="/docs/ja/insert-update-delete.md">Insert, Upsert, and Delete</a></li>
+<li><a href="/docs/ja/single-vector-search.md">Single-Vector Search</a></li>
+<li><a href="/docs/ja/multi-vector-search.md">Hybrid Search</a></li>
+<li><a href="/docs/ja/get-and-scalar-query.md">Get & Scalar Query</a></li>
+<li><a href="/docs/ja/milvus_for_agents.md">Milvus for AI Agents</a></li>
 </ul>
 </div>
 <div class="recomment-item">
-  <p>デプロイ</p>
+  <p>Deploy</p>
 <ul>
-<li><a href="/docs/ja/configure-docker.md">Milvusの設定</a></li>
-<li><a href="/docs/ja/deploy_s3.md">依存関係の管理</a></li>
-<li><a href="/docs/ja/eks.md">クラウドへのデプロイ</a></li>
-<li><a href="/docs/ja/scaleout.md">Milvusクラスターのスケール</a></li>
-<li><a href="/docs/ja/monitor_overview.md">監視とアラート</a></li>
+<li><a href="/docs/ja/configure-docker.md">Configure Milvus</a></li>
+<li><a href="/docs/ja/deploy_s3.md">Manage Dependencies</a></li>
+<li><a href="/docs/ja/eks.md">Deploy on Clouds</a></li>
+<li><a href="/docs/ja/scaleout.md">Scale a Milvus Cluster</a></li>
+<li><a href="/docs/ja/monitor_overview.md">Monitor and Alert</a></li>
 </ul>
 </div>
 <div class="recomment-item">
-  <p>学ぶ</p>
+  <p>Learn</p>
 <ul>
-<li><a href="/docs/ja/system_configuration.md">システム構成</a></li>
-<li><a href="/docs/ja/architecture_overview.md">アーキテクチャの概要</a></li>
-<li><a href="/docs/ja/index-explained.md">インデックスの説明</a></li>
-<li><a href="/docs/ja/metric.md">類似性メトリクス</a></li>
-<li><a href="/docs/ja/glossary.md">用語集</a></li>
+<li><a href="/docs/ja/system_configuration.md">System Configuration</a></li>
+<li><a href="/docs/ja/architecture_overview.md">Architecture Overview</a></li>
+<li><a href="/docs/ja/index-explained.md">Index Explained</a></li>
+<li><a href="/docs/ja/metric.md">Similarity Metrics</a></li>
+<li><a href="/docs/ja/glossary.md">Glossary</a></li>
 </ul>
 </div>
 </div>
 <div class="doc-home-what-is-new">
-<h2 id="Whats-new-in-docs" class="common-anchor-header">新着情報<button data-href="#Whats-new-in-docs" class="anchor-icon" translate="no">
+<h2 id="Whats-new-in-docs" class="common-anchor-header">What’s new in docs<button data-href="#Whats-new-in-docs" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -112,12 +122,12 @@ Milvusドキュメントへようこそ！</h1></p>
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><em>2026年5月 - Milvus 3.0.xアップデート</em></p>
+    </button></h2><p><em>May 2026 - Milvus 3.0.x updates</em></p>
 <ul>
-<li><a href="/docs/ja/release_notes.md">リリースノートに</a>Milvus 3.0.xのハイライト（外部コレクション、スナップショット、ストレージV3、レイクエコシステムの統合など）を追加しました。</li>
-<li><a href="/docs/ja/single-vector-search.md#Sort-Search-Results-by-Scalar-Fields--Milvus-30x">スカラーフィールドによる検索結果の並べ替えおよび</a> <a href="/docs/ja/get-and-scalar-query.md#Aggregate-Query-Results--Milvus-30x">クエリ結果の集約</a>方法に関するガイダンスを追加しました。</li>
-<li><a href="/docs/ja/nullable-and-default.md">NULL可能なベクトル・フィールドと</a> <a href="/docs/ja/set-collection-ttl.md#Set-entity-level-TTL--Milvus-30x">エンティティ・レベルTTLの</a>使用方法に関するガイダンスを追加しました。</li>
-<li>サーバー側のMinHash署名に<a href="/docs/ja/minhash-function.md">MinHash関数を</a>使用する方法に関するガイダンスを追加しました。</li>
-<li><a href="/docs/ja/search-with-embedding-lists.md">埋め込みリストを使用した検索と</a> <a href="/docs/ja/force-merge.md">強制マージ圧縮の</a>トリガー方法に関するガイダンスを追加しました。</li>
+<li>Added Milvus 3.0.x highlights to the <a href="/docs/ja/release_notes.md">Release Notes</a>, including External Collection, Snapshot, Storage V3, and lake ecosystem integrations.</li>
+<li>Added guidance on how to <a href="/docs/ja/single-vector-search.md#Sort-Search-Results-by-Scalar-Fields--Milvus-30x">sort search results by scalar fields</a> and <a href="/docs/ja/get-and-scalar-query.md#Aggregate-Query-Results--Milvus-30x">aggregate query results</a>.</li>
+<li>Added guidance on how to use <a href="/docs/ja/nullable-and-default.md">nullable vector fields</a> and <a href="/docs/ja/set-collection-ttl.md#Set-entity-level-TTL--Milvus-30x">entity-level TTL</a>.</li>
+<li>Added guidance on how to use <a href="/docs/ja/minhash-function.md">MinHash Function</a> for server-side MinHash signatures.</li>
+<li>Added guidance on how to <a href="/docs/ja/search-with-embedding-lists.md">search with embedding lists</a> and trigger <a href="/docs/ja/force-merge.md">force merge compaction</a>.</li>
 </ul>
 </div>

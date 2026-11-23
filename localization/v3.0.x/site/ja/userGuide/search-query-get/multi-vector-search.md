@@ -1,12 +1,19 @@
 ---
 id: multi-vector-search.md
-title: マルチベクトルハイブリッド検索
+title: Multi-Vector Hybrid Search
 summary: >-
-  多くのアプリケーションでは、タイトルや説明文といった豊富な情報、あるいはテキスト、画像、音声といった複数のモダリティを用いてオブジェクトを検索することができます。例えば、テキストと画像を含むツイートについては、テキストまたは画像のいずれかが検索クエリの意味内容と一致する場合、そのツイートが検索対象となります。
-  ハイブリッド検索は、こうした多様なフィールドにわたる検索を組み合わせることで、検索体験を向上させます。Milvusは、複数のベクトルフィールドでの検索を可能にし、複数の近似最近傍法（ANN）検索を同時に実行することで、これをサポートしています。
-  マルチベクトルハイブリッド検索は、テキストと画像の両方を検索したい場合、同じオブジェクトを記述する複数のテキストフィールドを検索したい場合、あるいは検索品質を向上させるために高密度ベクトルと疎ベクトルを検索したい場合に特に有用です。
+  In many applications, an object can be searched by a rich set of information
+  such as title and description, or with multiple modalities such as text,
+  images, and audio. For example, a tweet with a piece of text and an image
+  shall be searched if either the text or the image matches the semantic of the
+  search query. Hybrid search enhances search experience by combining searches
+  across these diverse fields. Milvus supports this by allowing search on
+  multiple vector fields, conducting several Approximate Nearest Neighbor (ANN)
+  searches simultaneously. Multi-vector hybrid search is particularly useful if
+  you want to search both text and images, multiple text fields that describe
+  the same object, or dense and sparse vectors to improve search quality.
 ---
-<h1 id="Multi-Vector-Hybrid-Search" class="common-anchor-header">マルチベクトルハイブリッド検索<button data-href="#Multi-Vector-Hybrid-Search" class="anchor-icon" translate="no">
+<h1 id="Multi-Vector-Hybrid-Search" class="common-anchor-header">Multi-Vector Hybrid Search<button data-href="#Multi-Vector-Hybrid-Search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -21,19 +28,19 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>多くのアプリケーションにおいて、オブジェクトはタイトルや説明文といった豊富な情報、あるいはテキスト、画像、音声といった複数のモダリティを用いて検索することができます。例えば、テキストと画像を含むツイートについては、テキストまたは画像のいずれかが検索クエリの意味内容と一致する場合に検索対象となります。 ハイブリッド検索は、こうした多様なフィールドにわたる検索を組み合わせることで、検索体験を向上させます。Milvusは、複数のベクトルフィールドでの検索を可能にし、複数の近似最近傍法（ANN）検索を同時に実行することで、これをサポートしています。 マルチベクトルハイブリッド検索は、テキストと画像の両方を検索したい場合、同じオブジェクトを記述する複数のテキストフィールドを検索したい場合、あるいは検索品質を向上させるために高密度ベクトルと疎ベクトルを検索したい場合に特に有用です。</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/hybrid-search-workflow.png" alt="Hybrid Search Workflow" class="doc-image" id="hybrid-search-workflow" /> 
-   <span>ハイブリッド検索のワークフロー</span>
-  
- </span></p>
-<p>マルチベクトルハイブリッド検索は、異なる検索手法を統合したり、さまざまなモダリティの埋め込みを横断したりします：</p>
+    </button></h1><p>In many applications, an object can be searched by a rich set of information such as title and description, or with multiple modalities such as text, images, and audio. For example, a tweet with a piece of text and an image shall be searched if either the text or the image matches the semantic of the search query. Hybrid search enhances search experience by combining searches across these diverse fields. Milvus supports this by allowing search on multiple vector fields, conducting several Approximate Nearest Neighbor (ANN) searches simultaneously. Multi-vector hybrid search is particularly useful if you want to search both text and images, multiple text fields that describe the same object, or dense and sparse vectors to improve search quality.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/hybrid-search-workflow.png" alt="Hybrid Search Workflow" class="doc-image" id="hybrid-search-workflow" />
+    <span>Hybrid Search Workflow</span>
+  </span>
+</p>
+<p>The multi-vector hybrid search integrates different search methods or spans embeddings from various modalities:</p>
 <ul>
-<li><p><strong>疎・密ベクトル検索</strong>：<a href="/docs/ja/dense-vector.md">密ベクトルは</a>意味的な関係を捉えるのに優れており、一方、<a href="/docs/ja/sparse_vector.md">疎ベクトルは</a>正確なキーワードマッチングに非常に効果的です。 ハイブリッド検索はこれらのアプローチを組み合わせることで、広範な概念的理解と正確な用語の関連性の両方を提供し、検索結果の質を向上させます。各手法の強みを活かすことで、ハイブリッド検索は個々のアプローチの限界を克服し、複雑なクエリに対してより優れたパフォーマンスを発揮します。ここでは、セマンティック検索と全文検索を組み合わせたハイブリッド検索に関するより詳細な<a href="/docs/ja/full_text_search_with_milvus.md">ガイド</a>をご紹介します。</p></li>
-<li><p><strong>マルチモーダルベクトル検索</strong>：マルチモーダルベクトル検索は、テキスト、画像、音声など、さまざまなデータタイプを横断して検索できる強力な技術です。このアプローチの主な利点は、異なるモダリティを統合し、シームレスで一貫性のある検索体験を実現できる点にあります。 例えば、商品検索において、ユーザーはテキストクエリを入力して、テキストと画像の両方で説明されている商品を検索することがあります。ハイブリッド検索手法を通じてこれらのモダリティを組み合わせることで、検索精度を高めたり、検索結果を充実させたりすることができます。</p></li>
+<li><p><strong>Sparse-Dense Vector Search</strong>: <a href="/docs/ja/dense-vector.md">Dense Vector</a> are excellent for capturing semantic relationships, while <a href="/docs/ja/sparse_vector.md">Sparse Vector</a> are highly effective for precise keyword matching. Hybrid search combines these approaches to provide both a broad conceptual understanding and exact term relevance, thus improving search results. By leveraging the strengths of each method, hybrid search overcomes the limitations of indiviual approaches, offering better performance for complex queries. Here is more detailed <a href="/docs/ja/full_text_search_with_milvus.md">guide</a> on hybrid retrieval that combines semantic search with full-text search.</p></li>
+<li><p><strong>Multimodal Vector Search</strong>: Multimodal vector search is a powerful technique that allows you to search across various data types, including text, images, audio, and others. The main advantage of this approach is its ability to unify different modalities into a seamless and cohesive search experience. For instance, in product search, a user might input a text query to find products described with both text and images. By combining these modalities through a hybrid search method, you can enhance search accuracy or enrich the search results.</p></li>
 </ul>
-<h2 id="Example" class="common-anchor-header">例<button data-href="#Example" class="anchor-icon" translate="no">
+<h2 id="Example" class="common-anchor-header">Example<button data-href="#Example" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -48,14 +55,14 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>各商品にテキストによる説明と画像が含まれているという実世界のユースケースを考えてみましょう。利用可能なデータに基づいて、以下の3種類の検索を行うことができます：</p>
+    </button></h2><p>Let’s consider a real world use case where each product includes a text description and an image. Based on the available data, we can conduct three types of searches:</p>
 <ul>
-<li><p><strong>セマンティックテキスト検索：</strong>これは、高密度ベクトルを用いて商品のテキスト説明を検索するものです。テキスト埋め込みは、<a href="https://zilliz.com/learn/NLP-essentials-understanding-transformers-in-AI?_gl=1*d243m9*_gcl_au*MjcyNTAwMzUyLjE3NDMxMzE1MjY.*_ga*MTQ3OTI4MDc5My4xNzQzMTMxNTI2*_ga_KKMVYG8YF2*MTc0NTkwODU0Mi45NC4xLjE3NDU5MDg4MzcuMC4wLjA.">BERTやTransformersといった</a>モデル、<a href="https://zilliz.com/learn/guide-to-using-openai-text-embedding-models">あるいはOpenAIのような</a>サービスを使用して生成できます。</p></li>
-<li><p><strong>全文検索</strong>：ここでは、スパースベクトルを用いたキーワードマッチングにより、商品のテキスト説明を検索します。この目的には、<a href="https://zilliz.com/learn/mastering-bm25-a-deep-dive-into-the-algorithm-and-application-in-milvus">BM25</a>のようなアルゴリズムや、<a href="https://zilliz.com/learn/bge-m3-and-splade-two-machine-learning-models-for-generating-sparse-embeddings?_gl=1*1cde1oq*_gcl_au*MjcyNTAwMzUyLjE3NDMxMzE1MjY.*_ga*MTQ3OTI4MDc5My4xNzQzMTMxNTI2*_ga_KKMVYG8YF2*MTc0NTkwODU0Mi45NC4xLjE3NDU5MDg4MzcuMC4wLjA.#BGE-M3">BGE-M3</a>、<a href="https://zilliz.com/learn/bge-m3-and-splade-two-machine-learning-models-for-generating-sparse-embeddings?_gl=1*ov2die*_gcl_au*MjcyNTAwMzUyLjE3NDMxMzE1MjY.*_ga*MTQ3OTI4MDc5My4xNzQzMTMxNTI2*_ga_KKMVYG8YF2*MTc0NTkwODU0Mi45NC4xLjE3NDU5MDg4MzcuMC4wLjA.#SPLADE">SPLADE</a>などのスパース埋め込みモデルを活用できます。</p></li>
-<li><p><strong>マルチモーダル画像検索：</strong>この手法では、高密度ベクトルを用いたテキストクエリを使用して画像を検索します。画像の埋め込みは、<a href="https://zilliz.com/learn/exploring-openai-clip-the-future-of-multimodal-ai-learning">CLIP</a>などのモデルで生成できます。</p></li>
+<li><p><strong>Semantic Text Search:</strong> This involves querying the text description of the product using dense vectors. Text embeddings can be generated using models such as <a href="https://zilliz.com/learn/explore-colbert-token-level-embedding-and-ranking-model-for-similarity-search?_gl=1*d243m9*_gcl_au*MjcyNTAwMzUyLjE3NDMxMzE1MjY.*_ga*MTQ3OTI4MDc5My4xNzQzMTMxNTI2*_ga_KKMVYG8YF2*MTc0NTkwODU0Mi45NC4xLjE3NDU5MDg4MzcuMC4wLjA.#A-Quick-Recap-of-BERT">BERT</a> and <a href="https://zilliz.com/learn/NLP-essentials-understanding-transformers-in-AI?_gl=1*d243m9*_gcl_au*MjcyNTAwMzUyLjE3NDMxMzE1MjY.*_ga*MTQ3OTI4MDc5My4xNzQzMTMxNTI2*_ga_KKMVYG8YF2*MTc0NTkwODU0Mi45NC4xLjE3NDU5MDg4MzcuMC4wLjA.">Transformers</a> or services like <a href="https://zilliz.com/learn/guide-to-using-openai-text-embedding-models">OpenAI</a>.</p></li>
+<li><p><strong>Full-Text Search</strong>: Here, we query the text description of the product using a keyword match with sparse vectors. Algorithms like <a href="https://zilliz.com/learn/mastering-bm25-a-deep-dive-into-the-algorithm-and-application-in-milvus">BM25</a> or sparse embedding models such as <a href="https://zilliz.com/learn/bge-m3-and-splade-two-machine-learning-models-for-generating-sparse-embeddings?_gl=1*1cde1oq*_gcl_au*MjcyNTAwMzUyLjE3NDMxMzE1MjY.*_ga*MTQ3OTI4MDc5My4xNzQzMTMxNTI2*_ga_KKMVYG8YF2*MTc0NTkwODU0Mi45NC4xLjE3NDU5MDg4MzcuMC4wLjA.#BGE-M3">BGE-M3</a> or <a href="https://zilliz.com/learn/bge-m3-and-splade-two-machine-learning-models-for-generating-sparse-embeddings?_gl=1*ov2die*_gcl_au*MjcyNTAwMzUyLjE3NDMxMzE1MjY.*_ga*MTQ3OTI4MDc5My4xNzQzMTMxNTI2*_ga_KKMVYG8YF2*MTc0NTkwODU0Mi45NC4xLjE3NDU5MDg4MzcuMC4wLjA.#SPLADE">SPLADE</a> can be utilized for this purpose.</p></li>
+<li><p><strong>Multimodal Image Search:</strong> This method queries over the image using a text query with dense vectors. Image embeddings can be generated with models like <a href="https://zilliz.com/learn/exploring-openai-clip-the-future-of-multimodal-ai-learning">CLIP</a>.</p></li>
 </ul>
-<p>本ガイドでは、製品の生のテキスト説明と画像埋め込みデータを用いて、上記の検索手法を組み合わせたマルチモーダルハイブリッド検索の例を解説します。マルチベクトルデータの保存方法と、再ランク付け戦略を用いたハイブリッド検索の実行方法について説明します。</p>
-<h2 id="Create-a-collection-with-multiple-vector-fields" class="common-anchor-header">複数のベクトルフィールドを持つコレクションを作成する<button data-href="#Create-a-collection-with-multiple-vector-fields" class="anchor-icon" translate="no">
+<p>This guide will walk you through an example of a multimodal hybrid search combining the above search methods, given the raw text description and image embeddings of products. We will demonstrate how to store multi-vector data and perform hybrid searches with a reranking strategy.</p>
+<h2 id="Create-a-collection-with-multiple-vector-fields" class="common-anchor-header">Create a collection with multiple vector fields<button data-href="#Create-a-collection-with-multiple-vector-fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -70,8 +77,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>コレクションの作成プロセスには、コレクションスキーマの定義、インデックスパラメータの設定、コレクションの作成という3つの主要なステップがあります。</p>
-<h3 id="Define-schema" class="common-anchor-header">スキーマの定義<button data-href="#Define-schema" class="anchor-icon" translate="no">
+    </button></h2><p>The process of creating a collection involves three key steps: defining the collection schema, configuring the index parameters, and creating the collection.</p>
+<h3 id="Define-schema" class="common-anchor-header">Define schema<button data-href="#Define-schema" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -86,23 +93,23 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>マルチベクトルハイブリッド検索を行うには、コレクションスキーマ内で複数のベクトルフィールドを定義する必要があります。コレクションで許可されるベクトルフィールド数の制限に関する詳細については、<a href="https://zilliverse.feishu.cn/wiki/PuxkwMWvbiHxvTkHsVkcMZP9n5f#E5yxdHM16okh57xV3WKcTJsYn0f">「Zilliz Cloud Limits</a>」を参照してください。ただし、必要に応じて、 <a href="/docs/ja/configure_proxy.md#proxymaxVectorFieldNum"><code translate="no">proxy.maxVectorFieldNum</code></a> 調整して、必要に応じてコレクションに最大10個のベクトルフィールドを含めることができます。</p>
-<p>この例では、以下のフィールドをスキーマに組み込んでいます：</p>
+    </button></h3><p>For multi-vector hybrid search, we should define multiple vector fields within a collection schema. For details about the limits on the number of vector fields allowed in a collection, see <a href="https://zilliverse.feishu.cn/wiki/PuxkwMWvbiHxvTkHsVkcMZP9n5f#E5yxdHM16okh57xV3WKcTJsYn0f">Zilliz Cloud Limits</a>.  However, if necessary, you can adjust the <a href="/docs/ja/configure_proxy.md#proxymaxVectorFieldNum"><code translate="no">proxy.maxVectorFieldNum</code></a> to include up to 10 vector fields in a collection as needed.</p>
+<p>This example incorporates the following fields into the schema:</p>
 <ul>
-<li><p><code translate="no">id</code>: テキスト ID を格納するための主キーとして機能します。このフィールドのデータ型は `<code translate="no">INT64</code>` です。</p></li>
-<li><p><code translate="no">text</code>: テキストコンテンツを格納するために使用されます。このフィールドのデータ型は<code translate="no">VARCHAR</code> で、最大長は1000バイトです。全文検索を容易にするため、<code translate="no">enable_analyzer</code> オプションは<code translate="no">True</code> に設定されています。</p></li>
-<li><p><code translate="no">text_dense</code>: テキストの密ベクトルを格納するために使用されます。このフィールドのデータ型は<code translate="no">FLOAT_VECTOR</code> で、ベクトルの次元は768です。</p></li>
-<li><p><code translate="no">text_sparse</code>: テキストの疎ベクトルを格納するために使用されます。このフィールドのデータ型は<code translate="no">SPARSE_FLOAT_VECTOR</code> です。</p></li>
-<li><p><code translate="no">image_dense</code>: 商品画像の密ベクトルを格納するために使用されます。このフィールドのデータ型は<code translate="no">FLOAT_VECTOR</code> で、ベクトルの次元は512です。</p></li>
+<li><p><code translate="no">id</code>: Serves as the primary key for storing text IDs. This field is of data type <code translate="no">INT64</code>.</p></li>
+<li><p><code translate="no">text</code>: Used for storing textual content. This field is of the data type <code translate="no">VARCHAR</code> with a maximum length of 1000 bytes. The <code translate="no">enable_analyzer</code> option is set to <code translate="no">True</code> to facilitate full-text search.</p></li>
+<li><p><code translate="no">text_dense</code>: Used to store dense vectors of the texts. This field is of the data type <code translate="no">FLOAT_VECTOR</code> with a vector dimension of 768.</p></li>
+<li><p><code translate="no">text_sparse</code>: Used to store sparse vectors of the texts. This field is of the data type <code translate="no">SPARSE_FLOAT_VECTOR</code>.</p></li>
+<li><p><code translate="no">image_dense</code>: Used to store dense vectors of the product images. This field is of the data type <code translate="no">FLOAT_VECTOR</code> with a vector dimension of 512.</p></li>
 </ul>
-<p>テキストフィールドに対して全文検索を実行するために組み込みのBM25アルゴリズムを使用するため、スキーマにMilvusの<code translate="no">Function</code> を追加する必要があります。詳細については、「<a href="/docs/ja/full-text-search.md">全文検索</a>」を参照してください。</p>
+<p>Since we will use the built-in BM25 algorithm to perform a full-text search on the text field, it is necessary to add the Milvus <code translate="no">Function</code> to the schema. For further details, please refer to <a href="/docs/ja/full-text-search.md">Full Text Search</a>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
- <a href="#cpp">   C++</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+    <a href="#cpp">C++</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> (
     MilvusClient, DataType, Function, FunctionType
@@ -356,7 +363,7 @@ schema-&gt;<span class="hljs-built_in">AddField</span>({<span class="hljs-string
 schema-&gt;<span class="hljs-built_in">AddField</span>(milvus::<span class="hljs-built_in">FieldSchema</span>(<span class="hljs-string">&quot;image_dense&quot;</span>, milvus::DataType::FLOAT_VECTOR).<span class="hljs-built_in">WithDimension</span>(<span class="hljs-number">512</span>));
 schema-&gt;<span class="hljs-built_in">AddFunction</span>(function);
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Create-index" class="common-anchor-header">インデックスの作成<button data-href="#Create-index" class="anchor-icon" translate="no">
+<h3 id="Create-index" class="common-anchor-header">Create index<button data-href="#Create-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -371,20 +378,20 @@ schema-&gt;<span class="hljs-built_in">AddFunction</span>(function);
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>コレクションスキーマを定義した後、次のステップとしてベクトルインデックスを設定し、類似度メトリックを指定します。以下の例では：</p>
+    </button></h3><p>After defining the collection schema, the next step is to configure the vector indexes and specify the similarity metrics. In the given example:</p>
 <ul>
-<li><p><code translate="no">text_dense_index</code>: テキストの密ベクトルフィールドに対して、メトリックタイプが「<code translate="no">IP</code> 」の<code translate="no">AUTOINDEX</code> 型インデックスが作成されます。</p></li>
-<li><p><code translate="no">text_sparse_index</code>: テキストのスパースベクトルフィールドには、タイプが `<code translate="no">SPARSE_INVERTED_INDEX</code>` で、メトリックタイプが `<code translate="no">BM25</code> ` のインデックスが使用されます。</p></li>
-<li><p><code translate="no">image_dense_index</code>: 画像の密ベクトルフィールドに対して、メトリックタイプが<code translate="no">IP</code> の<code translate="no">AUTOINDEX</code> 型のインデックスが作成されます。</p></li>
+<li><p><code translate="no">text_dense_index</code>: an index of type <code translate="no">AUTOINDEX</code> with <code translate="no">IP</code> metric type is created for the text dense vector field.</p></li>
+<li><p><code translate="no">text_sparse_index</code>: an index of type<code translate="no">SPARSE_INVERTED_INDEX</code>with <code translate="no">BM25</code> metric type is used for the text sparse vector field.</p></li>
+<li><p><code translate="no">image_dense_index</code>: an index of type <code translate="no">AUTOINDEX</code> with <code translate="no">IP</code> metric type is created for the image dense vector field.</p></li>
 </ul>
-<p>必要に応じて、要件やデータ型に最適な他のインデックス型を選択できます。サポートされているインデックス型の詳細については、<a href="/docs/ja/index-vector-fields.md">利用可能なインデックス型</a>に関するドキュメントを参照してください。</p>
+<p>You can choose other index types as necessary to best suit your needs and data types. For further information on the supported index types, please refer to the documentation on <a href="/docs/ja/index-vector-fields.md">available index types</a>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
- <a href="#cpp">   C++</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+    <a href="#cpp">C++</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Prepare index parameters</span>
 index_params = client.prepare_index_params()
@@ -504,7 +511,7 @@ std::vector&lt;milvus::IndexDesc&gt; indexes = {
     milvus::<span class="hljs-built_in">IndexDesc</span>(<span class="hljs-string">&quot;image_dense&quot;</span>, <span class="hljs-string">&quot;image_dense_index&quot;</span>, milvus::IndexType::AUTOINDEX, milvus::MetricType::IP),
 };
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Create-collection" class="common-anchor-header">コレクションの作成<button data-href="#Create-collection" class="anchor-icon" translate="no">
+<h3 id="Create-collection" class="common-anchor-header">Create collection<button data-href="#Create-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -519,14 +526,14 @@ std::vector&lt;milvus::IndexDesc&gt; indexes = {
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>前の2つの手順で設定したコレクションスキーマとインデックスを使用して、<code translate="no">demo</code> という名前のコレクションを作成します。</p>
+    </button></h3><p>Create a collection named <code translate="no">demo</code> with the collection schema and indexes configured in the previous two steps.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
- <a href="#cpp">   C++</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+    <a href="#cpp">C++</a>
 </div>
 <pre><code translate="no" class="language-python">client.create_collection(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,
@@ -578,7 +585,7 @@ curl --request POST \
     std::cout &lt;&lt; status.<span class="hljs-built_in">Message</span>() &lt;&lt; std::endl;
 }
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Insert-data" class="common-anchor-header">データの挿入<button data-href="#Insert-data" class="anchor-icon" translate="no">
+<h2 id="Insert-data" class="common-anchor-header">Insert data<button data-href="#Insert-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -593,22 +600,22 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>このセクションでは、先に定義したスキーマに基づいて、<code translate="no">my_collection</code> コレクションにデータを挿入します。挿入の際は、自動生成される値を持つフィールドを除き、すべてのフィールドに正しい形式のデータが指定されていることを確認してください。この例では：</p>
+    </button></h2><p>This section inserts data into the <code translate="no">my_collection</code> collection based on the schema defined earlier. During insert, ensure all fields, except those with auto-generated values, are provided with data in the correct format. In this example:</p>
 <ul>
-<li><p><code translate="no">id</code>: 製品IDを表す整数</p></li>
-<li><p><code translate="no">text</code>: 製品の説明を含む文字列</p></li>
-<li><p><code translate="no">text_dense</code>: テキスト説明の密な埋め込みを表す 768 個の浮動小数点値のリスト</p></li>
-<li><p><code translate="no">image_dense</code>: 商品画像の密な埋め込みを表す512個の浮動小数点値のリスト</p></li>
+<li><p><code translate="no">id</code>: an integer representing the product ID</p></li>
+<li><p><code translate="no">text</code>: a string containing the product description</p></li>
+<li><p><code translate="no">text_dense</code>: a list of 768 floating-point values representing the dense embedding of the text description</p></li>
+<li><p><code translate="no">image_dense</code>: a list of 512 floating-point values representing the dense embedding of the product image</p></li>
 </ul>
-<p>各フィールドの密な埋め込みを生成するために、同じモデルを使用しても、異なるモデルを使用しても構いません。この例では、2つの密な埋め込みの次元が異なるため、異なるモデルによって生成されたことが示唆されます。後で各検索を定義する際は、適切なクエリ埋め込みを生成するために、対応するモデルを必ず使用してください。</p>
-<p>この例では、テキストフィールドからスパース埋め込みを生成するために組み込みの BM25 関数を使用しているため、スパースベクトルを手動で指定する必要はありません。ただし、BM25 を使用しない場合は、スパース埋め込みを事前に計算して、自身で提供する必要があります。</p>
+<p>You may use the same or different models to generate dense embeddings for each field. In this example, the two dense embeddings have different dimensions, suggesting they were generated by different models. When defining each search later, be sure to use the corresponding model to generate the appropriate query embedding.</p>
+<p>Since this example uses the built-in BM25 function to generate sparse embeddings from the text field, you do not need to supply sparse vectors manually. However, if you opt not to use BM25, you must precompute and provide the sparse embeddings yourself.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
- <a href="#cpp">   C++</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+    <a href="#cpp">C++</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> random
 
@@ -753,7 +760,7 @@ status = client-&gt;<span class="hljs-built_in">Insert</span>(milvus::<span clas
     std::cout &lt;&lt; status.<span class="hljs-built_in">Message</span>() &lt;&lt; std::endl;
 }
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Perform-Hybrid-Search" class="common-anchor-header">ハイブリッド検索の実行<button data-href="#Perform-Hybrid-Search" class="anchor-icon" translate="no">
+<h2 id="Perform-Hybrid-Search" class="common-anchor-header">Perform Hybrid Search<button data-href="#Perform-Hybrid-Search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -768,7 +775,7 @@ status = client-&gt;<span class="hljs-built_in">Insert</span>(milvus::<span clas
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Step-1-Create-multiple-AnnSearchRequest-instances" class="common-anchor-header">ステップ 1: 複数の AnnSearchRequest インスタンスを作成する<button data-href="#Step-1-Create-multiple-AnnSearchRequest-instances" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Step-1-Create-multiple-AnnSearchRequest-instances" class="common-anchor-header">Step 1: Create multiple AnnSearchRequest instances<button data-href="#Step-1-Create-multiple-AnnSearchRequest-instances" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -783,24 +790,24 @@ status = client-&gt;<span class="hljs-built_in">Insert</span>(milvus::<span clas
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>ハイブリッド検索は、<code translate="no">hybrid_search()</code> 関数内で複数の<code translate="no">AnnSearchRequest</code> を作成することで実装されます。各<code translate="no">AnnSearchRequest</code> は、特定のベクトルフィールドに対する基本的なANN検索リクエストを表します。したがって、ハイブリッド検索を実行する前に、各ベクトルフィールドに対して<code translate="no">AnnSearchRequest</code> を作成する必要があります。</p>
-<p>さらに、<code translate="no">AnnSearchRequest</code> 内の<code translate="no">expr</code> パラメータを設定することで、ハイブリッド検索のフィルタリング条件を設定できます。「<a href="/docs/ja/filtered-search.md">フィルタリング検索</a>」および「<a href="/docs/ja/boolean.md">フィルタリングの解説</a>」を参照してください。</p>
+    </button></h3><p>Hybrid Search is implemented by creating multiple <code translate="no">AnnSearchRequest</code> in the <code translate="no">hybrid_search()</code> function, where each <code translate="no">AnnSearchRequest</code> represents a basic ANN search request for a specific vector field. Therefore, before conducting a Hybrid Search, it is necessary to create an <code translate="no">AnnSearchRequest</code> for each vector field.</p>
+<p>In addition, by configuring the <code translate="no">expr</code> parameter in an <code translate="no">AnnSearchRequest</code>, you can set the filtering conditions for your hybrid search. Please refer to <a href="/docs/ja/filtered-search.md">Filtered Search</a> and <a href="/docs/ja/boolean.md">Filtering Explained</a>.</p>
 <div class="alert note">
-<p>ハイブリッド検索では、各<code translate="no">AnnSearchRequest</code> は1つのクエリデータのみをサポートします。</p>
+<p>In Hybrid Search, each <code translate="no">AnnSearchRequest</code> supports only one query data.</p>
 </div>
-<p>さまざまな検索ベクトルフィールドの機能を実証するために、サンプルクエリを使用して3つの<code translate="no">AnnSearchRequest</code> 検索リクエストを作成します。このプロセスでは、事前に計算された密ベクトルも使用します。検索リクエストは、以下のベクトルフィールドを対象とします：</p>
+<p>To demonstrate the capabilities of various search vector fields, we will construct three <code translate="no">AnnSearchRequest</code> search requests using a sample query. We will also use its pre-computed dense vectors for this process. The search requests will target the following vector fields:</p>
 <ul>
-<li><p><code translate="no">text_dense</code> セマンティックテキスト検索：文脈を理解し、単純なキーワードの一致ではなく、意味に基づいた検索・抽出を可能にします。</p></li>
-<li><p><code translate="no">text_sparse</code>全文検索またはキーワードマッチング用。テキスト内の単語やフレーズの完全一致に焦点を当てます。</p></li>
-<li><p><code translate="no">image_dense</code>マルチモーダルなテキストから画像への検索用。クエリのセマンティックな内容に基づいて、関連する商品画像を検索します。</p></li>
+<li><p><code translate="no">text_dense</code> for semantic text search, allowing for contextual understanding and retrieval based on meaning rather than direct keyword matching.</p></li>
+<li><p><code translate="no">text_sparse</code>for full-text search or keyword matching, focusing on exact word or phrase matches within the text.</p></li>
+<li><p><code translate="no">image_dense</code>for multimodal text-to-image search, to retrieve relevant product images based on the semantic content of the query.</p></li>
 </ul>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
- <a href="#cpp">   C++</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+    <a href="#cpp">C++</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> AnnSearchRequest
 
@@ -953,8 +960,8 @@ sub_req<span class="hljs-number">1.</span><span class="hljs-built_in">AddExtraPa
                     .<span class="hljs-built_in">WithLimit</span>(<span class="hljs-number">2</span>);
 sub_req<span class="hljs-number">3.</span><span class="hljs-built_in">AddExtraParam</span>(<span class="hljs-string">&quot;nprobe&quot;</span>, <span class="hljs-string">&quot;10&quot;</span>);
 <button class="copy-code-btn"></button></code></pre>
-<p>パラメータ `<code translate="no">limit</code> ` が 2 に設定されているため、各 `<code translate="no">AnnSearchRequest</code> ` は 2 件の検索結果を返します。この例では、3 つの `<code translate="no">AnnSearchRequest</code> ` インスタンスが作成されるため、合計 6 件の検索結果が得られます。</p>
-<h3 id="Step-2-Configure-a-reranking-strategy" class="common-anchor-header">ステップ 2: 再ランク付け戦略の設定<button data-href="#Step-2-Configure-a-reranking-strategy" class="anchor-icon" translate="no">
+<p>Given that the parameter <code translate="no">limit</code> is set to 2, each <code translate="no">AnnSearchRequest</code> returns 2 search results. In this example, 3 <code translate="no">AnnSearchRequest</code> instances are created, resulting in a total of 6 search results.</p>
+<h3 id="Step-2-Configure-a-reranking-strategy" class="common-anchor-header">Step 2: Configure a reranking strategy<button data-href="#Step-2-Configure-a-reranking-strategy" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -969,15 +976,15 @@ sub_req<span class="hljs-number">3.</span><span class="hljs-built_in">AddExtraPa
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>ANNの検索結果セットを統合して再ランク付けするには、適切な再ランク付け戦略を選択することが不可欠です。Milvusでは、いくつかの種類の再ランク付け戦略が用意されています。これらの再ランク付けメカニズムの詳細については、「<a href="/docs/ja/weighted-ranker.md">Weighted Ranker</a>」または「<a href="/docs/ja/rrf-ranker.md">RRF Ranker</a>」を参照してください。</p>
-<p>この例では、特定の検索クエリを特に重視するわけではないため、RRFRanker戦略を採用します。</p>
+    </button></h3><p>To merge and rerank the sets of ANN search results, selecting an appropriate reranking strategy is essential. Milvus offers several types of reranking strategies. For more details on these reranking mechanisms, please refer to <a href="/docs/ja/weighted-ranker.md">Weighted Ranker</a> or <a href="/docs/ja/rrf-ranker.md">RRF Ranker</a>.</p>
+<p>In this example, since there is no particular emphasis on specific search queries, we will proceed with the RRFRanker strategy.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
- <a href="#cpp">   C++</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+    <a href="#cpp">C++</a>
 </div>
 <pre><code translate="no" class="language-python">ranker = Function(
     name=<span class="hljs-string">&quot;rrf&quot;</span>,
@@ -1018,7 +1025,7 @@ sub_req<span class="hljs-number">3.</span><span class="hljs-built_in">AddExtraPa
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-cpp"><span class="hljs-keyword">auto</span> ranker = std::<span class="hljs-built_in">make_shared</span>&lt;milvus::RRFRerank&gt;(<span class="hljs-number">100</span>);
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Step-3-Perform-a-Hybrid-Search" class="common-anchor-header">ステップ 3: ハイブリッド検索の実行<button data-href="#Step-3-Perform-a-Hybrid-Search" class="anchor-icon" translate="no">
+<h3 id="Step-3-Perform-a-Hybrid-Search" class="common-anchor-header">Step 3: Perform a Hybrid Search<button data-href="#Step-3-Perform-a-Hybrid-Search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1033,14 +1040,14 @@ sub_req<span class="hljs-number">3.</span><span class="hljs-built_in">AddExtraPa
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>ハイブリッド検索を開始する前に、コレクションが読み込まれていることを確認してください。コレクション内のベクトルフィールドにインデックスがない場合や、メモリに読み込まれていない場合、ハイブリッド検索メソッドの実行時にエラーが発生します。</p>
+    </button></h3><p>Before initiating a Hybrid Search, ensure that the collection is loaded. If any vector fields within the collection lack an index or are not loaded into memory, an error will occur upon executing the Hybrid Search method.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
- <a href="#cpp">   C++</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+    <a href="#cpp">C++</a>
 </div>
 <pre><code translate="no" class="language-python">res = client.hybrid_search(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,
@@ -1136,11 +1143,11 @@ status = client-&gt;<span class="hljs-built_in">HybridSearch</span>(request, res
     }
 }
 <button class="copy-code-btn"></button></code></pre>
-<p>出力は以下の通りです：</p>
+<p>The following is the output:</p>
 <pre><code translate="no" class="language-text">[&quot;[&#x27;id: 1, distance: 0.006047376897186041, entity: {}&#x27;, &#x27;id: 2, distance: 0.006422005593776703, entity: {}&#x27;]&quot;]
 <button class="copy-code-btn"></button></code></pre>
-<p>ハイブリッド検索で<code translate="no">limit=2</code> パラメータを指定すると、Milvusは3回の検索から得られた6つの結果を再ランク付けします。最終的に、最も類似度の高い上位2つの結果のみが返されます。</p>
-<h2 id="Advanced-usage" class="common-anchor-header">高度な使い方<button data-href="#Advanced-usage" class="anchor-icon" translate="no">
+<p>With the <code translate="no">limit=2</code> parameter specified for the Hybrid Search, Milvus will rerank the six results obtained from the three searches. Ultimately, they will return only the top two most similar results.</p>
+<h2 id="Advanced-usage" class="common-anchor-header">Advanced usage<button data-href="#Advanced-usage" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1155,7 +1162,7 @@ status = client-&gt;<span class="hljs-built_in">HybridSearch</span>(request, res
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Temporarily-set-a-timezone-for-a-hybrid-search" class="common-anchor-header">ハイブリッド検索でタイムゾーンを一時的に設定する<button data-href="#Temporarily-set-a-timezone-for-a-hybrid-search" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Temporarily-set-a-timezone-for-a-hybrid-search" class="common-anchor-header">Temporarily set a timezone for a hybrid search<button data-href="#Temporarily-set-a-timezone-for-a-hybrid-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1170,16 +1177,16 @@ status = client-&gt;<span class="hljs-built_in">HybridSearch</span>(request, res
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>コレクションに<code translate="no">TIMESTAMPTZ</code> フィールドがある場合、ハイブリッド検索の呼び出しで<code translate="no">timezone</code> パラメータを設定することで、単一の操作においてデータベースまたはコレクションのデフォルトのタイムゾーンを一時的に上書きできます。これにより、操作中に<code translate="no">TIMESTAMPTZ</code> の値がどのように表示され、比較されるかが制御されます。</p>
-<p><code translate="no">timezone</code> の値は、有効な<a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones">IANAタイムゾーン識別子</a>（例：<strong>Asia/Shanghai</strong>、<strong>America/Chicago</strong>、<strong>またはUTC</strong>）でなければなりません。<code translate="no">TIMESTAMPTZ</code> フィールドの使用方法の詳細については、<a href="/docs/ja/timestamptz-field.md">「TIMESTAMPTZフィールド</a>」を参照してください。</p>
-<p>以下の例は、ハイブリッド検索操作に対してタイムゾーンを一時的に設定する方法を示しています。</p>
+    </button></h3><p>If your collection has a <code translate="no">TIMESTAMPTZ</code> field, you can temporarily override the database or collection default timezone for a single operation by setting the <code translate="no">timezone</code> parameter in the hybrid search call. This controls how <code translate="no">TIMESTAMPTZ</code> values are displayed and compared during the operation.</p>
+<p>The value of <code translate="no">timezone</code> must be a valid <a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones">IANA time zone identifier</a> (for example, <strong>Asia/Shanghai</strong>, <strong>America/Chicago</strong>, or <strong>UTC</strong>). For details on how to use a <code translate="no">TIMESTAMPTZ</code> field, refer to <a href="/docs/ja/timestamptz-field.md">TIMESTAMPTZ Field</a>.</p>
+<p>The example below shows how to temporarily set a timezone for a hybrid search operation:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
- <a href="#cpp">   C++</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+    <a href="#cpp">C++</a>
 </div>
 <pre><code translate="no" class="language-python">res = client.hybrid_search(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,

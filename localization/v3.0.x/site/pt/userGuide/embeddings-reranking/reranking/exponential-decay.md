@@ -1,18 +1,17 @@
 ---
 id: exponential-decay.md
-title: Declínio exponencialCompatible with Milvus 2.6.x
+title: Exponential DecayCompatible with Milvus 2.6.x
 summary: >-
-  A decadência exponencial cria uma queda inicial acentuada, seguida de uma
-  cauda longa nos resultados da pesquisa. Tal como num ciclo de notícias de
-  última hora, em que a relevância diminui rapidamente no início, mas algumas
-  notícias mantêm a sua importância ao longo do tempo, a decadência exponencial
-  aplica uma penalização acentuada aos itens que se situam ligeiramente fora do
-  seu intervalo ideal, mantendo, no entanto, os itens mais distantes acessíveis.
-  Esta abordagem é ideal quando se pretende dar grande prioridade à proximidade
-  ou à atualidade, mas sem eliminar completamente as opções mais distantes.
+  Exponential decay creates a steep initial drop followed by a long tail in your
+  search results. Like a breaking news cycle where relevance diminishes rapidly
+  at first but some stories retain importance over time, exponential decay
+  applies a sharp penalty to items just beyond your ideal range while still
+  keeping distant items discoverable. This approach is ideal when you want to
+  heavily prioritize proximity or recency but don't want to completely eliminate
+  more distant options.
 beta: Milvus 2.6.x
 ---
-<h1 id="Exponential-Decay" class="common-anchor-header">Declínio exponencial<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#Exponential-Decay" class="anchor-icon" translate="no">
+<h1 id="Exponential-Decay" class="common-anchor-header">Exponential Decay<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#Exponential-Decay" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -27,14 +26,14 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>A decadência exponencial cria uma queda inicial acentuada, seguida de uma cauda longa nos resultados de pesquisa. Tal como num ciclo de notícias de última hora, em que a relevância diminui rapidamente no início, mas algumas notícias mantêm a sua importância ao longo do tempo, a decadência exponencial aplica uma penalização acentuada aos itens que se situam ligeiramente fora do seu intervalo ideal, mantendo, no entanto, os itens mais distantes acessíveis. Esta abordagem é ideal quando se pretende dar grande prioridade à proximidade ou à atualidade, mas sem eliminar completamente as opções mais distantes.</p>
-<p>Ao contrário de outras funções de decaimento:</p>
+    </button></h1><p>Exponential decay creates a steep initial drop followed by a long tail in your search results. Like a breaking news cycle where relevance diminishes rapidly at first but some stories retain importance over time, exponential decay applies a sharp penalty to items just beyond your ideal range while still keeping distant items discoverable. This approach is ideal when you want to heavily prioritize proximity or recency but don’t want to completely eliminate more distant options.</p>
+<p>Unlike other decay functions:</p>
 <ul>
-<li><p>A decadência gaussiana cria um declínio mais gradual, em forma de sino</p></li>
-<li><p>A decadência linear diminui a um ritmo constante até atingir exatamente zero</p></li>
+<li><p>Gaussian decay creates a more gradual, bell-shaped decline</p></li>
+<li><p>Linear decay decreases at a constant rate until reaching exactly zero</p></li>
 </ul>
-<p>A decadência exponencial «antecipa» a penalização de forma única, aplicando a maior parte da redução de relevância logo no início, mantendo ao mesmo tempo uma cauda longa de relevância mínima, mas diferente de zero.</p>
-<h2 id="When-to-use-exponential-decay" class="common-anchor-header">Quando utilizar a decaimento exponencial<button data-href="#When-to-use-exponential-decay" class="anchor-icon" translate="no">
+<p>Exponential decay uniquely “frontloads” the penalty, applying most of the relevance reduction early while maintaining a long tail of minimal but non-zero relevance.</p>
+<h2 id="When-to-use-exponential-decay" class="common-anchor-header">When to use exponential decay<button data-href="#When-to-use-exponential-decay" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -49,41 +48,41 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>A decaimento exponencial é particularmente eficaz para:</p>
+    </button></h2><p>Exponential decay is particularly effective for:</p>
 <table>
    <tr>
-     <th><p>Caso de utilização</p></th>
-     <th><p>Exemplo</p></th>
-     <th><p>Por que razão o decaimento exponencial funciona bem</p></th>
+     <th><p>Use Case</p></th>
+     <th><p>Example</p></th>
+     <th><p>Why Exponential Works Well</p></th>
    </tr>
    <tr>
-     <td><p>Feeds de notícias</p></td>
-     <td><p>Portais de notícias de última hora</p></td>
-     <td><p>Reduz rapidamente a relevância das notícias mais antigas, mantendo a exibição de notícias importantes de dias anteriores</p></td>
+     <td><p>News feeds</p></td>
+     <td><p>Breaking news portals</p></td>
+     <td><p>Quickly reduces relevance of older news while still showing important stories from days ago</p></td>
    </tr>
    <tr>
-     <td><p>Linhas do tempo nas redes sociais</p></td>
-     <td><p>Feeds de atividade, atualizações de estado</p></td>
-     <td><p>Dá destaque ao conteúdo recente, mas permite que o conteúdo antigo que se tornou viral venha à tona</p></td>
+     <td><p>Social media timelines</p></td>
+     <td><p>Activity feeds, status updates</p></td>
+     <td><p>Emphasizes fresh content but allows viral older content to surface</p></td>
    </tr>
    <tr>
-     <td><p>Sistemas de notificação</p></td>
-     <td><p>Priorização de alertas</p></td>
-     <td><p>Cria um sentido de urgência para os alertas recentes, mantendo simultaneamente a visibilidade dos alertas importantes</p></td>
+     <td><p>Notification systems</p></td>
+     <td><p>Alert prioritization</p></td>
+     <td><p>Creates urgency for recent alerts while maintaining visibility for important ones</p></td>
    </tr>
    <tr>
-     <td><p>Promoções relâmpago</p></td>
-     <td><p>Ofertas por tempo limitado</p></td>
-     <td><p>Diminui rapidamente a visibilidade à medida que o prazo se aproxima</p></td>
+     <td><p>Flash sales</p></td>
+     <td><p>Limited-time offers</p></td>
+     <td><p>Rapidly decreases visibility as deadline approaches</p></td>
    </tr>
 </table>
-<p>Escolha a diminuição exponencial quando:</p>
+<p>Choose exponential decay when:</p>
 <ul>
-<li><p>Os utilizadores esperam que os itens muito recentes ou próximos dominem fortemente os resultados</p></li>
-<li><p>Os itens mais antigos ou mais distantes devem continuar a ser encontráveis se forem excepcionalmente relevantes</p></li>
-<li><p>A diminuição da relevância deve ser mais acentuada no início (mais íngreme no início, mais gradual posteriormente)</p></li>
+<li><p>Users expect very recent or nearby items to strongly dominate results</p></li>
+<li><p>Older or more distant items should still be discoverable if they’re exceptionally relevant</p></li>
+<li><p>The relevance drop-off should be front-loaded (steeper at the beginning, more gradual later)</p></li>
 </ul>
-<h2 id="Sharp-drop-off-principle" class="common-anchor-header">Princípio da queda acentuada<button data-href="#Sharp-drop-off-principle" class="anchor-icon" translate="no">
+<h2 id="Sharp-drop-off-principle" class="common-anchor-header">Sharp drop-off principle<button data-href="#Sharp-drop-off-principle" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -98,26 +97,26 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>A decaimento exponencial cria uma curva que desce rapidamente no início, para depois se achatar gradualmente numa cauda longa que se aproxima de zero, mas nunca o atinge. Este padrão matemático surge frequentemente em fenómenos naturais, como o decaimento radioativo, o declínio populacional e a relevância da informação ao longo do tempo.</p>
+    </button></h2><p>Exponential decay creates a curve that drops quickly at first, then gradually flattens into a long tail that approaches but never reaches zero. This mathematical pattern appears frequently in natural phenomena like radioactive decay, population decline, and information relevance over time.</p>
 <div class="alert note">
-<p>Todos os parâmetros temporais (<code translate="no">origin</code>, <code translate="no">offset</code>, <code translate="no">scale</code>) devem utilizar a mesma unidade que os dados da coleção. Se a sua coleção armazenar carimbos de data/hora numa unidade diferente (milissegundos, microssegundos), ajuste todos os parâmetros em conformidade.</p>
+<p>All time parameters (<code translate="no">origin</code>, <code translate="no">offset</code>, <code translate="no">scale</code>) must use the same unit as the collection data. If your collection stores timestamps in a different unit (milliseconds, microseconds), adjust all parameters accordingly.</p>
 </div>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/exp-decay.png" alt="Exp Decay" class="doc-image" id="exp-decay" /> 
-   <span>Decadência exponencial</span>
-  
- </span></p>
-<p>O gráfico acima mostra como a decadência exponencial afetaria as classificações de artigos noticiosos numa plataforma de notícias digitais:</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/exp-decay.png" alt="Exp Decay" class="doc-image" id="exp-decay" />
+    <span>Exp Decay</span>
+  </span>
+</p>
+<p>The graph above shows how exponential decay would affect news article rankings in a digital news platform:</p>
 <ul>
-<li><p><code translate="no">origin</code> (hora atual): O momento presente, em que a relevância atinge o seu máximo (1,0).</p></li>
-<li><p><code translate="no">offset</code> (3 horas): A «janela de notícias de última hora» — todas as notícias publicadas nas últimas 3 horas mantêm pontuações de relevância totais (1,0), garantindo que as notícias muito recentes não sejam penalizadas desnecessariamente por pequenas diferenças de tempo.</p></li>
-<li><p><code translate="no">decay</code> (0,5): A pontuação na distância da escala — este parâmetro controla a rapidez com que as pontuações diminuem com o tempo.</p></li>
-<li><p><code translate="no">scale</code> (24 horas): O período de tempo em que a relevância desce para o valor de decaimento — as notícias com exatamente 24 horas têm as suas pontuações de relevância reduzidas para metade (0,5).</p></li>
+<li><p><code translate="no">origin</code> (current time): The present moment, where relevance is at its maximum (1.0).</p></li>
+<li><p><code translate="no">offset</code> (3 hours): The "breaking news window"—all stories published within the last 3 hours maintain full relevance scores (1.0), ensuring that very recent news isn’t needlessly penalized for minor time differences.</p></li>
+<li><p><code translate="no">decay</code> (0.5): The score at the scale distance—this parameter controls how dramatically scores diminish with time.</p></li>
+<li><p><code translate="no">scale</code> (24 hours): The time period at which relevance drops to the decay value—news articles exactly 24 hours old have their relevance scores halved (0.5).</p></li>
 </ul>
-<p>Como se pode ver na curva, as notícias com mais de 24 horas continuam a perder relevância, mas nunca chegam a atingir zero. Mesmo as notícias de há vários dias mantêm alguma relevância mínima, permitindo que notícias importantes, mas mais antigas, continuem a aparecer no seu feed (embora com uma classificação mais baixa).</p>
-<p>Este comportamento imita a forma como a relevância das notícias funciona normalmente — as notícias muito recentes dominam fortemente, mas notícias mais antigas, mas significativas, ainda podem destacar-se se forem excepcionalmente relevantes para os interesses do utilizador.</p>
-<h2 id="Formula" class="common-anchor-header">Fórmula<button data-href="#Formula" class="anchor-icon" translate="no">
+<p>As you can see from the curve, news articles older than 24 hours continue to decrease in relevance but never quite reach zero. Even stories from several days ago retain some minimal relevance, allowing important but older news to still appear in your feed (albeit ranked lower).</p>
+<p>This behavior mimics how news relevance typically works—very recent stories strongly dominate, but significant older stories can still break through if they’re exceptionally relevant to the user’s interests.</p>
+<h2 id="Formula" class="common-anchor-header">Formula<button data-href="#Formula" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -132,19 +131,19 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>A fórmula matemática para calcular uma pontuação de decaimento exponencial é:</p>
+    </button></h2><p>The mathematical formula for calculating an exponential decay score is:</p>
 <p><span class="katex-display" translate="no"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>S</mi><mo stretchy="false">(</mo><mi>d</mi><mi>o</mi><mi>c</mi><mo stretchy="false">)</mo><mo>=</mo><mi>exp</mi><mo>⁡</mo><mrow><mo fence="true">(</mo><mi>λ</mi><mo>⋅</mo><mi>max</mi><mo>⁡</mo><mrow><mo fence="true">(</mo><mn>0</mn><mo separator="true">,</mo><mrow><mo fence="true">∣</mo><mi>f</mi><mi>i</mi><mi>e</mi><mi>l</mi><mi>d</mi><mi>v</mi><mi>a</mi><mi>l</mi><mi>u</mi><msub><mi>e</mi><mrow><mi>d</mi><mi>o</mi><mi>c</mi></mrow></msub><mo>−</mo><mi>o</mi><mi>r</mi><mi>i</mi><mi>g</mi><mi>i</mi><mi>n</mi><mo fence="true">∣</mo></mrow><mo>−</mo><mi>o</mi><mi>f</mi><mi>f</mi><mi>s</mi><mi>e</mi><mi>t</mi><mo fence="true">)</mo></mrow><mo fence="true">)</mo></mrow></mrow><annotation encoding="application/x-tex">S(doc) = \exp\left( \lambda \cdot \max\left(0, \left|fieldvalue_{doc} - origin\right| - offset \right) \right)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0576em;">S</span><span class="mopen">(</span><span class="mord mathnormal">d</span><span class="mord mathnormal">oc</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop">exp</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;">(</span><span class="mord mathnormal">λ</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mop">max</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;">(</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;">∣</span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mord mathnormal">i</span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.0197em;">l</span><span class="mord mathnormal">d</span><span class="mord mathnormal" style="margin-right:0.0359em;">v</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.0197em;">l</span><span class="mord mathnormal">u</span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">d</span><span class="mord mathnormal mtight">oc</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">or</span><span class="mord mathnormal">i</span><span class="mord mathnormal" style="margin-right:0.0359em;">g</span><span class="mord mathnormal">in</span><span class="mclose delimcenter" style="top:0em;">∣</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mord mathnormal">se</span><span class="mord mathnormal">t</span><span class="mclose delimcenter" style="top:0em;">)</span></span><span class="mclose delimcenter" style="top:0em;">)</span></span></span></span></span></span></p>
-<p>Onde:</p>
+<p>Where:</p>
 <p><span class="katex-display" translate="no"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>λ</mi><mo>=</mo><mfrac><mrow><mi>ln</mi><mo>⁡</mo><mo stretchy="false">(</mo><mi>d</mi><mi>e</mi><mi>c</mi><mi>a</mi><mi>y</mi><mo stretchy="false">)</mo></mrow><mrow><mi>s</mi><mi>c</mi><mi>a</mi><mi>l</mi><mi>e</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">\lambda = \frac{\ln(decay)}{scale}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6944em;"></span><span class="mord mathnormal">λ</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:2.113em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.427em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">sc</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.0197em;">l</span><span class="mord mathnormal">e</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mop">ln</span><span class="mopen">(</span><span class="mord mathnormal">d</span><span class="mord mathnormal">ec</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.0359em;">y</span><span class="mclose">)</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
-<p>Explicando isto em linguagem simples:</p>
+<p>Breaking this down in plain language:</p>
 <ol>
-<li><p>Calcule a distância entre o valor do campo e a origem: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><annotation encoding="application/x-tex"> ∣fieldvaluedoc−origin∣|fieldvalue_{doc} - origin|</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"></span><span class="mord"><span class="mord mathnormal">∣fieldvalue</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight"></span></span></span></span></span><span class="vlist-s">doc​</span></span></span></span></span></span></span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span><span class="mbin"></span> <span class="katex"><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin"> −</span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="katex-base"><span class="mord mathnormal" style="margin-right:0.0278em;"></span></span> <span class="katex"><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;"> </span><span class="mord">origin∣</span></span></span></span>.</p></li>
-<li><p>Subtraia o desvio (se houver), mas nunca desça abaixo de zero: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>max⁡</mo><mo stretchy="false">(</mo><mn>0</mn><mo separator="true">,</mo><mi>distance−offset</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\max(0, distance - offset)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop">max</span><span class="mopen">(</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal"></span><span class="mord mathnormal">distance</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="katex-base"><span class="mord mathnormal"></span></span> <span class="katex"><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal"> </span><span class="mord mathnormal">offset</span><span class="mclose">)</span></span></span></span>.</p></li>
-<li><p>Multiplique por <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi></mrow><annotation encoding="application/x-tex">\lambda</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6944em;"></span><span class="mord mathnormal">λ</span></span></span></span>, que é calculado a partir dos seus parâmetros de escala e decaimento.</p></li>
-<li><p>Calcule o expoente, que lhe dará um valor entre 0 e 1: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>exp⁡</mo><mo stretchy="false">(</mo><mi>λ⋅valor</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\exp(\lambda \cdot valor)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop">exp</span><span class="mopen">(</span><span class="mbin">λ</span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="katex-base"><span class="mord mathnormal" style="margin-right:0.0359em;"></span></span> <span class="katex"><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="mbin">⋅</span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="katex-base"><span class="mord mathnormal" style="margin-right:0.0359em;"></span></span> <span class="katex"><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal"> valor</span><span class="mclose">)</span></span></span></span>.</p></li>
+<li><p>Calculate how far the field value is from the origin: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">∣</mi><mi>f</mi><mi>i</mi><mi>e</mi><mi>l</mi><mi>d</mi><mi>v</mi><mi>a</mi><mi>l</mi><mi>u</mi><msub><mi>e</mi><mrow><mi>d</mi><mi>o</mi><mi>c</mi></mrow></msub><mo>−</mo><mi>o</mi><mi>r</mi><mi>i</mi><mi>g</mi><mi>i</mi><mi>n</mi><mi mathvariant="normal">∣</mi></mrow><annotation encoding="application/x-tex">|fieldvalue_{doc} - origin|</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mord mathnormal">i</span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.0197em;">l</span><span class="mord mathnormal">d</span><span class="mord mathnormal" style="margin-right:0.0359em;">v</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.0197em;">l</span><span class="mord mathnormal">u</span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">d</span><span class="mord mathnormal mtight">oc</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">or</span><span class="mord mathnormal">i</span><span class="mord mathnormal" style="margin-right:0.0359em;">g</span><span class="mord mathnormal">in</span><span class="mord">∣</span></span></span></span>.</p></li>
+<li><p>Subtract the offset (if any) but never go below zero: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>max</mi><mo>⁡</mo><mo stretchy="false">(</mo><mn>0</mn><mo separator="true">,</mo><mi>d</mi><mi>i</mi><mi>s</mi><mi>t</mi><mi>a</mi><mi>n</mi><mi>c</mi><mi>e</mi><mo>−</mo><mi>o</mi><mi>f</mi><mi>f</mi><mi>s</mi><mi>e</mi><mi>t</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\max(0, distance - offset)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop">max</span><span class="mopen">(</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">d</span><span class="mord mathnormal">i</span><span class="mord mathnormal">s</span><span class="mord mathnormal">t</span><span class="mord mathnormal">an</span><span class="mord mathnormal">ce</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mord mathnormal">se</span><span class="mord mathnormal">t</span><span class="mclose">)</span></span></span></span>.</p></li>
+<li><p>Multiply by <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi></mrow><annotation encoding="application/x-tex">\lambda</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6944em;"></span><span class="mord mathnormal">λ</span></span></span></span>, which is calculated from your scale and decay parameters.</p></li>
+<li><p>Take the exponent, which gives you a value between 0 and 1: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>exp</mi><mo>⁡</mo><mo stretchy="false">(</mo><mi>λ</mi><mo>⋅</mo><mi>v</mi><mi>a</mi><mi>l</mi><mi>u</mi><mi>e</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\exp(\lambda \cdot value)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop">exp</span><span class="mopen">(</span><span class="mord mathnormal">λ</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0359em;">v</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.0197em;">l</span><span class="mord mathnormal">u</span><span class="mord mathnormal">e</span><span class="mclose">)</span></span></span></span>.</p></li>
 </ol>
-<p>O cálculo <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>de λ</mi></mrow><annotation encoding="application/x-tex">\lambda</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6944em;"></span><span class="mord mathnormal">λ</span></span></span></span> converte os seus parâmetros de escala e decaimento no parâmetro de taxa da função exponencial. Um valor mais negativo <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>de λ</mi></mrow><annotation encoding="application/x-tex">\lambda</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6944em;"></span><span class="mord mathnormal">λ</span></span></span></span> cria uma queda inicial mais acentuada.</p>
-<h2 id="Use-exponential-decay" class="common-anchor-header">Utilizar o decaimento exponencial<button data-href="#Use-exponential-decay" class="anchor-icon" translate="no">
+<p>The <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi></mrow><annotation encoding="application/x-tex">\lambda</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6944em;"></span><span class="mord mathnormal">λ</span></span></span></span> calculation converts your scale and decay parameters into the rate parameter for the exponential function. A more negative <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi></mrow><annotation encoding="application/x-tex">\lambda</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6944em;"></span><span class="mord mathnormal">λ</span></span></span></span> creates a steeper initial drop.</p>
+<h2 id="Use-exponential-decay" class="common-anchor-header">Use exponential decay<button data-href="#Use-exponential-decay" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -159,11 +158,11 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>A decadência exponencial pode ser aplicada tanto à pesquisa vetorial padrão como às operações de pesquisa híbrida no Milvus. Abaixo encontram-se os principais trechos de código para implementar esta funcionalidade.</p>
+    </button></h2><p>Exponential decay can be applied to both standard vector search and hybrid search operations in Milvus. Below are the key code snippets for implementing this feature.</p>
 <div class="alert note">
-<p>Antes de utilizar funções de decaimento, deve primeiro criar uma coleção com campos numéricos adequados (como carimbos de data/hora, distâncias, etc.) que serão utilizados para os cálculos de decaimento. Para exemplos práticos completos, incluindo a configuração da coleção, a definição do esquema e a inserção de dados, consulte <a href="/docs/pt/tutorial-implement-a-time-based-ranking-in-milvus.md">o Tutorial do Decay Ranker</a>.</p>
+<p>Before using decay functions, you must first create a collection with appropriate numeric fields (like timestamps, distances, etc.) that will be used for decay calculations. For complete working examples including collection setup, schema definition, and data insertion, refer to <a href="/docs/pt/tutorial-implement-a-time-based-ranking-in-milvus.md">Decay Ranker Tutorial</a>.</p>
 </div>
-<h3 id="Create-a-decay-ranker" class="common-anchor-header">Criar um classificador de decaimento<button data-href="#Create-a-decay-ranker" class="anchor-icon" translate="no">
+<h3 id="Create-a-decay-ranker" class="common-anchor-header">Create a decay ranker<button data-href="#Create-a-decay-ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -178,19 +177,19 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Depois de configurar a sua coleção com um campo numérico (neste exemplo, <code translate="no">publish_time</code>), crie um classificador de decaimento exponencial:</p>
+    </button></h3><p>After your collection is set up with a numeric field (in this example, <code translate="no">publish_time</code>), create an exponential decay ranker:</p>
 <div class="alert note">
-<p><strong>Consistência da unidade de tempo</strong>: Ao utilizar a decadência baseada no tempo, certifique-se de que os parâmetros <code translate="no">origin</code>, <code translate="no">scale</code> e <code translate="no">offset</code> utilizam a mesma unidade de tempo que os dados da sua coleção. Se a sua coleção armazenar carimbos de data/hora em segundos, utilize segundos para todos os parâmetros. Se utilizar milissegundos, utilize milissegundos para todos os parâmetros.</p>
+<p><strong>Time unit consistency</strong>: When using time-based decay, ensure that <code translate="no">origin</code>, <code translate="no">scale</code>, and <code translate="no">offset</code> parameters use the same time unit as your collection data. If your collection stores timestamps in seconds, use seconds for all parameters. If it uses milliseconds, use milliseconds for all parameters.</p>
 </div>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> Function, FunctionType
 <span class="hljs-keyword">import</span> datetime
@@ -312,7 +311,7 @@ rerank-&gt;<span class="hljs-built_in">SetDecay</span>(<span class="hljs-number"
 <span class="hljs-comment"># endpoint. The decay function is passed inline through the functionScore</span>
 <span class="hljs-comment"># field of the search request (see the next section).</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Apply-to-standard-vector-search" class="common-anchor-header">Aplicar à pesquisa vetorial padrão<button data-href="#Apply-to-standard-vector-search" class="anchor-icon" translate="no">
+<h3 id="Apply-to-standard-vector-search" class="common-anchor-header">Apply to standard vector search<button data-href="#Apply-to-standard-vector-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -327,16 +326,16 @@ rerank-&gt;<span class="hljs-built_in">SetDecay</span>(<span class="hljs-number"
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Depois de definir o seu classificador de decaimento, pode aplicá-lo durante as operações de pesquisa, passando-o para o parâmetro ` <code translate="no">ranker</code> `:</p>
+    </button></h3><p>After defining your decay ranker, you can apply it during search operations by passing it to the <code translate="no">ranker</code> parameter:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Apply decay ranker to vector search</span>
 result = milvus_client.search(

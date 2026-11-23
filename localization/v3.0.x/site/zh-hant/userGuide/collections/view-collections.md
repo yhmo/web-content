@@ -1,9 +1,11 @@
 ---
 id: view-collections.md
-title: 檢視集合
-summary: 您可以取得目前連線資料庫中所有集合的名稱清單，並查看特定集合的詳細資訊。
+title: View Collections
+summary: >-
+  You can obtain the name list of all the collections in the currently connected
+  database, and check the details of a specific collection.
 ---
-<h1 id="View-Collections" class="common-anchor-header">檢視集合<button data-href="#View-Collections" class="anchor-icon" translate="no">
+<h1 id="View-Collections" class="common-anchor-header">View Collections<button data-href="#View-Collections" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,8 +20,8 @@ summary: 您可以取得目前連線資料庫中所有集合的名稱清單，�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>您可以取得目前連線資料庫中所有集合的名稱清單，並檢視特定集合的詳細資訊。</p>
-<h2 id="List-Collections" class="common-anchor-header">列出集合<button data-href="#List-Collections" class="anchor-icon" translate="no">
+    </button></h1><p>You can obtain the name list of all the collections in the currently connected database, and check the details of a specific collection.</p>
+<h2 id="List-Collections" class="common-anchor-header">List Collections<button data-href="#List-Collections" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -34,16 +36,16 @@ summary: 您可以取得目前連線資料庫中所有集合的名稱清單，�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>以下範例示範如何取得目前已連線資料庫中所有集合的名稱清單。</p>
+    </button></h2><p>The following example demonstrates how to obtain the name list of all collections in the currently connected database.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
 
@@ -172,13 +174,13 @@ curl --request POST \
 --header <span class="hljs-string">&quot;Request-Timeout: 10&quot;</span> \
 -d <span class="hljs-string">&#x27;{}&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>若您已建立名為<code translate="no">quick_setup</code> 的集合，上述範例的結果應類似如下。</p>
+<p>If you have already created a collection named <code translate="no">quick_setup</code>, the result of the above example should be similar to the following.</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">[</span><span class="hljs-string">&quot;quick_setup&quot;</span><span class="hljs-punctuation">]</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p><code translate="no">list_collections()</code> 此方法會回傳目前連線資料庫中所有集合的名稱，並不適用於存在性檢查。若要檢查特定集合是否存在，請改用 `<code translate="no">has_collection()</code> `（例如 `<code translate="no">client.has_collection(&quot;quick_setup&quot;)</code> ` 會回傳布林值），或使用其他 SDK 中的等效方法。</p>
+<p><code translate="no">list_collections()</code> returns the names of all collections in the currently connected database and is not intended for existence checks. To check whether a specific collection exists, use <code translate="no">has_collection()</code> instead (e.g. <code translate="no">client.has_collection(&quot;quick_setup&quot;)</code> returns a boolean), or its equivalent in other SDKs.</p>
 </div>
-<h2 id="Describe-Collection" class="common-anchor-header">描述集合<button data-href="#Describe-Collection" class="anchor-icon" translate="no">
+<h2 id="Describe-Collection" class="common-anchor-header">Describe Collection<button data-href="#Describe-Collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -193,16 +195,16 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>您也可以取得特定集合的詳細資訊。以下範例假設您已建立一個名為 quick_setup 的集合。</p>
+    </button></h2><p>You can also obtain the details of a specific collection. The following example assumes that you have already created a collection named quick_setup.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">res = client.describe_collection(
     collection_name=<span class="hljs-string">&quot;quick_setup&quot;</span>
@@ -278,7 +280,7 @@ curl --request POST \
     &quot;collectionName&quot;: &quot;quick_setup&quot;
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>上述範例的結果應類似如下所示。</p>
+<p>The result of the above example should be similar to the following.</p>
 <pre><code translate="no" class="language-plaintext">{
     &#x27;collection_name&#x27;: &#x27;quick_setup&#x27;, 
     &#x27;auto_id&#x27;: False, 

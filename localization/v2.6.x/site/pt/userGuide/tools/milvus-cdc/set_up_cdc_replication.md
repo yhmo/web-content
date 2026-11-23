@@ -1,11 +1,11 @@
 ---
 id: set_up_cdc_replication.md
 summary: >-
-  Saiba como implantar dois clusters Milvus e configurar a replicação CDC entre
-  eles.
-title: Configurar a Replicação CDC
+  Learn how to deploy two Milvus clusters and configure CDC replication between
+  them.
+title: Set Up CDC Replication
 ---
-<h1 id="Set-Up-CDC-Replication" class="common-anchor-header">Configurar a Replicação CDC<button data-href="#Set-Up-CDC-Replication" class="anchor-icon" translate="no">
+<h1 id="Set-Up-CDC-Replication" class="common-anchor-header">Set Up CDC Replication<button data-href="#Set-Up-CDC-Replication" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,16 +20,16 @@ title: Configurar a Replicação CDC
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Este guia mostra como implementar dois clusters Milvus autónomos com o Milvus Operator e configurar a replicação CDC de um cluster de origem para um cluster de destino.</p>
-<p>Os exemplos usam:</p>
+    </button></h1><p>This guide shows how to deploy two standalone Milvus clusters with Milvus Operator and configure CDC replication from a source cluster to a target cluster.</p>
+<p>The examples use:</p>
 <ul>
-<li><code translate="no">source-cluster</code> como o cluster primário.</li>
-<li><code translate="no">target-cluster</code> como o cluster de espera.</li>
-<li><code translate="no">milvus</code> como o espaço de nomes para os clusters Milvus.</li>
-<li><code translate="no">milvus-operator</code> como o espaço de nomes para o Milvus Operator.</li>
+<li><code translate="no">source-cluster</code> as the primary cluster.</li>
+<li><code translate="no">target-cluster</code> as the standby cluster.</li>
+<li><code translate="no">milvus</code> as the namespace for Milvus clusters.</li>
+<li><code translate="no">milvus-operator</code> as the namespace for Milvus Operator.</li>
 </ul>
-<p>Antes de começar, leia o <a href="/docs/pt/v2.6.x/milvus_cdc_overview.md">Milvus CDC</a> para entender o modelo primário-em espera e as opções de failover.</p>
-<h2 id="Prerequisites" class="common-anchor-header">Pré-requisitos<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+<p>Before you begin, read <a href="/docs/pt/v2.6.x/milvus_cdc_overview.md">Milvus CDC</a> to understand the primary-standby model and failover options.</p>
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -45,14 +45,14 @@ title: Configurar a Replicação CDC
         ></path>
       </svg>
     </button></h2><ul>
-<li>Milvus v2.6.16 ou posterior.</li>
-<li>Milvus Operator v1.3.4 ou posterior.</li>
-<li>Um cluster Kubernetes está disponível.</li>
-<li>Os clusters de origem e destino podem se conectar uns aos outros pela rede.</li>
-<li>Você tem credenciais de administrador para ambos os clusters do Milvus.</li>
-<li>Você sabe a contagem de canais físicos para cada cluster.</li>
+<li>Milvus v2.6.16 or later.</li>
+<li>Milvus Operator v1.3.4 or later.</li>
+<li>A Kubernetes cluster is available.</li>
+<li>The source and target clusters can connect to each other over the network.</li>
+<li>You have admin credentials for both Milvus clusters.</li>
+<li>You know the physical channel count for each cluster.</li>
 </ul>
-<h2 id="Step-1-Upgrade-Milvus-Operator" class="common-anchor-header">Etapa 1: Atualizar o Milvus Operator<button data-href="#Step-1-Upgrade-Milvus-Operator" class="anchor-icon" translate="no">
+<h2 id="Step-1-Upgrade-Milvus-Operator" class="common-anchor-header">Step 1: Upgrade Milvus Operator<button data-href="#Step-1-Upgrade-Milvus-Operator" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -67,25 +67,25 @@ title: Configurar a Replicação CDC
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Adicione o repositório Helm do Milvus Operator:</p>
+    </button></h2><p>Add the Milvus Operator Helm repository:</p>
 <pre><code translate="no" class="language-bash">helm repo add zilliztech-milvus-operator https://zilliztech.github.io/milvus-operator/
 <button class="copy-code-btn"></button></code></pre>
-<p>Atualizar o repositório:</p>
+<p>Update the repository:</p>
 <pre><code translate="no" class="language-bash">helm repo update zilliztech-milvus-operator
 <button class="copy-code-btn"></button></code></pre>
-<p>Instalar ou atualizar o Milvus Operator:</p>
+<p>Install or upgrade Milvus Operator:</p>
 <pre><code translate="no" class="language-bash">helm -n milvus-operator upgrade --install milvus-operator \
   zilliztech-milvus-operator/milvus-operator \
   --create-namespace
 <button class="copy-code-btn"></button></code></pre>
-<p>Verificar se o pod do operador está em execução:</p>
+<p>Check that the operator pod is running:</p>
 <pre><code translate="no" class="language-bash">kubectl get pods -n milvus-operator
 <button class="copy-code-btn"></button></code></pre>
-<p>Exemplo de saída:</p>
+<p>Example output:</p>
 <pre><code translate="no" class="language-text">NAME                               READY   STATUS    RESTARTS   AGE
 milvus-operator-6f7d8c9c7d-xm4tj   1/1     Running   0          54s
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Step-2-Deploy-the-Source-Cluster" class="common-anchor-header">Etapa 2: Implantar o cluster de origem<button data-href="#Step-2-Deploy-the-Source-Cluster" class="anchor-icon" translate="no">
+<h2 id="Step-2-Deploy-the-Source-Cluster" class="common-anchor-header">Step 2: Deploy the Source Cluster<button data-href="#Step-2-Deploy-the-Source-Cluster" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -100,7 +100,7 @@ milvus-operator-6f7d8c9c7d-xm4tj   1/1     Running   0          54s
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Crie um arquivo chamado <code translate="no">milvus_source_cluster.yaml</code>:</p>
+    </button></h2><p>Create a file named <code translate="no">milvus_source_cluster.yaml</code>:</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">milvus.io/v1beta1</span>
 <span class="hljs-attr">kind:</span> <span class="hljs-string">Milvus</span>
 <span class="hljs-attr">metadata:</span>
@@ -117,22 +117,22 @@ milvus-operator-6f7d8c9c7d-xm4tj   1/1     Running   0          54s
   <span class="hljs-attr">dependencies:</span>
     <span class="hljs-attr">msgStreamType:</span> <span class="hljs-string">woodpecker</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Aplicar a configuração:</p>
+<p>Apply the configuration:</p>
 <pre><code translate="no" class="language-bash">kubectl create namespace milvus
 kubectl apply -f milvus_source_cluster.yaml
 <button class="copy-code-btn"></button></code></pre>
-<p>Verifique se os pods do cluster de origem estão em execução:</p>
+<p>Check that the source cluster pods are running:</p>
 <pre><code translate="no" class="language-bash">kubectl get pods -n milvus
 <button class="copy-code-btn"></button></code></pre>
-<p>Exemplo de saída:</p>
+<p>Example output:</p>
 <pre><code translate="no" class="language-text">NAME                                                   READY   STATUS    RESTARTS   AGE
 source-cluster-etcd-0                                  1/1     Running   0          3m
 source-cluster-minio-6d8f7d9b9f-9t7j2                  1/1     Running   0          3m
 source-cluster-milvus-standalone-7f8d9c8f6d-r2m5x      1/1     Running   0          2m
 source-cluster-milvus-cdc-66d64747bd-sckxj             1/1     Running   0          2m
 <button class="copy-code-btn"></button></code></pre>
-<p>Certifique-se de que o pod CDC, como <code translate="no">source-cluster-milvus-cdc-...</code>, esteja no estado <code translate="no">Running</code>.</p>
-<h2 id="Step-3-Deploy-the-Target-Cluster" class="common-anchor-header">Etapa 3: implantar o cluster de destino<button data-href="#Step-3-Deploy-the-Target-Cluster" class="anchor-icon" translate="no">
+<p>Make sure the CDC pod, such as <code translate="no">source-cluster-milvus-cdc-...</code>, is in the <code translate="no">Running</code> state.</p>
+<h2 id="Step-3-Deploy-the-Target-Cluster" class="common-anchor-header">Step 3: Deploy the Target Cluster<button data-href="#Step-3-Deploy-the-Target-Cluster" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -147,7 +147,7 @@ source-cluster-milvus-cdc-66d64747bd-sckxj             1/1     Running   0      
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Crie um arquivo chamado <code translate="no">milvus_target_cluster.yaml</code>:</p>
+    </button></h2><p>Create a file named <code translate="no">milvus_target_cluster.yaml</code>:</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">milvus.io/v1beta1</span>
 <span class="hljs-attr">kind:</span> <span class="hljs-string">Milvus</span>
 <span class="hljs-attr">metadata:</span>
@@ -164,21 +164,21 @@ source-cluster-milvus-cdc-66d64747bd-sckxj             1/1     Running   0      
   <span class="hljs-attr">dependencies:</span>
     <span class="hljs-attr">msgStreamType:</span> <span class="hljs-string">woodpecker</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>O componente CDC também está ativado no cluster de destino. Ele fica inativo enquanto o destino é um standby, mas é necessário se o destino mais tarde se tornar o primário após a alternância.</p>
-<p>Aplique a configuração:</p>
+<p>The CDC component is enabled on the target cluster as well. It is idle while the target is a standby, but it is needed if the target later becomes the primary after switchover.</p>
+<p>Apply the configuration:</p>
 <pre><code translate="no" class="language-bash">kubectl apply -f milvus_target_cluster.yaml
 <button class="copy-code-btn"></button></code></pre>
-<p>Verifique se os pods do cluster de destino estão em execução:</p>
+<p>Check that the target cluster pods are running:</p>
 <pre><code translate="no" class="language-bash">kubectl get pods -n milvus | grep -E <span class="hljs-string">&#x27;NAME|target-cluster&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Exemplo de saída:</p>
+<p>Example output:</p>
 <pre><code translate="no" class="language-text">NAME                                                   READY   STATUS    RESTARTS   AGE
 target-cluster-etcd-0                                  1/1     Running   0          3m
 target-cluster-minio-5f7c8d9b6f-k8s2q                  1/1     Running   0          3m
 target-cluster-milvus-standalone-66dc8d9f7f-5n6bp      1/1     Running   0          2m
 target-cluster-milvus-cdc-7f8c9d6b8c-q4t9m             1/1     Running   0          2m
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Step-4-Prepare-Cluster-Information" class="common-anchor-header">Etapa 4: preparar informações do cluster<button data-href="#Step-4-Prepare-Cluster-Information" class="anchor-icon" translate="no">
+<h2 id="Step-4-Prepare-Cluster-Information" class="common-anchor-header">Step 4: Prepare Cluster Information<button data-href="#Step-4-Prepare-Cluster-Information" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -193,20 +193,20 @@ target-cluster-milvus-cdc-7f8c9d6b8c-q4t9m             1/1     Running   0      
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Obtenha os endereços de serviço Milvus para ambos os clusters:</p>
+    </button></h2><p>Get the Milvus service addresses for both clusters:</p>
 <pre><code translate="no" class="language-bash">kubectl get svc -n milvus | grep -E <span class="hljs-string">&#x27;NAME|source-cluster|target-cluster&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Exemplo de saída:</p>
+<p>Example output:</p>
 <pre><code translate="no" class="language-text">NAME                                  TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)              AGE
 source-cluster-milvus                 ClusterIP   10.98.124.90     &lt;none&gt;        19530/TCP,9091/TCP   8m
 target-cluster-milvus                 ClusterIP   10.109.234.172   &lt;none&gt;        19530/TCP,9091/TCP   3m
 <button class="copy-code-btn"></button></code></pre>
-<p>Preparar dois tipos de endereços:</p>
+<p>Prepare two types of addresses:</p>
 <ul>
-<li>Os endereços do cluster são gravados na configuração de replicação e usados pelos componentes do CDC. Esses endereços devem ser acessíveis a partir dos pods do CDC.</li>
-<li>Os endereços de cliente são utilizados apenas pelo seu cliente Python quando chama as APIs do Milvus. Se executar o cliente Python fora do cluster Kubernetes, exponha os serviços Milvus através do seu método de acesso normal, como um balanceador de carga, ingress ou port-forward.</li>
+<li>Cluster addresses are written to the replication configuration and used by CDC components. These addresses must be reachable from the CDC pods.</li>
+<li>Client addresses are used only by your Python client when calling Milvus APIs. If you run the Python client outside the Kubernetes cluster, expose the Milvus services through your normal access method, such as a load balancer, ingress, or port-forward.</li>
 </ul>
-<p>Prepare as informações de conexão e as listas de pchannel para ambos os clusters:</p>
+<p>Prepare the connection information and pchannel lists for both clusters:</p>
 <pre><code translate="no" class="language-python">source_cluster_addr = <span class="hljs-string">&quot;http://source-cluster-milvus.milvus.svc.cluster.local:19530&quot;</span>
 target_cluster_addr = <span class="hljs-string">&quot;http://target-cluster-milvus.milvus.svc.cluster.local:19530&quot;</span>
 
@@ -236,8 +236,8 @@ target_cluster_pchannels = [
     <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(pchannel_num)
 ]
 <button class="copy-code-btn"></button></code></pre>
-<p>Substitua os endereços pelos endereços reais do serviço Milvus no seu ambiente. Não defina <code translate="no">source_cluster_addr</code> ou <code translate="no">target_cluster_addr</code> para um endereço de encaminhamento de porta local, a menos que os pods CDC também possam alcançar esse endereço. A lista pchannel deve corresponder à sua implantação do Milvus. Não copie os valores de exemplo sem verificar a configuração do cluster.</p>
-<h2 id="Step-5-Create-the-Replication-Configuration" class="common-anchor-header">Etapa 5: criar a configuração de replicação<button data-href="#Step-5-Create-the-Replication-Configuration" class="anchor-icon" translate="no">
+<p>Replace the addresses with the actual Milvus service addresses in your environment. Do not set <code translate="no">source_cluster_addr</code> or <code translate="no">target_cluster_addr</code> to a local port-forward address unless the CDC pods can also reach that address. The pchannel list must match your Milvus deployment. Do not copy the example values without checking your cluster configuration.</p>
+<h2 id="Step-5-Create-the-Replication-Configuration" class="common-anchor-header">Step 5: Create the Replication Configuration<button data-href="#Step-5-Create-the-Replication-Configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -252,7 +252,7 @@ target_cluster_pchannels = [
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Crie uma configuração de replicação de <code translate="no">source-cluster</code> para <code translate="no">target-cluster</code>:</p>
+    </button></h2><p>Create a replication configuration from <code translate="no">source-cluster</code> to <code translate="no">target-cluster</code>:</p>
 <pre><code translate="no" class="language-python">replicate_config = {
     <span class="hljs-string">&quot;clusters&quot;</span>: [
         {
@@ -280,7 +280,7 @@ target_cluster_pchannels = [
     ],
 }
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Step-6-Apply-the-Replication-Configuration" class="common-anchor-header">Etapa 6: Aplicar a configuração de replicação<button data-href="#Step-6-Apply-the-Replication-Configuration" class="anchor-icon" translate="no">
+<h2 id="Step-6-Apply-the-Replication-Configuration" class="common-anchor-header">Step 6: Apply the Replication Configuration<button data-href="#Step-6-Apply-the-Replication-Configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -295,7 +295,7 @@ target_cluster_pchannels = [
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Aplique a mesma configuração aos dois clusters:</p>
+    </button></h2><p>Apply the same configuration to both clusters:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 source_client = MilvusClient(
@@ -314,9 +314,9 @@ target_client = MilvusClient(
     source_client.close()
     target_client.close()
 <button class="copy-code-btn"></button></code></pre>
-<p>Para automação da produção, use clientes separados de curta duração para essa operação de plano de controle. Isso evita o compartilhamento do mesmo canal gRPC com o tráfego DML do aplicativo enquanto a função do cluster está sendo alterada.</p>
-<p>Depois que a configuração é aplicada, as alterações gravadas em <code translate="no">source-cluster</code> são replicadas para <code translate="no">target-cluster</code>.</p>
-<h2 id="Step-7-Verify-Data-Replication" class="common-anchor-header">Etapa 7: verificar a replicação de dados<button data-href="#Step-7-Verify-Data-Replication" class="anchor-icon" translate="no">
+<p>For production automation, use separate short-lived clients for this control-plane operation. This avoids sharing the same gRPC channel with application DML traffic while the cluster role is changing.</p>
+<p>After the configuration is applied, changes written to <code translate="no">source-cluster</code> are replicated to <code translate="no">target-cluster</code>.</p>
+<h2 id="Step-7-Verify-Data-Replication" class="common-anchor-header">Step 7: Verify Data Replication<button data-href="#Step-7-Verify-Data-Replication" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -331,19 +331,19 @@ target_client = MilvusClient(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Para verificar se a replicação funciona:</p>
+    </button></h2><p>To verify that replication works:</p>
 <ol>
-<li>Conecte-se a <code translate="no">source-cluster</code>.</li>
-<li>Crie uma coleção.</li>
-<li>Insira dados na coleção.</li>
-<li>Carregue a coleção e execute uma consulta ou pesquisa em <code translate="no">source-cluster</code>.</li>
-<li>Ligue-se a <code translate="no">target-cluster</code>.</li>
-<li>Execute a mesma consulta ou pesquisa em <code translate="no">target-cluster</code> sem carregar manualmente a coleção no cluster em espera.</li>
-<li>Confirme se os dados esperados estão visíveis em ambos os clusters.</li>
+<li>Connect to <code translate="no">source-cluster</code>.</li>
+<li>Create a collection.</li>
+<li>Insert data into the collection.</li>
+<li>Load the collection and run a query or search on <code translate="no">source-cluster</code>.</li>
+<li>Connect to <code translate="no">target-cluster</code>.</li>
+<li>Run the same query or search on <code translate="no">target-cluster</code> without manually loading the collection on the standby cluster.</li>
+<li>Confirm that the expected data is visible on both clusters.</li>
 </ol>
-<p>O cluster de destino é um cluster de espera nesta topologia. Não execute operações DDL ou DCL manuais, como <code translate="no">load_collection</code>, no cluster em espera. Essas operações devem ser executadas no cluster de origem e replicadas para o cluster de destino.</p>
-<p>O código de verificação exato depende do seu esquema de recolha. Para obter um fluxo de trabalho básico de coleção do Milvus, consulte a documentação de início rápido do Milvus.</p>
-<h2 id="CDC-Lag" class="common-anchor-header">Atraso do CDC<button data-href="#CDC-Lag" class="anchor-icon" translate="no">
+<p>The target cluster is a standby cluster in this topology. Do not run manual DDL or DCL operations, such as <code translate="no">load_collection</code>, on the standby cluster. Those operations should be performed on the source cluster and replicated to the target cluster.</p>
+<p>The exact verification code depends on your collection schema. For a basic Milvus collection workflow, see the Milvus quick start documentation.</p>
+<h2 id="CDC-Lag" class="common-anchor-header">CDC Lag<button data-href="#CDC-Lag" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -358,21 +358,21 @@ target_client = MilvusClient(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>O atraso do CDC é a janela de dados entre os clusters primário e em espera. É necessário monitorizá-lo continuamente após a configuração da replicação.</p>
-<p>O atraso do CDC pode aumentar quando:</p>
+    </button></h2><p>CDC lag is the data window between the primary and standby clusters. You should monitor it continuously after replication is configured.</p>
+<p>CDC lag can increase when:</p>
 <ul>
-<li>A taxa de gravação primária é alta.</li>
-<li>A latência da rede ou a perda de pacotes aumenta entre os clusters.</li>
-<li>O cluster em espera está sobrecarregado.</li>
-<li>Os nós do CDC estão com provisionamento insuficiente.</li>
-<li>Grandes operações DDL ou de importação estão em execução.</li>
+<li>The primary write rate is high.</li>
+<li>Network latency or packet loss increases between clusters.</li>
+<li>The standby cluster is overloaded.</li>
+<li>CDC nodes are under-provisioned.</li>
+<li>Large DDL or import operations are running.</li>
 </ul>
-<p>Use o atraso do CDC para orientar as decisões operacionais:</p>
+<p>Use CDC lag to guide operational decisions:</p>
 <ul>
-<li>Se o atraso for baixo, a transição deve ser concluída mais rapidamente.</li>
-<li>Se o atraso for alto, o failover pode perder mais dados.</li>
+<li>If lag is low, switchover should complete faster.</li>
+<li>If lag is high, failover may lose more data.</li>
 </ul>
-<p>É possível estimar o atraso do CDC com a seguinte consulta PromQL:</p>
+<p>You can estimate CDC lag with the following PromQL query:</p>
 <pre><code translate="no" class="language-promql">clamp_min(
   max by (channel_name) (
     milvus_wal_last_confirmed_time_tick
@@ -384,9 +384,9 @@ target_client = MilvusClient(
   0
 )
 </code></pre>
-<p>O resultado é em segundos. Para cada canal de origem, a consulta compara a última marca de tempo WAL confirmada com a última marca de tempo replicada pelo CDC. Se um primário replicar para vários clusters em espera, a expressão <code translate="no">min by (channel_name)</code> informa o progresso de replicação mais lento para esse canal.</p>
-<p>Se o Prometheus fizer o scraping de vários clusters do Milvus, adicione filtros de rótulo que correspondam à sua implantação, como <code translate="no">namespace</code> ou <code translate="no">app_kubernetes_io_instance</code>, para evitar a mistura de métricas de diferentes clusters.</p>
-<h2 id="FAQ" class="common-anchor-header">PERGUNTAS FREQUENTES<button data-href="#FAQ" class="anchor-icon" translate="no">
+<p>The result is in seconds. For each source channel, the query compares the latest confirmed WAL timetick with the last timetick replicated by CDC. If a primary replicates to multiple standby clusters, the <code translate="no">min by (channel_name)</code> expression reports the slowest replication progress for that channel.</p>
+<p>If Prometheus scrapes multiple Milvus clusters, add label filters that match your deployment, such as <code translate="no">namespace</code> or <code translate="no">app_kubernetes_io_instance</code>, to avoid mixing metrics from different clusters.</p>
+<h2 id="FAQ" class="common-anchor-header">FAQ<button data-href="#FAQ" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -401,7 +401,7 @@ target_client = MilvusClient(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Do-I-need-to-call-updatereplicateconfiguration-on-both-clusters" class="common-anchor-header">Preciso chamar <code translate="no">update_replicate_configuration</code> em ambos os clusters?<button data-href="#Do-I-need-to-call-updatereplicateconfiguration-on-both-clusters" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Do-I-need-to-call-updatereplicateconfiguration-on-both-clusters" class="common-anchor-header">Do I need to call <code translate="no">update_replicate_configuration</code> on both clusters?<button data-href="#Do-I-need-to-call-updatereplicateconfiguration-on-both-clusters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -416,8 +416,8 @@ target_client = MilvusClient(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Sim. Aplique a mesma topologia a todos os clusters participantes. Se um cluster não for primário no momento da chamada, ele aguardará até que a topologia seja aplicada por meio do CDC.</p>
-<h3 id="How-should-I-choose-clusterid" class="common-anchor-header">Como devo escolher <code translate="no">cluster_id</code>?<button data-href="#How-should-I-choose-clusterid" class="anchor-icon" translate="no">
+    </button></h3><p>Yes. Apply the same topology to all participating clusters. If one cluster is not primary at the time of the call, it waits until the topology is applied through CDC.</p>
+<h3 id="How-should-I-choose-clusterid" class="common-anchor-header">How should I choose <code translate="no">cluster_id</code>?<button data-href="#How-should-I-choose-clusterid" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -432,8 +432,8 @@ target_client = MilvusClient(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Use uma ID estável e exclusiva para cada cluster. A ID também é usada em nomes de pchannel e referências de topologia de replicação.</p>
-<h3 id="Can-I-change-pchannels-after-replication-is-configured" class="common-anchor-header">Posso alterar os pchannels depois de a replicação estar configurada?<button data-href="#Can-I-change-pchannels-after-replication-is-configured" class="anchor-icon" translate="no">
+    </button></h3><p>Use a stable, unique ID for each cluster. The ID is also used in pchannel names and replication topology references.</p>
+<h3 id="Can-I-change-pchannels-after-replication-is-configured" class="common-anchor-header">Can I change pchannels after replication is configured?<button data-href="#Can-I-change-pchannels-after-replication-is-configured" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -448,4 +448,4 @@ target_client = MilvusClient(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Pode atualizar a topologia, mas a lista de pchannels tem de corresponder à disposição do cluster. Trate as alterações de pchannel como uma operação avançada e verifique a replicação cuidadosamente depois disso.</p>
+    </button></h3><p>You can update the topology, but the pchannel list must match the cluster layout. Treat pchannel changes as an advanced operation and verify replication carefully afterward.</p>

@@ -1,9 +1,11 @@
 ---
 id: install-overview.md
-summary: 请根据您的工作负载、可用性要求和运行环境，选择 Milvus Lite、Milvus Standalone 或 Milvus Distributed。
-title: Milvus 部署选项概述
+summary: >-
+  Choose Milvus Lite, Standalone, or Distributed based on your workload,
+  availability requirements, and operating environment.
+title: Overview of Milvus Deployment Options
 ---
-<h1 id="Overview-of-Milvus-Deployment-Options" class="common-anchor-header">Milvus 部署选项概述<button data-href="#Overview-of-Milvus-Deployment-Options" class="anchor-icon" translate="no">
+<h1 id="Overview-of-Milvus-Deployment-Options" class="common-anchor-header">Overview of Milvus Deployment Options<button data-href="#Overview-of-Milvus-Deployment-Options" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,7 +20,7 @@ title: Milvus 部署选项概述
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Milvus 支持本地原型开发和大规模向量搜索服务。请根据您的数据、读写负载、可用性要求以及运行环境，在 Milvus Lite、Milvus Standalone 和 Milvus Distributed 之间进行选择。</p>
+    </button></h1><p>Milvus supports local prototypes and large-scale vector search services. Choose among Milvus Lite, Milvus Standalone, and Milvus Distributed based on your data, read and write load, availability requirements, and operating environment.</p>
 <h2 id="Milvus-Lite" class="common-anchor-header">Milvus Lite<button data-href="#Milvus-Lite" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -34,11 +36,11 @@ title: Milvus 部署选项概述
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><a href="https://milvus.io/docs/milvus_lite.md">Milvus Lite</a>是一个可导入到应用程序中的 Python 库。作为 Milvus 的轻量级版本，它非常适合在 Jupyter Notebook 中进行快速原型开发，或在资源有限的智能设备上运行。 Milvus Lite 支持其他 Milvus 部署方式相同的 API。与 Milvus Lite 交互的客户端代码也可与其他部署模式下的 Milvus 实例配合使用。</p>
-<p>对于本地示例，请使用 Python 3.10 或更高版本，并显式安装可选的 Lite 依赖项。在 Windows 系统中，pip 会跳过 `<code translate="no">milvus-lite</code> ` 这一补充参数，因此需要显式指定包名：</p>
+    </button></h2><p><a href="https://milvus.io/docs/milvus_lite.md">Milvus Lite</a> is a Python library that can be imported into your applications. As a lightweight version of Milvus, it is ideal for quick prototyping in Jupyter Notebooks or running on smart devices with limited resources. Milvus Lite supports the same APIs as other Milvus deployments. The client-side code interacting with Milvus Lite can also work with Milvus instances in other deployment modes.</p>
+<p>For the local examples, use Python 3.10 or later and install the optional Lite dependency explicitly. On Windows, pip skips the <code translate="no">milvus-lite</code> extra, so the explicit package name is required:</p>
 <pre><code translate="no" class="language-bash">python3 -m pip install <span class="hljs-string">&quot;pymilvus[milvus-lite]==3.0.2&quot;</span> <span class="hljs-string">&quot;milvus-lite==3.2.2&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>使用 `<code translate="no">MilvusClient(&quot;./demo.db&quot;)</code> ` 打开本地存储。Milvus Lite 3.x 会在此路径下创建一个目录；若存在 Milvus Lite 2.x 数据库文件，则需要进行导出和迁移。有关平台要求，请参阅《<a href="/docs/zh/milvus_lite.md">运行 Milvus Lite</a>》；有关完整的插入和搜索示例，请参阅《<a href="/docs/zh/quickstart.md">快速入门》</a>。</p>
+<p>Use <code translate="no">MilvusClient(&quot;./demo.db&quot;)</code> to open local storage. Milvus Lite 3.x creates a directory at this path; an existing Milvus Lite 2.x database file requires export and migration. See <a href="/docs/zh/milvus_lite.md">Run Milvus Lite</a> for platform requirements and <a href="/docs/zh/quickstart.md">Quickstart</a> for a complete insert-and-search example.</p>
 <h2 id="Milvus-Standalone" class="common-anchor-header">Milvus Standalone<button data-href="#Milvus-Standalone" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -54,7 +56,7 @@ title: Milvus 部署选项概述
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus Standalone 是一种单机服务器部署方案。Milvus Standalone 的所有组件都打包在一个<a href="https://milvus.io/docs/install_standalone-docker.md">Docker 镜像中</a>，使部署变得非常便捷。 如果您有生产环境的工作负载，但希望避免使用 Kubernetes，那么在内存充足的单台机器上运行 Milvus Standalone 是一个不错的选择。默认情况下，Milvus Standalone 使用<strong>Woodpecker</strong>（嵌入式）作为消息队列，因此无需单独运行消息服务。</p>
+    </button></h2><p>Milvus Standalone is a single-machine server deployment. All components of Milvus Standalone are packed into a single <a href="https://milvus.io/docs/install_standalone-docker.md">Docker image</a>, making deployment convenient. If you have a production workload but prefer not to use Kubernetes, running Milvus Standalone on a single machine with sufficient memory is a good option. By default, Milvus Standalone runs <strong>Woodpecker</strong> (embedded) as its message queue, so there’s no separate messaging service to operate.</p>
 <h2 id="Milvus-Distributed" class="common-anchor-header">Milvus Distributed<button data-href="#Milvus-Distributed" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -70,8 +72,8 @@ title: Milvus 部署选项概述
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus Distributed 可部署在<a href="https://milvus.io/docs/install_cluster-milvusoperator.md">Kubernetes</a>集群上。该部署采用云原生架构，其中数据摄取负载和搜索查询由隔离的节点分别处理，从而为关键组件提供了冗余保障。它具备最高的可扩展性和可用性，同时支持灵活定制各组件的资源分配。 对于在生产环境中运行大规模向量搜索系统的企业用户而言，Milvus Distributed 是首选方案。默认情况下，Milvus Distributed 将<strong>Woodpecker</strong>作为消息队列运行，并作为独立服务与 Milvus 并行部署。</p>
-<h2 id="Choose-the-Right-Deployment-for-Your-Use-Case" class="common-anchor-header">根据您的用例选择合适的部署方式<button data-href="#Choose-the-Right-Deployment-for-Your-Use-Case" class="anchor-icon" translate="no">
+    </button></h2><p>Milvus Distributed can be deployed on <a href="https://milvus.io/docs/install_cluster-milvusoperator.md">Kubernetes</a> clusters. This deployment features a cloud-native architecture, where ingestion load and search queries are separately handled by isolated nodes, allowing redundancy for critical components. It offers the highest scalability and availability, as well as the flexibility in customizing the allocated resources in each component. Milvus Distributed is the top choice for enterprise users running large-scale vector search systems in production. By default, Milvus Distributed runs <strong>Woodpecker</strong> as its message queue, deployed as a dedicated service alongside Milvus.</p>
+<h2 id="Choose-the-Right-Deployment-for-Your-Use-Case" class="common-anchor-header">Choose the Right Deployment for Your Use Case<button data-href="#Choose-the-Right-Deployment-for-Your-Use-Case" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -86,32 +88,32 @@ title: Milvus 部署选项概述
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>部署模式的选择通常取决于应用程序的开发阶段：</p>
+    </button></h2><p>The selection of a deployment mode typically depends on the development stage of your application:</p>
 <ul>
-<li><p><strong>快速原型开发</strong></p>
-<p>在笔记本中使用 Milvus Lite 来测试 Embeddings、RAG 分块策略和检索行为。当需要共享服务器，或者测得的内存和查询负载超过本地环境时，请切换到 Milvus Standalone。客户端 API 类似，但请检查功能差异，并单独迁移存储的数据。</p></li>
-<li><p><strong>小规模生产部署</strong></p>
-<p>当单台服务器能够满足您的工作负载和可用性要求，且您希望在不使用 Kubernetes 的情况下运行时，请使用 Milvus Standalone。根据向量维度、标量字段、索引设置和副本数量估算内存需求，然后对预期的查询并发量和写入速率进行基准测试。仅凭向量数量无法确定容量。</p></li>
-<li><p><strong>大规模生产部署</strong></p>
-<p>随着业务快速增长，当数据规模超过单台服务器的容量时，就该考虑使用 Milvus Distributed 了。您可以继续在开发或预发布环境中使用 Milvus Standalone 以保持便利性，同时运行托管 Milvus Distributed 的 K8s 集群。 这不仅能支持您处理数百亿量级的向量，还能根据具体工作负载（例如高读取、低写入，或高写入、低读取等场景）灵活调整节点规格。</p></li>
-<li><p><strong>边缘设备上的本地搜索</strong></p>
-<p>若需在边缘设备上搜索私有或敏感数据，您可在设备上部署 Milvus Lite，无需依赖云端服务即可进行文本或图像搜索。这适用于专有文档搜索或设备端物体检测等场景。</p></li>
+<li><p><strong>For Quick Prototyping</strong></p>
+<p>Use Milvus Lite in a notebook to test embeddings, RAG chunking strategies, and retrieval behavior. Move to Milvus Standalone when you need a shared server or when the measured memory and query load exceed the local environment. The client API is similar, but check feature differences and migrate the stored data separately.</p></li>
+<li><p><strong>Small-Scale Production Deployment</strong></p>
+<p>Use Milvus Standalone when a single server can meet your workload and availability requirements, and you prefer to operate without Kubernetes. Estimate memory from vector dimensions, scalar fields, index settings, and replicas, then benchmark the expected query concurrency and write rate. A vector count alone does not establish capacity.</p></li>
+<li><p><strong>Large-Scale Production Deployment</strong></p>
+<p>As your business is rapidly growing and the data scale exceeds the capacity of a single server, it’s time to consider Milvus Distributed. You can keep using Milvus Standalone for dev or staging environment for its convenience, and operate the K8s cluster that runs Milvus Distributed. This can sustain you towards tens of billions of vectors, as well as providing flexibility on tailoring the node size for your particular workload, such as high-read, infrequent write or high-write, low read cases.</p></li>
+<li><p><strong>Local Search on Edge Devices</strong></p>
+<p>For searching through private or sensitive on edge devices, you can deploy Milvus Lite on the device without relying on a cloud-based service to do text or image search. This is suitable for cases such as proprietary document search, or on-device object detection.</p></li>
 </ul>
-<p>Milvus 的部署模式选择取决于您项目的阶段和规模。从快速原型开发到大规模企业部署，Milvus 都能为各种需求提供灵活而强大的解决方案。</p>
+<p>The choice of Milvus deployment mode depends on your project’s stage and scale. Milvus provides a flexible and powerful solution for various needs, from rapid prototyping to large-scale enterprise deployment.</p>
 <ul>
-<li><strong>Milvus Lite</strong>适用于在单个应用程序的资源范围内进行本地评估和工作负载处理。</li>
-<li>当单台服务器满足您对容量和可用性的要求时<strong>，Milvus Standalone</strong>可提供共享服务。</li>
-<li>当您需要扩展至多台服务器，或隔离读写资源时，<strong>Milvus Distributed</strong>可提供组件级别的扩展性和冗余性。</li>
+<li><strong>Milvus Lite</strong> fits local evaluation and workloads within a single application’s resources.</li>
+<li><strong>Milvus Standalone</strong> provides a shared service when one server meets your measured capacity and availability requirements.</li>
+<li><strong>Milvus Distributed</strong> provides component-level scaling and redundancy when you need to grow beyond one server or isolate read and write resources.</li>
 </ul>
-<p>Milvus Standalone 和 Distributed 采用消息队列、对象存储以及元数据存储。Milvus Lite 则在本地运行，无需这些独立服务。有关服务器部署的默认依赖项和外部服务选项，请参阅<a href="/docs/zh/data-infra-integration-overview.md">“数据基础设施”</a>。</p>
-<p>如果您希望使用托管服务而非自行运维服务器基础设施，请考虑<a href="https://zilliz.com/cloud">Zilliz Cloud</a>。如需自行部署，请继续使用<a href="/docs/zh/install_standalone-docker.md">Docker</a>或<a href="/docs/zh/install_cluster-milvusoperator.md">Kubernetes</a>。</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/select-deployment-option.png" alt="Select deployment option for your use case" class="doc-image" id="select-deployment-option-for-your-use-case" /> 
-   <span>根据您的使用场景选择部署方案</span>
-  
- </span></p>
-<h2 id="Comparison-on-functionalities" class="common-anchor-header">功能对比<button data-href="#Comparison-on-functionalities" class="anchor-icon" translate="no">
+<p>Milvus Standalone and Distributed use a message queue, object storage, and a metadata store. Milvus Lite runs locally without those separate services. For the server deployments’ default dependencies and external service options, see <a href="/docs/zh/data-infra-integration-overview.md">Data Infrastructure</a>.</p>
+<p>If you want a managed service instead of operating the server infrastructure, consider <a href="https://zilliz.com/cloud">Zilliz Cloud</a>. For a hands-on deployment, continue with <a href="/docs/zh/install_standalone-docker.md">Docker</a> or <a href="/docs/zh/install_cluster-milvusoperator.md">Kubernetes</a>.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/select-deployment-option.png" alt="Select deployment option for your use case" class="doc-image" id="select-deployment-option-for-your-use-case" />
+    <span>Select deployment option for your use case</span>
+  </span>
+</p>
+<h2 id="Comparison-on-functionalities" class="common-anchor-header">Comparison on functionalities<button data-href="#Comparison-on-functionalities" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -126,18 +128,18 @@ title: Milvus 部署选项概述
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>“Lite”列描述的是 Milvus Lite 3.2.2。在本地应用程序中依赖某项服务器功能之前，请先查看<a href="/docs/zh/milvus_lite.md#Supported-features-and-limits">Milvus Lite 的限制</a>。</p>
+    </button></h2><p>The Lite column describes Milvus Lite 3.2.2. Check <a href="/docs/zh/milvus_lite.md#Supported-features-and-limits">Milvus Lite limits</a> before relying on a server feature in a local application.</p>
 <table>
 <thead>
-<tr><th>功能</th><th>Milvus Lite</th><th>Milvus Standalone</th><th>Milvus Distributed</th></tr>
+<tr><th>Feature</th><th>Milvus Lite</th><th>Milvus Standalone</th><th>Milvus Distributed</th></tr>
 </thead>
 <tbody>
-<tr><td>SDK / 客户端库</td><td>Python（本地 PyMilvus 适配器）</td><td>Python<br/>Go<br/>Java<br/>Node.js<br/>C#<br/>RESTful</td><td>Python<br/>Java<br/>Go<br/>Node.js<br/>C#<br/>RESTful</td></tr>
-<tr><td>数据类型</td><td><br/><br/><br/><br/><br/><br/><br/></td><td>稠密向量<br/>稀疏向量<br/>二进制向量<br/>布尔值<br/>整数<br/>浮点数<br/>VarChar<br/>数组<br/>JSON</td><td>稠密向量<br/>稀疏向量<br/>二进制向量<br/>布尔型<br/>整数型<br/>浮点型<br/>VarChar<br/>数组<br/>JSON</td></tr>
-<tr><td>搜索功能</td><td>向量搜索（ANN 搜索）<br/>元数据过滤<br/>范围搜索<br/>标量查询<br/>按主键获取实体<br/>混合搜索</td><td>向量搜索（ANN搜索）<br/>元数据过滤<br/>范围搜索<br/>标量查询<br/>按主键获取实体<br/>混合搜索</td><td>向量搜索（ANN 搜索）<br/>元数据过滤<br/>范围搜索<br/>标量查询<br/>按主键获取实体<br/>混合搜索</td></tr>
-<tr><td>CRUD 操作</td><td>✔️</td><td>✔️</td><td>✔️</td></tr>
-<tr><td>高级数据管理</td><td>数据库<br/>分区<br/>别名<br/>无访问控制</td><td>访问控制<br/>分区<br/>分区 Key</td><td>访问控制<br/>分区<br/>分区 Key<br/>物理资源分组</td></tr>
-<tr><td>一致性级别</td><td>不适用：由单个本地进程处理所有请求；<code translate="no">consistency_level</code> 被接受但无效</td><td>强一致性<br/>有限过时<br/>会话<br/>最终一致性</td><td>强<br/>有限过时<br/>会话<br/>最终</td></tr>
-<tr><td>消息队列</td><td>不适用</td><td>Woodpecker（嵌入式）</td><td>Woodpecker（服务）</td></tr>
+<tr><td>SDK / client library</td><td>Python (local PyMilvus adapter)</td><td>Python<br/>Go<br/>Java<br/>Node.js<br/>C#<br/>RESTful</td><td>Python<br/>Java<br/>Go<br/>Node.js<br/>C#<br/>RESTful</td></tr>
+<tr><td>Data types</td><td>Dense Vector<br/>Sparse Vector<br/>Boolean<br/>Integer<br/>Floating Point<br/>VarChar<br/>Array<br/>JSON</td><td>Dense Vector<br/>Sparse Vector<br/>Binary Vector<br/>Boolean<br/>Integer<br/>Floating Point<br/>VarChar<br/>Array<br/>JSON</td><td>Dense Vector<br/>Sparse Vector<br/>Binary Vector<br/>Boolean<br/>Integer<br/>Floating Point<br/>VarChar<br/>Array<br/>JSON</td></tr>
+<tr><td>Search capabilities</td><td>Vector Search (ANN Search)<br/>Metadata Filtering<br/>Range Search<br/>Scalar Query<br/>Get Entities by Primary Key<br/>Hybrid Search</td><td>Vector Search (ANN Search)<br/>Metadata Filtering<br/>Range Search<br/>Scalar Query<br/>Get Entities by Primary Key<br/>Hybrid Search</td><td>Vector Search (ANN Search)<br/>Metadata Filtering<br/>Range Search<br/>Scalar Query<br/>Get Entities by Primary Key<br/>Hybrid Search</td></tr>
+<tr><td>CRUD operations</td><td>✔️</td><td>✔️</td><td>✔️</td></tr>
+<tr><td>Advanced data management</td><td>Databases<br/>Partitions<br/>Aliases<br/>No access control</td><td>Access Control<br/>Partition<br/>Partition Key</td><td>Access Control<br/>Partition<br/>Partition Key<br/>Physical Resource Grouping</td></tr>
+<tr><td>Consistency Levels</td><td>Not applicable: a single local process serves all requests; <code translate="no">consistency_level</code> is accepted but has no effect</td><td>Strong<br/>Bounded Staleness<br/>Session<br/>Eventual</td><td>Strong<br/>Bounded Staleness<br/>Session<br/>Eventual</td></tr>
+<tr><td>Message queue</td><td>N/A</td><td>Woodpecker (embedded)</td><td>Woodpecker (service)</td></tr>
 </tbody>
 </table>

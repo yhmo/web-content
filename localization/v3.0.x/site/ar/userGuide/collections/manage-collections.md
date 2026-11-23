@@ -1,12 +1,13 @@
 ---
 id: manage-collections.md
-title: شرح مفهوم «المجموعة»
+title: Collection Explained
 summary: >-
-  في Milvus، يمكنك إنشاء مجموعات متعددة لإدارة بياناتك، وإدراج بياناتك ككيانات
-  ضمن هذه المجموعات. تشبه المجموعات والكيانات الجداول والسجلات في قواعد البيانات
-  العلائقية. تساعدك هذه الصفحة على التعرف على المجموعات والمفاهيم ذات الصلة.
+  On Milvus, you can create multiple collections to manage your data, and insert
+  your data as entities into the collections. Collection and entity are similar
+  to tables and records in relational databases. This page helps you to learn
+  about the collection and related concepts.
 ---
-<h1 id="Collection-Explained" class="common-anchor-header">شرح مفهوم «المجموعة»<button data-href="#Collection-Explained" class="anchor-icon" translate="no">
+<h1 id="Collection-Explained" class="common-anchor-header">Collection Explained<button data-href="#Collection-Explained" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -21,8 +22,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>في Milvus، يمكنك إنشاء مجموعات متعددة لإدارة بياناتك، وإدراج بياناتك ككيانات في هذه المجموعات. تشبه المجموعات والكيانات الجداول والسجلات في قواعد البيانات العلائقية. تساعدك هذه الصفحة على التعرف على المجموعات والمفاهيم ذات الصلة.</p>
-<h2 id="Collection" class="common-anchor-header">المجموعة<button data-href="#Collection" class="anchor-icon" translate="no">
+    </button></h1><p>On Milvus, you can create multiple collections to manage your data, and insert your data as entities into the collections. Collection and entity are similar to tables and records in relational databases. This page helps you to learn about the collection and related concepts.</p>
+<h2 id="Collection" class="common-anchor-header">Collection<button data-href="#Collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,15 +38,15 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>المجموعة عبارة عن جدول ثنائي الأبعاد يحتوي على أعمدة ثابتة وصفوف متنوعة. يمثل كل عمود حقلًا، ويمثل كل صف كيانًا.</p>
-<p>يوضح الرسم البياني التالي مجموعة تحتوي على ثمانية أعمدة وستة كيانات.</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/collection-explained.png" alt="Collection Explained" class="doc-image" id="collection-explained" /> 
-   <span>شرح المجموعات</span>
-  
- </span></p>
-<h2 id="Schema-and-Fields" class="common-anchor-header">المخطط والحقول<button data-href="#Schema-and-Fields" class="anchor-icon" translate="no">
+    </button></h2><p>A collection is a two-dimensional table with fixed columns and variant rows. Each column represents a field, and each row represents an entity.</p>
+<p>The following chart shows a collection with eight columns and six entities.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/collection-explained.png" alt="Collection Explained" class="doc-image" id="collection-explained" />
+    <span>Collection Explained</span>
+  </span>
+</p>
+<h2 id="Schema-and-Fields" class="common-anchor-header">Schema and Fields<button data-href="#Schema-and-Fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -60,15 +61,15 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>عند وصف كائن ما، عادةً ما نذكر سماته، مثل الحجم والوزن والموضع. يمكنك استخدام هذه السمات كحقول في مجموعة. لكل حقل خصائص تقييدية متنوعة، مثل نوع البيانات وأبعاد حقل متجه. يمكنك تكوين مخطط مجموعة عن طريق إنشاء الحقول وتحديد ترتيبها. للاطلاع على أنواع البيانات التي يمكن تطبيقها، راجع <a href="/docs/ar/schema.md">شرح المخطط</a>.</p>
-<p>يجب تضمين جميع الحقول المحددة في المخطط في الكيانات المراد إدراجها. لجعل بعضها اختياريًا، ضع في اعتبارك تمكين الحقل الديناميكي. لمزيد من التفاصيل، راجع «شرح <a href="/docs/ar/enable-dynamic-field.md">الحقل الديناميكي</a>».</p>
+    </button></h2><p>When describing an object, we usually mention its attributes, such as size, weight, and position. You can use these attributes as fields in a collection. Each field has various constraining properties, such as the data type and the dimensionality of a vector field. You can form a collection schema by creating the fields and defining their order. For possible applicable data types, refer to <a href="/docs/ar/schema.md">Schema Explained</a>.</p>
+<p>You should include all schema-defined fields in the entities to insert. To make some of them optional, consider enabling dynamic field. For details, refer to <a href="/docs/ar/enable-dynamic-field.md">Dynamic Field</a>.</p>
 <ul>
-<li><p><strong>جعلها قابلة للقيمة الفارغة أو تعيين قيم افتراضية</strong></p>
-<p>للحصول على تفاصيل حول كيفية جعل الحقل قابلاً للقيمة الفارغة أو تعيين القيمة الافتراضية، راجع <a href="/docs/ar/nullable-and-default.md">«القيمة الفارغة والقيمة الافتراضية</a>».</p></li>
-<li><p><strong>تمكين الحقل الديناميكي</strong></p>
-<p>للحصول على تفاصيل حول كيفية تمكين الحقل الديناميكي واستخدامه، راجع " <a href="/docs/ar/enable-dynamic-field.md">الحقل الديناميكي</a>".</p></li>
+<li><p><strong>Making them nullable or setting default values</strong></p>
+<p>For details on how to make a field nullable or set the default value, refer to <a href="/docs/ar/nullable-and-default.md">Nullable & Default</a>.</p></li>
+<li><p><strong>Enabling dynamic field</strong></p>
+<p>For details on how to enable and use the dynamic field, refer to <a href="/docs/ar/enable-dynamic-field.md">Dynamic Field</a>.</p></li>
 </ul>
-<h2 id="Primary-key-and-AutoId" class="common-anchor-header">المفتاح الأساسي و AutoId<button data-href="#Primary-key-and-AutoId" class="anchor-icon" translate="no">
+<h2 id="Primary-key-and-AutoId" class="common-anchor-header">Primary key and AutoId<button data-href="#Primary-key-and-AutoId" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -83,11 +84,11 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>على غرار الحقل الأساسي في قاعدة البيانات العلائقية، تحتوي المجموعة على حقل أساسي لتمييز كيان عن غيره. كل قيمة في الحقل الأساسي فريدة عالميًا وتتوافق مع كيان محدد واحد.</p>
-<p>كما هو موضح في الرسم البياني أعلاه، يعمل الحقل المسمى <strong>id</strong> كحقل أساسي، ويتوافق المعرف الأول <strong>0</strong> مع كيان بعنوان <em>«معدل الوفيات الناجم عن فيروس كورونا ليس مهمًا</em>». لن يكون هناك أي كيان آخر يحتوي على الحقل الأساسي 0.</p>
-<p>لا يقبل الحقل الأساسي سوى الأعداد الصحيحة أو السلاسل النصية. عند إدراج الكيانات، يجب تضمين قيم الحقل الأساسي بشكل افتراضي. ومع ذلك، إذا قمت بتمكين <strong>«AutoId»</strong> عند إنشاء المجموعة، فسيقوم Milvus بإنشاء تلك القيم عند إدراج البيانات. في هذه الحالة، استبعد قيم الحقل الأساسي من الكيانات المراد إدراجها.</p>
-<p>لمزيد من المعلومات، يرجى الرجوع إلى <a href="/docs/ar/primary-field.md">«الحقل الأساسي وAutoId</a>».</p>
-<h2 id="Index" class="common-anchor-header">الفهرس<button data-href="#Index" class="anchor-icon" translate="no">
+    </button></h2><p>Similar to the primary field in a relational database, a collection has a primary field to distinguish an entity from others. Each value in the primary field is globally unique and corresponds to one specific entity.</p>
+<p>As shown in the above chart, the field named <strong>id</strong> serves as the primary field, and the first ID <strong>0</strong> corresponds to an entity titled <em>The Mortality Rate of Coronavirus is Not Important</em>. There will not be any other entity that has the primary field of 0.</p>
+<p>A primary field accepts only integers or strings. When inserting entities, you should include the primary field values by default. However, if you have enabled <strong>AutoId</strong> upon collection creation, Milvus will generate those values upon data insertion. In such a case, exclude the primary field values from the entities to be inserted.</p>
+<p>For more information, please refer to <a href="/docs/ar/primary-field.md">Primary Field & AutoId</a>.</p>
+<h2 id="Index" class="common-anchor-header">Index<button data-href="#Index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -102,8 +103,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يؤدي إنشاء الفهارس على حقول محددة إلى تحسين كفاءة البحث. يُنصح بإنشاء فهارس لجميع الحقول التي تعتمد عليها خدمتك، ومن بينها الفهارس على حقول المتجهات التي تُعد إلزامية.</p>
-<h2 id="Entity" class="common-anchor-header">الكيان<button data-href="#Entity" class="anchor-icon" translate="no">
+    </button></h2><p>Creating indexes on specific fields improves search efficiency. You are advised to create indexes for all the fields your service relies on, among which indexes on vector fields are mandatory.</p>
+<h2 id="Entity" class="common-anchor-header">Entity<button data-href="#Entity" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -118,10 +119,10 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>الكيانات هي سجلات بيانات تشترك في نفس مجموعة الحقول في المجموعة. تشكل القيم الموجودة في جميع حقول نفس الصف كيانًا واحدًا.</p>
-<p>يمكنك إدراج أي عدد تريده من الكيانات في المجموعة. ومع ذلك، كلما زاد عدد الكيانات، زاد حجم الذاكرة المستهلكة أيضًا، مما يؤثر على أداء البحث.</p>
-<p>لمزيد من المعلومات، راجع <a href="/docs/ar/schema.md">شرح المخطط</a>.</p>
-<h2 id="Load-and-Release" class="common-anchor-header">التحميل والتحرير<button data-href="#Load-and-Release" class="anchor-icon" translate="no">
+    </button></h2><p>Entities are data records that share the same set of fields in a collection. The values in all fields of the same row comprise an entity.</p>
+<p>You can insert as many entities as you need into a collection. However, as the number of entities mounts, the memory size it takes also increases, affecting search performance.</p>
+<p>For more information, refer to <a href="/docs/ar/schema.md">Schema Explained</a>.</p>
+<h2 id="Load-and-Release" class="common-anchor-header">Load and Release<button data-href="#Load-and-Release" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -136,10 +137,10 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يُعد تحميل المجموعة شرطًا أساسيًا لإجراء عمليات البحث عن التشابه والاستعلامات في المجموعات. عند تحميل مجموعة، يقوم Milvus بتحميل جميع ملفات الفهرس والبيانات الأولية في كل حقل إلى الذاكرة من أجل الاستجابة السريعة لعمليات البحث والاستعلامات.</p>
-<p>تعد عمليات البحث والاستعلامات عمليات تستهلك قدرًا كبيرًا من الذاكرة. لتوفير التكلفة، يُنصح بتحرير المجموعات التي لا تُستخدم حاليًا.</p>
-<p>لمزيد من التفاصيل، راجع <a href="/docs/ar/load-and-release.md">«التحميل والتحرير</a>».</p>
-<h2 id="Search-and-Query" class="common-anchor-header">البحث والاستعلام<button data-href="#Search-and-Query" class="anchor-icon" translate="no">
+    </button></h2><p>Loading a collection is the prerequisite to conducting similarity searches and queries in collections. When you load a collection, Milvus loads all index files and the raw data in each field into memory for fast response to searches and queries.</p>
+<p>Searches and queries are memory-intensive operations. To save the cost, you are advised to release the collections that are currently not in use.</p>
+<p>For more details, refer to <a href="/docs/ar/load-and-release.md">Load & Release</a>.</p>
+<h2 id="Search-and-Query" class="common-anchor-header">Search and Query<button data-href="#Search-and-Query" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -154,28 +155,27 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>بمجرد إنشاء الفهارس وتحميل المجموعة، يمكنك بدء بحث عن التشابه عن طريق إدخال متجه استعلام واحد أو عدة متجهات. على سبيل المثال، عند تلقي التمثيل المتجهي لاستعلامك الوارد في طلب البحث، يستخدم Milvus نوع المقياس المحدد لقياس التشابه بين متجه الاستعلام والمتجهات الموجودة في المجموعة المستهدفة قبل إرجاع تلك المتجهات التي تشبه الاستعلام من الناحية الدلالية.</p>
-<p>يمكنك أيضًا تضمين تصفية البيانات الوصفية في عمليات البحث والاستعلامات لتحسين ملاءمة النتائج. لاحظ أن شروط تصفية البيانات الوصفية إلزامية في الاستعلامات ولكنها اختيارية في عمليات البحث.</p>
-<p>للحصول على تفاصيل حول أنواع المقاييس القابلة للتطبيق، راجع <a href="/docs/ar/metric.md">«أنواع المقاييس</a>».</p>
-<p>لمزيد من المعلومات حول عمليات البحث والاستعلامات، راجع المقالات في فصل «البحث وإعادة الترتيب»، ومن بينها الميزات الأساسية التالية:</p>
+    </button></h2><p>Once you create indexes and load the collection, you can start a similarity search by feeding one or several query vectors. For example, when receiving the vector representation of your query carried in a search request, Milvus uses the specified metric type to measure the similarity between the query vector and those in the target collection before returning those that are semantically similar to the query.</p>
+<p>You can also include metadata filtering within searches and queries to improve the relevancy of the results. Note that, metadata filtering conditions are mandatory in queries but optional in searches.</p>
+<p>For details on applicable metric types, refer to <a href="/docs/ar/metric.md">Metric Types</a>.</p>
+<p>For more information about searches and queries, refer to the articles in the Search & Rerank chapter, among which, basic features are:</p>
 <ul>
-<li><p><a href="/docs/ar/single-vector-search.md">البحث الأساسي باستخدام الشبكات العصبية الاصطناعية (ANN)</a></p></li>
-<li><p><a href="/docs/ar/filtered-search.md">البحث المُصفى</a></p></li>
-<li><p><a href="/docs/ar/range-search.md">البحث في النطاق</a></p></li>
-<li><p><a href="/docs/ar/grouping-search.md">البحث التجميعي</a></p></li>
-<li><p><a href="/docs/ar/multi-vector-search.md">البحث الهجين</a></p></li>
-<li><p><a href="/docs/ar/with-iterators.md">مكرر البحث</a></p></li>
-<li><p><a href="/docs/ar/get-and-scalar-query.md">الاستعلام</a></p></li>
-<li><p><a href="/docs/ar/full-text-search.md">البحث عن النص الكامل</a></p></li>
-<li><p><a href="/docs/ar/keyword-match.md">مطابقة النص</a></p></li>
+<li><p><a href="/docs/ar/single-vector-search.md">Basic ANN Search</a></p></li>
+<li><p><a href="/docs/ar/filtered-search.md">Filtered Search</a></p></li>
+<li><p><a href="/docs/ar/range-search.md">Range Search</a></p></li>
+<li><p><a href="/docs/ar/grouping-search.md">Grouping Search</a></p></li>
+<li><p><a href="/docs/ar/multi-vector-search.md">Hybrid Search</a></p></li>
+<li><p><a href="/docs/ar/with-iterators.md">Search Iterator</a></p></li>
+<li><p><a href="/docs/ar/get-and-scalar-query.md">Query</a></p></li>
+<li><p><a href="/docs/ar/full-text-search.md">Full Text Search</a></p></li>
+<li><p><a href="/docs/ar/keyword-match.md">Text Match</a></p></li>
 </ul>
-<p>بالإضافة إلى ذلك، يوفر Milvus أيضًا تحسينات لزيادة أداء البحث وكفاءته. وهي معطلة افتراضيًا، ويمكنك تمكينها واستخدامها وفقًا لمتطلبات الخدمة الخاصة بك. وهي</p>
+<p>In addition, Milvus also provides enhancements to improve search performance and efficiency. They are disabled by default, and you can enable and use them according to your service requirements. They are</p>
 <ul>
-<li><p><a href="/docs/ar/use-partition-key.md">استخدام مفتاح التقسيم</a></p></li>
-<li><p><a href="/docs/ar/mmap.md">استخدام mmap</a></p></li>
-<li><p><a href="/docs/ar/clustering-compaction.md">التجميع الضغط</a></p></li>
+<li><p><a href="/docs/ar/use-partition-key.md">Use Partition Key</a></p></li>
+<li><p><a href="/docs/ar/mmap.md">Use mmap</a></p></li>
 </ul>
-<h2 id="Partition" class="common-anchor-header">القسم<button data-href="#Partition" class="anchor-icon" translate="no">
+<h2 id="Partition" class="common-anchor-header">Partition<button data-href="#Partition" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -190,10 +190,10 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>الأقسام هي مجموعات فرعية من مجموعة ما، وتشترك في نفس مجموعة الحقول مع المجموعة الأم، وتحتوي كل منها على مجموعة فرعية من الكيانات.</p>
-<p>من خلال توزيع الكيانات على أقسام مختلفة، يمكنك إنشاء مجموعات من الكيانات. يمكنك إجراء عمليات البحث والاستعلامات في أقسام محددة لجعل Milvus يتجاهل الكيانات الموجودة في الأقسام الأخرى، مما يحسن كفاءة البحث.</p>
-<p>للحصول على التفاصيل، راجع <a href="/docs/ar/manage-partitions.md">إدارة الأقسام</a>.</p>
-<h2 id="Shard" class="common-anchor-header">الشظية<button data-href="#Shard" class="anchor-icon" translate="no">
+    </button></h2><p>Partitions are subsets of a collection, which share the same field set with its parent collection, each containing a subset of entities.</p>
+<p>By allocating entities into different partitions, you can create entity groups. You can conduct searches and queries in specific partitions to have Milvus ignore entities in other partitions, and improve search efficiency.</p>
+<p>For details, refer to <a href="/docs/ar/manage-partitions.md">Manage Partitions</a>.</p>
+<h2 id="Shard" class="common-anchor-header">Shard<button data-href="#Shard" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -208,9 +208,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>الشظايا هي شرائح أفقية لمجموعة. تتوافق كل شظية مع قناة إدخال بيانات. تحتوي كل مجموعة على شظية بشكل افتراضي. يمكنك تعيين العدد المناسب من الشظايا عند إنشاء مجموعة بناءً على معدل النقل المتوقع وحجم البيانات المراد إدراجها في المجموعة.</p>
-<p>للحصول على تفاصيل حول كيفية تعيين عدد الشاردات، راجع <a href="/docs/ar/create-collection.md">إنشاء مجموعة</a>.</p>
-<h2 id="Alias" class="common-anchor-header">الاسم المستعار<button data-href="#Alias" class="anchor-icon" translate="no">
+    </button></h2><p>Shards are horizontal slices of a collection. Each shard corresponds to a data input channel. Every collection has a shard by default. You can set the appropriate number of shards when creating a collection based on the expected throughput and the volume of the data to insert into the collection.</p>
+<p>For details on how to set the shard number, refer to <a href="/docs/ar/create-collection.md">Create Collection</a>.</p>
+<h2 id="Alias" class="common-anchor-header">Alias<button data-href="#Alias" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -225,9 +225,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يمكنك إنشاء أسماء مستعارة لمجموعاتك. يمكن أن تحتوي المجموعة على عدة أسماء مستعارة، ولكن لا يمكن للمجموعات مشاركة اسم مستعار واحد. عند تلقي طلب يتعلق بمجموعة ما، يقوم Milvus بتحديد موقع المجموعة بناءً على الاسم المقدم. إذا لم تكن المجموعة التي تحمل الاسم المقدم موجودة، يواصل Milvus البحث عن الاسم المقدم باعتباره اسمًا مستعارًا. يمكنك استخدام الأسماء المستعارة للمجموعات لتكييف الكود الخاص بك مع سيناريوهات مختلفة.</p>
-<p>لمزيد من التفاصيل، راجع <a href="/docs/ar/manage-aliases.md">«إدارة الأسماء المستعارة</a>».</p>
-<h2 id="Function" class="common-anchor-header">الوظيفة<button data-href="#Function" class="anchor-icon" translate="no">
+    </button></h2><p>You can create aliases for your collections. A collection can have several aliases, but collections cannot share an alias. Upon receiving a request against a collection, Milvus locates the collection based on the provided name. If the collection by the provided name does not exist, Milvus continues locating the provided name as an alias. You can use collection aliases to adapt your code to different scenarios.</p>
+<p>For more details, refer to <a href="/docs/ar/manage-aliases.md">Manage Aliases</a>.</p>
+<h2 id="Function" class="common-anchor-header">Function<button data-href="#Function" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -242,8 +242,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يمكنك تعيين وظائف لـ Milvus لاستنباط الحقول عند إنشاء المجموعة. على سبيل المثال، تستخدم وظيفة البحث عن النص الكامل الوظيفة المعرفة من قبل المستخدم لاستنباط حقل متجه متفرق من حقل varchar محدد. لمزيد من المعلومات حول البحث عن النص الكامل، راجع <a href="/docs/ar/full-text-search.md">البحث عن النص الكامل</a>.</p>
-<h2 id="Consistency-Level" class="common-anchor-header">مستوى الاتساق<button data-href="#Consistency-Level" class="anchor-icon" translate="no">
+    </button></h2><p>You can set functions for Milvus to derive fields upon collection creation. For example, the full-text search function uses the user-defined function to derive a sparse vector field from a specific varchar field. For more information on full-text search, refer to <a href="/docs/ar/full-text-search.md">Full Text Search</a>.</p>
+<h2 id="Consistency-Level" class="common-anchor-header">Consistency Level<button data-href="#Consistency-Level" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -258,5 +258,5 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>تستخدم أنظمة قواعد البيانات الموزعة عادةً مستوى الاتساق لتحديد مدى تطابق البيانات عبر عقد البيانات والنسخ المتماثلة. يمكنك تعيين مستويات اتساق منفصلة عند إنشاء مجموعة أو إجراء عمليات بحث عن التشابه داخل المجموعة. مستويات الاتساق القابلة للتطبيق هي <strong>«قوي»</strong> <strong>و«تقادم محدود</strong>» <strong>و«جلسة</strong>» <strong>و«في النهاية</strong>».</p>
-<p>للحصول على تفاصيل حول مستويات الاتساق هذه، راجع <a href="/docs/ar/tune_consistency.md">«مستوى الاتساق</a>».</p>
+    </button></h2><p>Distributed database systems usually use the consistency level to define the data sameness across data nodes and replicas. You can set separate consistency levels when you create a collection or conduct similarity searches within the collection. The applicable consistency levels are <strong>Strong</strong>, <strong>Bounded Staleness</strong>, <strong>Session</strong>, and <strong>Eventually</strong>.</p>
+<p>For details on these consistency levels, refer to <a href="/docs/ar/tune_consistency.md">Consistency Level</a>.</p>

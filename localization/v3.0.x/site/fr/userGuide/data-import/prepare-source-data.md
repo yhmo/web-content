@@ -1,12 +1,12 @@
 ---
 id: prepare-source-data.md
 order: 0
-title: Préparation des données source
+title: Prepare Source Data
 summary: >-
-  Cette page aborde un point que vous devriez prendre en compte avant de
-  commencer à insérer des données en masse dans votre collection.
+  This page discusses something you should consider before you start
+  bulk-inserting data into your collection.
 ---
-<h1 id="Prepare-Source-Data" class="common-anchor-header">Préparation des données source<button data-href="#Prepare-Source-Data" class="anchor-icon" translate="no">
+<h1 id="Prepare-Source-Data" class="common-anchor-header">Prepare Source Data<button data-href="#Prepare-Source-Data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -21,8 +21,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Cette page aborde les points à prendre en compte avant de commencer à insérer des données en masse dans votre collection.</p>
-<h2 id="Before-you-start" class="common-anchor-header">Avant de commencer<button data-href="#Before-you-start" class="anchor-icon" translate="no">
+    </button></h1><p>This page discusses something you should consider before you start bulk-inserting data into your collection.</p>
+<h2 id="Before-you-start" class="common-anchor-header">Before you start<button data-href="#Before-you-start" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,32 +37,32 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>La collection cible nécessite un mappage des données source vers son schéma. Le diagramme ci-dessous illustre comment les données source valides sont mappées au schéma d’une collection cible.</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/map-data-to-schema.png" alt="Map data to schema" class="doc-image" id="map-data-to-schema" /> 
-   <span>Mappage des données au schéma</span>
-  
- </span></p>
-<p>Vous devez examiner attentivement vos données et concevoir le schéma de la collection cible en conséquence.</p>
-<p>En prenant comme exemple les données JSON du schéma ci-dessus, la liste des lignes contient deux entités, chaque ligne comportant six champs. Le schéma de la collection n'en inclut que quatre : <strong>id</strong>, <strong>vector</strong>, <strong>scalar_1</strong> et <strong>scalar_2</strong>.</p>
-<p>Deux autres éléments doivent être pris en compte lors de la conception du schéma :</p>
+    </button></h2><p>The target collection requires mapping the source data to its schema. The diagram below shows how acceptable source data is mapped to the schema of a target collection.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/map-data-to-schema.png" alt="Map data to schema" class="doc-image" id="map-data-to-schema" />
+    <span>Map data to schema</span>
+  </span>
+</p>
+<p>You should carefully examine your data and design the schema of the target collection accordingly.</p>
+<p>Taking the JSON data in the above diagram as an example, there are two entities in the rows list, each row having six fields. The collection schema selectively includes four: <strong>id</strong>, <strong>vector</strong>, <strong>scalar_1</strong>, and <strong>scalar_2</strong>.</p>
+<p>There are two more things to consider when designing the schema:</p>
 <ul>
-<li><p><strong>Activer ou non l’AutoID</strong></p>
-<p>Le champ <strong>id</strong> sert de champ principal de la collection. Pour que ce champ principal soit incrémenté automatiquement, vous pouvez activer <strong>l’AutoID</strong> dans le schéma. Dans ce cas, vous devez exclure le champ <strong>id</strong> de chaque ligne des données source.</p></li>
-<li><p><strong>Faut-il activer les champs dynamiques ?</strong></p>
-<p>La collection cible peut également stocker des champs non inclus dans son schéma prédéfini si celui-ci autorise les champs dynamiques. Le champ <strong>$meta</strong> est un champ JSON réservé destiné à contenir les champs dynamiques et leurs valeurs sous forme de paires clé-valeur. Dans le schéma ci-dessus, les champs <strong>dynamic_field_1</strong> et <strong>dynamic_field_2</strong> ainsi que leurs valeurs seront enregistrés sous forme de paires clé-valeur dans le champ <strong>$meta</strong>.</p></li>
+<li><p><strong>Whether to enable AutoID</strong></p>
+<p>The <strong>id</strong> field serves as the primary field of the collection. To make the primary field automatically increment, you can enable <strong>AutoID</strong> in the schema. In this case, you should exclude the <strong>id</strong> field from each row in the source data.</p></li>
+<li><p><strong>Whether to enable dynamic fields</strong></p>
+<p>The target collection can also store fields not included in its pre-defined schema if the schema enables dynamic fields. The <strong>$meta</strong> field is a reserved JSON field to hold dynamic fields and their values in key-value pairs. In the above diagram, the fields <strong>dynamic_field_1</strong> and <strong>dynamic_field_2</strong> and the values will be saved as key-value pairs in the <strong>$meta</strong> field.</p></li>
 </ul>
-<p>Le code suivant montre comment configurer le schéma de la collection illustrée dans le diagramme ci-dessus.</p>
+<p>The following code shows how to set up the schema for the collection illustrated in the above diagram.</p>
 <div class="language-python">
-<p>Pour plus d’informations, consultez <a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Collections/create_schema.md"><code translate="no">create_schema()</code></a> et <a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/CollectionSchema/add_field.md"><code translate="no">add_field()</code></a> dans la documentation de référence du SDK.</p>
+<p>To obtain more information, refer to <a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Collections/create_schema.md"><code translate="no">create_schema()</code></a> and <a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/CollectionSchema/add_field.md"><code translate="no">add_field()</code></a> in the SDK reference.</p>
 </div>
 <div class="language-java">
-<p>Pour plus d’informations, consultez <a href="https://milvus.io/api-reference/java/v2.4.x/v2/CollectionSchema/CollectionSchema.md"><code translate="no">CollectionSchema</code></a> dans la documentation de référence du SDK.</p>
+<p>To obtain more information, refer to <a href="https://milvus.io/api-reference/java/v2.4.x/v2/CollectionSchema/CollectionSchema.md"><code translate="no">CollectionSchema</code></a> in the SDK reference.</p>
 </div>
 <div class="multipleCode">
- <a href="#python">Python 
- </a> <a href="#java"> Java</a>
+  <a href="#python">Python</a>
+  <a href="#java">Java</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
 
@@ -210,7 +210,7 @@ schema.verify()
     <span class="hljs-keyword">return</span> schema;
 }
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="StructArray-fields-in-source-files" class="common-anchor-header">Champs StructArray dans les fichiers source<button data-href="#StructArray-fields-in-source-files" class="anchor-icon" translate="no">
+<h2 id="StructArray-fields-in-source-files" class="common-anchor-header">StructArray fields in source files<button data-href="#StructArray-fields-in-source-files" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -225,29 +225,29 @@ schema.verify()
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Un champ <a href="/docs/fr/array-of-structs.md">StructArray</a> est représenté différemment selon le format du fichier source. Le lecteur d’importation s’attend à l’une des structures suivantes :</p>
+    </button></h2><p>A <a href="/docs/fr/array-of-structs.md">StructArray</a> field is carried differently by each source file format. The import reader expects one of the following shapes:</p>
 <table>
 <thead>
-<tr><th>Format</th><th>Structure du champ StructArray</th></tr>
+<tr><th>Format</th><th>StructArray field shape</th></tr>
 </thead>
 <tbody>
-<tr><td>JSON, JSONL</td><td>La valeur du champ est une liste d’objets, à raison d’un par élément Struct, indexée par le nom du sous-champ : <code translate="no">&quot;chunks&quot;: [{&quot;text&quot;: &quot;...&quot;, &quot;section&quot;: &quot;index&quot;, &quot;emb&quot;: [0.1, 0.2]}, ...]</code>.</td></tr>
-<tr><td>CSV</td><td>La cellule contient le même texte JSON que le format JSON. La chaîne « <code translate="no">nullkey</code> » configurée pour la tâche d’importation ou une <code translate="no">null</code> JSON indique une valeur StructArray nulle.</td></tr>
-<tr><td>Parquet</td><td>Une colonne par champ StructArray de type <code translate="no">list&lt;struct&lt;...&gt;&gt;</code>, un enfant struct par sous-champ. Un sous-champ scalaire est un enfant scalaire, un sous-champ vectoriel est une liste de son type d’élément, tel que <code translate="no">list&lt;float32&gt;</code>, et un sous-champ de type tableau (Milvus 3.0.6 et versions ultérieures) est un enfant de type <code translate="no">list&lt;T&gt;</code>.</td></tr>
-<tr><td>NumPy</td><td>Non pris en charge. Les fichiers NumPy contiennent un fichier par champ de niveau supérieur et ne disposent d’aucune représentation pour un champ StructArray. Utilisez des fichiers JSON, CSV ou Parquet pour les collections comportant un champ StructArray.</td></tr>
+<tr><td>JSON, JSONL</td><td>The field value is a list of objects, one per Struct element, keyed by subfield name: <code translate="no">&quot;chunks&quot;: [{&quot;text&quot;: &quot;...&quot;, &quot;section&quot;: &quot;index&quot;, &quot;emb&quot;: [0.1, 0.2]}, ...]</code>.</td></tr>
+<tr><td>CSV</td><td>The cell holds the same JSON text as the JSON format. The <code translate="no">nullkey</code> configured for the import job or a JSON <code translate="no">null</code> marks a null StructArray value.</td></tr>
+<tr><td>Parquet</td><td>One column per StructArray field with the type <code translate="no">list&lt;struct&lt;...&gt;&gt;</code>, one struct child per subfield. A scalar subfield is a scalar child, a vector subfield is a list of its element type, such as <code translate="no">list&lt;float32&gt;</code>, and an array subfield (Milvus 3.0.6 and later) is a <code translate="no">list&lt;T&gt;</code> child.</td></tr>
+<tr><td>NumPy</td><td>Not supported. NumPy files hold one file per top-level field and have no representation for a StructArray field. Use JSON, CSV, or Parquet files for collections that have a StructArray field.</td></tr>
 </tbody>
 </table>
-<p>Les règles suivantes s’appliquent aux valeurs StructArray dans tous les formats pris en charge :</p>
+<p>The following rules apply to StructArray values in all supported formats:</p>
 <ul>
-<li><p>Utilisez des noms de sous-champs à l’intérieur de chaque élément Struct, et non des chemins d’accès tels que <code translate="no">chunks[text]</code>. Les colonnes plates ou les clés nommées <code translate="no">chunks[text]</code> sont rejetées.</p></li>
-<li><p>Un élément Struct ne peut pas être nul en soi, par exemple <code translate="no">[null, {...}]</code>. Une valeur StructArray entière ne peut être nulle que si le champ StructArray est nullable. Avant Milvus 3.0.6, chaque élément Struct devait fournir tous ses sous-champs.</p></li>
-<li><p>Les clés ou les éléments enfants Parquet qui ne sont pas des sous-champs de la collection, y compris les sous-champs supprimés, sont ignorés.</p></li>
-<li><p>À partir de Milvus 3.0.6, une clé manquante ou une valeur « <code translate="no">null</code> » pour un sous-champ dont l’élément est nullable est importée comme une valeur nulle pour cet élément Struct ; ainsi, les fichiers créés avant l’ajout d’un sous-champ sont importés sans celui-ci. Un « <code translate="no">null</code> » (valeur nulle) à tout autre endroit entraîne l’échec de l’importation. Pour un sous-champ de type tableau, « <code translate="no">null</code> » correspond à un tableau interne nul, et « <code translate="no">null</code> » à l’intérieur du tableau interne correspond à une valeur interne nulle lorsque le sous-champ le permet.</p></li>
-<li><p>À partir de Milvus 3.0.6, l’importation à partir d’un fichier binlog (par exemple lors d’une restauration de sauvegarde) et l’importation à partir d’une source de snapshot sont rejetées pour les collections comportant des sous-champs dont les éléments peuvent être nuls ou des sous-champs de type tableau scalaire.</p></li>
+<li><p>Use subfield names inside each Struct element, not paths such as <code translate="no">chunks[text]</code>. Flat columns or keys named <code translate="no">chunks[text]</code> are rejected.</p></li>
+<li><p>A Struct element itself cannot be null, such as <code translate="no">[null, {...}]</code>. A whole StructArray value can be null only when the StructArray field is nullable. Before Milvus 3.0.6, every Struct element must provide every subfield.</p></li>
+<li><p>Keys or Parquet children that are not subfields of the collection, including dropped subfields, are ignored.</p></li>
+<li><p>Starting in Milvus 3.0.6, a missing key or a <code translate="no">null</code> value for an element-nullable subfield imports as a null value for that Struct element, so files written before a subfield was added import without it. A <code translate="no">null</code> anywhere else fails the import. For an array subfield, <code translate="no">null</code> is a null inner array, and <code translate="no">null</code> inside the inner array is a null inner value when the subfield allows it.</p></li>
+<li><p>Starting in Milvus 3.0.6, binlog import, such as a backup restore, and snapshot-source import are rejected for collections that have element-nullable subfields or scalar array subfields.</p></li>
 </ul>
-<p>pymilvus <a href="#Set-up-BulkWriter">BulkWriter</a> prend en charge les formes de StructArray ci-dessus dans tous les formats pris en charge, y compris les sous-champs dont les éléments peuvent être nuls et les valeurs de StructArray pouvant être nulles. Utilisez les mêmes formes de lignes dans les appels ` <code translate="no">add_row()</code> ` de l’éditeur.</p>
-<p>Pour les limites liées au schéma, consultez la section <a href="/docs/fr/structarray-limits.md#Import-and-storage-limits">Limites de StructArray</a>.</p>
-<h2 id="Set-up-BulkWriter" class="common-anchor-header">Configurer BulkWriter<button data-href="#Set-up-BulkWriter" class="anchor-icon" translate="no">
+<p>pymilvus <a href="#Set-up-BulkWriter">BulkWriter</a> supports the StructArray shapes above in every supported format, including element-nullable subfields and nullable StructArray values. Use the same row shapes in the writer’s <code translate="no">add_row()</code> calls.</p>
+<p>For the schema-side limits, see <a href="/docs/fr/structarray-limits.md#Import-and-storage-limits">StructArray Limits</a>.</p>
+<h2 id="Set-up-BulkWriter" class="common-anchor-header">Set up BulkWriter<button data-href="#Set-up-BulkWriter" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -262,13 +262,13 @@ schema.verify()
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><strong>BulkWriter</strong> est un outil conçu pour convertir des jeux de données bruts en un format adapté à l’importation via l’API d’importation RESTful. Il propose deux types d’écriteurs :</p>
+    </button></h2><p><strong>BulkWriter</strong> is a tool designed to convert raw datasets into a format suitable for importing via the RESTful Import API. It offers two types of writers:</p>
 <ul>
-<li><strong>LocalBulkWriter</strong>: lit l’ensemble de données désigné et le transforme en un format facile à utiliser.</li>
-<li><strong>RemoteBulkWriter</strong>: effectue la même tâche que LocalBulkWriter, mais transfère en outre les fichiers de données convertis vers un compartiment de stockage d’objets distant spécifié.</li>
+<li><strong>LocalBulkWriter</strong>: Reads the designated dataset and transforms it into an easy-to-use format.</li>
+<li><strong>RemoteBulkWriter</strong>: Performs the same task as the LocalBulkWriter but additionally transfers the converted data files to a specified remote object storage bucket.</li>
 </ul>
-<p><strong>RemoteBulkWriter</strong> se distingue de <strong>LocalBulkWriter</strong> en ce <strong>qu’il</strong> transfère les fichiers de données convertis vers un compartiment de stockage d’objets cible.</p>
-<h3 id="Set-up-LocalBulkWriter" class="common-anchor-header">Configurer LocalBulkWriter<button data-href="#Set-up-LocalBulkWriter" class="anchor-icon" translate="no">
+<p><strong>RemoteBulkWriter</strong> differs from <strong>LocalBulkWriter</strong> in that <strong>RemoteBulkWriter</strong> transfers the converted data files to a target object storage bucket.</p>
+<h3 id="Set-up-LocalBulkWriter" class="common-anchor-header">Set up LocalBulkWriter<button data-href="#Set-up-LocalBulkWriter" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -283,10 +283,10 @@ schema.verify()
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Un <strong>LocalBulkWriter</strong> ajoute les lignes du jeu de données source et les enregistre dans un fichier local au format spécifié.</p>
+    </button></h3><p>A <strong>LocalBulkWriter</strong> appends rows from the source dataset and commits them to a local file of the specified format.</p>
 <div class="multipleCode">
- <a href="#python">Python 
- </a> <a href="#java"> Java</a>
+  <a href="#python">Python</a>
+  <a href="#java">Java</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus.bulk_writer <span class="hljs-keyword">import</span> LocalBulkWriter, BulkFileType
 <span class="hljs-comment"># Use `from pymilvus import LocalBulkWriter, BulkFileType` </span>
@@ -313,26 +313,26 @@ writer = LocalBulkWriter(
 <span class="hljs-type">LocalBulkWriter</span> <span class="hljs-variable">localBulkWriter</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">LocalBulkWriter</span>(localBulkWriterParam);
 <button class="copy-code-btn"></button></code></pre>
 <div class="language-python">
-<p>Lors de la création d’un <strong>LocalBulkWriter</strong>, vous devez :</p>
+<p>When creating a <strong>LocalBulkWriter</strong>, you should:</p>
 <ul>
-<li>Référencer le schéma créé dans ` <code translate="no">schema</code>`.</li>
-<li>Définir ` <code translate="no">local_path</code> ` sur le répertoire de sortie.</li>
-<li>Définir ` <code translate="no">file_type</code> ` sur le type de fichier de sortie.</li>
-<li>Si votre jeu de données contient un grand nombre d'enregistrements, il est recommandé de segmenter vos données en définissant <code translate="no">segment_size</code> sur une valeur appropriée.</li>
+<li>Reference the created schema in <code translate="no">schema</code>.</li>
+<li>Set <code translate="no">local_path</code> to the output directory.</li>
+<li>Set <code translate="no">file_type</code> to the output file type.</li>
+<li>If your dataset contains a large number of records, you are advised to segment your data by setting <code translate="no">segment_size</code> to a proper value.</li>
 </ul>
-<p>Pour plus de détails sur les paramètres, reportez-vous à la section <a href="https://milvus.io/api-reference/pymilvus/v2.4.x/DataImport/LocalBulkWriter/LocalBulkWriter.md">LocalBulkWriter</a> dans la documentation de référence du SDK.</p>
+<p>For details on parameter settings, refer to <a href="https://milvus.io/api-reference/pymilvus/v2.4.x/DataImport/LocalBulkWriter/LocalBulkWriter.md">LocalBulkWriter</a> in the SDK reference.</p>
 </div>
 <div class="language-java">
-<p>Lors de la création d’un <strong>LocalBulkWriter</strong>, vous devez :</p>
+<p>When creating a <strong>LocalBulkWriter</strong>, you should:</p>
 <ul>
-<li>Référencer le schéma créé dans ` <code translate="no">CollectionSchema()</code>`.</li>
-<li>Définir le répertoire de sortie dans ` <code translate="no">withLocalPath()</code>`.</li>
-<li>Définir le type de fichier de sortie dans ` <code translate="no">withFileType()</code>`.</li>
-<li>Si votre jeu de données contient un grand nombre d'enregistrements, il est recommandé de segmenter vos données en définissant <code translate="no">withChunkSize()</code> sur une valeur appropriée.</li>
+<li>Reference the created schema in <code translate="no">CollectionSchema()</code>.</li>
+<li>Set the output directory in <code translate="no">withLocalPath()</code>.</li>
+<li>Set the output file type in <code translate="no">withFileType()</code>.</li>
+<li>If your dataset contains a large number of records, you are advised to segment your data by setting <code translate="no">withChunkSize()</code> to a proper value.</li>
 </ul>
-<p>Pour plus de détails sur les paramètres, reportez-vous à la section LocalBulkWriter dans la documentation du SDK.</p>
+<p>For details on parameter settings, refer to LocalBulkWriter in the SDK reference.</p>
 </div>
-<h3 id="Set-up-RemoteBulkWriter" class="common-anchor-header">Configurer RemoteBulkWriter<button data-href="#Set-up-RemoteBulkWriter" class="anchor-icon" translate="no">
+<h3 id="Set-up-RemoteBulkWriter" class="common-anchor-header">Set up RemoteBulkWriter<button data-href="#Set-up-RemoteBulkWriter" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -347,10 +347,10 @@ writer = LocalBulkWriter(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Au lieu d’enregistrer les données ajoutées dans un fichier local, un <strong>RemoteBulkWriter</strong> les enregistre dans un compartiment distant. Vous devez donc configurer un objet <strong>ConnectParam</strong> avant de créer un <strong>RemoteBulkWriter</strong>.</p>
+    </button></h3><p>Instead of committing appended data to a local file, a <strong>RemoteBulkWriter</strong> commits them to a remote bucket. Therefore, you should set up a <strong>ConnectParam</strong> object before creating a <strong>RemoteBulkWriter</strong>.</p>
 <div class="multipleCode">
- <a href="#python">Python 
- </a> <a href="#java"> Java</a>
+  <a href="#python">Python</a>
+  <a href="#java">Java</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus.bulk_writer <span class="hljs-keyword">import</span> RemoteBulkWriter
 <span class="hljs-comment"># Use `from pymilvus import RemoteBulkWriter` </span>
@@ -399,10 +399,10 @@ writer = RemoteBulkWriter(
     <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RemoteBulkWriter</span>(bulkWriterParam);
 }
 <button class="copy-code-btn"></button></code></pre>
-<p>Une fois les paramètres de connexion prêts, vous pouvez les référencer dans le <strong>RemoteBulkWriter</strong> comme suit :</p>
+<p>Once the connection parameters are ready, you can reference it in the <strong>RemoteBulkWriter</strong> as follows:</p>
 <div class="multipleCode">
- <a href="#python">Python 
- </a> <a href="#java"> Java</a>
+  <a href="#python">Python</a>
+  <a href="#java">Java</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus.bulk_writer <span class="hljs-keyword">import</span> BulkFileType
 <span class="hljs-comment"># Use `from pymilvus import BulkFileType` </span>
@@ -429,12 +429,12 @@ writer = RemoteBulkWriter(
 <span class="hljs-type">RemoteBulkWriter</span> <span class="hljs-variable">remoteBulkWriter</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RemoteBulkWriter</span>(remoteBulkWriterParam);
 <button class="copy-code-btn"></button></code></pre>
 <div class="language-python">
-<p>Les paramètres de création d’un <strong>RemoteBulkWriter</strong> sont pratiquement identiques à ceux d’un <strong>LocalBulkWriter</strong>, à l’exception de <code translate="no">connect_param</code>. Pour plus de détails sur la configuration des paramètres, reportez-vous aux sections <a href="https://milvus.io/api-reference/pymilvus/v2.4.x/DataImport/RemoteBulkWriter/RemoteBulkWriter.md">RemoteBulkWriter</a> et <a href="https://milvus.io/api-reference/pymilvus/v2.4.x/DataImport/RemoteBulkWriter/S3ConnectParam.md">ConnectParam</a> dans la documentation de référence du SDK.</p>
+<p>The parameters for creating a <strong>RemoteBulkWriter</strong> are barely the same as those for a <strong>LocalBulkWriter</strong>, except <code translate="no">connect_param</code>. For details on parameter settings, refer to <a href="https://milvus.io/api-reference/pymilvus/v2.4.x/DataImport/RemoteBulkWriter/RemoteBulkWriter.md">RemoteBulkWriter</a> and <a href="https://milvus.io/api-reference/pymilvus/v2.4.x/DataImport/RemoteBulkWriter/S3ConnectParam.md">ConnectParam</a> in the SDK reference.</p>
 </div>
 <div class="language-java">
-<p>Les paramètres de création d’un <strong>RemoteBulkWriter</strong> sont pratiquement identiques à ceux d’un <strong>LocalBulkWriter</strong>, à l’exception de <code translate="no">StorageConnectParam</code>. Pour plus de détails sur la configuration des paramètres, consultez les sections RemoteBulkWriter et StorageConnectParam dans la documentation de référence du SDK.</p>
+<p>The parameters for creating a <strong>RemoteBulkWriter</strong> are barely the same as those for a <strong>LocalBulkWriter</strong>, except <code translate="no">StorageConnectParam</code>. For details on parameter settings, refer to RemoteBulkWriter and StorageConnectParam in the SDK reference.</p>
 </div>
-<h2 id="Start-writing" class="common-anchor-header">Lancer l’écriture<button data-href="#Start-writing" class="anchor-icon" translate="no">
+<h2 id="Start-writing" class="common-anchor-header">Start writing<button data-href="#Start-writing" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -450,15 +450,15 @@ writer = RemoteBulkWriter(
         ></path>
       </svg>
     </button></h2><div class="language-python">
-<p>Un <strong>BulkWriter</strong> dispose de deux méthodes : ` <code translate="no">append_row()</code> ` ajoute une ligne à partir d’un ensemble de données source, et ` <code translate="no">commit()</code> ` valide les lignes ajoutées dans un fichier local ou un compartiment distant.</p>
+<p>A <strong>BulkWriter</strong> has two methods: <code translate="no">append_row()</code> adds a row from a source dataset, and <code translate="no">commit()</code> commits added rows to a local file or a remote bucket.</p>
 </div>
 <div class="language-java">
-<p>Un <strong>BulkWriter</strong> dispose de deux méthodes : <code translate="no">appendRow()</code> ajoute une ligne à partir d’un ensemble de données source, et <code translate="no">commit()</code> valide les lignes ajoutées dans un fichier local ou un compartiment distant.</p>
+<p>A <strong>BulkWriter</strong> has two methods: <code translate="no">appendRow()</code> adds a row from a source dataset, and <code translate="no">commit()</code> commits added rows to a local file or a remote bucket.</p>
 </div>
-<p>À des fins de démonstration, le code suivant ajoute des données générées aléatoirement.</p>
+<p>For demonstration purposes, the following code appends randomly generated data.</p>
 <div class="multipleCode">
- <a href="#python">Python 
- </a> <a href="#java"> Java</a>
+  <a href="#python">Python</a>
+  <a href="#java">Java</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> random, string, json
 <span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
@@ -656,7 +656,7 @@ writer = RemoteBulkWriter(
     List&lt;List&lt;String&gt;&gt; batchFiles = uploadData();
 }
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Verify-the-results" class="common-anchor-header">Vérifier les résultats<button data-href="#Verify-the-results" class="anchor-icon" translate="no">
+<h2 id="Verify-the-results" class="common-anchor-header">Verify the results<button data-href="#Verify-the-results" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -672,14 +672,14 @@ writer = RemoteBulkWriter(
         ></path>
       </svg>
     </button></h2><div class="language-python">
-<p>Pour vérifier les résultats, vous pouvez obtenir le chemin de sortie réel en affichant la propriété ` <code translate="no">batch_files</code> ` du writer.</p>
+<p>To check the results, you can get the actual output path by printing the <code translate="no">batch_files</code> property of the writer.</p>
 </div>
 <div class="language-java">
-<p>Pour vérifier les résultats, vous pouvez obtenir le chemin de sortie réel en affichant la méthode ` <code translate="no">getBatchFiles()</code> ` de l'éditeur.</p>
+<p>To check the results, you can get the actual output path by printing the <code translate="no">getBatchFiles()</code> method of the writer.</p>
 </div>
 <div class="multipleCode">
- <a href="#python">Python 
- </a> <a href="#java"> Java</a>
+  <a href="#python">Python</a>
+  <a href="#java">Java</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">print</span>(writer.batch_files)
 
@@ -700,8 +700,8 @@ remoteBulkWriter.getBatchFiles();
     e.printStackTrace();
 }
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>BulkWriter</strong> génère un UUID, crée un sous-dossier à l'aide de cet UUID dans le répertoire de sortie fourni, puis place tous les fichiers générés dans ce sous-dossier. <a href="https://assets.zilliz.com/bulk_writer.zip">Cliquez ici</a> pour télécharger les exemples de données préparés.</p>
-<p>Les structures de dossiers possibles sont les suivantes :</p>
+<p><strong>BulkWriter</strong> generates a UUID, creates a sub-folder using the UUID in the provided output directory, and places all generated files in the sub-folder. <a href="https://assets.zilliz.com/bulk_writer.zip">Click here</a> to download the prepared sample data.</p>
+<p>Possible folder structures are as follows:</p>
 <pre><code translate="no"><span class="hljs-comment"># JSON</span>
 ├── folder
 │   └── 45ae1139-1d87-4aff-85f5-0039111f9e6b

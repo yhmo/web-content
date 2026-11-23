@@ -2,8 +2,10 @@
 id: voyage-ai-ranker.md
 title: Voyage AI RankerCompatible with Milvus 2.6.x
 summary: >-
-  Voyage AI Ranker 利用 Voyage AI 的專門
-  rerankers，透過語義重排來增強搜尋相關性。它提供高性能的重排功能，針對檢索增量生成（RAG）和搜尋應用進行了優化。
+  The Voyage AI Ranker leverages Voyage AI's specialized rerankers to enhance
+  search relevance through semantic reranking. It provides high-performance
+  reranking capabilities optimized for retrieval-augmented generation (RAG) and
+  search applications.
 beta: Milvus 2.6.x
 ---
 <h1 id="Voyage-AI-Ranker" class="common-anchor-header">Voyage AI Ranker<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#Voyage-AI-Ranker" class="anchor-icon" translate="no">
@@ -21,15 +23,15 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Voyage AI Ranker 利用<a href="https://www.voyageai.com/">Voyage AI 的</a>專門 rerankers，透過語義重排（semantic reranking）增強搜尋相關性。它提供高性能的重排功能，針對檢索增強生成（RAG）和搜尋應用進行了優化。</p>
-<p>Voyage AI Ranker 對需要下列功能的應用程式特別有價值：</p>
+    </button></h1><p>The Voyage AI Ranker leverages <a href="https://www.voyageai.com/">Voyage AI’s</a> specialized rerankers to enhance search relevance through semantic reranking. It provides high-performance reranking capabilities optimized for retrieval-augmented generation (RAG) and search applications.</p>
+<p>Voyage AI Ranker is particularly valuable for applications requiring:</p>
 <ul>
-<li><p>先進的語意理解能力，具備專門針對 Reranking 任務所訓練的模型</p></li>
-<li><p>高效能處理，針對生產工作負載進行最佳化推論</p></li>
-<li><p>靈活的截斷控制，可處理不同長度的文件</p></li>
-<li><p>針對不同的模型變異（reank-2、reank-lite 等）進行性能微調</p></li>
+<li><p>Advanced semantic understanding with models specifically trained for reranking tasks</p></li>
+<li><p>High-performance processing with optimized inference for production workloads</p></li>
+<li><p>Flexible truncation controls for handling diverse document lengths</p></li>
+<li><p>Fine-tuned performance across different model variants (rerank-2, rerank-lite, etc.)</p></li>
 </ul>
-<h2 id="Prerequisites" class="common-anchor-header">先決條件<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -44,16 +46,16 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>在 Milvus 中實作 Voyage AI Ranker 之前，請確保您擁有</p>
+    </button></h2><p>Before implementing Voyage AI Ranker in Milvus, ensure you have:</p>
 <ul>
-<li><p>具有<code translate="no">VARCHAR</code> 欄位的 Milvus 套件，其中包含要進行 rerank 的文字</p></li>
-<li><p>有效的 Voyage AI API 金鑰，可存取 reranker。在<a href="https://www.voyageai.com/">Voyage AI 的平台</a>註冊以取得您的 API 認證。您可以</p>
+<li><p>A Milvus collection with a <code translate="no">VARCHAR</code> field containing the text to be reranked</p></li>
+<li><p>A valid Voyage AI API key with access to rerankers. Sign up at <a href="https://www.voyageai.com/">Voyage AI’s platform</a> to obtain your API credentials. You can either:</p>
 <ul>
-<li><p>設定<code translate="no">VOYAGE_API_KEY</code> 環境變數，或</p></li>
-<li><p>直接在ranker配置中指定API key</p></li>
+<li><p>Set the <code translate="no">VOYAGE_API_KEY</code> environment variable, or</p></li>
+<li><p>Specify the API key directly in the ranker configuration</p></li>
 </ul></li>
 </ul>
-<h2 id="Create-a-Voyage-AI-ranker-function" class="common-anchor-header">建立 Voyage AI Ranker 功能<button data-href="#Create-a-Voyage-AI-ranker-function" class="anchor-icon" translate="no">
+<h2 id="Create-a-Voyage-AI-ranker-function" class="common-anchor-header">Create a Voyage AI ranker function<button data-href="#Create-a-Voyage-AI-ranker-function" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -68,9 +70,14 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>要在您的 Milvus 應用程式中使用 Voyage AI Ranker，請建立一個 Function 物件，指定重排的操作方式。這個函數將會傳給 Milvus 搜尋作業，以提升結果排名。</p>
+    </button></h2><p>To use Voyage AI Ranker in your Milvus application, create a Function object that specifies how the reranking should operate. This function will be passed to Milvus search operations to enhance result ranking.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, Function, FunctionType
 
 <span class="hljs-comment"># Connect to your Milvus server</span>
@@ -122,7 +129,7 @@ CreateCollectionReq.<span class="hljs-type">Function</span> <span class="hljs-va
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Voyage-AI-ranker-specific-parameters" class="common-anchor-header">Voyage AI 排序器特定參數<button data-href="#Voyage-AI-ranker-specific-parameters" class="anchor-icon" translate="no">
+<h3 id="Voyage-AI-ranker-specific-parameters" class="common-anchor-header">Voyage AI ranker-specific parameters<button data-href="#Voyage-AI-ranker-specific-parameters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -137,61 +144,61 @@ CreateCollectionReq.<span class="hljs-type">Function</span> <span class="hljs-va
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>以下參數是 Voyage AI ranker 特有的參數：</p>
+    </button></h3><p>The following parameters are specific to the Voyage AI ranker:</p>
 <table>
    <tr>
-     <th><p><strong>參數</strong></p></th>
-     <th><p><strong>需要嗎？</strong></p></th>
-     <th><p><strong>說明</strong></p></th>
-     <th><p><strong>值/範例</strong></p></th>
+     <th><p><strong>Parameter</strong></p></th>
+     <th><p><strong>Required?</strong></p></th>
+     <th><p><strong>Description</strong></p></th>
+     <th><p><strong>Value / Example</strong></p></th>
    </tr>
    <tr>
      <td><p><code translate="no">reranker</code></p></td>
-     <td><p>是</p></td>
-     <td><p>必須設定為<code translate="no">"model"</code> ，才能啟用模型重排。</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Must be set to <code translate="no">"model"</code> to enable model reranking.</p></td>
      <td><p><code translate="no">"model"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">provider</code></p></td>
-     <td><p>是</p></td>
-     <td><p>用於重排的模型服務提供者。</p></td>
+     <td><p>Yes</p></td>
+     <td><p>The model service provider to use for reranking.</p></td>
      <td><p><code translate="no">"voyageai"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">model_name</code></p></td>
-     <td><p>是</p></td>
-     <td><p>從 Voyage AI 平台支援的模型中使用的 Voyage AI reranker。</p><p>有關可用的 reranker 清單，請參閱<a href="https://docs.voyageai.com/docs/reranker">Voyage AI</a><a href="https://docs.voyageai.com/docs/reranker"> 文件</a>。</p></td>
+     <td><p>Yes</p></td>
+     <td><p>The Voyage AI reranker to use from supported models on Voyage AI platform.</p><p>For a list of rerankers available, refer to <a href="https://docs.voyageai.com/docs/reranker">Voyage AI</a><a href="https://docs.voyageai.com/docs/reranker"> documentation</a>.</p></td>
      <td><p><code translate="no">"rerank-2.5"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">queries</code></p></td>
-     <td><p>是</p></td>
-     <td><p>rerank 模型用來計算相關性分數的查詢字串清單。查詢字串的數量必須與您搜尋作業中的查詢字串數量完全相同（即使是使用查詢向量來取代文字），否則會報錯。</p></td>
-     <td><p><em>[「搜尋查詢」]</em></p></td>
+     <td><p>Yes</p></td>
+     <td><p>List of query strings used by the rerank model to calculate relevance scores. The number of query strings must match exactly the number of queries in your search operation (even when using query vectors instead of text), otherwise an error will be reported.</p></td>
+     <td><p><em>["search query"]</em></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">max_client_batch_size</code></p></td>
-     <td><p>否</p></td>
-     <td><p>由於模型服務可能無法一次處理所有資料，因此這會設定在多次請求中存取模型服務的批次大小。</p></td>
-     <td><p><code translate="no">128</code> (預設值)</p></td>
+     <td><p>No</p></td>
+     <td><p>Since model services may not process all data at once, this sets the batch size for accessing the model service in multiple requests.</p></td>
+     <td><p><code translate="no">128</code> (default)</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">truncation</code></p></td>
-     <td><p>否</p></td>
-     <td><p>是否截斷輸入，以滿足查詢和文件的「上下文長度限制」。</p><ul><li><p>如果<code translate="no">True</code> ，查詢和文件將被截斷以符合上下文長度限制，然後才由 reranker 模型處理。</p></li><li><p>如果是<code translate="no">False</code> ，當<code translate="no">rerank-2.5</code> 和<code translate="no">rerank-2.5-lite</code> 的查詢超過 8,000 個字元；<code translate="no">rerank-2</code> 的查詢超過 4,000 個字元；<code translate="no">rerank-2-lite</code> 和<code translate="no">rerank-1</code> 的查詢超過 2,000 個字元；<code translate="no">rerank-lite-1</code> 的查詢超過 1,000 個字元，或<code translate="no">rerank-2</code> 的查詢字元數與任何單一文件的字元數之和超過 16,000 個字元；<code translate="no">rerank-2-lite</code> 和<code translate="no">rerank-1</code> 的查詢字元數超過 8,000 個字元；<code translate="no">rerank-lite-1</code> 的查詢字元數超過 4,000 個字元時，就會發生錯誤。</p></li></ul></td>
-     <td><p><code translate="no">True</code> (預設）或<code translate="no">False</code></p></td>
+     <td><p>No</p></td>
+     <td><p>Whether to truncate the input to satisfy the "context length limit" on the query and the documents.</p><ul><li><p>If <code translate="no">True</code>, the query and documents will be truncated to fit within the context length limit, before processed by the reranker model.</p></li><li><p>If <code translate="no">False</code>, an error will be raised when the query exceeds 8,000 tokens for <code translate="no">rerank-2.5</code> and <code translate="no">rerank-2.5-lite</code>; 4,000 tokens for <code translate="no">rerank-2</code>; 2,000 tokens <code translate="no">rerank-2-lite</code> and <code translate="no">rerank-1</code>; and 1,000 tokens for <code translate="no">rerank-lite-1</code>, or the sum of the number of tokens in the query and the number of tokens in any single document exceeds 16,000 for <code translate="no">rerank-2</code>; 8,000 for <code translate="no">rerank-2-lite</code> and <code translate="no">rerank-1</code>; and 4,000 for <code translate="no">rerank-lite-1</code>.</p></li></ul></td>
+     <td><p><code translate="no">True</code> (default) or <code translate="no">False</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">credential</code></p></td>
-     <td><p>無</p></td>
-     <td><p>存取 Voyage AI API 服務的驗證憑證。如果未指定，系統會尋找<code translate="no">VOYAGE_API_KEY</code> 環境變數。</p></td>
-     <td><p><em>"your-voyage-api-key"。</em></p></td>
+     <td><p>No</p></td>
+     <td><p>Authentication credential for accessing Voyage AI API services. If not specified, the system will look for the <code translate="no">VOYAGE_API_KEY</code> environment variable.</p></td>
+     <td><p><em>"your-voyage-api-key"</em></p></td>
    </tr>
 </table>
 <div class="alert note">
-<p>關於所有模型排名器共用的一般參數 (例如<code translate="no">provider</code>,<code translate="no">queries</code>)，請參閱<a href="/docs/zh-hant/model-ranker-overview.md#Create-a-model-ranker">建立模型排名器</a>。</p>
+<p>For general parameters shared across all model rankers (e.g., <code translate="no">provider</code>, <code translate="no">queries</code>), refer to <a href="/docs/zh-hant/v2.6.x/model-ranker-overview.md#Create-a-model-ranker">Create a model ranker</a>.</p>
 </div>
-<h2 id="Apply-to-standard-vector-search" class="common-anchor-header">應用於標準向量搜尋<button data-href="#Apply-to-standard-vector-search" class="anchor-icon" translate="no">
+<h2 id="Apply-to-standard-vector-search" class="common-anchor-header">Apply to standard vector search<button data-href="#Apply-to-standard-vector-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -206,9 +213,14 @@ CreateCollectionReq.<span class="hljs-type">Function</span> <span class="hljs-va
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>將 Voyage AI Ranker 應用於標準向量搜尋：</p>
+    </button></h2><p>To apply Voyage AI Ranker to a standard vector search:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Execute search with Voyage AI reranker</span>
 results = client.search(
     collection_name=<span class="hljs-string">&quot;your_collection&quot;</span>,

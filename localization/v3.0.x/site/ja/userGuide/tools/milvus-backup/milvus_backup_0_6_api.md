@@ -1,10 +1,12 @@
 ---
 id: milvus_backup_0_6_api.md
-summary: Milvus Backup HTTP API を使用して、バックアップおよび復元タスクを作成・監視します。
-title: API を使用したデータのバックアップと復元Compatible with Milvus Backup 0.6.x
+summary: >-
+  Create and monitor backup and restore tasks through the Milvus Backup HTTP
+  API.
+title: Back up and Restore Data Using APIsCompatible with Milvus Backup 0.6.x
 beta: Milvus Backup 0.6.x
 ---
-<h1 id="Back-up-and-Restore-Data-Using-APIs" class="common-anchor-header">API を使用したデータのバックアップと復元<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus Backup 0.6.x</span><button data-href="#Back-up-and-Restore-Data-Using-APIs" class="anchor-icon" translate="no">
+<h1 id="Back-up-and-Restore-Data-Using-APIs" class="common-anchor-header">Back up and Restore Data Using APIs<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus Backup 0.6.x</span><button data-href="#Back-up-and-Restore-Data-Using-APIs" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -19,8 +21,8 @@ beta: Milvus Backup 0.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Milvus Backup HTTP API を使用して、バックアップの作成、コレクションの復元、および非同期タスクの監視を行います。以下のスナップショットの例では、<strong>Milvus 3.0.1 以降</strong>が必要です。Backup 0.5.x については、<a href="/docs/ja/milvus_backup_api.md">0.5.x API ガイドを</a>参照してください。既存のインストールについては、「<a href="/docs/ja/milvus_backup_upgrade.md">Milvus Backup のアップグレード</a>」を参照してください。</p>
-<h2 id="Obtain-Milvus-Backup" class="common-anchor-header">Milvus Backup の入手<button data-href="#Obtain-Milvus-Backup" class="anchor-icon" translate="no">
+    </button></h1><p>Use the Milvus Backup HTTP API to create backups, restore collections, and monitor asynchronous tasks. The snapshot example below requires <strong>Milvus 3.0.1 or later</strong>. For Backup 0.5.x, use the <a href="/docs/ja/milvus_backup_api.md">0.5.x API guide</a>. For an existing installation, see <a href="/docs/ja/milvus_backup_upgrade.md">Upgrade Milvus Backup</a>.</p>
+<h2 id="Obtain-Milvus-Backup" class="common-anchor-header">Obtain Milvus Backup<button data-href="#Obtain-Milvus-Backup" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -35,8 +37,8 @@ beta: Milvus Backup 0.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>以下の例は、<strong>Milvus Backup 0.6.0</strong> で検証済みです。<a href="https://github.com/zilliztech/milvus-backup/releases/tag/v0.6.0">v0.6.0 リリースから</a>適切なバイナリをダウンロードして解凍してください。代わりにソースからビルドする場合は、<a href="/docs/ja/milvus_backup_0_6_cli.md#Obtain-Milvus-Backup">「Milvus Backup の入手</a>」の手順に従ってください。ビルドには Go 1.26 以降が必要です。</p>
-<h2 id="Prepare-configuration-file" class="common-anchor-header">設定ファイルの準備<button data-href="#Prepare-configuration-file" class="anchor-icon" translate="no">
+    </button></h2><p>The examples below were validated with <strong>Milvus Backup 0.6.0</strong>. Download and extract the appropriate binary from the <a href="https://github.com/zilliztech/milvus-backup/releases/tag/v0.6.0">v0.6.0 release</a>. To build from source instead, follow <a href="/docs/ja/milvus_backup_0_6_cli.md#Obtain-Milvus-Backup">Obtain Milvus Backup</a>; building requires Go 1.26 or later.</p>
+<h2 id="Prepare-configuration-file" class="common-anchor-header">Prepare configuration file<button data-href="#Prepare-configuration-file" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -51,14 +53,14 @@ beta: Milvus Backup 0.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>「<a href="/docs/ja/milvus_backup_0_6_cli.md#Prepare-configuration-file">設定ファイルの準備</a>」にある v2 の例を使用して、<code translate="no">configs/backup.yaml</code> を作成してください。Milvus、インスタンスのストレージ、およびバックアップ先へのアクセスを設定します。また、スナップショット操作を行うためには、Milvus サーバーがバックアップストレージにアクセスできる必要があります。</p>
-<p>v1形式のファイルをお持ちの場合、引き続き読み込むことができます。スキーマや環境変数を変更する前に、「<a href="/docs/ja/milvus_backup_upgrade.md#Migrate-the-configuration">設定の移行</a>」を参照してください。</p>
-<p>バイナリが含まれるディレクトリから、設定を確認し、接続性をチェックします:</p>
+    </button></h2><p>Create <code translate="no">configs/backup.yaml</code> using the v2 example in <a href="/docs/ja/milvus_backup_0_6_cli.md#Prepare-configuration-file">Prepare configuration file</a>. Configure access to Milvus, the instance’s storage, and the backup destination. The Milvus server must also be able to access the backup storage for snapshot operations.</p>
+<p>If you have a v1 file, it remains loadable. See <a href="/docs/ja/milvus_backup_upgrade.md#Migrate-the-configuration">Migrate the configuration</a> before changing its schema or environment variables.</p>
+<p>From the directory containing the binary, inspect the configuration and check connectivity:</p>
 <pre><code translate="no" class="language-shell">./milvus-backup config show --config configs/backup.yaml
 ./milvus-backup check --config configs/backup.yaml
 <button class="copy-code-btn"></button></code></pre>
-<p>接続性チェックの結果が「<code translate="no">Success!</code> 」と表示されたら、次の手順に進みます。</p>
-<h2 id="Start-up-the-API-server" class="common-anchor-header">API サーバーを起動します<button data-href="#Start-up-the-API-server" class="anchor-icon" translate="no">
+<p>Continue when the connectivity check reports <code translate="no">Success!</code>.</p>
+<h2 id="Start-up-the-API-server" class="common-anchor-header">Start up the API server<button data-href="#Start-up-the-API-server" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -73,15 +75,15 @@ beta: Milvus Backup 0.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>確認済みの設定を使用してサービスを起動します：</p>
+    </button></h2><p>Start the service with the configuration you checked:</p>
 <pre><code translate="no" class="language-shell">./milvus-backup server --config configs/backup.yaml
 <button class="copy-code-btn"></button></code></pre>
-<p>デフォルトのポートは 8080 です。別のポートを選択するには、<code translate="no">-p</code> を使用してください：</p>
+<p>The default port is 8080. To choose another port, use <code translate="no">-p</code>:</p>
 <pre><code translate="no" class="language-shell">./milvus-backup server -p 18080 --config configs/backup.yaml
 <button class="copy-code-btn"></button></code></pre>
-<p>特定のサービスに対しては、これらのコマンドのうち1つだけを実行してください。以下の例ではポート8080を使用しています。別のポートを選択した場合は、URLを変更してください。Swagger UIは<code translate="no">http://localhost:8080/api/v1/docs/index.html</code> で利用可能です。</p>
-<p>タスクのポーリング中は、サービスを稼働させたままにしてください。タスク ID およびリアルタイムの進行状況はサービスプロセスに紐づいており、プロセスが停止した後も、永続化されたバックアップはオブジェクトストレージに残ります。</p>
-<h2 id="Prepare-data" class="common-anchor-header">データの準備<button data-href="#Prepare-data" class="anchor-icon" translate="no">
+<p>Run only one of these commands for a given service. The examples below use port 8080; change their URLs if you selected another port. Swagger UI is available at <code translate="no">http://localhost:8080/api/v1/docs/index.html</code>.</p>
+<p>Keep the service running while polling tasks. Task IDs and live progress belong to the service process; the persisted backup remains in object storage after the process stops.</p>
+<h2 id="Prepare-data" class="common-anchor-header">Prepare data<button data-href="#Prepare-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -96,8 +98,8 @@ beta: Milvus Backup 0.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">coll</code> という名前の既存のコレクションを使用するか、「<a href="/docs/ja/snapshot-backup-and-restore.md#Prepare-sample-data">サンプルデータの準備</a>」の手順に従って 256 エンティティのテストコレクションを作成してください。独自のデータを使用する場合は、リクエスト内のコレクション名を変更してください。結果の検証中は、テストデータを変更しないでください。</p>
-<h2 id="Back-up-data" class="common-anchor-header">データのバックアップ<button data-href="#Back-up-data" class="anchor-icon" translate="no">
+    </button></h2><p>Use an existing collection named <code translate="no">coll</code>, or create the 256-entity test collection from <a href="/docs/ja/snapshot-backup-and-restore.md#Prepare-sample-data">Prepare sample data</a>. Change the collection names in the requests if you use your own data. Keep the test data unchanged while verifying the result.</p>
+<h2 id="Back-up-data" class="common-anchor-header">Back up data<button data-href="#Back-up-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -112,7 +114,7 @@ beta: Milvus Backup 0.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>非同期のバックアップリクエストを送信します：</p>
+    </button></h2><p>Submit an asynchronous backup request:</p>
 <pre><code translate="no" class="language-shell">curl --request POST &#x27;http://localhost:8080/api/v1/create&#x27; \
   --header &#x27;Content-Type: application/json&#x27; \
   --data &#x27;{
@@ -121,31 +123,31 @@ beta: Milvus Backup 0.6.x
     &quot;collection_names&quot;: [&quot;coll&quot;]
   }&#x27;
 <button class="copy-code-btn"></button></code></pre>
-<p>レスポンスには `<code translate="no">requestId</code>` が含まれます。リクエストの送信は、バックアップが完了したことを意味するものではありません。その値を `<code translate="no">backup_id</code> ` にコピーし、ポーリングを行います:</p>
+<p>The response includes a <code translate="no">requestId</code>. Submission does not mean that the backup is complete. Copy that value into <code translate="no">backup_id</code> and poll:</p>
 <pre><code translate="no" class="language-shell">curl &#x27;http://localhost:8080/api/v1/get_backup?backup_id=BACKUP_REQUEST_ID&amp;backup_name=my_backup&#x27;
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">data.state_code</code> が<code translate="no">2</code> になるのを待ちます。API では以下のタスク状態が使用されます：</p>
+<p>Wait for <code translate="no">data.state_code</code> to become <code translate="no">2</code>. The API uses these task states:</p>
 <table>
 <thead>
-<tr><th><code translate="no">state_code</code></th><th>意味</th></tr>
+<tr><th><code translate="no">state_code</code></th><th>Meaning</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">0</code></td><td>初期</td></tr>
-<tr><td><code translate="no">1</code></td><td>実行中</td></tr>
-<tr><td><code translate="no">2</code></td><td>成功</td></tr>
-<tr><td><code translate="no">3</code></td><td>失敗</td></tr>
-<tr><td><code translate="no">4</code></td><td>タイムアウト</td></tr>
+<tr><td><code translate="no">0</code></td><td>Initial</td></tr>
+<tr><td><code translate="no">1</code></td><td>Executing</td></tr>
+<tr><td><code translate="no">2</code></td><td>Success</td></tr>
+<tr><td><code translate="no">3</code></td><td>Failed</td></tr>
+<tr><td><code translate="no">4</code></td><td>Timed out</td></tr>
 </tbody>
 </table>
-<p>レスポンスとタスクの状態の両方を確認してください。HTTP 200 だけでは不十分です。<code translate="no">code</code> の値が 0 以外の場合、エラーが発生していることを示します。正常なレスポンスの場合、<code translate="no">code</code> の値は 0 であるため、この項目は省略可能です。タスクが失敗またはタイムアウトした場合は、そのバックアップから復元する前に、レスポンスの詳細とサーバーログを確認してください。</p>
-<p>保存されているバックアップの一覧を表示し、名前で完了済みのバックアップを確認します：</p>
+<p>Check both the response and the task state. HTTP 200 alone is insufficient: a nonzero response <code translate="no">code</code> indicates an error. A successful response can omit <code translate="no">code</code> because its value is zero. If a task fails or times out, inspect the response details and server log before restoring from that backup.</p>
+<p>List the stored backups and inspect the completed backup by name:</p>
 <pre><code translate="no" class="language-shell">curl &#x27;http://localhost:8080/api/v1/list&#x27;
 curl &#x27;http://localhost:8080/api/v1/get_backup?backup_name=my_backup&#x27;
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">get_backup</code> <code translate="no">collection_backups</code> を含む JSON メタデータを返します。バックアップファイルはダウンロード<strong>されません</strong>。別のプロセスによって作成されたバックアップの場合、名前のみのクエリでは、進行中のタスクの進捗情報を含まないメタデータが返されることがあります。アクティブなバックアップを監視する際は、現在のサービスの作成レスポンスから取得したタスク ID を使用してください。</p>
-<p>デフォルトの形式は `<code translate="no">auto</code>` であり、これは Milvus 3.0 でのスナップショットを選択します。binlog を明示的に要求するには、`create` ボディに `<code translate="no">&quot;format&quot;: &quot;binlog&quot;</code> ` を追加してください。CLI の `<code translate="no">--for</code> ` プリセットは、HTTP リクエストのフィールドではありません。</p>
-<p>バックアップを保持または移動するには、オブジェクトストレージ内のディレクトリ全体をコピーします。<a href="https://github.com/zilliztech/milvus-backup/blob/v0.6.0/docs/user_guide/transfer.md">0.6.0の転送ガイド</a>を参照してください。</p>
-<h2 id="Restore-data" class="common-anchor-header">データの復元<button data-href="#Restore-data" class="anchor-icon" translate="no">
+<p><code translate="no">get_backup</code> returns JSON metadata, including <code translate="no">collection_backups</code>; it does <strong>not</strong> download backup files. For a backup created by another process, a name-only query can return metadata without live task progress. Use the task ID from the current service’s create response when monitoring an active backup.</p>
+<p>The default format is <code translate="no">auto</code>, which selects snapshot on Milvus 3.0. To explicitly request binlog, add <code translate="no">&quot;format&quot;: &quot;binlog&quot;</code> to the create body. The CLI’s <code translate="no">--for</code> presets are not an HTTP request field.</p>
+<p>To preserve or move the backup, copy the entire directory in object storage. See the <a href="https://github.com/zilliztech/milvus-backup/blob/v0.6.0/docs/user_guide/transfer.md">0.6.0 transfer guide</a>.</p>
+<h2 id="Restore-data" class="common-anchor-header">Restore data<button data-href="#Restore-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -160,7 +162,7 @@ curl &#x27;http://localhost:8080/api/v1/get_backup?backup_name=my_backup&#x27;
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">coll_bak</code> が既に存在していないことを確認してください。サフィックスを指定して復元リクエストを送信します：</p>
+    </button></h2><p>Ensure that <code translate="no">coll_bak</code> does not already exist. Submit a restore request with a suffix:</p>
 <pre><code translate="no" class="language-shell">curl --request POST &#x27;http://localhost:8080/api/v1/restore&#x27; \
   --header &#x27;Content-Type: application/json&#x27; \
   --data &#x27;{
@@ -170,12 +172,12 @@ curl &#x27;http://localhost:8080/api/v1/get_backup?backup_name=my_backup&#x27;
     &quot;collection_suffix&quot;: &quot;_bak&quot;
   }&#x27;
 <button class="copy-code-btn"></button></code></pre>
-<p>HTTPの<code translate="no">collection_names</code> フィールドは、サフィックスが適用される前に、<strong>バックアップ内の</strong>名前を選択します。このリクエストでは、<code translate="no">coll</code> が選択され、<code translate="no">coll_bak</code> が作成されます。一方、CLIの<code translate="no">--filter</code> は、名前変更後のターゲット名と照合します。このHTTPフィールドに<code translate="no">coll_bak</code> を代入しないでください。</p>
-<p>復元レスポンスから `<code translate="no">data.id</code> ` をコピーし、タスクのステータスを確認します:</p>
+<p>The HTTP <code translate="no">collection_names</code> field selects names <strong>in the backup</strong>, before the suffix is applied. This request selects <code translate="no">coll</code> and creates <code translate="no">coll_bak</code>. The CLI’s <code translate="no">--filter</code> instead matches target names after renaming; do not substitute <code translate="no">coll_bak</code> into this HTTP field.</p>
+<p>Copy <code translate="no">data.id</code> from the restore response and poll the task:</p>
 <pre><code translate="no" class="language-shell">curl &#x27;http://localhost:8080/api/v1/get_restore?id=RESTORE_TASK_ID&#x27;
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">data.state_code: 2</code> が表示されるまで待機し、<code translate="no">collection_restore_tasks</code> で期待されるターゲットコレクションを確認してください。タスクが送信されただけでは、復元がまだ検証されたことにはなりません。</p>
-<h3 id="Restore-with-the-original-name" class="common-anchor-header">元の名前で復元する<button data-href="#Restore-with-the-original-name" class="anchor-icon" translate="no">
+<p>Wait for <code translate="no">data.state_code: 2</code> and check <code translate="no">collection_restore_tasks</code> for the expected target collection. A submitted task is not yet a verified restore.</p>
+<h3 id="Restore-with-the-original-name" class="common-anchor-header">Restore with the original name<button data-href="#Restore-with-the-original-name" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -190,7 +192,7 @@ curl &#x27;http://localhost:8080/api/v1/get_backup?backup_name=my_backup&#x27;
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">coll</code> が存在しないターゲットインスタンスを使用します。そのターゲットおよびバックアップ完了先が設定された別のバックアップ API サービスを起動し、次のリクエストをターゲットサービスに送信します:</p>
+    </button></h3><p>Use a target instance where <code translate="no">coll</code> does not exist. Start a separate backup API service configured for that target and the completed backup location, then send this request to the target service:</p>
 <pre><code translate="no" class="language-shell">curl --request POST &#x27;http://localhost:8080/api/v1/restore&#x27; \
   --header &#x27;Content-Type: application/json&#x27; \
   --data &#x27;{
@@ -200,8 +202,8 @@ curl &#x27;http://localhost:8080/api/v1/get_backup?backup_name=my_backup&#x27;
     &quot;collection_suffix&quot;: &quot;&quot;
   }&#x27;
 <button class="copy-code-btn"></button></code></pre>
-<p>返されたタスク ID を使用して、同じサービス上の<code translate="no">get_restore</code> をポーリングします。復元先については<code translate="no">milvus.*</code> を、既存のバックアップについては<code translate="no">backup.storage</code> を設定します。「<a href="/docs/ja/milvus_backup_0_6_cli.md#Prepare-configuration-file">設定ファイルの準備</a>」を参照してください。</p>
-<h2 id="Verify-restored-data" class="common-anchor-header">復元されたデータの確認<button data-href="#Verify-restored-data" class="anchor-icon" translate="no">
+<p>Poll <code translate="no">get_restore</code> on the same service using the returned task ID. Configure <code translate="no">milvus.*</code> for the restore target and <code translate="no">backup.storage</code> for the existing backup. See <a href="/docs/ja/milvus_backup_0_6_cli.md#Prepare-configuration-file">Prepare configuration file</a>.</p>
+<h2 id="Verify-restored-data" class="common-anchor-header">Verify restored data<button data-href="#Verify-restored-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -216,5 +218,5 @@ curl &#x27;http://localhost:8080/api/v1/get_backup?backup_name=my_backup&#x27;
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>復元タスクが成功したら、ターゲットの Milvus インスタンスに接続し、期待されるコレクションとデータが存在することを確認します。256 エンティティのテストコレクションについては、「<a href="/docs/ja/snapshot-backup-and-restore.md#Verify-the-result">結果の確認</a>」に記載されているスカラー、ベクトル、および検索の全チェックを実行してください。</p>
-<p>元の名前で復元する場合は、<code translate="no">coll_bak</code> を<code translate="no">coll</code> に変更してください。検証コードは、復元されたデータを削除せずに読み取ります。本番データについては、バックアップ時に取得したベースラインと比較してください。</p>
+    </button></h2><p>After the restore task succeeds, connect to the target Milvus instance and verify that the expected collection and data exist. For the 256-entity test collection, use the full scalar, vector, and search checks in <a href="/docs/ja/snapshot-backup-and-restore.md#Verify-the-result">Verify the result</a>.</p>
+<p>Change <code translate="no">coll_bak</code> to <code translate="no">coll</code> when you restore with the original name. The verification code reads the restored data without deleting it. For production data, compare against a baseline captured at backup time.</p>

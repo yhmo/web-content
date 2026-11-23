@@ -1,11 +1,11 @@
 ---
 id: cdc_failover.md
 summary: >-
-  Узнайте, как выполнить обход отказа, когда основной кластер Milvus становится
-  недоступным.
-title: Обход отказа
+  Learn how to perform a failover when the primary Milvus cluster becomes
+  unavailable.
+title: Failover
 ---
-<h1 id="Failover" class="common-anchor-header">Обход отказа<button data-href="#Failover" class="anchor-icon" translate="no">
+<h1 id="Failover" class="common-anchor-header">Failover<button data-href="#Failover" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,14 +20,14 @@ title: Обход отказа
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Обход отказа переводит резервный кластер в автономный основной, когда исходный основной кластер становится полностью недоступен. Эта операция основана на доступности и может привести к потере данных, которые не были реплицированы до сбоя.</p>
-<p>В данном руководстве предполагается исходная топология:</p>
+    </button></h1><p>Failover promotes a standby cluster to a standalone primary when the original primary is completely unavailable. It is an availability-first operation and may lose data that was not replicated before the failure.</p>
+<p>This guide assumes the original topology is:</p>
 <pre><code translate="no" class="language-text">cluster-a (primary)  -&gt;  cluster-b (standby)
 <button class="copy-code-btn"></button></code></pre>
-<p>После обхода отказа <code translate="no">cluster-b</code> становится автономной основной:</p>
+<p>After failover, <code translate="no">cluster-b</code> becomes a standalone primary:</p>
 <pre><code translate="no" class="language-text">cluster-b (primary)
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="When-to-Use-Failover" class="common-anchor-header">Когда использовать обход отказа<button data-href="#When-to-Use-Failover" class="anchor-icon" translate="no">
+<h2 id="When-to-Use-Failover" class="common-anchor-header">When to Use Failover<button data-href="#When-to-Use-Failover" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -42,14 +42,14 @@ title: Обход отказа
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Используйте обход отказа только в следующих случаях:</p>
+    </button></h2><p>Use failover only when:</p>
 <ul>
-<li>Оригинальный основной сервер не может отвечать на запросы.</li>
-<li>Первичная система не может быть восстановлена в течение приемлемого времени.</li>
-<li>Восстановление доступности записи важнее, чем ожидание старого основного сервера.</li>
+<li>The original primary cannot respond to requests.</li>
+<li>The primary cannot be recovered within an acceptable time.</li>
+<li>Restoring write availability is more important than waiting for the old primary.</li>
 </ul>
-<p>Если основной сервер все еще доступен, используйте <a href="/docs/ru/cdc_switchover.md">переключение</a>. Переключение позволяет избежать потери данных.</p>
-<h2 id="Data-Loss-Risk" class="common-anchor-header">Риск потери данных<button data-href="#Data-Loss-Risk" class="anchor-icon" translate="no">
+<p>If the primary is still reachable, use <a href="/docs/ru/cdc_switchover.md">Switchover</a> instead. Switchover avoids data loss.</p>
+<h2 id="Data-Loss-Risk" class="common-anchor-header">Data Loss Risk<button data-href="#Data-Loss-Risk" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -64,20 +64,20 @@ title: Обход отказа
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>При переходе на новый ресурс не нужно ждать, пока восстановится старый основной ресурс. Все данные, записанные на старом основном сервере, но еще не реплицированные на резервном, могут быть потеряны.</p>
-<p>Возможная потеря данных определяется задержкой CDC на момент, когда первичная система стала недоступной.</p>
-<p>Прежде чем запускать обход отказа, поймите, чем это чревато:</p>
+    </button></h2><p>Failover does not wait for the original primary. Any data written to the old primary but not yet replicated to the standby may be lost.</p>
+<p>The possible data loss is determined by CDC lag at the time the primary became unavailable.</p>
+<p>Before running failover, understand the tradeoff:</p>
 <table>
 <thead>
-<tr><th>Цель</th><th>Переключение</th><th>Обход отказа</th></tr>
+<tr><th>Goal</th><th>Switchover</th><th>Failover</th></tr>
 </thead>
 <tbody>
-<tr><td>Восстановление записи при недоступности основной системы</td><td>Нет</td><td>Да</td></tr>
-<tr><td>Избежать потери данных</td><td>Да</td><td>Не гарантируется</td></tr>
-<tr><td>Требуется, чтобы старая основная система отреагировала</td><td>Да</td><td>Нет</td></tr>
+<tr><td>Restore writes while primary is unreachable</td><td>No</td><td>Yes</td></tr>
+<tr><td>Avoid data loss</td><td>Yes</td><td>Not guaranteed</td></tr>
+<tr><td>Requires old primary to respond</td><td>Yes</td><td>No</td></tr>
 </tbody>
 </table>
-<h2 id="Before-You-Begin" class="common-anchor-header">Прежде чем начать<button data-href="#Before-You-Begin" class="anchor-icon" translate="no">
+<h2 id="Before-You-Begin" class="common-anchor-header">Before You Begin<button data-href="#Before-You-Begin" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -92,16 +92,16 @@ title: Обход отказа
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Убедитесь в следующем:</p>
+    </button></h2><p>Confirm the following:</p>
 <ul>
-<li>Оригинальный основной сервер недоступен.</li>
-<li>Вы решили не ждать восстановления основной системы.</li>
-<li>Трафик приложений можно перенаправить на резервную систему.</li>
-<li>Автоматизация трафика не будет отправлять записи обратно на старый основной кластер, если он восстановится.</li>
-<li>У вас есть идентификатор резервного кластера, адрес, токен и pchannels.</li>
+<li>The original primary is unavailable.</li>
+<li>You have decided not to wait for primary recovery.</li>
+<li>Application traffic can be redirected to the standby.</li>
+<li>Traffic automation will not send writes back to the old primary if it recovers.</li>
+<li>You have the standby cluster ID, address, token, and pchannels.</li>
 </ul>
-<p>Самое важное требование безопасности - предотвратить раздвоение мозга. После обхода отказа только восстановленный резервный кластер должен принимать записи приложений.</p>
-<h2 id="Build-the-Failover-Configuration" class="common-anchor-header">Постройте конфигурацию обхода отказа<button data-href="#Build-the-Failover-Configuration" class="anchor-icon" translate="no">
+<p>The most important safety requirement is to prevent split brain. After failover, only the promoted standby should accept application writes.</p>
+<h2 id="Build-the-Failover-Configuration" class="common-anchor-header">Build the Failover Configuration<button data-href="#Build-the-Failover-Configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -116,7 +116,7 @@ title: Обход отказа
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Создайте конфигурацию, содержащую только резервный кластер и не имеющую топологии репликации. Установите <code translate="no">force_promote=True</code>.</p>
+    </button></h2><p>Build a configuration that contains only the standby cluster and no replication topology. Set <code translate="no">force_promote=True</code>.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># If you followed Set Up CDC Replication, cluster B is the original target cluster.</span>
 cluster_b_id = target_cluster_id
 cluster_b_addr = target_cluster_addr
@@ -139,7 +139,7 @@ failover_config = {
     <span class="hljs-string">&quot;force_promote&quot;</span>: <span class="hljs-literal">True</span>,
 }
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Promote-the-Standby" class="common-anchor-header">Продвижение резервного кластера<button data-href="#Promote-the-Standby" class="anchor-icon" translate="no">
+<h2 id="Promote-the-Standby" class="common-anchor-header">Promote the Standby<button data-href="#Promote-the-Standby" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -154,7 +154,7 @@ failover_config = {
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Отправьте запрос на резервный кластер.</p>
+    </button></h2><p>Send the request to the standby cluster.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
@@ -164,8 +164,8 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
 <span class="hljs-keyword">finally</span>:
     client_b.close()
 <button class="copy-code-btn"></button></code></pre>
-<p>Если запрос успешен, <code translate="no">cluster-b</code> становится автономным основным и может принимать записи.</p>
-<h2 id="Redirect-Application-Traffic" class="common-anchor-header">Перенаправление трафика приложений<button data-href="#Redirect-Application-Traffic" class="anchor-icon" translate="no">
+<p>If the request succeeds, <code translate="no">cluster-b</code> becomes a standalone primary and can accept writes.</p>
+<h2 id="Redirect-Application-Traffic" class="common-anchor-header">Redirect Application Traffic<button data-href="#Redirect-Application-Traffic" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -180,14 +180,14 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>После продвижения:</p>
+    </button></h2><p>After promotion:</p>
 <ol>
-<li>Перенаправьте трафик записи на <code translate="no">cluster-b</code>.</li>
-<li>Удалите <code translate="no">cluster-a</code> из конечных точек записи, балансировщиков нагрузки, записей DNS и автоматизации.</li>
-<li>Убедитесь, что <code translate="no">cluster-b</code> принимает записи.</li>
-<li>Сохраняйте <code translate="no">cluster-a</code> изолированным до тех пор, пока он не будет выведен из эксплуатации или явно перестроен.</li>
+<li>Redirect write traffic to <code translate="no">cluster-b</code>.</li>
+<li>Remove <code translate="no">cluster-a</code> from write endpoints, load balancers, DNS records, and automation.</li>
+<li>Verify that <code translate="no">cluster-b</code> accepts writes.</li>
+<li>Keep <code translate="no">cluster-a</code> isolated until it is decommissioned or explicitly rebuilt.</li>
 </ol>
-<p>Пример проверки записи:</p>
+<p>Example write verification:</p>
 <pre><code translate="no" class="language-python">client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
 
 <span class="hljs-keyword">try</span>:
@@ -198,8 +198,8 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
 <span class="hljs-keyword">finally</span>:
     client_b.close()
 <button class="copy-code-btn"></button></code></pre>
-<p>Отрегулируйте поля "Имя коллекции" и "Схема" в соответствии с вашим развертыванием.</p>
-<h2 id="Verify-the-Result" class="common-anchor-header">Проверка результата<button data-href="#Verify-the-Result" class="anchor-icon" translate="no">
+<p>Adjust the collection name and schema fields to match your deployment.</p>
+<h2 id="Verify-the-Result" class="common-anchor-header">Verify the Result<button data-href="#Verify-the-Result" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -214,13 +214,13 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Проверьте продвигаемый кластер напрямую:</p>
+    </button></h2><p>Verify the promoted cluster directly:</p>
 <ul>
-<li>Записи проходят успешно на <code translate="no">cluster-b</code>.</li>
-<li>Чтение возвращает ожидаемые данные.</li>
-<li>Ни один компонент приложения не пишет на <code translate="no">cluster-a</code>.</li>
+<li>Writes succeed on <code translate="no">cluster-b</code>.</li>
+<li>Reads return expected data.</li>
+<li>No application component writes to <code translate="no">cluster-a</code>.</li>
 </ul>
-<h2 id="Handling-the-Old-Primary" class="common-anchor-header">Работа со старой основной системой<button data-href="#Handling-the-Old-Primary" class="anchor-icon" translate="no">
+<h2 id="Handling-the-Old-Primary" class="common-anchor-header">Handling the Old Primary<button data-href="#Handling-the-Old-Primary" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -235,9 +235,9 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>После обхода отказа считайте <code translate="no">cluster-a</code> устаревшим. Не отправляйте на него записи приложений, если он снова станет доступным. Он может содержать данные, которые никогда не реплицировались на <code translate="no">cluster-b</code>, а <code translate="no">cluster-b</code> может уже содержать новые записи после обхода отказа.</p>
-<p>Не подключайте <code translate="no">cluster-a</code> к старой топологии автоматически. Восстановление старой основной топологии - это отдельная задача восстановления, которая должна быть тщательно спланирована.</p>
-<h2 id="Minimizing-Data-Loss" class="common-anchor-header">Минимизация потери данных<button data-href="#Minimizing-Data-Loss" class="anchor-icon" translate="no">
+    </button></h2><p>After failover, treat <code translate="no">cluster-a</code> as stale. Do not send application writes to it if it becomes reachable again. It may contain data that was never replicated to <code translate="no">cluster-b</code>, and <code translate="no">cluster-b</code> may already contain new writes after failover.</p>
+<p>Do not reconnect <code translate="no">cluster-a</code> to the old topology automatically. Reintroducing the old primary is a separate recovery task that must be planned carefully.</p>
+<h2 id="Minimizing-Data-Loss" class="common-anchor-header">Minimizing Data Loss<button data-href="#Minimizing-Data-Loss" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -252,16 +252,16 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Нельзя полностью исключить риск потери данных при обходе отказа, но его можно снизить:</p>
+    </button></h2><p>You cannot remove all data-loss risk from failover, but you can reduce it:</p>
 <ul>
-<li>Постоянно отслеживайте отставание CDC.</li>
-<li>Обеспечьте резервные кластеры провизией для обработки скорости записи основного.</li>
-<li>Поддерживайте низкий уровень задержек и потерь пакетов в межкластерной сети.</li>
-<li>Сделайте запись приложений идемпотентной.</li>
-<li>Повторяйте записи, успех которых неясен после переключения.</li>
-<li>Предпочитайте переключаться, когда основной кластер еще может ответить.</li>
+<li>Monitor CDC lag continuously.</li>
+<li>Keep standby clusters provisioned to handle the primary write rate.</li>
+<li>Keep cross-cluster network latency and packet loss low.</li>
+<li>Make application writes idempotent.</li>
+<li>Retry writes whose success is uncertain after failover.</li>
+<li>Prefer switchover whenever the primary can still respond.</li>
 </ul>
-<h2 id="FAQ" class="common-anchor-header">ЧАСТО ЗАДАВАЕМЫЕ ВОПРОСЫ<button data-href="#FAQ" class="anchor-icon" translate="no">
+<h2 id="FAQ" class="common-anchor-header">FAQ<button data-href="#FAQ" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -276,7 +276,7 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Does-failover-always-lose-data" class="common-anchor-header">Всегда ли при обходе отказа теряются данные?<button data-href="#Does-failover-always-lose-data" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Does-failover-always-lose-data" class="common-anchor-header">Does failover always lose data?<button data-href="#Does-failover-always-lose-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -291,8 +291,8 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Нет, но может. Если все записи уже были реплицированы до отказа основного сервера, данные не будут потеряны. Если существовало отставание CDC, отстающие данные могут быть потеряны.</p>
-<h3 id="How-long-does-failover-take" class="common-anchor-header">Сколько времени занимает обход отказа?<button data-href="#How-long-does-failover-take" class="anchor-icon" translate="no">
+    </button></h3><p>No, but it can. If all writes were already replicated before the primary failed, no data is lost. If CDC lag existed, the lagging data may be lost.</p>
+<h3 id="How-long-does-failover-take" class="common-anchor-header">How long does failover take?<button data-href="#How-long-does-failover-take" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -307,8 +307,8 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Обычно оно завершается в течение нескольких секунд, в зависимости от состояния кластера и доступности плоскости управления на резервном сервере.</p>
-<h3 id="Can-I-run-failover-on-the-primary" class="common-anchor-header">Можно ли запустить обход отказа на основном сервере?<button data-href="#Can-I-run-failover-on-the-primary" class="anchor-icon" translate="no">
+    </button></h3><p>It typically completes within seconds, depending on cluster state and control-plane availability on the standby.</p>
+<h3 id="Can-I-run-failover-on-the-primary" class="common-anchor-header">Can I run failover on the primary?<button data-href="#Can-I-run-failover-on-the-primary" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -323,8 +323,8 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Нет. Обход отказа предназначен для резервного кластера. Если текущий основной кластер доступен, используйте переключение.</p>
-<h3 id="Can-the-old-primary-rejoin-automatically" class="common-anchor-header">Может ли старый основной кластер подключиться автоматически?<button data-href="#Can-the-old-primary-rejoin-automatically" class="anchor-icon" translate="no">
+    </button></h3><p>No. Failover is intended for a standby cluster. If the current primary is available, use switchover.</p>
+<h3 id="Can-the-old-primary-rejoin-automatically" class="common-anchor-header">Can the old primary rejoin automatically?<button data-href="#Can-the-old-primary-rejoin-automatically" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -339,8 +339,8 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Нет. После обхода отказа старая первичная система должна быть признана устаревшей и выведена из эксплуатации или перестроена, прежде чем она сможет снова участвовать в репликации.</p>
-<h3 id="How-do-I-avoid-split-brain" class="common-anchor-header">Как избежать "раздвоения мозга"?<button data-href="#How-do-I-avoid-split-brain" class="anchor-icon" translate="no">
+    </button></h3><p>No. After failover, the old primary must be treated as stale and decommissioned or rebuilt before it can participate in replication again.</p>
+<h3 id="How-do-I-avoid-split-brain" class="common-anchor-header">How do I avoid split brain?<button data-href="#How-do-I-avoid-split-brain" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -355,4 +355,4 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Убедитесь, что записи получает только продвигаемый кластер. Удалите старый основной кластер со всех путей записи, прежде чем он сможет восстановиться и принимать трафик.</p>
+    </button></h3><p>Ensure that only the promoted cluster receives writes. Remove the old primary from all write paths before it can recover and accept traffic.</p>

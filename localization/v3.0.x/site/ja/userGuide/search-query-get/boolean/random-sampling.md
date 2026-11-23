@@ -1,11 +1,14 @@
 ---
 id: random-sampling.md
-title: ランダムサンプリングCompatible with Milvus 2.6.x
+title: Random SamplingCompatible with Milvus 2.6.x
 summary: >-
-  大規模なデータセットを扱う際、洞察を得たりフィルタリングロジックを検証したりするために、必ずしもすべてのデータを処理する必要はありません。ランダムサンプリングを利用すれば、データの中から統計的に代表的な部分集合を用いて処理を行うことが可能となり、クエリの実行時間やリソース消費を大幅に削減できます。
+  When working with large-scale datasets, you often don't need to process all
+  your data to gain insights or test filtering logic. Random sampling provides a
+  solution by allowing you to work with a statistically representative subset of
+  your data, significantly reducing query time and resource consumption.
 beta: Milvus 2.6.x
 ---
-<h1 id="Random-Sampling" class="common-anchor-header">ランダムサンプリング<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#Random-Sampling" class="anchor-icon" translate="no">
+<h1 id="Random-Sampling" class="common-anchor-header">Random Sampling<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#Random-Sampling" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,15 +23,15 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>大規模なデータセットを扱う際、洞察を得たりフィルタリングロジックを検証したりするために、必ずしもすべてのデータを処理する必要はありません。ランダムサンプリングは、データの統計的に代表的な部分集合を用いて処理を行うことを可能にし、クエリ実行時間とリソース消費を大幅に削減する解決策となります。</p>
-<p>ランダムサンプリングはセグメントレベルで実行されるため、コレクションのデータ分布全体にわたってサンプルのランダム性を維持しつつ、効率的なパフォーマンスを確保します。</p>
-<p><strong>主なユースケース：</strong></p>
+    </button></h1><p>When working with large-scale datasets, you often don’t need to process all your data to gain insights or test filtering logic. Random sampling provides a solution by allowing you to work with a statistically representative subset of your data, significantly reducing query time and resource consumption.</p>
+<p>Random sampling operates at the segment level, ensuring efficient performance while maintaining the randomness of the sample across your collection’s data distribution.</p>
+<p><strong>Key use cases:</strong></p>
 <ul>
-<li><p><strong>データ探索</strong>：リソース使用量を最小限に抑えながら、コレクションの構造や内容を迅速に確認</p></li>
-<li><p><strong>開発テスト</strong>：本番環境への完全なデプロイに先立ち、管理しやすいデータサンプルで複雑なフィルタリングロジックをテスト</p></li>
-<li><p><strong>リソースの最適化</strong>：探索的クエリや統計分析にかかる計算コストを削減</p></li>
+<li><p><strong>Data exploration</strong>: Quickly preview collection structure and content with minimal resource usage</p></li>
+<li><p><strong>Development testing</strong>: Test complex filtering logic on manageable data samples before full deployment</p></li>
+<li><p><strong>Resource optimization</strong>: Reduce computational costs for exploratory queries and statistical analysis</p></li>
 </ul>
-<h2 id="Syntax" class="common-anchor-header">構文<button data-href="#Syntax" class="anchor-icon" translate="no">
+<h2 id="Syntax" class="common-anchor-header">Syntax<button data-href="#Syntax" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -44,14 +47,14 @@ beta: Milvus 2.6.x
         ></path>
       </svg>
     </button></h2><div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&quot;RANDOM_SAMPLE(sampling_factor)&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -70,16 +73,16 @@ beta: Milvus 2.6.x
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <span class="hljs-built_in">export</span> filterRandomSample=<span class="hljs-string">&#x27;RANDOM_SAMPLE(sampling_factor)&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>パラメータ：</strong></p>
+<p><strong>Parameters:</strong></p>
 <ul>
-<li><code translate="no">sampling_factor</code>: 範囲 (0, 1) 内のサンプリング係数（境界値を除く）。例えば、<code translate="no">RANDOM_SAMPLE(0.001)</code> は結果の約 0.1% を選択します。</li>
+<li><code translate="no">sampling_factor</code>: A sampling factor in the range (0, 1), excluding the boundaries. For example, <code translate="no">RANDOM_SAMPLE(0.001)</code> selects approximately 0.1% of the results.</li>
 </ul>
-<p><strong>重要なルール：</strong></p>
+<p><strong>Important rules:</strong></p>
 <ul>
-<li><p>式は大文字小文字を区別しません（<code translate="no">RANDOM_SAMPLE</code> または<code translate="no">random_sample</code> ）。</p></li>
-<li><p>サンプリング係数は、境界値を除く (0, 1) の範囲内である必要があります</p></li>
+<li><p>The expression is case-insensitive (<code translate="no">RANDOM_SAMPLE</code> or <code translate="no">random_sample</code>)</p></li>
+<li><p>The sampling factor must be in the range (0, 1), excluding boundaries</p></li>
 </ul>
-<h2 id="Combine-with-other-filters" class="common-anchor-header">他のフィルターとの組み合わせ<button data-href="#Combine-with-other-filters" class="anchor-icon" translate="no">
+<h2 id="Combine-with-other-filters" class="common-anchor-header">Combine with other filters<button data-href="#Combine-with-other-filters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -94,16 +97,16 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>ランダムサンプリング演算子は、論理演算子 `<code translate="no">AND</code>` を使用して他のフィルタリング式と組み合わせる必要があります。フィルタを組み合わせる場合、Milvus はまず他の条件を適用し、その結果セットに対してランダムサンプリングを実行します。</p>
+    </button></h2><p>The random sampling operator must be combined with other filtering expressions using logical <code translate="no">AND</code>. When combining filters, Milvus first applies the other conditions and then performs random sampling on the result set.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Correct: Filter first, then sample</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;color == &quot;red&quot; AND RANDOM_SAMPLE(0.001)&#x27;</span>
@@ -164,7 +167,7 @@ filter = <span class="hljs-string">&quot;color == \&quot;red\&quot; OR RANDOM_SA
 <span class="hljs-built_in">export</span> filterSampleIncorrect=<span class="hljs-string">&#x27;color == &quot;red&quot; OR RANDOM_SAMPLE(0.001)&#x27;</span>  <span class="hljs-comment"># ❌ Invalid logic</span>
 <span class="hljs-comment"># This would mean: &quot;Either red items OR sample everything&quot; - which is meaningless</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Examples" class="common-anchor-header">例<button data-href="#Examples" class="anchor-icon" translate="no">
+<h2 id="Examples" class="common-anchor-header">Examples<button data-href="#Examples" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -179,7 +182,7 @@ filter = <span class="hljs-string">&quot;color == \&quot;red\&quot; OR RANDOM_SA
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Example-1-Data-exploration" class="common-anchor-header">例 1: データ探索<button data-href="#Example-1-Data-exploration" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Example-1-Data-exploration" class="common-anchor-header">Example 1: Data exploration<button data-href="#Example-1-Data-exploration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -194,16 +197,16 @@ filter = <span class="hljs-string">&quot;color == \&quot;red\&quot; OR RANDOM_SA
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>コレクションの構造をすばやくプレビューします:</p>
+    </button></h3><p>Quickly preview your collection structure:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -374,7 +377,7 @@ curl --request POST \
   \&quot;limit\&quot;: 10
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-2-Combined-filtering-with-random-sampling" class="common-anchor-header">例 2: フィルタリングとランダムサンプリングの組み合わせ<button data-href="#Example-2-Combined-filtering-with-random-sampling" class="anchor-icon" translate="no">
+<h3 id="Example-2-Combined-filtering-with-random-sampling" class="common-anchor-header">Example 2: Combined filtering with random sampling<button data-href="#Example-2-Combined-filtering-with-random-sampling" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -389,16 +392,16 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>処理しやすいサブセットでフィルタリングロジックをテストする:</p>
+    </button></h3><p>Test filtering logic on a manageable subset:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># First filter by category and price, then sample 0.5% of results</span>
 filter_expression = <span class="hljs-string">&#x27;category == &quot;electronics&quot; AND price &gt; 100 AND RANDOM_SAMPLE(0.005)&#x27;</span>
@@ -529,7 +532,7 @@ curl --request POST \
   \&quot;outputFields\&quot;: [\&quot;product_name\&quot;, \&quot;price\&quot;, \&quot;rating\&quot;]
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-3-Quick-analytics" class="common-anchor-header">例 3: 迅速な分析<button data-href="#Example-3-Quick-analytics" class="anchor-icon" translate="no">
+<h3 id="Example-3-Quick-analytics" class="common-anchor-header">Example 3: Quick analytics<button data-href="#Example-3-Quick-analytics" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -544,16 +547,16 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>フィルタリング済みのデータに対して迅速な統計分析を実行する:</p>
+    </button></h3><p>Perform rapid statistical analysis on filtered data:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Get insights from ~0.1% of premium customer data</span>
 filter_expression = <span class="hljs-string">&#x27;customer_tier == &quot;premium&quot; AND region == &quot;North America&quot; AND RANDOM_SAMPLE(0.001)&#x27;</span>
@@ -700,7 +703,7 @@ curl --request POST \
   \&quot;limit\&quot;: 10
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-4-Combined-with-vector-search" class="common-anchor-header">例 4: ベクトル検索との組み合わせ<button data-href="#Example-4-Combined-with-vector-search" class="anchor-icon" translate="no">
+<h3 id="Example-4-Combined-with-vector-search" class="common-anchor-header">Example 4: Combined with vector search<button data-href="#Example-4-Combined-with-vector-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -715,16 +718,16 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>フィルタリングされた検索シナリオでランダムサンプリングを使用する:</p>
+    </button></h3><p>Use random sampling in filtered search scenarios:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Search for similar products within a sampled subset</span>
 search_results = client.search(
@@ -890,7 +893,7 @@ curl --request POST \
   &quot;outputFields&quot;: [&quot;title&quot;, &quot;author&quot;, &quot;price&quot;]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Best-practices" class="common-anchor-header">ベストプラクティス<button data-href="#Best-practices" class="anchor-icon" translate="no">
+<h2 id="Best-practices" class="common-anchor-header">Best practices<button data-href="#Best-practices" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -906,8 +909,8 @@ curl --request POST \
         ></path>
       </svg>
     </button></h2><ul>
-<li><p><strong>小規模から始める</strong>：初期の探索段階では、サンプリング係数を小さく（0.001～0.01）設定して開始する</p></li>
-<li><p><strong>開発ワークフロー</strong>：開発中はサンプリングを使用し、本番環境のクエリではサンプリングを無効にする</p></li>
-<li><p><strong>統計的妥当性</strong>：サンプルサイズが大きいほど、より正確な統計的表現が得られる</p></li>
-<li><p><strong>パフォーマンステスト</strong>：クエリのパフォーマンスを監視し、必要に応じてサンプリング係数を調整する</p></li>
+<li><p><strong>Start small</strong>: Begin with smaller sampling factors (0.001-0.01) for initial exploration</p></li>
+<li><p><strong>Development workflow</strong>: Use sampling during development, remove for production queries</p></li>
+<li><p><strong>Statistical validity</strong>: Larger samples provide more accurate statistical representations</p></li>
+<li><p><strong>Performance testing</strong>: Monitor query performance and adjust sampling factors as needed</p></li>
 </ul>

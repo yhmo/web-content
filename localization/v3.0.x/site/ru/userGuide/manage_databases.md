@@ -1,12 +1,11 @@
 ---
 id: manage_databases.md
-title: База данных
+title: Database
 summary: >-
-  Milvus вводит уровень базы данных, расположенный над коллекциями, что
-  обеспечивает более эффективный способ управления и систематизации данных при
-  одновременной поддержке многопользовательского доступа.
+  Milvus introduces a database layer above collections, providing a more
+  efficient way to manage and organize your data while supporting multi-tenancy.
 ---
-<h1 id="Database" class="common-anchor-header">База данных<button data-href="#Database" class="anchor-icon" translate="no">
+<h1 id="Database" class="common-anchor-header">Database<button data-href="#Database" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -21,8 +20,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Milvus вводит уровень <strong>базы данных</strong>, расположенный над коллекциями, что обеспечивает более эффективный способ управления и организации ваших данных при одновременной поддержке многопользовательского доступа.</p>
-<h2 id="What-is-a-database" class="common-anchor-header">Что такое база данных<button data-href="#What-is-a-database" class="anchor-icon" translate="no">
+    </button></h1><p>Milvus introduces a <strong>database</strong> layer above collections, providing a more efficient way to manage and organize your data while supporting multi-tenancy.</p>
+<h2 id="What-is-a-database" class="common-anchor-header">What is a database<button data-href="#What-is-a-database" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,8 +36,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>В Milvus база данных служит логической единицей для организации и управления данными. Для повышения безопасности данных и обеспечения многопользовательского доступа можно создавать несколько баз данных, чтобы логически изолировать данные для разных приложений или пользователей. Например, вы можете создать одну базу данных для хранения данных пользователя A и другую — для пользователя B.</p>
-<h2 id="Create-database" class="common-anchor-header">Создание базы данных<button data-href="#Create-database" class="anchor-icon" translate="no">
+    </button></h2><p>In Milvus, a database serves as a logical unit for organizing and managing data. To enhance data security and achieve multi-tenancy, you can create multiple databases to logically isolate data for different applications or tenants. For example, you create a database to store the data of user A and another database for user B.</p>
+<h2 id="Create-database" class="common-anchor-header">Create database<button data-href="#Create-database" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -53,16 +52,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Вы можете использовать RESTful API или SDK Milvus для программного создания базы данных.</p>
+    </button></h2><p>You can use the Milvus RESTful API or SDKs to create a database programmatically.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -180,16 +179,16 @@ curl --request POST \
     &quot;dbName&quot;: &quot;my_database_1&quot;
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>При создании базы данных также можно задать её свойства. В следующем примере задаётся количество реплик базы данных.</p>
+<p>You can also set properties for the database when you create it. The following example sets the number of replicas of the database.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.create_database(
     db_name=<span class="hljs-string">&quot;my_database_2&quot;</span>,
@@ -266,7 +265,7 @@ curl --request POST \
     }
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="View-databases" class="common-anchor-header">Просмотр баз данных<button data-href="#View-databases" class="anchor-icon" translate="no">
+<h2 id="View-databases" class="common-anchor-header">View databases<button data-href="#View-databases" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -281,16 +280,16 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Вы можете использовать RESTful API или SDK Milvus для вывода списка всех существующих баз данных и просмотра их сведений.</p>
+    </button></h2><p>You can use the Milvus RESTful API or SDKs to list all existing databases and view their details.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># List all existing databases</span>
 client.list_databases()
@@ -385,7 +384,7 @@ curl --request POST \
     &quot;dbName&quot;: &quot;default&quot;
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Manage-database-properties" class="common-anchor-header">Управление свойствами базы данных<button data-href="#Manage-database-properties" class="anchor-icon" translate="no">
+<h2 id="Manage-database-properties" class="common-anchor-header">Manage database properties<button data-href="#Manage-database-properties" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -400,51 +399,51 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Каждая база данных имеет свои собственные свойства. Вы можете настроить свойства базы данных при её создании, как описано в разделе <a href="/docs/ru/manage_databases.md#Create-database">«Создание базы данных</a> », а также изменять и удалять свойства любой существующей базы данных.</p>
-<p>В следующей таблице перечислены возможные свойства базы данных.</p>
+    </button></h2><p>Each database has its own properties, you can set the properties of a database when you create the database as described in <a href="/docs/ru/manage_databases.md#Create-database">Create database</a> or you can alter and drop the properties of any existing database.</p>
+<p>The following table lists possible database properties.</p>
 <table>
    <tr>
-     <th><p>Название свойства</p></th>
-     <th><p>Тип</p></th>
-     <th><p>Описание свойства</p></th>
+     <th><p>Property Name</p></th>
+     <th><p>Type</p></th>
+     <th><p>Property Description</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">database.replica.number</code></p></td>
-     <td><p>целое число</p></td>
-     <td><p>Количество реплик для указанной базы данных.</p></td>
+     <td><p>integer</p></td>
+     <td><p>The number of replicas for the specified database.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">database.resource_groups</code></p></td>
-     <td><p>строка</p></td>
-     <td><p>Имена групп ресурсов, связанных с указанной базой данных, в виде списка, разделенного запятыми.</p></td>
+     <td><p>string</p></td>
+     <td><p>The names of the resource groups associated with the specified database in a comma-separated list.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">database.diskQuota.mb</code></p></td>
-     <td><p>целое число</p></td>
-     <td><p>Максимальный размер дискового пространства для указанной базы данных в мегабайтах (МБ).</p></td>
+     <td><p>integer</p></td>
+     <td><p>The maximum size of the disk space for the specified database, in megabytes (MB).</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">database.max.collections</code></p></td>
-     <td><p>целое</p></td>
-     <td><p>Максимальное количество коллекций, разрешенных в указанной базе данных.</p></td>
+     <td><p>integer</p></td>
+     <td><p>The maximum number of collections allowed in the specified database.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">database.force.deny.writing</code></p></td>
-     <td><p>логическое</p></td>
-     <td><p>Укажите, следует ли принудительно запретить операции записи в указанной базе данных.</p></td>
+     <td><p>boolean</p></td>
+     <td><p>Whether to force the specified database to deny writing operations.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">database.force.deny.reading</code></p></td>
-     <td><p>логическое</p></td>
-     <td><p>Принудительно ли запрещать операции чтения в указанной базе данных.</p></td>
+     <td><p>boolean</p></td>
+     <td><p>Whether to force the specified database to deny reading operations.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">timezone</code></p></td>
-     <td><p>строка</p></td>
-     <td><p>Указывает часовой пояс по умолчанию, применяемый к операциям, чувствительным ко времени, внутри базы данных, в частности для полей типа « <code translate="no">TIMESTAMPTZ</code> ». Коллекции наследуют часовой пояс базы данных, если не задан часовой пояс на уровне коллекции. Параметр часового пояса на уровне запроса может временно переопределить значения по умолчанию как для базы данных, так и для коллекции. Значением должен быть допустимый <a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones">идентификатор часового пояса IANA</a> (например, <strong>Asia/Shanghai</strong>, <strong>America/Chicago</strong> или <strong>UTC</strong>). Подробные сведения об использовании поля <code translate="no">TIMESTAMPTZ</code> см. в <a href="/docs/ru/timestamptz-field.md">разделе «Поле TIMESTAMPTZ</a>».</p></td>
+     <td><p>string</p></td>
+     <td><p>Specifies the default timezone applied to time-sensitive operations within the database, particularly for <code translate="no">TIMESTAMPTZ</code> fields. Collections inherit the database timezone unless a collection-level timezone is set. A query-level timezone parameter can temporarily override both database and collection defaults. The value must be a valid <a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones">IANA time zone identifier</a> (for example, <strong>Asia/Shanghai</strong>, <strong>America/Chicago</strong>, or <strong>UTC</strong>). For details on how to use a <code translate="no">TIMESTAMPTZ</code> field, refer to <a href="/docs/ru/timestamptz-field.md">TIMESTAMPTZ Field</a>.</p></td>
    </tr>
 </table>
-<h3 id="Alter-database-properties" class="common-anchor-header">Изменение свойств базы данных<button data-href="#Alter-database-properties" class="anchor-icon" translate="no">
+<h3 id="Alter-database-properties" class="common-anchor-header">Alter database properties<button data-href="#Alter-database-properties" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -459,16 +458,16 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Свойства существующей базы данных можно изменить следующим образом. В приведённом ниже примере ограничивается количество коллекций, которые можно создать в базе данных.</p>
+    </button></h3><p>You can alter the properties of an existing database as follows. The following example limits the number of collections you can create in the database.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.alter_database_properties(
     db_name=<span class="hljs-string">&quot;my_database_1&quot;</span>,
@@ -542,7 +541,7 @@ curl --request POST \
     }
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Drop-database-properties" class="common-anchor-header">Удаление свойств базы данных<button data-href="#Drop-database-properties" class="anchor-icon" translate="no">
+<h3 id="Drop-database-properties" class="common-anchor-header">Drop database properties<button data-href="#Drop-database-properties" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -557,16 +556,16 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Вы также можете сбросить свойство базы данных, удалив его следующим образом. В приведенном ниже примере снимается ограничение на количество коллекций, которые можно создать в базе данных.</p>
+    </button></h3><p>You can also reset a database property by dropping it as follows. The following example removes the limit on the number of collections you can create in the database.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.drop_database_properties(
     db_name=<span class="hljs-string">&quot;my_database_1&quot;</span>,
@@ -635,7 +634,7 @@ curl --request POST \
     ]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Use-database" class="common-anchor-header">Использование базы данных<button data-href="#Use-database" class="anchor-icon" translate="no">
+<h2 id="Use-database" class="common-anchor-header">Use database<button data-href="#Use-database" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -650,19 +649,19 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Вы можете переключаться с одной базы данных на другую, не отключаясь от Milvus.</p>
+    </button></h2><p>You can switch from one database to another without disconnecting from Milvus.</p>
 <div class="alert note">
-<p>RESTful API не поддерживает переключение баз данных при постоянном соединении. Для запросов RESTful API указывайте целевую базу данных в теле каждого запроса, если операция поддерживает параметр ` <code translate="no">dbName</code>`.</p>
+<p>RESTful API does not support switching databases on a persistent connection. For RESTful API requests, specify the target database in each request body when the operation supports <code translate="no">dbName</code>.</p>
 </div>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.use_database(
     db_name=<span class="hljs-string">&quot;my_database_2&quot;</span>
@@ -696,7 +695,7 @@ curl --request POST \
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># This operation is unsupported because RESTful does not provide a persistent connection.</span>
 <span class="hljs-comment"># As a workaround, initiate the required request again with the target database.</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Drop-database" class="common-anchor-header">Удаление базы данных<button data-href="#Drop-database" class="anchor-icon" translate="no">
+<h2 id="Drop-database" class="common-anchor-header">Drop database<button data-href="#Drop-database" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -711,21 +710,21 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Если база данных больше не нужна, вы можете удалить её. Обратите внимание:</p>
+    </button></h2><p>Once a database is no longer needed, you can drop the database. Note that:</p>
 <ul>
-<li><p>Базы данных по умолчанию удалить нельзя.</p></li>
-<li><p>Перед удалением базы данных необходимо сначала удалить все коллекции в ней.</p></li>
+<li><p>Default databases cannot be dropped.</p></li>
+<li><p>Before dropping a database, you need to drop all collections in the database first.</p></li>
 </ul>
-<p>Для программного удаления базы данных можно использовать RESTful API Milvus или SDK.</p>
+<p>You can use the Milvus RESTful API or SDKs to drop a database programmatically.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.drop_database(
     db_name=<span class="hljs-string">&quot;my_database_2&quot;</span>
@@ -779,7 +778,7 @@ curl --request POST \
     &quot;dbName&quot;: &quot;my_database_2&quot;
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="FAQ" class="common-anchor-header">Часто задаваемые вопросы<button data-href="#FAQ" class="anchor-icon" translate="no">
+<h2 id="FAQ" class="common-anchor-header">FAQ<button data-href="#FAQ" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -794,7 +793,7 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="How-do-I-manage-permissions-for-a-database" class="common-anchor-header">Как управлять правами доступа к базе данных?<button data-href="#How-do-I-manage-permissions-for-a-database" class="anchor-icon" translate="no">
+    </button></h2><h3 id="How-do-I-manage-permissions-for-a-database" class="common-anchor-header">How do I manage permissions for a database?<button data-href="#How-do-I-manage-permissions-for-a-database" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -809,8 +808,8 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Milvus использует систему управления доступом на основе ролей (RBAC) для управления правами доступа. Вы можете создавать роли с определёнными привилегиями и назначать их пользователям, тем самым контролируя их доступ к различным базам данных. Более подробную информацию см. в <a href="/docs/ru/rbac.md">документации по RBAC</a>.</p>
-<h3 id="Are-there-any-quota-limitations-for-a-database" class="common-anchor-header">Существуют ли какие-либо ограничения квот для базы данных?<button data-href="#Are-there-any-quota-limitations-for-a-database" class="anchor-icon" translate="no">
+    </button></h3><p>Milvus uses Role-Based Access Control (RBAC) to manage permissions. You can create roles with specific privileges and assign them to users, thus controlling their access to different databases. For more details, refer to the <a href="/docs/ru/rbac.md">RBAC documentation</a>.</p>
+<h3 id="Are-there-any-quota-limitations-for-a-database" class="common-anchor-header">Are there any quota limitations for a database?<button data-href="#Are-there-any-quota-limitations-for-a-database" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -825,4 +824,4 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Да, Milvus позволяет устанавливать ограничения квот для базы данных, например максимальное количество коллекций. Полный список ограничений см. в <a href="/docs/ru/limitations.md">документации по ограничениям Milvus</a>.</p>
+    </button></h3><p>Yes, Milvus allows you to set quota limitations for a database, such as the maximum number of collections. For a comprehensive list of limitations, please refer to the <a href="/docs/ru/limitations.md">Milvus Limits documentation</a>.</p>

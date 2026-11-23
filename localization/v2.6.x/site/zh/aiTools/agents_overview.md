@@ -1,9 +1,11 @@
 ---
 id: agents_overview.md
-title: Milvus 的 AGENTS.md
-summary: 使用 PyMilvus 生成、审查或调试 Milvus 向量数据库代码的人工智能编码 Agents 的规则和模式。
+title: AGENTS.md for Milvus
+summary: >-
+  Rules and patterns for AI coding agents that generate, review, or debug Milvus
+  vector database code using PyMilvus.
 ---
-<h1 id="AGENTSmd--Milvus" class="common-anchor-header">Agents.md - Milvus<button data-href="#AGENTSmd--Milvus" class="anchor-icon" translate="no">
+<h1 id="AGENTSmd--Milvus" class="common-anchor-header">AGENTS.md — Milvus<button data-href="#AGENTSmd--Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,8 +20,8 @@ summary: 使用 PyMilvus 生成、审查或调试 Milvus 向量数据库代码�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Milvus 是一个开源向量数据库，用于相似性搜索、混合搜索和 RAG。您可以通过 PyMilvus SDK 的<code translate="no">MilvusClient</code> 界面与之交互。将下面的完整提示复制到您的人工智能工具中，即可自动应用这些规则。有关特定任务的详细提示，请参阅<a href="/docs/zh/milvus_for_agents.md">人工智能提示</a>。</p>
-<h2 id="How-to-use-this-prompt" class="common-anchor-header">如何使用此提示<button data-href="#How-to-use-this-prompt" class="anchor-icon" translate="no">
+    </button></h1><p>Milvus is an open-source vector database for similarity search, hybrid search, and RAG. You interact with it through the PyMilvus SDK’s <code translate="no">MilvusClient</code> interface. Copy the full prompt below into your AI tool to apply these rules automatically. For detailed task-specific prompts, see <a href="/docs/zh/v2.6.x/milvus_for_agents.md">AI Prompts</a>.</p>
+<h2 id="How-to-use-this-prompt" class="common-anchor-header">How to use this prompt<button data-href="#How-to-use-this-prompt" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -35,12 +37,12 @@ summary: 使用 PyMilvus 生成、审查或调试 Milvus 向量数据库代码�
         ></path>
       </svg>
     </button></h2><ol>
-<li>从下面的完整提示部分<strong>复制</strong> <a href="#full-prompt">完整提示</a>。</li>
-<li>将其<strong>保存</strong>到人工智能工具所需的位置 - 有关位置的详细信息，请参阅<a href="/docs/zh/milvus_for_agents.md">环境表</a>。</li>
-<li>在生成或审核 Milvus 代码时，您的人工智能助手将自动应用这些规则。</li>
+<li><strong>Copy</strong> the full prompt from the <a href="#full-prompt">Full prompt</a> section below.</li>
+<li><strong>Save</strong> it to the location your AI tool expects — see the <a href="/docs/zh/v2.6.x/milvus_for_agents.md">environment table</a> for placement details.</li>
+<li>Your AI assistant will automatically apply these rules when generating or reviewing Milvus code.</li>
 </ol>
-<p>对于<strong>Cursor</strong>用户：从<a href="#full-prompt">完整提示</a>部分复制提示，并将其保存在项目中的<code translate="no">.cursor/rules/</code> 下。</p>
-<h2 id="Full-prompt" class="common-anchor-header">完整提示<button data-href="#Full-prompt" class="anchor-icon" translate="no">
+<p>For <strong>Cursor</strong> users: copy the prompt from the <a href="#full-prompt">Full prompt</a> section and save it under <code translate="no">.cursor/rules/</code> in your project.</p>
+<h2 id="Full-prompt" class="common-anchor-header">Full prompt<button data-href="#Full-prompt" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -55,7 +57,7 @@ summary: 使用 PyMilvus 生成、审查或调试 Milvus 向量数据库代码�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><a href="cursor://anysphere.cursor-deeplink/prompt?text=%23%20AGENTS.md%20%E2%80%94%20Milvus%0A%0AMilvus%20is%20an%20open-source%20vector%20database%20for%20similarity%20search%2C%20hybrid%20search%2C%20and%20RAG.%20You%20interact%20with%20it%20through%20the%20PyMilvus%20SDK%27s%20%60MilvusClient%60%20interface.%0A%0AUse%20these%20rules%20whenever%20you%20generate%2C%20review%2C%20or%20debug%20code%20that%20connects%20to%20Milvus%20or%20Zilliz%20Cloud.%0A%0A%23%23%20Client%20%26%20connection%0A%0A1.%20CRITICAL%20%E2%80%94%20Always%20use%20%60MilvusClient%60.%20Never%20use%20the%20legacy%20ORM%20API.%0A2.%20Local%3A%20%60MilvusClient%28uri%3D%22http%3A%2F%2Flocalhost%3A19530%22%29%60.%20Zilliz%20Cloud%3A%20add%20%60token%3D%22...%22%60.%0A%0A%23%23%20Schema%20%26%20data%0A%0A3.%20CRITICAL%20%E2%80%94%20Use%20%60DataType%60%20enum%2C%20not%20strings.%0A4.%20CRITICAL%20%E2%80%94%20Schema%20is%20immutable%20in%20v2.5.x.%20Drop%20and%20recreate%20to%20change.%20v2.6%2B%20allows%20adding%20nullable%20fields.%0A5.%20Primary%20keys%3A%20INT64%20or%20VARCHAR%20only.%20No%20composite%20keys.%0A6.%20Use%20%60upsert%28%29%60%20to%20update.%20There%20is%20no%20%60update%28%29%60%20method.%0A7.%20BM25%20must%20be%20defined%20at%20collection%20creation%20time.%0A%0A%23%23%20Index%20%26%20loading%0A%0A8.%20CRITICAL%20%E2%80%94%20Index%20before%20load%2C%20load%20before%20search.%20Pass%20schema%20%2B%20index_params%20to%20create_collection%28%29%20to%20auto-handle.%0A9.%20Start%20with%20AUTOINDEX.%0A%0A%23%23%20Search%0A%0A10.%20CRITICAL%20%E2%80%94%20One%20vector%20per%20AnnSearchRequest.%0A11.%20One%20ranker%20per%20hybrid_search%28%29%20call.">在光标中打开</a></p>
+    </button></h2><p><a href="cursor://anysphere.cursor-deeplink/prompt?text=%23%20AGENTS.md%20%E2%80%94%20Milvus%0A%0AMilvus%20is%20an%20open-source%20vector%20database%20for%20similarity%20search%2C%20hybrid%20search%2C%20and%20RAG.%20You%20interact%20with%20it%20through%20the%20PyMilvus%20SDK%27s%20%60MilvusClient%60%20interface.%0A%0AUse%20these%20rules%20whenever%20you%20generate%2C%20review%2C%20or%20debug%20code%20that%20connects%20to%20Milvus%20or%20Zilliz%20Cloud.%0A%0A%23%23%20Client%20%26%20connection%0A%0A1.%20CRITICAL%20%E2%80%94%20Always%20use%20%60MilvusClient%60.%20Never%20use%20the%20legacy%20ORM%20API.%0A2.%20Local%3A%20%60MilvusClient%28uri%3D%22http%3A%2F%2Flocalhost%3A19530%22%29%60.%20Zilliz%20Cloud%3A%20add%20%60token%3D%22...%22%60.%0A%0A%23%23%20Schema%20%26%20data%0A%0A3.%20CRITICAL%20%E2%80%94%20Use%20%60DataType%60%20enum%2C%20not%20strings.%0A4.%20CRITICAL%20%E2%80%94%20Schema%20is%20immutable%20in%20v2.5.x.%20Drop%20and%20recreate%20to%20change.%20v2.6%2B%20allows%20adding%20nullable%20fields.%0A5.%20Primary%20keys%3A%20INT64%20or%20VARCHAR%20only.%20No%20composite%20keys.%0A6.%20Use%20%60upsert%28%29%60%20to%20update.%20There%20is%20no%20%60update%28%29%60%20method.%0A7.%20BM25%20must%20be%20defined%20at%20collection%20creation%20time.%0A%0A%23%23%20Index%20%26%20loading%0A%0A8.%20CRITICAL%20%E2%80%94%20Index%20before%20load%2C%20load%20before%20search.%20Pass%20schema%20%2B%20index_params%20to%20create_collection%28%29%20to%20auto-handle.%0A9.%20Start%20with%20AUTOINDEX.%0A%0A%23%23%20Search%0A%0A10.%20CRITICAL%20%E2%80%94%20One%20vector%20per%20AnnSearchRequest.%0A11.%20One%20ranker%20per%20hybrid_search%28%29%20call.">Open in Cursor</a></p>
 <pre><code translate="no" class="language-text"># AGENTS.md — Milvus
 
 Milvus is an open-source vector database for similarity search, hybrid search, and RAG. You interact with it through the PyMilvus SDK&#x27;s `MilvusClient` interface.

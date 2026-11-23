@@ -2,9 +2,10 @@
 id: insert-data-into-structarray-fields.md
 title: Insert Data into StructArray Fields
 summary: >-
-  각 엔티티가 정렬된 구조화된 요소 목록을 포함하는 경우, StructArray 필드에 데이터를 삽입합니다. 삽입 페이로드에서
-  StructArray 필드는 객체 배열로 표현됩니다. 각 객체는 하나의 Struct 요소를 나타내며, 컬렉션 스키마에 정의된 Struct
-  하위 필드 이름을 사용합니다.
+  Insert data into a StructArray field when each entity contains an ordered list
+  of structured elements. In the insert payload, a StructArray field is
+  represented as an array of objects. Each object represents one Struct element
+  and uses the Struct subfield names defined in the collection schema.
 ---
 <h1 id="Insert-Data-into-StructArray-Fields" class="common-anchor-header">Insert Data into StructArray Fields<button data-href="#Insert-Data-into-StructArray-Fields" class="anchor-icon" translate="no">
       <svg translate="no"

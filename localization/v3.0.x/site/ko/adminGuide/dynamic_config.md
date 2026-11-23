@@ -1,10 +1,10 @@
 ---
 id: dynamic_config.md
 related_key: configure
-summary: Milvus의 동적 구성에 대해 알아보세요.
-title: 실시간으로 Milvus 구성하기
+summary: Learn about the dynamic configuration of Milvus.
+title: Configure Milvus on the Fly
 ---
-<h1 id="Configure-Milvus-on-the-Fly" class="common-anchor-header">실시간으로 Milvus 구성하기<button data-href="#Configure-Milvus-on-the-Fly" class="anchor-icon" translate="no">
+<h1 id="Configure-Milvus-on-the-Fly" class="common-anchor-header">Configure Milvus on the Fly<button data-href="#Configure-Milvus-on-the-Fly" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -19,8 +19,8 @@ title: 실시간으로 Milvus 구성하기
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Milvus에서는 일부 설정을 실행 중에 변경할 수 있습니다.</p>
-<h2 id="Before-you-start" class="common-anchor-header">시작하기 전에<button data-href="#Before-you-start" class="anchor-icon" translate="no">
+    </button></h1><p>Milvus allows you to change some of its configurations on the fly.</p>
+<h2 id="Before-you-start" class="common-anchor-header">Before you start<button data-href="#Before-you-start" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -35,19 +35,19 @@ title: 실시간으로 Milvus 구성하기
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>다음 사항을 확인해야 합니다:</p>
+    </button></h2><p>You need to ensure that：</p>
 <ul>
-<li>Birdwatcher가 설치되어 있어야 합니다. 자세한 내용은 <a href="/docs/ko/birdwatcher_install_guides.md">Birdwatcher 설치를</a> 참조하십시오.</li>
-<li>etcdctl이 설치되어 있어야 합니다. 자세한 내용은 <a href="https://etcd.io/docs/v3.5/dev-guide/interacting_v3/">‘etcd와 상호작용하기</a>’를 참조하십시오. 또는</li>
-<li>Python 클라이언트와 같은 다른 etcd 클라이언트가 설치되어 있어야 합니다.</li>
+<li>You have Birdwatcher installed. For details, refer to <a href="/docs/ko/birdwatcher_install_guides.md">Install Birdwatcher</a>,</li>
+<li>You have etcdctl installed. For details, refer to <a href="https://etcd.io/docs/v3.5/dev-guide/interacting_v3/">Interacting with etcd</a>, or</li>
+<li>You have other etcd clients, such as the Python client, installed.</li>
 </ul>
 <div class="alert note">
 <ul>
-<li>이 가이드의 예제에서는 <code translate="no">proxy.minPasswordLength</code> 의 값을 <code translate="no">8</code> 로 변경합니다. 해당 키를 <a href="/docs/ko/dynamic_config.md#Applicable-configuration-items">‘적용 가능한 구성 항목</a>’에 나열된 적절한 키로 대체할 수 있습니다.</li>
-<li>이 가이드의 예제는 Milvus의 루트 경로가 <code translate="no">by-dev</code> 라고 가정합니다. 모든 구성은 <code translate="no">by-dev/config</code> 경로 아래에 나열되어 있습니다. Milvus의 루트 경로는 설치 방법에 따라 다릅니다. Helm 차트를 사용하여 설치한 인스턴스의 경우, 루트 경로는 기본적으로 <code translate="no">by-dev</code> 입니다. 루트 경로를 모르는 경우, <a href="/docs/ko/birdwatcher_usage_guides.md#Connect-to-etcd">etcd 연결을</a> 참조하십시오.</li>
+<li>Examples in this guide change the value of <code translate="no">proxy.minPasswordLength</code> to <code translate="no">8</code>. You can replace the key with the applicable ones listed in <a href="/docs/ko/dynamic_config.md#Applicable-configuration-items">Applicable configuration items</a>.</li>
+<li>Examples in this guide assume that the root path of your Milvus is <code translate="no">by-dev</code>. All configurations are listed under the path <code translate="no">by-dev/config</code>. The Milvus root path varies with the way you install it. For the instances installed using the Helm charts, the root path defaults to <code translate="no">by-dev</code>. If you do not know the root path, refer to <a href="/docs/ko/birdwatcher_usage_guides.md#Connect-to-etcd">Connect to etcd</a>.</li>
 </ul>
 </div>
-<h2 id="Change-configurations" class="common-anchor-header">구성 변경<button data-href="#Change-configurations" class="anchor-icon" translate="no">
+<h2 id="Change-configurations" class="common-anchor-header">Change configurations<button data-href="#Change-configurations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -62,15 +62,15 @@ title: 실시간으로 Milvus 구성하기
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus에서는 <code translate="no">proxy.minPasswordLength</code> 가 기본적으로 <code translate="no">6</code> 로 설정되어 있습니다. 이 값을 변경하려면 다음과 같이 하십시오:</p>
+    </button></h2><p>On Milvus, <code translate="no">proxy.minPasswordLength</code> is set to <code translate="no">6</code> by default. To change this value, you can do as follows:</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">etcdctl put by-dev/config/proxy/minPasswordLength 8</span>
 <span class="hljs-meta prompt_"># </span><span class="language-bash">or</span>
 <span class="hljs-meta prompt_">$ </span><span class="language-bash">birdwatcher -olc <span class="hljs-string">&quot;#connect --etcd 127.0.0.1:2379 --rootPath=by-dev,set config-etcd --key by-dev/config/proxy/minPasswordLength --value 8&quot;</span></span>
 <button class="copy-code-btn"></button></code></pre>
-<p>그런 다음 다음과 같이 구성을 확인할 수 있습니다:</p>
+<p>Then you can check the configurations as follows:</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">etcdctl get by-dev/config/proxy/minPasswordLength</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Roll-back-configurations" class="common-anchor-header">구성 롤백<button data-href="#Roll-back-configurations" class="anchor-icon" translate="no">
+<h2 id="Roll-back-configurations" class="common-anchor-header">Roll back configurations<button data-href="#Roll-back-configurations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -85,15 +85,15 @@ title: 실시간으로 Milvus 구성하기
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus에서는 변경된 값이 더 이상 적용되지 않는 경우 구성을 롤백할 수도 있습니다.</p>
+    </button></h2><p>Milvus also allows you to roll back your configurations in case the changed value no longer applies.</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">etcdctl del by-dev/config/proxy/minPasswordLength</span> 
 <span class="hljs-meta prompt_"># </span><span class="language-bash">or</span> 
 <span class="hljs-meta prompt_">$ </span><span class="language-bash">birdwatcher -olc <span class="hljs-string">&quot;#connect --etcd 127.0.0.1:2379 --rootPath=by-dev,remove config-etcd --key by-dev/config/proxy/minPasswordLength&quot;</span></span>
 <button class="copy-code-btn"></button></code></pre>
-<p>그런 다음 다음과 같이 구성을 확인할 수 있습니다:</p>
+<p>Then you can check the configurations as follows:</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">etcdctl get by-dev/config/proxy/minPasswordLength</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="View-configurations" class="common-anchor-header">구성 항목 보기<button data-href="#View-configurations" class="anchor-icon" translate="no">
+<h2 id="View-configurations" class="common-anchor-header">View configurations<button data-href="#View-configurations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -108,18 +108,18 @@ title: 실시간으로 Milvus 구성하기
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>특정 구성 항목의 값을 확인하는 대신, 모든 구성 항목을 나열할 수도 있습니다.</p>
+    </button></h2><p>Instead of viewing the value of a specific configuration item, you can also list all of them.</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">etcdctl get --prefix by-dev/config</span>
 <span class="hljs-meta prompt_"># </span><span class="language-bash">or</span>
 <span class="hljs-meta prompt_">$ </span><span class="language-bash">birdwatcher -olc <span class="hljs-string">&quot;#connect --etcd 127.0.0.1:2379 --rootPath=by-dev,show config-etcd&quot;</span></span>
 <button class="copy-code-btn"></button></code></pre>
-<p>특정 노드의 구성을 확인하려면:</p>
+<p>To view the configurations of a specific node:</p>
 <pre><code translate="no" class="language-shell">Offline &gt; connect --etcd ip:port 
 Milvus(by-dev) &gt; show session          # List all nodes with their server ID
 Milvus(by-dev) &gt; visit querycoord 1    # Visit a node by server ID
 QueryCoord-1(ip:port) &gt; configuration  # List the configuration of the node
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Applicable-configuration-items" class="common-anchor-header">적용 가능한 구성 항목<button data-href="#Applicable-configuration-items" class="anchor-icon" translate="no">
+<h2 id="Applicable-configuration-items" class="common-anchor-header">Applicable configuration items<button data-href="#Applicable-configuration-items" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -134,17 +134,17 @@ QueryCoord-1(ip:port) &gt; configuration  # List the configuration of the node
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>현재 다음과 같은 구성 항목을 실시간으로 변경할 수 있습니다.</p>
+    </button></h2><p>Currently, you can change the following configuration items on the fly.</p>
 <table>
 <thead>
-<tr><th>구성 항목</th><th>기본값</th></tr>
+<tr><th>Configuration item</th><th>Default value</th></tr>
 </thead>
 <tbody>
 <tr><td>pulsar.maxMessageSize</td><td>5242880</td></tr>
 <tr><td>common.retentionDuration</td><td>86400</td></tr>
 <tr><td>common.entityExpiration</td><td>-1</td></tr>
-<tr><td>common.유예기간</td><td>5000</td></tr>
-<tr><td>common.점진적중지타임아웃</td><td>30</td></tr>
+<tr><td>common.gracefulTime</td><td>5000</td></tr>
+<tr><td>common.gracefulStopTimeout</td><td>30</td></tr>
 <tr><td>quotaAndLimits.ddl.enabled</td><td>FALSE</td></tr>
 <tr><td>quotaAndLimits.indexRate.enabled</td><td>FALSE</td></tr>
 <tr><td>quotaAndLimits.flushRate.enabled</td><td>FALSE</td></tr>
@@ -187,7 +187,7 @@ QueryCoord-1(ip:port) &gt; configuration  # List the configuration of the node
 <tr><td>dataCoord.compaction.enableAutoCompaction</td><td>TRUE</td></tr>
 </tbody>
 </table>
-<h2 id="Whats-next" class="common-anchor-header">다음 단계<button data-href="#Whats-next" class="anchor-icon" translate="no">
+<h2 id="Whats-next" class="common-anchor-header">What’s next<button data-href="#Whats-next" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -203,6 +203,6 @@ QueryCoord-1(ip:port) &gt; configuration  # List the configuration of the node
         ></path>
       </svg>
     </button></h2><ul>
-<li><a href="/docs/ko/system_configuration.md">시스템 구성</a>에 대해 자세히 알아보세요.</li>
-<li><a href="/docs/ko/configure_operator.md">Milvus Operator</a>, <a href="/docs/ko/configure-helm.md">Helm 차트</a> 및 <a href="/docs/ko/configure-docker.md">Docker를</a> 사용하여 설치된 Milvus를 구성하는 방법을 알아보세요.</li>
+<li>Learn more about <a href="/docs/ko/system_configuration.md">System Configurations</a>.</li>
+<li>Learn how to configure Milvus installed using <a href="/docs/ko/configure_operator.md">Milvus Operator</a>, <a href="/docs/ko/configure-helm.md">Helm charts</a>, and <a href="/docs/ko/configure-docker.md">Docker</a>.</li>
 </ul>

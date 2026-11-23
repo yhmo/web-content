@@ -1,13 +1,16 @@
 ---
 id: weighted-ranker.md
-title: 가중치 기반 순위 지정기
+title: Weighted Ranker
 summary: >-
-  Weighted Ranker는 여러 검색 경로의 결과에 각각 다른 중요도 가중치를 부여함으로써, 이를 지능적으로 결합하고 우선순위를
-  정합니다. 숙련된 셰프가 여러 재료를 조화롭게 조합하여 완벽한 요리를 만들어내는 것과 마찬가지로, 가중치 기반 순위 결정기는 서로 다른 검색
-  결과의 균형을 맞춰 가장 관련성 높은 통합 결과를 제공합니다. 이 접근 방식은 특정 필드가 다른 필드보다 최종 순위에 더 큰 비중을 차지해야
-  하는 여러 벡터 필드나 모달리티를 가로질러 검색할 때 이상적입니다.
+  Weighted Ranker intelligently combines and prioritizes results from multiple
+  search paths by assigning different importance weights to each. Similar to how
+  a skilled chef balances multiple ingredients to create the perfect dish,
+  Weighted Ranker balances different search results to deliver the most relevant
+  combined outcomes. This approach is ideal when searching across multiple
+  vector fields or modalities where certain fields should contribute more
+  significantly to the final ranking than others.
 ---
-<h1 id="Weighted-Ranker" class="common-anchor-header">가중치 기반 순위 지정기<button data-href="#Weighted-Ranker" class="anchor-icon" translate="no">
+<h1 id="Weighted-Ranker" class="common-anchor-header">Weighted Ranker<button data-href="#Weighted-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -22,8 +25,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>가중치 기반 순위 결정기는 여러 검색 경로의 결과에 각기 다른 중요도 가중치를 할당하여 결과를 지능적으로 결합하고 우선순위를 정합니다. 숙련된 셰프가 완벽한 요리를 만들기 위해 여러 재료를 조화롭게 조합하는 것과 마찬가지로, 가중치 순위 지정기는 서로 다른 검색 결과의 균형을 맞춰 가장 관련성 높은 통합 결과를 제공합니다. 이 접근 방식은 특정 필드가 다른 필드보다 최종 순위에 더 큰 비중을 차지해야 하는 여러 벡터 필드나 모달리티를 가로질러 검색할 때 이상적입니다.</p>
-<h2 id="When-to-use-Weighted-Ranker" class="common-anchor-header">가중치 기반 순위 지정기 사용 시점<button data-href="#When-to-use-Weighted-Ranker" class="anchor-icon" translate="no">
+    </button></h1><p>Weighted Ranker intelligently combines and prioritizes results from multiple search paths by assigning different importance weights to each. Similar to how a skilled chef balances multiple ingredients to create the perfect dish, Weighted Ranker balances different search results to deliver the most relevant combined outcomes. This approach is ideal when searching across multiple vector fields or modalities where certain fields should contribute more significantly to the final ranking than others.</p>
+<h2 id="When-to-use-Weighted-Ranker" class="common-anchor-header">When to use Weighted Ranker<button data-href="#When-to-use-Weighted-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -38,31 +41,31 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>가중치 기반 순위 결정기는 여러 벡터 검색 경로의 결과를 결합해야 하는 하이브리드 검색 시나리오를 위해 특별히 설계되었습니다. 특히 다음과 같은 경우에 효과적입니다:</p>
+    </button></h2><p>Weighted Ranker is specifically designed for hybrid search scenarios where you need to combine results from multiple vector search paths. It’s particularly effective for:</p>
 <table>
    <tr>
-     <th><p>사용 사례</p></th>
-     <th><p>예시</p></th>
-     <th><p>Weighted Ranker가 효과적인 이유</p></th>
+     <th><p>Use Case</p></th>
+     <th><p>Example</p></th>
+     <th><p>Why Weighted Ranker Works Well</p></th>
    </tr>
    <tr>
-     <td><p>전자상거래 검색</p></td>
-     <td><p>이미지 유사도와 텍스트 설명을 결합한 상품 검색</p></td>
-     <td><p>소매업체가 패션 상품의 경우 시각적 유사성을 우선시하고, 기술 제품의 경우 텍스트 설명을 강조할 수 있게 해줌</p></td>
+     <td><p>E-commerce search</p></td>
+     <td><p>Product search combining image similarity and text description</p></td>
+     <td><p>Allows retailers to prioritize visual similarity for fashion items while emphasizing text descriptions for technical products</p></td>
    </tr>
    <tr>
-     <td><p>미디어 콘텐츠 검색</p></td>
-     <td><p>시각적 특징과 오디오 대본을 모두 활용한 동영상 검색</p></td>
-     <td><p>검색 의도에 따라 시각적 콘텐츠와 음성 대화의 중요도를 균형 있게 조정</p></td>
+     <td><p>Media content search</p></td>
+     <td><p>Video retrieval using both visual features and audio transcripts</p></td>
+     <td><p>Balances the importance of visual content versus spoken dialogue based on query intent</p></td>
    </tr>
    <tr>
-     <td><p>문서 검색</p></td>
-     <td><p>각기 다른 섹션에 대해 여러 임베딩을 활용하는 기업용 문서 검색</p></td>
-     <td><p>전체 텍스트 임베딩을 고려하면서도 제목 및 초록 임베딩에 더 높은 가중치를 부여</p></td>
+     <td><p>Document retrieval</p></td>
+     <td><p>Enterprise document search with multiple embeddings for different sections</p></td>
+     <td><p>Gives higher weight to title and abstract embeddings while still considering full-text embeddings</p></td>
    </tr>
 </table>
-<p>하이브리드 검색 애플리케이션에서 여러 검색 경로를 결합하면서 각 경로의 상대적 중요도를 제어해야 하는 경우, Weighted Ranker가 이상적인 선택입니다.</p>
-<h2 id="Mechanism-of-Weighted-Ranker" class="common-anchor-header">Weighted Ranker의 작동 원리<button data-href="#Mechanism-of-Weighted-Ranker" class="anchor-icon" translate="no">
+<p>If your hybrid search application requires combining multiple search paths while controlling their relative importance, Weighted Ranker is your ideal choice.</p>
+<h2 id="Mechanism-of-Weighted-Ranker" class="common-anchor-header">Mechanism of Weighted Ranker<button data-href="#Mechanism-of-Weighted-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -77,20 +80,20 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>WeightedRanker 전략의 주요 워크플로는 다음과 같습니다:</p>
+    </button></h2><p>The main workflow of the WeightedRanker strategy is as follows:</p>
 <ol>
-<li><p><strong>검색 점수 수집</strong>: 벡터 검색의 각 경로에서 결과와 점수(score_1, score_2)를 수집합니다.</p></li>
-<li><p><strong>점수 정규화</strong>: 각 검색은 서로 다른 유사도 측정 기준을 사용할 수 있으며, 이로 인해 점수 분포가 달라질 수 있습니다. 예를 들어, 유사도 유형으로 내적(IP)을 사용하면 [−∞,+∞] 범위의 점수가 나올 수 있는 반면, 유클리드 거리(L2)를 사용하면 [0,+∞] 범위의 점수가 나옵니다. 서로 다른 검색의 점수 범위가 달라 직접 비교할 수 없기 때문에, 각 검색 경로의 점수를 정규화해야 합니다. 일반적으로 <code translate="no">arctan</code> 함수를 적용하여 점수를 [0, 1] 사이의 범위로 변환합니다(score_1_normalized, score_2_normalized). 1에 가까운 점수는 유사성이 더 높음을 나타냅니다.</p></li>
-<li><p><strong>가중치 할당</strong>: 서로 다른 벡터 필드에 할당된 중요도에 따라, 정규화된 점수(score_1_normalized, score_2_normalized)에 가중치(<strong>wi</strong>)가 할당됩니다. 각 경로의 가중치는 [0, 1] 범위 내에 있어야 합니다. 그 결과로 얻어지는 가중 점수는 score_1_weighted 및 score_2_weighted입니다.</p></li>
-<li><p><strong>점수 병합</strong>: 가중치 점수(score_1_weighted, score_2_weighted)를 높은 순서부터 낮은 순서로 정렬하여 최종 점수 집합(score_final)을 생성합니다.</p></li>
+<li><p><strong>Collect Search Scores</strong>: Gather the results and scores from each path of vector search (score_1, score_2).</p></li>
+<li><p><strong>Score Normalization</strong>: Each search may use different similarity metrics, resulting in varied score distributions. For instance, using Inner Product (IP) as a similarity type could result in scores ranging from [−∞,+∞], while using Euclidean distance (L2) results in scores ranging from [0,+∞]. Because the score ranges from different searches vary and cannot be directly compared, it is necessary to normalize the scores from each path of search. Typically, <code translate="no">arctan</code> function is applied to transform the scores into a range between [0, 1] (score_1_normalized, score_2_normalized). Scores closer to 1 indicate higher similarity.</p></li>
+<li><p><strong>Assign Weights</strong>: Based on the importance assigned to different vector fields, weights (<strong>wi</strong>) are allocated to the normalized scores (score_1_normalized, score_2_normalized). The weights of each path should range between [0,1]. The resulting weighted scores are score_1_weighted and score_2_weighted.</p></li>
+<li><p><strong>Merge Scores</strong>: The weighted scores (score_1_weighted, score_2_weighted) are ranked from highest to lowest to produce a final set of scores (score_final).</p></li>
 </ol>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/weighted-ranker.png" alt="Weighted Ranker" class="doc-image" id="weighted-ranker" /> 
-   <span>가중치 순위 결정기</span>
-  
- </span></p>
-<h2 id="Example-of-Weighted-Ranker" class="common-anchor-header">가중치 기반 순위 지정기 예시<button data-href="#Example-of-Weighted-Ranker" class="anchor-icon" translate="no">
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/weighted-ranker.png" alt="Weighted Ranker" class="doc-image" id="weighted-ranker" />
+    <span>Weighted Ranker</span>
+  </span>
+</p>
+<h2 id="Example-of-Weighted-Ranker" class="common-anchor-header">Example of Weighted Ranker<button data-href="#Example-of-Weighted-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -105,13 +108,13 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>이 예제는 이미지와 텍스트를 포함한 다중 모달 하이브리드 검색(topK=5)을 보여주고, WeightedRanker 전략이 두 ANN 검색 결과를 어떻게 재순위화하는지 설명합니다.</p>
+    </button></h2><p>This example demonstrates a multimodal Hybrid Search (topK=5) involving images and text and illustrates how the WeightedRanker strategy reranks the results from two ANN searches.</p>
 <ul>
-<li><p>이미지에 대한 ANN 검색 결과 (topK=5):</p>
+<li><p>Results of ANN search on images （topK=5)：</p>
 <p><table>
 <tr>
 <th><p><strong>ID</strong></p></th>
-<th><p><strong>점수 (이미지)</strong></p></th>
+<th><p><strong>Score (image)</strong></p></th>
 </tr>
 <tr>
 <td><p>101</p></td>
@@ -134,11 +137,11 @@ summary: >-
 <td><p>0.8</p></td>
 </tr>
 </table></p></li>
-<li><p>텍스트에 대한 ANN 검색 결과 (topK=5):</p>
+<li><p>Results of ANN search on texts （topK=5)：</p>
 <p><table>
 <tr>
 <th><p><strong>ID</strong></p></th>
-<th><p><strong>점수 (텍스트)</strong></p></th>
+<th><p><strong>Score (text)</strong></p></th>
 </tr>
 <tr>
 <td><p>198</p></td>
@@ -161,13 +164,13 @@ summary: >-
 <td><p>0.78</p></td>
 </tr>
 </table></p></li>
-<li><p>WeightedRanker를 사용하여 이미지 및 텍스트 검색 결과에 가중치를 할당합니다. 이미지 ANN 검색의 가중치가 0.6이고 텍스트 검색의 가중치가 0.4라고 가정합니다.</p>
+<li><p>Use WeightedRanker assign weights to image and text search results. Suppose the weight for the image ANN search is 0.6 and the weight for the text search is 0.4.</p>
 <p><table>
 <tr>
 <th><p><strong>ID</strong></p></th>
-<th><p><strong>점수 (이미지)</strong></p></th>
-<th><p><strong>점수 (텍스트)</strong></p></th>
-<th><p><strong>가중 점수</strong></p></th>
+<th><p><strong>Score (image)</strong></p></th>
+<th><p><strong>Score (text)</strong></p></th>
+<th><p><strong>Weighted Score</strong></p></th>
 </tr>
 <tr>
 <td><p>101</p></td>
@@ -178,13 +181,13 @@ summary: >-
 <tr>
 <td><p>203</p></td>
 <td><p>0.88</p></td>
-<td><p>해당 없음</p></td>
+<td><p>N/A</p></td>
 <td><p>0.6×0.88+0.4×0=0.528</p></td>
 </tr>
 <tr>
 <td><p>150</p></td>
 <td><p>0.85</p></td>
-<td><p>해당 없음</p></td>
+<td><p>N/A</p></td>
 <td><p>0.6×0.85+0.4×0=0.51</p></td>
 </tr>
 <tr>
@@ -201,23 +204,23 @@ summary: >-
 </tr>
 <tr>
 <td><p>110</p></td>
-<td><p>이미지에 없음</p></td>
+<td><p>Not in Image</p></td>
 <td><p>0.85</p></td>
 <td><p>0.6×0+0.4×0.85=0.34</p></td>
 </tr>
 <tr>
 <td><p>250</p></td>
-<td><p>이미지에 없음</p></td>
+<td><p>Not in Image</p></td>
 <td><p>0.78</p></td>
 <td><p>0.6×0+0.4×0.78=0.312</p></td>
 </tr>
 </table></p></li>
-<li><p>재순위 지정 후 최종 결과（topK=5）：</p>
+<li><p>The final results after reranking（topK=5)：</p>
 <p><table>
 <tr>
-<th><p><strong>순위</strong></p></th>
+<th><p><strong>Rank</strong></p></th>
 <th><p><strong>ID</strong></p></th>
-<th><p><strong>최종 점수</strong></p></th>
+<th><p><strong>Final Score</strong></p></th>
 </tr>
 <tr>
 <td><p>1</p></td>
@@ -246,7 +249,7 @@ summary: >-
 </tr>
 </table></p></li>
 </ul>
-<h2 id="Usage-of-Weighted-Ranker" class="common-anchor-header">가중치 랭커 사용법<button data-href="#Usage-of-Weighted-Ranker" class="anchor-icon" translate="no">
+<h2 id="Usage-of-Weighted-Ranker" class="common-anchor-header">Usage of Weighted Ranker<button data-href="#Usage-of-Weighted-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -261,8 +264,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>가중치 랭커(WeightedRanker) 전략을 사용할 때는 가중치 값을 입력해야 합니다. 입력할 가중치 값의 개수는 하이브리드 검색(Hybrid Search)에서 수행되는 기본 ANN 검색 요청의 개수와 일치해야 합니다. 입력 가중치 값은 [0,1] 범위 내에 있어야 하며, 1에 가까울수록 중요도가 높음을 나타냅니다.</p>
-<h3 id="Create-a-Weighted-Ranker" class="common-anchor-header">가중치 랭커 생성<button data-href="#Create-a-Weighted-Ranker" class="anchor-icon" translate="no">
+    </button></h2><p>When using the WeightedRanker strategy, it is necessary to input weight values. The number of weight values to input should correspond to the number of basic ANN search requests in the Hybrid Search. The input weight values should fall in the range of [0,1], with values closer to 1 indicating greater importance.</p>
+<h3 id="Create-a-Weighted-Ranker" class="common-anchor-header">Create a Weighted Ranker<button data-href="#Create-a-Weighted-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -277,19 +280,19 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>예를 들어, 하이브리드 검색에 텍스트 검색과 이미지 검색이라는 두 가지 기본 ANN 검색 요청이 있다고 가정해 봅시다. 텍스트 검색이 더 중요하다고 간주된다면, 더 큰 가중치를 할당해야 합니다.</p>
+    </button></h3><p>For example, suppose there are two basic ANN search requests in a Hybrid Search: text search and image search. If the text search is considered more important, it should be assigned a greater weight.</p>
 <div class="alert note">
-<p>Milvus 2.6.x 이상 버전에서는 <code translate="no">Function</code> API를 통해 재순위 지정 전략을 직접 구성할 수 있습니다. 이전 버전(v2.6.0 이전)을 사용하는 경우, 설정 방법에 대해서는 <a href="https://milvus.io/docs/v2.5.x/reranking.md#Usage-of-WeightedRanker">재순위</a> 지정( <a href="https://milvus.io/docs/v2.5.x/reranking.md#Usage-of-WeightedRanker">Reranking</a> ) 문서를 참조하십시오.</p>
+<p>Milvus 2.6.x and later let you configure reranking strategies directly via the <code translate="no">Function</code> API. If you’re using an earlier release (before v2.6.0), refer to the <a href="https://milvus.io/docs/v2.5.x/reranking.md#Usage-of-WeightedRanker">Reranking</a> documentation for setup instructions.</p>
 </div>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> Function, FunctionType
 
@@ -379,49 +382,49 @@ rerank-&gt;<span class="hljs-built_in">AddParam</span>(<span class="hljs-string"
 <button class="copy-code-btn"></button></code></pre>
 <table>
    <tr>
-     <th><p>매개변수</p></th>
-     <th><p>필수?</p></th>
-     <th><p>설명</p></th>
-     <th><p>값/예시</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Required?</p></th>
+     <th><p>Description</p></th>
+     <th><p>Value/Example</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">name</code></p></td>
-     <td><p>예</p></td>
-     <td><p>이 함수의 고유 식별자</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Unique identifier for this Function</p></td>
      <td><p><code translate="no">"weight"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">input_field_names</code></p></td>
-     <td><p>예</p></td>
-     <td><p>함수를 적용할 벡터 필드 목록 (가중 순위 지정(Weighted Ranker)의 경우 비워야 함)</p></td>
+     <td><p>Yes</p></td>
+     <td><p>List of vector fields to apply the function to (must be empty for Weighted Ranker)</p></td>
      <td><p>[]</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">function_type</code></p></td>
-     <td><p>예</p></td>
-     <td><p>호출할 함수의 유형; 재순위 지정 전략을 지정하려면 ` <code translate="no">RERANK</code> `을 사용하십시오</p></td>
+     <td><p>Yes</p></td>
+     <td><p>The type of Function to invoke; use <code translate="no">RERANK</code> to specify a reranking strategy</p></td>
      <td><p><code translate="no">FunctionType.RERANK</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.reranker</code></p></td>
-     <td><p>예</p></td>
-     <td><p>사용할 재순위 지정 방법을 지정합니다.</p><p>가중 순위 지정기(Weighted Ranker)를 사용하려면 <code translate="no">weighted</code> 로 설정해야 합니다.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Specifies the reranking method to use.</p><p>Must be set to <code translate="no">weighted</code> to use Weighted Ranker.</p></td>
      <td><p><code translate="no">"weighted"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.weights</code></p></td>
-     <td><p>예</p></td>
-     <td><p>각 검색 경로에 해당하는 가중치 배열; 값은 [0,1] 범위입니다.</p><p>자세한 내용은 <a href="/docs/ko/weighted-ranker.md#Mechanism-of-Weighted-Ranker">가중치 랭커의 작동 원리를</a> 참조하십시오.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Array of weights corresponding to each search path; values ∈ [0,1].</p><p>For details, refer to <a href="/docs/ko/weighted-ranker.md#Mechanism-of-Weighted-Ranker">Mechanism of Weighted Ranker</a>.</p></td>
      <td><p><code translate="no">[0.1, 0.9]</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.norm_score</code></p></td>
-     <td><p>아니요</p></td>
-     <td><p>가중치를 적용하기 전에 원점수를 (arctan을 사용하여) 정규화할지 여부.</p><p>자세한 내용은 <a href="/docs/ko/weighted-ranker.md#Mechanism-of-Weighted-Ranker">가중 랭커의 작동 원리를</a> 참조하십시오.</p></td>
+     <td><p>No</p></td>
+     <td><p>Whether to normalize raw scores (using arctan) before weighting.</p><p>For details, refer to <a href="/docs/ko/weighted-ranker.md#Mechanism-of-Weighted-Ranker">Mechanism of Weighted Ranker</a>.</p></td>
      <td><p><code translate="no">True</code></p></td>
    </tr>
 </table>
-<h3 id="Apply-to-hybrid-search" class="common-anchor-header">하이브리드 검색에 적용<button data-href="#Apply-to-hybrid-search" class="anchor-icon" translate="no">
+<h3 id="Apply-to-hybrid-search" class="common-anchor-header">Apply to hybrid search<button data-href="#Apply-to-hybrid-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -436,16 +439,16 @@ rerank-&gt;<span class="hljs-built_in">AddParam</span>(<span class="hljs-string"
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>가중 순위 지정기는 여러 벡터 필드를 결합하는 하이브리드 검색 작업을 위해 특별히 설계되었습니다. 하이브리드 검색을 수행할 때는 각 검색 경로에 대한 가중치를 지정해야 합니다:</p>
+    </button></h3><p>Weighted Ranker is designed specifically for hybrid search operations that combine multiple vector fields. When performing hybrid search, you must specify the weights for each search path:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, AnnSearchRequest
 
@@ -704,4 +707,4 @@ curl --request POST \
     \&quot;outputFields\&quot;: [\&quot;product_name\&quot;, \&quot;price\&quot;, \&quot;category\&quot;]
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>하이브리드 검색에 대한 자세한 내용은 <a href="/docs/ko/multi-vector-search.md">다중 벡터 하이브리드 검색을</a> 참조하십시오.</p>
+<p>For more information on hybrid search, refer to <a href="/docs/ko/multi-vector-search.md">Multi-Vector Hybrid Search</a>.</p>

@@ -1,9 +1,9 @@
 ---
 id: switch_milvus_cluster_mq_type-operator.md
-summary: Imparare a cambiare il tipo di coda dei messaggi per un cluster Milvus.
-title: Cambio del tipo di MQ per il cluster Milvus
+summary: Learn how to switch the message queue type for a Milvus cluster.
+title: Switch MQ Type for Milvus Cluster
 ---
-<h1 id="Switch-MQ-Type-for-Milvus-Cluster" class="common-anchor-header">Cambio del tipo di MQ per il cluster Milvus<button data-href="#Switch-MQ-Type-for-Milvus-Cluster" class="anchor-icon" translate="no">
+<h1 id="Switch-MQ-Type-for-Milvus-Cluster" class="common-anchor-header">Switch MQ Type for Milvus Cluster<button data-href="#Switch-MQ-Type-for-Milvus-Cluster" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,11 +18,11 @@ title: Cambio del tipo di MQ per il cluster Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Questo argomento descrive come cambiare il tipo di coda di messaggi (MQ) per un cluster Milvus esistente. Milvus supporta la commutazione online di MQ tra Pulsar, Kafka e Woodpecker senza tempi di inattività.</p>
+    </button></h1><p>This topic describes how to switch the message queue (MQ) type for an existing Milvus cluster deployment. Milvus supports online MQ switching between Pulsar, Kafka, and Woodpecker without downtime.</p>
 <div class="alert warning">
-<p>Questa funzione è in attesa di rilascio ed è soggetta a modifiche. Contattate il supporto Milvus se volete provarla o se avete domande.</p>
+<p>This feature is pending release and is subject to change. Please reach out to Milvus support if you want to try it out or have any questions.</p>
 </div>
-<h2 id="Prerequisites" class="common-anchor-header">Prerequisiti<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -38,10 +38,10 @@ title: Cambio del tipo di MQ per il cluster Milvus
         ></path>
       </svg>
     </button></h2><ul>
-<li>Un'istanza di cluster Milvus in funzione, installata tramite <a href="/docs/it/install_cluster-milvusoperator.md">Milvus Operator</a> o <a href="/docs/it/install_cluster-helm.md">Helm</a>.</li>
-<li>L'istanza Milvus è stata aggiornata all'ultima versione che supporta la funzione Switch MQ.</li>
+<li>A running Milvus cluster instance installed via <a href="/docs/it/v2.6.x/install_cluster-milvusoperator.md">Milvus Operator</a> or <a href="/docs/it/v2.6.x/install_cluster-helm.md">Helm</a>.</li>
+<li>The Milvus instance has been upgraded to the latest version that supports this Switch MQ feature.</li>
 </ul>
-<h2 id="Switch-from-PulsarKafka-to-Woodpecker-MinIO" class="common-anchor-header">Passaggio da Pulsar/Kafka a Woodpecker (MinIO)<button data-href="#Switch-from-PulsarKafka-to-Woodpecker-MinIO" class="anchor-icon" translate="no">
+<h2 id="Switch-from-PulsarKafka-to-Woodpecker-MinIO" class="common-anchor-header">Switch from Pulsar/Kafka to Woodpecker (MinIO)<button data-href="#Switch-from-PulsarKafka-to-Woodpecker-MinIO" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -56,8 +56,8 @@ title: Cambio del tipo di MQ per il cluster Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Procedere come segue per cambiare il tipo di MQ da Pulsar o Kafka a Woodpecker con archiviazione MinIO.</p>
-<h3 id="Step-1-Verify-the-Milvus-instance-is-running" class="common-anchor-header">Passo 1: Verificare che l'istanza Milvus sia in esecuzione<button data-href="#Step-1-Verify-the-Milvus-instance-is-running" class="anchor-icon" translate="no">
+    </button></h2><p>Follow these steps to switch the MQ type from Pulsar or Kafka to Woodpecker with MinIO storage.</p>
+<h3 id="Step-1-Verify-the-Milvus-instance-is-running" class="common-anchor-header">Step 1: Verify the Milvus instance is running<button data-href="#Step-1-Verify-the-Milvus-instance-is-running" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -72,8 +72,8 @@ title: Cambio del tipo di MQ per il cluster Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Prima di effettuare il passaggio, assicuratevi che l'istanza del cluster Milvus funzioni correttamente. Si può verificare creando una raccolta di prova, inserendo i dati ed eseguendo una query.</p>
-<h3 id="Step-2-Optional-Verify-Woodpecker-configuration" class="common-anchor-header">Passo 2: (Facoltativo) Verificare la configurazione di Woodpecker<button data-href="#Step-2-Optional-Verify-Woodpecker-configuration" class="anchor-icon" translate="no">
+    </button></h3><p>Before switching, ensure that your Milvus cluster instance is running properly. You can verify this by creating a test collection, inserting data, and running a query.</p>
+<h3 id="Step-2-Optional-Verify-Woodpecker-configuration" class="common-anchor-header">Step 2: (Optional) Verify Woodpecker configuration<button data-href="#Step-2-Optional-Verify-Woodpecker-configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -88,17 +88,17 @@ title: Cambio del tipo di MQ per il cluster Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>La configurazione predefinita di Milvus imposta già il tipo di archiviazione di Woodpecker su MinIO, quindi nella maggior parte dei casi non è necessaria alcuna configurazione aggiuntiva.</p>
-<p>Tuttavia, se la configurazione di Woodpecker è stata precedentemente personalizzata, è necessario assicurarsi che <code translate="no">woodpecker.storage.type</code> sia impostato su <code translate="no">minio</code>. Aggiornare la configurazione di Milvus <strong>senza</strong> modificare il valore <code translate="no">mqType</code>:</p>
+    </button></h3><p>The default Milvus configuration already sets Woodpecker storage type to MinIO, so no additional configuration is required in most cases.</p>
+<p>However, if you have previously customized the Woodpecker configuration, you must ensure that <code translate="no">woodpecker.storage.type</code> is set to <code translate="no">minio</code>. Update the Milvus configuration <strong>without</strong> changing the <code translate="no">mqType</code> value:</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">woodpecker:</span>
   <span class="hljs-attr">storage:</span>
     <span class="hljs-attr">type:</span> <span class="hljs-string">minio</span>
 <button class="copy-code-btn"></button></code></pre>
 <ul>
-<li>Per <strong>Helm</strong>, fare riferimento a <a href="/docs/it/configure-helm.md">Configurazione di Milvus con le carte di Helm</a> per le istruzioni sull'aggiornamento della configurazione.</li>
-<li>Per <strong>Milvus Operator</strong>, fare riferimento a <a href="/docs/it/configure_operator.md">Configurare Milvus con Milvus Operator</a> per istruzioni sull'aggiornamento della configurazione.</li>
+<li>For <strong>Helm</strong>, refer to <a href="/docs/it/v2.6.x/configure-helm.md">Configure Milvus with Helm Charts</a> for instructions on updating configuration.</li>
+<li>For <strong>Milvus Operator</strong>, refer to <a href="/docs/it/v2.6.x/configure_operator.md">Configure Milvus with Milvus Operator</a> for instructions on updating configuration.</li>
 </ul>
-<h3 id="Step-3-Execute-the-MQ-switch" class="common-anchor-header">Passo 3: Eseguire lo switch MQ<button data-href="#Step-3-Execute-the-MQ-switch" class="anchor-icon" translate="no">
+<h3 id="Step-3-Execute-the-MQ-switch" class="common-anchor-header">Step 3: Execute the MQ switch<button data-href="#Step-3-Execute-the-MQ-switch" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -113,15 +113,15 @@ title: Cambio del tipo di MQ per il cluster Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Eseguite il seguente comando per attivare il passaggio a Woodpecker:</p>
+    </button></h3><p>Run the following command to trigger the switch to Woodpecker:</p>
 <pre><code translate="no" class="language-shell">curl -X POST http://&lt;mixcoord_addr&gt;:9091/management/wal/alter \
   -H &quot;Content-Type: application/json&quot; \
   -d &#x27;{&quot;target_wal_name&quot;: &quot;woodpecker&quot;}&#x27;
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>Sostituite <code translate="no">&lt;mixcoord_addr&gt;</code> con l'indirizzo effettivo del vostro servizio MixCoord.</p>
+<p>Replace <code translate="no">&lt;mixcoord_addr&gt;</code> with the actual address of your MixCoord service.</p>
 </div>
-<h3 id="Step-4-Verify-the-switch-is-complete" class="common-anchor-header">Fase 4: Verificare il completamento del passaggio<button data-href="#Step-4-Verify-the-switch-is-complete" class="anchor-icon" translate="no">
+<h3 id="Step-4-Verify-the-switch-is-complete" class="common-anchor-header">Step 4: Verify the switch is complete<button data-href="#Step-4-Verify-the-switch-is-complete" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -136,20 +136,20 @@ title: Cambio del tipo di MQ per il cluster Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Il processo di passaggio si completa automaticamente. Monitorare i log di Milvus per i seguenti messaggi chiave per confermare che il passaggio è stato completato:</p>
+    </button></h3><p>The switch process completes automatically. Monitor the Milvus logs for the following key messages to confirm the switch has finished:</p>
 <pre><code translate="no">WAL <span class="hljs-keyword">switch</span> success: &lt;MQ1&gt; <span class="hljs-keyword">switch</span> to &lt;MQ2&gt; finish, re-opening required
 AlterWAL broadcast message acknowledged <span class="hljs-keyword">by</span> all vchannels
 successfully updated mq.type configuration <span class="hljs-keyword">in</span> etcd
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>Nei messaggi di log sopra riportati, <code translate="no">&lt;MQ1&gt;</code> è il tipo di MQ di origine (ad esempio, <code translate="no">pulsar</code> o <code translate="no">kafka</code>) e <code translate="no">&lt;MQ2&gt;</code> è il tipo di MQ di destinazione (<code translate="no">woodpecker</code>).</p>
+<p>In the log messages above, <code translate="no">&lt;MQ1&gt;</code> is the source MQ type (e.g., <code translate="no">pulsar</code> or <code translate="no">kafka</code>), and <code translate="no">&lt;MQ2&gt;</code> is the target MQ type (<code translate="no">woodpecker</code>).</p>
 <ul>
-<li>Il primo messaggio indica che il passaggio del WAL dall'origine alla destinazione è stato completato.</li>
-<li>Il secondo messaggio indica che tutti i canali fisici sono stati commutati.</li>
-<li>Il terzo messaggio indica che la configurazione di <code translate="no">mq.type</code> è stata aggiornata in etcd.</li>
+<li>The first message indicates that the WAL switch from the source to the target has completed.</li>
+<li>The second message indicates that all physical channels have been switched.</li>
+<li>The third message indicates that the <code translate="no">mq.type</code> configuration has been updated in etcd.</li>
 </ul>
 </div>
-<h2 id="Switch-from-Woodpecker-MinIO-to-Pulsar-or-Kafka" class="common-anchor-header">Passaggio da Woodpecker (MinIO) a Pulsar o Kafka<button data-href="#Switch-from-Woodpecker-MinIO-to-Pulsar-or-Kafka" class="anchor-icon" translate="no">
+<h2 id="Switch-from-Woodpecker-MinIO-to-Pulsar-or-Kafka" class="common-anchor-header">Switch from Woodpecker (MinIO) to Pulsar or Kafka<button data-href="#Switch-from-Woodpecker-MinIO-to-Pulsar-or-Kafka" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -164,8 +164,8 @@ successfully updated mq.type configuration <span class="hljs-keyword">in</span> 
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Seguite questi passaggi per cambiare il tipo di MQ da Woodpecker a Pulsar o Kafka.</p>
-<h3 id="Step-1-Verify-the-Milvus-instance-is-running" class="common-anchor-header">Passo 1: Verificare che l'istanza Milvus sia in esecuzione<button data-href="#Step-1-Verify-the-Milvus-instance-is-running" class="anchor-icon" translate="no">
+    </button></h2><p>Follow these steps to switch the MQ type from Woodpecker back to Pulsar or Kafka.</p>
+<h3 id="Step-1-Verify-the-Milvus-instance-is-running" class="common-anchor-header">Step 1: Verify the Milvus instance is running<button data-href="#Step-1-Verify-the-Milvus-instance-is-running" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -180,8 +180,8 @@ successfully updated mq.type configuration <span class="hljs-keyword">in</span> 
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Prima di effettuare il passaggio, assicurarsi che l'istanza del cluster Milvus funzioni correttamente.</p>
-<h3 id="Step-2-Configure-the-target-MQ" class="common-anchor-header">Passo 2: Configurare l'MQ di destinazione<button data-href="#Step-2-Configure-the-target-MQ" class="anchor-icon" translate="no">
+    </button></h3><p>Before switching, ensure that your Milvus cluster instance is running properly.</p>
+<h3 id="Step-2-Configure-the-target-MQ" class="common-anchor-header">Step 2: Configure the target MQ<button data-href="#Step-2-Configure-the-target-MQ" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -196,25 +196,25 @@ successfully updated mq.type configuration <span class="hljs-keyword">in</span> 
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Prima di attivare lo switch, è necessario assicurarsi che il servizio MQ di destinazione (Pulsar o Kafka) sia disponibile e che la sua configurazione di accesso sia resa nella configurazione di Milvus.</p>
+    </button></h3><p>Before triggering the switch, you need to ensure the target MQ service (Pulsar or Kafka) is available and its access configuration is rendered into the Milvus configuration.</p>
 <div class="alert note">
-<p>I passaggi esatti di questa sezione dipendono dall'utilizzo di un servizio MQ interno (in bundle) o esterno.</p>
+<p>The exact steps in this section depend on whether you are using an internal (bundled) or external MQ service.</p>
 </div>
-<h4 id="Option-A-Internal-PulsarKafka-bundled-with-Helm" class="common-anchor-header">Opzione A: Pulsar/Kafka interno (in bundle con Helm)</h4><p>Se si utilizza Pulsar o Kafka in bundle con Helm, aggiornare la release di Helm per abilitare il servizio MQ di destinazione e disabilitare Woodpecker. Il flag <code translate="no">streaming.enabled=true</code> è necessario per abilitare lo Streaming Node, che è un prerequisito per la funzione Switch MQ. Ad esempio, per passare a Pulsar:</p>
+<h4 id="Option-A-Internal-PulsarKafka-bundled-with-Helm" class="common-anchor-header">Option A: Internal Pulsar/Kafka (bundled with Helm)</h4><p>If you are using the bundled Pulsar or Kafka deployed by Helm, update your Helm release to enable the target MQ service and disable Woodpecker. The <code translate="no">streaming.enabled=true</code> flag is required to enable the Streaming Node, which is a prerequisite for the Switch MQ feature. For example, to switch to Pulsar:</p>
 <pre><code translate="no" class="language-shell">helm upgrade -i my-release milvus/milvus \
   --set pulsarv3.enabled=true \
   --set woodpecker.enabled=false \
   --set streaming.enabled=true \
   -f values.yaml
 <button class="copy-code-btn"></button></code></pre>
-<p>Dopo l'aggiornamento, verificare che la configurazione di accesso MQ di destinazione sia stata resa nella configurazione di Milvus. Ad esempio, per Pulsar:</p>
+<p>After the upgrade, verify that the target MQ access configuration has been rendered into the Milvus configuration. For example, for Pulsar:</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">pulsar:</span>
   <span class="hljs-attr">address:</span> <span class="hljs-string">&lt;pulsar-proxy-address&gt;</span>
   <span class="hljs-attr">port:</span> <span class="hljs-number">6650</span>
 <button class="copy-code-btn"></button></code></pre>
-<h4 id="Option-B-Internal-PulsarKafka-managed-by-Milvus-Operator" class="common-anchor-header">Opzione B: Pulsar/Kafka interno (gestito da Milvus Operator)</h4><p>Se si utilizza Milvus Operator, aggiornare la risorsa personalizzata di Milvus per includere la configurazione di accesso MQ di destinazione. Per maggiori dettagli sull'aggiornamento della configurazione di <a href="/docs/it/configure_operator.md">Milvus</a>, consultare <a href="/docs/it/configure_operator.md">Configurazione di Milvus con Milvus Operator</a>.</p>
-<h4 id="Option-C-External-PulsarKafka" class="common-anchor-header">Opzione C: Pulsar/Kafka esterno</h4><p>Se si utilizza un servizio Pulsar o Kafka esterno, non è necessario modificare il sito <code translate="no">mqType</code>. È sufficiente aggiungere la configurazione di accesso MQ esterno al sito <code translate="no">values.yaml</code> e riavviare l'istanza Milvus per eseguire la configurazione.</p>
-<h3 id="Step-3-Execute-the-MQ-switch" class="common-anchor-header">Passo 3: Eseguire lo switch MQ<button data-href="#Step-3-Execute-the-MQ-switch" class="anchor-icon" translate="no">
+<h4 id="Option-B-Internal-PulsarKafka-managed-by-Milvus-Operator" class="common-anchor-header">Option B: Internal Pulsar/Kafka (managed by Milvus Operator)</h4><p>If you are using Milvus Operator, update the Milvus custom resource to include the target MQ access configuration. Refer to <a href="/docs/it/v2.6.x/configure_operator.md">Configure Milvus with Milvus Operator</a> for details on updating Milvus configuration.</p>
+<h4 id="Option-C-External-PulsarKafka" class="common-anchor-header">Option C: External Pulsar/Kafka</h4><p>If you are using an external Pulsar or Kafka service, you do not need to change the <code translate="no">mqType</code>. Simply add the external MQ access configuration to your <code translate="no">values.yaml</code> and restart the Milvus instance to render the configuration.</p>
+<h3 id="Step-3-Execute-the-MQ-switch" class="common-anchor-header">Step 3: Execute the MQ switch<button data-href="#Step-3-Execute-the-MQ-switch" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -229,15 +229,15 @@ successfully updated mq.type configuration <span class="hljs-keyword">in</span> 
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Eseguire il seguente comando per attivare il passaggio a Pulsar (sostituire <code translate="no">pulsar</code> con <code translate="no">kafka</code> se si passa a Kafka):</p>
+    </button></h3><p>Run the following command to trigger the switch to Pulsar (replace <code translate="no">pulsar</code> with <code translate="no">kafka</code> if switching to Kafka):</p>
 <pre><code translate="no" class="language-shell">curl -X POST http://&lt;mixcoord_addr&gt;:9091/management/wal/alter \
   -H &quot;Content-Type: application/json&quot; \
   -d &#x27;{&quot;target_wal_name&quot;: &quot;pulsar&quot;}&#x27;
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>Sostituire <code translate="no">&lt;mixcoord_addr&gt;</code> con l'indirizzo effettivo del servizio MixCoord.</p>
+<p>Replace <code translate="no">&lt;mixcoord_addr&gt;</code> with the actual address of your MixCoord service.</p>
 </div>
-<h3 id="Step-4-Verify-the-switch-is-complete" class="common-anchor-header">Passo 4: Verificare il completamento del passaggio<button data-href="#Step-4-Verify-the-switch-is-complete" class="anchor-icon" translate="no">
+<h3 id="Step-4-Verify-the-switch-is-complete" class="common-anchor-header">Step 4: Verify the switch is complete<button data-href="#Step-4-Verify-the-switch-is-complete" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -252,16 +252,16 @@ successfully updated mq.type configuration <span class="hljs-keyword">in</span> 
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Il processo di passaggio si completa automaticamente. Monitorare i log di Milvus per i seguenti messaggi chiave per confermare il completamento del passaggio:</p>
+    </button></h3><p>The switch process completes automatically. Monitor the Milvus logs for the following key messages to confirm the switch has finished:</p>
 <pre><code translate="no">WAL <span class="hljs-keyword">switch</span> success: &lt;MQ1&gt; <span class="hljs-keyword">switch</span> to &lt;MQ2&gt; finish, re-opening required
 AlterWAL broadcast message acknowledged <span class="hljs-keyword">by</span> all vchannels
 successfully updated mq.type configuration <span class="hljs-keyword">in</span> etcd
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>Nei messaggi di log sopra riportati, <code translate="no">&lt;MQ1&gt;</code> è il tipo di MQ di origine (<code translate="no">woodpecker</code>) e <code translate="no">&lt;MQ2&gt;</code> è il tipo di MQ di destinazione (ad esempio, <code translate="no">pulsar</code> o <code translate="no">kafka</code>).</p>
+<p>In the log messages above, <code translate="no">&lt;MQ1&gt;</code> is the source MQ type (<code translate="no">woodpecker</code>), and <code translate="no">&lt;MQ2&gt;</code> is the target MQ type (e.g., <code translate="no">pulsar</code> or <code translate="no">kafka</code>).</p>
 <ul>
-<li>Il primo messaggio indica che il passaggio del WAL dall'origine alla destinazione è stato completato.</li>
-<li>Il secondo messaggio indica che tutti i canali fisici sono stati commutati.</li>
-<li>Il terzo messaggio indica che la configurazione di <code translate="no">mq.type</code> è stata aggiornata in etcd.</li>
+<li>The first message indicates that the WAL switch from the source to the target has completed.</li>
+<li>The second message indicates that all physical channels have been switched.</li>
+<li>The third message indicates that the <code translate="no">mq.type</code> configuration has been updated in etcd.</li>
 </ul>
 </div>

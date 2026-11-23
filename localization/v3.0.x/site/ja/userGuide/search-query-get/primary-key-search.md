@@ -1,11 +1,14 @@
 ---
 id: primary-key-search.md
-title: 主キー検索Compatible with Milvus 2.6.9+
+title: Primary-Key SearchCompatible with Milvus 2.6.9+
 summary: >-
-  類似性検索を実行する際は、たとえ対象コレクションにクエリベクトルがすでに存在していても、常に1つ以上のクエリベクトルを指定するよう求められます。検索の前にベクトルを取得する手間を省くには、代わりに主キーを使用することができます。
+  When conducting similarity searches, you are always asked to provide one or
+  more query vectors, even if the query vectors are already present in the
+  target collection. To avoid retrieving vectors before the search, you can use
+  primary keys instead.
 beta: Milvus 2.6.9+
 ---
-<h1 id="Primary-Key-Search" class="common-anchor-header">主キー検索<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.9+</span><button data-href="#Primary-Key-Search" class="anchor-icon" translate="no">
+<h1 id="Primary-Key-Search" class="common-anchor-header">Primary-Key Search<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.9+</span><button data-href="#Primary-Key-Search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,8 +23,8 @@ beta: Milvus 2.6.9+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>類似性検索を行う際、たとえクエリベクトルが対象コレクションにすでに存在していても、常に1つ以上のクエリベクトルを指定するよう求められます。検索前にベクトルを取得する手間を省くために、代わりに主キーを使用することができます。</p>
-<h2 id="Overview" class="common-anchor-header">概要<button data-href="#Overview" class="anchor-icon" translate="no">
+    </button></h1><p>When conducting similarity searches, you are always asked to provide one or more query vectors, even if the query vectors are already present in the target collection. To avoid retrieving vectors before the search, you can use primary keys instead.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -36,11 +39,11 @@ beta: Milvus 2.6.9+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>eコマースプラットフォームでは、ユーザーがキーワードを入力して、それに一致する商品を検索できます。ユーザーが商品詳細ページを表示すると、プラットフォームは、商品を比較したいユーザーのために、ページの下部に類似商品のリストも表示します。</p>
-<p>おすすめ商品は、キーワードや現在の商品との類似度順に並べ替えられます。これを実現するには、プラットフォームの開発者は、実際の類似度検索の前に、Milvusからキーワードや現在の商品のベクトル表現を取得する必要があります。これにより、プラットフォームとMilvus間のラウンドトリップが増加し、ネットワークを介して大量の高次元浮動小数点値が送信されることになります。</p>
-<p>アプリケーションとMilvus間の連携ロジックを簡素化し、ラウンドトリップの回数を減らし、ネットワークを介して大量の高次元浮動小数点値を転送することを避けるためには、プライマリキー検索の利用を検討してください。</p>
-<p>主キー検索では、クエリベクトルを指定する必要はありません。その代わりに、クエリベクトルを含むエンティティの主キー（<code translate="no">ids</code> ）を指定する必要があります。</p>
-<h2 id="Limits--restrictions" class="common-anchor-header">制限事項<button data-href="#Limits--restrictions" class="anchor-icon" translate="no">
+    </button></h2><p>On e-commerce platforms, users can enter a keyword to retrieve products that match it. Once the user views a product detail page, the platform will also display a list of similar products at the bottom of the page for users who want to compare them.</p>
+<p>The recommendations are sorted by their similarity to the keyword or the current product. To achieve this, platform developers need to retrieve the vector representation of the keyword or the current product from Milvus before the actual similarity search, which increases the round-trip between the platform and Milvus and results in a large number of high-dimensional floats being transmitted across the network.</p>
+<p>To simplify the interaction logic between your applications and Milvus, reduce the number of round-trips, and avoid transmitting large amounts of high-dimensional floating-point values across the network, consider using primary key searches.</p>
+<p>In a primary key search, you do not need to provide any query vectors. Instead, you are asked to provide the primary keys (<code translate="no">ids</code>) of the entities that contain the query vectors.</p>
+<h2 id="Limits--restrictions" class="common-anchor-header">Limits & restrictions<button data-href="#Limits--restrictions" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -56,14 +59,14 @@ beta: Milvus 2.6.9+
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>主キーを使用した検索は、BM25関数のようにVarCharフィールドから派生した疎ベクトルフィールドを除き、すべてのベクトルデータ型に適用されます。</p></li>
-<li><p>フィルタ検索、範囲検索、およびグループ化検索では、クエリベクトルの代わりにプライマリキーを使用でき、必要に応じてページネーションを有効にすることも可能です。ただし、この機能はハイブリッド検索および検索イテレータには適用されません。</p></li>
-<li><p>埋め込みリストを含む類似性検索の場合、引き続きクエリベクトルを取得し、それらを埋め込みリストに整理してから検索を実行する必要があります。</p></li>
-<li><p>RESTful API では、クエリベクトルの代わりにプライマリキーを使用することはできません。</p></li>
-<li><p>存在しない主キーや形式が正しくない主キーについては、Milvus はエラーを表示します。</p></li>
-<li><p>主キーとクエリベクトルは互いに排他的です。両方を指定すると、エラーが発生します。</p></li>
+<li><p>Searches using primary keys apply to all vector data types, except sparse vector fields derived from VarChar fields, as in BM25 functions.</p></li>
+<li><p>You can use primary keys instead of query vectors in filtered, range, and grouping searches, optionally with pagination enabled. However, this feature does not apply to hybrid searches and search iterators.</p></li>
+<li><p>For similarity searches involving embedding lists, you still need to retrieve the query vectors, arrange them into embedding lists, and run the searches.</p></li>
+<li><p>You cannot use primary keys instead of query vectors in RESTful APIs.</p></li>
+<li><p>For any nonexistent primary keys or those in an incorrect format, Milvus will prompt errors.</p></li>
+<li><p>Primary keys and query vectors are mutually exclusive. Providing both also results in errors.</p></li>
 </ul>
-<h2 id="Examples" class="common-anchor-header">例<button data-href="#Examples" class="anchor-icon" translate="no">
+<h2 id="Examples" class="common-anchor-header">Examples<button data-href="#Examples" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -78,11 +81,11 @@ beta: Milvus 2.6.9+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>以下の例では、指定されたすべての Int64 ID がターゲットコレクションに存在することを前提としています。</p>
+    </button></h2><p>The following examples assume that all provided Int64 IDs are available in the target collection.</p>
 <div class="alert note">
-<p>主キーはフィルタリングには使用されず、ベクトルの取得にのみ使用されます。</p>
+<p>The primary keys are not used for filtering; they are used only for vector retrieval.</p>
 </div>
-<h3 id="Example-1-Basic-primary-key-search" class="common-anchor-header">例 1: 基本的な主キー検索<button data-href="#Example-1-Basic-primary-key-search" class="anchor-icon" translate="no">
+<h3 id="Example-1-Basic-primary-key-search" class="common-anchor-header">Example 1: Basic primary-key search<button data-href="#Example-1-Basic-primary-key-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -97,14 +100,14 @@ beta: Milvus 2.6.9+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>基本的な主キー検索を行うには、クエリベクトルを主キーに置き換えるだけです。</p>
+    </button></h3><p>To conduct a basic primary-key search, simply replace the query vectors with primary keys.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
- <a href="#cpp">   C++</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+    <a href="#cpp">C++</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -239,7 +242,7 @@ milvus::SearchResponse searchResponse;
     }
 }
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-2-Filtered-search-using-primary-keys" class="common-anchor-header">例 2: 主キーを使用したフィルタリング検索<button data-href="#Example-2-Filtered-search-using-primary-keys" class="anchor-icon" translate="no">
+<h3 id="Example-2-Filtered-search-using-primary-keys" class="common-anchor-header">Example 2: Filtered search using primary keys<button data-href="#Example-2-Filtered-search-using-primary-keys" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -254,14 +257,14 @@ milvus::SearchResponse searchResponse;
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>以下の例では、color と likes がターゲットコレクションのスキーマで定義された 2 つのフィールドであると仮定します。</p>
+    </button></h3><p>The following example assumes that color and likes are two schema-defined fields in the target collection.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
- <a href="#cpp">   C++</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+    <a href="#cpp">C++</a>
 </div>
 <pre><code translate="no" class="language-python">res = client.search(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,
@@ -356,7 +359,7 @@ milvus::SearchResponse searchResponse;
     }
 }
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-3-Range-search-using-primary-keys" class="common-anchor-header">例 3: 主キーを使用した範囲検索<button data-href="#Example-3-Range-search-using-primary-keys" class="anchor-icon" translate="no">
+<h3 id="Example-3-Range-search-using-primary-keys" class="common-anchor-header">Example 3: Range search using primary keys<button data-href="#Example-3-Range-search-using-primary-keys" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -372,12 +375,12 @@ milvus::SearchResponse searchResponse;
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
- <a href="#cpp">   C++</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+    <a href="#cpp">C++</a>
 </div>
 <pre><code translate="no" class="language-python">res = client.search(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,
@@ -483,7 +486,7 @@ milvus::SearchResponse searchResponse;
     }
 }
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-4-Grouping-search-using-primary-keys" class="common-anchor-header">例 4: 主キーを使用したグループ化検索<button data-href="#Example-4-Grouping-search-using-primary-keys" class="anchor-icon" translate="no">
+<h3 id="Example-4-Grouping-search-using-primary-keys" class="common-anchor-header">Example 4: Grouping search using primary keys<button data-href="#Example-4-Grouping-search-using-primary-keys" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -498,14 +501,14 @@ milvus::SearchResponse searchResponse;
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>以下の例では、<code translate="no">docId</code> がターゲットコレクションのスキーマで定義されたフィールドであると仮定しています。</p>
+    </button></h3><p>The following example assumes <code translate="no">docId</code> is a schema-defined fields in the target collection.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
- <a href="#cpp">   C++</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+    <a href="#cpp">C++</a>
 </div>
 <pre><code translate="no" class="language-python">res = client.search(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,

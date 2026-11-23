@@ -1,11 +1,11 @@
 ---
 id: switch-mq-type.md
-title: Переключение очереди сообщений
+title: Switch Message Queue
 summary: >-
-  Переключить существующий развернутый проект Milvus с Woodpecker на другую
-  очередь сообщений без простоев.
+  Switch an existing Milvus deployment between Woodpecker and another message
+  queue without downtime.
 ---
-<h1 id="Switch-Message-Queue" class="common-anchor-header">Переключение очереди сообщений<button data-href="#Switch-Message-Queue" class="anchor-icon" translate="no">
+<h1 id="Switch-Message-Queue" class="common-anchor-header">Switch Message Queue<button data-href="#Switch-Message-Queue" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,11 +20,11 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>В данном руководстве описано, как переключить очередь сообщений (MQ) существующего развертывания Milvus <strong>с Woodpecker на другую очередь сообщений</strong> в режиме онлайн и без простоев.</p>
+    </button></h1><p>This guide describes how to switch the message queue (MQ) of an existing Milvus deployment <strong>between Woodpecker and another message queue</strong>, online and without downtime.</p>
 <div class="alert warning">
-<p>Эта функция находится в стадии подготовки к выпуску и может быть изменена. Если вы хотите опробовать эту функцию или у вас есть вопросы, обратитесь в службу поддержки Milvus.</p>
+<p>This feature is pending release and is subject to change. Please reach out to Milvus support if you want to try it out or have any questions.</p>
 </div>
-<h2 id="Prerequisites" class="common-anchor-header">Необходимые условия<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -40,10 +40,10 @@ summary: >-
         ></path>
       </svg>
     </button></h2><ul>
-<li><strong>Функция «Смена MQ» доступна в Milvus 3.0 и более поздних версиях.</strong> Перед использованием обновите свой экземпляр Milvus до версии 3.0 или более поздней — в более ранних версиях эта функция недоступна.</li>
-<li>Инстанс работает корректно.</li>
+<li><strong>The Switch MQ feature is available in Milvus 3.0 and later.</strong> Upgrade your Milvus instance to Milvus 3.0 or later before using it — the feature is not available on earlier versions.</li>
+<li>The instance is running properly.</li>
 </ul>
-<h2 id="Scope" class="common-anchor-header">Область применения<button data-href="#Scope" class="anchor-icon" translate="no">
+<h2 id="Scope" class="common-anchor-header">Scope<button data-href="#Scope" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -58,13 +58,13 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>В данном руководстве рассматривается только переключение <strong>между Woodpecker и другой очередью сообщений</strong>. Прямое переключение между Pulsar и Kafka не входит в сферу применения данного руководства.</p>
+    </button></h2><p>This guide covers switching <strong>between Woodpecker and another message queue</strong> only. Switching directly between Pulsar and Kafka is out of scope.</p>
 <ul>
-<li><a href="/docs/ru/switch-rocksmq-woodpecker.md">Переключение между RocksMQ и Woodpecker</a> — автономная версия Milvus (Docker Compose)</li>
-<li><a href="/docs/ru/switch-pulsar-woodpecker.md">Переключение между Pulsar и Woodpecker</a> — кластер Milvus (Helm / Milvus Operator)</li>
-<li><a href="/docs/ru/switch-kafka-woodpecker.md">Переключение между Kafka и Woodpecker</a> — кластер Milvus (Helm / Milvus Operator)</li>
+<li><a href="/docs/ru/switch-rocksmq-woodpecker.md">Switch between RocksMQ and Woodpecker</a> — Milvus Standalone (Docker Compose)</li>
+<li><a href="/docs/ru/switch-pulsar-woodpecker.md">Switch between Pulsar and Woodpecker</a> — Milvus cluster (Helm / Milvus Operator)</li>
+<li><a href="/docs/ru/switch-kafka-woodpecker.md">Switch between Kafka and Woodpecker</a> — Milvus cluster (Helm / Milvus Operator)</li>
 </ul>
-<h2 id="General-workflow" class="common-anchor-header">Общий рабочий процесс<button data-href="#General-workflow" class="anchor-icon" translate="no">
+<h2 id="General-workflow" class="common-anchor-header">General workflow<button data-href="#General-workflow" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -80,16 +80,16 @@ summary: >-
         ></path>
       </svg>
     </button></h2><ol>
-<li>Убедитесь, что экземпляр Milvus работает корректно.</li>
-<li>Уточните тип исходного и целевого MQ.</li>
-<li>Отразите настройки доступа целевого MQ в конфигурации Milvus, <strong>не</strong> изменяя значение параметра « <code translate="no">mqType</code> ».</li>
-<li>Запустите переключение, вызвав API-интерфейс WAL alter в MixCoord.</li>
-<li>Проследите за журналами, чтобы убедиться, что переключение завершилось.</li>
+<li>Ensure the Milvus instance is running properly.</li>
+<li>Confirm the source MQ type and the target MQ type.</li>
+<li>Render the target MQ’s access settings into the Milvus configuration <strong>without</strong> changing the <code translate="no">mqType</code> value.</li>
+<li>Trigger the switch by calling the WAL alter API on MixCoord.</li>
+<li>Monitor the logs to confirm the switch has completed.</li>
 </ol>
 <div class="alert note">
-<p>Перед переключением убедитесь, что целевой MQ не содержит тем с именами, совпадающими с именами, используемыми текущим экземпляром Milvus. Это особенно важно, если целевой MQ ранее использовался другим экземпляром Milvus, поскольку конфликтующие имена тем могут привести к непредвиденному поведению.</p>
+<p>Before switching, ensure that the target MQ does not contain topics with the same names as those used by the current Milvus instance. This is especially important if the target MQ has been used by another Milvus instance, as conflicting topic names can lead to unexpected behavior.</p>
 </div>
-<h2 id="Support-matrix" class="common-anchor-header">Матрица поддержки<button data-href="#Support-matrix" class="anchor-icon" translate="no">
+<h2 id="Support-matrix" class="common-anchor-header">Support matrix<button data-href="#Support-matrix" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -106,18 +106,18 @@ summary: >-
       </svg>
     </button></h2><table>
 <thead>
-<tr><th>Исходный MQ</th><th>Целевой MQ</th><th>Развертывание</th><th>Статус</th></tr>
+<tr><th>Source MQ</th><th>Target MQ</th><th>Deployment</th><th>Status</th></tr>
 </thead>
 <tbody>
-<tr><td>RocksMQ</td><td>Woodpecker (локальный/MinIO)</td><td>Автономный (Docker Compose)</td><td><strong>Поддерживается</strong></td></tr>
-<tr><td>Woodpecker (локальный/MinIO)</td><td>RocksMQ</td><td>Автономный (Docker Compose)</td><td><strong>Поддерживается</strong></td></tr>
-<tr><td>Pulsar (встроенный/внешний)</td><td>Woodpecker (MinIO)</td><td>Кластер (Helm / Operator)</td><td><strong>Поддерживается</strong></td></tr>
-<tr><td>Woodpecker (MinIO)</td><td>Pulsar (внешний)</td><td>Кластер (Helm / Operator)</td><td><strong>Поддерживается</strong></td></tr>
-<tr><td>Kafka (встроенный/внешний)</td><td>Woodpecker (MinIO)</td><td>Кластер (Helm / Operator)</td><td><strong>Поддерживается</strong></td></tr>
-<tr><td>Woodpecker (MinIO)</td><td>Kafka (внешний)</td><td>Кластер (Helm / Operator)</td><td><strong>Поддерживается</strong></td></tr>
-<tr><td>Woodpecker MinIO</td><td>Woodpecker локальный (или наоборот)</td><td>любой</td><td><strong>Не поддерживается</strong></td></tr>
+<tr><td>RocksMQ</td><td>Woodpecker (local/MinIO)</td><td>Standalone (Docker Compose)</td><td><strong>Supported</strong></td></tr>
+<tr><td>Woodpecker (local/MinIO)</td><td>RocksMQ</td><td>Standalone (Docker Compose)</td><td><strong>Supported</strong></td></tr>
+<tr><td>Pulsar (builtin/external)</td><td>Woodpecker (MinIO)</td><td>Cluster (Helm / Operator)</td><td><strong>Supported</strong></td></tr>
+<tr><td>Woodpecker (MinIO)</td><td>Pulsar (external)</td><td>Cluster (Helm / Operator)</td><td><strong>Supported</strong></td></tr>
+<tr><td>Kafka (builtin/external)</td><td>Woodpecker (MinIO)</td><td>Cluster (Helm / Operator)</td><td><strong>Supported</strong></td></tr>
+<tr><td>Woodpecker (MinIO)</td><td>Kafka (external)</td><td>Cluster (Helm / Operator)</td><td><strong>Supported</strong></td></tr>
+<tr><td>Woodpecker MinIO</td><td>Woodpecker local (or vice versa)</td><td>any</td><td><strong>Not supported</strong></td></tr>
 </tbody>
 </table>
 <div class="alert note">
-<p>Старайтесь избегать многократного переключения между типами MQ. Если переключение все же необходимо, обязательно очищайте связанные данные перед каждым переключением — остаточные данные могут привести к непредвиденному поведению.</p>
+<p>Avoid switching MQ types back and forth repeatedly. If you do need to switch, make sure to clean up the related data before each switch — residual data may cause unexpected behavior.</p>
 </div>

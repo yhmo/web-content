@@ -1,13 +1,13 @@
 ---
 id: langchain_milvus_async.md
 summary: >-
-  يستكشف هذا البرنامج التعليمي كيفية الاستفادة من الدوال غير المتزامنة في لغة
-  سلسلة اللغات-ميلفوس لبناء تطبيقات عالية الأداء. باستخدام الدوال غير المتزامنة،
-  يمكنك تحسين إنتاجية تطبيقك واستجابته بشكل كبير، خاصةً عند التعامل مع الاسترجاع
-  على نطاق واسع.
-title: الدوال غير المتزامنة في تكامل لانغتشين ميلفوس
+  This tutorial explores how to leverage asynchronous functions in
+  langchain-milvus to build high-performance applications. By using async
+  methods, you can significantly improve your application's throughput and
+  responsiveness, especially when dealing with large-scale retrieval.
+title: Asynchronous Functions in LangChain Milvus Integration
 ---
-<h1 id="Asynchronous-Functions-in-LangChain-Milvus-Integration" class="common-anchor-header">الدوال غير المتزامنة في تكامل لانغتشين ميلفوس<button data-href="#Asynchronous-Functions-in-LangChain-Milvus-Integration" class="anchor-icon" translate="no">
+<h1 id="Asynchronous-Functions-in-LangChain-Milvus-Integration" class="common-anchor-header">Asynchronous Functions in LangChain Milvus Integration<button data-href="#Asynchronous-Functions-in-LangChain-Milvus-Integration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -28,8 +28,8 @@ title: الدوال غير المتزامنة في تكامل لانغتشين �
 <a href="https://github.com/milvus-io/bootcamp/blob/master/integration/langchain/langchain_milvus_async.ipynb" target="_blank">
 <img translate="no" src="https://img.shields.io/badge/View%20on%20GitHub-555555?style=flat&logo=github&logoColor=white" alt="GitHub Repository"/>
 </a></p>
-<p>يستكشف هذا البرنامج التعليمي كيفية الاستفادة من الدوال غير المتزامنة في <a href="https://github.com/langchain-ai/langchain-milvus">langchain-milvus</a> لبناء تطبيقات عالية الأداء. باستخدام الدوال غير المتزامنة، يمكنك تحسين إنتاجية تطبيقك واستجابته بشكل كبير، خاصةً عند التعامل مع الاسترجاع على نطاق واسع. سواء كنت تقوم ببناء نظام توصية في الوقت الحقيقي، أو تنفيذ بحث دلالي في تطبيقك، أو إنشاء خط أنابيب RAG (استرجاع-جيل معزز)، يمكن أن تساعدك العمليات غير المتزامنة في التعامل مع الطلبات المتزامنة بكفاءة أكبر. يمكن أن توفر قاعدة البيانات المتجهة عالية الأداء Milvus جنبًا إلى جنب مع تجريدات LLM القوية من LangChain أساسًا قويًا لبناء تطبيقات ذكاء اصطناعي قابلة للتطوير.</p>
-<h2 id="Async-API-Overview" class="common-anchor-header">نظرة عامة على واجهة برمجة التطبيقات غير المتزامنة<button data-href="#Async-API-Overview" class="anchor-icon" translate="no">
+<p>This tutorial explores how to leverage asynchronous functions in <a href="https://github.com/langchain-ai/langchain-milvus">langchain-milvus</a> to build high-performance applications. By using async methods, you can significantly improve your application’s throughput and responsiveness, especially when dealing with large-scale retrieval. Whether you’re building a real-time recommendation system, implementing semantic search in your application, or creating a RAG (Retrieval-Augmented Generation) pipeline, async operations can help you handle concurrent requests more efficiently. The high-performance vector database Milvus combined with LangChain’s powerful LLM abstractions can provide a robust foundation for building scalable AI applications.</p>
+<h2 id="Async-API-Overview" class="common-anchor-header">Async API Overview<button data-href="#Async-API-Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -44,8 +44,8 @@ title: الدوال غير المتزامنة في تكامل لانغتشين �
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>توفر langchain-milvus دعمًا شاملاً للعمليات غير المتزامنة، مما يحسن الأداء بشكل كبير في السيناريوهات المتزامنة واسعة النطاق. تحافظ واجهة برمجة التطبيقات غير المتزامنة على تصميم واجهة متناسقة مع واجهة برمجة التطبيقات المتزامنة.</p>
-<h3 id="Core-Async-Functions" class="common-anchor-header">الوظائف الأساسية غير المتزامنة<button data-href="#Core-Async-Functions" class="anchor-icon" translate="no">
+    </button></h2><p>langchain-milvus provides comprehensive asynchronous operation support, significantly improving performance in large-scale concurrent scenarios. The async API maintains consistent interface design with sync API.</p>
+<h3 id="Core-Async-Functions" class="common-anchor-header">Core Async Functions<button data-href="#Core-Async-Functions" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -60,30 +60,30 @@ title: الدوال غير المتزامنة في تكامل لانغتشين �
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>لاستخدام العمليات غير المتزامنة في langchain-milvus، ما عليك سوى إضافة بادئة <code translate="no">a</code> إلى أسماء الطرق. يسمح ذلك باستخدام أفضل للموارد وتحسين الإنتاجية عند التعامل مع طلبات الاسترجاع المتزامنة.</p>
+    </button></h3><p>To use async operations in langchain-milvus, simply add an <code translate="no">a</code> prefix to method names. This allows for better resource utilization and improved throughput when handling concurrent retrieval requests.</p>
 <table>
 <thead>
-<tr><th>نوع العملية</th><th>طريقة المزامنة</th><th>طريقة غير متزامنة</th><th>الوصف</th></tr>
+<tr><th>Operation Type</th><th>Sync Method</th><th>Async Method</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr><td>إضافة نصوص</td><td><code translate="no">add_texts()</code></td><td><code translate="no">aadd_texts()</code></td><td>إضافة نصوص إلى مخزن المتجهات</td></tr>
-<tr><td>إضافة مستندات</td><td><code translate="no">add_documents()</code></td><td><code translate="no">aadd_documents()</code></td><td>إضافة مستندات إلى مخزن المتجهات</td></tr>
-<tr><td>إضافة تضمينات</td><td><code translate="no">add_embeddings()</code></td><td><code translate="no">aadd_embeddings()</code></td><td>إضافة متجهات التضمين</td></tr>
-<tr><td>بحث التشابه</td><td><code translate="no">similarity_search()</code></td><td><code translate="no">asimilarity_search()</code></td><td>البحث الدلالي بالنص</td></tr>
-<tr><td>البحث عن المتجهات</td><td><code translate="no">similarity_search_by_vector()</code></td><td><code translate="no">asimilarity_search_by_vector()</code></td><td>البحث الدلالي بالمتجه</td></tr>
-<tr><td>البحث بالنتيجة</td><td><code translate="no">similarity_search_with_score()</code></td><td><code translate="no">asimilarity_search_with_score()</code></td><td>البحث الدلالي عن طريق النص وإرجاع درجات التشابه</td></tr>
-<tr><td>البحث عن طريق المتجهات بالنتيجة</td><td><code translate="no">similarity_search_with_score_by_vector()</code></td><td><code translate="no">asimilarity_search_with_score_by_vector()</code></td><td>البحث الدلالي حسب المتجه وإرجاع درجات التشابه</td></tr>
-<tr><td>البحث بالتنوع</td><td><code translate="no">max_marginal_relevance_search()</code></td><td><code translate="no">amax_marginal_relevance_search()</code></td><td>بحث MMR (إرجاع المتشابهات مع تحسين التنوع أيضًا)</td></tr>
-<tr><td>بحث التنوع المتجهي</td><td><code translate="no">max_marginal_relevance_search_by_vector()</code></td><td><code translate="no">amax_marginal_relevance_search_by_vector()</code></td><td>بحث MMR حسب المتجه</td></tr>
-<tr><td>عملية الحذف</td><td><code translate="no">delete()</code></td><td><code translate="no">adelete()</code></td><td>حذف المستندات</td></tr>
-<tr><td>عملية الإدراج</td><td><code translate="no">upsert()</code></td><td><code translate="no">aupsert()</code></td><td>Upsert (تحديث إذا كانت موجودة، وإلا إدراج) المستندات</td></tr>
-<tr><td>البحث في البيانات الوصفية</td><td><code translate="no">search_by_metadata()</code></td><td><code translate="no">asearch_by_metadata()</code></td><td>الاستعلام مع تصفية البيانات الوصفية</td></tr>
-<tr><td>الحصول على المفاتيح الأساسية</td><td><code translate="no">get_pks()</code></td><td><code translate="no">aget_pks()</code></td><td>الحصول على المفاتيح الأساسية حسب التعبير</td></tr>
-<tr><td>إنشاء من النصوص</td><td><code translate="no">from_texts()</code></td><td><code translate="no">afrom_texts()</code></td><td>إنشاء مخزن متجه من النصوص</td></tr>
+<tr><td>Add Texts</td><td><code translate="no">add_texts()</code></td><td><code translate="no">aadd_texts()</code></td><td>Add texts to vector store</td></tr>
+<tr><td>Add Documents</td><td><code translate="no">add_documents()</code></td><td><code translate="no">aadd_documents()</code></td><td>Add documents to vector store</td></tr>
+<tr><td>Add Embeddings</td><td><code translate="no">add_embeddings()</code></td><td><code translate="no">aadd_embeddings()</code></td><td>Add embedding vectors</td></tr>
+<tr><td>Similarity Search</td><td><code translate="no">similarity_search()</code></td><td><code translate="no">asimilarity_search()</code></td><td>Semantic search by text</td></tr>
+<tr><td>Vector Search</td><td><code translate="no">similarity_search_by_vector()</code></td><td><code translate="no">asimilarity_search_by_vector()</code></td><td>Semantic search by vector</td></tr>
+<tr><td>Search with Score</td><td><code translate="no">similarity_search_with_score()</code></td><td><code translate="no">asimilarity_search_with_score()</code></td><td>Semantic search by text and return similarity scores</td></tr>
+<tr><td>Vector Search with Score</td><td><code translate="no">similarity_search_with_score_by_vector()</code></td><td><code translate="no">asimilarity_search_with_score_by_vector()</code></td><td>Semantic search by vector and return similarity scores</td></tr>
+<tr><td>Diversity Search</td><td><code translate="no">max_marginal_relevance_search()</code></td><td><code translate="no">amax_marginal_relevance_search()</code></td><td>MMR search (return similar ones while also optimizing for diversity)</td></tr>
+<tr><td>Vector Diversity Search</td><td><code translate="no">max_marginal_relevance_search_by_vector()</code></td><td><code translate="no">amax_marginal_relevance_search_by_vector()</code></td><td>MMR search by vector</td></tr>
+<tr><td>Delete Operation</td><td><code translate="no">delete()</code></td><td><code translate="no">adelete()</code></td><td>Delete documents</td></tr>
+<tr><td>Upsert Operation</td><td><code translate="no">upsert()</code></td><td><code translate="no">aupsert()</code></td><td>Upsert (update if existing, otherwise insert) documents</td></tr>
+<tr><td>Metadata Search</td><td><code translate="no">search_by_metadata()</code></td><td><code translate="no">asearch_by_metadata()</code></td><td>Query with metadata filtering</td></tr>
+<tr><td>Get Primary Keys</td><td><code translate="no">get_pks()</code></td><td><code translate="no">aget_pks()</code></td><td>Get primary keys by expression</td></tr>
+<tr><td>Create from Texts</td><td><code translate="no">from_texts()</code></td><td><code translate="no">afrom_texts()</code></td><td>Create vector store from texts</td></tr>
 </tbody>
 </table>
-<p>لمزيد من المعلومات التفصيلية حول هذه الدوال، يرجى الرجوع إلى <a href="https://python.langchain.com/api_reference/milvus/vectorstores/langchain_milvus.vectorstores.milvus.Milvus.html#milvus">مرجع واجهة برمجة التطبيقات</a>.</p>
-<h3 id="Performance-Benefits" class="common-anchor-header">مزايا الأداء<button data-href="#Performance-Benefits" class="anchor-icon" translate="no">
+<p>For more detailed information about these functions, please refer to the <a href="https://python.langchain.com/api_reference/milvus/vectorstores/langchain_milvus.vectorstores.milvus.Milvus.html#milvus">API Reference</a>.</p>
+<h3 id="Performance-Benefits" class="common-anchor-header">Performance Benefits<button data-href="#Performance-Benefits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -98,15 +98,15 @@ title: الدوال غير المتزامنة في تكامل لانغتشين �
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>توفر العمليات غير المتزامنة تحسينات كبيرة في الأداء عند التعامل مع كميات كبيرة من الطلبات المتزامنة، وهي مناسبة بشكل خاص لـ</p>
+    </button></h3><p>Async operations provide significant performance improvements when handling large volumes of concurrent requests, particularly suitable for:</p>
 <ul>
-<li>معالجة المستندات دفعة واحدة</li>
-<li>سيناريوهات البحث عالية التزامن</li>
-<li>تطبيقات RAG للإنتاج</li>
-<li>استيراد/تصدير البيانات على نطاق واسع</li>
+<li>Batch document processing</li>
+<li>High-concurrency search scenarios</li>
+<li>Production RAG applications</li>
+<li>Large-scale data import/export</li>
 </ul>
-<p>في هذا البرنامج التعليمي، سنوضح في هذا البرنامج التعليمي فوائد الأداء هذه من خلال مقارنات مفصلة للعمليات المتزامنة وغير المتزامنة، لنوضح لك كيفية الاستفادة من واجهات برمجة التطبيقات غير المتزامنة لتحقيق الأداء الأمثل في تطبيقاتك.</p>
-<h2 id="Before-you-begin" class="common-anchor-header">قبل أن تبدأ<button data-href="#Before-you-begin" class="anchor-icon" translate="no">
+<p>In this tutorial, we’ll demonstrate these performance benefits through detailed comparisons of synchronous and asynchronous operations, showing you how to leverage async APIs for optimal performance in your applications.</p>
+<h2 id="Before-you-begin" class="common-anchor-header">Before you begin<button data-href="#Before-you-begin" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -121,23 +121,23 @@ title: الدوال غير المتزامنة في تكامل لانغتشين �
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>تتطلب مقتطفات التعليمات البرمجية في هذه الصفحة التبعيات التالية:</p>
+    </button></h2><p>Code snippets on this page require the following dependencies:</p>
 <pre><code translate="no" class="language-python">! pip install -U pymilvus langchain-milvus langchain langchain-core langchain-openai langchain-text-splitters nest-asyncio
 <button class="copy-code-btn"></button></code></pre>
 <blockquote>
-<p>إذا كنت تستخدم Google Colab، لتمكين التبعيات المثبتة للتو، قد تحتاج إلى <strong>إعادة تشغيل وقت التشغيل</strong> (انقر على قائمة "وقت التشغيل" في أعلى الشاشة، وحدد "إعادة تشغيل الجلسة" من القائمة المنسدلة).</p>
+<p>If you are using Google Colab, to enable dependencies just installed, you may need to <strong>restart the runtime</strong> (click on the “Runtime” menu at the top of the screen, and select “Restart session” from the dropdown menu).</p>
 </blockquote>
-<p>سنستخدم نماذج OpenAI. يجب عليك إعداد <a href="https://platform.openai.com/docs/quickstart">مفتاح api</a> <code translate="no">OPENAI_API_KEY</code> كمتغير بيئة:</p>
+<p>We will use OpenAI models. You should prepare the <a href="https://platform.openai.com/docs/quickstart">api key</a> <code translate="no">OPENAI_API_KEY</code> as an environment variable:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> os
 
 os.environ[<span class="hljs-string">&quot;OPENAI_API_KEY&quot;</span>] = <span class="hljs-string">&quot;sk-***********&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>إذا كنت تستخدم دفتر Jupyter Notebook، فستحتاج إلى تشغيل هذا السطر من التعليمات البرمجية قبل تشغيل التعليمات البرمجية غير المتزامنة:</p>
+<p>If you are using Jupyter Notebook, you need to run this line of code before running the asynchronous code:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> nest_asyncio
 
 nest_asyncio.apply()
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Exploring-Async-APIs-and-Performance-Comparison" class="common-anchor-header">استكشاف واجهات برمجة التطبيقات غير المتزامنة ومقارنة الأداء<button data-href="#Exploring-Async-APIs-and-Performance-Comparison" class="anchor-icon" translate="no">
+<h2 id="Exploring-Async-APIs-and-Performance-Comparison" class="common-anchor-header">Exploring Async APIs and Performance Comparison<button data-href="#Exploring-Async-APIs-and-Performance-Comparison" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -152,8 +152,8 @@ nest_asyncio.apply()
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>دعنا الآن نتعمق أكثر في مقارنة الأداء بين العمليات المتزامنة وغير المتزامنة باستخدام langchain-milvus.</p>
-<p>أولًا، استورد المكتبات اللازمة:</p>
+    </button></h2><p>Now let’s dive deeper into the performance comparison between synchronous and asynchronous operations with langchain-milvus.</p>
+<p>First, import the necessary libraries:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> asyncio
 <span class="hljs-keyword">import</span> random
 <span class="hljs-keyword">import</span> time
@@ -164,7 +164,7 @@ nest_asyncio.apply()
 <span class="hljs-comment"># Define the Milvus URI</span>
 URI = <span class="hljs-string">&quot;http://localhost:19530&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Setting-up-Test-Functions" class="common-anchor-header">إعداد دوال الاختبار<button data-href="#Setting-up-Test-Functions" class="anchor-icon" translate="no">
+<h3 id="Setting-up-Test-Functions" class="common-anchor-header">Setting up Test Functions<button data-href="#Setting-up-Test-Functions" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -179,7 +179,7 @@ URI = <span class="hljs-string">&quot;http://localhost:19530&quot;</span>
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>لننشئ دوال مساعدة لتوليد بيانات الاختبار:</p>
+    </button></h3><p>Let’s create helper functions to generate test data:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">random_id</span>():
     <span class="hljs-string">&quot;&quot;&quot;Generate a random string ID&quot;&quot;&quot;</span>
     random_num_str = <span class="hljs-string">&quot;&quot;</span>
@@ -205,7 +205,7 @@ URI = <span class="hljs-string">&quot;http://localhost:19530&quot;</span>
         docs.append(doc)
     <span class="hljs-keyword">return</span> docs
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Initialize-the-Vector-Store" class="common-anchor-header">تهيئة مخزن المتجهات<button data-href="#Initialize-the-Vector-Store" class="anchor-icon" translate="no">
+<h3 id="Initialize-the-Vector-Store" class="common-anchor-header">Initialize the Vector Store<button data-href="#Initialize-the-Vector-Store" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -220,7 +220,7 @@ URI = <span class="hljs-string">&quot;http://localhost:19530&quot;</span>
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>قبل أن نتمكن من إجراء اختبارات الأداء الخاصة بنا، نحتاج إلى إعداد مخزن متجه Milvus نظيف. تضمن هذه الدالة أن نبدأ بمجموعة جديدة لكل اختبار، مما يزيل أي تداخل من البيانات السابقة:</p>
+    </button></h3><p>Before we can run our performance tests, we need to set up a clean Milvus vector store. This function ensures we start with a fresh collection for each test, eliminating any interference from previous data:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">init_vector_store</span>():
     <span class="hljs-string">&quot;&quot;&quot;Initialize and return a fresh vector store for testing&quot;&quot;&quot;</span>
     <span class="hljs-keyword">return</span> Milvus(
@@ -231,7 +231,7 @@ URI = <span class="hljs-string">&quot;http://localhost:19530&quot;</span>
         drop_old=<span class="hljs-literal">True</span>,  <span class="hljs-comment"># Always start with a fresh collection</span>
     )
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Async-vs-Sync-Add-Documents" class="common-anchor-header">المزامنة مقابل المزامنة: إضافة مستندات<button data-href="#Async-vs-Sync-Add-Documents" class="anchor-icon" translate="no">
+<h3 id="Async-vs-Sync-Add-Documents" class="common-anchor-header">Async vs Sync: Add Documents<button data-href="#Async-vs-Sync-Add-Documents" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -246,7 +246,7 @@ URI = <span class="hljs-string">&quot;http://localhost:19530&quot;</span>
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>لنقارن الآن أداء إضافة المستندات المتزامنة مقابل إضافة المستندات غير المتزامنة. ستساعدنا هذه الوظائف في قياس مدى سرعة العمليات غير المتزامنة عند إضافة مستندات متعددة إلى مخزن المتجهات. يقوم الإصدار غير المتزامن بإنشاء مهام لكل عملية إضافة مستند وتشغيلها بشكل متزامن، بينما يقوم الإصدار المتزامن بمعالجة المستندات واحدًا تلو الآخر:</p>
+    </button></h3><p>Now let’s compare the performance of synchronous vs asynchronous document addition. These functions will help us measure how much faster async operations can be when adding multiple documents to the vector store. The async version creates tasks for each document addition and runs them concurrently, while the sync version processes documents one by one:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">async_add</span>(<span class="hljs-params">milvus_store, num_adding</span>):
     <span class="hljs-string">&quot;&quot;&quot;Add documents asynchronously and measure the time&quot;&quot;&quot;</span>
     docs = generate_test_documents(num_adding)
@@ -270,7 +270,7 @@ URI = <span class="hljs-string">&quot;http://localhost:19530&quot;</span>
     end_time = time.time()
     <span class="hljs-keyword">return</span> end_time - start_time
 <button class="copy-code-btn"></button></code></pre>
-<p>الآن دعونا ننفذ اختبارات الأداء الخاصة بنا مع عدد مختلف من المستندات لمعرفة الاختلافات في الأداء في العالم الحقيقي. سنختبر بأحمال متفاوتة لفهم كيفية قياس العمليات غير المتزامنة مقارنةً بنظيراتها المتزامنة. ستقيس الاختبارات وقت التنفيذ لكلتا الطريقتين وتساعد في توضيح فوائد أداء العمليات غير المتزامنة:</p>
+<p>Now let’s execute our performance tests with different document counts to see the real-world performance differences. We’ll test with varying loads to understand how async operations scale compared to their synchronous counterparts. The tests will measure execution time for both approaches and help demonstrate the performance benefits of asynchronous operations:</p>
 <pre><code translate="no" class="language-python">add_counts = [<span class="hljs-number">10</span>, <span class="hljs-number">100</span>]
 
 <span class="hljs-comment"># Get the event loop</span>
@@ -310,7 +310,7 @@ Async add for 100 documents took 2.77 seconds
 Sync add for 10 documents took 5.36 seconds
 Sync add for 100 documents took 65.60 seconds
 </code></pre>
-<h3 id="Async-vs-Sync-Search" class="common-anchor-header">غير المتزامنة مقابل المتزامنة: البحث<button data-href="#Async-vs-Sync-Search" class="anchor-icon" translate="no">
+<h3 id="Async-vs-Sync-Search" class="common-anchor-header">Async vs Sync: Search<button data-href="#Async-vs-Sync-Search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -325,7 +325,7 @@ Sync add for 100 documents took 65.60 seconds
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>لمقارنة أداء البحث، سنحتاج إلى ملء مخزن المتجهات أولاً. ستساعدنا الدوال التالية في قياس أداء البحث من خلال إنشاء استعلامات بحث متزامنة متعددة ومقارنة وقت التنفيذ بين النهج المتزامن وغير المتزامن:</p>
+    </button></h3><p>For the search performance comparison, we’ll need to populate the vector store first. The following functions will help us measure search performance by creating multiple concurrent search queries and comparing the execution time between synchronous and asynchronous approaches:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">populate_vector_store</span>(<span class="hljs-params">milvus_store, num_docs=<span class="hljs-number">1000</span></span>):
     <span class="hljs-string">&quot;&quot;&quot;Populate the vector store with test documents&quot;&quot;&quot;</span>
     docs = generate_test_documents(num_docs)
@@ -355,7 +355,7 @@ Sync add for 100 documents took 65.60 seconds
     end_time = time.time()
     <span class="hljs-keyword">return</span> end_time - start_time
 <button class="copy-code-btn"></button></code></pre>
-<p>الآن دعنا نجري اختبارات أداء بحث شاملة لنرى كيف يمكن قياس أداء العمليات غير المتزامنة مقارنةً بالعمليات المتزامنة. سنختبر باستخدام أحجام استعلامات مختلفة لتوضيح فوائد أداء العمليات غير المتزامنة، خاصةً مع زيادة عدد العمليات المتزامنة:</p>
+<p>Now let’s run comprehensive search performance tests to see how async operations scale compared to synchronous ones. We’ll test with different query volumes to demonstrate the performance benefits of asynchronous operations, especially as the number of concurrent operations increases:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Initialize and populate the vector store</span>
 milvus_store = init_vector_store()
 populate_vector_store(milvus_store, <span class="hljs-number">1000</span>)
@@ -385,7 +385,7 @@ Async search for 100 queries took 3.72 seconds
 Sync search for 10 queries took 6.07 seconds
 Sync search for 100 queries took 54.22 seconds
 </code></pre>
-<h3 id="Async-vs-Sync-Delete" class="common-anchor-header">غير المتزامنة مقابل المتزامنة: الحذف<button data-href="#Async-vs-Sync-Delete" class="anchor-icon" translate="no">
+<h3 id="Async-vs-Sync-Delete" class="common-anchor-header">Async vs Sync: Delete<button data-href="#Async-vs-Sync-Delete" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -400,7 +400,7 @@ Sync search for 100 queries took 54.22 seconds
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>عمليات الحذف هي جانب مهم آخر حيث يمكن أن توفر العمليات غير المتزامنة تحسينات كبيرة في الأداء. لنقم بإنشاء دوال لقياس فرق الأداء بين عمليات الحذف المتزامنة وغير المتزامنة. ستساعد هذه الاختبارات في توضيح كيف يمكن للعمليات غير المتزامنة التعامل مع عمليات الحذف المجمعة بكفاءة أكبر:</p>
+    </button></h3><p>Delete operations are another critical aspect where async operations can provide significant performance improvements. Let’s create functions to measure the performance difference between synchronous and asynchronous delete operations. These tests will help demonstrate how async operations can handle batch deletions more efficiently:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">async_delete</span>(<span class="hljs-params">milvus_store, num_deleting</span>):
     <span class="hljs-string">&quot;&quot;&quot;Delete documents asynchronously and measure the time&quot;&quot;&quot;</span>
     start_time = time.time()
@@ -423,7 +423,7 @@ Sync search for 100 queries took 54.22 seconds
     end_time = time.time()
     <span class="hljs-keyword">return</span> end_time - start_time
 <button class="copy-code-btn"></button></code></pre>
-<p>الآن دعنا ننفذ اختبارات أداء الحذف لقياس فرق الأداء. سنبدأ بمخزن متجه جديد مملوء ببيانات الاختبار، ثم ننفذ عمليات الحذف باستخدام كل من النهجين المتزامن وغير المتزامن:</p>
+<p>Now let’s execute the delete performance tests to quantify the performance difference. We’ll start with a fresh vector store populated with test data, then perform delete operations using both synchronous and asynchronous approaches:</p>
 <pre><code translate="no" class="language-python">delete_counts = [<span class="hljs-number">10</span>, <span class="hljs-number">100</span>]
 
 <span class="hljs-comment"># Initialize and populate the vector store</span>
@@ -462,7 +462,7 @@ Async delete for 100 operations took 0.61 seconds
 Sync delete for 10 operations took 2.82 seconds
 Sync delete for 100 operations took 29.21 seconds
 </code></pre>
-<h2 id="Conclusion" class="common-anchor-header">الخاتمة<button data-href="#Conclusion" class="anchor-icon" translate="no">
+<h2 id="Conclusion" class="common-anchor-header">Conclusion<button data-href="#Conclusion" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -477,11 +477,11 @@ Sync delete for 100 operations took 29.21 seconds
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>أظهر هذا البرنامج التعليمي مزايا الأداء الكبيرة لاستخدام العمليات غير المتزامنة مع LangChain و Milvus. قمنا بمقارنة الإصدارات المتزامنة وغير المتزامنة لعمليات الإضافة والبحث والحذف، موضحين كيف يمكن للعمليات غير المتزامنة أن توفر تحسينات كبيرة في السرعة، خاصةً للعمليات المجمعة الكبيرة.</p>
-<p>الوجبات الرئيسية:</p>
+    </button></h2><p>This tutorial demonstrated the significant performance advantages of using asynchronous operations with LangChain and Milvus. We compared the synchronous and asynchronous versions of add, search, and delete operations, showing how async operations can provide substantial speed improvements, especially for large batch operations.</p>
+<p>Key takeaways:</p>
 <ol>
-<li>توفر العمليات غير المتزامنة أكبر فائدة عند تنفيذ العديد من العمليات الفردية التي يمكن تشغيلها بالتوازي</li>
-<li>بالنسبة لأعباء العمل التي تولد إنتاجية أعلى، تتسع فجوة الأداء بين العمليات المتزامنة وغير المتزامنة</li>
-<li>تستفيد العمليات غير المتزامنة استفادة كاملة من قوة الحوسبة للأجهزة</li>
+<li>Async operations deliver the most benefit when performing many individual operations that can run in parallel</li>
+<li>For workload that generates higher throughput, the performance gap between sync and async operations widens</li>
+<li>Async operations fully utilize the compute power of the machines</li>
 </ol>
-<p>عند إنشاء تطبيقات RAG للإنتاج باستخدام LangChain وMilvus، ضع في اعتبارك استخدام واجهة برمجة التطبيقات غير المتزامنة عندما يكون الأداء مصدر قلق، خاصةً بالنسبة للعمليات المتزامنة.</p>
+<p>When building production RAG applications with LangChain and Milvus, consider using the async API when performance is a concern, especially for concurrent operations.</p>

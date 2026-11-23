@@ -2,10 +2,10 @@
 id: hnsw.md
 title: HNSW
 summary: >-
-  O índice HNSW é um algoritmo de indexação baseado em grafos que pode melhorar
-  o desempenho na pesquisa de vetores flutuantes de alta dimensão. Oferece uma
-  excelente precisão de pesquisa e baixa latência, embora exija um elevado
-  consumo de memória para manter a sua estrutura hierárquica em grafo.
+  The HNSW index is a graph-based indexing algorithm that can improve
+  performance when searching for high-dimensional floating vectors. It offers
+  excellent search accuracy and low latency, while it requires high memory
+  overhead to maintain its hierarchical graph structure.
 ---
 <h1 id="HNSW" class="common-anchor-header">HNSW<button data-href="#HNSW" class="anchor-icon" translate="no">
       <svg translate="no"
@@ -22,8 +22,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>O índice <strong>HNSW</strong> é um algoritmo de indexação <strong>baseado em grafos</strong> que pode melhorar o desempenho na pesquisa de vetores flutuantes de alta dimensão. Oferece uma <strong>excelente</strong> precisão de pesquisa e <strong>baixa</strong> latência, embora exija um <strong>elevado</strong> consumo de memória para manter a sua estrutura hierárquica em grafo.</p>
-<h2 id="Overview" class="common-anchor-header">Visão geral<button data-href="#Overview" class="anchor-icon" translate="no">
+    </button></h1><p>The <strong>HNSW</strong> index is a <strong>graph-based</strong> indexing algorithm that can improve performance when searching for high-dimensional floating vectors. It offers <strong>excellent</strong> search accuracy and <strong>low</strong> latency, while it requires <strong>high</strong> memory overhead to maintain its hierarchical graph structure.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -38,29 +38,29 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>O algoritmo Hierarchical Navigable Small World (HNSW) constrói um grafo com várias camadas, semelhante a um mapa com diferentes níveis de zoom. A <strong>camada inferior</strong> contém todos os pontos de dados, enquanto as <strong>camadas superiores</strong> consistem num subconjunto de pontos de dados amostrados a partir da camada inferior.</p>
-<p>Nesta hierarquia, cada camada contém nós que representam pontos de dados, ligados por arestas que indicam a sua proximidade. As camadas superiores permitem saltos de longa distância para se aproximar rapidamente do alvo, enquanto as camadas inferiores permitem uma pesquisa mais detalhada para obter os resultados mais precisos.</p>
-<p>Eis como funciona:</p>
+    </button></h2><p>The Hierarchical Navigable Small World (HNSW) algorithm builds a multi-layered graph, kind of like a map with different zoom levels. The <strong>bottom layer</strong> contains all the data points, while the <strong>upper layers</strong> consist of a subset of data points sampled from the lower layer.</p>
+<p>In this hierarchy, each layer contains nodes representing data points, connected by edges that indicate their proximity. The higher layers provide long-distance jumps to quickly get close to the target, while the lower layers enable a fine-grained search for the most accurate results.</p>
+<p>Here’s how it works:</p>
 <ol>
-<li><p><strong>Ponto de entrada</strong>: A pesquisa começa num ponto de entrada fixo na camada superior, que é um nó pré-determinado no gráfico.</p></li>
-<li><p><strong>Pesquisa «greedy</strong>»: O algoritmo desloca-se de forma «greedy» para o vizinho mais próximo na camada atual até não conseguir aproximar-se mais do vetor de consulta. As camadas superiores têm uma função de navegação, atuando como um filtro grosseiro para localizar potenciais pontos de entrada para a pesquisa mais refinada nos níveis inferiores.</p></li>
-<li><p><strong>Descida de camadas</strong>: Assim que se atinge um <strong>mínimo local</strong> na camada atual, o algoritmo salta para a camada inferior, utilizando uma ligação pré-estabelecida, e repete a pesquisa gananciosa.</p></li>
-<li><p><strong>Aperfeiçoamento</strong><strong>final</strong>: Este processo continua até se atingir a camada inferior, onde uma etapa de aperfeiçoamento final identifica os vizinhos mais próximos.</p></li>
+<li><p><strong>Entry point</strong>: The search starts at a fixed entry point at the top layer, which is a pre-determined node in the graph.</p></li>
+<li><p><strong>Greedy search</strong>: The algorithm greedily moves to the closest neighbor at the current layer until it cannot get any closer to the query vector. The upper layers serve a navigational purpose, acting as a coarse filter to locate potential entry points for the finer search at the lower levels.</p></li>
+<li><p><strong>Layer descend</strong>: Once a <strong>local minimum</strong> is reached at the current layer, the algorithm jumps down to the lower layer, using a pre-established connection, and repeats the greedy search.</p></li>
+<li><p><strong>Final</strong> <strong>refinement</strong>: This process continues until the bottom layer is reached, where a final refinement step identifies the nearest neighbors.</p></li>
 </ol>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/hnsw.png" alt="HNSW" class="doc-image" id="hnsw" /> 
-   <span>HNSW</span>
-  
- </span></p>
-<p>O desempenho do HNSW depende de vários parâmetros-chave que controlam tanto a estrutura do grafo como o comportamento de pesquisa. Estes incluem:</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/hnsw.png" alt="HNSW" class="doc-image" id="hnsw" />
+    <span>HNSW</span>
+  </span>
+</p>
+<p>The performance of HNSW depends on several key parameters that control both the structure of the graph and the search behavior. These include:</p>
 <ul>
-<li><p><code translate="no">M</code>: O número máximo de arestas ou ligações que cada nó pode ter no grafo em cada nível da hierarquia. Um valor mais elevado de « <code translate="no">M</code> » resulta num grafo mais denso e aumenta a recuperação e a precisão, uma vez que a pesquisa tem mais caminhos para explorar, o que também consome mais memória e torna o tempo de inserção mais lento devido às ligações adicionais. Conforme ilustrado na imagem acima, <strong>M = 5</strong> indica que cada nó no grafo HNSW está diretamente ligado a um máximo de 5 outros nós. Isto cria uma estrutura de grafo moderadamente densa, na qual os nós dispõem de múltiplas vias para alcançar outros nós.</p></li>
-<li><p><code translate="no">efConstruction</code>: O número de candidatos considerados durante a construção do índice. Um valor mais elevado de « <code translate="no">efConstruction</code> » resulta geralmente num grafo de melhor qualidade, mas requer mais tempo para ser construído.</p></li>
-<li><p><code translate="no">ef</code>: O número de vizinhos avaliados durante uma pesquisa. Aumentar o parâmetro « <code translate="no">ef</code> » melhora a probabilidade de encontrar os vizinhos mais próximos, mas torna o processo de pesquisa mais lento.</p></li>
+<li><p><code translate="no">M</code>: The maximum number of edges or connections each node can have in the graph at each level of the hierarchy. A higher <code translate="no">M</code> results in a denser graph and increases recall and accuracy as the search has more pathways to explore, which also consumes more memory and slows down insertion time due to additional connections. As shown in the image above, <strong>M = 5</strong> indicates that each node in the HNSW graph is directly connected to a maximum of 5 other nodes. This creates a moderately dense graph structure where nodes have multiple pathways to reach other nodes.</p></li>
+<li><p><code translate="no">efConstruction</code>: The number of candidates considered during index construction. A higher <code translate="no">efConstruction</code> generally results in a better quality graph but requires more time to build.</p></li>
+<li><p><code translate="no">ef</code>: The number of neighbors evaluated during a search. Increasing <code translate="no">ef</code> improves the likelihood of finding the nearest neighbors but slows down the search process.</p></li>
 </ul>
-<p>Para obter detalhes sobre como ajustar estas definições de acordo com as suas necessidades, consulte <a href="/docs/pt/hnsw.md#Index-params">Parâmetros</a> do <a href="/docs/pt/hnsw.md#Index-params">índice</a>.</p>
-<h2 id="Build-index" class="common-anchor-header">Criar índice<button data-href="#Build-index" class="anchor-icon" translate="no">
+<p>For details on how to adjust these settings to suit your needs, refer to <a href="/docs/pt/hnsw.md#Index-params">Index params</a>.</p>
+<h2 id="Build-index" class="common-anchor-header">Build index<button data-href="#Build-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -75,8 +75,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Este exemplo utiliza um <code translate="no">MilvusClient</code> e conectado denominado <code translate="no">client</code> e uma coleção existente denominada <code translate="no">your_collection_name</code>. A coleção possui um campo <code translate="no">FLOAT_VECTOR</code> de cinco dimensões denominado <code translate="no">your_vector_field_name</code>. Consulte <a href="/docs/pt/install-pymilvus.md">Instalar o SDK do Milvus para Python</a> para obter informações sobre a compatibilidade do SDK e <a href="/docs/pt/create-collection.md">Criar coleção</a> para o esquema e a configuração da ligação. Substitua o nome do campo e a dimensão da consulta em conjunto ao adaptar o exemplo às suas embeddings.</p>
-<p>Defina os parâmetros do índice com « <code translate="no">add_index()</code> » e, em seguida, crie o índice com « <code translate="no">create_index()</code> ».</p>
+    </button></h2><p>This example uses a connected <code translate="no">MilvusClient</code> named <code translate="no">client</code> and an existing collection named <code translate="no">your_collection_name</code>. The collection has a five-dimensional <code translate="no">FLOAT_VECTOR</code> field named <code translate="no">your_vector_field_name</code>. See <a href="/docs/pt/install-pymilvus.md">Install Milvus Python SDK</a> for SDK compatibility and <a href="/docs/pt/create-collection.md">Create Collection</a> for the schema and connection setup. Replace the field name and query dimension together when adapting the example to your embeddings.</p>
+<p>Define the index parameters with <code translate="no">add_index()</code>, then build the index with <code translate="no">create_index()</code>.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 <span class="hljs-comment"># Prepare index building params</span>
@@ -98,19 +98,19 @@ client.create_index(
     index_params=index_params
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>Nesta configuração:</p>
+<p>In this configuration:</p>
 <ul>
-<li><p><code translate="no">index_type</code>: O tipo de índice a ser criado. Neste exemplo, defina o valor como <code translate="no">HNSW</code>.</p></li>
-<li><p><code translate="no">metric_type</code>: O método utilizado para calcular a distância entre vetores. Os valores suportados incluem <code translate="no">COSINE</code>, <code translate="no">L2</code> e <code translate="no">IP</code>. Para mais detalhes, consulte <a href="/docs/pt/metric.md">Tipos</a> de <a href="/docs/pt/metric.md">métricas</a>.</p></li>
-<li><p><code translate="no">params</code>: Opções de configuração adicionais para a criação do índice.</p>
+<li><p><code translate="no">index_type</code>: The type of index to be built. In this example, set the value to <code translate="no">HNSW</code>.</p></li>
+<li><p><code translate="no">metric_type</code>: The method used to calculate the distance between vectors. Supported values include <code translate="no">COSINE</code>, <code translate="no">L2</code>, and <code translate="no">IP</code>. For details, refer to <a href="/docs/pt/metric.md">Metric Types</a>.</p></li>
+<li><p><code translate="no">params</code>: Additional configuration options for building the index.</p>
 <ul>
-<li><p><code translate="no">M</code>: Número máximo de vizinhos a que cada nó se pode ligar.</p></li>
-<li><p><code translate="no">efConstruction</code>: Número de vizinhos candidatos considerados para ligação durante a construção do índice.</p></li>
+<li><p><code translate="no">M</code>: Maximum number of neighbors each node can connect to.</p></li>
+<li><p><code translate="no">efConstruction</code>: Number of candidate neighbors considered for connection during index construction.</p></li>
 </ul>
-<p>O exemplo define <code translate="no">M=64</code> e <code translate="no">efConstruction=100</code> como substituições de ajuste. Para valores predefinidos e intervalos aceites, consulte <a href="/docs/pt/hnsw.md#Index-building-params">Parâmetros de criação de índices</a>.</p></li>
+<p>The example sets <code translate="no">M=64</code> and <code translate="no">efConstruction=100</code> as tuning overrides. For defaults and accepted ranges, see <a href="/docs/pt/hnsw.md#Index-building-params">Index building params</a>.</p></li>
 </ul>
-<p>Para criar uma coleção e o respetivo índice em simultâneo, passe os parâmetros do índice para <code translate="no">create_collection()</code>. Para mais detalhes, consulte <a href="/docs/pt/create-collection.md">Criar coleção</a>.</p>
-<h2 id="Search-on-index" class="common-anchor-header">Pesquisa no índice<button data-href="#Search-on-index" class="anchor-icon" translate="no">
+<p>To create a collection and its index together, pass the index parameters to <code translate="no">create_collection()</code>. For details, see <a href="/docs/pt/create-collection.md">Create Collection</a>.</p>
+<h2 id="Search-on-index" class="common-anchor-header">Search on index<button data-href="#Search-on-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -125,7 +125,7 @@ client.create_index(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Após construir o índice e inserir entidades, carregue a coleção e pesquise no seu campo vetorial. Para pesquisas kNN comuns, defina <code translate="no">ef</code> para, pelo menos, <code translate="no">limit</code>.</p>
+    </button></h2><p>After building the index and inserting entities, load the collection and search its vector field. For ordinary kNN searches, set <code translate="no">ef</code> to at least <code translate="no">limit</code>.</p>
 <pre><code translate="no" class="language-python">search_params = {
     <span class="hljs-string">&quot;params&quot;</span>: {
         <span class="hljs-string">&quot;ef&quot;</span>: <span class="hljs-number">10</span>, <span class="hljs-comment"># Number of neighbors to consider during the search</span>
@@ -142,15 +142,15 @@ res = client.search(
     search_params=search_params
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>Nesta configuração:</p>
+<p>In this configuration:</p>
 <ul>
-<li><p><code translate="no">params</code>: Opções de configuração adicionais para a pesquisa no índice.</p>
+<li><p><code translate="no">params</code>: Additional configuration options for searching on the index.</p>
 <ul>
-<li><code translate="no">ef</code>: Número de vizinhos a considerar durante uma pesquisa.</li>
+<li><code translate="no">ef</code>: Number of neighbors to consider during a search.</li>
 </ul>
-<p>Para saber mais sobre os parâmetros de pesquisa disponíveis para o índice <code translate="no">HNSW</code>, consulte <a href="/docs/pt/hnsw.md#Index-specific-search-params">Parâmetros de pesquisa específicos</a> do <a href="/docs/pt/hnsw.md#Index-specific-search-params">índice</a>.</p></li>
+<p>To learn more search parameters available for the <code translate="no">HNSW</code> index, refer to <a href="/docs/pt/hnsw.md#Index-specific-search-params">Index-specific search params</a>.</p></li>
 </ul>
-<h2 id="Index-params" class="common-anchor-header">Parâmetros do índice<button data-href="#Index-params" class="anchor-icon" translate="no">
+<h2 id="Index-params" class="common-anchor-header">Index params<button data-href="#Index-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -165,8 +165,8 @@ res = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>As tabelas abaixo apresentam os parâmetros para a criação do índice e para a pesquisa. As definições do servidor podem substituir os valores predefinidos dos parâmetros que omitir.</p>
-<h3 id="Index-building-params" class="common-anchor-header">Parâmetros de criação de índices<button data-href="#Index-building-params" class="anchor-icon" translate="no">
+    </button></h2><p>The tables below list the parameters for index building and search. Server settings can override the defaults for parameters you omit.</p>
+<h3 id="Index-building-params" class="common-anchor-header">Index building params<button data-href="#Index-building-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -181,28 +181,28 @@ res = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>A tabela seguinte apresenta os parâmetros que podem ser configurados no <code translate="no">params</code> durante <a href="/docs/pt/hnsw.md#Build-index">a criação de um índice</a>.</p>
+    </button></h3><p>The following table lists the parameters that can be configured in <code translate="no">params</code> when <a href="/docs/pt/hnsw.md#Build-index">building an index</a>.</p>
 <table>
    <tr>
-     <th><p>Parâmetro</p></th>
-     <th><p>Descrição</p></th>
-     <th><p>Intervalo de valores</p></th>
-     <th><p>Sugestão de ajuste</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Description</p></th>
+     <th><p>Value Range</p></th>
+     <th><p>Tuning Suggestion</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">M</code></p></td>
-     <td><p>Número máximo de ligações (ou arestas) que cada nó pode ter no gráfico, incluindo tanto as arestas de saída como as de entrada. Este parâmetro afeta diretamente tanto a construção do índice como a pesquisa.</p></td>
-     <td><p><strong>Tipo</strong>: Número inteiro <strong>Intervalo</strong>: [2, 2048]</p><p><strong>Valor predefinido</strong>: <code translate="no">30</code> (até 30 arestas de saída e 30 arestas de entrada por nó)</p></td>
-     <td><p>Um valor maior de « <code translate="no">M</code> » geralmente conduz a <strong>uma maior precisão</strong>, mas <strong>aumenta a sobrecarga de memória</strong> e <strong>torna mais lentas tanto a construção do índice como a pesquisa</strong>. Considere aumentar « <code translate="no">M</code> » para conjuntos de dados com elevada dimensionalidade ou quando for crucial obter uma elevada taxa de recuperação.</p><p>Considere diminuir o valor de ` <code translate="no">M</code> ` quando a utilização de memória e a velocidade de pesquisa forem as principais preocupações.</p><p>Na maioria dos casos, recomendamos que defina um valor dentro deste intervalo: [5, 100].</p></td>
+     <td><p>Maximum number of connections （or edges) each node can have in the graph, including both outgoing and incoming edges. This parameter directly affects both index construction and search.</p></td>
+     <td><p><strong>Type</strong>: Integer <strong>Range</strong>: [2, 2048]</p><p><strong>Default value</strong>: <code translate="no">30</code> (up to 30 outgoing and 30 incoming edges per node)</p></td>
+     <td><p>A larger <code translate="no">M</code> generally leads to <strong>higher accuracy</strong> but <strong>increases memory overhead</strong> and <strong>slows down both index building and search</strong>. Consider increasing <code translate="no">M</code> for datasets with high dimensionality or when high recall is crucial.</p><p>Consider decreasing <code translate="no">M</code> when memory usage and search speed are primary concerns.</p><p>In most cases, we recommend you set a value within this range: [5, 100].</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">efConstruction</code></p></td>
-     <td><p>Número de vizinhos candidatos considerados para ligação durante a construção do índice. É avaliado um conjunto maior de candidatos para cada novo elemento, mas o número máximo de ligações efetivamente estabelecidas continua a ser limitado por <code translate="no">M</code>.</p></td>
-     <td><p><strong>Tipo</strong>: Inteiro <strong>Intervalo</strong>: [1, <em>int_max</em>]</p><p><strong>Valor predefinido</strong>: <code translate="no">360</code></p></td>
-     <td><p>Um valor mais elevado de « <code translate="no">efConstruction</code> » resulta normalmente num <strong>índice mais preciso</strong>, uma vez que são exploradas mais ligações potenciais. No entanto, isto também conduz a <strong>um tempo de indexação mais longo e a um aumento do consumo de memória</strong> durante a construção. Considere aumentar « <code translate="no">efConstruction</code> » para melhorar a precisão, especialmente em cenários em que o tempo de indexação é menos crítico.</p><p>Considere diminuir o valor de ` <code translate="no">efConstruction</code> ` para acelerar a construção do índice quando houver restrições de recursos.</p><p>Na maioria dos casos, recomendamos que defina um valor dentro deste intervalo: [50, 500].</p></td>
+     <td><p>Number of candidate neighbors considered for connection during index construction. A larger pool of candidates is evaluated for each new element, but the maximum number of connections actually established is still limited by <code translate="no">M</code>.</p></td>
+     <td><p><strong>Type</strong>: Integer <strong>Range</strong>: [1, <em>int_max</em>]</p><p><strong>Default value</strong>: <code translate="no">360</code></p></td>
+     <td><p>A higher <code translate="no">efConstruction</code> typically results in a <strong>more accurate index</strong>, as more potential connections are explored. However, this also leads to <strong>longer indexing time and increased memory usage</strong> during construction. Consider increasing <code translate="no">efConstruction</code> for improved accuracy, especially in scenarios where indexing time is less critical.</p><p>Consider decreasing <code translate="no">efConstruction</code> to speed up index construction when resource constraints are a concern.</p><p>In most cases, we recommend you set a value within this range: [50, 500].</p></td>
    </tr>
 </table>
-<h3 id="Index-specific-search-params" class="common-anchor-header">Parâmetros de pesquisa específicos do índice<button data-href="#Index-specific-search-params" class="anchor-icon" translate="no">
+<h3 id="Index-specific-search-params" class="common-anchor-header">Index-specific search params<button data-href="#Index-specific-search-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -217,22 +217,22 @@ res = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>A tabela seguinte lista os parâmetros que podem ser configurados em <code translate="no">search_params.params</code> ao <a href="/docs/pt/hnsw.md#Search-on-index">efetuar pesquisas no índice</a>.</p>
+    </button></h3><p>The following table lists the parameters that can be configured in <code translate="no">search_params.params</code> when <a href="/docs/pt/hnsw.md#Search-on-index">searching on the index</a>.</p>
 <table>
    <tr>
-     <th><p>Parâmetro</p></th>
-     <th><p>Descrição</p></th>
-     <th><p>Intervalo de valores</p></th>
-     <th><p>Sugestão de ajuste</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Description</p></th>
+     <th><p>Value Range</p></th>
+     <th><p>Tuning Suggestion</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">ef</code></p></td>
-     <td><p>Controla a amplitude da pesquisa durante a recuperação do vizinho mais próximo. Determina quantos nós são visitados e avaliados como potenciais vizinhos mais próximos. Este parâmetro afeta apenas o processo de pesquisa e aplica-se exclusivamente à camada inferior do gráfico.</p></td>
-     <td><p><strong>Tipo</strong>: Número inteiro <strong>Intervalo</strong>: [1, <em>int_max</em>]</p><p><strong>Valor predefinido</strong>: <code translate="no">max(limit, 16)</code> para a pesquisa kNN normal; <code translate="no">512</code> para a pesquisa por intervalo.</p><p>Para a pesquisa kNN normal, um valor explícito de ` <code translate="no">ef</code> ` deve ser maior ou igual a ` <code translate="no">limit</code> ` (o número de vizinhos mais próximos a devolver).</p></td>
-     <td><p>Um valor maior de <code translate="no">ef</code> conduz geralmente a <strong>uma maior precisão de pesquisa</strong>, uma vez que são considerados mais vizinhos potenciais. No entanto, isto também <strong>aumenta o tempo de pesquisa</strong>. Considere aumentar <code translate="no">ef</code> quando for essencial obter uma elevada taxa de recuperação e a velocidade de pesquisa for menos importante.</p><p>Considere diminuir o « <code translate="no">ef</code> » para dar prioridade a pesquisas mais rápidas, especialmente em cenários em que uma ligeira redução na precisão seja aceitável.</p><p>Na maioria dos casos, recomendamos que defina um valor dentro deste intervalo: [K, 10K].</p></td>
+     <td><p>Controls the breadth of search during nearest neighbor retrieval. It determines how many nodes are visited and evaluated as potential nearest neighbors.  This parameter affects only the search process and applies exclusively to the bottom layer of the graph.</p></td>
+     <td><p><strong>Type</strong>: Integer <strong>Range</strong>: [1, <em>int_max</em>]</p><p><strong>Default value</strong>: <code translate="no">max(limit, 16)</code> for ordinary kNN search; <code translate="no">512</code> for range search.</p><p>For ordinary kNN search, an explicit <code translate="no">ef</code> must be greater than or equal to <code translate="no">limit</code> (the number of nearest neighbors to return).</p></td>
+     <td><p>A larger <code translate="no">ef</code> generally leads to <strong>higher search accuracy</strong> as more potential neighbors are considered. However, this also <strong>increases search time</strong>. Consider increasing <code translate="no">ef</code> when achieving high recall is critical and search speed is less of a concern.</p><p>Consider decreasing <code translate="no">ef</code> to prioritize faster searches, especially in scenarios where a slight reduction in accuracy is acceptable.</p><p>In most cases, we recommend you set a value within this range: [K, 10K].</p></td>
    </tr>
 </table>
-<h2 id="Evaluate-the-trade-offs" class="common-anchor-header">Avalie as vantagens e desvantagens<button data-href="#Evaluate-the-trade-offs" class="anchor-icon" translate="no">
+<h2 id="Evaluate-the-trade-offs" class="common-anchor-header">Evaluate the trade-offs<button data-href="#Evaluate-the-trade-offs" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -247,11 +247,11 @@ res = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Utilize dados e consultas representativos para escolher os parâmetros, em vez de tratar os valores de exemplo como predefinições de produção:</p>
+    </button></h2><p>Use representative data and queries to choose parameters rather than treating the example values as production defaults:</p>
 <ol>
-<li>Defina o modelo de incorporação, a métrica, o ` <code translate="no">limit</code>` e quaisquer <a href="/docs/pt/filtered-search.md">condições de filtragem</a>. Calcule os vizinhos mais próximos exatos para as mesmas consultas e entidades elegíveis, por exemplo, com um índice <a href="/docs/pt/flat.md">FLAT</a>, para medir a recuperação.</li>
-<li>Varie o « <code translate="no">ef</code> » no tempo de pesquisa na sua concorrência-alvo. Registe em simultâneo a recuperação, o débito e a latência de cauda. Aumentar o « <code translate="no">ef</code> » não requer a reconstrução do índice.</li>
-<li>Se o ajuste no momento da pesquisa não atingir a meta, compare índices reconstruídos com diferentes valores de « <code translate="no">M</code> » e « <code translate="no">efConstruction</code> ». Registe o tempo de construção do índice e a utilização de memória, bem como o desempenho das consultas.</li>
-<li>Inclua a estratégia de carregamento e o estado da cache no teste. Ao utilizar <a href="/docs/pt/tiered-storage-overview.md">o Armazenamento em Camadas</a>, meça as consultas que recuperam dados não armazenados em cache separadamente das consultas com cache «quente».</li>
+<li>Fix the embedding model, metric, <code translate="no">limit</code>, and any <a href="/docs/pt/filtered-search.md">filter conditions</a>. Compute exact nearest neighbors for the same queries and eligible entities, for example with a <a href="/docs/pt/flat.md">FLAT</a> index, to measure recall.</li>
+<li>Sweep the search-time <code translate="no">ef</code> at your target concurrency. Record recall, throughput, and tail latency together. Increasing <code translate="no">ef</code> does not require rebuilding the index.</li>
+<li>If search-time tuning cannot meet the target, compare rebuilt indexes with different <code translate="no">M</code> and <code translate="no">efConstruction</code>. Record index build time and memory use as well as query performance.</li>
+<li>Include the loading strategy and cache state in the test. When using <a href="/docs/pt/tiered-storage-overview.md">Tiered Storage</a>, measure queries that fetch uncached data separately from warm-cache queries.</li>
 </ol>
-<p>Em caso de restrições de memória ou de uma meta diferente de recall e latência, compare as alternativas descritas em <a href="/docs/pt/index-explained.md">«Index Explained</a>».</p>
+<p>For memory constraints or a different recall and latency target, compare the alternatives in <a href="/docs/pt/index-explained.md">Index Explained</a>.</p>

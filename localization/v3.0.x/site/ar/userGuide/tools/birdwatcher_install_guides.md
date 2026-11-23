@@ -1,9 +1,9 @@
 ---
 id: birdwatcher_install_guides.md
-summary: تعرف على كيفية تثبيت Birdwatch لتصحيح أخطاء ميلفوس.
-title: تثبيت Birdwatcher
+summary: Learn how to install Birdwatch to debug Milvus.
+title: Install Birdwatcher
 ---
-<h1 id="Install-Birdwatcher" class="common-anchor-header">تثبيت Birdwatcher<button data-href="#Install-Birdwatcher" class="anchor-icon" translate="no">
+<h1 id="Install-Birdwatcher" class="common-anchor-header">Install Birdwatcher<button data-href="#Install-Birdwatcher" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,8 +18,8 @@ title: تثبيت Birdwatcher
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>توضح هذه الصفحة كيفية تثبيت Birdwatcher.</p>
-<h2 id="Local-install" class="common-anchor-header">التثبيت المحلي<button data-href="#Local-install" class="anchor-icon" translate="no">
+    </button></h1><p>This page demonstrates how to install Birdwatcher.</p>
+<h2 id="Local-install" class="common-anchor-header">Local install<button data-href="#Local-install" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -34,35 +34,35 @@ title: تثبيت Birdwatcher
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>إذا كنت قد قمت بتثبيت ميلفوس ستاندالون <a href="/docs/ar/install_standalone-docker.md">باستخدام docker،</a> فمن الأفضل تنزيل وتثبيت النسخة الثنائية المدمجة، أو تثبيت Birdwatcher كوحدة Go مشتركة، أو بناء Birdwatcher من المصدر.</p>
+    </button></h2><p>If you have installed Milvus Standalone <a href="/docs/ar/install_standalone-docker.md">using docker</a>, you’d better download and install the built binary, install Birdwatcher as a common Go module, or build Birdwatcher from the source.</p>
 <ul>
-<li><p>قم بتثبيته كوحدة Go مشتركة.</p>
+<li><p>Install it as a common Go module.</p>
 <pre><code translate="no" class="language-shell">git clone https://github.com/milvus-io/birdwatcher.git
 cd birdwatcher
 go install github.com/milvus-io/birdwatcher
 <button class="copy-code-btn"></button></code></pre>
-<p>ثم يمكنك تشغيل Birdwatcher على النحو التالي:</p>
+<p>Then you can run Birdwatcher as follows:</p>
 <pre><code translate="no" class="language-shell">go run main.go
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>قم ببنائه من المصدر.</p>
+<li><p>Build it from the source.</p>
 <pre><code translate="no" class="language-shell">git clone https://github.com/milvus-io/birdwatcher.git
 cd birdwatcher
 go build -o birdwatcher main.go
 <button class="copy-code-btn"></button></code></pre>
-<p>ثم يمكنك تشغيل Birdwatcher على النحو التالي:</p>
+<p>Then you can run Birdwatcher as follows:</p>
 <pre><code translate="no" class="language-shell">./birdwatcher
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>قم بتنزيل النسخة الثنائية المبنية مسبقًا</p>
-<p>أولاً، افتح <a href="https://github.com/milvus-io/birdwatcher/releases/latest">صفحة الإصدار الأخير،</a> وابحث عن الثنائيات المعدة مسبقًا.</p>
+<li><p>Download the already-built binary</p>
+<p>First, open the <a href="https://github.com/milvus-io/birdwatcher/releases/latest">latest release page</a>, and find the prepared binaries.</p>
 <pre><code translate="no" class="language-shell">wget -O birdwatcher.tar.gz \
 https://github.com/milvus-io/birdwatcher/releases/download/latest/birdwatcher_&lt;os&gt;_&lt;arch&gt;.tar.gz
 <button class="copy-code-btn"></button></code></pre>
-<p>ثم يمكنك فك ضغط كرة القطران واستخدام Birdwatcher على النحو التالي:</p>
+<p>Then you can decompress the tarball and use Birdwatcher as follows:</p>
 <pre><code translate="no" class="language-shell">tar -xvzf birdwatcher.tar.gz
 ./birdwatcher
 <button class="copy-code-btn"></button></code></pre></li>
 </ul>
-<h2 id="Install-as-a-Kubernetes-pod" class="common-anchor-header">التثبيت كجراب Kubernetes<button data-href="#Install-as-a-Kubernetes-pod" class="anchor-icon" translate="no">
+<h2 id="Install-as-a-Kubernetes-pod" class="common-anchor-header">Install as a Kubernetes pod<button data-href="#Install-as-a-Kubernetes-pod" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -77,8 +77,8 @@ https://github.com/milvus-io/birdwatcher/releases/download/latest/birdwatcher_&l
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>إذا كنت قد قمت بتثبيت إما Milvus Standalone <a href="/docs/ar/install_standalone-helm.md">باستخدام مخططات Helm</a> أو <a href="/docs/ar/install_standalone-operator.md">Milvus Operator</a> أو Milvus Cluster <a href="/docs/ar/install_cluster-helm.md">باستخدام مخططات Helm</a> أو <a href="/docs/ar/install_cluster-milvusoperator.md">Milvus Operator،</a> يُنصح بتثبيت Birdwatcher كجراب Kubernetes.</p>
-<h3 id="Prepare-deploymentyml" class="common-anchor-header">إعداد deployment.yml<button data-href="#Prepare-deploymentyml" class="anchor-icon" translate="no">
+    </button></h2><p>If you have installed either Milvus Standalone <a href="/docs/ar/install_standalone-helm.md">using the Helm charts</a> or <a href="/docs/ar/install_standalone-operator.md">the Milvus Operator</a> or Milvus Cluster <a href="/docs/ar/install_cluster-helm.md">using the Helm charts</a> or <a href="/docs/ar/install_cluster-milvusoperator.md">the Milvus Operator</a>, you are advised to install Birdwatcher as a Kubernetes pod.</p>
+<h3 id="Prepare-deploymentyml" class="common-anchor-header">Prepare deployment.yml<button data-href="#Prepare-deploymentyml" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -115,12 +115,12 @@ https://github.com/milvus-io/birdwatcher/releases/download/latest/birdwatcher_&l
             <span class="hljs-attr">cpu:</span> <span class="hljs-string">&quot;500m&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>إذا لم تكن الصورة المتوفرة على DockerHub هي الأحدث، يمكنك إنشاء صورة لـ Birdwatcher باستخدام ملف Dockerfile المرفق مع الكود المصدري كما يلي:</p>
+<p>If the image available on DockerHub is not the latest, you can build an image of Birdwatcher using the Dockerfile provided with the source code as follows:</p>
 <pre><code translate="no" class="language-shell">git clone https://github.com/milvus-io/birdwatcher.git
 cd birdwatcher
 docker build -t milvusdb/birdwatcher .
 <button class="copy-code-btn"></button></code></pre>
-<p>لنشر صورة مبنية محليًا، تحتاج إلى إضافة <code translate="no">imagePullPolicy</code> إلى المواصفات المذكورة أعلاه وتعيينها إلى <code translate="no">Never</code>.</p>
+<p>To deploy a locally built image, you need to add <code translate="no">imagePullPolicy</code> to the above specs and set it to <code translate="no">Never</code>.</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-string">...</span>
       <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">birdwatcher</span>
         <span class="hljs-attr">image:</span> <span class="hljs-string">milvusdb/birdwatcher</span>
@@ -128,7 +128,7 @@ docker build -t milvusdb/birdwatcher .
 <span class="hljs-string">...</span>
 <button class="copy-code-btn"></button></code></pre>
 </div>
-<h3 id="Apply-deploymentyml" class="common-anchor-header">تطبيق deployment.yml<button data-href="#Apply-deploymentyml" class="anchor-icon" translate="no">
+<h3 id="Apply-deploymentyml" class="common-anchor-header">Apply deployment.yml<button data-href="#Apply-deploymentyml" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -143,6 +143,6 @@ docker build -t milvusdb/birdwatcher .
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>احفظ YAML أعلاه في ملف وسمه <code translate="no">deployment.yml</code> ، وقم بتشغيل الأمر التالي</p>
+    </button></h3><p>Save the above YAML in a file and name it <code translate="no">deployment.yml</code>, and run the following command</p>
 <pre><code translate="no" class="language-shell">kubectl apply -f deployment.yml
 <button class="copy-code-btn"></button></code></pre>

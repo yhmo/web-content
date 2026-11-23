@@ -2,11 +2,12 @@
 id: best-practices-for-array-of-structs.md
 title: Data Model Design with an Array of StructsCompatible with Milvus 2.6.4+
 summary: >-
-  عادةً ما تعتمد تطبيقات الذكاء الاصطناعي الحديثة، لا سيما في مجال إنترنت
-  الأشياء (IoT) والقيادة الذاتية، على تحليل أحداث غنية ومنظمة: مثل قراءة مستشعر
-  مع طابعها الزمني وتضمينها المتجهي، أو سجل تشخيصي مع رمز خطأ ومقتطف صوتي، أو
-  مقطع رحلة مع الموقع والسرعة وسياق المشهد. وهذا يتطلب أن تدعم قاعدة البيانات
-  بشكل أصلي استيعاب البيانات المتداخلة والبحث فيها.
+  Modern AI applications, especially in the Internet of Things (IoT) and
+  autonomous driving, typically reason over rich, structured events: a sensor
+  reading with its timestamp and vector embedding, a diagnostic log with an
+  error code and audio snippet, or a trip segment with location, speed, and
+  scene context. These require the database to natively support the ingestion
+  and search of nested data.
 beta: Milvus 2.6.4+
 ---
 <h1 id="Data-Model-Design-with-an-Array-of-Structs" class="common-anchor-header">Data Model Design with an Array of Structs<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.4+</span><button data-href="#Data-Model-Design-with-an-Array-of-Structs" class="anchor-icon" translate="no">

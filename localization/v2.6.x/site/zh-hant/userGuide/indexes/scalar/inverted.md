@@ -1,9 +1,13 @@
 ---
 id: inverted.md
-title: 反向
-summary: 當您需要對資料執行頻繁的篩選查詢時，倒轉式索引可以顯著提高查詢性能。Milvus 不需要掃描所有文件，而是使用倒轉式索引來快速找出符合篩選條件的精確記錄。
+title: INVERTED
+summary: >-
+  When you need to perform frequent filter queries on your data, INVERTED
+  indexes can dramatically improve query performance. Instead of scanning
+  through all documents, Milvus uses inverted indexes to quickly locate the
+  exact records that match your filter conditions.
 ---
-<h1 id="INVERTED" class="common-anchor-header">反向<button data-href="#INVERTED" class="anchor-icon" translate="no">
+<h1 id="INVERTED" class="common-anchor-header">INVERTED<button data-href="#INVERTED" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,8 +22,8 @@ summary: 當您需要對資料執行頻繁的篩選查詢時，倒轉式索引�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>當您需要對資料執行頻繁的篩選查詢時，<code translate="no">INVERTED</code> 索引可以顯著提高查詢性能。Milvus 使用倒排索引來快速找出符合篩選條件的精確記錄，而不是掃描所有文件。</p>
-<h2 id="When-to-use-INVERTED-indexes" class="common-anchor-header">何時使用 INVERTED 索引<button data-href="#When-to-use-INVERTED-indexes" class="anchor-icon" translate="no">
+    </button></h1><p>When you need to perform frequent filter queries on your data, <code translate="no">INVERTED</code> indexes can dramatically improve query performance. Instead of scanning through all documents, Milvus uses inverted indexes to quickly locate the exact records that match your filter conditions.</p>
+<h2 id="When-to-use-INVERTED-indexes" class="common-anchor-header">When to use INVERTED indexes<button data-href="#When-to-use-INVERTED-indexes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -34,14 +38,14 @@ summary: 當您需要對資料執行頻繁的篩選查詢時，倒轉式索引�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>當您需要時，請使用 INVERTED 索引：</p>
+    </button></h2><p>Use INVERTED indexes when you need to:</p>
 <ul>
-<li><p><strong>根據特定值進行篩選</strong>：尋找欄位等於特定值的所有記錄 (例如<code translate="no">category == &quot;electronics&quot;</code>)</p></li>
-<li><p><strong>過濾文字內容</strong>：在<code translate="no">VARCHAR</code> 欄位上執行有效率的搜尋</p></li>
-<li><p><strong>查詢 JSON 欄位值</strong>：篩選 JSON 結構中的特定鍵</p></li>
+<li><p><strong>Filter by specific values</strong>: Find all records where a field equals a specific value (e.g., <code translate="no">category == &quot;electronics&quot;</code>)</p></li>
+<li><p><strong>Filter text content</strong>: Perform efficient searches on <code translate="no">VARCHAR</code> fields</p></li>
+<li><p><strong>Query JSON field values</strong>: Filter on specific keys within JSON structures</p></li>
 </ul>
-<p><strong>效能優勢</strong>：INVERTED 索引不需要進行全集掃描，可將大型資料集的查詢時間從幾秒縮短至幾毫秒。</p>
-<h2 id="How-INVERTED-indexes-work" class="common-anchor-header">INVERTED 索引如何工作<button data-href="#How-INVERTED-indexes-work" class="anchor-icon" translate="no">
+<p><strong>Performance benefit</strong>: INVERTED indexes can reduce query time from seconds to milliseconds on large datasets by eliminating the need for full collection scans.</p>
+<h2 id="How-INVERTED-indexes-work" class="common-anchor-header">How INVERTED indexes work<button data-href="#How-INVERTED-indexes-work" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -56,20 +60,22 @@ summary: 當您需要對資料執行頻繁的篩選查詢時，倒轉式索引�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus 中的<strong>INVERTED 索引</strong>將每個唯一欄位值（術語）對應到出現該值的文件 ID 集。這種結構能夠快速查找具有重複或分類值的欄位。</p>
-<p>如圖所示，此過程分為兩個步驟：</p>
+    </button></h2><p>An <strong>INVERTED index</strong> in Milvus maps each unique field value (term) to the set of document IDs where that value occurs. This structure enables fast lookups for fields with repeated or categorical values.</p>
+<p>As shown in the diagram, the process works in two steps:</p>
 <ol>
-<li><p><strong>前向映射 (ID → 詞彙)：</strong>每個文件 ID 指向其包含的欄位值。</p></li>
-<li><p><strong>反向映射 (術語 → ID)：</strong>Milvus 收集獨特的術語，並從每個術語到包含該術語的所有 ID 建立反向映射。</p></li>
+<li><p><strong>Forward mapping (ID → Term):</strong> Each document ID points to the field value it contains.</p></li>
+<li><p><strong>Inverted mapping (Term → IDs):</strong> Milvus collects unique terms and builds a reverse mapping from each term to all IDs that contain it.</p></li>
 </ol>
-<p>例如，值<strong>「electronics」</strong>對應到 ID<strong>1</strong>和<strong>3</strong>，而<strong>「books」</strong>對應到 ID<strong>2</strong>和<strong>5</strong>。</p>
+<p>For example, the value <strong>“electronics”</strong> maps to IDs <strong>1</strong> and <strong>3</strong>, while <strong>“books”</strong> maps to IDs <strong>2</strong> and <strong>5</strong>.</p>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="/docs/v2.6.x/assets/how-inverted-index-works.png" alt="How Inverted Index Works" class="doc-image" id="how-inverted-index-works" />
-   </span> <span class="img-wrapper"> <span>反向索引如何運作</span> </span></p>
-<p>當您篩選特定值 (例如<code translate="no">category == &quot;electronics&quot;</code>)，Milvus 只需在索引中查找該詞，並直接檢索匹配的 ID。這可以避免掃描整個資料集，並實現快速篩選，特別是對於分類或重複值。</p>
-<p>INVERTED 索引支援所有標量欄位類型，例如<strong>BOOL</strong>、<strong>INT8</strong>、<strong>INT16</strong>、<strong>INT32</strong>、<strong>INT64</strong>、<strong>FLOAT</strong>、<strong>DOUBLE</strong>、<strong>VARCHAR</strong>、<strong>JSON</strong> 和<strong>ARRAY</strong>。然而，索引 JSON 欄位的索引參數與一般標量欄位略有不同。</p>
-<h2 id="Create-indexes-on-non-JSON-fields" class="common-anchor-header">在非 JSON 欄位上建立索引<button data-href="#Create-indexes-on-non-JSON-fields" class="anchor-icon" translate="no">
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/how-inverted-index-works.png" alt="How Inverted Index Works" class="doc-image" id="how-inverted-index-works" />
+    <span>How Inverted Index Works</span>
+  </span>
+</p>
+<p>When you filter for a specific value (e.g., <code translate="no">category == &quot;electronics&quot;</code>), Milvus simply looks up the term in the index and retrieves the matching IDs directly. This avoids scanning the full dataset and enables fast filtering, especially for categorical or repeated values.</p>
+<p>INVERTED indexes support all scalar field types, such as <strong>BOOL</strong>, <strong>INT8</strong>, <strong>INT16</strong>, <strong>INT32</strong>, <strong>INT64</strong>, <strong>FLOAT</strong>, <strong>DOUBLE</strong>, <strong>VARCHAR</strong>, <strong>JSON</strong>, and <strong>ARRAY</strong>. However, the index parameters for indexing a JSON field are slightly different from regular scalar fields.</p>
+<h2 id="Create-indexes-on-non-JSON-fields" class="common-anchor-header">Create indexes on non-JSON fields<button data-href="#Create-indexes-on-non-JSON-fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -84,9 +90,9 @@ summary: 當您需要對資料執行頻繁的篩選查詢時，倒轉式索引�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>要在非 JSON 欄位上建立索引，請遵循下列步驟：</p>
+    </button></h2><p>To create an index on a non-JSON field, follow these steps:</p>
 <ol>
-<li><p>準備您的索引參數：</p>
+<li><p>Prepare your index parameters:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>) <span class="hljs-comment"># Replace with your server address</span>
@@ -94,21 +100,21 @@ client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530
 <span class="hljs-comment"># Create an empty index parameter object</span>
 index_params = client.prepare_index_params()
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>新增<code translate="no">INVERTED</code> 索引：</p>
+<li><p>Add the <code translate="no">INVERTED</code> index:</p>
 <pre><code translate="no" class="language-python">index_params.add_index(
     field_name=<span class="hljs-string">&quot;category&quot;</span>,           <span class="hljs-comment"># Name of the field to index</span>
 <span class="highlighted-wrapper-line">    index_type=<span class="hljs-string">&quot;INVERTED&quot;</span>,          <span class="hljs-comment"># Specify INVERTED index type</span></span>
     index_name=<span class="hljs-string">&quot;category_index&quot;</span>     <span class="hljs-comment"># Give your index a name</span>
 )
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>建立索引：</p>
+<li><p>Create the index:</p>
 <pre><code translate="no" class="language-python">client.create_index(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>, <span class="hljs-comment"># Replace with your collection name</span>
     index_params=index_params
 )
 <button class="copy-code-btn"></button></code></pre></li>
 </ol>
-<h2 id="Create-indexes-on-JSON-fields--Milvus-2511+" class="common-anchor-header">在 JSON 欄位上建立索引<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.5.11+</span><button data-href="#Create-indexes-on-JSON-fields--Milvus-2511+" class="anchor-icon" translate="no">
+<h2 id="Create-indexes-on-JSON-fields" class="common-anchor-header">Create indexes on JSON fields<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.5.11+</span><button data-href="#Create-indexes-on-JSON-fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -123,7 +129,7 @@ index_params = client.prepare_index_params()
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>您也可以在 JSON 欄位內的特定路徑上建立 INVERTED 索引。這需要額外的參數來指定 JSON 路徑和資料類型：</p>
+    </button></h2><p>You can also create INVERTED indexes on specific paths within JSON fields. This requires additional parameters to specify the JSON path and data type:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Build index params</span>
 index_params.add_index(
     field_name=<span class="hljs-string">&quot;metadata&quot;</span>,                    <span class="hljs-comment"># JSON field name</span>
@@ -141,8 +147,8 @@ client.create_index(
     index_params=index_params
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>有關 JSON 欄位索引的詳細資訊，包括支援的路徑、資料類型和限制，請參閱<a href="/docs/zh-hant/json-indexing.md">JSON 索引</a>。</p>
-<h2 id="Drop-an-index" class="common-anchor-header">刪除索引<button data-href="#Drop-an-index" class="anchor-icon" translate="no">
+<p>For detailed information about JSON field indexing, including supported paths, data types, and limitations, refer to <a href="/docs/zh-hant/v2.6.x/json-indexing.md">JSON Indexing</a>.</p>
+<h2 id="Drop-an-index" class="common-anchor-header">Drop an index<button data-href="#Drop-an-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -157,11 +163,11 @@ client.create_index(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>使用<code translate="no">drop_index()</code> 方法從集合中移除現有索引。</p>
+    </button></h2><p>Use the <code translate="no">drop_index()</code> method to remove an existing index from a collection.</p>
 <div class="alert note">
 <ul>
-<li><p>在<strong>v2.6.3</strong>或更早版本中，您必須先釋放集合，才能刪除標量索引。</p></li>
-<li><p>從<strong>v2.6.4</strong>或更新版本開始，一旦不再需要標量索引，您就可以直接將它刪除，而不需要先釋放集合。</p></li>
+<li><p>In <strong>v2.6.3</strong> or earlier, you must release the collection before dropping a scalar index.</p></li>
+<li><p>From <strong>v2.6.4</strong> or later, you can drop a scalar index directly once it’s no longer needed—no need to release the collection first.</p></li>
 </ul>
 </div>
 <pre><code translate="no" class="language-python">client.drop_index(
@@ -169,7 +175,7 @@ client.create_index(
     index_name=<span class="hljs-string">&quot;category_index&quot;</span> <span class="hljs-comment"># Name of the index to drop</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Best-practices" class="common-anchor-header">最佳實務<button data-href="#Best-practices" class="anchor-icon" translate="no">
+<h2 id="Best-practices" class="common-anchor-header">Best practices<button data-href="#Best-practices" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -185,12 +191,12 @@ client.create_index(
         ></path>
       </svg>
     </button></h2><ul>
-<li><p><strong>在載入資料後建立索引</strong>：在已包含資料的集合上建立索引，以獲得更佳效能</p></li>
-<li><p><strong>使用描述性索引名稱</strong>：選擇能清楚指出欄位和目的的名稱</p></li>
-<li><p><strong>監控索引效能</strong>：在建立索引之前和之後，檢查查詢效能</p></li>
-<li><p><strong>考慮您的查詢模式</strong>：在您經常篩選的欄位上建立索引</p></li>
+<li><p><strong>Create indexes after loading data</strong>: Build indexes on collections that already contain data for better performance</p></li>
+<li><p><strong>Use descriptive index names</strong>: Choose names that clearly indicate the field and purpose</p></li>
+<li><p><strong>Monitor index performance</strong>: Check query performance before and after creating indexes</p></li>
+<li><p><strong>Consider your query patterns</strong>: Create indexes on fields you frequently filter by</p></li>
 </ul>
-<h2 id="Next-steps" class="common-anchor-header">下一步<button data-href="#Next-steps" class="anchor-icon" translate="no">
+<h2 id="Next-steps" class="common-anchor-header">Next steps<button data-href="#Next-steps" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -206,6 +212,6 @@ client.create_index(
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>瞭解<a href="/docs/zh-hant/index-explained.md">其他索引類型</a></p></li>
-<li><p>請參閱<a href="/docs/zh-hant/json-indexing.md">JSON</a>索引，瞭解進階的 JSON 索引情境</p></li>
+<li><p>Learn about <a href="/docs/zh-hant/v2.6.x/index-explained.md">other index types</a></p></li>
+<li><p>See <a href="/docs/zh-hant/v2.6.x/json-indexing.md">JSON Indexing</a> for advanced JSON indexing scenarios</p></li>
 </ul>

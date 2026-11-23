@@ -1,11 +1,11 @@
 ---
 id: milvus_lite.md
 summary: >-
-  Installa Milvus Lite ed esegui una ricerca vettoriale locale utilizzando un
-  percorso di database persistente.
-title: Eseguire Milvus Lite in locale
+  Install Milvus Lite and run local vector search with a persistent database
+  path.
+title: Run Milvus Lite Locally
 ---
-<h1 id="Run-Milvus-Lite-Locally" class="common-anchor-header">Eseguire Milvus Lite in locale<button data-href="#Run-Milvus-Lite-Locally" class="anchor-icon" translate="no">
+<h1 id="Run-Milvus-Lite-Locally" class="common-anchor-header">Run Milvus Lite Locally<button data-href="#Run-Milvus-Lite-Locally" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,8 +20,8 @@ title: Eseguire Milvus Lite in locale
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Questa pagina illustra come eseguire una ricerca vettoriale locale con Milvus Lite. Tratta argomenti quali l'installazione, la persistenza dei dati, il filtraggio e l'esportazione dei dati verso un'altra istanza di Milvus.</p>
-<h2 id="Overview" class="common-anchor-header">Panoramica<button data-href="#Overview" class="anchor-icon" translate="no">
+    </button></h1><p>This page shows how to run local vector search with Milvus Lite. It covers installation, data persistence, filtering, and exporting data to another Milvus deployment.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -36,15 +36,15 @@ title: Eseguire Milvus Lite in locale
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus Lite è un backend locale leggero per <a href="https://github.com/milvus-io/pymilvus">l'SDK Python di Milvus</a>. Installarlo con l'extra opzionale " <code translate="no">milvus-lite</code> "; l'installazione del solo " <code translate="no">pymilvus</code> " non installa questo backend nella versione dell'SDK utilizzata di seguito.</p>
-<p>Milvus Lite è adatto allo sviluppo locale e a carichi di lavoro su piccola scala in ambienti quali:</p>
+    </button></h2><p>Milvus Lite is a lightweight local backend for the <a href="https://github.com/milvus-io/pymilvus">Milvus Python SDK</a>. Install it with the optional <code translate="no">milvus-lite</code> extra; installing <code translate="no">pymilvus</code> alone does not install this backend in the SDK version used below.</p>
+<p>Milvus Lite is suitable for local development and small-scale workloads in environments such as:</p>
 <ul>
-<li>Jupyter Notebook o Google Colab</li>
-<li>Computer portatili</li>
-<li>Dispositivi edge con dipendenze Python compatibili</li>
+<li>Jupyter Notebook or Google Colab</li>
+<li>Laptops</li>
+<li>Edge devices with compatible Python dependencies</li>
 </ul>
-<p>Milvus Lite utilizza l’API <code translate="no">MilvusClient</code> per le operazioni supportate, tra cui la persistenza dei dati vettoriali, l’inserimento e l’eliminazione, la ricerca vettoriale e il filtraggio dei metadati. Per trasferire un flusso di lavoro applicativo supportato su una distribuzione remota, modificare l’URI di connessione e le credenziali, quindi verificare le differenze nelle funzionalità supportate. Per carichi di lavoro di produzione su larga scala, utilizzare <a href="/docs/it/install-overview.md">Milvus Standalone o Distributed</a>, oppure Milvus completamente gestito su <a href="https://zilliz.com/cloud">Zilliz Cloud</a>.</p>
-<h2 id="Prerequisites" class="common-anchor-header">Prerequisiti<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+<p>Milvus Lite uses the <code translate="no">MilvusClient</code> API for supported operations, including vector data persistence, insert and delete, vector search, and metadata filtering. To move a supported application workflow to a remote deployment, change the connection URI and credentials, and review the differences in supported features. For large-scale production workloads, use <a href="/docs/it/install-overview.md">Milvus Standalone or Distributed</a>, or fully managed Milvus on <a href="https://zilliz.com/cloud">Zilliz Cloud</a>.</p>
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -59,14 +59,14 @@ title: Eseguire Milvus Lite in locale
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Questa guida utilizza PyMilvus <strong>3.0.2</strong> e Milvus Lite <strong>3.2.2</strong>. Preparare il seguente ambiente:</p>
+    </button></h2><p>This guide uses PyMilvus <strong>3.0.2</strong> and Milvus Lite <strong>3.2.2</strong>. Prepare the following environment:</p>
 <ul>
-<li>Python 3.10 o versioni successive. Il backend Lite locale richiede una versione minima di Python superiore rispetto al client PyMilvus remoto.</li>
-<li>macOS, Linux o Windows, con wheel compatibili per le dipendenze quali <code translate="no">faiss-cpu</code> e <code translate="no">pyarrow</code>. Milvus Lite 3.2.2 è un pacchetto scritto interamente in Python, pertanto sono il sistema operativo e l’architettura a dover soddisfare tali dipendenze, piuttosto che il pacchetto Lite stesso.</li>
-<li>Una directory locale scrivibile per l’archiviazione del database.</li>
+<li>Python 3.10 or newer. The local Lite backend has a higher minimum Python version than the remote PyMilvus client.</li>
+<li>macOS, Linux, or Windows, with compatible wheels for dependencies such as <code translate="no">faiss-cpu</code> and <code translate="no">pyarrow</code>. Milvus Lite 3.2.2 is a pure-Python package, so the operating system and architecture must satisfy those dependencies rather than the Lite package itself.</li>
+<li>A writable local directory for database storage.</li>
 </ul>
-<p>Su Windows, pip ignora l’extra <code translate="no">milvus-lite</code> di PyMilvus 3.0.2 a causa del suo marcatore di piattaforma, quindi <code translate="no">milvus-lite</code> deve essere specificato esplicitamente. Il comando di installazione riportato di seguito lo fa già. Per altre combinazioni di pacchetti e piattaforme, consultare i <a href="https://github.com/milvus-io/milvus-lite/blob/v3.2.2/README.md#requirements">requisiti di rilascio di Milvus Lite</a>.</p>
-<h2 id="Set-up-Milvus-Lite" class="common-anchor-header">Configurazione di Milvus Lite<button data-href="#Set-up-Milvus-Lite" class="anchor-icon" translate="no">
+<p>On Windows, pip skips the <code translate="no">milvus-lite</code> extra of PyMilvus 3.0.2 because of its platform marker, so <code translate="no">milvus-lite</code> must be named explicitly. The install command below already does this. For other package and platform combinations, consult the <a href="https://github.com/milvus-io/milvus-lite/blob/v3.2.2/README.md#requirements">Milvus Lite release requirements</a>.</p>
+<h2 id="Set-up-Milvus-Lite" class="common-anchor-header">Set up Milvus Lite<button data-href="#Set-up-Milvus-Lite" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -81,18 +81,18 @@ title: Eseguire Milvus Lite in locale
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Creare un ambiente Python isolato e installare entrambi i pacchetti:</p>
+    </button></h2><p>Create an isolated Python environment and install both packages:</p>
 <pre><code translate="no" class="language-bash">python3 -m venv .venv
 <span class="hljs-built_in">source</span> .venv/bin/activate
 python -m pip install <span class="hljs-string">&quot;pymilvus[milvus-lite]==3.0.2&quot;</span> <span class="hljs-string">&quot;milvus-lite==3.2.2&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Metti tra virgolette l'espressione degli extra in modo che le shell come zsh non interpretino le parentesi. Su Windows PowerShell, attiva l'ambiente con ` <code translate="no">.venv\Scripts\Activate.ps1</code> ` invece che con ` <code translate="no">source .venv/bin/activate</code>`. Le versioni esplicite mantengono l'SDK e il backend locale allineati con questa guida.</p>
+<p>Quote the extras expression so shells such as zsh do not interpret the brackets. On Windows PowerShell, activate the environment with <code translate="no">.venv\Scripts\Activate.ps1</code> instead of <code translate="no">source .venv/bin/activate</code>. The explicit versions keep the SDK and local backend aligned with this guide.</p>
 <div class="alert note">
 <blockquote>
-<p>Milvus Lite 3.x utilizza un motore di archiviazione diverso rispetto al pacchetto originale 2.x. Non è in grado di aprire direttamente un file <code translate="no">.db</code> esistente della versione 2.x. Conservare il database originale e un ambiente in grado di aprirlo, esportare i dati in tale ambiente e importarli in un nuovo database. L’installazione di un nuovo pacchetto non comporta la migrazione del vecchio formato di archiviazione. Vedere <a href="#Migrating-data-from-Milvus-Lite">Migrazione dei dati da Milvus Lite</a>.</p>
+<p>Milvus Lite 3.x uses a different storage engine from the original 2.x package. It cannot open an existing 2.x <code translate="no">.db</code> file in place. Keep the original database and an environment that can open it, export its data there, and import the data into a new database. Installing a new package does not migrate the old storage format. See <a href="#Migrating-data-from-Milvus-Lite">Migrating data from Milvus Lite</a>.</p>
 </blockquote>
 </div>
-<h2 id="Connect-to-Milvus-Lite" class="common-anchor-header">Connessione a Milvus Lite<button data-href="#Connect-to-Milvus-Lite" class="anchor-icon" translate="no">
+<h2 id="Connect-to-Milvus-Lite" class="common-anchor-header">Connect to Milvus Lite<button data-href="#Connect-to-Milvus-Lite" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -107,16 +107,16 @@ python -m pip install <span class="hljs-string">&quot;pymilvus[milvus-lite]==3.0
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Passare un percorso locale che termina con <code translate="no">.db</code> a <code translate="no">MilvusClient</code>:</p>
+    </button></h2><p>Pass a local path ending in <code translate="no">.db</code> to <code translate="no">MilvusClient</code>:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client = MilvusClient(<span class="hljs-string">&quot;./milvus_demo.db&quot;</span>)
 <button class="copy-code-btn"></button></code></pre>
-<p>Per Milvus Lite 3.2.2, questa operazione crea una <strong>directory milvus_demo.db</strong> nella directory di lavoro. La directory contiene i file di archiviazione del database; il suffisso <code translate="no">.db</code> non indica che si tratti di un unico file portatile. Riutilizzare lo stesso percorso per riaprire il database dopo aver chiuso il client o riavviato l’applicazione.</p>
-<p>Utilizza un percorso diverso per un nuovo database. Per connetterti invece a un server Milvus remoto, specifica il suo endpoint e le credenziali:</p>
+<p>For Milvus Lite 3.2.2, this creates a <strong>milvus_demo.db directory</strong> in the working directory. The directory contains the database’s storage files; the <code translate="no">.db</code> suffix does not mean it is a single portable file. Reuse the same path to reopen the database after closing the client or restarting the application.</p>
+<p>Use a different path for a new database. To connect to a remote Milvus server instead, pass its endpoint and credentials:</p>
 <pre><code translate="no" class="language-python">client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>, token=<span class="hljs-string">&quot;username:password&quot;</span>)
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Run-a-local-search-example" class="common-anchor-header">Esegui un esempio di ricerca locale<button data-href="#Run-a-local-search-example" class="anchor-icon" translate="no">
+<h2 id="Run-a-local-search-example" class="common-anchor-header">Run a local search example<button data-href="#Run-a-local-search-example" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -131,7 +131,7 @@ client = MilvusClient(<span class="hljs-string">&quot;./milvus_demo.db&quot;</sp
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>L'esempio seguente illustra il flusso di lavoro dell'API con vettori generati. Questi vettori non codificano il significato del testo; utilizzare un modello di embedding quando si crea una ricerca semantica. Eseguire l'esempio con un nuovo percorso del database oppure rimuovere il file <code translate="no">demo_collection</code> esistente prima di eseguirlo nuovamente.</p>
+    </button></h2><p>The following example demonstrates the API workflow with generated vectors. These vectors do not encode the meaning of the text; use an embedding model when building semantic search. Run the example against a new database path, or remove the existing <code translate="no">demo_collection</code> before running it again.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 <span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
 
@@ -180,8 +180,8 @@ res = client.delete(collection_name=<span class="hljs-string">&quot;demo_collect
 <span class="hljs-built_in">print</span>(res)
 client.close()
 <button class="copy-code-btn"></button></code></pre>
-<p>Per un'applicazione che genera embedding da testo, prosegui con <a href="/docs/it/quickstart.md">la Guida rapida</a>. Puoi anche esplorare gli <a href="https://github.com/milvus-io/bootcamp">esempi del Milvus Bootcamp</a> relativi a RAG, ricerca di immagini e integrazioni con framework.</p>
-<h2 id="Supported-features-and-limits" class="common-anchor-header">Funzionalità supportate e limiti<button data-href="#Supported-features-and-limits" class="anchor-icon" translate="no">
+<p>For an application that generates embeddings from text, continue with <a href="/docs/it/quickstart.md">Quickstart</a>. You can also explore the <a href="https://github.com/milvus-io/bootcamp">Milvus Bootcamp examples</a> for RAG, image search, and framework integrations.</p>
+<h2 id="Supported-features-and-limits" class="common-anchor-header">Supported features and limits<button data-href="#Supported-features-and-limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -196,32 +196,32 @@ client.close()
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus Lite 3.2.2 implementa un sottoinsieme delle operazioni di Milvus tramite il proprio adattatore locale PyMilvus. <a href="https://github.com/milvus-io/milvus-lite/blob/v3.2.2/README.md#supported-features">Il riferimento alle funzionalità, aggiornato con le versioni</a>, descrive le seguenti capacità:</p>
+    </button></h2><p>Milvus Lite 3.2.2 implements a subset of Milvus operations through its local PyMilvus adapter. Its <a href="https://github.com/milvus-io/milvus-lite/blob/v3.2.2/README.md#supported-features">versioned feature reference</a> describes the following capabilities:</p>
 <table>
 <thead>
-<tr><th>Area</th><th>Supporto in questa versione Lite</th></tr>
+<tr><th>Area</th><th>Support in this Lite version</th></tr>
 </thead>
 <tbody>
-<tr><td>Vettori densi e sparsi</td><td><code translate="no">FLOAT_VECTOR</code> e <code translate="no">SPARSE_FLOAT_VECTOR</code></td></tr>
-<tr><td>Indici vettoriali</td><td><code translate="no">FLAT</code>, <code translate="no">BRUTE_FORCE</code>, <code translate="no">IVF_FLAT</code>, <code translate="no">IVF_SQ8</code>, <code translate="no">HNSW</code>, <code translate="no">HNSW_SQ</code>, e <code translate="no">AUTOINDEX</code></td></tr>
-<tr><td>Indici scalari e sparsi</td><td><code translate="no">INVERTED</code> Indici scalari e <code translate="no">SPARSE_INVERTED_INDEX</code></td></tr>
-<tr><td>Operazioni sui dati</td><td>Inserimento, upsert, recupero, query, ricerca vettoriale ed eliminazione</td></tr>
-<tr><td>Ricerca</td><td>Ricerca densa e sparsa, filtri sui metadati, campi vettoriali multipli e ricerca ibrida</td></tr>
-<tr><td>Organizzazione delle collezioni</td><td>Collezioni, database denominati, alias e partizioni, nell’ambito delle operazioni supportate dall’adattatore locale</td></tr>
+<tr><td>Dense and sparse vectors</td><td><code translate="no">FLOAT_VECTOR</code> and <code translate="no">SPARSE_FLOAT_VECTOR</code></td></tr>
+<tr><td>Vector indexes</td><td><code translate="no">FLAT</code>, <code translate="no">BRUTE_FORCE</code>, <code translate="no">IVF_FLAT</code>, <code translate="no">IVF_SQ8</code>, <code translate="no">HNSW</code>, <code translate="no">HNSW_SQ</code>, and <code translate="no">AUTOINDEX</code></td></tr>
+<tr><td>Scalar and sparse indexes</td><td><code translate="no">INVERTED</code> scalar indexes and <code translate="no">SPARSE_INVERTED_INDEX</code></td></tr>
+<tr><td>Data operations</td><td>Insert, upsert, get, query, vector search, and delete</td></tr>
+<tr><td>Search</td><td>Dense and sparse search, metadata filters, multiple vector fields, and hybrid search</td></tr>
+<tr><td>Collection organization</td><td>Collections, named databases, aliases, and partitions, within the local adapter’s supported operations</td></tr>
 </tbody>
 </table>
-<p>Questa versione non è limitata agli indici " <code translate="no">FLAT</code> ". La disponibilità e il comportamento degli indici dipendono dalla versione Lite; non applicare i limiti del backend originale 2.x al motore 3.x.</p>
-<p>Esaminare questi limiti prima di scegliere Lite per un'applicazione:</p>
+<p>This version is not limited to <code translate="no">FLAT</code> indexes. Index availability and behavior depend on the Lite version; do not apply limits from the original 2.x backend to the 3.x engine.</p>
+<p>Review these limits before choosing Lite for an application:</p>
 <ul>
-<li>Solo un processo alla volta può possedere una directory di archiviazione del database. Il motore protegge la directory con un blocco del file.</li>
-<li>Serializzare le operazioni di scrittura sulla stessa collezione. Le scritture concorrenti non sono supportate in modo sicuro.</li>
-<li>L'adattatore locale non implementa tutti gli RPC di Milvus. Le operazioni non supportate restituiscono un errore " <code translate="no">UNIMPLEMENTED</code>"; la modifica dello schema e il caricamento o il rilascio a livello di partizione non sono disponibili.</li>
-<li>L'autenticazione, gli utenti, i ruoli, RBAC e TLS non sono supportati. Non esporre il server locale a una rete non attendibile.</li>
-<li>I campi vettoriali di tipo binary, float16, bfloat16 e int8, nonché gli indici con quantizzazione del prodotto, non sono supportati.</li>
-<li>La versione Lite è progettata per carichi di lavoro locali. La compatibilità con le API locali non garantisce la scalabilità distribuita né l’isolamento e la disponibilità in produzione tipici di una distribuzione remota.</li>
+<li>Only one process can own a database storage directory at a time. The engine protects the directory with a file lock.</li>
+<li>Serialize writes to the same collection. Concurrent writes are not supported safely.</li>
+<li>The local adapter does not implement every Milvus RPC. Unsupported operations return <code translate="no">UNIMPLEMENTED</code>; schema alteration and partition-level load or release are not available.</li>
+<li>Authentication, users, roles, RBAC, and TLS are not supported. Do not expose the local server to an untrusted network.</li>
+<li>Binary, float16, bfloat16, and int8 vector fields, and Product Quantization indexes, are not supported.</li>
+<li>Lite is designed for local workloads. Local API compatibility does not provide distributed scaling or the production isolation and availability of a remote deployment.</li>
 </ul>
-<p>Consultare le <a href="https://github.com/milvus-io/milvus-lite/blob/v3.2.2/README.md#known-limitations">limitazioni note relative alla versione</a> prima di fare affidamento su una funzionalità del server che l’esempio locale non utilizza.</p>
-<h2 id="Migrating-data-from-Milvus-Lite" class="common-anchor-header">Migrazione dei dati da Milvus Lite<button data-href="#Migrating-data-from-Milvus-Lite" class="anchor-icon" translate="no">
+<p>See the <a href="https://github.com/milvus-io/milvus-lite/blob/v3.2.2/README.md#known-limitations">versioned known limitations</a> before relying on a server feature that the local example does not exercise.</p>
+<h2 id="Migrating-data-from-Milvus-Lite" class="common-anchor-header">Migrating data from Milvus Lite<button data-href="#Migrating-data-from-Milvus-Lite" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -236,22 +236,22 @@ client.close()
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Utilizzare <code translate="no">milvus-lite dump</code> per esportare una raccolta come file JSON di Milvus BulkWriter. Questi file possono essere importati in una distribuzione Milvus self-hosted o su Zilliz Cloud.</p>
-<p>Installare le dipendenze del Bulk Writer dell’SDK nell’ambiente che apre il database di origine:</p>
+    </button></h2><p>Use <code translate="no">milvus-lite dump</code> to export a collection as Milvus BulkWriter JSON files. These files can be imported into a self-hosted Milvus deployment or Zilliz Cloud.</p>
+<p>Install the SDK’s bulk writer dependencies in the environment that opens the source database:</p>
 <pre><code translate="no" class="language-bash">python -m pip install <span class="hljs-string">&quot;pymilvus[bulk_writer]==3.0.2&quot;</span>
 milvus-lite dump -h
 <button class="copy-code-btn"></button></code></pre>
-<p>Chiudere l’applicazione Python che gestisce il database locale prima di eseguire il comando in un altro processo. Esportare la collezione dall’esempio precedente:</p>
+<p>Close the Python application that owns the local database before running the command in another process. Export the collection from the preceding example:</p>
 <pre><code translate="no" class="language-bash">milvus-lite dump -d ./milvus_demo.db -c demo_collection -p ./data_dir
 <button class="copy-code-btn"></button></code></pre>
-<p>Il comando legge <code translate="no">demo_collection</code> dalla <strong>directory di archiviazione milvus_demo.db</strong> e scrive i file di esportazione nella <strong>directory data_dir</strong>. Importare tali file con <a href="/docs/it/import-data.md">Bulk Insert</a> o <a href="https://docs.zilliz.com/docs/data-import">Zilliz Cloud Data Import</a>.</p>
+<p>The command reads <code translate="no">demo_collection</code> from the <strong>milvus_demo.db storage directory</strong> and writes export files under <strong>data_dir</strong>. Import those files with <a href="/docs/it/import-data.md">Bulk Insert</a> or <a href="https://docs.zilliz.com/docs/data-import">Zilliz Cloud Data Import</a>.</p>
 <div class="alert note">
 <blockquote>
-<p>Per esportare un file di database originale della versione 2.x, eseguire lo strumento di dump in un ambiente con la versione Lite originale in grado di aprire quel file. Lo strumento di dump della versione 3.x non converte il vecchio formato di archiviazione aprendolo direttamente. Conservare il database di origine fino a quando non si è verificato il numero di righe importate e i risultati della ricerca.</p>
+<p>To export an original 2.x database file, run the dump tool in an environment with the original Lite version that can open that file. The 3.x dump tool does not convert the old storage format by opening it directly. Preserve the source database until you have verified the imported row count and search results.</p>
 </blockquote>
 </div>
-<p>Per le opzioni di dump supportate e le restrizioni relative al formato di archiviazione, consultare la <a href="https://github.com/milvus-io/milvus-lite/blob/v3.2.2/README.md#dump-data">guida di riferimento all’esportazione di Milvus Lite</a>.</p>
-<h2 id="Whats-next" class="common-anchor-header">Prossimi passi<button data-href="#Whats-next" class="anchor-icon" translate="no">
+<p>For supported dump options and storage-format restrictions, see the <a href="https://github.com/milvus-io/milvus-lite/blob/v3.2.2/README.md#dump-data">Milvus Lite export reference</a>.</p>
+<h2 id="Whats-next" class="common-anchor-header">What’s next<button data-href="#Whats-next" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -266,10 +266,10 @@ milvus-lite dump -h
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Proseguire con queste attività:</p>
+    </button></h2><p>Continue with these tasks:</p>
 <ul>
-<li><a href="/docs/it/quickstart.md">Guida rapida</a>: generare embedding ed eseguire un flusso di lavoro di ricerca.</li>
-<li><a href="/docs/it/single-vector-search.md">Ricerca a vettore singolo</a> e <a href="/docs/it/multi-vector-search.md">ricerca ibrida</a>: progetta le query per la tua applicazione.</li>
-<li><a href="/docs/it/install-overview.md">Scegliere una distribuzione</a>: andare oltre lo sviluppo locale.</li>
-<li><a href="https://github.com/zilliztech/attu">Attu</a>: esplora l'interfaccia grafica di Milvus per una distribuzione remota.</li>
+<li><a href="/docs/it/quickstart.md">Quickstart</a>: generate embeddings and run a search workflow.</li>
+<li><a href="/docs/it/single-vector-search.md">Single-Vector Search</a> and <a href="/docs/it/multi-vector-search.md">Hybrid Search</a>: design queries for your application.</li>
+<li><a href="/docs/it/install-overview.md">Choose a deployment</a>: move beyond local development.</li>
+<li><a href="https://github.com/zilliztech/attu">Attu</a>: explore the Milvus GUI for a remote deployment.</li>
 </ul>

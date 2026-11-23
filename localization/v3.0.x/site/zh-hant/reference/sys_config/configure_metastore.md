@@ -2,9 +2,9 @@
 id: configure_metastore.md
 related_key: configure
 group: system_configuration.md
-summary: 學習如何為 Milvus 設定 metastore。
+summary: Learn how to configure metastore for Milvus.
 ---
-<h1 id="metastore-related-Configurations" class="common-anchor-header">metastore 相關設定<button data-href="#metastore-related-Configurations" class="anchor-icon" translate="no">
+<h1 id="metastore-related-Configurations" class="common-anchor-header">metastore-related Configurations<button data-href="#metastore-related-Configurations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,13 +37,13 @@ summary: 學習如何為 Milvus 設定 metastore。
     </button></h2><table id="metastore.type">
   <thead>
     <tr>
-      <th class="width80">說明</th>
-      <th class="width20">預設值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        預設值：etcd，有效值：[etcd, tikv］      </td>
+      <td>        Default value: etcd, Valid values: [etcd, tikv]      </td>
       <td>etcd</td>
     </tr>
   </tbody>
@@ -66,13 +66,13 @@ summary: 學習如何為 Milvus 設定 metastore。
     </button></h2><table id="metastore.snapshot.ttl">
   <thead>
     <tr>
-      <th class="width80">說明</th>
-      <th class="width20">預設值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        快照 ttl（秒      </td>
+      <td>        snapshot ttl in seconds      </td>
       <td>86400</td>
     </tr>
   </tbody>
@@ -95,13 +95,13 @@ summary: 學習如何為 Milvus 設定 metastore。
     </button></h2><table id="metastore.snapshot.reserveTime">
   <thead>
     <tr>
-      <th class="width80">說明</th>
-      <th class="width20">預設值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        快照保留時間（秒      </td>
+      <td>        snapshot reserve time in seconds      </td>
       <td>3600</td>
     </tr>
   </tbody>

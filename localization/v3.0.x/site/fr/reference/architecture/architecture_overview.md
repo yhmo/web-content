@@ -1,12 +1,11 @@
 ---
 id: architecture_overview.md
 summary: >-
-  Milvus propose une base de données vectorielle rapide, fiable et stable,
-  spécialement conçue pour la recherche de similitudes et l'intelligence
-  artificielle.
-title: Présentation de l'architecture de Milvus
+  Milvus provides a fast, reliable, and stable vector database built
+  specifically for similarity search and artificial intelligence.
+title: Milvus Architecture Overview
 ---
-<h1 id="Milvus-Architecture-Overview" class="common-anchor-header">Présentation de l'architecture de Milvus<button data-href="#Milvus-Architecture-Overview" class="anchor-icon" translate="no">
+<h1 id="Milvus-Architecture-Overview" class="common-anchor-header">Milvus Architecture Overview<button data-href="#Milvus-Architecture-Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -21,8 +20,8 @@ title: Présentation de l'architecture de Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Milvus est une base de données vectorielle <strong>open source</strong> et <strong>native du cloud</strong>, conçue pour effectuer des recherches de similarité hautement performantes sur des ensembles de données vectorielles volumineux. S'appuyant sur des bibliothèques de recherche vectorielle courantes telles que Faiss, HNSW, DiskANN et SCANN, elle facilite le développement d'applications d'IA et la recherche de données non structurées. Avant de poursuivre, familiarisez-vous avec les <a href="/docs/fr/glossary.md">principes de base</a> de la recherche par embeddings.</p>
-<h2 id="Architecture-Diagram" class="common-anchor-header">Schéma d'architecture<button data-href="#Architecture-Diagram" class="anchor-icon" translate="no">
+    </button></h1><p>Milvus is an <strong>open-source</strong>, <strong>cloud-native</strong> vector database designed for high-performance similarity search on massive vector datasets. Built on top of popular vector search libraries including Faiss, HNSW, DiskANN, and SCANN, it empowers AI applications and unstructured data retrieval scenarios. Before proceeding, familiarize yourself with the <a href="/docs/fr/glossary.md">basic principles</a> of embedding retrieval.</p>
+<h2 id="Architecture-Diagram" class="common-anchor-header">Architecture Diagram<button data-href="#Architecture-Diagram" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,14 +36,14 @@ title: Présentation de l'architecture de Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Le schéma suivant illustre l’architecture générale de Milvus, mettant en avant sa conception modulaire, évolutive et native du cloud, avec des couches de stockage et de calcul entièrement dissociées.</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/milvus_architecture_2_6.png" alt="Architecture_diagram" class="doc-image" id="architecture_diagram" /> 
-   <span>Schéma_d’architecture</span>
-  
- </span></p>
-<h2 id="Architectural-Principles" class="common-anchor-header">Principes architecturaux<button data-href="#Architectural-Principles" class="anchor-icon" translate="no">
+    </button></h2><p>The following diagram illustrates Milvus’s high-level architecture, showcasing its modular, scalable, and cloud-native design with fully disaggregated storage and compute layers.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/milvus_architecture_2_6.png" alt="Architecture_diagram" class="doc-image" id="architecture_diagram" />
+    <span>Architecture_diagram</span>
+  </span>
+</p>
+<h2 id="Architectural-Principles" class="common-anchor-header">Architectural Principles<button data-href="#Architectural-Principles" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -59,9 +58,9 @@ title: Présentation de l'architecture de Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus suit le principe de dissociation entre le plan de données et le plan de contrôle, et se compose de quatre couches principales qui sont indépendantes les unes des autres en termes d’évolutivité et de reprise après sinistre. Cette architecture à stockage partagé, avec des couches de stockage et de calcul entièrement dissociées, permet une évolutivité horizontale des nœuds de calcul tout en implémentant Woodpecker comme couche WAL sans disque, pour une élasticité accrue et une réduction des coûts d’exploitation.</p>
-<p>En séparant le traitement des flux dans le nœud de streaming et le traitement par lots dans les nœuds de requête et de données, Milvus atteint des performances élevées tout en répondant simultanément aux exigences de traitement en temps réel.</p>
-<h2 id="Detailed-Layer-Architecture" class="common-anchor-header">Architecture détaillée des couches<button data-href="#Detailed-Layer-Architecture" class="anchor-icon" translate="no">
+    </button></h2><p>Milvus follows the principle of data plane and control plane disaggregation, comprising four main layers that are mutually independent in terms of scalability and disaster recovery. This shared-storage architecture with fully disaggregated storage and compute layers enables horizontal scaling of compute nodes while implementing Woodpecker as a zero-disk WAL layer for increased elasticity and reduced operational overhead.</p>
+<p>By separating stream processing into Streaming Node and batch processing into Query Node and Data Node, Milvus achieves high performance while meeting real-time processing requirements simultaneously.</p>
+<h2 id="Detailed-Layer-Architecture" class="common-anchor-header">Detailed Layer Architecture<button data-href="#Detailed-Layer-Architecture" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -76,7 +75,7 @@ title: Présentation de l'architecture de Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Layer-1-Access-Layer" class="common-anchor-header">Couche 1 : Couche d’accès<button data-href="#Layer-1-Access-Layer" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Layer-1-Access-Layer" class="common-anchor-header">Layer 1: Access Layer<button data-href="#Layer-1-Access-Layer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -91,12 +90,12 @@ title: Présentation de l'architecture de Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Composée d’un groupe de proxys sans état, la couche d’accès constitue la couche frontale du système et le point de terminaison pour les utilisateurs. Elle valide les requêtes des clients et filtre les résultats renvoyés :</p>
+    </button></h3><p>Composed of a group of stateless proxies, the access layer is the front layer of the system and endpoint to users. It validates client requests and reduces the returned results:</p>
 <ul>
-<li>Le proxy est en soi sans état. Il fournit une adresse de service unifiée à l’aide de composants d’équilibrage de charge tels que Nginx, Kubernetes Ingress, NodePort et LVS.</li>
-<li>Milvus utilisant une architecture de traitement massivement parallèle (MPP), le proxy agrège et traite les résultats intermédiaires avant de renvoyer les résultats finaux au client.</li>
+<li>Proxy is in itself stateless. It provides a unified service address using load balancing components such as Nginx, Kubernetes Ingress, NodePort, and LVS.</li>
+<li>As Milvus employs a massively parallel processing (MPP) architecture, the proxy aggregates and post-process the intermediate results before returning the final results to the client.</li>
 </ul>
-<h3 id="Layer-2-Coordinator" class="common-anchor-header">Couche 2 : Coordinateur<button data-href="#Layer-2-Coordinator" class="anchor-icon" translate="no">
+<h3 id="Layer-2-Coordinator" class="common-anchor-header">Layer 2: Coordinator<button data-href="#Layer-2-Coordinator" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -111,15 +110,15 @@ title: Présentation de l'architecture de Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Le coordinateur fait office de « cerveau » de Milvus. À tout moment, un seul et unique coordinateur est actif sur l’ensemble du cluster ; il est chargé de maintenir la topologie du cluster, de planifier tous les types de tâches et de garantir la cohérence au niveau du cluster.</p>
-<p>Voici quelques-unes des tâches gérées par le <strong>coordinateur</strong>:</p>
+    </button></h3><p>The Coordinator serves as the brain of Milvus. At any moment, exactly one Coordinator is active across the entire cluster, responsible for maintaining the cluster topology, scheduling all task types, and promising cluster-level consistency.</p>
+<p>The following are some of the tasks handled by the <strong>Coordinator</strong>:</p>
 <ul>
-<li><strong>Gestion DDL/DCL/TSO</strong>: traite les requêtes en langage de définition des données (DDL) et en langage de contrôle des données (DCL), telles que la création ou la suppression de collections, de partitions ou d’index, ainsi que la gestion des horodatages Oracle (TSO) et l’émission de marqueurs temporels.</li>
-<li><strong>Gestion du service de streaming</strong>: relie le journal d’écriture anticipée (WAL) aux nœuds de streaming et assure la découverte des services pour le service de streaming.</li>
-<li><strong>Gestion des requêtes</strong>: gère la topologie et l’équilibrage de charge des nœuds de requêtes, et fournit et gère les vues de requêtes servies pour guider le routage des requêtes.</li>
-<li><strong>Gestion des données historiques</strong>: distribue les tâches hors ligne, telles que la compaction et la création d’index, aux nœuds de données, et gère la topologie des segments et des vues de données.</li>
+<li><strong>DDL/DCL/TSO Management</strong>: Handles data definition language (DDL) and data control language (DCL) requests, such as creating or deleting collections, partitions, or indexes, as well as managing timestamp Oracle (TSO) and time ticker issuing.</li>
+<li><strong>Streaming Service Management</strong>: Binds the Write-Ahead Log (WAL) with Streaming Nodes and provides service discovery for the streaming service.</li>
+<li><strong>Query Management</strong>: Manages topology and load balancing for the Query Nodes, and provides and manages the serving query views to guide the query routing.</li>
+<li><strong>Historical Data Management</strong>: Distributes offline tasks such as compaction and index-building to Data Nodes, and manages the topology of segments and data views.</li>
 </ul>
-<h3 id="Layer-3-Worker-Nodes" class="common-anchor-header">Couche 3 : Nœuds de travail<button data-href="#Layer-3-Worker-Nodes" class="anchor-icon" translate="no">
+<h3 id="Layer-3-Worker-Nodes" class="common-anchor-header">Layer 3: Worker Nodes<button data-href="#Layer-3-Worker-Nodes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -134,8 +133,8 @@ title: Présentation de l'architecture de Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Les bras et les jambes. Les nœuds de travail sont des exécuteurs « passifs » qui suivent les instructions du coordinateur. Grâce à la séparation entre le stockage et le calcul, les nœuds de travail sont sans état et peuvent faciliter l’évolutivité horizontale du système ainsi que la reprise après sinistre lorsqu’ils sont déployés sur Kubernetes. Il existe trois types de nœuds de travail :</p>
-<h3 id="Streaming-node" class="common-anchor-header">Nœud de streaming<button data-href="#Streaming-node" class="anchor-icon" translate="no">
+    </button></h3><p>The arms and legs. Worker nodes are dumb executors that follow instructions from the coordinator. Worker nodes are stateless thanks to separation of storage and computation, and can facilitate system scale-out and disaster recovery when deployed on Kubernetes. There are three types of worker nodes:</p>
+<h3 id="Streaming-node" class="common-anchor-header">Streaming node<button data-href="#Streaming-node" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -150,8 +149,8 @@ title: Présentation de l'architecture de Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Le nœud de streaming fait office de « mini-cerveau » au niveau des shards, assurant la cohérence au niveau des shards et la récupération en cas de panne grâce au stockage WAL sous-jacent. Parallèlement, le nœud de streaming est également chargé d’interroger les données en croissance et de générer des plans de requête. De plus, il gère la conversion des données en croissance en données scellées (historiques).</p>
-<h3 id="Query-node" class="common-anchor-header">Nœud de requête<button data-href="#Query-node" class="anchor-icon" translate="no">
+    </button></h3><p>Streaming Node serves as the shard-level "mini-brain", providing shard-level consistency guarantees and fault recovery based on underlying WAL Storage. Meanwhile, Streaming Node is also responsible for growing data querying and generating query plans. Additionally, it also handles the conversion of growing data into sealed (historical) data.</p>
+<h3 id="Query-node" class="common-anchor-header">Query node<button data-href="#Query-node" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -166,8 +165,8 @@ title: Présentation de l'architecture de Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Le nœud de requête charge les données historiques à partir du stockage d’objets et permet d’interroger ces données historiques.</p>
-<h3 id="Data-node" class="common-anchor-header">Nœud de données<button data-href="#Data-node" class="anchor-icon" translate="no">
+    </button></h3><p>Query node loads the historical data from object storage, and provides the historical data querying.</p>
+<h3 id="Data-node" class="common-anchor-header">Data node<button data-href="#Data-node" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -182,8 +181,8 @@ title: Présentation de l'architecture de Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Le nœud de données est chargé du traitement hors ligne des données historiques, notamment la compaction et la création d’index.</p>
-<h3 id="Layer-4-Storage" class="common-anchor-header">Couche 4 : Stockage<button data-href="#Layer-4-Storage" class="anchor-icon" translate="no">
+    </button></h3><p>Data node is responsible for offline processing of historical data, such as compaction and index building.</p>
+<h3 id="Layer-4-Storage" class="common-anchor-header">Layer 4: Storage<button data-href="#Layer-4-Storage" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -198,8 +197,8 @@ title: Présentation de l'architecture de Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Le stockage est la colonne vertébrale du système, chargé d’assurer la persistance des données. Il comprend le méta-stockage, le courtier de journaux et le stockage objet.</p>
-<h3 id="Meta-storage" class="common-anchor-header">Méta-stockage<button data-href="#Meta-storage" class="anchor-icon" translate="no">
+    </button></h3><p>Storage is the bone of the system, responsible for data persistence. It comprises meta storage, log broker, and object storage.</p>
+<h3 id="Meta-storage" class="common-anchor-header">Meta storage<button data-href="#Meta-storage" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -214,8 +213,8 @@ title: Présentation de l'architecture de Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Le méta-stockage stocke des instantanés de métadonnées, tels que le schéma de collection et les points de contrôle de consommation des messages. Le stockage des métadonnées exige une disponibilité extrêmement élevée, une forte cohérence et la prise en charge des transactions ; c’est pourquoi Milvus a choisi etcd comme méta-stockage. Milvus utilise également etcd pour l’enregistrement des services et les contrôles d’intégrité.</p>
-<h3 id="Object-storage" class="common-anchor-header">Stockage d’objets<button data-href="#Object-storage" class="anchor-icon" translate="no">
+    </button></h3><p>Meta storage stores snapshots of metadata such as collection schema, and message consumption checkpoints. Storing metadata demands extremely high availability, strong consistency, and transaction support, so Milvus chose etcd for meta store. Milvus also uses etcd for service registration and health check.</p>
+<h3 id="Object-storage" class="common-anchor-header">Object storage<button data-href="#Object-storage" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -230,9 +229,9 @@ title: Présentation de l'architecture de Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Le stockage d’objets assure la persistance des données et des fichiers d’index. Milvus prend en charge des backends de stockage d’objets tels que MinIO, AWS S3 et Azure Blob Storage. Les QueryNodes mettent en cache les données et les index nécessaires au traitement des requêtes.</p>
-<p>Grâce <a href="/docs/fr/tiered-storage-overview.md">au stockage hiérarchisé</a>, disponible dans Milvus 2.6.4 et versions ultérieures, les QueryNodes peuvent charger en premier lieu les métadonnées des segments, puis récupérer les données des champs ou les index à la demande, plutôt que de tout charger lors de l’initialisation. Le stockage d’objets distant reste la source persistante ; l’éviction d’une entrée du cache local ne supprime pas les données stockées. L’accès aux données non mises en cache augmente les E/S de stockage et peut accroître la latence des requêtes. Utilisez <a href="/docs/fr/warm-up.md">la fonction « Warm Up »</a> pour les champs ou index sensibles à la latence, et évaluez la latence des requêtes « froides » ainsi que celle du cache « tiède » avant de choisir une stratégie de chargement.</p>
-<h3 id="WAL-storage" class="common-anchor-header">Stockage WAL<button data-href="#WAL-storage" class="anchor-icon" translate="no">
+    </button></h3><p>Object storage persists data and index files. Milvus supports object storage backends such as MinIO, AWS S3, and Azure Blob Storage. QueryNodes cache the data and indexes needed to serve queries.</p>
+<p>With <a href="/docs/fr/tiered-storage-overview.md">Tiered Storage</a>, available in Milvus 2.6.4 and later, QueryNodes can load segment metadata first and fetch field data or indexes on demand, rather than loading everything at initialization. Remote object storage remains the persistent source; evicting a local cache entry does not delete the stored data. Accessing uncached data adds storage I/O and can increase query latency. Use <a href="/docs/fr/warm-up.md">Warm Up</a> for latency-sensitive fields or indexes, and evaluate cold-query as well as warm-cache latency before choosing a loading strategy.</p>
+<h3 id="WAL-storage" class="common-anchor-header">WAL storage<button data-href="#WAL-storage" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -247,10 +246,10 @@ title: Présentation de l'architecture de Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Le stockage du journal d’écriture anticipée (WAL) est le fondement de la durabilité et de la cohérence des données dans les systèmes distribués. Avant qu’une modification ne soit validée, elle est d’abord enregistrée dans un journal, ce qui garantit qu’en cas de panne, vous pouvez reprendre exactement là où vous vous étiez arrêté.</p>
-<p>Parmi les implémentations courantes du WAL, on trouve Kafka, Pulsar et Woodpecker. Contrairement aux solutions traditionnelles basées sur disque, Woodpecker adopte une architecture cloud native « zéro disque » qui écrit directement dans un stockage objet. Cette approche s’adapte sans effort à vos besoins et simplifie les opérations en supprimant la charge liée à la gestion des disques locaux.</p>
-<p>En consignant chaque opération d’écriture à l’avance, la couche WAL garantit un mécanisme fiable à l’échelle du système pour la récupération et la cohérence, quelle que soit la complexité de votre environnement distribué.</p>
-<h2 id="Data-Flow-and-API-Categories" class="common-anchor-header">Flux de données et catégories d’API<button data-href="#Data-Flow-and-API-Categories" class="anchor-icon" translate="no">
+    </button></h3><p>Write-Ahead Log (WAL) storage is the foundation of data durability and consistency in distributed systems. Before any change is committed, it’s first recorded in a log—ensuring that, in the event of a failure, you can recover exactly where you left off.</p>
+<p>Common WAL implementations include Kafka, Pulsar, and Woodpecker. Unlike traditional disk-based solutions, Woodpecker adopts a cloud-native, zero-disk design that writes directly to object storage. This approach scales effortlessly with your needs and simplifies operations by removing the overhead of managing local disks.</p>
+<p>By logging every write operation ahead of time, the WAL layer guarantees a reliable, system-wide mechanism for recovery and consistency—no matter how complex your distributed environment grows.</p>
+<h2 id="Data-Flow-and-API-Categories" class="common-anchor-header">Data Flow and API Categories<button data-href="#Data-Flow-and-API-Categories" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -265,18 +264,18 @@ title: Présentation de l'architecture de Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Les API Milvus sont classées par fonction et suivent des chemins spécifiques au sein de l’architecture :</p>
+    </button></h2><p>Milvus APIs are categorized by their function and follow specific paths through the architecture:</p>
 <table>
 <thead>
-<tr><th>Catégorie d’API</th><th>Opérations</th><th>Exemples d’API</th><th>Flux architectural</th></tr>
+<tr><th>API Category</th><th>Operations</th><th>Example APIs</th><th>Architecture Flow</th></tr>
 </thead>
 <tbody>
-<tr><td><strong>DDL/DCL</strong></td><td>Schéma et contrôle d'accès</td><td><code translate="no">createCollection</code>, <code translate="no">dropCollection</code>, <code translate="no">hasCollection</code>, <code translate="no">createPartition</code></td><td>Couche d'accès → Coordinateur</td></tr>
-<tr><td><strong>DML</strong></td><td>Manipulation des données</td><td><code translate="no">insert</code>, <code translate="no">delete</code>, <code translate="no">upsert</code></td><td>Couche d’accès → Nœud de traitement en continu</td></tr>
-<tr><td><strong>DQL</strong></td><td>Requête de données</td><td><code translate="no">search</code>, <code translate="no">query</code></td><td>Couche d'accès → Nœud de traitement par lots (nœuds de requête)</td></tr>
+<tr><td><strong>DDL/DCL</strong></td><td>Schema & Access Control</td><td><code translate="no">createCollection</code>, <code translate="no">dropCollection</code>, <code translate="no">hasCollection</code>, <code translate="no">createPartition</code></td><td>Access Layer → Coordinator</td></tr>
+<tr><td><strong>DML</strong></td><td>Data Manipulation</td><td><code translate="no">insert</code>, <code translate="no">delete</code>, <code translate="no">upsert</code></td><td>Access Layer → Streaming Worker Node</td></tr>
+<tr><td><strong>DQL</strong></td><td>Data Query</td><td><code translate="no">search</code>, <code translate="no">query</code></td><td>Access Layer → Batch Worker Node (Query Nodes)</td></tr>
 </tbody>
 </table>
-<h3 id="Example-Data-Flow-Search-Operation" class="common-anchor-header">Exemple de flux de données : opération de recherche<button data-href="#Example-Data-Flow-Search-Operation" class="anchor-icon" translate="no">
+<h3 id="Example-Data-Flow-Search-Operation" class="common-anchor-header">Example Data Flow: Search Operation<button data-href="#Example-Data-Flow-Search-Operation" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -292,14 +291,14 @@ title: Présentation de l'architecture de Milvus
         ></path>
       </svg>
     </button></h3><ol>
-<li>Le client envoie une requête de recherche via le SDK/l’API RESTful</li>
-<li>L'équilibreur de charge achemine la requête vers un proxy disponible dans la couche d'accès</li>
-<li>Le proxy utilise le cache de routage pour déterminer les nœuds cibles ; il ne contacte le coordinateur que si le cache n’est pas disponible</li>
-<li>Le proxy transmet la requête aux nœuds de streaming appropriés, qui se coordonnent ensuite avec les nœuds de requête pour la recherche de données scellées tout en exécutant localement la recherche dans les données en croissance</li>
-<li>Les nœuds de requête chargent les segments scellés depuis le stockage d’objets selon les besoins et effectuent une recherche au niveau des segments</li>
-<li>Les résultats de la recherche font l’objet d’une réduction à plusieurs niveaux : les nœuds de requête réduisent les résultats sur plusieurs segments, les nœuds de streaming réduisent les résultats provenant des nœuds de requête, et le proxy réduit les résultats provenant de tous les nœuds de streaming avant de les renvoyer au client</li>
+<li>Client sends a search request via SDK/RESTful API</li>
+<li>Load Balancer routes request to available Proxy in Access Layer</li>
+<li>Proxy uses routing cache to determine target nodes; contacts Coordinator only if cache is unavailable</li>
+<li>Proxy forwards request to appropriate Streaming Nodes, which then coordinate with Query Nodes for sealed data search while executing growing data search locally</li>
+<li>Query Nodes load sealed segments from Object Storage as needed and perform segment-level search</li>
+<li>Search results undergo multi-level reduction: Query Nodes reduce results across multiple segments, Streaming Nodes reduce results from Query Nodes, and Proxy reduces results from all Streaming Nodes before returning to client</li>
 </ol>
-<h3 id="Example-Data-Flow-Data-Insertion" class="common-anchor-header">Exemple de flux de données : insertion de données<button data-href="#Example-Data-Flow-Data-Insertion" class="anchor-icon" translate="no">
+<h3 id="Example-Data-Flow-Data-Insertion" class="common-anchor-header">Example Data Flow: Data Insertion<button data-href="#Example-Data-Flow-Data-Insertion" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -315,15 +314,15 @@ title: Présentation de l'architecture de Milvus
         ></path>
       </svg>
     </button></h3><ol>
-<li>Le client envoie une requête d’insertion contenant des données vectorielles</li>
-<li>La couche d’accès valide et transmet la requête au nœud de streaming</li>
-<li>Le nœud de streaming consigne l’opération dans le journal WAL à des fins de durabilité</li>
-<li>Les données sont traitées en temps réel et mises à disposition pour les requêtes</li>
-<li>Lorsque les segments atteignent leur capacité maximale, le nœud de streaming déclenche leur conversion en segments scellés</li>
-<li>Le nœud de données gère la compaction et crée des index sur les segments scellés, en stockant les résultats dans le stockage d’objets</li>
-<li>Les nœuds de requête chargent les index nouvellement créés et remplacent les données correspondantes qui ne cessent de croître</li>
+<li>Client sends an insert request with vector data</li>
+<li>Access Layer validates and forwards request to Streaming Node</li>
+<li>Streaming Node logs operation to WAL Storage for durability</li>
+<li>Data is processed in real-time and made available for queries</li>
+<li>When segments reach capacity, Streaming Node triggers conversion to sealed segments</li>
+<li>Data Node handles compaction and builds indexes on top of the sealed segments, storing results in Object Storage</li>
+<li>Query Nodes load the newly built indexes and replace the corresponding growing data</li>
 </ol>
-<h2 id="Whats-Next" class="common-anchor-header">Prochaines étapes<button data-href="#Whats-Next" class="anchor-icon" translate="no">
+<h2 id="Whats-Next" class="common-anchor-header">What’s Next<button data-href="#Whats-Next" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -339,7 +338,7 @@ title: Présentation de l'architecture de Milvus
         ></path>
       </svg>
     </button></h2><ul>
-<li>Découvrez les <a href="/docs/fr/main_components.md">principaux composants</a> pour connaître les détails de la mise en œuvre</li>
-<li>Découvrez les workflows <a href="/docs/fr/data_processing.md">de traitement des données</a> et les stratégies d’optimisation</li>
-<li>Comprenez le <a href="/docs/fr/tune_consistency.md">modèle de cohérence</a> et les garanties de transaction dans Milvus</li>
+<li>Explore the <a href="/docs/fr/main_components.md">Main Components</a> for detailed implementation specifics</li>
+<li>Learn about <a href="/docs/fr/data_processing.md">Data Processing</a> workflows and optimization strategies</li>
+<li>Understand the <a href="/docs/fr/tune_consistency.md">Consistency Model</a> and transaction guarantees in Milvus</li>
 </ul>

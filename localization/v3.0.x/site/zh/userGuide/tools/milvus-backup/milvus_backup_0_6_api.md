@@ -1,10 +1,12 @@
 ---
 id: milvus_backup_0_6_api.md
-summary: 通过 Milvus Backup HTTP API 创建和监控备份与还原任务。
-title: 使用 API 备份和恢复数据Compatible with Milvus Backup 0.6.x
+summary: >-
+  Create and monitor backup and restore tasks through the Milvus Backup HTTP
+  API.
+title: Back up and Restore Data Using APIsCompatible with Milvus Backup 0.6.x
 beta: Milvus Backup 0.6.x
 ---
-<h1 id="Back-up-and-Restore-Data-Using-APIs" class="common-anchor-header">使用 API 备份和恢复数据<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus Backup 0.6.x</span><button data-href="#Back-up-and-Restore-Data-Using-APIs" class="anchor-icon" translate="no">
+<h1 id="Back-up-and-Restore-Data-Using-APIs" class="common-anchor-header">Back up and Restore Data Using APIs<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus Backup 0.6.x</span><button data-href="#Back-up-and-Restore-Data-Using-APIs" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -19,8 +21,8 @@ beta: Milvus Backup 0.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>使用 Milvus Backup HTTP API 创建备份、还原 Collections 并监控异步任务。下面的快照示例需要<strong>Milvus 3.0.1 或更高版本</strong>。对于 Backup 0.5.x，请使用<a href="/docs/zh/milvus_backup_api.md">0.5.x API 指南</a>。对于现有安装，请参阅《<a href="/docs/zh/milvus_backup_upgrade.md">升级 Milvus Backup</a>》。</p>
-<h2 id="Obtain-Milvus-Backup" class="common-anchor-header">获取 Milvus Backup<button data-href="#Obtain-Milvus-Backup" class="anchor-icon" translate="no">
+    </button></h1><p>Use the Milvus Backup HTTP API to create backups, restore collections, and monitor asynchronous tasks. The snapshot example below requires <strong>Milvus 3.0.1 or later</strong>. For Backup 0.5.x, use the <a href="/docs/zh/milvus_backup_api.md">0.5.x API guide</a>. For an existing installation, see <a href="/docs/zh/milvus_backup_upgrade.md">Upgrade Milvus Backup</a>.</p>
+<h2 id="Obtain-Milvus-Backup" class="common-anchor-header">Obtain Milvus Backup<button data-href="#Obtain-Milvus-Backup" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -35,8 +37,8 @@ beta: Milvus Backup 0.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>以下示例已在<strong>Milvus Backup 0.6.0</strong> 版本上经过验证。请从<a href="https://github.com/zilliztech/milvus-backup/releases/tag/v0.6.0">v0.6.0 发布版本中</a>下载并解压相应的二进制文件。若要从源代码编译，请参阅<a href="/docs/zh/milvus_backup_0_6_cli.md#Obtain-Milvus-Backup">《获取 Milvus Backup</a>》；编译需要 Go 1.26 或更高版本。</p>
-<h2 id="Prepare-configuration-file" class="common-anchor-header">准备配置文件<button data-href="#Prepare-configuration-file" class="anchor-icon" translate="no">
+    </button></h2><p>The examples below were validated with <strong>Milvus Backup 0.6.0</strong>. Download and extract the appropriate binary from the <a href="https://github.com/zilliztech/milvus-backup/releases/tag/v0.6.0">v0.6.0 release</a>. To build from source instead, follow <a href="/docs/zh/milvus_backup_0_6_cli.md#Obtain-Milvus-Backup">Obtain Milvus Backup</a>; building requires Go 1.26 or later.</p>
+<h2 id="Prepare-configuration-file" class="common-anchor-header">Prepare configuration file<button data-href="#Prepare-configuration-file" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -51,14 +53,14 @@ beta: Milvus Backup 0.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>请参考<a href="/docs/zh/milvus_backup_0_6_cli.md#Prepare-configuration-file">“准备配置文件</a>”中的 v2 示例创建 `<code translate="no">configs/backup.yaml</code> `<a href="/docs/zh/milvus_backup_0_6_cli.md#Prepare-configuration-file">文件</a>。配置对 Milvus、实例存储以及备份目标的访问权限。此外，Milvus 服务器还必须能够访问备份存储以执行快照操作。</p>
-<p>如果您已有 v1 配置文件，该文件仍可加载。在更改其 Schema 或环境变量之前，请参阅<a href="/docs/zh/milvus_backup_upgrade.md#Migrate-the-configuration">《迁移配置》</a>。</p>
-<p>在包含二进制文件的目录下，检查配置并验证连接性：</p>
+    </button></h2><p>Create <code translate="no">configs/backup.yaml</code> using the v2 example in <a href="/docs/zh/milvus_backup_0_6_cli.md#Prepare-configuration-file">Prepare configuration file</a>. Configure access to Milvus, the instance’s storage, and the backup destination. The Milvus server must also be able to access the backup storage for snapshot operations.</p>
+<p>If you have a v1 file, it remains loadable. See <a href="/docs/zh/milvus_backup_upgrade.md#Migrate-the-configuration">Migrate the configuration</a> before changing its schema or environment variables.</p>
+<p>From the directory containing the binary, inspect the configuration and check connectivity:</p>
 <pre><code translate="no" class="language-shell">./milvus-backup config show --config configs/backup.yaml
 ./milvus-backup check --config configs/backup.yaml
 <button class="copy-code-btn"></button></code></pre>
-<p>当连接性检查报告<code translate="no">Success!</code> 时，请继续操作。</p>
-<h2 id="Start-up-the-API-server" class="common-anchor-header">启动 API 服务器<button data-href="#Start-up-the-API-server" class="anchor-icon" translate="no">
+<p>Continue when the connectivity check reports <code translate="no">Success!</code>.</p>
+<h2 id="Start-up-the-API-server" class="common-anchor-header">Start up the API server<button data-href="#Start-up-the-API-server" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -73,15 +75,15 @@ beta: Milvus Backup 0.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>使用您已验证的配置启动服务：</p>
+    </button></h2><p>Start the service with the configuration you checked:</p>
 <pre><code translate="no" class="language-shell">./milvus-backup server --config configs/backup.yaml
 <button class="copy-code-btn"></button></code></pre>
-<p>默认端口为 8080。若要选择其他端口，请使用<code translate="no">-p</code> ：</p>
+<p>The default port is 8080. To choose another port, use <code translate="no">-p</code>:</p>
 <pre><code translate="no" class="language-shell">./milvus-backup server -p 18080 --config configs/backup.yaml
 <button class="copy-code-btn"></button></code></pre>
-<p>对于给定的服务，仅需运行其中一条命令。下面的示例使用端口 8080；如果您选择了其他端口，请修改其中的 URL。Swagger UI 可通过<code translate="no">http://localhost:8080/api/v1/docs/index.html</code> 访问。</p>
-<p>在轮询任务期间请保持服务运行。任务 ID 和实时进度属于服务进程；进程停止后，持久化的备份仍保留在对象存储中。</p>
-<h2 id="Prepare-data" class="common-anchor-header">准备数据<button data-href="#Prepare-data" class="anchor-icon" translate="no">
+<p>Run only one of these commands for a given service. The examples below use port 8080; change their URLs if you selected another port. Swagger UI is available at <code translate="no">http://localhost:8080/api/v1/docs/index.html</code>.</p>
+<p>Keep the service running while polling tasks. Task IDs and live progress belong to the service process; the persisted backup remains in object storage after the process stops.</p>
+<h2 id="Prepare-data" class="common-anchor-header">Prepare data<button data-href="#Prepare-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -96,8 +98,8 @@ beta: Milvus Backup 0.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>使用名为<code translate="no">coll</code> 的现有 Collection，或从<a href="/docs/zh/snapshot-backup-and-restore.md#Prepare-sample-data">“准备示例数据</a>”中创建包含 256 个实体的测试 Collection。若使用自有数据，请在请求中修改 Collection 名称。验证结果时请保持测试数据不变。</p>
-<h2 id="Back-up-data" class="common-anchor-header">备份数据<button data-href="#Back-up-data" class="anchor-icon" translate="no">
+    </button></h2><p>Use an existing collection named <code translate="no">coll</code>, or create the 256-entity test collection from <a href="/docs/zh/snapshot-backup-and-restore.md#Prepare-sample-data">Prepare sample data</a>. Change the collection names in the requests if you use your own data. Keep the test data unchanged while verifying the result.</p>
+<h2 id="Back-up-data" class="common-anchor-header">Back up data<button data-href="#Back-up-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -112,7 +114,7 @@ beta: Milvus Backup 0.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>提交异步备份请求：</p>
+    </button></h2><p>Submit an asynchronous backup request:</p>
 <pre><code translate="no" class="language-shell">curl --request POST &#x27;http://localhost:8080/api/v1/create&#x27; \
   --header &#x27;Content-Type: application/json&#x27; \
   --data &#x27;{
@@ -121,31 +123,31 @@ beta: Milvus Backup 0.6.x
     &quot;collection_names&quot;: [&quot;coll&quot;]
   }&#x27;
 <button class="copy-code-btn"></button></code></pre>
-<p>响应中包含一个<code translate="no">requestId</code> 。提交请求并不意味着备份已完成。将该值复制到<code translate="no">backup_id</code> 并进行轮询：</p>
+<p>The response includes a <code translate="no">requestId</code>. Submission does not mean that the backup is complete. Copy that value into <code translate="no">backup_id</code> and poll:</p>
 <pre><code translate="no" class="language-shell">curl &#x27;http://localhost:8080/api/v1/get_backup?backup_id=BACKUP_REQUEST_ID&amp;backup_name=my_backup&#x27;
 <button class="copy-code-btn"></button></code></pre>
-<p>等待<code translate="no">data.state_code</code> 变为<code translate="no">2</code> 。该 API 使用以下任务状态：</p>
+<p>Wait for <code translate="no">data.state_code</code> to become <code translate="no">2</code>. The API uses these task states:</p>
 <table>
 <thead>
-<tr><th><code translate="no">state_code</code></th><th>含义</th></tr>
+<tr><th><code translate="no">state_code</code></th><th>Meaning</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">0</code></td><td>初始</td></tr>
-<tr><td><code translate="no">1</code></td><td>执行中</td></tr>
-<tr><td><code translate="no">2</code></td><td>成功</td></tr>
-<tr><td><code translate="no">3</code></td><td>失败</td></tr>
-<tr><td><code translate="no">4</code></td><td>超时</td></tr>
+<tr><td><code translate="no">0</code></td><td>Initial</td></tr>
+<tr><td><code translate="no">1</code></td><td>Executing</td></tr>
+<tr><td><code translate="no">2</code></td><td>Success</td></tr>
+<tr><td><code translate="no">3</code></td><td>Failed</td></tr>
+<tr><td><code translate="no">4</code></td><td>Timed out</td></tr>
 </tbody>
 </table>
-<p>请同时检查响应和任务状态。仅凭 HTTP 200 状态码是不够的：非零的响应<code translate="no">code</code> 表示出现错误。成功的响应可以省略<code translate="no">code</code> ，因为其值为零。如果任务失败或超时，请在从该备份恢复之前检查响应详细信息和服务器日志。</p>
-<p>列出已存储的备份，并按名称检查已完成的备份：</p>
+<p>Check both the response and the task state. HTTP 200 alone is insufficient: a nonzero response <code translate="no">code</code> indicates an error. A successful response can omit <code translate="no">code</code> because its value is zero. If a task fails or times out, inspect the response details and server log before restoring from that backup.</p>
+<p>List the stored backups and inspect the completed backup by name:</p>
 <pre><code translate="no" class="language-shell">curl &#x27;http://localhost:8080/api/v1/list&#x27;
 curl &#x27;http://localhost:8080/api/v1/get_backup?backup_name=my_backup&#x27;
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">get_backup</code> 该命令返回包含<code translate="no">collection_backups</code> 的 JSON 元数据；它<strong>不会</strong>下载备份文件。对于由其他进程创建的备份，仅按名称查询会返回元数据，但不包含实时任务进度。监控正在进行的备份时，请使用当前服务创建响应中的任务 ID。</p>
-<p>默认格式为<code translate="no">auto</code> ，这在 Milvus 3.0 上会选择快照。若要显式请求二进制日志，请在 create 请求主体中添加<code translate="no">&quot;format&quot;: &quot;binlog&quot;</code> 。CLI 中的<code translate="no">--for</code> 预设值并非 HTTP 请求字段。</p>
-<p>若要保留或迁移备份，请将整个目录复制到对象存储中。请参阅<a href="https://github.com/zilliztech/milvus-backup/blob/v0.6.0/docs/user_guide/transfer.md">0.6.0</a> 版本的<a href="https://github.com/zilliztech/milvus-backup/blob/v0.6.0/docs/user_guide/transfer.md">传输指南</a>。</p>
-<h2 id="Restore-data" class="common-anchor-header">恢复数据<button data-href="#Restore-data" class="anchor-icon" translate="no">
+<p><code translate="no">get_backup</code> returns JSON metadata, including <code translate="no">collection_backups</code>; it does <strong>not</strong> download backup files. For a backup created by another process, a name-only query can return metadata without live task progress. Use the task ID from the current service’s create response when monitoring an active backup.</p>
+<p>The default format is <code translate="no">auto</code>, which selects snapshot on Milvus 3.0. To explicitly request binlog, add <code translate="no">&quot;format&quot;: &quot;binlog&quot;</code> to the create body. The CLI’s <code translate="no">--for</code> presets are not an HTTP request field.</p>
+<p>To preserve or move the backup, copy the entire directory in object storage. See the <a href="https://github.com/zilliztech/milvus-backup/blob/v0.6.0/docs/user_guide/transfer.md">0.6.0 transfer guide</a>.</p>
+<h2 id="Restore-data" class="common-anchor-header">Restore data<button data-href="#Restore-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -160,7 +162,7 @@ curl &#x27;http://localhost:8080/api/v1/get_backup?backup_name=my_backup&#x27;
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>请确保<code translate="no">coll_bak</code> 尚未存在。提交带后缀的恢复请求：</p>
+    </button></h2><p>Ensure that <code translate="no">coll_bak</code> does not already exist. Submit a restore request with a suffix:</p>
 <pre><code translate="no" class="language-shell">curl --request POST &#x27;http://localhost:8080/api/v1/restore&#x27; \
   --header &#x27;Content-Type: application/json&#x27; \
   --data &#x27;{
@@ -170,12 +172,12 @@ curl &#x27;http://localhost:8080/api/v1/get_backup?backup_name=my_backup&#x27;
     &quot;collection_suffix&quot;: &quot;_bak&quot;
   }&#x27;
 <button class="copy-code-btn"></button></code></pre>
-<p>HTTP<code translate="no">collection_names</code> 字段在应用后缀之前，用于选择<strong>备份中的</strong>名称。此请求将选择<code translate="no">coll</code> 并创建<code translate="no">coll_bak</code> 。而 CLI 的<code translate="no">--filter</code> 则匹配重命名后的目标名称；请勿将<code translate="no">coll_bak</code> 替换到此 HTTP 字段中。</p>
-<p>从恢复响应中复制<code translate="no">data.id</code> ，并轮询该任务：</p>
+<p>The HTTP <code translate="no">collection_names</code> field selects names <strong>in the backup</strong>, before the suffix is applied. This request selects <code translate="no">coll</code> and creates <code translate="no">coll_bak</code>. The CLI’s <code translate="no">--filter</code> instead matches target names after renaming; do not substitute <code translate="no">coll_bak</code> into this HTTP field.</p>
+<p>Copy <code translate="no">data.id</code> from the restore response and poll the task:</p>
 <pre><code translate="no" class="language-shell">curl &#x27;http://localhost:8080/api/v1/get_restore?id=RESTORE_TASK_ID&#x27;
 <button class="copy-code-btn"></button></code></pre>
-<p>等待<code translate="no">data.state_code: 2</code> 状态更新，并访问<code translate="no">collection_restore_tasks</code> 检查目标 Collection 是否符合预期。已提交的任务并不代表恢复操作已通过验证。</p>
-<h3 id="Restore-with-the-original-name" class="common-anchor-header">使用原始名称进行恢复<button data-href="#Restore-with-the-original-name" class="anchor-icon" translate="no">
+<p>Wait for <code translate="no">data.state_code: 2</code> and check <code translate="no">collection_restore_tasks</code> for the expected target collection. A submitted task is not yet a verified restore.</p>
+<h3 id="Restore-with-the-original-name" class="common-anchor-header">Restore with the original name<button data-href="#Restore-with-the-original-name" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -190,7 +192,7 @@ curl &#x27;http://localhost:8080/api/v1/get_backup?backup_name=my_backup&#x27;
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>请选择一个不存在<code translate="no">coll</code> 的目标实例。启动一个单独的备份 API 服务（该服务需针对该目标及已完成的备份位置进行配置），然后向该目标服务发送以下请求：</p>
+    </button></h3><p>Use a target instance where <code translate="no">coll</code> does not exist. Start a separate backup API service configured for that target and the completed backup location, then send this request to the target service:</p>
 <pre><code translate="no" class="language-shell">curl --request POST &#x27;http://localhost:8080/api/v1/restore&#x27; \
   --header &#x27;Content-Type: application/json&#x27; \
   --data &#x27;{
@@ -200,8 +202,8 @@ curl &#x27;http://localhost:8080/api/v1/get_backup?backup_name=my_backup&#x27;
     &quot;collection_suffix&quot;: &quot;&quot;
   }&#x27;
 <button class="copy-code-btn"></button></code></pre>
-<p>使用返回的任务 ID 在同一服务上轮询<code translate="no">get_restore</code> 。为恢复目标配置<code translate="no">milvus.*</code> ，并为现有备份配置<code translate="no">backup.storage</code> 。请参阅<a href="/docs/zh/milvus_backup_0_6_cli.md#Prepare-configuration-file">“准备配置文件”</a>。</p>
-<h2 id="Verify-restored-data" class="common-anchor-header">验证恢复的数据<button data-href="#Verify-restored-data" class="anchor-icon" translate="no">
+<p>Poll <code translate="no">get_restore</code> on the same service using the returned task ID. Configure <code translate="no">milvus.*</code> for the restore target and <code translate="no">backup.storage</code> for the existing backup. See <a href="/docs/zh/milvus_backup_0_6_cli.md#Prepare-configuration-file">Prepare configuration file</a>.</p>
+<h2 id="Verify-restored-data" class="common-anchor-header">Verify restored data<button data-href="#Verify-restored-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -216,5 +218,5 @@ curl &#x27;http://localhost:8080/api/v1/get_backup?backup_name=my_backup&#x27;
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>恢复任务成功后，连接到目标 Milvus 实例，并验证预期 Collection 和数据是否存在。对于包含 256 个实体的测试 Collection，请<a href="/docs/zh/snapshot-backup-and-restore.md#Verify-the-result">按照“验证结果</a>”中的说明执行完整的标量、向量和搜索检查。</p>
-<p>若使用原始名称进行恢复，请将<code translate="no">coll_bak</code> 更改为<code translate="no">coll</code> 。验证代码会读取恢复后的数据，但不会将其删除。对于生产数据，请与备份时捕获的基线进行对比。</p>
+    </button></h2><p>After the restore task succeeds, connect to the target Milvus instance and verify that the expected collection and data exist. For the 256-entity test collection, use the full scalar, vector, and search checks in <a href="/docs/zh/snapshot-backup-and-restore.md#Verify-the-result">Verify the result</a>.</p>
+<p>Change <code translate="no">coll_bak</code> to <code translate="no">coll</code> when you restore with the original name. The verification code reads the restored data without deleting it. For production data, compare against a baseline captured at backup time.</p>

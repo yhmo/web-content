@@ -1,13 +1,13 @@
 ---
 id: scale-standalone.md
-title: Escalar Milvus Standalone
+title: Scale Milvus Standalone
 summary: >-
-  O Milvus Standalone é uma implantação de servidor de máquina única. Todos os
-  componentes do Milvus Standalone são empacotados em uma única imagem Docker,
-  tornando a implantação conveniente. Este tópico descreve como escalar uma
-  instância do Milvus em execução neste modo.
+  Milvus Standalone is a single-machine server deployment. All components of
+  Milvus Standalone are packed into a single Docker image, making deployment
+  convenient. This topic describes how to scale a Milvus instance running in
+  this mode.
 ---
-<h1 id="Scale-Milvus-Standalone" class="common-anchor-header">Escalar Milvus Standalone<button data-href="#Scale-Milvus-Standalone" class="anchor-icon" translate="no">
+<h1 id="Scale-Milvus-Standalone" class="common-anchor-header">Scale Milvus Standalone<button data-href="#Scale-Milvus-Standalone" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -22,8 +22,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Milvus Standalone é uma implantação de servidor de máquina única. Todos os componentes do Milvus Standalone são empacotados em uma única <a href="/docs/pt/install_standalone-docker.md">imagem Docker</a>, tornando a implantação conveniente. Este tópico descreve como escalar uma instância do Milvus em execução neste modo.</p>
-<h2 id="Prerequsites" class="common-anchor-header">Pré-requisitos<button data-href="#Prerequsites" class="anchor-icon" translate="no">
+    </button></h1><p>Milvus Standalone is a single-machine server deployment. All components of Milvus Standalone are packed into a single <a href="/docs/pt/v2.6.x/install_standalone-docker.md">Docker image</a>, making deployment convenient. This topic describes how to scale a Milvus instance running in this mode.</p>
+<h2 id="Prerequsites" class="common-anchor-header">Prerequsites<button data-href="#Prerequsites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -38,14 +38,14 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Ao implementar o Milvus Standalone com o <a href="/docs/pt/install_standalone-docker.md">Docker</a> ou o <a href="/docs/pt/install_standalone-docker-compose.md">Docker Compose</a>, o script de implementação (<code translate="no">standalone_embed.sh</code>) ou o ficheiro de configuração (<code translate="no">docker-compose.yml</code>) cria vários volumes e mapeia-os para diretórios do anfitrião para garantir a persistência dos dados.</p>
-<p>Para escalar uma instância do Milvus implantada dessa maneira, é necessário parar e remover o contêiner ou a pilha de contêineres existente, reimplantar o Milvus Standalone com definições de configuração atualizadas e reutilizar os dados persistentes no seu host para iniciar uma nova instância.</p>
-<p>A tabela a seguir lista o mapeamento de volumes entre o host e os contêineres.</p>
+    </button></h2><p>When deploying Milvus Standalone with <a href="/docs/pt/v2.6.x/install_standalone-docker.md">Docker</a> or <a href="/docs/pt/v2.6.x/install_standalone-docker-compose.md">Docker Compose</a>, the deployment script (<code translate="no">standalone_embed.sh</code>) or configuration file (<code translate="no">docker-compose.yml</code>) creates several volumes and maps them to host directories to ensure data persistence.</p>
+<p>To scale a Milvus instance deployed in this manner, you must stop and remove the existing container or container stack, redeploy Milvus Standalone with updated configuration settings, and reuse the persisted data on your host to launch a new instance.</p>
+<p>The following table lists the volume mapping between the host and containers.</p>
 <table>
    <tr>
-     <th><p>Opção de implantação</p></th>
-     <th><p>Caminho do host</p></th>
-     <th><p>Caminho do contentor</p></th>
+     <th><p>Deployment option</p></th>
+     <th><p>Host path</p></th>
+     <th><p>Container path</p></th>
    </tr>
    <tr>
      <td rowspan="3"><p>Docker</p></td>
@@ -74,8 +74,8 @@ summary: >-
      <td><p><code translate="no">/var/lib/milvus</code></p></td>
    </tr>
 </table>
-<p>Antes de executar os procedimentos neste guia, certifique-se de que seus dados persistem nos caminhos de host acima.</p>
-<h2 id="Scale-instances-deployed-using-Docker" class="common-anchor-header">Escalar instâncias implantadas usando o Docker<button data-href="#Scale-instances-deployed-using-Docker" class="anchor-icon" translate="no">
+<p>Before running the procedures in this guide, ensure your data persists in the above host paths.</p>
+<h2 id="Scale-instances-deployed-using-Docker" class="common-anchor-header">Scale instances deployed using Docker<button data-href="#Scale-instances-deployed-using-Docker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -90,19 +90,19 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Para escalar uma instância do Milvus em execução, é necessário parar a instância, remover o contentor e reimplementar a instância com novas definições e dados persistentes.</p>
-<p>O procedimento específico é o seguinte:</p>
+    </button></h2><p>To scale a currently running Milvus instance, you must stop the instance, remove the container, and redeploy the instance with new settings and persisted data.</p>
+<p>The specific procedure is as follows:</p>
 <ol>
-<li><p>Execute <code translate="no">docker stats milvus-standalone</code> para visualizar a CPU e a memória alocadas para a instância do Milvus. A saída deve ser semelhante à seguinte:</p>
+<li><p>Run <code translate="no">docker stats milvus-standalone</code> to view the CPU and memory allocated to the Milvus instance. The output should be similar to the following:</p>
 <pre><code translate="no" class="language-bash">CONTAINER ID   NAME                CPU %     MEM USAGE / LIMIT     MEM %     NET I/O       BLOCK I/O         PIDS
 917da667f2ff   milvus-standalone   6.10%     171.8MiB / 3.886GiB   4.32%     1.57kB / 0B   1.01GB / 1.79MB   31
 <button class="copy-code-btn"></button></code></pre>
-<p>Na saída do comando, pode encontrar a utilização atual dos recursos da sua instância Milvus.</p></li>
-<li><p>Pare e remova o contêiner.</p>
+<p>In the command output, you can find the current resource usage of your Milvus instance.</p></li>
+<li><p>Stop and remove the container.</p>
 <pre><code translate="no" class="language-bash">$ docker stop milvus-standalone
 $ docker <span class="hljs-built_in">rm</span> milvus-standalone
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>Localize o ficheiro de script <code translate="no">standalone_embed.sh</code>, encontre o comando <code translate="no">docker run</code> e adicione os limites de recursos.</p>
+<li><p>Locate the <code translate="no">standalone_embed.sh</code> script file, find the <code translate="no">docker run</code> command, and add the resource limits.</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-string">...</span>
     <span class="hljs-string">sudo</span> <span class="hljs-string">docker</span> <span class="hljs-string">run</span> <span class="hljs-string">-d</span> <span class="hljs-string">\</span>
         <span class="hljs-string">--name</span> <span class="hljs-string">milvus-standalone</span> <span class="hljs-string">\</span>
@@ -127,15 +127,15 @@ $ docker <span class="hljs-built_in">rm</span> milvus-standalone
         <span class="hljs-string">milvusdb/milvus:v2.5.11</span> <span class="hljs-string">\</span>
         <span class="hljs-string">milvus</span> <span class="hljs-string">run</span> <span class="hljs-string">standalone</span>  <span class="hljs-number">1</span><span class="hljs-string">&gt;</span> <span class="hljs-string">/dev/null</span>
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>Certifique-se de que os dados persistentes estão na mesma pasta que o script <code translate="no">standalone_embed.sh</code> e execute o script da seguinte forma:</p>
+<li><p>Ensure the persisted data is in the same folder as the <code translate="no">standalone_embed.sh</code> script, and run the script as follows:</p>
 <pre><code translate="no" class="language-bash"><span class="hljs-built_in">sudo</span>  bash standalone_embed.sh start
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>Execute <code translate="no">docker stats milvus-standalone</code> para ver a CPU e a memória alocadas para a instância do Milvus após o dimensionamento. A saída deve ser semelhante à seguinte:</p>
+<li><p>Run <code translate="no">docker stats milvus-standalone</code> to view the CPU and memory allocated to the Milvus instance after scaling. The output should be similar to the following:</p>
 <pre><code translate="no" class="language-bash">CONTAINER ID   NAME                CPU %     MEM USAGE / LIMIT   MEM %     NET I/O       BLOCK I/O        PIDS
 7aea450f87ce   milvus-standalone   7.52%     210.9MiB / 4GiB     5.15%     1.05kB / 0B   610kB / 8.19kB   29
 <button class="copy-code-btn"></button></code></pre></li>
 </ol>
-<h2 id="Scale-instances-deployed-using-Docker-Compose" class="common-anchor-header">Escalar instâncias implantadas usando o Docker Compose<button data-href="#Scale-instances-deployed-using-Docker-Compose" class="anchor-icon" translate="no">
+<h2 id="Scale-instances-deployed-using-Docker-Compose" class="common-anchor-header">Scale instances deployed using Docker Compose<button data-href="#Scale-instances-deployed-using-Docker-Compose" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -150,18 +150,18 @@ $ docker <span class="hljs-built_in">rm</span> milvus-standalone
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Para dimensionar uma instância do Milvus em execução no momento, é necessário parar a instância, remover a pilha de contêineres e reimplantar a instância com novas configurações e dados persistentes.</p>
-<p>O procedimento específico é o seguinte:</p>
+    </button></h2><p>To scale a currently running Milvus instance, you must stop the instance, remove the container stack, and redeploy the instance with new settings and persisted data.</p>
+<p>The specific procedure is as follows:</p>
 <ol>
-<li><p>Execute <code translate="no">docker stats milvus-standalone</code> para visualizar a CPU e a memória alocadas para a instância do Milvus. A saída deve ser semelhante à seguinte:</p>
+<li><p>Run <code translate="no">docker stats milvus-standalone</code> to view the CPU and memory allocated to the Milvus instance. The output should be similar to the following:</p>
 <pre><code translate="no" class="language-bash">CONTAINER ID   NAME                CPU %     MEM USAGE / LIMIT     MEM %     NET I/O       BLOCK I/O         PIDS
 917da667f2ff   milvus-standalone   6.10%     171.8MiB / 3.886GiB   4.32%     1.57kB / 0B   1.01GB / 1.79MB   31
 <button class="copy-code-btn"></button></code></pre>
-<p>Na saída do comando, pode encontrar a utilização atual dos recursos da sua instância Milvus.</p></li>
-<li><p>Pare e remova a pilha de contêineres.</p>
+<p>In the command output, you can find the current resource usage of your Milvus instance.</p></li>
+<li><p>Stop and remove the container stack.</p>
 <pre><code translate="no" class="language-bash">$ docker compose down
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>Localize o ficheiro de configuração <code translate="no">docker-compose.yml</code>, encontre a secção autónoma e adicione os limites de recursos.</p>
+<li><p>Locate the <code translate="no">docker-compose.yml</code> configuration file, find the standalone section, and add the resource limits.</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-string">...</span>
   <span class="hljs-attr">standalone:</span>
     <span class="hljs-attr">container_name:</span> <span class="hljs-string">milvus-standalone</span>
@@ -192,10 +192,10 @@ $ docker <span class="hljs-built_in">rm</span> milvus-standalone
       <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;etcd&quot;</span>
       <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;minio&quot;</span>
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>Certifique-se de que os dados persistentes estejam disponíveis e execute <code translate="no">docker compose</code> da seguinte forma:</p>
+<li><p>Ensure the persisted data is available, and run <code translate="no">docker compose</code> as follows:</p>
 <pre><code translate="no" class="language-bash">docker compose up -d
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>Execute <code translate="no">docker stats milvus-standalone</code> para ver a CPU e a memória alocadas à instância do Milvus após o dimensionamento. A saída deve ser semelhante à seguinte:</p>
+<li><p>Run <code translate="no">docker stats milvus-standalone</code> to view the CPU and memory allocated to the Milvus instance after scaling. The output should be similar to the following:</p>
 <pre><code translate="no" class="language-bash">CONTAINER ID   NAME                CPU %     MEM USAGE / LIMIT   MEM %     NET I/O       BLOCK I/O        PIDS
 7aea450f87ce   milvus-standalone   7.52%     210.9MiB / 4GiB     5.15%     1.05kB / 0B   610kB / 8.19kB   29
 <button class="copy-code-btn"></button></code></pre></li>

@@ -1,9 +1,11 @@
 ---
 id: manage-aliases.md
-title: 管理別名
-summary: Milvus 提供別名管理功能。本頁說明建立、列出、變更及刪除別名的操作步驟。
+title: Manage Aliases
+summary: >-
+  Milvus provides alias management capabilities. This page demonstrates the
+  procedures to create, list, alter, and drop aliases.
 ---
-<h1 id="Manage-Aliases" class="common-anchor-header">管理別名<button data-href="#Manage-Aliases" class="anchor-icon" translate="no">
+<h1 id="Manage-Aliases" class="common-anchor-header">Manage Aliases<button data-href="#Manage-Aliases" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,9 +20,9 @@ summary: Milvus 提供別名管理功能。本頁說明建立、列出、變更�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>在 Milvus 中，別名是集合的次要且可變更的名稱。使用別名可提供一層抽象化，讓您無需修改應用程式程式碼，即可在集合之間動態切換。這在生產環境中特別有用，可實現無縫的資料更新、A/B 測試及其他運維任務。</p>
-<p>本頁面將示範如何建立、列出、重新指派及刪除集合別名。</p>
-<h2 id="Why-Use-an-Alias" class="common-anchor-header">為何要使用別名？<button data-href="#Why-Use-an-Alias" class="anchor-icon" translate="no">
+    </button></h1><p>In Milvus, an alias is a secondary, mutable name for a collection. Using aliases provides a layer of abstraction that allows you to dynamically switch between collections without modifying your application code. This is particularly useful in production environments for seamless data updates, A/B testing, and other operational tasks.</p>
+<p>This page demonstrates how to create, list, reassign, and drop collection aliases.</p>
+<h2 id="Why-Use-an-Alias" class="common-anchor-header">Why Use an Alias?<button data-href="#Why-Use-an-Alias" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -35,21 +37,21 @@ summary: Milvus 提供別名管理功能。本頁說明建立、列出、變更�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>使用別名的主要好處在於，能將您的客戶端應用程式與特定的實體集合名稱解耦。</p>
-<p>假設您有一個正在運行的應用程式，該應用程式透過名為<code translate="no">prod_data</code> 的別名查詢集合。當您需要更新底層資料時，可以在不中斷服務的情況下執行更新。工作流程如下：</p>
+    </button></h2><p>The primary benefit of using an alias is to decouple your client application from a specific, physical collection name.</p>
+<p>Imagine you have a live application that queries a collection through an alias named <code translate="no">prod_data</code>. When you need to update the underlying data, you can perform the update without any service interruption. The workflow would be:</p>
 <ol>
-<li><strong>建立新集合</strong>：建立一個新集合，例如<code translate="no">prod_data_v2</code> 。</li>
-<li><strong>準備資料</strong>：為<code translate="no">prod_data_v2</code> 建立索引並載入新資料。</li>
-<li><strong>切換別名</strong>：當新集合已準備就緒可提供服務時，將別名<code translate="no">prod_data</code> 從舊集合原子性地重新指派至<code translate="no">prod_data_v2</code> 。</li>
+<li><strong>Create a New Collection</strong>: Create a new collection, for instance, <code translate="no">prod_data_v2</code>.</li>
+<li><strong>Prepare Data</strong>: Index and load the new data in <code translate="no">prod_data_v2</code>.</li>
+<li><strong>Switch the Alias</strong>: Once the new collection is ready for service, atomically reassign the alias <code translate="no">prod_data</code> from the old collection to <code translate="no">prod_data_v2</code>.</li>
 </ol>
-<p>您的應用程式將持續向別名<code translate="no">prod_data</code> 發送請求，且完全不會造成服務中斷。此機制可實現無縫更新，並簡化向量搜尋服務的藍綠部署等操作。</p>
-<p><strong>別名的關鍵屬性：</strong></p>
+<p>Your application continues to send requests to the alias <code translate="no">prod_data</code>, experiencing zero downtime. This mechanism enables seamless updates and simplifies operations like blue-green deployments for your vector search service.</p>
+<p><strong>Key Properties of Aliases:</strong></p>
 <ul>
-<li>一個集合可以擁有多個別名。</li>
-<li>一個別名一次只能指向一個集合。</li>
-<li>在處理請求時，Milvus 會先檢查是否存在名稱與請求相符的集合。若不存在，則會進一步檢查該名稱是否為某個集合的別名。</li>
+<li>A collection can have multiple aliases.</li>
+<li>An alias can only point to one collection at a time.</li>
+<li>When processing a request, Milvus first checks if a collection with the provided name exists. If not, it then checks if the name is an alias for a collection.</li>
 </ul>
-<h2 id="Create-Alias" class="common-anchor-header">建立別名<button data-href="#Create-Alias" class="anchor-icon" translate="no">
+<h2 id="Create-Alias" class="common-anchor-header">Create Alias<button data-href="#Create-Alias" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -64,16 +66,16 @@ summary: Milvus 提供別名管理功能。本頁說明建立、列出、變更�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>以下程式碼片段示範如何為集合建立別名。</p>
+    </button></h2><p>The following code snippet demonstrates how to create an alias for a collection.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -305,7 +307,7 @@ curl --request POST \
 <span class="hljs-comment">#     &quot;data&quot;: {}</span>
 <span class="hljs-comment"># }</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="List-Aliases" class="common-anchor-header">列出別名<button data-href="#List-Aliases" class="anchor-icon" translate="no">
+<h2 id="List-Aliases" class="common-anchor-header">List Aliases<button data-href="#List-Aliases" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -320,16 +322,16 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>以下程式碼片段示範如何列出分配給特定集合的別名。</p>
+    </button></h2><p>The following code snippet demonstrates the procedure to list the aliases allocated to a specific collection.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># 9.2. List aliases</span>
 res = client.list_aliases(
@@ -437,7 +439,7 @@ curl --request POST \
 <span class="hljs-comment">#     ]</span>
 <span class="hljs-comment"># }</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Describe-Alias" class="common-anchor-header">描述別名<button data-href="#Describe-Alias" class="anchor-icon" translate="no">
+<h2 id="Describe-Alias" class="common-anchor-header">Describe Alias<button data-href="#Describe-Alias" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -452,16 +454,16 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>以下程式碼片段詳細描述了特定別名，包括其所分配的集合名稱。</p>
+    </button></h2><p>The following code snippet describes a specific alias in detail, including the name of the collection to which it has been allocated.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># 9.3. Describe aliases</span>
 res = client.describe_alias(
@@ -576,7 +578,7 @@ curl --request POST \
 <span class="hljs-comment">#     }</span>
 <span class="hljs-comment"># }</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Alter-Alias" class="common-anchor-header">變更別名<button data-href="#Alter-Alias" class="anchor-icon" translate="no">
+<h2 id="Alter-Alias" class="common-anchor-header">Alter Alias<button data-href="#Alter-Alias" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -591,16 +593,16 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>您可以將已分配給特定集合的別名重新分配至另一個集合。</p>
+    </button></h2><p>You can reallocate the alias already allocated to a specific collection to another.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># 9.4 Reassign aliases to other collections</span>
 client.alter_alias(
@@ -836,7 +838,7 @@ curl --request POST \
 <span class="hljs-comment">#     }</span>
 <span class="hljs-comment"># }</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Drop-Alias" class="common-anchor-header">刪除別名<button data-href="#Drop-Alias" class="anchor-icon" translate="no">
+<h2 id="Drop-Alias" class="common-anchor-header">Drop Alias<button data-href="#Drop-Alias" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -851,16 +853,16 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>以下程式碼片段示範了刪除別名的步驟。</p>
+    </button></h2><p>The following code snippet demonstrates the procedure to drop an alias.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># 9.5 Drop aliases</span>
 client.drop_alias(

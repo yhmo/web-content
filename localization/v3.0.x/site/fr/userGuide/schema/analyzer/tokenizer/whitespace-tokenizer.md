@@ -1,12 +1,11 @@
 ---
 id: whitespace-tokenizer.md
-title: Espaces
+title: Whitespace
 summary: >-
-  Le tokeniseur basé sur les espaces sépare le texte à l'aide de cinq caractères
-  ASCII représentant des espaces : tabulation, saut de ligne, saut de page,
-  retour chariot et espace.
+  The whitespace tokenizer splits text at five ASCII whitespace characters: tab,
+  line feed, form feed, carriage return, and space.
 ---
-<h1 id="Whitespace" class="common-anchor-header">Espaces<button data-href="#Whitespace" class="anchor-icon" translate="no">
+<h1 id="Whitespace" class="common-anchor-header">Whitespace<button data-href="#Whitespace" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -21,8 +20,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Le tokeniseur <code translate="no">whitespace</code> divise le texte en fonction de cinq caractères d'espacement ASCII : tabulation, saut de ligne, saut de page, retour chariot et espace.</p>
-<h2 id="Tokenization-rules" class="common-anchor-header">Règles de segmentation<button data-href="#Tokenization-rules" class="anchor-icon" translate="no">
+    </button></h1><p>The <code translate="no">whitespace</code> tokenizer splits text at five ASCII whitespace characters: tab, line feed, form feed, carriage return, and space.</p>
+<h2 id="Tokenization-rules" class="common-anchor-header">Tokenization rules<button data-href="#Tokenization-rules" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,25 +36,25 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Le tokeniseur d'<code translate="no">whitespace</code> s segmente le texte uniquement au niveau des cinq caractères d'espacement ASCII suivants :</p>
+    </button></h2><p>The <code translate="no">whitespace</code> tokenizer splits text only at the following five ASCII whitespace characters:</p>
 <table>
 <thead>
-<tr><th>Caractère</th><th>Nom</th><th>Point de code Unicode</th></tr>
+<tr><th>Character</th><th>Name</th><th>Unicode code point</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">\t</code></td><td>Tabulation horizontale</td><td>U+0009</td></tr>
-<tr><td><code translate="no">\n</code></td><td>Saut de ligne</td><td>U+000A</td></tr>
-<tr><td><code translate="no">\x0C</code> ou <code translate="no">\f</code></td><td>Saut de page</td><td>U+000C</td></tr>
-<tr><td><code translate="no">\r</code></td><td>Retour chariot</td><td>U+000D</td></tr>
-<tr><td><code translate="no">' '</code></td><td>Espace</td><td>U+0020</td></tr>
+<tr><td><code translate="no">\t</code></td><td>Horizontal tab</td><td>U+0009</td></tr>
+<tr><td><code translate="no">\n</code></td><td>Line feed</td><td>U+000A</td></tr>
+<tr><td><code translate="no">\x0C</code> or <code translate="no">\f</code></td><td>Form feed</td><td>U+000C</td></tr>
+<tr><td><code translate="no">\r</code></td><td>Carriage return</td><td>U+000D</td></tr>
+<tr><td><code translate="no">' '</code></td><td>Space</td><td>U+0020</td></tr>
 </tbody>
 </table>
-<p>Ces séparateurs sont ignorés, et des séparateurs consécutifs ne produisent pas de tokens vides. La ponctuation et les autres caractères restent dans les tokens. En particulier, la tabulation verticale (<code translate="no">\x0B</code>, U+000B), l'espace insécable (<code translate="no">\u00A0</code>) et l'espace idéographique (<code translate="no">\u3000</code>) ne déclenchent pas de fractionnement.</p>
-<p>Cet ensemble suit celui de Rust <a href="https://doc.rust-lang.org/std/primitive.char.html#method.is_ascii_whitespace"><code translate="no">char::is_ascii_whitespace()</code></a>, qui exclut les autres caractères d’espacement Unicode.</p>
-<p>Les exemples suivants utilisent <code translate="no">{&quot;tokenizer&quot;: &quot;whitespace&quot;}</code> sans aucun filtre. Les entrées et les sorties utilisent la notation de chaîne Python : les séquences d'échappement telles que <code translate="no">\t</code> et <code translate="no">\u00A0</code> représentent les caractères réels.</p>
+<p>These separators are discarded, and consecutive separators do not produce empty tokens. Punctuation and other characters remain in the tokens. In particular, vertical tab (<code translate="no">\x0B</code>, U+000B), no-break space (<code translate="no">\u00A0</code>), and ideographic space (<code translate="no">\u3000</code>) do not trigger splitting.</p>
+<p>This set follows Rust’s <a href="https://doc.rust-lang.org/std/primitive.char.html#method.is_ascii_whitespace"><code translate="no">char::is_ascii_whitespace()</code></a>, which excludes other Unicode whitespace characters.</p>
+<p>The following examples use <code translate="no">{&quot;tokenizer&quot;: &quot;whitespace&quot;}</code> with no filters. Inputs and outputs use Python string notation: escape sequences such as <code translate="no">\t</code> and <code translate="no">\u00A0</code> represent the actual characters.</p>
 <table>
 <thead>
-<tr><th>Entrée</th><th>Tokens de sortie</th></tr>
+<tr><th>Input</th><th>Output tokens</th></tr>
 </thead>
 <tbody>
 <tr><td><code translate="no">&quot;a\tb\nc\x0Cd\re f&quot;</code></td><td><code translate="no">[&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;, &quot;e&quot;, &quot;f&quot;]</code></td></tr>
@@ -81,16 +80,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Pour configurer un analyseur à l’aide du tokenizer « <code translate="no">whitespace</code> », définissez « <code translate="no">tokenizer</code> » sur « <code translate="no">whitespace</code> » dans <code translate="no">analyzer_params</code>.</p>
+    </button></h2><p>To configure an analyzer using the <code translate="no">whitespace</code> tokenizer, set <code translate="no">tokenizer</code> to <code translate="no">whitespace</code> in <code translate="no">analyzer_params</code>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;whitespace&quot;</span>,
@@ -124,16 +123,16 @@ Dictionary&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">analyzerParams=<span class="hljs-string">&#x27;{&quot;tokenizer&quot;: &quot;whitespace&quot;}&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Le tokenizer « whitespace » peut fonctionner en association avec un ou plusieurs filtres. Par exemple, le code suivant définit un analyseur qui utilise le tokenizer « <code translate="no">whitespace</code> » et le <a href="/docs/fr/lowercase-filter.md">filtre « lowercase »</a>:</p>
+<p>The whitespace tokenizer can work in conjunction with one or more filters. For example, the following code defines an analyzer that uses the <code translate="no">whitespace</code> tokenizer and the <a href="/docs/fr/lowercase-filter.md">lowercase filter</a>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;whitespace&quot;</span>,
@@ -181,8 +180,8 @@ analyzerParams=<span class="hljs-string">&#x27;{
   ]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Une fois les <code translate="no">analyzer_params</code> définis, vous pouvez les appliquer à un champ « <code translate="no">VARCHAR</code> » lors de la définition d’un schéma de collection. Cela permet à Milvus de traiter le texte de ce champ à l’aide de l’analyseur spécifié, pour une tokenisation et un filtrage efficaces. Pour plus de détails, consultez la section « <a href="/docs/fr/analyzer-overview.md#Example-use">Exemple d’utilisation</a> ».</p>
-<h2 id="Examples" class="common-anchor-header">Exemples<button data-href="#Examples" class="anchor-icon" translate="no">
+<p>After defining <code translate="no">analyzer_params</code>, you can apply them to a <code translate="no">VARCHAR</code> field when defining a collection schema. This allows Milvus to process the text in that field using the specified analyzer for efficient tokenization and filtering. For details, refer to <a href="/docs/fr/analyzer-overview.md#Example-use">Example use</a>.</p>
+<h2 id="Examples" class="common-anchor-header">Examples<button data-href="#Examples" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -197,8 +196,8 @@ analyzerParams=<span class="hljs-string">&#x27;{
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Avant d’appliquer la configuration de l’analyseur à votre schéma de collection, vérifiez son comportement à l’aide de la méthode ` <code translate="no">run_analyzer</code> `. Utilisez la configuration ci-dessous avec l’exemple de vérification correspondant au langage que vous avez sélectionné.</p>
-<h3 id="Analyzer-configuration" class="common-anchor-header">Configuration de l’analyseur<button data-href="#Analyzer-configuration" class="anchor-icon" translate="no">
+    </button></h2><p>Before applying the analyzer configuration to your collection schema, verify its behavior using the <code translate="no">run_analyzer</code> method. Use the configuration below with the verification example for your selected language.</p>
+<h3 id="Analyzer-configuration" class="common-anchor-header">Analyzer configuration<button data-href="#Analyzer-configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -214,14 +213,14 @@ analyzerParams=<span class="hljs-string">&#x27;{
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;whitespace&quot;</span>,
@@ -269,7 +268,7 @@ analyzerParams=<span class="hljs-string">&#x27;{
   ]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Verification-using-runanalyzer" class="common-anchor-header">Vérification à l’aide de <code translate="no">run_analyzer</code><span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.5.11+</span><button data-href="#Verification-using-runanalyzer" class="anchor-icon" translate="no">
+<h3 id="Verification-using-runanalyzer" class="common-anchor-header">Verification using <code translate="no">run_analyzer</code><span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.5.11+</span><button data-href="#Verification-using-runanalyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -285,14 +284,14 @@ analyzerParams=<span class="hljs-string">&#x27;{
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> (
     MilvusClient,
@@ -475,7 +474,7 @@ RunAnalyzerResp result = <span class="hljs-keyword">await</span> client.RunAnaly
     &quot;text&quot;: [&quot;The Milvus vector database is built for scale!&quot;]
   }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Expected-output" class="common-anchor-header">Résultat attendu<button data-href="#Expected-output" class="anchor-icon" translate="no">
+<h3 id="Expected-output" class="common-anchor-header">Expected output<button data-href="#Expected-output" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -490,6 +489,6 @@ RunAnalyzerResp result = <span class="hljs-keyword">await</span> client.RunAnaly
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Pour le texte d'exemple, l'analyseur génère les tokens suivants dans l'ordre. Les objets de réponse du SDK et le format d'affichage varient selon le langage ; la réponse REST contient ces tokens à l'adresse <code translate="no">data.results[].tokens[].token</code>.</p>
+    </button></h3><p>For the sample text, the analyzer produces the following tokens in order. SDK response objects and printed formatting vary by language; the REST response contains these tokens at <code translate="no">data.results[].tokens[].token</code>.</p>
 <pre><code translate="no" class="language-plaintext">[&#x27;the&#x27;, &#x27;milvus&#x27;, &#x27;vector&#x27;, &#x27;database&#x27;, &#x27;is&#x27;, &#x27;built&#x27;, &#x27;for&#x27;, &#x27;scale!&#x27;]
 <button class="copy-code-btn"></button></code></pre>

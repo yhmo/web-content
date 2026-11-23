@@ -1,17 +1,16 @@
 ---
 id: binary-vector.md
-title: Двоичный вектор
+title: Binary Vector
 summary: >-
-  Двоичные векторы представляют собой особую форму представления данных, при
-  которой традиционные многомерные векторы с плавающей запятой преобразуются в
-  двоичные векторы, содержащие только нули и единицы. Такое преобразование не
-  только уменьшает размер вектора, но и снижает затраты на хранение и
-  вычисления, сохраняя при этом семантическую информацию. Когда точность для
-  некритических признаков не является существенной, бинарные векторы позволяют
-  эффективно сохранить большую часть целостности и полезности исходных векторов
-  с плавающей запятой.
+  Binary vectors are a special form of data representation that convert
+  traditional high-dimensional floating-point vectors into binary vectors
+  containing only 0s and 1s. This transformation not only compresses the size of
+  the vector but also reduces storage and computational costs while retaining
+  semantic information. When precision for non-critical features is not
+  essential, binary vectors can effectively maintain most of the integrity and
+  utility of the original floating-point vectors.
 ---
-<h1 id="Binary-Vector" class="common-anchor-header">Двоичный вектор<button data-href="#Binary-Vector" class="anchor-icon" translate="no">
+<h1 id="Binary-Vector" class="common-anchor-header">Binary Vector<button data-href="#Binary-Vector" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -26,9 +25,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Бинарные векторы представляют собой особую форму представления данных, при которой традиционные высокоразмерные векторы с плавающей запятой преобразуются в бинарные векторы, содержащие только нули и единицы. Такое преобразование не только уменьшает размер вектора, но и снижает затраты на хранение и вычисления, сохраняя при этом семантическую информацию. Когда точность для некритичных характеристик не является существенной, бинарные векторы позволяют эффективно сохранить большую часть целостности и полезности исходных векторов с плавающей запятой.</p>
-<p>Бинарные векторы имеют широкий спектр применений, особенно в ситуациях, когда решающее значение имеют вычислительная эффективность и оптимизация хранения. В крупномасштабных системах искусственного интеллекта, таких как поисковые системы или системы рекомендаций, ключевую роль играет обработка огромных объемов данных в режиме реального времени. За счет уменьшения размера векторов бинарные векторы помогают снизить задержку и вычислительные затраты без существенной потери точности. Кроме того, бинарные векторы полезны в средах с ограниченными ресурсами, таких как мобильные устройства и встроенные системы, где объем памяти и вычислительная мощность ограничены. Благодаря использованию бинарных векторов сложные функции искусственного интеллекта могут быть реализованы в этих ограниченных условиях с сохранением высокой производительности.</p>
-<h2 id="Overview" class="common-anchor-header">Обзор<button data-href="#Overview" class="anchor-icon" translate="no">
+    </button></h1><p>Binary vectors are a special form of data representation that convert traditional high-dimensional floating-point vectors into binary vectors containing only 0s and 1s. This transformation not only compresses the size of the vector but also reduces storage and computational costs while retaining semantic information. When precision for non-critical features is not essential, binary vectors can effectively maintain most of the integrity and utility of the original floating-point vectors.</p>
+<p>Binary vectors have a wide range of applications, particularly in situations where computational efficiency and storage optimization are crucial. In large-scale AI systems, such as search engines or recommendation systems, real-time processing of massive amounts of data is key. By reducing the size of the vectors, binary vectors help lower latency and computational costs without significantly sacrificing accuracy. Additionally, binary vectors are useful in resource-constrained environments, such as mobile devices and embedded systems, where memory and processing power are limited. Through the use of binary vectors, complex AI functions can be implemented in these restricted settings while maintaining high performance.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -43,33 +42,33 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Бинарные векторы — это метод кодирования сложных объектов (таких как изображения, текст или аудио) в виде двоичных значений фиксированной длины. В Milvus бинарные векторы обычно представляются в виде битовых или байтовых массивов. Например, 8-мерный бинарный вектор можно представить в виде <code translate="no">[1, 0, 1, 1, 0, 0, 1, 0]</code>.</p>
-<p>На приведенной ниже схеме показано, как бинарные векторы отображают наличие ключевых слов в текстовом контенте. В этом примере 10-мерный бинарный вектор используется для представления двух разных текстов (<strong>Текст 1</strong> и <strong>Текст 2</strong>), где каждое измерение соответствует слову в словаре: 1 указывает на наличие слова в тексте, а 0 — на его отсутствие.</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/binary-vector.png" alt="Binary Vector" class="doc-image" id="binary-vector" /> 
-   <span>Двоичный вектор</span>
-  
- </span></p>
-<p>Двоичные векторы обладают следующими характеристиками:</p>
+    </button></h2><p>Binary vectors are a method of encoding complex objects (like images, text, or audio) into fixed-length binary values. In Milvus, binary vectors are typically represented as bit arrays or byte arrays. For example, an 8-dimensional binary vector can be represented as <code translate="no">[1, 0, 1, 1, 0, 0, 1, 0]</code>.</p>
+<p>The diagram below shows how binary vectors represent the presence of keywords in text content. In this example, a 10-dimensional binary vector is used to represent two different texts (<strong>Text 1</strong> and <strong>Text 2</strong>), where each dimension corresponds to a word in the vocabulary: 1 indicates the presence of the word in the text, while 0 indicates its absence.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/binary-vector.png" alt="Binary Vector" class="doc-image" id="binary-vector" />
+    <span>Binary Vector</span>
+  </span>
+</p>
+<p>Binary vectors have the following characteristics:</p>
 <ul>
-<li><p><strong>Эффективное хранение:</strong> каждое измерение требует всего 1 бита памяти, что значительно сокращает объем занимаемого пространства.</p></li>
-<li><p><strong>Быстрые вычисления:</strong> степень сходства между векторами можно быстро вычислить с помощью побитовых операций, таких как XOR.</p></li>
-<li><p><strong>Фиксированная длина:</strong> длина вектора остается постоянной независимо от длины исходного текста, что упрощает индексирование и поиск.</p></li>
-<li><p><strong>Простота и интуитивность:</strong> непосредственно отражает наличие ключевых слов, что делает их подходящими для определённых специализированных задач поиска.</p></li>
+<li><p><strong>Efficient Storage:</strong> Each dimension requires only 1 bit of storage, significantly reducing storage space.</p></li>
+<li><p><strong>Fast Computation:</strong> Similarity between vectors can be quickly calculated using bitwise operations like XOR.</p></li>
+<li><p><strong>Fixed Length:</strong> The length of the vector remains constant regardless of the original text length, making indexing and retrieval easier.</p></li>
+<li><p><strong>Simple and Intuitive:</strong> Directly reflects the presence of keywords, making it suitable for certain specialized retrieval tasks.</p></li>
 </ul>
-<p>Бинарные векторы можно генерировать различными способами. При обработке текста можно использовать заранее определенные словари для установки соответствующих битов в зависимости от наличия слов. При обработке изображений алгоритмы перцепционного хеширования (такие как <a href="https://en.wikipedia.org/wiki/Perceptual_hashing">pHash</a>) могут генерировать бинарные признаки изображений. В приложениях машинного обучения выходы моделей можно бинаризировать для получения бинарных векторных представлений.</p>
-<p>После бинарной векторизации данные можно сохранить в Milvus для управления и векторного поиска. На приведенной ниже схеме показан основной процесс.</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/use-binary-vector.png" alt="Use Binary Vector" class="doc-image" id="use-binary-vector" /> 
-   <span>Использование бинарных векторов</span>
-  
- </span></p>
+<p>Binary vectors can be generated through various methods. In text processing, predefined vocabularies can be used to set corresponding bits based on word presence. For image processing, perceptual hashing algorithms (like <a href="https://en.wikipedia.org/wiki/Perceptual_hashing">pHash</a>) can generate binary features of images. In machine learning applications, model outputs can be binarized to obtain binary vector representations.</p>
+<p>After binary vectorization, the data can be stored in Milvus for management and vector retrieval. The diagram below shows the basic process.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/use-binary-vector.png" alt="Use Binary Vector" class="doc-image" id="use-binary-vector" />
+    <span>Use Binary Vector</span>
+  </span>
+</p>
 <div class="alert note">
-<p>Хотя бинарные векторы отлично подходят для определённых сценариев, они имеют ограничения в выразительной способности, что затрудняет отражение сложных семантических отношений. Поэтому в реальных сценариях бинарные векторы часто используются наряду с другими типами векторов для обеспечения баланса между эффективностью и выразительностью. Дополнительную информацию см. в разделах <a href="/docs/ru/dense-vector.md">«Плотный вектор</a> » и <a href="/docs/ru/sparse_vector.md">«Редкий вектор</a>».</p>
+<p>Although binary vectors excel in specific scenarios, they have limitations in their expressive capability, making it difficult to capture complex semantic relationships. Therefore, in real-world scenarios, binary vectors are often used alongside other vector types to balance efficiency and expressiveness. For more information, refer to <a href="/docs/ru/dense-vector.md">Dense Vector</a> and <a href="/docs/ru/sparse_vector.md">Sparse Vector</a>.</p>
 </div>
-<h2 id="Use-binary-vectors" class="common-anchor-header">Использование бинарных векторов<button data-href="#Use-binary-vectors" class="anchor-icon" translate="no">
+<h2 id="Use-binary-vectors" class="common-anchor-header">Use binary vectors<button data-href="#Use-binary-vectors" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -84,7 +83,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Add-vector-field" class="common-anchor-header">Добавление векторного поля<button data-href="#Add-vector-field" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Add-vector-field" class="common-anchor-header">Add vector field<button data-href="#Add-vector-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -99,20 +98,20 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Чтобы использовать бинарные векторы в Milvus, сначала при создании коллекции необходимо определить векторное поле для хранения бинарных векторов. Этот процесс включает:</p>
+    </button></h3><p>To use binary vectors in Milvus, first define a vector field for storing binary vectors when creating a collection. This process includes:</p>
 <ol>
-<li><p>Установку параметра ` <code translate="no">datatype</code> ` в значение поддерживаемого типа данных бинарного вектора, т. е. ` <code translate="no">BINARY_VECTOR</code>`.</p></li>
-<li><p>Указание размеров вектора с помощью параметра ` <code translate="no">dim</code> `. Обратите внимание, что значение ` <code translate="no">dim</code> ` должно быть кратно 8, так как при вставке бинарные векторы должны преобразовываться в массив байтов. Каждые 8 булевых значений (0 или 1) будут упакованы в 1 байт. Например, если <code translate="no">dim=128</code>, для вставки потребуется массив размером 16 байт.</p></li>
+<li><p>Setting <code translate="no">datatype</code> to the supported binary vector data type, i.e., <code translate="no">BINARY_VECTOR</code>.</p></li>
+<li><p>Specifying the vector’s dimensions using the <code translate="no">dim</code> parameter. Note that <code translate="no">dim</code> must be a multiple of 8 as binary vectors must be converted into a byte array when inserting. Every 8 boolean values (0 or 1) will be packed into 1 byte. For example, if <code translate="no">dim=128</code>, a 16-byte array is required for insertion.</p></li>
 </ol>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
 
@@ -296,8 +295,8 @@ schema-&gt;<span class="hljs-built_in">AddField</span>(milvus::<span class="hljs
     \&quot;enableDynamicField\&quot;: true
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>В этом примере добавляется векторное поле с именем « <code translate="no">binary_vector</code> » для хранения двоичных векторов. Тип данных этого поля — « <code translate="no">BINARY_VECTOR</code> », размерность — 128.</p>
-<h3 id="Set-index-params-for-vector-field" class="common-anchor-header">Настройка параметров индекса для векторного поля<button data-href="#Set-index-params-for-vector-field" class="anchor-icon" translate="no">
+<p>In this example, a vector field named <code translate="no">binary_vector</code> is added for storing binary vectors. The data type of this field is <code translate="no">BINARY_VECTOR</code>, with a dimension of 128.</p>
+<h3 id="Set-index-params-for-vector-field" class="common-anchor-header">Set index params for vector field<button data-href="#Set-index-params-for-vector-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -312,16 +311,16 @@ schema-&gt;<span class="hljs-built_in">AddField</span>(milvus::<span class="hljs
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Для ускорения поиска необходимо создать индекс для поля бинарных векторов. Индексирование может значительно повысить эффективность поиска в больших массивах векторных данных.</p>
+    </button></h3><p>To speed up searches, an index must be created for the binary vector field. Indexing can significantly enhance the retrieval efficiency of large-scale vector data.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">index_params = client.prepare_index_params()
 
@@ -391,10 +390,10 @@ indexOption := milvusclient.NewCreateIndexOption(<span class="hljs-string">&quot
         }
     ]&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>В приведенном выше примере для поля <code translate="no">binary_vector</code> создается индекс с именем <code translate="no">binary_vector_index</code> с использованием типа индекса <code translate="no">AUTOINDEX</code>. Параметр <code translate="no">metric_type</code> установлен в значение <code translate="no">HAMMING</code>, что указывает на использование расстояния Хэмминга для измерения схожести.</p>
-<p>Milvus предоставляет различные типы индексов для более эффективного векторного поиска. AUTOINDEX — это специальный тип индекса, разработанный для облегчения освоения векторного поиска. Вам доступно множество типов индексов на выбор. Подробности см. в разделе <a href="/docs/ru/index-explained.md">«Объяснение индексов</a>».</p>
-<p>Кроме того, Milvus поддерживает другие метрики сходства для бинарных векторов. Дополнительную информацию см. в разделе <a href="/docs/ru/metric.md">«Типы метрик</a>».</p>
-<h3 id="Create-collection" class="common-anchor-header">Создание коллекции<button data-href="#Create-collection" class="anchor-icon" translate="no">
+<p>In the example above, an index named <code translate="no">binary_vector_index</code> is created for the <code translate="no">binary_vector</code> field, using the <code translate="no">AUTOINDEX</code> index type. The <code translate="no">metric_type</code> is set to <code translate="no">HAMMING</code>, indicating that Hamming distance is used for similarity measurement.</p>
+<p>Milvus provides various index types for a better vector search experience. AUTOINDEX is a special index type designed to smooth the learning curve of vector search. There are a lot of index types available for you to choose from. For details, refer to <a href="/docs/ru/index-explained.md">Index Explained</a>.</p>
+<p>Additionally, Milvus supports other similarity metrics for binary vectors. For more information, refer to <a href="/docs/ru/metric.md">Metric Types</a>.</p>
+<h3 id="Create-collection" class="common-anchor-header">Create collection<button data-href="#Create-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -409,16 +408,16 @@ indexOption := milvusclient.NewCreateIndexOption(<span class="hljs-string">&quot
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>После завершения настройки бинарных векторов и индекса создайте коллекцию, содержащую бинарные векторы. В приведенном ниже примере с помощью метода ` <code translate="no">create_collection</code> ` создается коллекция с именем ` <code translate="no">my_collection</code>`.</p>
+    </button></h3><p>Once the binary vector and index settings are complete, create a collection that contains binary vectors. The example below uses the <code translate="no">create_collection</code> method to create a collection named <code translate="no">my_collection</code>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.create_collection(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,
@@ -507,7 +506,7 @@ client
     \&quot;indexParams\&quot;: <span class="hljs-variable">$indexParams</span>
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Insert-data" class="common-anchor-header">Вставка данных<button data-href="#Insert-data" class="anchor-icon" translate="no">
+<h3 id="Insert-data" class="common-anchor-header">Insert data<button data-href="#Insert-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -522,17 +521,17 @@ client
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>После создания коллекции используйте метод ` <code translate="no">insert</code> ` для добавления данных, содержащих двоичные векторы. Обратите внимание, что двоичные векторы должны предоставляться в виде массива байтов, где каждый байт представляет 8 булевых значений.</p>
-<p>Например, для 128-мерного двоичного вектора требуется массив из 16 байтов (поскольку 128 бит ÷ 8 бит/байт = 16 байтов). Ниже приведён пример кода для вставки данных:</p>
+    </button></h3><p>After creating the collection, use the <code translate="no">insert</code> method to add data containing binary vectors. Note that binary vectors should be provided in the form of a byte array, where each byte represents 8 boolean values.</p>
+<p>For example, for a 128-dimensional binary vector, a 16-byte array is required (since 128 bits ÷ 8 bits/byte = 16 bytes). Below is an example code for inserting data:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">convert_bool_list_to_bytes</span>(<span class="hljs-params">bool_list</span>):
     <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(bool_list) % <span class="hljs-number">8</span> != <span class="hljs-number">0</span>:
@@ -693,7 +692,7 @@ curl --request POST \
     \&quot;collectionName\&quot;: \&quot;my_collection\&quot;
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Perform-similarity-search" class="common-anchor-header">Выполнение поиска по схожести<button data-href="#Perform-similarity-search" class="anchor-icon" translate="no">
+<h3 id="Perform-similarity-search" class="common-anchor-header">Perform similarity search<button data-href="#Perform-similarity-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -708,17 +707,17 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Поиск по схожести — одна из ключевых функций Milvus, позволяющая быстро находить данные, наиболее схожие с вектором запроса, на основе расстояния между векторами. Чтобы выполнить поиск по схожести с использованием бинарных векторов, подготовьте вектор запроса и параметры поиска, а затем вызовите метод ` <code translate="no">search</code> `.</p>
-<p>При выполнении поисковых операций бинарные векторы также должны предоставляться в виде массива байтов. Убедитесь, что размерность вектора запроса соответствует размерности, указанной при определении метода <code translate="no">dim</code>, и что каждые 8 булевых значений преобразуются в 1 байт.</p>
+    </button></h3><p>Similarity search is one of the core features of Milvus, allowing you to quickly find data that is most similar to a query vector based on the distance between vectors. To perform a similarity search using binary vectors, prepare the query vector and search parameters, then call the <code translate="no">search</code> method.</p>
+<p>During search operations, binary vectors must also be provided in the form of a byte array. Ensure that the dimensionality of the query vector matches the dimension specified when defining <code translate="no">dim</code> and that every 8 boolean values are converted into 1 byte.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">search_params = {
     <span class="hljs-string">&quot;params&quot;</span>: {<span class="hljs-string">&quot;nprobe&quot;</span>: <span class="hljs-number">10</span>}
@@ -894,4 +893,4 @@ curl --request POST \
     \&quot;outputFields\&quot;: [\&quot;pk\&quot;]
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Дополнительную информацию о параметрах поиска по сходству см. в разделе <a href="/docs/ru/single-vector-search.md">«Базовый поиск с использованием нейронных сетей</a>».</p>
+<p>For more information on similarity search parameters, refer to <a href="/docs/ru/single-vector-search.md">Basic ANN Search</a>.</p>

@@ -1,16 +1,15 @@
 ---
 id: use-partition-key.md
-title: Utilisation de la clé de partition
+title: Use Partition Key
 summary: >-
-  La « Partition Key » est une solution d'optimisation de la recherche basée sur
-  les partitions. En désignant un champ scalaire spécifique comme « Partition
-  Key » et en définissant des conditions de filtrage basées sur celle-ci lors de
-  la recherche, il est possible de restreindre le champ de recherche à quelques
-  partitions, ce qui améliore l'efficacité de la recherche. Cet article présente
-  l'utilisation de la « Partition Key » ainsi que les points à prendre en
-  compte.
+  The Partition Key is a search optimization solution based on partitions. By
+  designating a specific scalar field as the Partition Key and specifying
+  filtering conditions based on the Partition Key during the search, the search
+  scope can be narrowed down to several partitions, thereby improving search
+  efficiency. This article will introduce how to use the Partition Key and
+  related considerations.
 ---
-<h1 id="Use-Partition-Key" class="common-anchor-header">Utilisation de la clé de partition<button data-href="#Use-Partition-Key" class="anchor-icon" translate="no">
+<h1 id="Use-Partition-Key" class="common-anchor-header">Use Partition Key<button data-href="#Use-Partition-Key" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -25,8 +24,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>La clé de partition est une solution d'optimisation de la recherche basée sur les partitions. En désignant un champ scalaire spécifique comme clé de partition et en spécifiant des conditions de filtrage basées sur cette clé lors de la recherche, il est possible de restreindre le champ de recherche à quelques partitions, améliorant ainsi l'efficacité de la recherche. Cet article présente l'utilisation de la clé de partition et les considérations associées.</p>
-<h2 id="Overview" class="common-anchor-header">Présentation<button data-href="#Overview" class="anchor-icon" translate="no">
+    </button></h1><p>The Partition Key is a search optimization solution based on partitions. By designating a specific scalar field as the Partition Key and specifying filtering conditions based on the Partition Key during the search, the search scope can be narrowed down to several partitions, thereby improving search efficiency. This article will introduce how to use the Partition Key and related considerations.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -41,26 +40,26 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Dans Milvus, vous pouvez utiliser des partitions pour mettre en œuvre la ségrégation des données et améliorer les performances de recherche en limitant le champ de recherche à des partitions spécifiques. Si vous choisissez de gérer les partitions manuellement, vous pouvez créer jusqu’à 1 024 partitions dans une collection et y insérer des entités selon une règle spécifique, ce qui vous permet de restreindre le champ de recherche en limitant les requêtes à un nombre donné de partitions.</p>
-<p>Milvus propose la clé de partition afin de vous permettre de réutiliser des partitions dans le cadre de la ségrégation des données et de contourner ainsi la limite du nombre de partitions pouvant être créées dans une collection. Lors de la création d’une collection, vous pouvez utiliser un champ scalaire comme clé de partition. Une fois la collection prête, Milvus crée le nombre spécifié de partitions à l’intérieur de celle-ci. À la réception d’une entité insérée, Milvus calcule une valeur de hachage à partir de la valeur de la clé de partition de l’entité, effectue une opération modulo en fonction de cette valeur de hachage et de la propriété « <code translate="no">partitions_num</code> » de la collection pour obtenir l’ID de la partition cible, puis stocke l’entité dans cette partition.</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="/docs/v2.6.x/assets/partition-vs-partition-key.png" alt="Partition Vs Partition Key" class="doc-image" id="partition-vs-partition-key" /> 
-   <span>Partition vs clé de partition</span>
-  
- </span></p>
-<p>La figure suivante illustre la manière dont Milvus traite les requêtes de recherche dans une collection, que la fonctionnalité de clé de partition soit activée ou non.</p>
+    </button></h2><p>In Milvus, you can use partitions to implement data segregation and improve search performance by restricting the search scope to specific partitions. If you choose to manage partitions manually, you can create a maximum of 1,024 partitions in a collection, and insert entities into these partitions based on a specific rule so that you can narrow the search scope by restricting searches within a specific number of partitions.</p>
+<p>Milvus introduces the Partition Key for you to reuse partitions in data segregation to overcome the limit on the number of partitions you can create in a collection. When creating a collection, you can use a scalar field as the Partition Key. Once the collection is ready, Milvus creates the specified number of partitions inside the collection. Upon receiving an inserted entity, Milvus calculates a hash value using the Partition Key value of the entity, executes a modulo operation based on the hash value and the <code translate="no">partitions_num</code> property of the collection to obtain the target partition ID, and stores the entity in the target partition.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/partition-vs-partition-key.png" alt="Partition Vs Partition Key" class="doc-image" id="partition-vs-partition-key" />
+    <span>Partition Vs Partition Key</span>
+  </span>
+</p>
+<p>The following figure illustrates how Milvus processes the search requests in a collection with or without the Partition Key feature enabled.</p>
 <ul>
-<li><p>Si la clé de partition est désactivée, Milvus recherche les entités les plus similaires au vecteur de requête au sein de la collection. Vous pouvez restreindre le champ de recherche si vous savez quelle partition contient les résultats les plus pertinents.</p></li>
-<li><p>Si la clé de partition est activée, Milvus détermine le champ de recherche en fonction de la valeur de la clé de partition spécifiée dans un filtre de recherche et analyse uniquement les entités présentes dans les partitions correspondantes.</p></li>
+<li><p>If the Partition Key is disabled, Milvus searches for entities that are the most similar to the query vector within the collection. You can narrow the search scope if you know which partition contains the most relevant results.</p></li>
+<li><p>If the Partition Key is enabled, Milvus determines the search scope based on the Partition Key value specified in a search filter and scans only the entities within the partitions that match.</p></li>
 </ul>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="/docs/v2.6.x/assets/with-and-without-partition-key.png" alt="With And Without Partition Key" class="doc-image" id="with-and-without-partition-key" /> 
-   <span>Avec et sans clé de partition</span>
-  
- </span></p>
-<h2 id="Use-Partition-Key" class="common-anchor-header">Utilisation de la clé de partition<button data-href="#Use-Partition-Key" class="anchor-icon" translate="no">
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/with-and-without-partition-key.png" alt="With And Without Partition Key" class="doc-image" id="with-and-without-partition-key" />
+    <span>With And Without Partition Key</span>
+  </span>
+</p>
+<h2 id="Use-Partition-Key" class="common-anchor-header">Use Partition Key<button data-href="#Use-Partition-Key" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -75,14 +74,14 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Pour utiliser la clé de partition, vous devez</p>
+    </button></h2><p>To use the Partition Key, you need to</p>
 <ul>
-<li><p><a href="/docs/fr/v2.6.x/use-partition-key.md#Set-Partition-Key">définir la clé de partition</a>,</p></li>
-<li><p><a href="/docs/fr/v2.6.x/use-partition-key.md#Set-Partition-Numbers">définir le nombre de partitions à créer</a> (facultatif),</p></li>
-<li><p><a href="/docs/fr/v2.6.x/use-partition-key.md#Create-Filtering-Condition">Créer une condition de filtrage basée sur la clé de partition</a>, et</p></li>
-<li><p><a href="/docs/fr/v2.6.x/use-partition-key.md#Index-Partition-Key">indexer la clé de partition</a> (recommandé).</p></li>
+<li><p><a href="/docs/fr/v2.6.x/use-partition-key.md#Set-Partition-Key">Set the Partition Key</a>,</p></li>
+<li><p><a href="/docs/fr/v2.6.x/use-partition-key.md#Set-Partition-Numbers">Set the number of partitions to create</a> (Optional),</p></li>
+<li><p><a href="/docs/fr/v2.6.x/use-partition-key.md#Create-Filtering-Condition">Create a filtering condition based on the Partition Key</a>, and</p></li>
+<li><p><a href="/docs/fr/v2.6.x/use-partition-key.md#Index-Partition-Key">Index the Partition Key</a> (Recommended).</p></li>
 </ul>
-<h3 id="Set-Partition-Key" class="common-anchor-header">Définir la clé de partition<button data-href="#Set-Partition-Key" class="anchor-icon" translate="no">
+<h3 id="Set-Partition-Key" class="common-anchor-header">Set Partition Key<button data-href="#Set-Partition-Key" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -97,16 +96,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Pour désigner un champ scalaire comme clé de partition, vous devez définir son attribut « <code translate="no">is_partition_key</code> » (Type de partition) sur « <code translate="no">true</code> » (Clé de partition) lorsque vous ajoutez le champ scalaire.</p>
+    </button></h3><p>To designate a scalar field as the Partition Key, you need to set its <code translate="no">is_partition_key</code> attribute to <code translate="no">true</code> when you add the scalar field.</p>
 <div class="alert note">
-<p>Lorsque vous définissez un champ scalaire comme clé de partition, les valeurs de ce champ ne peuvent être ni vides ni nulles.</p>
+<p>When you set a scalar field as the Partition Key, the field values cannot be empty or null.</p>
 </div>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> (
     MilvusClient, DataType
@@ -252,7 +251,7 @@ schema.WithField(entity.NewField().
         ]
     }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Set-Partition-Numbers" class="common-anchor-header">Définir le nombre de partitions<button data-href="#Set-Partition-Numbers" class="anchor-icon" translate="no">
+<h3 id="Set-Partition-Numbers" class="common-anchor-header">Set Partition Numbers<button data-href="#Set-Partition-Numbers" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -267,14 +266,14 @@ schema.WithField(entity.NewField().
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Lorsque vous désignez un champ scalaire d’une collection comme clé de partition, Milvus crée automatiquement 16 partitions dans la collection. À la réception d’une entité, Milvus choisit une partition en fonction de la valeur de la clé de partition de cette entité et stocke l’entité dans cette partition, ce qui fait que certaines ou toutes les partitions contiennent des entités avec des valeurs de clé de partition différentes.</p>
-<p>Vous pouvez également définir le nombre de partitions à créer lors de la création de la collection. Cette option n’est valable que si vous avez désigné un champ scalaire comme clé de partition.</p>
+    </button></h3><p>When you designate a scalar field in a collection as the Partition Key, Milvus automatically creates 16 partitions in the collection. Upon receiving an entity, Milvus chooses a partition based on the Partition Key value of this entity and stores the entity in the partition, resulting in some or all partitions holding entities with different Partition Key values.</p>
+<p>You can also determine the number of partitions to create along with the collection. This is valid only if you have a scalar field designated as the Partition Key.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.create_collection(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,
@@ -323,7 +322,7 @@ curl --request POST \
     \&quot;params\&quot;: <span class="hljs-variable">$params</span>
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Create-Filtering-Condition" class="common-anchor-header">Créer une condition de filtrage<button data-href="#Create-Filtering-Condition" class="anchor-icon" translate="no">
+<h3 id="Create-Filtering-Condition" class="common-anchor-header">Create Filtering Condition<button data-href="#Create-Filtering-Condition" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -338,15 +337,15 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Lorsque vous effectuez des recherches ANN dans une collection où la fonctionnalité de clé de partition est activée, vous devez inclure dans la requête de recherche une expression de filtrage impliquant la clé de partition. Dans cette expression, vous pouvez restreindre la valeur de la clé de partition à une plage spécifique afin que Milvus limite le champ de recherche aux partitions correspondantes.</p>
-<p>Lors de l’exécution d’opérations de suppression, il est conseillé d’inclure une expression de filtrage spécifiant une seule clé de partition afin d’optimiser l’efficacité de la suppression. Cette approche limite l’opération de suppression à une partition particulière, ce qui réduit l’amplification d’écriture lors de la compaction et permet d’économiser des ressources pour la compaction et l’indexation.</p>
-<p>Les exemples suivants illustrent le filtrage basé sur la clé de partition, en fonction d’une valeur spécifique de clé de partition et d’un ensemble de valeurs de clé de partition.</p>
+    </button></h3><p>When conducting ANN searches in a collection with the Partition Key feature enabled, you need to include a filtering expression involving the Partition Key in the search request. In the filtering expression, you can restrict the Partition Key value within a specific range so that Milvus restricts the search scope within the corresponding partitions.</p>
+<p>When performing delete operations, It is advisable to include a filter expression that specifies a single partition key to achieve more efficient deletion. This approach limits the delete operation to a particular partition, reducing write amplification during compaction and conserving resources for compaction and indexing.</p>
+<p>The following examples demonstrate Partition-Key-based filtering based on a specific Partition Key value and a set of Partition Key values.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Filter based on a single partition key value, or</span>
 <span class="hljs-built_in">filter</span>=<span class="hljs-string">&#x27;partition_key == &quot;x&quot; &amp;&amp; &lt;other conditions&gt;&#x27;</span>
@@ -379,9 +378,9 @@ filter = <span class="hljs-string">&quot;partition_key in [&#x27;x&#x27;, &#x27;
 <span class="hljs-built_in">export</span> filter=<span class="hljs-string">&#x27;partition_key in [&quot;x&quot;, &quot;y&quot;, &quot;z&quot;] &amp;&amp; &lt;other conditions&gt;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>Vous devez remplacer « <code translate="no">partition_key</code> » par le nom du champ désigné comme clé de partition.</p>
+<p>You have to replace <code translate="no">partition_key</code> with the name of the field that is designated as the partition key.</p>
 </div>
-<h3 id="Index-Partition-Key" class="common-anchor-header">Index de la clé de partition<button data-href="#Index-Partition-Key" class="anchor-icon" translate="no">
+<h3 id="Index-Partition-Key" class="common-anchor-header">Index Partition Key<button data-href="#Index-Partition-Key" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -396,22 +395,22 @@ filter = <span class="hljs-string">&quot;partition_key in [&#x27;x&#x27;, &#x27;
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Nous vous recommandons de créer un index scalaire sur le champ de clé de partition.</p>
-<p>La clé de partition restreint la recherche aux partitions susceptibles de contenir les valeurs de clé de partition correspondantes. Cependant, chaque partition contient généralement des entités présentant de nombreuses valeurs de clé de partition différentes ; Milvus évalue donc toujours le filtre basé sur la clé de partition par rapport à chaque entité des partitions qu’il explore. En l’absence d’index scalaire sur ce champ, cette évaluation consiste en un balayage complet des valeurs du champ, ce qui peut représenter une part importante de la latence de recherche sur les grandes collections. Avec un index scalaire, Milvus recherche plutôt les entités correspondantes dans l’index.</p>
-<p>Cette évaluation a lieu quel que soit le type d’index vectoriel. Milvus peut intégrer les valeurs de clé de partition dans des index vectoriels de la famille HNSW afin qu’une recherche filtrée par clé de partition ne parcoure que les sous-index pertinents, mais cette optimisation restreint le parcours vectoriel — elle ne supprime pas l’évaluation du filtre. Les recherches qui filtrent uniquement sur des champs scalaires ne bénéficient d’aucun raccourci équivalent. Dans les deux cas, c’est la présence d’un index scalaire sur le champ de clé de partition qui garantit la rapidité de l’évaluation.</p>
-<p>Choisissez le type d’index en fonction du champ de clé de partition :</p>
+    </button></h3><p>We recommend that you create a scalar index on the Partition Key field.</p>
+<p>The Partition Key narrows a search down to the partitions that may hold the matching Partition Key values. However, each partition usually holds entities with many different Partition Key values, so Milvus still evaluates the Partition-Key-based filter against every entity in the partitions it searches. Without a scalar index on the field, that evaluation is a full scan of the field values, which can take up a large share of search latency on large collections. With a scalar index, Milvus looks up the matching entities in the index instead.</p>
+<p>This evaluation happens regardless of the vector index type. Milvus can embed Partition Key values into HNSW-family vector indexes so that a Partition-Key-filtered search traverses only the relevant sub-indexes, but that optimization narrows the vector traversal — it does not remove the filter evaluation. Searches that filter on scalar fields alone have no equivalent shortcut. In both cases, a scalar index on the Partition Key field is what keeps the evaluation fast.</p>
+<p>Choose the index type based on the Partition Key field:</p>
 <ul>
-<li><p><a href="/docs/fr/v2.6.x/inverted.md">INVERTED</a> convient à la plupart des champs de clé de partition, car les filtres basés sur la clé de partition utilisent des conditions de type « <code translate="no">==</code> » et « <code translate="no">in</code> ».</p></li>
-<li><p><a href="/docs/fr/v2.6.x/bitmap.md">BITMAP</a> convient aux champs comportant peu de valeurs distinctes. En règle générale, n’utilisez-le que lorsque le champ contient moins de 500 valeurs distinctes.</p></li>
-<li><p><a href="/docs/fr/v2.6.x/stl-sort.md">STL_SORT</a> est une alternative pour les champs numériques et de type « <code translate="no">VARCHAR</code> ».</p></li>
+<li><p><a href="/docs/fr/v2.6.x/inverted.md">INVERTED</a> suits most Partition Key fields, because Partition-Key-based filters use <code translate="no">==</code> and <code translate="no">in</code> conditions.</p></li>
+<li><p><a href="/docs/fr/v2.6.x/bitmap.md">BITMAP</a> suits fields with few distinct values. As a general guideline, use it only when the field holds fewer than 500 distinct values.</p></li>
+<li><p><a href="/docs/fr/v2.6.x/stl-sort.md">STL_SORT</a> is an alternative for numeric and <code translate="no">VARCHAR</code> fields.</p></li>
 </ul>
-<p>Les exemples suivants ajoutent un index « <code translate="no">INVERTED</code> » sur le champ « Partition Key » aux paramètres d’index de la collection, en plus de l’index sur le champ « vector ».</p>
+<p>The following examples add an <code translate="no">INVERTED</code> index on the Partition Key field to the index parameters of the collection, alongside the index on the vector field.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">index_params = client.prepare_index_params()
 
@@ -509,8 +508,8 @@ curl --request POST \
     \&quot;indexParams\&quot;: <span class="hljs-variable">$indexParams</span>
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Transmettez ces paramètres d’index lors de la création de la collection, ou créez l’index sur une collection existante. Pour plus de détails, consultez la section <a href="/docs/fr/v2.6.x/create-collection.md">Créer une collection</a>.</p>
-<h2 id="Use-Partition-Key-Isolation" class="common-anchor-header">Utilisation de l’isolation de la clé de partition<button data-href="#Use-Partition-Key-Isolation" class="anchor-icon" translate="no">
+<p>Pass these index parameters when you create the collection, or create the index on an existing collection. For details, refer to <a href="/docs/fr/v2.6.x/create-collection.md">Create Collection</a>.</p>
+<h2 id="Use-Partition-Key-Isolation" class="common-anchor-header">Use Partition Key Isolation<button data-href="#Use-Partition-Key-Isolation" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -525,20 +524,20 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Dans un scénario de multi-locataires, vous pouvez désigner le champ scalaire lié aux identités des locataires comme clé de partition et créer un filtre basé sur une valeur spécifique de ce champ scalaire. Afin d’améliorer encore les performances de recherche dans des scénarios similaires, Milvus introduit la fonctionnalité d’isolation de la clé de partition.</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="/docs/v2.6.x/assets/partition-key-isolation.png" alt="Partition Key Isolation" class="doc-image" id="partition-key-isolation" /> 
-   <span>Isolement de la clé de partition</span>
-  
- </span></p>
-<p>Comme le montre la figure ci-dessus, Milvus regroupe les entités en fonction de la valeur de la clé de partition et crée un index distinct pour chacun de ces groupes. Lorsqu’il reçoit une requête de recherche, Milvus localise l’index en fonction de la valeur de la clé de partition spécifiée dans la condition de filtrage et limite le champ de recherche aux entités incluses dans cet index, évitant ainsi de parcourir des entités non pertinentes pendant la recherche et améliorant considérablement les performances de recherche.</p>
-<p>Une fois l’isolation par clé de partition activée, vous devez inclure une seule valeur spécifique dans le filtre basé sur la clé de partition afin que Milvus puisse limiter le champ de recherche aux entités incluses dans l’index qui correspondent à cette valeur.</p>
+    </button></h2><p>In the multi-tenancy scenario, you can designate the scalar field related to tenant identities as the partition key and create a filter based on a specific value in this scalar field. To further improve search performance in similar scenarios, Milvus introduces the Partition Key Isolation feature.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/partition-key-isolation.png" alt="Partition Key Isolation" class="doc-image" id="partition-key-isolation" />
+    <span>Partition Key Isolation</span>
+  </span>
+</p>
+<p>As shown in the above figure, Milvus groups entities based on the Partition Key value and creates a separate index for each of these groups. Upon receiving a search request, Milvus locates the index based on the Partition Key value specified in the filtering condition and restricts the search scope within the entities included in the index, thus avoiding scanning irrelevant entities during the search and greatly enhancing the search performance.</p>
+<p>Once you have enabled Partition Key Isolation, you must include only one specific value in the Partition-key-based filter so that Milvus can restrict the search scope within the entities included in the index that match.</p>
 <div class="alert note">
-<p>Actuellement, la fonctionnalité d’isolation de la clé de partition s’applique uniquement aux recherches dont le type d’index est défini sur HNSW.</p>
+<p>Currently, the Partition-Key Isolation feature applies only to searches with the index type set to HNSW.</p>
 </div>
-<p>L’isolation de la clé de partition ne remplace pas l’index scalaire sur le champ « Partition Key ». La valeur de la clé de partition dans le filtre permet de localiser le sous-index correspondant, mais Milvus évalue toujours le filtre lui-même pour identifier les entités correspondantes ; nous vous recommandons donc <a href="/docs/fr/v2.6.x/use-partition-key.md#Index-Partition-Key">d’indexer</a> également <a href="/docs/fr/v2.6.x/use-partition-key.md#Index-Partition-Key">la clé de partition</a>.</p>
-<h3 id="Enable-Partition-Key-Isolation" class="common-anchor-header">Activer l’isolation par clé de partition<button data-href="#Enable-Partition-Key-Isolation" class="anchor-icon" translate="no">
+<p>Partition Key Isolation does not replace the scalar index on the Partition Key field. The Partition Key value in the filter locates the matching sub-index, but Milvus still evaluates the filter itself to identify the matching entities, so we recommend that you also <a href="/docs/fr/v2.6.x/use-partition-key.md#Index-Partition-Key">index the Partition Key</a>.</p>
+<h3 id="Enable-Partition-Key-Isolation" class="common-anchor-header">Enable Partition Key Isolation<button data-href="#Enable-Partition-Key-Isolation" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -553,13 +552,13 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Les exemples de code suivants montrent comment activer l’isolation par clé de partition.</p>
+    </button></h3><p>The following code examples demonstrate how to enable Partition Key Isolation.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.create_collection(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,
@@ -612,4 +611,4 @@ curl --request POST \
     \&quot;params\&quot;: <span class="hljs-variable">$params</span>
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Une fois l’isolation de la clé de partition activée, vous pouvez toujours définir la clé de partition et le nombre de partitions comme décrit dans <a href="/docs/fr/v2.6.x/use-partition-key.md#Set-Partition-Numbers">la section</a> « <a href="/docs/fr/v2.6.x/use-partition-key.md#Set-Partition-Numbers">Définir le nombre de partitions</a> ». Notez que le filtre basé sur la clé de partition ne doit inclure qu’une seule valeur spécifique de clé de partition.</p>
+<p>Once you have enabled Partition Key Isolation, you can still set the Partition Key and number of partitions as described in <a href="/docs/fr/v2.6.x/use-partition-key.md#Set-Partition-Numbers">Set Partition Numbers</a>. Note that the Partition-Key-based filter should include only a specific Partition Key value.</p>

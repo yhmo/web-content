@@ -1,13 +1,12 @@
 ---
 id: primary-field.md
-title: Primärfeld und AutoID
+title: Primary Field & AutoID
 summary: >-
-  Jede Sammlung in Milvus muss ein Primärfeld zur eindeutigen Identifizierung
-  jeder Entität haben. Dieses Feld stellt sicher, dass jede Entität eingefügt,
-  aktualisiert, abgefragt oder gelöscht werden kann, ohne dass es zu
-  Mehrdeutigkeiten kommt.
+  Every collection in Milvus must have a primary field to uniquely identify each
+  entity. This field ensures that every entity can be inserted, updated,
+  queried, or deleted without ambiguity.
 ---
-<h1 id="Primary-Field--AutoID" class="common-anchor-header">Primärfeld und AutoID<button data-href="#Primary-Field--AutoID" class="anchor-icon" translate="no">
+<h1 id="Primary-Field--AutoID" class="common-anchor-header">Primary Field & AutoID<button data-href="#Primary-Field--AutoID" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -22,9 +21,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Jede Sammlung in Milvus muss ein Primärfeld haben, um jede Entität eindeutig zu identifizieren. Dieses Feld stellt sicher, dass jede Entität eingefügt, aktualisiert, abgefragt oder gelöscht werden kann, ohne dass es zu Mehrdeutigkeiten kommt.</p>
-<p>Je nach Anwendungsfall können Sie entweder Milvus automatisch IDs generieren lassen (AutoID) oder Ihre eigenen IDs manuell zuweisen.</p>
-<h2 id="What-is-a-primary-field" class="common-anchor-header">Was ist ein Primärfeld?<button data-href="#What-is-a-primary-field" class="anchor-icon" translate="no">
+    </button></h1><p>Every collection in Milvus must have a primary field to uniquely identify each entity. This field ensures that every entity can be inserted, updated, queried, or deleted without ambiguity.</p>
+<p>Depending on your use case, you can either let Milvus automatically generate IDs (AutoID) or assign your own IDs manually.</p>
+<h2 id="What-is-a-primary-field" class="common-anchor-header">What is a primary field?<button data-href="#What-is-a-primary-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -39,14 +38,14 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Ein Primärfeld fungiert als eindeutiger Schlüssel für jede Entität in einer Sammlung, ähnlich wie ein Primärschlüssel in einer herkömmlichen Datenbank. Milvus verwendet das Primärfeld, um Entitäten während Einfüge-, Upsert-, Lösch- und Abfrageoperationen zu verwalten.</p>
-<p>Schlüssel-Anforderungen:</p>
+    </button></h2><p>A primary field acts as the unique key for each entity in a collection, similar to a primary key in a traditional database. Milvus uses the primary field to manage entities during insert, upsert, delete, and query operations.</p>
+<p>Key requirements:</p>
 <ul>
-<li><p>Jede Sammlung muss <strong>genau ein</strong> Primärfeld haben.</p></li>
-<li><p>Primärfeldwerte können nicht null sein.</p></li>
-<li><p>Der Datentyp muss bei der Erstellung angegeben werden und kann später nicht mehr geändert werden.</p></li>
+<li><p>Each collection must have <strong>exactly one</strong> primary field.</p></li>
+<li><p>Primary field values cannot be null.</p></li>
+<li><p>The data type must be specified at creation and cannot be changed later.</p></li>
 </ul>
-<h2 id="Supported-data-types" class="common-anchor-header">Unterstützte Datentypen<button data-href="#Supported-data-types" class="anchor-icon" translate="no">
+<h2 id="Supported-data-types" class="common-anchor-header">Supported data types<button data-href="#Supported-data-types" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -61,22 +60,22 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Für das Primärfeld muss ein unterstützter skalarer Datentyp verwendet werden, der Entitäten eindeutig identifizieren kann.</p>
+    </button></h2><p>The primary field must use a supported scalar data type that can uniquely identify entities.</p>
 <table>
    <tr>
-     <th><p>Datentyp</p></th>
-     <th><p>Beschreibung</p></th>
+     <th><p>Data Type</p></th>
+     <th><p>Description</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">INT64</code></p></td>
-     <td><p>64-Bit-Integer-Typ, der üblicherweise mit AutoID verwendet wird. Dies ist die empfohlene Option für die meisten Anwendungsfälle.</p></td>
+     <td><p>64-bit integer type, commonly used with AutoID. This is the recommended option for most use cases.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">VARCHAR</code></p></td>
-     <td><p>String-Typ mit variabler Länge. Verwenden Sie diesen Typ, wenn Entitätskennungen von externen Systemen stammen (z. B. Produktcodes oder Benutzer-IDs). Erfordert die Eigenschaft <code translate="no">max_length</code>, um die maximal zulässige Anzahl von Bytes pro Wert zu definieren.</p></td>
+     <td><p>Variable-length string type. Use this when entity identifiers come from external systems (for example, product codes or user IDs). Requires the <code translate="no">max_length</code> property to define the maximum number of bytes allowed per value.</p></td>
    </tr>
 </table>
-<h2 id="Choose-between-AutoID-and-Manual-IDs" class="common-anchor-header">Wählen Sie zwischen AutoID und manuellen IDs<button data-href="#Choose-between-AutoID-and-Manual-IDs" class="anchor-icon" translate="no">
+<h2 id="Choose-between-AutoID-and-Manual-IDs" class="common-anchor-header">Choose between AutoID and Manual IDs<button data-href="#Choose-between-AutoID-and-Manual-IDs" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -91,31 +90,31 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus unterstützt zwei Modi für die Zuweisung von Primärschlüsselwerten.</p>
+    </button></h2><p>Milvus supports two modes for assigning primary key values.</p>
 <table>
    <tr>
-     <th><p>Modus</p></th>
-     <th><p>Beschreibung</p></th>
-     <th><p>Empfohlen für</p></th>
+     <th><p>Mode</p></th>
+     <th><p>Description</p></th>
+     <th><p>Recommended For</p></th>
    </tr>
    <tr>
      <td><p>AutoID</p></td>
-     <td><p>Milvus erzeugt automatisch eindeutige Bezeichner für eingefügte oder importierte Entitäten.</p></td>
-     <td><p>Die meisten Szenarien, in denen Sie die IDs nicht manuell verwalten müssen.</p></td>
+     <td><p>Milvus automatically generates unique identifiers for inserted or imported entities.</p></td>
+     <td><p>Most scenarios where you don’t need to manage IDs manually.</p></td>
    </tr>
    <tr>
-     <td><p>Manuelle ID</p></td>
-     <td><p>Sie stellen selbst eindeutige IDs bereit, wenn Sie Daten einfügen oder importieren.</p></td>
-     <td><p>Wenn IDs mit externen Systemen oder bereits existierenden Datensätzen übereinstimmen müssen.</p></td>
+     <td><p>Manual ID</p></td>
+     <td><p>You provide unique IDs yourself when inserting or importing data.</p></td>
+     <td><p>When IDs must align with external systems or pre-existing datasets.</p></td>
    </tr>
 </table>
 <div class="alert note">
 <ul>
-<li><p>Wenn Sie sich nicht sicher sind, welchen Modus Sie wählen sollen, <a href="/docs/de/v2.6.x/primary-field.md#Quickstart-Use-AutoID">beginnen Sie mit AutoID</a>, um die Aufnahme zu vereinfachen und die Eindeutigkeit zu gewährleisten.</p></li>
-<li><p>Wir empfehlen Ihnen, sich in allen Fällen auf <code translate="no">autoId</code> zu verlassen, es sei denn, das manuelle Setzen von Primärschlüsseln ist von Vorteil.</p></li>
+<li><p>If you are unsure which mode to choose, <a href="/docs/de/v2.6.x/primary-field.md#Quickstart-Use-AutoID">start with AutoID</a> for simpler ingestion and guaranteed uniqueness.</p></li>
+<li><p>You are advised to rely on <code translate="no">autoId</code> in all cases unless manually setting primary keys is beneficial.</p></li>
 </ul>
 </div>
-<h2 id="Quickstart-Use-AutoID" class="common-anchor-header">Schnellstart: AutoID verwenden<button data-href="#Quickstart-Use-AutoID" class="anchor-icon" translate="no">
+<h2 id="Quickstart-Use-AutoID" class="common-anchor-header">Quickstart: Use AutoID<button data-href="#Quickstart-Use-AutoID" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -130,8 +129,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Sie können die ID-Generierung automatisch von Milvus durchführen lassen.</p>
-<h3 id="Step-1-Create-a-collection-with-AutoID" class="common-anchor-header">Schritt 1: Erstellen Sie eine Sammlung mit AutoID<button data-href="#Step-1-Create-a-collection-with-AutoID" class="anchor-icon" translate="no">
+    </button></h2><p>You can let Milvus handle ID generation automatically.</p>
+<h3 id="Step-1-Create-a-collection-with-AutoID" class="common-anchor-header">Step 1: Create a collection with AutoID<button data-href="#Step-1-Create-a-collection-with-AutoID" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -146,9 +145,14 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Aktivieren Sie <code translate="no">auto_id=True</code> in Ihrer Primärfelddefinition. Milvus wird die ID-Generierung automatisch durchführen.</p>
+    </button></h3><p>Enable <code translate="no">auto_id=True</code> in your primary field definition. Milvus will handle ID generation automatically.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
 
 client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>)
@@ -286,7 +290,7 @@ curl -X POST <span class="hljs-string">&#x27;http://localhost:19530/v2/vectordb/
     \&quot;schema\&quot;: <span class="hljs-variable">$SCHEMA</span>
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Step-2-Insert-Data" class="common-anchor-header">Schritt 2: Daten einfügen<button data-href="#Step-2-Insert-Data" class="anchor-icon" translate="no">
+<h3 id="Step-2-Insert-Data" class="common-anchor-header">Step 2: Insert Data<button data-href="#Step-2-Insert-Data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -301,9 +305,14 @@ curl -X POST <span class="hljs-string">&#x27;http://localhost:19530/v2/vectordb/
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><strong>Wichtig!</strong> Fügen Sie die Primärfeldspalte nicht in Ihre Daten ein. Milvus generiert IDs automatisch.</p>
+    </button></h3><p><strong>Important:</strong> Do not include the primary field column in your data. Milvus generates IDs automatically.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">data = [
     {<span class="hljs-string">&quot;embedding&quot;</span>: [<span class="hljs-number">0.1</span>, <span class="hljs-number">0.2</span>, <span class="hljs-number">0.3</span>, <span class="hljs-number">0.4</span>], <span class="hljs-string">&quot;category&quot;</span>: <span class="hljs-string">&quot;book&quot;</span>},
     {<span class="hljs-string">&quot;embedding&quot;</span>: [<span class="hljs-number">0.2</span>, <span class="hljs-number">0.3</span>, <span class="hljs-number">0.4</span>, <span class="hljs-number">0.5</span>], <span class="hljs-string">&quot;category&quot;</span>: <span class="hljs-string">&quot;toy&quot;</span>},
@@ -372,9 +381,9 @@ curl -X POST <span class="hljs-string">&#x27;http://localhost:19530/v2/vectordb/
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>Verwenden Sie <code translate="no">upsert()</code> anstelle von <code translate="no">insert()</code>, wenn Sie mit bestehenden Entitäten arbeiten, um Fehler durch doppelte IDs zu vermeiden.</p>
+<p>Use <code translate="no">upsert()</code> instead of <code translate="no">insert()</code> when working with existing entities to avoid duplicate ID errors.</p>
 </div>
-<h2 id="Use-manual-IDs" class="common-anchor-header">Manuelle IDs verwenden<button data-href="#Use-manual-IDs" class="anchor-icon" translate="no">
+<h2 id="Use-manual-IDs" class="common-anchor-header">Use manual IDs<button data-href="#Use-manual-IDs" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -389,8 +398,8 @@ curl -X POST <span class="hljs-string">&#x27;http://localhost:19530/v2/vectordb/
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Wenn Sie IDs manuell steuern müssen, deaktivieren Sie AutoID und geben Sie Ihre eigenen Werte ein.</p>
-<h3 id="Step-1-Create-a-collection-without-AutoID" class="common-anchor-header">Schritt 1: Erstellen Sie eine Sammlung ohne AutoID<button data-href="#Step-1-Create-a-collection-without-AutoID" class="anchor-icon" translate="no">
+    </button></h2><p>If you need to control IDs manually, disable AutoID and provide your own values.</p>
+<h3 id="Step-1-Create-a-collection-without-AutoID" class="common-anchor-header">Step 1: Create a collection without AutoID<button data-href="#Step-1-Create-a-collection-without-AutoID" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -406,7 +415,12 @@ curl -X POST <span class="hljs-string">&#x27;http://localhost:19530/v2/vectordb/
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
 
 client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>)
@@ -546,7 +560,7 @@ curl -X POST <span class="hljs-string">&#x27;http://localhost:19530/v2/vectordb/
     \&quot;schema\&quot;: <span class="hljs-variable">$SCHEMA</span>
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Step-2-Insert-data-with-your-IDs" class="common-anchor-header">Schritt 2: Fügen Sie Daten mit Ihren IDs ein<button data-href="#Step-2-Insert-data-with-your-IDs" class="anchor-icon" translate="no">
+<h3 id="Step-2-Insert-data-with-your-IDs" class="common-anchor-header">Step 2: Insert data with your IDs<button data-href="#Step-2-Insert-data-with-your-IDs" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -561,9 +575,14 @@ curl -X POST <span class="hljs-string">&#x27;http://localhost:19530/v2/vectordb/
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Bei jedem Einfügevorgang müssen Sie die Primärfeldspalte mit einbeziehen.</p>
+    </button></h3><p>You must include the primary field column in every insert operation.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Each entity must contain the primary field `product_id`</span>
 data = [
     {<span class="hljs-string">&quot;product_id&quot;</span>: <span class="hljs-string">&quot;PROD-001&quot;</span>, <span class="hljs-string">&quot;embedding&quot;</span>: [<span class="hljs-number">0.1</span>, <span class="hljs-number">0.2</span>, <span class="hljs-number">0.3</span>, <span class="hljs-number">0.4</span>], <span class="hljs-string">&quot;category&quot;</span>: <span class="hljs-string">&quot;book&quot;</span>},
@@ -638,13 +657,13 @@ curl -X POST <span class="hljs-string">&#x27;http://localhost:19530/v2/vectordb/
     \&quot;data\&quot;: <span class="hljs-variable">$INSERT_DATA</span>
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Ihre Verantwortlichkeiten:</p>
+<p>Your responsibilities:</p>
 <ul>
-<li><p>Sicherstellen, dass alle IDs über alle Entitäten hinweg eindeutig sind</p></li>
-<li><p>Einbindung des Primärfelds in jeden Einfüge-/Importvorgang</p></li>
-<li><p>Behandeln Sie ID-Konflikte und die Erkennung von Duplikaten selbst</p></li>
+<li><p>Ensure all IDs are unique across all entities</p></li>
+<li><p>Include the primary field in every insert/import operation</p></li>
+<li><p>Handle ID conflicts and duplicate detection yourself</p></li>
 </ul>
-<h2 id="Advanced-usage" class="common-anchor-header">Erweiterte Nutzung<button data-href="#Advanced-usage" class="anchor-icon" translate="no">
+<h2 id="Advanced-usage" class="common-anchor-header">Advanced usage<button data-href="#Advanced-usage" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -659,7 +678,7 @@ curl -X POST <span class="hljs-string">&#x27;http://localhost:19530/v2/vectordb/
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Migrate-data-with-existing-AutoIDs" class="common-anchor-header">Migrieren Sie Daten mit vorhandenen AutoIDs<button data-href="#Migrate-data-with-existing-AutoIDs" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Migrate-data-with-existing-AutoIDs" class="common-anchor-header">Migrate data with existing AutoIDs<button data-href="#Migrate-data-with-existing-AutoIDs" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -674,9 +693,9 @@ curl -X POST <span class="hljs-string">&#x27;http://localhost:19530/v2/vectordb/
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Um bestehende IDs während der Datenmigration zu erhalten, aktivieren Sie die Eigenschaft <code translate="no">allow_insert_auto_id</code> durch den Aufruf von <code translate="no">alter_collection_properties</code>. Wenn sie auf true gesetzt ist, akzeptiert Milvus vom Benutzer bereitgestellte IDs, auch wenn AutoID aktiviert ist.</p>
-<p>Einzelheiten zur Konfiguration finden Sie unter <a href="/docs/de/v2.6.x/modify-collection.md#Example-5-Enable-allowinsertautoid">Sammlung ändern</a>.</p>
-<h3 id="Ensure-global-AutoID-uniqueness-across-clusters" class="common-anchor-header">Globale AutoID Eindeutigkeit über Cluster hinweg sicherstellen<button data-href="#Ensure-global-AutoID-uniqueness-across-clusters" class="anchor-icon" translate="no">
+    </button></h3><p>To preserve existing IDs during data migration, enable the <code translate="no">allow_insert_auto_id</code> property by making the <code translate="no">alter_collection_properties</code> call. When set to true, Milvus accepts user-provided IDs even if AutoID is enabled.</p>
+<p>For configuration details, refer to <a href="/docs/de/v2.6.x/modify-collection.md#Example-5-Enable-allowinsertautoid">Modify Collection</a>.</p>
+<h3 id="Ensure-global-AutoID-uniqueness-across-clusters" class="common-anchor-header">Ensure global AutoID uniqueness across clusters<button data-href="#Ensure-global-AutoID-uniqueness-across-clusters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -691,16 +710,16 @@ curl -X POST <span class="hljs-string">&#x27;http://localhost:19530/v2/vectordb/
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Wenn Sie mehrere Milvus-Cluster betreiben, konfigurieren Sie eine eindeutige Cluster-ID für jeden Cluster, um sicherzustellen, dass sich die AutoIDs nicht überschneiden.</p>
-<p><strong>Konfiguration:</strong> Bearbeiten Sie vor der Initialisierung Ihres Clusters die Konfiguration <code translate="no">common.clusterID</code> in <code translate="no">milvus.yaml</code>:</p>
+    </button></h3><p>When running multiple Milvus clusters, configure a unique cluster ID for each to ensure AutoIDs never overlap.</p>
+<p><strong>Configuration:</strong> Edit the <code translate="no">common.clusterID</code> config in <code translate="no">milvus.yaml</code> before initializing your cluster:</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">common:</span>
   <span class="hljs-attr">clusterID:</span> <span class="hljs-number">3</span>   <span class="hljs-comment"># Must be unique across all clusters (Range: 0-7)</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>In dieser Konfiguration gibt <code translate="no">clusterID</code> den eindeutigen Bezeichner an, der bei der AutoID-Generierung verwendet wird und von 0 bis 7 reicht (unterstützt bis zu acht Cluster).</p>
+<p>In this config, <code translate="no">clusterID</code> specifies the unique identifier used in AutoID generation, ranging from 0 to 7 (supports up to eight clusters).</p>
 <div class="alert note">
-<p>Milvus handhabt die Bit-Umkehrung intern, um zukünftige Erweiterungen ohne ID-Überschneidungen zu ermöglichen. Neben der Einstellung der Cluster-ID ist keine manuelle Konfiguration erforderlich.</p>
+<p>Milvus handles bit-reversal internally to enable future expansion without ID overlap. No manual configuration needed beyond setting the cluster ID.</p>
 </div>
-<h2 id="Reference-How-AutoID-works" class="common-anchor-header">Referenz: Wie AutoID funktioniert<button data-href="#Reference-How-AutoID-works" class="anchor-icon" translate="no">
+<h2 id="Reference-How-AutoID-works" class="common-anchor-header">Reference: How AutoID works<button data-href="#Reference-How-AutoID-works" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -715,32 +734,32 @@ curl -X POST <span class="hljs-string">&#x27;http://localhost:19530/v2/vectordb/
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Wenn Sie verstehen, wie AutoID intern eindeutige Bezeichner generiert, können Sie <a href="/docs/de/v2.6.x/primary-field.md#Ensure-global-AutoID-uniqueness-across-clusters">Cluster-IDs</a> korrekt <a href="/docs/de/v2.6.x/primary-field.md#Ensure-global-AutoID-uniqueness-across-clusters">konfigurieren</a> und ID-bezogene Probleme beheben.</p>
-<p>AutoID verwendet ein strukturiertes 64-Bit-Format, um die Einzigartigkeit zu gewährleisten:</p>
+    </button></h2><p>Understanding how AutoID generates unique identifiers internally can help you <a href="/docs/de/v2.6.x/primary-field.md#Ensure-global-AutoID-uniqueness-across-clusters">configure cluster IDs</a> correctly and troubleshoot ID-related issues.</p>
+<p>AutoID uses a structured 64-bit format to guarantee uniqueness:</p>
 <pre><code translate="no" class="language-plaintext">[sign_bit][cluster_id][physical_ts][logical_ts]
 <button class="copy-code-btn"></button></code></pre>
 <table>
    <tr>
      <th><p>Segment</p></th>
-     <th><p>Beschreibung</p></th>
+     <th><p>Description</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">sign_bit</code></p></td>
-     <td><p>Reserviert für den internen Gebrauch</p></td>
+     <td><p>Reserved for internal use</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">cluster_id</code></p></td>
-     <td><p>Identifiziert, welcher Cluster die ID erzeugt hat (Wertebereich: 0-7)</p></td>
+     <td><p>Identifies which cluster generated the ID (value range: 0-7)</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">physical_ts</code></p></td>
-     <td><p>Zeitstempel in Millisekunden, wann die ID erzeugt wurde</p></td>
+     <td><p>Timestamp in milliseconds when the ID was generated</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">logical_ts</code></p></td>
-     <td><p>Zähler zur Unterscheidung von IDs, die in der gleichen Millisekunde erstellt wurden</p></td>
+     <td><p>Counter to distinguish IDs created in the same millisecond</p></td>
    </tr>
 </table>
 <div class="alert note">
-<p>Auch wenn AutoID mit <code translate="no">VARCHAR</code> als Datentyp aktiviert ist, erzeugt Milvus numerische IDs. Diese werden als numerische Zeichenketten mit einer maximalen Länge von 20 Zeichen (uint64-Bereich) gespeichert.</p>
+<p>Even when AutoID is enabled with <code translate="no">VARCHAR</code> as the data type, Milvus still generates numeric IDs. These are stored as numeric strings with a maximum length of 20 characters (uint64 range).</p>
 </div>

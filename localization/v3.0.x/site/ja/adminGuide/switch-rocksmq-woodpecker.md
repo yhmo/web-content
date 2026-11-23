@@ -1,11 +1,11 @@
 ---
 id: switch-rocksmq-woodpecker.md
-title: RocksMQ と Woodpecker の切り替え
+title: Switch between RocksMQ and Woodpecker
 summary: >-
-  Milvus Standalone（Docker
-  Compose）のデプロイメントにおいて、メッセージキューをRocksMQとWoodpeckerの間で切り替える。
+  Switch the message queue of a Milvus Standalone (Docker Compose) deployment
+  between RocksMQ and Woodpecker.
 ---
-<h1 id="Switch-between-RocksMQ-and-Woodpecker" class="common-anchor-header">RocksMQ と Woodpecker の切り替え<button data-href="#Switch-between-RocksMQ-and-Woodpecker" class="anchor-icon" translate="no">
+<h1 id="Switch-between-RocksMQ-and-Woodpecker" class="common-anchor-header">Switch between RocksMQ and Woodpecker<button data-href="#Switch-between-RocksMQ-and-Woodpecker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,14 +20,14 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>このページでは、<strong>Milvus Standalone（Docker Compose）</strong>環境において、メッセージキュー（MQ）<strong>を</strong> <strong>RocksMQとWoodpecker</strong>（ローカルまたはMinIOバックエンド）の間で双方向に切り替える方法について説明します。一般的なワークフローと前提条件については、<a href="/docs/ja/switch-mq-type.md">「メッセージキューの切り替え」</a>を参照してください。</p>
+    </button></h1><p>This page describes how to switch the message queue (MQ) of a <strong>Milvus Standalone (Docker Compose)</strong> deployment between <strong>RocksMQ</strong> and <strong>Woodpecker</strong> (local or MinIO backend), in both directions. For the general workflow and prerequisites, see <a href="/docs/ja/switch-mq-type.md">Switch Message Queue</a>.</p>
 <div class="alert note">
 <ul>
-<li><strong>前提条件：</strong>MQの切り替え機能は<strong>、Milvus 3.0以降で</strong>利用可能です。作業を開始する前に、MilvusインスタンスをMilvus 3.0以降にアップグレードしてください。以前のバージョンではこの機能は利用できません。</li>
-<li>MQの切り替えには、Docker<strong>Composeによる</strong>デプロイ（etcd設定ソースを有効にするもの）が必要です。シングルコンテナのDockerデプロイでは、切り替えはサポートされていません。</li>
+<li><strong>Prerequisite:</strong> The Switch MQ feature is available in <strong>Milvus 3.0 and later</strong>. Upgrade your Milvus instance to Milvus 3.0 or later before you begin — the feature is not available on earlier versions.</li>
+<li>MQ switching requires the Docker <strong>Compose</strong> deployment (which enables an etcd config source). The single-container Docker deployment does not support switching.</li>
 </ul>
 </div>
-<h2 id="Switch-from-RocksMQ-to-Woodpecker" class="common-anchor-header">RocksMQ から Woodpecker への切り替え<button data-href="#Switch-from-RocksMQ-to-Woodpecker" class="anchor-icon" translate="no">
+<h2 id="Switch-from-RocksMQ-to-Woodpecker" class="common-anchor-header">Switch from RocksMQ to Woodpecker<button data-href="#Switch-from-RocksMQ-to-Woodpecker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -42,7 +42,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Step-1-Verify-the-Milvus-instance-is-running" class="common-anchor-header">ステップ 1: Milvus インスタンスが実行中であることを確認する<button data-href="#Step-1-Verify-the-Milvus-instance-is-running" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Step-1-Verify-the-Milvus-instance-is-running" class="common-anchor-header">Step 1: Verify the Milvus instance is running<button data-href="#Step-1-Verify-the-Milvus-instance-is-running" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -57,8 +57,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Milvus Standalone Docker Compose インスタンスが正常に実行されていることを確認します。たとえば、テスト用コレクションを作成し、データを挿入し、クエリを実行するなどして確認してください。</p>
-<h3 id="Step-2-Configure-Woodpecker-storage" class="common-anchor-header">ステップ 2: Woodpecker ストレージの設定<button data-href="#Step-2-Configure-Woodpecker-storage" class="anchor-icon" translate="no">
+    </button></h3><p>Verify your Milvus Standalone Docker Compose instance is running properly — for example, by creating a test collection, inserting data, and running a query.</p>
+<h3 id="Step-2-Configure-Woodpecker-storage" class="common-anchor-header">Step 2: Configure Woodpecker storage<button data-href="#Step-2-Configure-Woodpecker-storage" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -73,15 +73,15 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">mqType</code> の値<strong>を変更せずに</strong>、Milvusの設定にWoodpeckerの設定を追加します。<code translate="no">docker exec -it milvus-standalone bash</code> を実行してコンテナに入り、<code translate="no">/milvus/configs/user.yaml</code> を編集します：</p>
+    </button></h3><p>Add the Woodpecker settings to the Milvus configuration <strong>without</strong> changing the <code translate="no">mqType</code> value. Run <code translate="no">docker exec -it milvus-standalone bash</code> to enter the container, then edit <code translate="no">/milvus/configs/user.yaml</code>:</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">woodpecker:</span>
   <span class="hljs-attr">storage:</span>
     <span class="hljs-attr">type:</span> <span class="hljs-string">minio</span>   <span class="hljs-comment"># minio or local</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>設定を適用するために、Milvusインスタンスを再起動します：</p>
+<p>Restart the Milvus instance to apply the configuration:</p>
 <pre><code translate="no" class="language-shell">docker compose restart
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Step-3-Execute-the-MQ-switch" class="common-anchor-header">ステップ 3: MQ の切り替えを実行する<button data-href="#Step-3-Execute-the-MQ-switch" class="anchor-icon" translate="no">
+<h3 id="Step-3-Execute-the-MQ-switch" class="common-anchor-header">Step 3: Execute the MQ switch<button data-href="#Step-3-Execute-the-MQ-switch" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -97,14 +97,14 @@ summary: >-
         ></path>
       </svg>
     </button></h3><div class="alert note">
-<p>Woodpeckerへの切り替えが初めての場合は、この注意事項をスキップしてください。それ以外の場合は、再度切り替える前に、残存するWoodpeckerのメタデータとデータをクリーンアップしてください。残存データがあると、予期しない動作を引き起こす可能性があります。</p>
+<p>If this is your first time switching to Woodpecker, skip this note. Otherwise, clean up residual Woodpecker meta and data before switching again — residual data may cause unexpected behavior.</p>
 </div>
 <pre><code translate="no" class="language-shell">curl -X POST http://&lt;mixcoord_addr&gt;:&lt;mixcoord_port&gt;/management/wal/alter \
   -H &quot;Content-Type: application/json&quot; \
   -d &#x27;{&quot;target_wal_name&quot;: &quot;woodpecker&quot;}&#x27;
 <button class="copy-code-btn"></button></code></pre>
-<p>MixCoordのポートは通常、<code translate="no">9091</code> です。</p>
-<h3 id="Step-4-Verify-the-switch-is-complete" class="common-anchor-header">ステップ 4: 切り替えが完了したことを確認する<button data-href="#Step-4-Verify-the-switch-is-complete" class="anchor-icon" translate="no">
+<p>The MixCoord port is typically <code translate="no">9091</code>.</p>
+<h3 id="Step-4-Verify-the-switch-is-complete" class="common-anchor-header">Step 4: Verify the switch is complete<button data-href="#Step-4-Verify-the-switch-is-complete" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -121,8 +121,8 @@ summary: >-
       </svg>
     </button></h3><pre><code translate="no" class="language-shell">docker logs milvus-standalone | grep &quot;successfully updated mq.type configuration in etcd&quot;
 <button class="copy-code-btn"></button></code></pre>
-<p>切り替えが成功すると、<code translate="no">[mqTypeValue=woodpecker]</code> がログに記録されます。</p>
-<h3 id="Step-5-Optional-Clean-up-RocksMQ-data" class="common-anchor-header">ステップ 5: (オプション) RocksMQ データのクリーンアップ<button data-href="#Step-5-Optional-Clean-up-RocksMQ-data" class="anchor-icon" translate="no">
+<p>A successful switch logs <code translate="no">[mqTypeValue=woodpecker]</code>.</p>
+<h3 id="Step-5-Optional-Clean-up-RocksMQ-data" class="common-anchor-header">Step 5: (Optional) Clean up RocksMQ data<button data-href="#Step-5-Optional-Clean-up-RocksMQ-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -137,8 +137,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>RocksMQのデータは、<code translate="no">docker-compose.yaml</code> で定義されている<code translate="no">volumes/milvus/rdb_data</code> および<code translate="no">volumes/milvus/rdb_data_meta_kv</code> ディレクトリ内にあります。後でRocksMQに戻す予定がある場合は、競合を避けるために、まずこれらのファイルをクリーンアップしてください。</p>
-<h2 id="Switch-from-Woodpecker-to-RocksMQ" class="common-anchor-header">Woodpecker から RocksMQ への切り替え<button data-href="#Switch-from-Woodpecker-to-RocksMQ" class="anchor-icon" translate="no">
+    </button></h3><p>RocksMQ data is in the <code translate="no">volumes/milvus/rdb_data</code> and <code translate="no">volumes/milvus/rdb_data_meta_kv</code> directories defined in <code translate="no">docker-compose.yaml</code>. If you plan to switch back to RocksMQ later, clean up these files first to avoid conflicts.</p>
+<h2 id="Switch-from-Woodpecker-to-RocksMQ" class="common-anchor-header">Switch from Woodpecker to RocksMQ<button data-href="#Switch-from-Woodpecker-to-RocksMQ" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -153,7 +153,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Step-1-Verify-the-Milvus-instance-is-running" class="common-anchor-header">ステップ 1: Milvus インスタンスが実行中であることを確認する<button data-href="#Step-1-Verify-the-Milvus-instance-is-running" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Step-1-Verify-the-Milvus-instance-is-running" class="common-anchor-header">Step 1: Verify the Milvus instance is running<button data-href="#Step-1-Verify-the-Milvus-instance-is-running" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -168,8 +168,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Milvus Standalone Docker Compose インスタンスが正常に実行されていることを確認してください。</p>
-<h3 id="Step-2-Execute-the-MQ-switch" class="common-anchor-header">ステップ 2: MQ の切り替えを実行する<button data-href="#Step-2-Execute-the-MQ-switch" class="anchor-icon" translate="no">
+    </button></h3><p>Ensure your Milvus Standalone Docker Compose instance is running properly.</p>
+<h3 id="Step-2-Execute-the-MQ-switch" class="common-anchor-header">Step 2: Execute the MQ switch<button data-href="#Step-2-Execute-the-MQ-switch" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -185,13 +185,13 @@ summary: >-
         ></path>
       </svg>
     </button></h3><div class="alert note">
-<p>インスタンスに前回の実行から残っているRocksMQのデータがないことを確認してください。今回がRocksMQへの切り替えが初めての場合は、この注意事項をスキップしてください。それ以外の場合は、まず関連するRocksMQのメタデータとデータをクリーンアップしてください。</p>
+<p>Ensure the instance has no residual RocksMQ data from a previous run. If this is your first time switching to RocksMQ, skip this note; otherwise clean up the related RocksMQ meta and data first.</p>
 </div>
 <pre><code translate="no" class="language-shell">curl -X POST http://&lt;mixcoord_addr&gt;:&lt;mixcoord_port&gt;/management/wal/alter \
   -H &quot;Content-Type: application/json&quot; \
   -d &#x27;{&quot;target_wal_name&quot;: &quot;rocksmq&quot;}&#x27;
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Step-3-Verify-the-switch-is-complete" class="common-anchor-header">ステップ 3: 切り替えが完了したことを確認する<button data-href="#Step-3-Verify-the-switch-is-complete" class="anchor-icon" translate="no">
+<h3 id="Step-3-Verify-the-switch-is-complete" class="common-anchor-header">Step 3: Verify the switch is complete<button data-href="#Step-3-Verify-the-switch-is-complete" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -208,8 +208,8 @@ summary: >-
       </svg>
     </button></h3><pre><code translate="no" class="language-shell">docker logs milvus-standalone | grep &quot;successfully updated mq.type configuration in etcd&quot;
 <button class="copy-code-btn"></button></code></pre>
-<p>切り替えが成功すると、<code translate="no">[mqTypeValue=rocksmq]</code> というログが出力されます。</p>
-<h3 id="Step-4-Optional-Clean-up-Woodpecker-data" class="common-anchor-header">ステップ 4: (オプション) Woodpecker データのクリーンアップ<button data-href="#Step-4-Optional-Clean-up-Woodpecker-data" class="anchor-icon" translate="no">
+<p>A successful switch logs <code translate="no">[mqTypeValue=rocksmq]</code>.</p>
+<h3 id="Step-4-Optional-Clean-up-Woodpecker-data" class="common-anchor-header">Step 4: (Optional) Clean up Woodpecker data<button data-href="#Step-4-Optional-Clean-up-Woodpecker-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -225,11 +225,11 @@ summary: >-
         ></path>
       </svg>
     </button></h3><ul>
-<li><strong>メタデータ（etcd）：</strong>Woodpeckerのキープレフィックスは通常、<code translate="no">woodpecker/...</code> です。<code translate="no">etcdctl get woodpecker --prefix</code> で確認し、削除してください。</li>
-<li><strong>ストレージデータ：</strong> <strong>MinIOモードの場合</strong>、バケット内の<code translate="no">&lt;rootPath&gt;/wp/...</code> 配下にあるログデータを削除します（通常は<code translate="no">files/wp/...</code> ）。<strong>ローカルモード</strong>の場合、データはローカルディスクの<code translate="no">volumes/milvus/data/wp/...</code> にあります。</li>
+<li><strong>Metadata (etcd):</strong> the Woodpecker key prefix is typically <code translate="no">woodpecker/...</code>. View it with <code translate="no">etcdctl get woodpecker --prefix</code>, then delete it.</li>
+<li><strong>Storage data:</strong> in <strong>MinIO mode</strong>, delete the log data under <code translate="no">&lt;rootPath&gt;/wp/...</code> (typically <code translate="no">files/wp/...</code>) in the bucket; in <strong>local mode</strong>, the data is on local disk at <code translate="no">volumes/milvus/data/wp/...</code>.</li>
 </ul>
-<p>後でWoodpeckerに戻す予定がある場合は、競合を避けるために、まずこれらのファイルをクリーンアップしてください。</p>
-<h2 id="Supported-scenarios" class="common-anchor-header">サポートされるシナリオ<button data-href="#Supported-scenarios" class="anchor-icon" translate="no">
+<p>If you plan to switch back to Woodpecker later, clean up these files first to avoid conflicts.</p>
+<h2 id="Supported-scenarios" class="common-anchor-header">Supported scenarios<button data-href="#Supported-scenarios" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -246,13 +246,13 @@ summary: >-
       </svg>
     </button></h2><table>
 <thead>
-<tr><th>ソース MQ</th><th>ターゲット MQ</th><th>ステータス</th><th>備考</th></tr>
+<tr><th>Source MQ</th><th>Target MQ</th><th>Status</th><th>Notes</th></tr>
 </thead>
 <tbody>
-<tr><td>RocksMQ</td><td>Woodpecker (MinIO/ローカル)</td><td><strong>対応済み</strong></td><td></td></tr>
-<tr><td>Woodpecker (MinIO/ローカル)</td><td>RocksMQ</td><td><strong>サポート対象</strong></td><td></td></tr>
-<tr><td>Woodpecker MinIO</td><td>Woodpecker ローカル</td><td><strong>未対応</strong></td><td>Woodpeckerのストレージモードを切り替えるには、追加のメタデータ処理が必要ですが、これはまだサポートされていません。</td></tr>
-<tr><td>Woodpecker ローカル</td><td>Woodpecker MinIO</td><td><strong>未対応</strong></td><td>上記と同様です。</td></tr>
-<tr><td>RocksMQ / Woodpecker</td><td>外部の Pulsar / Kafka</td><td><strong>サポートされていますが、推奨されません</strong></td><td>スタンドアロンインスタンスは、可能な限りシンプルに保ってください。</td></tr>
+<tr><td>RocksMQ</td><td>Woodpecker (MinIO/local)</td><td><strong>Supported</strong></td><td></td></tr>
+<tr><td>Woodpecker (MinIO/local)</td><td>RocksMQ</td><td><strong>Supported</strong></td><td></td></tr>
+<tr><td>Woodpecker MinIO</td><td>Woodpecker local</td><td><strong>Not supported</strong></td><td>Switching between Woodpecker storage modes requires additional metadata handling, which is not yet supported.</td></tr>
+<tr><td>Woodpecker local</td><td>Woodpecker MinIO</td><td><strong>Not supported</strong></td><td>Same as above.</td></tr>
+<tr><td>RocksMQ / Woodpecker</td><td>External Pulsar / Kafka</td><td><strong>Supported but not recommended</strong></td><td>Keep standalone instances as simple as possible.</td></tr>
 </tbody>
 </table>

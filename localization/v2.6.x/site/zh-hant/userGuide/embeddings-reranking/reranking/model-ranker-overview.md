@@ -1,11 +1,16 @@
 ---
 id: model-ranker-overview.md
-title: 模型排名器概述Compatible with Milvus 2.6.x
+title: Model Ranker OverviewCompatible with Milvus 2.6.x
 summary: >-
-  傳統的向量搜尋純粹根據數學上的相似度來排序結果——也就是向量在高維空間中的匹配程度。雖然這種方法效率很高，但往往會忽略真正的語義相關性。以搜尋「資料庫優化的最佳實務」為例：您可能會收到向量相似度很高、且頻繁提及這些術語的文件，但這些文件實際上並未提供可付諸實行的優化策略。
+  Traditional vector search ranks results purely by mathematical similarity—how
+  closely vectors match in high-dimensional space. While efficient, this
+  approach often misses true semantic relevance. Consider searching for "best
+  practices for database optimization": you might receive documents with high
+  vector similarity that mention these terms frequently, but don't actually
+  provide actionable optimization strategies.
 beta: Milvus 2.6.x
 ---
-<h1 id="Model-Ranker-Overview" class="common-anchor-header">模型排名器概述<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#Model-Ranker-Overview" class="anchor-icon" translate="no">
+<h1 id="Model-Ranker-Overview" class="common-anchor-header">Model Ranker Overview<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#Model-Ranker-Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,9 +25,9 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>傳統的向量搜尋純粹依據數學上的相似度來排序結果——即向量在高維空間中的匹配程度。雖然這種方法效率很高，但往往會忽略真正的語義相關性。以搜尋<strong>「資料庫優化的最佳實踐」</strong>為例<strong>：</strong>您可能會收到向量相似度很高、且頻繁提及這些術語的文件，但這些文件實際上並未提供可付諸實行的優化策略。</p>
-<p>Model Ranker 透過整合能理解查詢與文件之間語義關係的先進語言模型，徹底革新了 Milvus 的搜尋方式。它不再僅依賴向量相似度，而是評估內容的意義與上下文，從而提供更智能、更相關的搜尋結果。</p>
-<h2 id="Limits" class="common-anchor-header">限制<button data-href="#Limits" class="anchor-icon" translate="no">
+    </button></h1><p>Traditional vector search ranks results purely by mathematical similarity—how closely vectors match in high-dimensional space. While efficient, this approach often misses true semantic relevance. Consider searching for <strong>“best practices for database optimization”</strong>: you might receive documents with high vector similarity that mention these terms frequently, but don’t actually provide actionable optimization strategies.</p>
+<p>Model Ranker transforms Milvus search by integrating advanced language models that understand semantic relationships between queries and documents. Instead of relying solely on vector similarity, it evaluates content meaning and context to deliver more intelligent, relevant results.</p>
+<h2 id="Limits" class="common-anchor-header">Limits<button data-href="#Limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -38,11 +43,11 @@ beta: Milvus 2.6.x
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>模型排序器無法與分組搜尋功能併用。</p></li>
-<li><p>用於模型重新排序的欄位必須為文字類型（<code translate="no">VARCHAR</code> ）。</p></li>
-<li><p>每個模型重新排序器每次僅能使用一個<code translate="no">VARCHAR</code> 欄位進行評估。</p></li>
+<li><p>Model rankers cannot be used with grouping searches.</p></li>
+<li><p>Fields used for model reranking must be text type (<code translate="no">VARCHAR</code>).</p></li>
+<li><p>Each model ranker can use only one <code translate="no">VARCHAR</code> field at a time for evaluation.</p></li>
 </ul>
-<h2 id="How-it-works" class="common-anchor-header">運作原理<button data-href="#How-it-works" class="anchor-icon" translate="no">
+<h2 id="How-it-works" class="common-anchor-header">How it works<button data-href="#How-it-works" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -57,27 +62,27 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>模型排序器透過一套明確定義的工作流程，將語言模型的理解能力整合至 Milvus 搜尋流程中：</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="/docs/v2.6.x/assets/model-ranker-overview.png" alt="Model Ranker Overview" class="doc-image" id="model-ranker-overview" /> 
-   <span>模型排名器概覽</span>
-  
- </span></p>
+    </button></h2><p>Model rankers integrate language model understanding capabilities into the Milvus search process through a well-defined workflow:</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/model-ranker-overview.png" alt="Model Ranker Overview" class="doc-image" id="model-ranker-overview" />
+    <span>Model Ranker Overview</span>
+  </span>
+</p>
 <ol>
-<li><p><strong>初始查詢</strong>：您的應用程式將查詢傳送至 Milvus</p></li>
-<li><p><strong>向量搜尋</strong>：Milvus 執行標準向量搜尋以識別候選文件</p></li>
-<li><p><strong>候選文件檢索</strong>：系統根據向量相似度識別出初始候選文件集</p></li>
-<li><p><strong>模型評估</strong>：模型排序器函式處理查詢-文件配對：</p>
+<li><p><strong>Initial query</strong>: Your application sends a query to Milvus</p></li>
+<li><p><strong>Vector search</strong>: Milvus performs standard vector search to identify candidate documents</p></li>
+<li><p><strong>Candidate retrieval</strong>: The system identifies the initial set of candidate documents based on vector similarity</p></li>
+<li><p><strong>Model evaluation</strong>: The Model Ranker Function processes query-document pairs:</p>
 <ul>
-<li><p>將原始查詢與候選文件傳送至外部模型服務</p></li>
-<li><p>語言模型評估查詢與每份文件之間的語義相關性</p></li>
-<li><p>每份文件會根據語義理解獲得相關性分數</p></li>
+<li><p>Sends the original query and candidate documents to an external model service</p></li>
+<li><p>The language model evaluates semantic relevance between query and each document</p></li>
+<li><p>Each document receives a relevance score based on semantic understanding</p></li>
 </ul></li>
-<li><p><strong>智慧重新排序</strong>：根據模型產生的相關性分數，重新排列文件順序</p></li>
-<li><p><strong>強化搜尋結果</strong>：您的應用程式將收到依語義相關性排序的結果，而非僅依向量相似度排序</p></li>
+<li><p><strong>Intelligent reranking</strong>: Documents are reordered based on model-generated relevance scores</p></li>
+<li><p><strong>Enhanced results</strong>: Your application receives results ranked by semantic relevance rather than just vector similarity</p></li>
 </ol>
-<h2 id="Choose-a-model-provider-for-your-needs" class="common-anchor-header">根據您的需求選擇模型供應商<button data-href="#Choose-a-model-provider-for-your-needs" class="anchor-icon" translate="no">
+<h2 id="Choose-a-model-provider-for-your-needs" class="common-anchor-header">Choose a model provider for your needs<button data-href="#Choose-a-model-provider-for-your-needs" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -92,61 +97,61 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus 支援以下用於重新排序的模型服務供應商，各家皆具備獨特特性：</p>
+    </button></h2><p>Milvus supports the following model service providers for reranking, each with distinct characteristics:</p>
 <table>
    <tr>
-     <th><p>供應商</p></th>
-     <th><p>最適合</p></th>
-     <th><p>特點</p></th>
-     <th><p>應用範例</p></th>
+     <th><p>Provider</p></th>
+     <th><p>Best For</p></th>
+     <th><p>Characteristics</p></th>
+     <th><p>Example Use Case</p></th>
    </tr>
    <tr>
      <td><p>vLLM</p></td>
-     <td><p>需要深度語義理解與客製化的複雜應用</p></td>
-     <td><ul><li><p>支援各種大型語言模型</p></li><li><p>靈活的部署選項</p></li><li><p>更高的運算需求</p></li><li><p>更大的客製化潛力</p></li></ul></td>
-     <td><p>部署了能理解法律術語與判例法之間關係的領域專用模型之法律研究平台</p></td>
+     <td><p>Complex applications requiring deep semantic understanding and customization</p></td>
+     <td><ul><li><p>Supports various large language models</p></li><li><p>Flexible deployment options</p></li><li><p>Higher computational requirements</p></li><li><p>Greater customization potential</p></li></ul></td>
+     <td><p>Legal research platform deploying domain-specific models that understand legal terminology and case law relationships</p></td>
    </tr>
    <tr>
      <td><p>TEI</p></td>
-     <td><p>快速實施且資源利用率高</p></td>
-     <td><ul><li><p>針對文字處理進行優化的輕量級服務</p></li><li><p>部署更簡便，資源需求更低</p></li><li><p>預先優化的重新排序模型</p></li><li><p>基礎架構開銷極低</p></li></ul></td>
-     <td><p>需要高效重新排序功能且符合標準要求的內容管理系統</p></td>
+     <td><p>Quick implementation with efficient resource usage</p></td>
+     <td><ul><li><p>Lightweight service optimized for text operations</p></li><li><p>Easier deployment with lower resource requirements</p></li><li><p>Pre-optimized reranking models</p></li><li><p>Minimal infrastructure overhead</p></li></ul></td>
+     <td><p>Content management system needing efficient reranking capabilities with standard requirements</p></td>
    </tr>
    <tr>
      <td><p>Cohere</p></td>
-     <td><p>優先考量可靠性與整合便利性的企業級應用程式</p></td>
-     <td><ul><li><p>企業級的可靠性與可擴展性</p></li><li><p>無需維護基礎架構的託管服務</p></li><li><p>多語言重新排序功能</p></li><li><p>內建流量限制與錯誤處理機制</p></li></ul></td>
-     <td><p>需要高可用性搜尋功能、穩定 API 效能及多語言產品目錄的電子商務平台</p></td>
+     <td><p>Enterprise applications prioritizing reliability and ease of integration</p></td>
+     <td><ul><li><p>Enterprise-grade reliability and scalability</p></li><li><p>Managed service with no infrastructure maintenance</p></li><li><p>Multilingual reranking capabilities</p></li><li><p>Built-in rate limiting and error handling</p></li></ul></td>
+     <td><p>E-commerce platform requiring high-availability search with consistent API performance and multilingual product catalogs</p></td>
    </tr>
    <tr>
      <td><p>Voyage AI</p></td>
-     <td><p>具有特定效能與語境需求的 RAG 應用程式</p></td>
-     <td><ul><li><p>專為重新排序任務訓練的模型</p></li><li><p>針對不同文件長度的細粒度截斷控制</p></li><li><p>針對生產環境工作負載進行優化的推論</p></li><li><p>多種模型變體（rerank-2、rerank-lite 等）</p></li></ul></td>
-     <td><p>包含不同文件長度的研究資料庫，需要精細調校的效能控制與專業的語義理解</p></td>
+     <td><p>RAG applications with specific performance and context requirements</p></td>
+     <td><ul><li><p>Models specifically trained for reranking tasks</p></li><li><p>Granular truncation controls for diverse document lengths</p></li><li><p>Optimized inference for production workloads</p></li><li><p>Multiple model variants (rerank-2, rerank-lite, etc.)</p></li></ul></td>
+     <td><p>Research database with varying document lengths requiring fine-tuned performance control and specialized semantic understanding</p></td>
    </tr>
    <tr>
      <td><p>SiliconFlow</p></td>
-     <td><p>以成本效益為優先考量，處理長篇文件之應用</p></td>
-     <td><ul><li><p>具備可配置重疊度的進階文件分塊功能</p></li><li><p>基於區塊的評分（得分最高的區塊代表該文件）</p></li><li><p>支援多種重新排序模型</p></li><li><p>提供標準版與專業版兩種方案，兼具成本效益</p></li></ul></td>
-     <td><p>技術文件搜尋系統，專門處理需要智慧分割與重疊控制的長篇手冊及論文</p></td>
+     <td><p>Applications processing long documents with cost-effectiveness priorities</p></td>
+     <td><ul><li><p>Advanced document chunking with configurable overlap</p></li><li><p>Chunk-based scoring (highest-scoring chunk represents document)</p></li><li><p>Support for diverse reranking models</p></li><li><p>Cost-effective with standard and pro model variants</p></li></ul></td>
+     <td><p>Technical documentation search system processing lengthy manuals and papers that need intelligent segmentation and overlap control</p></td>
    </tr>
    <tr>
      <td><p>Hugging Face</p></td>
-     <td><p>採用 Hugging Face 託管式句子相似度模型的應用程式</p></td>
-     <td><ul><li><p>採用託管式<code translate="no">hf-inference</code> 服務提供者</p></li><li><p>從 Hugging Face Hub 選取模型</p></li><li><p>針對每個候選句計算一個句子相似度分數</p></li><li><p>採用 API 金鑰驗證</p></li></ul></td>
-     <td><p>希望利用 Hugging Face 模型對候選文字進行重新排序，卻無需自行運作獨立推論服務的語義搜尋應用程式</p></td>
+     <td><p>Applications using hosted Hugging Face sentence-similarity models</p></td>
+     <td><ul><li><p>Uses the hosted <code translate="no">hf-inference</code> provider</p></li><li><p>Selects models from the Hugging Face Hub</p></li><li><p>Calculates one sentence-similarity score per candidate</p></li><li><p>Uses API-key authentication</p></li></ul></td>
+     <td><p>Semantic search applications that want to rerank candidate text with a Hugging Face model without operating a separate inference service</p></td>
    </tr>
 </table>
-<p>有關各模型服務實作的詳細資訊，請參閱專用文件：</p>
+<p>For detailed information about implementation of each model service, refer to the dedicated documentation:</p>
 <ul>
 <li><p><a href="/docs/zh-hant/v2.6.x/vllm-ranker.md">vLLM Ranker</a></p></li>
 <li><p><a href="/docs/zh-hant/v2.6.x/tei-ranker.md">TEI Ranker</a></p></li>
 <li><p><a href="/docs/zh-hant/v2.6.x/cohere-ranker.md">Cohere Ranker</a></p></li>
 <li><p><a href="/docs/zh-hant/v2.6.x/voyage-ai-ranker.md">Voyage AI Ranker</a></p></li>
 <li><p><a href="/docs/zh-hant/v2.6.x/siliconflow-ranker.md">SiliconFlow Ranker</a></p></li>
-<li><p><a href="/docs/zh-hant/v2.6.x/hugging-face-ranker.md">Hugging Face 排名系統</a></p></li>
+<li><p><a href="/docs/zh-hant/v2.6.x/hugging-face-ranker.md">Hugging Face Ranker</a></p></li>
 </ul>
-<h2 id="Implementation" class="common-anchor-header">實作<button data-href="#Implementation" class="anchor-icon" translate="no">
+<h2 id="Implementation" class="common-anchor-header">Implementation<button data-href="#Implementation" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -161,14 +166,14 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>在實作 Model Ranker 之前，請確保您已具備：</p>
+    </button></h2><p>Before implementing Model Ranker, ensure you have:</p>
 <ul>
-<li><p>一個 Milvus 集合，其中包含名為 `<code translate="no">VARCHAR</code> ` 的欄位，該欄位存有待重新排序的文字</p></li>
-<li><p>一個可由您的 Milvus 實例存取且正在運行的外部模型服務</p></li>
-<li><p>Milvus 與您選用的模型服務之間具備適當的網路連線</p></li>
+<li><p>A Milvus collection with a <code translate="no">VARCHAR</code> field containing the text to be reranked</p></li>
+<li><p>A running external model service accessible to your Milvus instance</p></li>
+<li><p>Appropriate network connectivity between Milvus and your chosen model service</p></li>
 </ul>
-<p>模型排序器可與標準向量搜尋及混合搜尋操作無縫整合。實作過程涉及建立一個 Function 物件來定義您的重新排序設定，並將其傳遞給搜尋操作。</p>
-<h3 id="Create-a-model-ranker" class="common-anchor-header">建立模型排序器<button data-href="#Create-a-model-ranker" class="anchor-icon" translate="no">
+<p>Model rankers integrate seamlessly with both standard vector search and hybrid search operations. The implementation involves creating a Function object that defines your reranking configuration and passing it to search operations.</p>
+<h3 id="Create-a-model-ranker" class="common-anchor-header">Create a model ranker<button data-href="#Create-a-model-ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -183,13 +188,13 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>要實作模型重新排序，首先需定義一個具有適當配置的 Function 物件。在此範例中，我們使用 TEI 作為服務提供者：</p>
+    </button></h3><p>To implement model reranking, first define a Function object with the appropriate configuration. In this example, we use TEI as the service provider:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, Function, FunctionType
 
@@ -236,67 +241,67 @@ model_ranker = Function(
 <button class="copy-code-btn"></button></code></pre>
 <table>
    <tr>
-     <th><p>參數</p></th>
-     <th><p>是否必填？</p></th>
-     <th><p>說明</p></th>
-     <th><p>值 / 範例</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Required?</p></th>
+     <th><p>Description</p></th>
+     <th><p>Value / Example</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">name</code></p></td>
-     <td><p>是</p></td>
-     <td><p>執行搜尋時用於識別您的函式的標識符。</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Identifier for your function used when executing searches.</p></td>
      <td><p><code translate="no">"semantic_ranker"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">input_field_names</code></p></td>
-     <td><p>是</p></td>
-     <td><p>用於重新排序的文字欄位名稱。</p><p>必須為<code translate="no">VARCHAR</code> 類型的欄位。</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Name of the text field to use for reranking.</p><p>Must be a <code translate="no">VARCHAR</code> type field.</p></td>
      <td><p><code translate="no">["document"]</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">function_type</code></p></td>
-     <td><p>是</p></td>
-     <td><p>指定正在建立的函數類型。</p><p>對於所有模型排名器，此參數必須設定為「<code translate="no">RERANK</code> 」。</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Specifies the type of function being created.</p><p>Must be set to <code translate="no">RERANK</code> for all model rankers.</p></td>
      <td><p><code translate="no">FunctionType.RERANK</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params</code></p></td>
-     <td><p>是</p></td>
-     <td><p>一個包含基於模型的重新排序函數配置的字典。可用的參數（鍵）會因服務提供者而異。</p></td>
+     <td><p>Yes</p></td>
+     <td><p>A dictionary containing configuration for the model-based reranking function. The available parameters (keys) vary depending on the service provider.</p></td>
      <td><p><code translate="no">{...}</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.reranker</code></p></td>
-     <td><p>是</p></td>
-     <td><p>必須設定為 `<code translate="no">"model"</code> ` 才能啟用模型重新排序。</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Must be set to <code translate="no">"model"</code> to enable model reranking.</p></td>
      <td><p><code translate="no">"model"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.provider</code></p></td>
-     <td><p>是</p></td>
-     <td><p>用於重新排序的模型服務提供者。</p></td>
+     <td><p>Yes</p></td>
+     <td><p>The model service provider to use for reranking.</p></td>
      <td><p><code translate="no">"tei"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.queries</code></p></td>
-     <td><p>是</p></td>
-     <td><p>重新排序模型用於計算相關性分數的查詢字串清單。</p><p>查詢字串的數量必須與搜尋操作中的查詢數量完全相符（即使使用查詢向量而非文字），否則將回報錯誤。</p></td>
+     <td><p>Yes</p></td>
+     <td><p>List of query strings used by the reranking model to calculate relevance scores.</p><p>The number of query strings must match exactly the number of queries in your search operation (even when using query vectors instead of text), otherwise an error will be reported.</p></td>
      <td><p><code translate="no">["search query"]</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.endpoint</code></p></td>
-     <td><p>是</p></td>
-     <td><p>模型服務的 URL。</p></td>
+     <td><p>Yes</p></td>
+     <td><p>URL of the model service.</p></td>
      <td><p><code translate="no">"http://localhost:8080"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">max_client_batch_size</code></p></td>
-     <td><p>否</p></td>
-     <td><p>單批次中最多可處理的文件數量。較大的數值會提高吞吐量，但需要更多記憶體。</p></td>
-     <td><p><code translate="no">32</code> (預設)</p></td>
+     <td><p>No</p></td>
+     <td><p>Maximum number of documents to process in a single batch. Larger values increase throughput but require more memory.</p></td>
+     <td><p><code translate="no">32</code> (default)</p></td>
    </tr>
 </table>
-<h3 id="Apply-to-standard-vector-search" class="common-anchor-header">套用至標準向量搜尋<button data-href="#Apply-to-standard-vector-search" class="anchor-icon" translate="no">
+<h3 id="Apply-to-standard-vector-search" class="common-anchor-header">Apply to standard vector search<button data-href="#Apply-to-standard-vector-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -311,13 +316,13 @@ model_ranker = Function(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>定義模型排序器後，您可透過將其傳遞至 `ranker` 參數，在搜尋操作中套用該模型：</p>
+    </button></h3><p>After defining your model ranker, you can apply it during search operations by passing it to the ranker parameter:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Use the model ranker in standard vector search</span>
 results = client.search(

@@ -1,12 +1,16 @@
 ---
 id: phrase-match.md
-title: 短語匹配Compatible with Milvus 2.5.17+
+title: Phrase MatchCompatible with Milvus 2.5.17+
 summary: >-
-  「短語匹配」可讓您搜尋包含查詢詞彙作為精確短語的文件。預設情況下，這些詞彙必須以相同的順序出現，且彼此緊鄰。 例如，查詢「robotics machine
-  learning」將匹配如「…典型的機器人學機器學習模型…」這類文字，其中「robotics」、「machine」和「learning」這三個詞依序出現，且之間沒有其他詞彙。
+  Phrase match lets you search for documents containing your query terms as an
+  exact phrase. By default, the words must appear in the same order and directly
+  adjacent to one another. For example, a query for "robotics machine learning"
+  matches text like "…typical robotics machine learning models…", where the
+  words "robotics", "machine", and "learning" appear in sequence with no other
+  words between them.
 beta: Milvus 2.5.17+
 ---
-<h1 id="Phrase-Match" class="common-anchor-header">短語匹配<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.5.17+</span><button data-href="#Phrase-Match" class="anchor-icon" translate="no">
+<h1 id="Phrase-Match" class="common-anchor-header">Phrase Match<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.5.17+</span><button data-href="#Phrase-Match" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -21,9 +25,9 @@ beta: Milvus 2.5.17+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>短語匹配可讓您搜尋包含查詢詞彙作為精確短語的文件。預設情況下，這些詞彙必須以相同的順序出現，且彼此緊鄰。 例如，查詢<strong>「robotics machine learning」</strong>將匹配如<em>「…典型的機器人學機器學習模型…」</em>這類文字，其中<strong>「robotics」</strong>、<strong>「machine」</strong>和<strong>「learning」</strong>這三個詞依序出現，且之間沒有其他詞彙。</p>
-<p>然而，在實際情境中，嚴格的短語匹配可能過於僵化。您可能希望匹配類似<em>「…在機器人學中廣泛採用的機器學習模型…」</em>這類文字<em>。</em>在此情況下，雖然包含相同的關鍵字，但這些關鍵字並非緊鄰出現，亦非依原始順序排列。為解決此問題，短語匹配支援「<code translate="no">slop</code> 」參數，藉此增加靈活性。<code translate="no">slop</code> 的數值定義了短語中各詞語之間允許的位置偏移量。例如，當<code translate="no">slop</code> 設為 1 時，查詢<strong>「machine learning」</strong>即可匹配如<em>「…machine deep learning…」</em>這類文字，其中一個詞（<strong>「deep」</strong>）將原始詞語分隔開來。</p>
-<h2 id="Overview" class="common-anchor-header">概述<button data-href="#Overview" class="anchor-icon" translate="no">
+    </button></h1><p>Phrase match lets you search for documents containing your query terms as an exact phrase. By default, the words must appear in the same order and directly adjacent to one another. For example, a query for <strong>“robotics machine learning”</strong> matches text like <em>“…typical robotics machine learning models…”</em>, where the words <strong>“robotics”</strong>, <strong>“machine”</strong>, and <strong>“learning”</strong> appear in sequence with no other words between them.</p>
+<p>However, in real-world scenarios, strict phrase matching can be too rigid. You might want to match text like <em>“…machine learning models widely adopted in robotics…”</em>. Here, the same keywords are present but not side-by-side or in the original order. To handle this, phrase match supports a <code translate="no">slop</code> parameter, which introduces flexibility. The <code translate="no">slop</code> value defines how many positional shifts are allowed between the terms in the phrase. For example, with a <code translate="no">slop</code> of 1, a query for <strong>“machine learning”</strong> can match text like <em>“…machine deep learning…”</em>, where one word (<strong>“deep”</strong>) separates the original terms.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -38,30 +42,30 @@ beta: Milvus 2.5.17+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>短語匹配功能由<a href="https://github.com/quickwit-oss/tantivy">Tantivy</a>搜尋引擎函式庫驅動，其運作原理是分析文件中單字的位置資訊。下圖說明了此過程：</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="/docs/v2.6.x/assets/phrase-match-workflow.png" alt="Phrase Match Workflow" class="doc-image" id="phrase-match-workflow" /> 
-   <span>短語匹配工作流程</span>
-  
- </span></p>
+    </button></h2><p>Powered by the <a href="https://github.com/quickwit-oss/tantivy">Tantivy</a> search engine library, phrase match works by analyzing the positional information of words within documents. The diagram below illustrates the process:</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/phrase-match-workflow.png" alt="Phrase Match Workflow" class="doc-image" id="phrase-match-workflow" />
+    <span>Phrase Match Workflow</span>
+  </span>
+</p>
 <ol>
-<li><p><strong>文件分詞</strong>：當您將文件導入 Milvus 時，系統會使用分析器將文字分割為分詞（單一單字或詞彙），並為每個分詞記錄其位置資訊。 例如<strong>，doc_1</strong>被分詞為<strong>[“machine” (pos=0)、“learning” (pos=1)、“boosts” (pos=2)、“efficiency” (pos=3)]</strong>。有關分析器的更多資訊，請參閱《<a href="/docs/zh-hant/v2.6.x/analyzer-overview.md">分析器概覽》</a>。</p></li>
-<li><p><strong>倒排索引建立</strong>：Milvus 會建立一個倒排索引，將每個詞元映射至其出現的文件，以及該詞元在這些文件中的位置。</p></li>
-<li><p><strong>短語匹配</strong>：當執行短語查詢時，Milvus 會從倒排索引中查詢每個詞元，並檢查其位置，以確定它們是否以正確的順序和相鄰度出現。<code translate="no">slop</code> 參數控制匹配詞元之間允許的最大位置數：</p>
+<li><p><strong>Document Tokenization</strong>: When you insert documents into Milvus, the text is split into tokens (individual words or terms) using an analyzer, with positional information recorded for each token. For example, <strong>doc_1</strong> is tokenized into <strong>[“machine” (pos=0), “learning” (pos=1), “boosts” (pos=2), “efficiency” (pos=3)]</strong>. For more information on analyzers, refer to <a href="/docs/zh-hant/v2.6.x/analyzer-overview.md">Analyzer Overview</a>.</p></li>
+<li><p><strong>Inverted Index Creation</strong>: Milvus builds an inverted index, mapping each token to the document(s) in which it appears and the token’s positions in those documents.</p></li>
+<li><p><strong>Phrase Matching</strong>: When a phrase query is executed, Milvus looks up each token in the inverted index and checks their positions to determine if they appear in the correct order and proximity. The <code translate="no">slop</code> parameter controls the maximum number of positions allowed between matching tokens:</p>
 <ul>
-<li><p><strong>slop = 0</strong>表示詞元必須<strong>以完全相同的順序</strong>出現<strong>，且緊鄰</strong>（即中間不得有額外單字）。</p>
+<li><p><strong>slop = 0</strong> means the tokens must appear <strong>in the exact order and immediately adjacent</strong> (i.e., no extra words in between).</p>
 <ul>
-<li>在此範例中，僅<strong>doc_1</strong>（<strong>「machine」</strong>位於<strong>pos=0</strong>，<strong>「learning」</strong>位於<strong>pos=1</strong>）完全匹配。</li>
+<li>In the example, only <strong>doc_1</strong> (<strong>“machine”</strong> at <strong>pos=0</strong>, <strong>“learning”</strong> at <strong>pos=1</strong>) matches exactly.</li>
 </ul></li>
-<li><p><strong>slop = 2</strong>允許匹配標記之間最多有兩個位置的彈性或重新排列。</p>
+<li><p><strong>slop = 2</strong> allows up to two positions of flexibility or rearrangements between matching tokens.</p>
 <ul>
-<li><p>這允許順序顛倒（<strong>「learning machine」</strong>）或標記之間存在微小間隔。</p></li>
-<li><p>因此，<strong>doc_1</strong>、<strong>doc_2</strong>（<strong>位置 0</strong> 處為<strong>「learning」</strong>，<strong>位置 1</strong> 處為<strong>「machine」</strong>）以及<strong>doc_3</strong>（<strong>位置 1</strong> 處為<strong>「learning」</strong>，<strong>位置 2</strong> 處為<strong>「machine」</strong>）均符合條件。</p></li>
+<li><p>This allows reversed order (<strong>“learning machine”</strong>) or a small gap between the tokens.</p></li>
+<li><p>Consequently, <strong>doc_1</strong>, <strong>doc_2</strong> (<strong>“learning”</strong> at <strong>pos=0</strong>, <strong>“machine”</strong> at <strong>pos=1</strong>), and <strong>doc_3</strong> (<strong>“learning”</strong> at <strong>pos=1</strong>, <strong>“machine”</strong> at <strong>pos=2</strong>) all match.</p></li>
 </ul></li>
 </ul></li>
 </ol>
-<h2 id="Enable-phrase-match" class="common-anchor-header">啟用短語匹配<button data-href="#Enable-phrase-match" class="anchor-icon" translate="no">
+<h2 id="Enable-phrase-match" class="common-anchor-header">Enable phrase match<button data-href="#Enable-phrase-match" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -76,8 +80,8 @@ beta: Milvus 2.5.17+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>短語匹配適用於<code translate="no">VARCHAR</code> 字段類型，即Milvus中的字串資料類型。要啟用短語匹配，請配置您的集合模式，將<code translate="no">enable_analyzer</code> 和<code translate="no">enable_match</code> 參數均設定為<code translate="no">True</code> ，這與<a href="/docs/zh-hant/v2.6.x/keyword-match.md">文字匹配</a>類似。</p>
-<h3 id="Set-enableanalyzer-and-enablematch" class="common-anchor-header">設定<code translate="no">enable_analyzer</code> 以及<code translate="no">enable_match</code><button data-href="#Set-enableanalyzer-and-enablematch" class="anchor-icon" translate="no">
+    </button></h2><p>Phrase match works with the <code translate="no">VARCHAR</code> field type, the string data type in Milvus. To enable phrase matching, configure your collection schema by setting both <code translate="no">enable_analyzer</code> and <code translate="no">enable_match</code> parameters to <code translate="no">True</code>, similar to <a href="/docs/zh-hant/v2.6.x/keyword-match.md">text match</a>.</p>
+<h3 id="Set-enableanalyzer-and-enablematch" class="common-anchor-header">Set <code translate="no">enable_analyzer</code> and <code translate="no">enable_match</code><button data-href="#Set-enableanalyzer-and-enablematch" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -92,8 +96,8 @@ beta: Milvus 2.5.17+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>若要為特定的<code translate="no">VARCHAR</code> 欄位啟用短語匹配，請在定義欄位架構時，將<code translate="no">enable_analyzer</code> 和<code translate="no">enable_match</code> 參數均設定為<code translate="no">True</code> 。此設定會指示 Milvus 將文字進行分詞，並建立包含高效短語匹配所需位置資訊的倒排索引。</p>
-<p>以下是一個啟用短語匹配的範例模式定義：</p>
+    </button></h3><p>To enable phrase match for a specific <code translate="no">VARCHAR</code> field, set both <code translate="no">enable_analyzer</code> and <code translate="no">enable_match</code> parameters to <code translate="no">True</code> when defining the field schema. This configuration instructs Milvus to tokenize the text and create an inverted index with positional information required for efficient phrase matching.</p>
+<p>Here’s an example schema definition to enable phrase match:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
 
 <span class="hljs-comment"># Create a schema for a new collection</span>
@@ -118,7 +122,7 @@ schema.add_field(
     dim=<span class="hljs-number">5</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Optional-Configure-an-analyzer" class="common-anchor-header">可選：配置分析器<button data-href="#Optional-Configure-an-analyzer" class="anchor-icon" translate="no">
+<h3 id="Optional-Configure-an-analyzer" class="common-anchor-header">Optional: Configure an analyzer<button data-href="#Optional-Configure-an-analyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -133,9 +137,9 @@ schema.add_field(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>短語匹配的準確度在很大程度上取決於用於將文字資料分詞的分析器。不同的分析器適用於不同的語言和文字格式，並會影響分詞結果及位置準確度。針對您的特定使用情境選擇合適的分析器，將能優化短語匹配的結果。</p>
-<p>預設情況下，Milvus 會使用標準分析器，該分析器會根據空白字元和標點符號對文字進行分詞，移除長度超過 40 個字元的詞元，並將文字轉換為小寫。預設使用時無需額外參數。詳情請參閱「<a href="/docs/zh-hant/v2.6.x/standard-analyzer.md">標準分析器</a>」。</p>
-<p>若您的應用程式需要特定的分析器，請使用 `<code translate="no">analyzer_params</code> ` 參數進行設定。例如，以下說明如何為英文文本的短語比對設定 `<code translate="no">english</code> ` 分析器：</p>
+    </button></h3><p>Phrase matching accuracy depends significantly on the analyzer used to tokenize your text data. Different analyzers suit different languages and text formats, affecting tokenization and positional accuracy. Selecting an appropriate analyzer for your specific use case will optimize your phrase matching results.</p>
+<p>By default, Milvus uses the standard analyzer, which tokenizes text based on whitespace and punctuation and converts text to lowercase. No additional parameters are required for default usage. Refer to <a href="/docs/zh-hant/v2.6.x/standard-analyzer.md">Standard Analyzer</a> for details.</p>
+<p>If your application requires a specific analyzer, configure it using the <code translate="no">analyzer_params</code> parameter. For example, here’s how to configure the <code translate="no">english</code> analyzer for phrase matching in English text:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Define analyzer parameters for English-language tokenization</span>
 analyzer_params = {
     <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;english&quot;</span>
@@ -151,8 +155,8 @@ schema.add_field(
     enable_match=<span class="hljs-literal">True</span>                  <span class="hljs-comment"># Enables inverted indexing for phrase matching</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>Milvus 支援多種針對不同語言和用例量身打造的分析器。如需詳細資訊，請參閱《<a href="/docs/zh-hant/v2.6.x/analyzer-overview.md">分析器概覽</a>》。</p>
-<h2 id="Use-phrase-match" class="common-anchor-header">使用短語匹配<button data-href="#Use-phrase-match" class="anchor-icon" translate="no">
+<p>Milvus supports several analyzers tailored for different languages and use cases. For detailed information, refer to <a href="/docs/zh-hant/v2.6.x/analyzer-overview.md">Analyzer Overview</a>.</p>
+<h2 id="Use-phrase-match" class="common-anchor-header">Use phrase match<button data-href="#Use-phrase-match" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -167,11 +171,11 @@ schema.add_field(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>在您的集合架構中為<code translate="no">VARCHAR</code> 欄位啟用匹配功能後，即可使用<code translate="no">PHRASE_MATCH</code> 表達式執行短語匹配。</p>
+    </button></h2><p>Once you’ve enabled match for a <code translate="no">VARCHAR</code> field in your collection schema, you can perform phrase matches using the <code translate="no">PHRASE_MATCH</code> expression.</p>
 <div class="alert note">
-<p><code translate="no">PHRASE_MATCH</code> 表達式不區分大小寫。您可以使用<code translate="no">PHRASE_MATCH</code> 或<code translate="no">phrase_match</code> 。</p>
+<p>The <code translate="no">PHRASE_MATCH</code> expression is case-insensitive. You can use either <code translate="no">PHRASE_MATCH</code> or <code translate="no">phrase_match</code>.</p>
 </div>
-<h3 id="PHRASEMATCH-expression-syntax" class="common-anchor-header">PHRASE_MATCH 表達式語法<button data-href="#PHRASEMATCH-expression-syntax" class="anchor-icon" translate="no">
+<h3 id="PHRASEMATCH-expression-syntax" class="common-anchor-header">PHRASE_MATCH expression syntax<button data-href="#PHRASEMATCH-expression-syntax" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -186,20 +190,20 @@ schema.add_field(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>使用<code translate="no">PHRASE_MATCH</code> 表達式，可在搜尋時指定欄位、短語以及可選的靈活性（<code translate="no">slop</code> ）。其語法如下：</p>
+    </button></h3><p>Use the <code translate="no">PHRASE_MATCH</code> expression to specify the field, phrase, and optional flexibility (<code translate="no">slop</code>) when searching. The syntax is:</p>
 <pre><code translate="no" class="language-python">PHRASE_MATCH(field_name, phrase, slop)
 <button class="copy-code-btn"></button></code></pre>
 <ul>
-<li><p><code translate="no">field_name</code><strong>:</strong>您要執行短語比對的<code translate="no">VARCHAR</code> 欄位名稱。</p></li>
-<li><p><code translate="no">phrase</code><strong>:</strong>要搜尋的精確短語。</p></li>
-<li><p><code translate="no">slop</code> (可選)<strong>：</strong>指定匹配標記中允許的最大位置數的整數。</p>
+<li><p><code translate="no">field_name</code><strong>:</strong> The name of the <code translate="no">VARCHAR</code> field on which you perform phrase matches.</p></li>
+<li><p><code translate="no">phrase</code><strong>:</strong> The exact phrase to search for.</p></li>
+<li><p><code translate="no">slop</code> (optional)<strong>:</strong> An integer specifying the maximum number of positions allowed in matching tokens.</p>
 <ul>
-<li><p><code translate="no">0</code> (預設)：僅匹配完全相符的短語。範例：針對<strong>「machine learning」</strong>的篩選器將精確匹配<strong>「machine learning」</strong>，但不會匹配<strong>「machine boosts learning」</strong>或<strong>「learning machine」。</strong></p></li>
-<li><p><code translate="no">1</code>: 允許輕微變體，例如多出一個詞彙或位置的輕微變動。範例：針對<strong>「machine learning」</strong>的篩選器將匹配<strong>「machine boosts learning」</strong>（<strong>「machine」</strong>與<strong>「learning」</strong>之間有一個詞彙），但不會匹配<strong>「learning machine」</strong>（詞彙順序顛倒）。</p></li>
-<li><p><code translate="no">2</code>：允許更大的彈性，包括詞彙順序顛倒或中間最多有兩個詞元。範例：篩選條件<strong>「machine learning」</strong>將匹配<strong>「learning machine」</strong>（詞彙順序顛倒）或<strong>「machine quickly boosts learning」</strong>（<strong>「machine」</strong>與<strong>「learning」</strong>之間有兩個詞元）。</p></li>
+<li><p><code translate="no">0</code> (default): Matches exact phrases only. Example: A filter for <strong>“machine learning”</strong> will match <strong>“machine learning”</strong> exactly, but not <strong>“machine boosts learning”</strong> or <strong>“learning machine”</strong>.</p></li>
+<li><p><code translate="no">1</code>: Allows minor variation, such as one extra term or minor shift in position. Example: A filter for <strong>“machine learning”</strong> will match <strong>“machine boosts learning”</strong> (one token between <strong>“machine”</strong> and <strong>“learning”</strong>) but not <strong>“learning machine”</strong> (terms reversed).</p></li>
+<li><p><code translate="no">2</code>: Allows more flexibility, including reversed term order or up to two tokens in between. Example: A filter for <strong>“machine learning”</strong> will match <strong>“learning machine”</strong> (terms reversed) or <strong>“machine quickly boosts learning”</strong> (two tokens between <strong>“machine”</strong> and <strong>“learning”</strong>).</p></li>
 </ul></li>
 </ul>
-<h3 id="Example-dataset" class="common-anchor-header">範例資料集<button data-href="#Example-dataset" class="anchor-icon" translate="no">
+<h3 id="Example-dataset" class="common-anchor-header">Example dataset<button data-href="#Example-dataset" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -214,7 +218,7 @@ schema.add_field(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>假設您有一個名為<strong>tech_articles</strong>的集合，其中包含以下五個實體：</p>
+    </button></h3><p>Suppose you have a collection named <strong>tech_articles</strong> containing the following five entities:</p>
 <table>
    <tr>
      <th><p><code translate="no">doc_id</code></p></th>
@@ -222,26 +226,26 @@ schema.add_field(
    </tr>
    <tr>
      <td><p>1</p></td>
-     <td><p>「機器學習能提升大規模資料分析的效率」</p></td>
+     <td><p>"Machine learning boosts efficiency in large-scale data analysis"</p></td>
    </tr>
    <tr>
      <td><p>2</p></td>
-     <td><p>「學習基於機器的方法對於現代人工智慧的進展至關重要」</p></td>
+     <td><p>"Learning a machine-based approach is vital for modern AI progress"</p></td>
    </tr>
    <tr>
      <td><p>3</p></td>
-     <td><p>「深度學習機器架構可優化運算負載」</p></td>
+     <td><p>"Deep learning machine architectures optimize computational loads"</p></td>
    </tr>
    <tr>
      <td><p>4</p></td>
-     <td><p>「機器能迅速提升模型效能，以支援持續學習」</p></td>
+     <td><p>"Machine swiftly improves model performance for ongoing learning"</p></td>
    </tr>
    <tr>
      <td><p>5</p></td>
-     <td><p>「學習先進的機器演算法可擴展人工智慧的能力」</p></td>
+     <td><p>"Learning advanced machine algorithms expands AI capabilities"</p></td>
    </tr>
 </table>
-<h3 id="Query-with-phrase-match" class="common-anchor-header">使用短語匹配進行查詢<button data-href="#Query-with-phrase-match" class="anchor-icon" translate="no">
+<h3 id="Query-with-phrase-match" class="common-anchor-header">Query with phrase match<button data-href="#Query-with-phrase-match" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -256,8 +260,8 @@ schema.add_field(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>使用 `<code translate="no">query()</code> ` 方法時，<strong>`PHRASE_MATCH</strong>` 會作為標量篩選器。系統僅會回傳包含指定短語（且符合允許的容差範圍）的文件。</p>
-<h4 id="Example-slop--0-exact-match" class="common-anchor-header">範例：slop = 0（精確匹配）</h4><p>此範例會回傳包含精確短語<strong>「machine learning」</strong>且中間沒有任何額外詞元之文件。</p>
+    </button></h3><p>When using the <code translate="no">query()</code> method, <strong>PHRASE_MATCH</strong> acts as a scalar filter. Only documents that contain the specified phrase (subject to the allowed slop) are returned.</p>
+<h4 id="Example-slop--0-exact-match" class="common-anchor-header">Example: slop = 0 (exact match)</h4><p>This example returns documents containing the exact phrase <strong>“machine learning”</strong> without any extra tokens in between.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Match documents containing exactly &quot;machine learning&quot;</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&quot;PHRASE_MATCH(text, &#x27;machine learning&#x27;)&quot;</span>
 
@@ -267,7 +271,7 @@ result = client.query(
     output_fields=[<span class="hljs-string">&quot;id&quot;</span>, <span class="hljs-string">&quot;text&quot;</span>]
 )
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>預期匹配結果：</strong></p>
+<p><strong>Expected match results:</strong></p>
 <table>
    <tr>
      <th><p><code translate="no">doc_id</code></p></th>
@@ -275,11 +279,11 @@ result = client.query(
    </tr>
    <tr>
      <td><p>1</p></td>
-     <td><p>「機器學習可提升大規模資料分析的效率」</p></td>
+     <td><p>"Machine learning boosts efficiency in large-scale data analysis"</p></td>
    </tr>
 </table>
-<p>僅有文件 1 包含精確短語<strong>「machine learning」</strong>，且順序與指定一致，中間沒有額外的詞元。</p>
-<h3 id="Search-with-phrase-match" class="common-anchor-header">使用短語匹配進行搜尋<button data-href="#Search-with-phrase-match" class="anchor-icon" translate="no">
+<p>Only document 1 contains the exact phrase <strong>“machine learning”</strong> in the specified order with no additional tokens.</p>
+<h3 id="Search-with-phrase-match" class="common-anchor-header">Search with phrase match<button data-href="#Search-with-phrase-match" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -294,8 +298,8 @@ result = client.query(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>在搜尋操作中<strong>，PHRASE_MATCH</strong>用於在套用向量相似度排序之前篩選文件。此兩步驟方法首先透過文字比對縮小候選集範圍，然後根據向量嵌入重新對這些候選項目進行排序。</p>
-<h4 id="Example-slop--1" class="common-anchor-header">範例：slop = 1</h4><p>在此，我們允許 1 的容錯度。篩選器將應用於包含短語<strong>「learning machine」</strong>且具有輕微彈性的文件。</p>
+    </button></h3><p>In search operations, <strong>PHRASE_MATCH</strong> is used to filter documents before applying vector similarity ranking. This two-step approach first narrows the candidate set by textual matching and then re-ranks those candidates based on vector embeddings.</p>
+<h4 id="Example-slop--1" class="common-anchor-header">Example: slop = 1</h4><p>Here, we allow a slop of 1. The filter is applied to documents that contain the phrase <strong>“learning machine”</strong> with slight flexibility.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Example: Filter documents containing &quot;learning machine&quot; with slop=1</span>
 filter_slop1 = <span class="hljs-string">&quot;PHRASE_MATCH(text, &#x27;learning machine&#x27;, 1)&quot;</span>
 
@@ -309,7 +313,7 @@ result_slop1 = client.search(
     output_fields=[<span class="hljs-string">&quot;id&quot;</span>, <span class="hljs-string">&quot;text&quot;</span>]
 )
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>匹配結果：</strong></p>
+<p><strong>Match results:</strong></p>
 <table>
    <tr>
      <th><p><code translate="no">doc_id</code></p></th>
@@ -317,18 +321,18 @@ result_slop1 = client.search(
    </tr>
    <tr>
      <td><p>2</p></td>
-     <td><p>「學習以機器為基礎的方法，對現代人工智慧的進展至關重要」</p></td>
+     <td><p>"Learning a machine-based approach is vital for modern AI progress"</p></td>
    </tr>
    <tr>
      <td><p>3</p></td>
-     <td><p>「深度學習機器架構可優化運算負載」</p></td>
+     <td><p>"Deep learning machine architectures optimize computational loads"</p></td>
    </tr>
    <tr>
      <td><p>5</p></td>
-     <td><p>「學習先進的機器演算法能拓展人工智慧的能力」</p></td>
+     <td><p>"Learning advanced machine algorithms expands AI capabilities"</p></td>
    </tr>
 </table>
-<h4 id="Example-slop--2" class="common-anchor-header">範例：slop = 2</h4><p>此範例允許 2 的容錯度，意即在<strong>「machine」</strong>與<strong>「learning」</strong>兩個詞之間，最多可有兩個額外的詞元（或順序顛倒的詞語）<strong>。</strong></p>
+<h4 id="Example-slop--2" class="common-anchor-header">Example: slop = 2</h4><p>This example allows a slop of 2, meaning that up to two extra tokens (or reversed terms) are allowed between the words <strong>“machine”</strong> and <strong>“learning”</strong>.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Example: Filter documents containing &quot;machine learning&quot; with slop=2</span>
 filter_slop2 = <span class="hljs-string">&quot;PHRASE_MATCH(text, &#x27;machine learning&#x27;, 2)&quot;</span>
 
@@ -342,7 +346,7 @@ result_slop2 = client.search(
     output_fields=[<span class="hljs-string">&quot;id&quot;</span>, <span class="hljs-string">&quot;text&quot;</span>]
 )
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>匹配結果：</strong></p>
+<p><strong>Match results:</strong></p>
 <table>
    <tr>
      <th><p><code translate="no">doc_id</code></p></th>
@@ -350,14 +354,14 @@ result_slop2 = client.search(
    </tr>
    <tr>
      <td><p>1</p></td>
-     <td><p>「機器學習能提升大規模資料分析的效率」</p></td>
+     <td><p>"Machine learning boosts efficiency in large-scale data analysis"</p></td>
    </tr>
    <tr>
      <td><p>3</p></td>
-     <td><p>「深度學習機器架構可優化運算負載」</p></td>
+     <td><p>"Deep learning machine architectures optimize computational loads"</p></td>
    </tr>
 </table>
-<h4 id="Example-slop--3" class="common-anchor-header">範例：slop = 3</h4><p>在此範例中，slop 值設為 3 可提供更大的靈活性。篩選器會搜尋<strong>「machine learning」</strong>，並允許兩個單詞之間最多有三個詞元的位置差。</p>
+<h4 id="Example-slop--3" class="common-anchor-header">Example: slop = 3</h4><p>In this example, a slop of 3 provides even more flexibility. The filter searches for <strong>“machine learning”</strong> with up to three token positions allowed between the words.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Example: Filter documents containing &quot;machine learning&quot; with slop=3</span>
 filter_slop3 = <span class="hljs-string">&quot;PHRASE_MATCH(text, &#x27;machine learning&#x27;, 3)&quot;</span>
 
@@ -371,7 +375,7 @@ result_slop2 = client.search(
     output_fields=[<span class="hljs-string">&quot;id&quot;</span>, <span class="hljs-string">&quot;text&quot;</span>]
 )
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>匹配結果：</strong></p>
+<p><strong>Match results:</strong></p>
 <table>
    <tr>
      <th><p><code translate="no">doc_id</code></p></th>
@@ -379,22 +383,22 @@ result_slop2 = client.search(
    </tr>
    <tr>
      <td><p>1</p></td>
-     <td><p>「機器學習提升大規模資料分析的效率」</p></td>
+     <td><p>"Machine learning boosts efficiency in large-scale data analysis"</p></td>
    </tr>
    <tr>
      <td><p>2</p></td>
-     <td><p>「學習以機器為基礎的方法對現代人工智慧的進展至關重要」</p></td>
+     <td><p>"Learning a machine-based approach is vital for modern AI progress"</p></td>
    </tr>
    <tr>
      <td><p>3</p></td>
-     <td><p>「深度學習機器架構可優化運算負載」</p></td>
+     <td><p>"Deep learning machine architectures optimize computational loads"</p></td>
    </tr>
    <tr>
      <td><p>5</p></td>
-     <td><p>「學習先進的機器演算法能拓展人工智慧的能力」</p></td>
+     <td><p>"Learning advanced machine algorithms expands AI capabilities"</p></td>
    </tr>
 </table>
-<h2 id="Considerations" class="common-anchor-header">注意事項<button data-href="#Considerations" class="anchor-icon" translate="no">
+<h2 id="Considerations" class="common-anchor-header">Considerations<button data-href="#Considerations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -410,13 +414,13 @@ result_slop2 = client.search(
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>為某個欄位啟用短語匹配功能會觸發建立倒排索引，這會消耗儲存資源。在決定是否啟用此功能時，請考量其對儲存空間的影響，因為此影響會因文字大小、唯一詞元以及所使用的分析器而異。</p></li>
-<li><p>一旦在資料結構中定義了分析器，其設定將對該集合永久生效。若您認為其他分析器更能滿足需求，可考慮刪除現有集合，並使用所需的分析器配置建立新的集合。</p></li>
-<li><p>短語匹配的效能取決於文字的分詞方式。在將分析器套用至整個集合之前，請使用 `<code translate="no">run_analyzer</code> ` 方法檢視分詞結果。如需更多資訊，請參閱《<a href="/docs/zh-hant/v2.6.x/analyzer-overview.md#share-DYZvdQ2vUowWEwx1MEHcdjNNnqT">分析器概覽</a>》。</p></li>
-<li><p><code translate="no">filter</code> 表達式中的轉義規則：</p>
+<li><p>Enabling phrase matching for a field triggers the creation of an inverted index, which consumes storage resources. Consider storage impact when deciding to enable this feature, as it varies based on text size, unique tokens, and the analyzer used.</p></li>
+<li><p>Once you’ve defined an analyzer in your schema, its settings become permanent for that collection. If you decide that a different analyzer would better suit your needs, you may consider dropping the existing collection and creating a new one with the desired analyzer configuration.</p></li>
+<li><p>Phrase match performance depends on how text is tokenized. Before applying an analyzer to your entire collection, use the <code translate="no">run_analyzer</code> method to review the tokenization output. For more information, refer to <a href="/docs/zh-hant/v2.6.x/analyzer-overview.md#share-DYZvdQ2vUowWEwx1MEHcdjNNnqT">Analyzer Overview</a>.</p></li>
+<li><p>Escape rules in <code translate="no">filter</code> expressions:</p>
 <ul>
-<li><p>在表達式中，以雙引號或單引號包圍的字元將被視為字串常數。若字串常數包含轉義字元，則必須使用轉義序列來表示該轉義字元。例如，使用<code translate="no">\\</code> 來表示<code translate="no">\</code> 、<code translate="no">\\t</code> 來表示制表符<code translate="no">\t</code> ，以及<code translate="no">\\n</code> 來表示換行符。</p></li>
-<li><p>若字串常數以單引號包圍，常數內的單引號應以<code translate="no">\\'</code> 表示，而雙引號則可使用<code translate="no">&quot;</code> 或<code translate="no">\\&quot;</code> 表示。範例：<code translate="no">'It\\'s milvus'</code> 。</p></li>
-<li><p>若字串常數以雙引號包圍，則常數內的雙引號應以<code translate="no">\\&quot;</code> 表示，而單引號則可使用<code translate="no">'</code> 或<code translate="no">\\'</code> 表示。範例：<code translate="no">&quot;He said \\&quot;Hi\\&quot;&quot;</code> 。</p></li>
+<li><p>Characters enclosed in double quotes or single quotes within expressions are interpreted as string constants. If the string constant includes escape characters, the escape characters must be represented with escape sequence. For example, use <code translate="no">\\</code> to represent <code translate="no">\</code>, <code translate="no">\\t</code> to represent a tab <code translate="no">\t</code>, and <code translate="no">\\n</code> to represent a newline.</p></li>
+<li><p>If a string constant is enclosed by single quotes, a single quote within the constant should be represented as <code translate="no">\\'</code> while a double quote can be represented as either <code translate="no">&quot;</code> or <code translate="no">\\&quot;</code>. Example: <code translate="no">'It\\'s milvus'</code>.</p></li>
+<li><p>If a string constant is enclosed by double quotes, a double quote within the constant should be represented as <code translate="no">\\&quot;</code> while a single quote can be represented as either <code translate="no">'</code> or <code translate="no">\\'</code>. Example: <code translate="no">&quot;He said \\&quot;Hi\\&quot;&quot;</code>.</p></li>
 </ul></li>
 </ul>

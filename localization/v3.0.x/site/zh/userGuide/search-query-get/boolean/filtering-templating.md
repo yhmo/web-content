@@ -1,12 +1,15 @@
 ---
 id: filtering-templating.md
-title: 过滤器模板机制
+title: Filter Templating
 summary: >-
-  在 Milvus 中，包含大量元素的复杂过滤表达式（尤其是涉及 CJK 字符等非 ASCII
-  字符的表达式）可能会显著影响查询性能。为解决这一问题，Milvus
-  引入了过滤表达式模板机制，旨在通过减少解析复杂表达式所花费的时间来提高效率。本页将介绍如何在搜索、查询和删除操作中使用过滤表达式模板。
+  In Milvus, complex filter expressions with numerous elements, especially those
+  involving non-ASCII characters like CJK characters, can significantly affect
+  query performance. To address this, Milvus introduces a filter expression
+  templating mechanism designed to improve efficiency by reducing the time spent
+  parsing complex expressions. This page explains using filter expression
+  templating in search, query, and delete operations.
 ---
-<h1 id="Filter-Templating" class="common-anchor-header">过滤器模板机制<button data-href="#Filter-Templating" class="anchor-icon" translate="no">
+<h1 id="Filter-Templating" class="common-anchor-header">Filter Templating<button data-href="#Filter-Templating" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -21,12 +24,12 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>在 Milvus 中，包含大量元素的复杂过滤表达式（尤其是涉及 CJK 字符等非 ASCII 字符的表达式）会显著影响查询性能。为解决此问题，Milvus 引入了过滤表达式模板机制，旨在通过减少解析复杂表达式所花费的时间来提高效率。本页将介绍如何在搜索、查询和删除操作中使用过滤表达式模板。</p>
+    </button></h1><p>In Milvus, complex filter expressions with numerous elements, especially those involving non-ASCII characters like CJK characters, can significantly affect query performance. To address this, Milvus introduces a filter expression templating mechanism designed to improve efficiency by reducing the time spent parsing complex expressions. This page explains using filter expression templating in search, query, and delete operations.</p>
 <div class="alert note">
-<p>过滤表达式左侧的字面量可以是 Collection 字段名（例如下文示例中的<code translate="no">age</code> 、<code translate="no">city</code> 等），也可以是 StructArray 子字段在特定元素索引处的名称，例如<code translate="no">filter = 'struct[0][subfield] &gt; {var}'</code> 。</p>
-<p>有关 StructArray 字段中标量过滤的详细信息，请参阅《<a href="/docs/zh/struct-array-operators.md">StructArray 操作符</a>》。</p>
+<p>The literal on the left-hand side of a filtering expression can either be a collection field name, such as <code translate="no">age</code>, <code translate="no">city</code>, etc., used in examples below, or the name of a StructArray subfield at a specific element index, as in <code translate="no">filter = 'struct[0][subfield] &gt; {var}'</code>.</p>
+<p>For details on scalar filtering in a StructArray field, refer to <a href="/docs/zh/struct-array-operators.md">StructArray Operators</a>.</p>
 </div>
-<h2 id="Overview" class="common-anchor-header">概述<button data-href="#Overview" class="anchor-icon" translate="no">
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -41,17 +44,17 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>过滤表达式模板功能允许您创建包含占位符的过滤表达式，这些占位符会在查询执行期间被动态替换为实际值。通过使用模板，您可以避免将大型数组或复杂表达式直接嵌入过滤器中，从而减少解析时间并提高查询性能。</p>
-<p>假设您有一个涉及两个字段的过滤表达式：<code translate="no">age</code> 和<code translate="no">city</code> ，您希望查找所有年龄大于 25 岁且居住在“北京”或“上海”的人。与其将值直接嵌入过滤表达式中，您可以使用模板：</p>
+    </button></h2><p>Filter expression templating allows you to create filter expressions with placeholders that are dynamically substituted with values during query execution. Using templating, you avoid embedding large arrays or complex expressions directly into the filter, reducing parsing time and improving query performance.</p>
+<p>Let’s say you have a filter expression involving two fields, <code translate="no">age</code> and <code translate="no">city</code>, and you want to find all people whose age is greater than 25 and who live in either “北京” (Beijing) or “上海” (Shanghai). Instead of directly embedding the values in the filter expression, you can use a template:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&quot;age &gt; {age} AND city IN {city}&quot;</span>
 filter_params = {<span class="hljs-string">&quot;age&quot;</span>: <span class="hljs-number">25</span>, <span class="hljs-string">&quot;city&quot;</span>: [<span class="hljs-string">&quot;北京&quot;</span>, <span class="hljs-string">&quot;上海&quot;</span>]}
@@ -101,14 +104,14 @@ std::unordered_map&lt;std::string, nlohmann::json&gt; filterTemplates = {
 filter=<span class="hljs-string">&quot;age &gt; {age} AND city IN {city}&quot;</span>
 filter_params=<span class="hljs-string">&#x27;{&quot;age&quot;: 25, &quot;city&quot;: [&quot;北京&quot;, &quot;上海&quot;]}&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>在此，<code translate="no">{age}</code> 和<code translate="no">{city}</code> 是占位符，在执行查询时，它们将被<code translate="no">filter_params</code> 中的实际值替换。</p>
-<p>在 Milvus 中使用过滤表达式模板具有以下几个关键优势：</p>
+<p>Here, <code translate="no">{age}</code> and <code translate="no">{city}</code> are placeholders that will be replaced with the actual values in <code translate="no">filter_params</code> when the query is executed.</p>
+<p>Using filter expression templating in Milvus has several key advantages:</p>
 <ul>
-<li><p><strong>减少解析时间</strong>：通过用占位符替换大型或复杂的过滤表达式，系统在解析和处理过滤器时所花费的时间更少。</p></li>
-<li><p><strong>提升查询性能</strong>：随着解析开销的降低，查询性能得到提升，从而带来更高的每秒查询次数（QPS）和更快的响应时间。</p></li>
-<li><p><strong>可扩展性</strong>：随着数据集规模扩大和过滤表达式日益复杂，模板化机制可确保系统性能始终保持高效且具备可扩展性。</p></li>
+<li><p><strong>Reduced Parsing Time</strong>: By replacing large or complex filter expressions with placeholders, the system spends less time parsing and processing the filter.</p></li>
+<li><p><strong>Improved Query Performance</strong>: With reduced parsing overhead, query performance improves, leading to higher QPS and faster response times.</p></li>
+<li><p><strong>Scalability</strong>: As your datasets grow and filter expressions become more complex, templating ensures that performance remains efficient and scalable.</p></li>
 </ul>
-<h2 id="Search-Operations" class="common-anchor-header">搜索操作<button data-href="#Search-Operations" class="anchor-icon" translate="no">
+<h2 id="Search-Operations" class="common-anchor-header">Search Operations<button data-href="#Search-Operations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -123,16 +126,16 @@ filter_params=<span class="hljs-string">&#x27;{&quot;age&quot;: 25, &quot;city&q
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>在 Milvus 的搜索操作中，使用 `<code translate="no">filter</code> ` 表达式来定义过滤条件，并使用 `<code translate="no">filter_params</code> ` 参数来指定占位符的值。`<code translate="no">filter_params</code> ` 字典包含 Milvus 将用于替换到过滤表达式中的动态值。</p>
+    </button></h2><p>For search operations in Milvus, the <code translate="no">filter</code> expression is used to define the filtering condition, and the <code translate="no">filter_params</code> parameter is used to specify the values for the placeholders. The <code translate="no">filter_params</code> dictionary contains the dynamic values that Milvus will use to substitute into the filter expression.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">expr = <span class="hljs-string">&quot;age &gt; {age} AND city IN {city}&quot;</span>
 filter_params = {<span class="hljs-string">&quot;age&quot;</span>: <span class="hljs-number">25</span>, <span class="hljs-string">&quot;city&quot;</span>: [<span class="hljs-string">&quot;北京&quot;</span>, <span class="hljs-string">&quot;上海&quot;</span>]}
@@ -293,8 +296,8 @@ curl --request POST \
       &quot;outputFields&quot;: [&quot;age&quot;, &quot;city&quot;]
   }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>在此示例中，Milvus 在执行搜索时会将<code translate="no">{age}</code> 动态替换为<code translate="no">25</code> ，并将<code translate="no">{city}</code> 动态替换为<code translate="no">[&quot;北京&quot;, &quot;上海&quot;]</code> 。</p>
-<h2 id="Query-Operations" class="common-anchor-header">查询操作<button data-href="#Query-Operations" class="anchor-icon" translate="no">
+<p>In this example, Milvus will dynamically replace <code translate="no">{age}</code> with <code translate="no">25</code> and <code translate="no">{city}</code> with <code translate="no">[&quot;北京&quot;, &quot;上海&quot;]</code> when executing the search.</p>
+<h2 id="Query-Operations" class="common-anchor-header">Query Operations<button data-href="#Query-Operations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -309,16 +312,16 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>相同的模板机制也可应用于 Milvus 中的查询操作。在<code translate="no">query</code> 函数中，您定义过滤表达式，并使用<code translate="no">filter_params</code> 来指定要替换的值。</p>
+    </button></h2><p>The same templating mechanism can be applied to query operations in Milvus. In the <code translate="no">query</code> function, you define the filter expression and use the <code translate="no">filter_params</code> to specify the values to substitute.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">expr = <span class="hljs-string">&quot;age &gt; {age} AND city IN {city}&quot;</span>
 filter_params = {<span class="hljs-string">&quot;age&quot;</span>: <span class="hljs-number">25</span>, <span class="hljs-string">&quot;city&quot;</span>: [<span class="hljs-string">&quot;北京&quot;</span>, <span class="hljs-string">&quot;上海&quot;</span>]}
@@ -451,8 +454,8 @@ curl --request POST \
       &quot;outputFields&quot;: [&quot;age&quot;, &quot;city&quot;]
   }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>通过使用 `<code translate="no">filter_params</code>`，Milvus 能高效处理值的动态插入，从而提高查询执行速度。</p>
-<h2 id="Delete-Operations" class="common-anchor-header">删除操作<button data-href="#Delete-Operations" class="anchor-icon" translate="no">
+<p>By using <code translate="no">filter_params</code>, Milvus efficiently handles the dynamic insertion of values, improving the speed of query execution.</p>
+<h2 id="Delete-Operations" class="common-anchor-header">Delete Operations<button data-href="#Delete-Operations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -467,16 +470,16 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>您还可以在删除操作中使用过滤表达式模板。与搜索和查询类似，<code translate="no">filter</code> 表达式定义条件，而<code translate="no">filter_params</code> 为占位符提供动态值。</p>
+    </button></h2><p>You can also use filter expression templating in delete operations. Similar to search and query, the <code translate="no">filter</code> expression defines the conditions, and the <code translate="no">filter_params</code> provides the dynamic values for the placeholders.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">expr = <span class="hljs-string">&quot;age &gt; {age} AND city IN {city}&quot;</span>
 filter_params = {<span class="hljs-string">&quot;age&quot;</span>: <span class="hljs-number">25</span>, <span class="hljs-string">&quot;city&quot;</span>: [<span class="hljs-string">&quot;北京&quot;</span>, <span class="hljs-string">&quot;上海&quot;</span>]}
@@ -597,8 +600,8 @@ curl --request POST \
       &quot;exprParams&quot;: {&quot;age&quot;: 25, &quot;city&quot;: [&quot;北京&quot;, &quot;上海&quot;]}
   }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>这种方法可提升删除操作的性能，特别是在处理复杂的过滤条件时。</p>
-<h2 id="Regex-filter-templates" class="common-anchor-header">正则表达式过滤模板<button data-href="#Regex-filter-templates" class="anchor-icon" translate="no">
+<p>This approach improves the performance of delete operations, especially when dealing with complex filter conditions.</p>
+<h2 id="Regex-filter-templates" class="common-anchor-header">Regex filter templates<button data-href="#Regex-filter-templates" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -613,16 +616,16 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>您可以将过滤表达式模板与正则表达式过滤器结合使用。当正则表达式模式在请求时提供时，此功能非常有用。</p>
+    </button></h2><p>You can use filter expression templating with regex filters. This is useful when the regex pattern is provided at request time.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">expr = <span class="hljs-string">&quot;message =~ {pattern}&quot;</span>
 filter_params = {<span class="hljs-string">&quot;pattern&quot;</span>: <span class="hljs-string">&quot;E[0-9]{4}&quot;</span>}
@@ -749,16 +752,16 @@ curl --request POST \
       &quot;outputFields&quot;: [&quot;message&quot;]
   }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>您还可以在<code translate="no">!~</code> 中使用模板参数：</p>
+<p>You can also use template parameters with <code translate="no">!~</code>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">expr = <span class="hljs-string">&quot;message !~ {pattern}&quot;</span>
 filter_params = {<span class="hljs-string">&quot;pattern&quot;</span>: <span class="hljs-string">&quot;^DEBUG&quot;</span>}
@@ -800,9 +803,9 @@ std::unordered_map&lt;std::string, nlohmann::json&gt; filterTemplates = {
 filter=<span class="hljs-string">&quot;message !~ {pattern}&quot;</span>
 filter_params=<span class="hljs-string">&#x27;{&quot;pattern&quot;: &quot;^DEBUG&quot;}&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>模板值必须是一个包含有效 RE2 正则表达式模式的字符串。Milvus 会在执行过滤器之前对该模式进行验证。</p>
-<p>过滤器模板将正则表达式模式作为值传递，而非将其拼接到过滤器表达式中。这既减少了表达式解析的开销，又避免了当模式中包含引号或操作符时意外更改过滤器结构的情况。</p>
-<h2 id="Conclusion" class="common-anchor-header">结论<button data-href="#Conclusion" class="anchor-icon" translate="no">
+<p>The template value must be a string containing a valid RE2 regex pattern. Milvus validates the pattern before executing the filter.</p>
+<p>Filter templates pass the regex pattern as a value instead of concatenating it into the filter expression. This reduces expression parsing overhead and avoids accidentally changing the filter structure when the pattern contains quotes or operators.</p>
+<h2 id="Conclusion" class="common-anchor-header">Conclusion<button data-href="#Conclusion" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -817,4 +820,4 @@ filter_params=<span class="hljs-string">&#x27;{&quot;pattern&quot;: &quot;^DEBUG
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>过滤器表达式模板化是优化 Milvus 查询性能的重要工具。通过使用占位符和 `<code translate="no">filter_params</code> ` 字典，您可以显著减少解析复杂过滤器表达式所花费的时间。这将带来更快的查询执行速度和更佳的整体性能。</p>
+    </button></h2><p>Filter expression templating is an essential tool for optimizing query performance in Milvus. By using placeholders and the <code translate="no">filter_params</code> dictionary, you can significantly reduce the time spent parsing complex filter expressions. This leads to faster query execution and better overall performance.</p>

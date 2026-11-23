@@ -1,15 +1,14 @@
 ---
 id: random-sampling.md
-title: Pengambilan Sampel AcakCompatible with Milvus 2.6.x
+title: Random SamplingCompatible with Milvus 2.6.x
 summary: >-
-  Saat mengolah kumpulan data berskala besar, Anda sering kali tidak perlu
-  memproses seluruh data untuk memperoleh wawasan atau menguji logika
-  penyaringan. Pengambilan sampel acak menawarkan solusi dengan memungkinkan
-  Anda mengolah subset data yang secara statistik representatif, sehingga secara
-  signifikan mengurangi waktu kueri dan penggunaan sumber daya.
+  When working with large-scale datasets, you often don't need to process all
+  your data to gain insights or test filtering logic. Random sampling provides a
+  solution by allowing you to work with a statistically representative subset of
+  your data, significantly reducing query time and resource consumption.
 beta: Milvus 2.6.x
 ---
-<h1 id="Random-Sampling" class="common-anchor-header">Pengambilan Sampel Acak<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#Random-Sampling" class="anchor-icon" translate="no">
+<h1 id="Random-Sampling" class="common-anchor-header">Random Sampling<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#Random-Sampling" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -24,15 +23,15 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Saat bekerja dengan kumpulan data berskala besar, Anda sering kali tidak perlu memproses seluruh data untuk memperoleh wawasan atau menguji logika penyaringan. Pengambilan sampel acak memberikan solusi dengan memungkinkan Anda bekerja dengan subset data yang secara statistik representatif, sehingga secara signifikan mengurangi waktu kueri dan konsumsi sumber daya.</p>
-<p>Pengambilan sampel acak beroperasi pada tingkat segmen, memastikan kinerja yang efisien sekaligus mempertahankan keacakan sampel di seluruh distribusi data koleksi Anda.</p>
-<p><strong>Kasus penggunaan utama:</strong></p>
+    </button></h1><p>When working with large-scale datasets, you often don’t need to process all your data to gain insights or test filtering logic. Random sampling provides a solution by allowing you to work with a statistically representative subset of your data, significantly reducing query time and resource consumption.</p>
+<p>Random sampling operates at the segment level, ensuring efficient performance while maintaining the randomness of the sample across your collection’s data distribution.</p>
+<p><strong>Key use cases:</strong></p>
 <ul>
-<li><p><strong>Eksplorasi data</strong>: Meninjau struktur dan konten koleksi dengan cepat menggunakan sumber daya seminimal mungkin</p></li>
-<li><p><strong>Pengujian pengembangan</strong>: Menguji logika penyaringan yang kompleks pada sampel data yang dapat dikelola sebelum penerapan penuh</p></li>
-<li><p><strong>Optimalisasi sumber daya</strong>: Mengurangi biaya komputasi untuk kueri eksploratif dan analisis statistik</p></li>
+<li><p><strong>Data exploration</strong>: Quickly preview collection structure and content with minimal resource usage</p></li>
+<li><p><strong>Development testing</strong>: Test complex filtering logic on manageable data samples before full deployment</p></li>
+<li><p><strong>Resource optimization</strong>: Reduce computational costs for exploratory queries and statistical analysis</p></li>
 </ul>
-<h2 id="Syntax" class="common-anchor-header">Sintaks<button data-href="#Syntax" class="anchor-icon" translate="no">
+<h2 id="Syntax" class="common-anchor-header">Syntax<button data-href="#Syntax" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -48,14 +47,14 @@ beta: Milvus 2.6.x
         ></path>
       </svg>
     </button></h2><div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&quot;RANDOM_SAMPLE(sampling_factor)&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -74,16 +73,16 @@ beta: Milvus 2.6.x
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <span class="hljs-built_in">export</span> filterRandomSample=<span class="hljs-string">&#x27;RANDOM_SAMPLE(sampling_factor)&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>Parameter:</strong></p>
+<p><strong>Parameters:</strong></p>
 <ul>
-<li><code translate="no">sampling_factor</code>: Faktor pengambilan sampel dalam rentang (0, 1), tidak termasuk batas-batasnya. Misalnya, <code translate="no">RANDOM_SAMPLE(0.001)</code> memilih sekitar 0,1% dari hasil.</li>
+<li><code translate="no">sampling_factor</code>: A sampling factor in the range (0, 1), excluding the boundaries. For example, <code translate="no">RANDOM_SAMPLE(0.001)</code> selects approximately 0.1% of the results.</li>
 </ul>
-<p><strong>Aturan penting:</strong></p>
+<p><strong>Important rules:</strong></p>
 <ul>
-<li><p>Ekspresi ini tidak peka huruf besar-kecil (<code translate="no">RANDOM_SAMPLE</code> atau <code translate="no">random_sample</code>)</p></li>
-<li><p>Faktor pengambilan sampel harus berada dalam rentang (0, 1), tidak termasuk batas-batasnya</p></li>
+<li><p>The expression is case-insensitive (<code translate="no">RANDOM_SAMPLE</code> or <code translate="no">random_sample</code>)</p></li>
+<li><p>The sampling factor must be in the range (0, 1), excluding boundaries</p></li>
 </ul>
-<h2 id="Combine-with-other-filters" class="common-anchor-header">Gabungkan dengan filter lain<button data-href="#Combine-with-other-filters" class="anchor-icon" translate="no">
+<h2 id="Combine-with-other-filters" class="common-anchor-header">Combine with other filters<button data-href="#Combine-with-other-filters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -98,16 +97,16 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Operator pengambilan sampel acak harus digabungkan dengan ekspresi penyaringan lainnya menggunakan operator logika <code translate="no">AND</code>. Saat menggabungkan filter, Milvus terlebih dahulu menerapkan kondisi lain dan kemudian melakukan pengambilan sampel acak pada himpunan hasil.</p>
+    </button></h2><p>The random sampling operator must be combined with other filtering expressions using logical <code translate="no">AND</code>. When combining filters, Milvus first applies the other conditions and then performs random sampling on the result set.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Correct: Filter first, then sample</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;color == &quot;red&quot; AND RANDOM_SAMPLE(0.001)&#x27;</span>
@@ -168,7 +167,7 @@ filter = <span class="hljs-string">&quot;color == \&quot;red\&quot; OR RANDOM_SA
 <span class="hljs-built_in">export</span> filterSampleIncorrect=<span class="hljs-string">&#x27;color == &quot;red&quot; OR RANDOM_SAMPLE(0.001)&#x27;</span>  <span class="hljs-comment"># ❌ Invalid logic</span>
 <span class="hljs-comment"># This would mean: &quot;Either red items OR sample everything&quot; - which is meaningless</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Examples" class="common-anchor-header">Contoh<button data-href="#Examples" class="anchor-icon" translate="no">
+<h2 id="Examples" class="common-anchor-header">Examples<button data-href="#Examples" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -183,7 +182,7 @@ filter = <span class="hljs-string">&quot;color == \&quot;red\&quot; OR RANDOM_SA
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Example-1-Data-exploration" class="common-anchor-header">Contoh 1: Eksplorasi data<button data-href="#Example-1-Data-exploration" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Example-1-Data-exploration" class="common-anchor-header">Example 1: Data exploration<button data-href="#Example-1-Data-exploration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -198,16 +197,16 @@ filter = <span class="hljs-string">&quot;color == \&quot;red\&quot; OR RANDOM_SA
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Lihat sekilas struktur koleksi Anda dengan cepat:</p>
+    </button></h3><p>Quickly preview your collection structure:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -378,7 +377,7 @@ curl --request POST \
   \&quot;limit\&quot;: 10
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-2-Combined-filtering-with-random-sampling" class="common-anchor-header">Contoh 2: Penyaringan gabungan dengan pengambilan sampel acak<button data-href="#Example-2-Combined-filtering-with-random-sampling" class="anchor-icon" translate="no">
+<h3 id="Example-2-Combined-filtering-with-random-sampling" class="common-anchor-header">Example 2: Combined filtering with random sampling<button data-href="#Example-2-Combined-filtering-with-random-sampling" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -393,16 +392,16 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Uji logika penyaringan pada subset yang dapat dikelola:</p>
+    </button></h3><p>Test filtering logic on a manageable subset:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># First filter by category and price, then sample 0.5% of results</span>
 filter_expression = <span class="hljs-string">&#x27;category == &quot;electronics&quot; AND price &gt; 100 AND RANDOM_SAMPLE(0.005)&#x27;</span>
@@ -533,7 +532,7 @@ curl --request POST \
   \&quot;outputFields\&quot;: [\&quot;product_name\&quot;, \&quot;price\&quot;, \&quot;rating\&quot;]
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-3-Quick-analytics" class="common-anchor-header">Contoh 3: Analisis cepat<button data-href="#Example-3-Quick-analytics" class="anchor-icon" translate="no">
+<h3 id="Example-3-Quick-analytics" class="common-anchor-header">Example 3: Quick analytics<button data-href="#Example-3-Quick-analytics" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -548,16 +547,16 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Lakukan analisis statistik cepat pada data yang telah difilter:</p>
+    </button></h3><p>Perform rapid statistical analysis on filtered data:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Get insights from ~0.1% of premium customer data</span>
 filter_expression = <span class="hljs-string">&#x27;customer_tier == &quot;premium&quot; AND region == &quot;North America&quot; AND RANDOM_SAMPLE(0.001)&#x27;</span>
@@ -704,7 +703,7 @@ curl --request POST \
   \&quot;limit\&quot;: 10
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-4-Combined-with-vector-search" class="common-anchor-header">Contoh 4: Dikombinasikan dengan pencarian vektor<button data-href="#Example-4-Combined-with-vector-search" class="anchor-icon" translate="no">
+<h3 id="Example-4-Combined-with-vector-search" class="common-anchor-header">Example 4: Combined with vector search<button data-href="#Example-4-Combined-with-vector-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -719,16 +718,16 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Gunakan pengambilan sampel acak dalam skenario pencarian yang telah difilter:</p>
+    </button></h3><p>Use random sampling in filtered search scenarios:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Search for similar products within a sampled subset</span>
 search_results = client.search(
@@ -894,7 +893,7 @@ curl --request POST \
   &quot;outputFields&quot;: [&quot;title&quot;, &quot;author&quot;, &quot;price&quot;]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Best-practices" class="common-anchor-header">Praktik terbaik<button data-href="#Best-practices" class="anchor-icon" translate="no">
+<h2 id="Best-practices" class="common-anchor-header">Best practices<button data-href="#Best-practices" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -910,8 +909,8 @@ curl --request POST \
         ></path>
       </svg>
     </button></h2><ul>
-<li><p><strong>Mulailah dari yang kecil</strong>: Mulailah dengan faktor pengambilan sampel yang lebih kecil (0,001–0,01) untuk eksplorasi awal</p></li>
-<li><p><strong>Alur kerja pengembangan</strong>: Gunakan pengambilan sampel selama pengembangan, hapus untuk kueri produksi</p></li>
-<li><p><strong>Validitas statistik</strong>: Sampel yang lebih besar memberikan representasi statistik yang lebih akurat</p></li>
-<li><p><strong>Pengujian kinerja</strong>: Pantau kinerja kueri dan sesuaikan faktor pengambilan sampel sesuai kebutuhan</p></li>
+<li><p><strong>Start small</strong>: Begin with smaller sampling factors (0.001-0.01) for initial exploration</p></li>
+<li><p><strong>Development workflow</strong>: Use sampling during development, remove for production queries</p></li>
+<li><p><strong>Statistical validity</strong>: Larger samples provide more accurate statistical representations</p></li>
+<li><p><strong>Performance testing</strong>: Monitor query performance and adjust sampling factors as needed</p></li>
 </ul>

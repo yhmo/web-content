@@ -2,13 +2,12 @@
 id: phrase-match.md
 title: Phrase MatchCompatible with Milvus 2.5.17+
 summary: >-
-  Pencocokan frasa memungkinkan Anda mencari dokumen yang berisi istilah kueri
-  Anda sebagai frasa yang persis sama. Secara default, kata-kata tersebut harus
-  muncul dalam urutan yang sama dan berdekatan satu sama lain. Misalnya, kueri
-  "robotics machine learning" akan cocok dengan teks seperti "…model
-  pembelajaran mesin robotika yang umum…", di mana kata-kata "robotics",
-  "machine", dan "learning" muncul secara berurutan tanpa ada kata lain di
-  antaranya.
+  Phrase match lets you search for documents containing your query terms as an
+  exact phrase. By default, the words must appear in the same order and directly
+  adjacent to one another. For example, a query for "robotics machine learning"
+  matches text like "…typical robotics machine learning models…", where the
+  words "robotics", "machine", and "learning" appear in sequence with no other
+  words between them.
 beta: Milvus 2.5.17+
 ---
 <h1 id="Phrase-Match" class="common-anchor-header">Phrase Match<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.5.17+</span><button data-href="#Phrase-Match" class="anchor-icon" translate="no">

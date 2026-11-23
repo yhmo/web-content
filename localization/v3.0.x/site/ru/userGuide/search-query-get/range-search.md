@@ -1,13 +1,12 @@
 ---
 id: range-search.md
-title: Поиск по диапазону
+title: Range Search
 summary: >-
-  Поиск по диапазону повышает релевантность результатов поиска за счет
-  ограничения расстояния или оценки возвращаемых объектов в пределах
-  определенного диапазона. Эта страница поможет вам понять, что такое поиск по
-  диапазону, и ознакомиться с порядком его проведения.
+  A range search improves search result relevancy by restricting the distance or
+  score of the returned entities within a specific range. This page helps you
+  understand what range search is and the procedures to conduct a range search.
 ---
-<h1 id="Range-Search" class="common-anchor-header">Поиск по диапазону<button data-href="#Range-Search" class="anchor-icon" translate="no">
+<h1 id="Range-Search" class="common-anchor-header">Range Search<button data-href="#Range-Search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -22,8 +21,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Поиск по диапазону повышает релевантность результатов поиска за счет ограничения расстояния или оценки возвращаемых объектов в пределах определенного диапазона. Эта страница поможет вам понять, что такое поиск по диапазону, и ознакомиться с процедурами его проведения.</p>
-<h2 id="Overview" class="common-anchor-header">Обзор<button data-href="#Overview" class="anchor-icon" translate="no">
+    </button></h1><p>A range search improves search result relevancy by restricting the distance or score of the returned entities within a specific range. This page helps you understand what range search is and the procedures to conduct a range search.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -38,53 +37,53 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>При выполнении запроса на поиск по диапазону Milvus использует в качестве центра векторы, наиболее схожие с вектором запроса из результатов поиска ANN, при этом <strong>радиус</strong>, указанный в запросе на поиск, служит радиусом внешнего круга, а параметр <strong>range_filter</strong> — радиусом внутреннего круга, на основе чего рисуются два концентрических круга. Будут возвращены все векторы, показатели схожести которых находятся в кольцевой области, образованной этими двумя концентрическими кругами. При этом параметр <strong>range_filter</strong> можно установить равным <strong>0</strong>, что означает, что будут возвращены все объекты, показатели схожести которых находятся в пределах указанного значения (радиуса).</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/range-search.png" alt="Range Search" class="doc-image" id="range-search" /> 
-   <span>Поиск по диапазону</span>
-  
- </span></p>
-<p>На приведенной выше схеме показано, что запрос на поиск по диапазону содержит два параметра: <strong>radius</strong> и <strong>range_filter</strong>. При получении запроса на поиск по диапазону Milvus выполняет следующие действия:</p>
+    </button></h2><p>When executing a Range Search request, Milvus uses the most similar vectors to the query vector from the ANN Search results as the center, with the <strong>radius</strong> specified in the Search request as the outer circle’s radius, and the <strong>range_filter</strong> as the inner circle’s radius to draw two concentric circles. All vectors with similarity scores that fall within the annular region formed by these two concentric circles will be returned. Here, the <strong>range_filter</strong> can be set to <strong>0</strong>, indicating that all entities within the specified similarity score (radius) will be returned.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/range-search.png" alt="Range Search" class="doc-image" id="range-search" />
+    <span>Range Search</span>
+  </span>
+</p>
+<p>The above diagram shows that a range search request carries two parameters: <strong>radius</strong> and <strong>range_filter</strong>. Upon receiving a range search request, Milvus does the following:</p>
 <ul>
-<li><p>Использует указанный тип метрики (<strong>COSINE</strong>) для поиска всех векторных вложений, наиболее схожих с вектором запроса.</p></li>
-<li><p>Фильтрует векторные вложения, <strong>расстояния</strong> или <strong>оценки сходства</strong> которых по отношению к вектору запроса находятся в диапазоне, заданном параметрами <strong>radius</strong> и <strong>range_filter</strong>.</p></li>
-<li><p>Возвращает <strong>K лучших</strong> объектов из отфильтрованных.</p></li>
+<li><p>Use the specified metric type (<strong>COSINE</strong>) to find all vector embeddings most similar to the query vector.</p></li>
+<li><p>Filter the vector embeddings whose <strong>distances</strong> or <strong>scores</strong> to the query vector fall within the range specified by the <strong>radius</strong> and <strong>range_filter</strong> parameters.</p></li>
+<li><p>Return the <strong>top-K</strong> entities from the filtered ones.</p></li>
 </ul>
-<p>Способ настройки <strong>radius</strong> и <strong>range_filter</strong> зависит от типа метрики поиска. В следующей таблице приведены требования к настройке этих двух параметров для различных типов метрик.</p>
+<p>The way to set <strong>radius</strong> and <strong>range_filter</strong> varies with the metric type of the search. The following table lists the requirements for setting these two parameters with different metric types.</p>
 <table>
    <tr>
-     <th><p>Тип метрики</p></th>
-     <th><p>Обозначения</p></th>
-     <th><p>Требования к настройке radius и range_filter</p></th>
+     <th><p>Metric Type</p></th>
+     <th><p>Denotations</p></th>
+     <th><p>Requirements for Setting radius and range_filter</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">L2</code></p></td>
-     <td><p>Чем меньше L2-расстояние, тем выше степень сходства.</p></td>
-     <td><p>Чтобы игнорировать наиболее схожие векторные вложения, убедитесь, что</p><p><code translate="no">range_filter</code> &lt;= расстояние &lt; <code translate="no">radius</code></p></td>
+     <td><p>A smaller L2 distance indicates a higher similarity.</p></td>
+     <td><p>To ignore the most similar vector embeddings, ensure that</p><p><code translate="no">range_filter</code> &lt;= distance &lt; <code translate="no">radius</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">IP</code></p></td>
-     <td><p>Более большое расстояние IP указывает на более высокую степень сходства.</p></td>
-     <td><p>Чтобы игнорировать наиболее схожие векторные вложения, убедитесь, что</p><p><code translate="no">radius</code> &lt; расстояние &lt;= <code translate="no">range_filter</code></p></td>
+     <td><p>A greater IP distance indicates a higher similarity.</p></td>
+     <td><p>To ignore the most similar vector embeddings, ensure that</p><p><code translate="no">radius</code> &lt; distance &lt;= <code translate="no">range_filter</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">COSINE</code></p></td>
-     <td><p>Большее расстояние по косинусу указывает на более высокую степень сходства.</p></td>
-     <td><p>Чтобы игнорировать наиболее схожие векторные вложения, убедитесь, что</p><p><code translate="no">radius</code> &lt; расстояние &lt;= <code translate="no">range_filter</code></p></td>
+     <td><p>A greater COSINE distance indicates a higher similarity.</p></td>
+     <td><p>To ignore the most similar vector embeddings, ensure that</p><p><code translate="no">radius</code> &lt; distance &lt;= <code translate="no">range_filter</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">JACCARD</code></p></td>
-     <td><p>Чем меньше расстояние по Жаккарду, тем выше степень сходства.</p></td>
-     <td><p>Чтобы игнорировать наиболее схожие векторные вложения, убедитесь, что</p><p><code translate="no">range_filter</code> &lt;= расстояние &lt; <code translate="no">radius</code></p></td>
+     <td><p>A smaller Jaccard distance indicates a higher similarity.</p></td>
+     <td><p>To ignore the most similar vector embeddings, ensure that</p><p><code translate="no">range_filter</code> &lt;= distance &lt; <code translate="no">radius</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">HAMMING</code></p></td>
-     <td><p>Чем меньше расстояние Хэмминга, тем выше степень сходства.</p></td>
-     <td><p>Чтобы игнорировать наиболее схожие векторные вложения, убедитесь, что</p><p><code translate="no">range_filter</code> &lt;= расстояние &lt; <code translate="no">radius</code></p></td>
+     <td><p>A smaller Hamming distance indicates a higher similarity.</p></td>
+     <td><p>To ignore the most similar vector embeddings, ensure that</p><p><code translate="no">range_filter</code> &lt;= distance &lt; <code translate="no">radius</code></p></td>
    </tr>
 </table>
-<h2 id="Examples" class="common-anchor-header">Примеры<button data-href="#Examples" class="anchor-icon" translate="no">
+<h2 id="Examples" class="common-anchor-header">Examples<button data-href="#Examples" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -99,17 +98,17 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>В этом разделе показано, как выполнить поиск по диапазону. Запросы на поиск в приведенных ниже фрагментах кода не содержат указания на тип метрики, что означает применение метрики <strong>COSINE</strong> по умолчанию. В этом случае убедитесь, что значение <strong>радиуса</strong> меньше значения <strong>range_filter</strong>.</p>
-<p>В приведённых ниже фрагментах кода задайте ` <code translate="no">radius</code> ` равным ` <code translate="no">0.4</code> `, а ` <code translate="no">range_filter</code> ` — ` <code translate="no">0.6</code> `, чтобы Milvus возвращал все объекты, расстояния или оценки которых относительно вектора запроса находятся в диапазоне <strong>от 0,4</strong> до <strong>0,6</strong>.</p>
+    </button></h2><p>This section demonstrates how to conduct a range search. The search requests in the following code snippets do not carry a metric type, indicating the default metric type <strong>COSINE</strong> applies. In this case, ensure that the <strong>radius</strong> value is smaller than the <strong>range_filter</strong> value.</p>
+<p>In the following code snippets, set <code translate="no">radius</code> to <code translate="no">0.4</code> and <code translate="no">range_filter</code> to <code translate="no">0.6</code> so that Milvus returns all entities whose distances or scores to the query vector fall within <strong>0.4</strong> to <strong>0.6</strong>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -357,5 +356,5 @@ curl --request POST \
 <span class="hljs-comment"># {&quot;code&quot;:0,&quot;cost&quot;:0,&quot;data&quot;:[]}</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>Если векторы запроса уже существуют в целевой коллекции, рассмотрите возможность использования <code translate="no">ids</code> вместо их извлечения перед поиском. Подробности см. в разделе <a href="/docs/ru/primary-key-search.md">«Поиск по первичному ключу</a>».</p>
+<p>If the query vectors already exist in the target collection, consider using <code translate="no">ids</code> instead of retrieving them before searches. For details, refer to <a href="/docs/ru/primary-key-search.md">Primary-Key Search</a>.</p>
 </div>

@@ -2,8 +2,9 @@
 id: gpu-cagra.md
 title: GPU_CAGRA
 summary: >-
-  GPU_CAGRA 索引是一种针对 GPU 进行优化的基于图的索引。与使用昂贵的训练级 GPU 相比，使用推理级 GPU 运行 Milvus 的 GPU
-  版本可能更具成本效益。
+  The GPU_CAGRA index is a graph-based index optimized for GPUs. Using
+  inference-grade GPUs to run the Milvus GPU version can be more cost-effective
+  compared to using expensive training-grade GPUs.
 ---
 <h1 id="GPUCAGRA" class="common-anchor-header">GPU_CAGRA<button data-href="#GPUCAGRA" class="anchor-icon" translate="no">
       <svg translate="no"
@@ -20,8 +21,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p><strong>GPU_CAGRA</strong>索引是一种针对 GPU 进行优化的基于图的索引。与使用昂贵的训练级 GPU 相比，使用推理级 GPU 运行 Milvus GPU 版本可能更具成本效益。</p>
-<h2 id="Build-index" class="common-anchor-header">构建索引<button data-href="#Build-index" class="anchor-icon" translate="no">
+    </button></h1><p>The <strong>GPU_CAGRA</strong> index is a graph-based index optimized for GPUs. Using inference-grade GPUs to run the Milvus GPU version can be more cost-effective compared to using expensive training-grade GPUs.</p>
+<h2 id="Build-index" class="common-anchor-header">Build index<button data-href="#Build-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -36,7 +37,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>要在 Milvus 中针对向量字段构建<code translate="no">GPU_CAGRA</code> 索引，请使用<code translate="no">add_index()</code> 方法，并指定<code translate="no">index_type</code> 、<code translate="no">metric_type</code> 以及索引的其他参数。</p>
+    </button></h2><p>To build a <code translate="no">GPU_CAGRA</code> index on a vector field in Milvus, use the <code translate="no">add_index()</code> method, specifying the <code translate="no">index_type</code>, <code translate="no">metric_type</code>, and additional parameters for the index.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 <span class="hljs-comment"># Prepare index building params</span>
@@ -56,14 +57,14 @@ index_params.add_index(
     } <span class="hljs-comment"># Index building params</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>在此配置中：</p>
+<p>In this configuration:</p>
 <ul>
-<li><p><code translate="no">index_type</code>: 要构建的索引类型。在此示例中，将值设置为<code translate="no">GPU_CAGRA</code> 。</p></li>
-<li><p><code translate="no">metric_type</code>: 用于计算向量之间距离的方法。有关详细信息，请参阅《<a href="/docs/zh/metric.md">度量类型</a>》。</p></li>
-<li><p><code translate="no">params</code>: 构建索引的其他配置选项。要了解<code translate="no">GPU_CAGRA</code> 索引可用的更多构建参数，请参阅《<a href="/docs/zh/gpu-cagra.md#Index-building-params">索引构建参数</a>》。</p></li>
+<li><p><code translate="no">index_type</code>: The type of index to be built. In this example, set the value to <code translate="no">GPU_CAGRA</code>.</p></li>
+<li><p><code translate="no">metric_type</code>: The method used to calculate the distance between vectors. For details, refer to <a href="/docs/zh/metric.md">Metric Types</a>.</p></li>
+<li><p><code translate="no">params</code>: Additional configuration options for building the index. To learn more building parameters available for the <code translate="no">GPU_CAGRA</code> index, refer to <a href="/docs/zh/gpu-cagra.md#Index-building-params">Index building params</a>.</p></li>
 </ul>
-<p>配置好索引参数后，您可以直接使用<code translate="no">create_index()</code> 方法创建索引，或在<code translate="no">create_collection</code> 方法中传入索引参数。详情请参阅<a href="/docs/zh/create-collection.md">“创建Collection”</a>。</p>
-<h2 id="Search-on-index" class="common-anchor-header">在索引上进行搜索<button data-href="#Search-on-index" class="anchor-icon" translate="no">
+<p>Once the index parameters are configured, you can create the index by using the <code translate="no">create_index()</code> method directly or passing the index params in the <code translate="no">create_collection</code> method. For details, refer to <a href="/docs/zh/create-collection.md">Create Collection</a>.</p>
+<h2 id="Search-on-index" class="common-anchor-header">Search on index<button data-href="#Search-on-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -78,7 +79,7 @@ index_params.add_index(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>索引构建完成且实体插入后，即可对索引执行相似度搜索。</p>
+    </button></h2><p>Once the index is built and entities are inserted, you can perform similarity searches on the index.</p>
 <pre><code translate="no" class="language-python">search_params = {
     <span class="hljs-string">&quot;params&quot;</span>: {
         <span class="hljs-string">&quot;itopk_size&quot;</span>: <span class="hljs-number">16</span>, <span class="hljs-comment"># Determines the size of intermediate results kept during the search</span>
@@ -94,11 +95,11 @@ res = MilvusClient.search(
     search_params=search_params
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>在此配置中：</p>
+<p>In this configuration:</p>
 <ul>
-<li><code translate="no">params</code>：针对索引搜索的附加配置选项。要了解<code translate="no">GPU_CAGRA</code> 索引可用的更多搜索参数，请参阅《<a href="/docs/zh/gpu-cagra.md#Index-specific-search-params">索引特定搜索参数</a>》。</li>
+<li><code translate="no">params</code>: Additional configuration options for searching on the index. To learn more search parameters available for the <code translate="no">GPU_CAGRA</code> index, refer to <a href="/docs/zh/gpu-cagra.md#Index-specific-search-params">Index-specific search params</a>.</li>
 </ul>
-<h2 id="Enable-CPU-search-at-load-time--Milvus-264+" class="common-anchor-header">在加载时启用 CPU 搜索<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.4+</span><button data-href="#Enable-CPU-search-at-load-time--Milvus-264+" class="anchor-icon" translate="no">
+<h2 id="Enable-CPU-search-at-load-time" class="common-anchor-header">Enable CPU search at load time<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.4+</span><button data-href="#Enable-CPU-search-at-load-time" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -113,23 +114,23 @@ res = MilvusClient.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>若要在加载时动态启用 CPU 搜索，请在<code translate="no">milvus.yaml</code> 中编辑以下配置：</p>
+    </button></h2><p>To enable CPU search dynamically at load time, edit the following config in <code translate="no">milvus.yaml</code>:</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-comment"># milvus.yaml</span>
 <span class="hljs-attr">knowhere:</span>
   <span class="hljs-attr">GPU_CAGRA:</span>
     <span class="hljs-attr">load:</span> 
       <span class="hljs-attr">adapt_for_cpu:</span> <span class="hljs-literal">true</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>行为</strong></p>
+<p><strong>Behavior</strong></p>
 <ul>
-<li><p>当<code translate="no">load.adapt_for_cpu</code> 设置为<code translate="no">true</code> 时，Milvus会在加载过程中<strong>将GPU_CAGRA索引</strong>转换为可在CPU上执行的格式（类似HNSW）。</p></li>
-<li><p>后续的搜索操作将在 CPU 上执行，即使该索引最初是为 GPU 构建的。</p></li>
-<li><p>如果省略或设置为 false，索引将保留在 GPU 上，搜索也在 GPU 上运行。</p></li>
+<li><p>When <code translate="no">load.adapt_for_cpu</code> is set to <code translate="no">true</code>, Milvus converts the <strong>GPU_CAGRA</strong> index into a CPU-executable format (HNSW-like) during load.</p></li>
+<li><p>Subsequent search operations are executed on CPU, even if the index was originally built for GPU.</p></li>
+<li><p>If omitted or false, the index stays on GPU and searches run on GPU.</p></li>
 </ul>
 <div class="alert note">
-<p>在混合或成本敏感的环境中，GPU 资源被保留用于索引构建，但搜索在 CPU 上运行，请使用加载时的 CPU 适配。</p>
+<p>Use load-time CPU adaptation in hybrid or cost-sensitive environments where GPU resources are reserved for index building but searches run on CPU.</p>
 </div>
-<h2 id="Index-params" class="common-anchor-header">索引参数<button data-href="#Index-params" class="anchor-icon" translate="no">
+<h2 id="Index-params" class="common-anchor-header">Index params<button data-href="#Index-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -144,8 +145,8 @@ res = MilvusClient.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>本节概述了用于构建索引和在索引上执行搜索的参数。</p>
-<h3 id="Index-building-params" class="common-anchor-header">索引构建参数<button data-href="#Index-building-params" class="anchor-icon" translate="no">
+    </button></h2><p>This section provides an overview of the parameters used for building an index and performing searches on the index.</p>
+<h3 id="Index-building-params" class="common-anchor-header">Index building params<button data-href="#Index-building-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -160,40 +161,40 @@ res = MilvusClient.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>下表列出了在<code translate="no">params</code> 中<a href="/docs/zh/gpu-cagra.md#Build-index">构建索引</a>时可配置的参数。</p>
+    </button></h3><p>The following table lists the parameters that can be configured in <code translate="no">params</code> when <a href="/docs/zh/gpu-cagra.md#Build-index">building an index</a>.</p>
 <table>
    <tr>
-     <th><p>参数</p></th>
-     <th><p>描述</p></th>
-     <th><p>默认值</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Description</p></th>
+     <th><p>Default Value</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">intermediate_graph_degree</code></p></td>
-     <td><p>通过确定修剪前图的度数来影响召回率和构建时间。推荐值为<code translate="no">32</code> 或<code translate="no">64</code> 。</p></td>
+     <td><p>Affects recall and build time by determining the graph’s degree before pruning. Recommended values are <code translate="no">32</code> or <code translate="no">64</code>.</p></td>
      <td><p><code translate="no">128</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">graph_degree</code></p></td>
-     <td><p>通过设置修剪后图的度数来影响搜索性能和召回率。这两个度数之间的差异越大，构建时间就越长。其值必须小于<code translate="no">intermediate_graph_degree</code> 的值。</p></td>
+     <td><p>Affects search performance and recall by setting the graph’s degree after pruning. A larger difference between these two degrees results in a longer build time. Its value must be smaller than the value of <code translate="no">intermediate_graph_degree</code>.</p></td>
      <td><p><code translate="no">64</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">build_algo</code></p></td>
-     <td><p>选择修剪前的图生成算法。可用值：</p><ul><li><p><code translate="no">IVF_PQ</code>：提供更高质量，但构建时间较长。</p></li><li><p><code translate="no">NN_DESCENT</code>: 构建速度更快，但召回率可能较低。</p></li></ul></td>
+     <td><p>Selects the graph generation algorithm before pruning. Possible values:</p><ul><li><p><code translate="no">IVF_PQ</code>: Offers higher quality but slower build time.</p></li><li><p><code translate="no">NN_DESCENT</code>: Provides a quicker build with potentially lower recall.</p></li></ul></td>
      <td><p><code translate="no">IVF_PQ</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">cache_dataset_on_device</code></p></td>
-     <td><p>决定是否将原始数据集缓存到 GPU 内存中。可用值：</p><ul><li><p><code translate="no">"true"</code>: 将原始数据集缓存到GPU内存中，通过优化搜索结果来提高召回率。</p></li><li><p><code translate="no">"false"</code>: 不缓存原始数据集，以节省 GPU 内存。</p></li></ul></td>
+     <td><p>Decides whether to cache the original dataset in GPU memory. Possible values:</p><ul><li><p><code translate="no">"true"</code>: Caches the original dataset to enhance recall by refining search results.</p></li><li><p><code translate="no">"false"</code>: Does not cache the original dataset to save gpu memory.</p></li></ul></td>
      <td><p><code translate="no">"false"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">adapt_for_cpu</code></p></td>
-     <td><p>决定是否使用 GPU 进行索引构建，并使用 CPU 进行搜索。</p><p>将此参数设置为<code translate="no">"true"</code> 时，搜索请求中必须包含<code translate="no">ef</code> 参数。</p></td>
+     <td><p>Decides whether to use GPU for index-building and CPU for search.</p><p>Setting this parameter to <code translate="no">"true"</code> requires the presence of the <code translate="no">ef</code> parameter in the search requests.</p></td>
      <td><p><code translate="no">"false"</code></p></td>
    </tr>
 </table>
-<h3 id="Index-specific-search-params" class="common-anchor-header">索引特定搜索参数<button data-href="#Index-specific-search-params" class="anchor-icon" translate="no">
+<h3 id="Index-specific-search-params" class="common-anchor-header">Index-specific search params<button data-href="#Index-specific-search-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -208,41 +209,41 @@ res = MilvusClient.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>下表列出了<a href="/docs/zh/gpu-cagra.md#Search-on-index">在索引上进行搜索</a>时，可在<code translate="no">search_params.params</code> 中配置的参数。</p>
+    </button></h3><p>The following table lists the parameters that can be configured in <code translate="no">search_params.params</code> when <a href="/docs/zh/gpu-cagra.md#Search-on-index">searching on the index</a>.</p>
 <table>
    <tr>
-     <th><p>参数</p></th>
-     <th><p>描述</p></th>
-     <th><p>默认值</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Description</p></th>
+     <th><p>Default Value</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">itopk_size</code></p></td>
-     <td><p>确定搜索过程中保留的中间结果的大小。 较大的值可能会提高召回率，但会牺牲搜索性能。该值应至少等于最终的 top-k（限制）值，并且通常是 2 的幂（例如 16、32、64、128）。</p></td>
-     <td><p>空</p></td>
+     <td><p>Determines the size of intermediate results kept during the search. A larger value may improve recall at the expense of search performance. It should be at least equal to the final top-k (limit) value and is typically a power of 2 (e.g., 16, 32, 64, 128).</p></td>
+     <td><p>Empty</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">search_width</code></p></td>
-     <td><p>指定搜索过程中进入 CAGRA 图的入口点数量。增加此值可以提高召回率，但可能会影响搜索性能（例如 1、2、4、8、16、32）。</p></td>
-     <td><p>空</p></td>
+     <td><p>Specifies the number of entry points into the CAGRA graph during the search. Increasing this value can enhance recall but may impact search performance（e.g. 1, 2, 4, 8, 16, 32).</p></td>
+     <td><p>Empty</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">num_random_samplings</code></p></td>
-     <td><p>控制CAGRA在选择图搜索初始入口点时进行随机采样的程度。较大的数值使CAGRA有更多机会从更优的点开始，从而提高召回率，但会增加搜索延迟。该值必须不小于<code translate="no">1</code> 。此功能在Milvus 2.6.20及以上版本中可用。</p></td>
+     <td><p>Controls how much random sampling CAGRA performs when choosing initial entry points for graph search. A larger value gives CAGRA more chances to start from better points, improving recall at the cost of increased search latency. The value must be at least <code translate="no">1</code>. Available in Milvus 2.6.20+.</p></td>
      <td><p><code translate="no">1</code></p></td>
    </tr>
    <tr>
-     <td><p><code translate="no">min_iterations</code> /<code translate="no">max_iterations</code></p></td>
-     <td><p>控制搜索迭代过程。默认设置为<code translate="no">0</code> ，CAGRA会根据<code translate="no">itopk_size</code> 和<code translate="no">search_width</code> 自动确定迭代次数。手动调整这些值有助于平衡性能与准确性。</p></td>
+     <td><p><code translate="no">min_iterations</code> / <code translate="no">max_iterations</code></p></td>
+     <td><p>Controls the search iteration process. By default, they are set to <code translate="no">0</code>, and CAGRA automatically determines the number of iterations based on <code translate="no">itopk_size</code> and <code translate="no">search_width</code>. Adjusting these values manually can help balance performance and accuracy.</p></td>
      <td><p><code translate="no">0</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">team_size</code></p></td>
-     <td><p>指定用于在 GPU 上计算度量距离的 CUDA 线程数。常见值为 2 的幂（最大为 32），例如 2、4、8、16、32。该参数对搜索性能影响较小。 默认值为<code translate="no">0</code> ，其中 Milvus 会根据向量维度自动选择<code translate="no">team_size</code> 。</p></td>
+     <td><p>Specifies the number of CUDA threads used for calculating metric distance on the GPU. Common values are a power of 2 up to 32 (e.g. 2, 4, 8, 16, 32). It has a minor impact on search performance. The default value is <code translate="no">0</code>, where Milvus automatically selects the <code translate="no">team_size</code> based on the vector dimension.</p></td>
      <td><p><code translate="no">0</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">ef</code></p></td>
-     <td><p>指定查询时间与精度的权衡。<code translate="no">ef</code> 值越高，搜索精度越高，但速度越慢。</p><p>若在构建索引时将<code translate="no">adapt_for_cpu</code> 设置为<code translate="no">true</code> ，则此参数为必填项。</p></td>
+     <td><p>Specifies the query time/accuracy trade-off. A higher <code translate="no">ef</code> value leads to more accurate but slower search.</p><p>This parameter is mandatory if you set <code translate="no">adapt_for_cpu</code> to <code translate="no">true</code> when you build the index.</p></td>
      <td><p><code translate="no">[top_k, int_max]</code></p></td>
    </tr>
 </table>

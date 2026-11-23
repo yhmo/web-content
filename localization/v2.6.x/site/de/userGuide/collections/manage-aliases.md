@@ -1,12 +1,11 @@
 ---
 id: manage-aliases.md
-title: Aliase verwalten
+title: Manage Aliases
 summary: >-
-  Milvus bietet Funktionen zur Verwaltung von Aliasen. Auf dieser Seite werden
-  die Verfahren zum Erstellen, Auflisten, Ändern und Löschen von Aliasen
-  beschrieben.
+  Milvus provides alias management capabilities. This page demonstrates the
+  procedures to create, list, alter, and drop aliases.
 ---
-<h1 id="Manage-Aliases" class="common-anchor-header">Aliase verwalten<button data-href="#Manage-Aliases" class="anchor-icon" translate="no">
+<h1 id="Manage-Aliases" class="common-anchor-header">Manage Aliases<button data-href="#Manage-Aliases" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -21,9 +20,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>In Milvus ist ein Alias ein zweiter, veränderbarer Name für eine Sammlung. Die Verwendung von Aliasen bietet eine Abstraktionsebene, die es Ihnen ermöglicht, dynamisch zwischen Sammlungen zu wechseln, ohne Ihren Anwendungscode zu ändern. Dies ist besonders in Produktionsumgebungen für nahtlose Datenaktualisierungen, A/B-Tests und andere operative Aufgaben nützlich.</p>
-<p>Auf dieser Seite wird gezeigt, wie Sie Sammlungsalias erstellen, auflisten, neu zuordnen und löschen können.</p>
-<h2 id="Why-Use-an-Alias" class="common-anchor-header">Warum einen Alias verwenden?<button data-href="#Why-Use-an-Alias" class="anchor-icon" translate="no">
+    </button></h1><p>In Milvus, an alias is a secondary, mutable name for a collection. Using aliases provides a layer of abstraction that allows you to dynamically switch between collections without modifying your application code. This is particularly useful in production environments for seamless data updates, A/B testing, and other operational tasks.</p>
+<p>This page demonstrates how to create, list, reassign, and drop collection aliases.</p>
+<h2 id="Why-Use-an-Alias" class="common-anchor-header">Why Use an Alias?<button data-href="#Why-Use-an-Alias" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -38,21 +37,21 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Der Hauptvorteil der Verwendung eines Alias ist die Entkopplung Ihrer Client-Anwendung von einem bestimmten, physischen Sammlungsnamen.</p>
-<p>Stellen Sie sich vor, Sie haben eine Live-Anwendung, die eine Sammlung namens <code translate="no">prod_data</code> abfragt. Wenn Sie die zugrundeliegenden Daten aktualisieren müssen, können Sie die Aktualisierung ohne Dienstunterbrechung durchführen. Der Arbeitsablauf wäre folgender:</p>
+    </button></h2><p>The primary benefit of using an alias is to decouple your client application from a specific, physical collection name.</p>
+<p>Imagine you have a live application that queries a collection named <code translate="no">prod_data</code>. When you need to update the underlying data, you can perform the update without any service interruption. The workflow would be:</p>
 <ol>
-<li><strong>Erstellen Sie eine neue Sammlung</strong>: Erstellen Sie eine neue Sammlung, zum Beispiel <code translate="no">prod_data_v2</code>.</li>
-<li><strong>Daten vorbereiten</strong>: Laden und indizieren Sie die neuen Daten in <code translate="no">prod_data_v2</code>.</li>
-<li><strong>Wechseln Sie den Alias</strong>: Sobald die neue Sammlung einsatzbereit ist, weisen Sie den Alias <code translate="no">prod_data</code> von der alten Sammlung atomar auf <code translate="no">prod_data_v2</code> um.</li>
+<li><strong>Create a New Collection</strong>: Create a new collection, for instance, <code translate="no">prod_data_v2</code>.</li>
+<li><strong>Prepare Data</strong>: Load and index the new data in <code translate="no">prod_data_v2</code>.</li>
+<li><strong>Switch the Alias</strong>: Once the new collection is ready for service, atomically reassign the alias <code translate="no">prod_data</code> from the old collection to <code translate="no">prod_data_v2</code>.</li>
 </ol>
-<p>Ihre Anwendung sendet weiterhin Anfragen an den Alias <code translate="no">prod_data</code>, ohne dass es zu Ausfallzeiten kommt. Dieser Mechanismus ermöglicht nahtlose Aktualisierungen und vereinfacht Vorgänge wie Blue-Green-Deployments für Ihren Vektorsuchdienst.</p>
-<p><strong>Schlüsseleigenschaften von Aliasen:</strong></p>
+<p>Your application continues to send requests to the alias <code translate="no">prod_data</code>, experiencing zero downtime. This mechanism enables seamless updates and simplifies operations like blue-green deployments for your vector search service.</p>
+<p><strong>Key Properties of Aliases:</strong></p>
 <ul>
-<li>Eine Sammlung kann mehrere Aliasnamen haben.</li>
-<li>Ein Alias kann jeweils nur auf eine Sammlung verweisen.</li>
-<li>Bei der Verarbeitung einer Anfrage prüft Milvus zunächst, ob eine Sammlung mit dem angegebenen Namen existiert. Wenn nicht, wird geprüft, ob der Name ein Alias für eine Sammlung ist.</li>
+<li>A collection can have multiple aliases.</li>
+<li>An alias can only point to one collection at a time.</li>
+<li>When processing a request, Milvus first checks if a collection with the provided name exists. If not, it then checks if the name is an alias for a collection.</li>
 </ul>
-<h2 id="Create-Alias" class="common-anchor-header">Alias erstellen<button data-href="#Create-Alias" class="anchor-icon" translate="no">
+<h2 id="Create-Alias" class="common-anchor-header">Create Alias<button data-href="#Create-Alias" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -67,9 +66,14 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Der folgende Codeschnipsel zeigt, wie man einen Alias für eine Sammlung erstellt.</p>
+    </button></h2><p>The following code snippet demonstrates how to create an alias for a collection.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client = MilvusClient(
@@ -217,7 +221,7 @@ curl --request POST \
 <span class="hljs-comment">#     &quot;data&quot;: {}</span>
 <span class="hljs-comment"># }</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="List-Aliases" class="common-anchor-header">Aliase auflisten<button data-href="#List-Aliases" class="anchor-icon" translate="no">
+<h2 id="List-Aliases" class="common-anchor-header">List Aliases<button data-href="#List-Aliases" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -232,9 +236,14 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Der folgende Codeschnipsel demonstriert das Verfahren zur Auflistung der Aliasnamen, die einer bestimmten Sammlung zugeordnet sind.</p>
+    </button></h2><p>The following code snippet demonstrates the procedure to list the aliases allocated to a specific collection.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># 9.2. List aliases</span>
 res = client.list_aliases(
     collection_name=<span class="hljs-string">&quot;my_collection_1&quot;</span>
@@ -305,7 +314,7 @@ curl --request POST \
 <span class="hljs-comment">#     ]</span>
 <span class="hljs-comment"># }</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Describe-Alias" class="common-anchor-header">Alias beschreiben<button data-href="#Describe-Alias" class="anchor-icon" translate="no">
+<h2 id="Describe-Alias" class="common-anchor-header">Describe Alias<button data-href="#Describe-Alias" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -320,9 +329,14 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Der folgende Codeschnipsel beschreibt einen bestimmten Alias im Detail, einschließlich des Namens der Sammlung, der er zugewiesen wurde.</p>
+    </button></h2><p>The following code snippet describes a specific alias in detail, including the name of the collection to which it has been allocated.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># 9.3. Describe aliases</span>
 res = client.describe_alias(
     alias=<span class="hljs-string">&quot;bob&quot;</span>
@@ -406,7 +420,7 @@ curl --request POST \
 <span class="hljs-comment">#     }</span>
 <span class="hljs-comment"># }</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Alter-Alias" class="common-anchor-header">Alias ändern<button data-href="#Alter-Alias" class="anchor-icon" translate="no">
+<h2 id="Alter-Alias" class="common-anchor-header">Alter Alias<button data-href="#Alter-Alias" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -421,9 +435,14 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Sie können den Alias, der bereits einer bestimmten Sammlung zugewiesen wurde, einer anderen zuweisen.</p>
+    </button></h2><p>You can reallocate the alias already allocated to a specific collection to another.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># 9.4 Reassign aliases to other collections</span>
 client.alter_alias(
     collection_name=<span class="hljs-string">&quot;my_collection_2&quot;</span>,
@@ -601,7 +620,7 @@ curl --request POST \
 <span class="hljs-comment">#     }</span>
 <span class="hljs-comment"># }</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Drop-Alias" class="common-anchor-header">Alias verwerfen<button data-href="#Drop-Alias" class="anchor-icon" translate="no">
+<h2 id="Drop-Alias" class="common-anchor-header">Drop Alias<button data-href="#Drop-Alias" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -616,9 +635,14 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Der folgende Codeschnipsel demonstriert das Verfahren zum Löschen eines Alias.</p>
+    </button></h2><p>The following code snippet demonstrates the procedure to drop an alias.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># 9.5 Drop aliases</span>
 client.drop_alias(
     alias=<span class="hljs-string">&quot;bob&quot;</span>

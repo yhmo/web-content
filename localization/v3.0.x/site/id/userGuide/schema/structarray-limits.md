@@ -1,13 +1,12 @@
 ---
 id: structarray-limits.md
-title: Batasan StructArray
+title: StructArray Limits
 summary: >-
-  Dukungan StructArray mencakup definisi skema, data yang dimasukkan,
-  pengindeksan, mode pencarian, dan filter khusus StructArray. Gunakan halaman
-  ini sebagai panduan batasan sebelum Anda mengandalkan perilaku StructArray
-  dalam lingkungan produksi.
+  StructArray support spans schema definition, insert payloads, indexing, search
+  modes, and StructArray-specific filters. Use this page as the limits reference
+  before you rely on StructArray behavior in production.
 ---
-<h1 id="StructArray-Limits" class="common-anchor-header">Batasan StructArray<button data-href="#StructArray-Limits" class="anchor-icon" translate="no">
+<h1 id="StructArray-Limits" class="common-anchor-header">StructArray Limits<button data-href="#StructArray-Limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -22,9 +21,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Dukungan StructArray mencakup definisi skema, muatan penyisipan, pengindeksan, mode pencarian, dan filter khusus StructArray. Gunakan halaman ini sebagai referensi batasan sebelum Anda mengandalkan perilaku StructArray dalam lingkungan produksi.</p>
-<p>Sebagian besar batasan StructArray berasal dari salah satu dari tiga sumber: model skema StructArray, mode pencarian yang Anda pilih untuk subbidang vektor, dan versi Milvus yang digunakan oleh koleksi Anda.</p>
-<h2 id="Limits-at-a-glance" class="common-anchor-header">Sekilas tentang batasan<button data-href="#Limits-at-a-glance" class="anchor-icon" translate="no">
+    </button></h1><p>StructArray support spans schema definition, insert payloads, indexing, search modes, and StructArray-specific filters. Use this page as the limits reference before you rely on StructArray behavior in production.</p>
+<p>Most StructArray limits come from one of three places: the StructArray schema model, the search mode you choose for vector subfields, and the Milvus version that your collection runs on.</p>
+<h2 id="Limits-at-a-glance" class="common-anchor-header">Limits at a glance<button data-href="#Limits-at-a-glance" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -39,26 +38,26 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Batasan utama StructArray adalah:</p>
+    </button></h2><p>The main StructArray limits are:</p>
 <table>
 <thead>
-<tr><th>Area</th><th>Batasan</th></tr>
+<tr><th>Area</th><th>Limit</th></tr>
 </thead>
 <tbody>
-<tr><td>Bentuk skema</td><td>Struct hanya dapat digunakan sebagai tipe elemen dari bidang Array. Struct tidak didukung sebagai bidang koleksi tingkat atas.</td></tr>
-<tr><td>Skema subbidang</td><td>Semua elemen Struct dalam bidang StructArray yang sama berbagi satu skema Struct yang telah ditentukan sebelumnya.</td></tr>
-<tr><td>Subbidang bersarang</td><td>Mulai dari Milvus 3.0.6, Struct dapat berisi subbidang skalar <code translate="no">ARRAY</code> dengan satu tingkat penyarangan. Subbidang <code translate="no">Struct</code>, <code translate="no">ArrayOfStruct</code>, dan JSON yang bersarang tidak didukung di versi mana pun.</td></tr>
-<tr><td>Kapasitas</td><td><code translate="no">max_capacity</code> diperlukan dan membatasi berapa banyak elemen Struct yang dapat disimpan oleh satu entitas di bidang StructArray.</td></tr>
-<tr><td>Perubahan subbidang</td><td>Mulai dari Milvus 3.0.6, Anda dapat menambahkan subbidang yang elemennya dapat bernilai null ke bidang StructArray yang sudah ada atau menghapus subbidang darinya. Versi sebelumnya mengharuskan Anda menghapus dan menambahkan kembali seluruh bidang StructArray.</td></tr>
-<tr><td>Jalur subbidang</td><td>Gunakan jalur <code translate="no">structArray[subfield]</code>, seperti <code translate="no">chunks[emb]</code>, untuk indeks, target pencarian, bidang keluaran, dan filter. Jangan gunakan <code translate="no">chunks.emb</code>.</td></tr>
-<tr><td>Bentuk penyisipan</td><td>Sisipkan bidang StructArray sebagai array objek. Jangan gunakan sintaks jalur di dalam muatan penyisipan.</td></tr>
-<tr><td>Indeks vektor</td><td>Bidang vektor atau subbidang vektor hanya menerima satu indeks. Gunakan subbidang vektor terpisah untuk pencarian EmbeddingList dan pencarian tingkat elemen.</td></tr>
-<tr><td>Fungsi</td><td>Fungsi bidang tidak didukung untuk bidang atau subbidang di dalam bidang StructArray.</td></tr>
-<tr><td>Bidang yang dapat bernilai null</td><td>Bidang StructArray yang dapat bernilai null bergantung pada versi. Nilai null pada tingkat baris berlaku untuk seluruh bidang StructArray. Mulai dari Milvus 3.0.6, subbidang juga dapat mengizinkan nilai null pada elemen Struct individu: ` <code translate="no">nullable=True</code> ` pada subbidang skalar atau vektor, ` <code translate="no">element_nullable=True</code> ` pada subbidang array. Elemen Struct itu sendiri tidak dapat bernilai null.</td></tr>
-<tr><td>Menambahkan bidang secara dinamis</td><td>Penambahan bidang StructArray ke koleksi yang sudah ada bergantung pada versi dan mengharuskan bidang yang ditambahkan dapat bernilai null.</td></tr>
+<tr><td>Schema shape</td><td>A Struct can be used only as the element type of an Array field. Struct is not supported as a top-level collection field.</td></tr>
+<tr><td>Subfield schema</td><td>All Struct elements in the same StructArray field share one predefined Struct schema.</td></tr>
+<tr><td>Nested subfields</td><td>Starting in Milvus 3.0.6, a Struct can contain scalar <code translate="no">ARRAY</code> subfields with one nesting level. Nested <code translate="no">Struct</code>, <code translate="no">ArrayOfStruct</code>, and JSON subfields are not supported in any version.</td></tr>
+<tr><td>Capacity</td><td><code translate="no">max_capacity</code> is required and limits how many Struct elements one entity can store in the StructArray field.</td></tr>
+<tr><td>Subfield changes</td><td>Starting in Milvus 3.0.6, you can add an element-nullable subfield to an existing StructArray field or drop a subfield from it. Earlier versions require dropping and re-adding the whole StructArray field.</td></tr>
+<tr><td>Subfield path</td><td>Use <code translate="no">structArray[subfield]</code> paths, such as <code translate="no">chunks[emb]</code>, for indexes, search targets, output fields, and filters. Do not use <code translate="no">chunks.emb</code>.</td></tr>
+<tr><td>Insert shape</td><td>Insert a StructArray field as an array of objects. Do not use path syntax inside insert payloads.</td></tr>
+<tr><td>Vector indexes</td><td>A vector field or vector subfield accepts only one index. Use separate vector subfields for EmbeddingList search and element-level search.</td></tr>
+<tr><td>Functions</td><td>Field functions are not supported for fields or subfields inside a StructArray field.</td></tr>
+<tr><td>Nullable fields</td><td>Nullable StructArray fields are version-gated. Row-level null applies to the whole StructArray field. Starting in Milvus 3.0.6, a subfield can additionally allow a null value in an individual Struct element: <code translate="no">nullable=True</code> on a scalar or vector subfield, <code translate="no">element_nullable=True</code> on an array subfield. A Struct element itself cannot be null.</td></tr>
+<tr><td>Dynamic add field</td><td>Adding a StructArray field to an existing collection is version-gated and requires the added field to be nullable.</td></tr>
 </tbody>
 </table>
-<h2 id="Schema-limits" class="common-anchor-header">Batasan skema<button data-href="#Schema-limits" class="anchor-icon" translate="no">
+<h2 id="Schema-limits" class="common-anchor-header">Schema limits<button data-href="#Schema-limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -73,25 +72,25 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Skema StructArray memiliki batasan berikut:</p>
+    </button></h2><p>StructArray schemas have the following limits:</p>
 <table>
 <thead>
-<tr><th>Batasan</th><th>Rincian</th></tr>
+<tr><th>Limit</th><th>Details</th></tr>
 </thead>
 <tbody>
-<tr><td>Struct bukanlah tipe bidang tingkat atas.</td><td>Buat bidang StructArray sebagai ` <code translate="no">datatype=DataType.ARRAY</code> ` dengan ` <code translate="no">element_type=DataType.STRUCT</code> ` dan ` <code translate="no">struct_schema</code>`.</td></tr>
-<tr><td>Semua elemen berbagi satu skema.</td><td>Setiap elemen Struct dalam bidang StructArray mengikuti daftar subbidang dan tipe data subbidang yang sama.</td></tr>
-<tr><td><code translate="no">max_capacity</code> diperlukan.</td><td>Jumlah elemen Struct dalam satu entitas tidak boleh melebihi <code translate="no">max_capacity</code> yang dikonfigurasi untuk bidang StructArray.</td></tr>
-<tr><td>Subbidang skalar <code translate="no">ARRAY</code> memiliki <code translate="no">max_capacity</code> per subbidang.</td><td>Subbidang skalar ` <code translate="no">ARRAY</code> ` mendeklarasikan ` <code translate="no">max_capacity</code> ` untuk array dalamnya, dan Milvus akan menolak elemen `Struct` yang array dalamnya melebihi kapasitas yang dideklarasikan oleh subbidang tersebut. Nilai tidak perlu sama di seluruh subbidang. Nilai harus lebih besar dari 0 dan tidak boleh melebihi ` <code translate="no">proxy.maxArrayCapacity</code>`, yang secara default bernilai 4096.</td></tr>
-<tr><td>Subfield dapat mengalami perubahan pada Milvus 3.0.6 dan versi selanjutnya.</td><td>Tambahkan subbidang yang dapat bernilai null, atau hapus subbidang berdasarkan jalurnya, seperti <code translate="no">chunks[lang]</code>. Anda tidak dapat menghapus subbidang terakhir dari bidang StructArray, bidang vektor terakhir dari koleksi, atau subbidang yang digunakan oleh Fungsi. Pada versi sebelumnya, hapus bidang StructArray dan tambahkan kembali dengan skema yang telah diperbarui.</td></tr>
-<tr><td>Struct bersarang tidak didukung.</td><td>Sebuah Struct tidak boleh mengandung subfield <code translate="no">Struct</code>, <code translate="no">ArrayOfStruct</code>, atau JSON yang bersarang. Mulai dari Milvus 3.0.6, sebuah Struct dapat mengandung subfield skalar <code translate="no">ARRAY</code> dengan satu tingkat penyarangan. Subfield <code translate="no">ARRAY</code> tidak boleh berisi vektor.</td></tr>
-<tr><td>Fungsi tidak didukung di dalam StructArray.</td><td>Jangan mendefinisikan fungsi bidang untuk bidang StructArray atau subbidangnya.</td></tr>
-<tr><td>Properti bidang dibatasi pada bidang StructArray.</td><td>Mulai dari Milvus 3.0.6, perintah ` <code translate="no">alter_collection_field()</code> ` pada bidang StructArray atau jalur subbidang hanya menerima ` <code translate="no">mmap.enabled</code>`, ` <code translate="no">field.description</code>`, dan ` <code translate="no">warmup</code>`. Properti lain, seperti ` <code translate="no">max_capacity</code> ` dan ` <code translate="no">max_length</code>`, akan ditolak.</td></tr>
-<tr><td>Analisis teks tidak didukung pada subbidang.</td><td>Pengaturan <code translate="no">enable_match</code> atau <code translate="no">enable_analyzer</code> pada subbidang Struct akan ditolak. Indeks teks hanya dibuat untuk bidang tingkat atas.</td></tr>
+<tr><td>Struct is not a top-level field type.</td><td>Create a StructArray field as <code translate="no">datatype=DataType.ARRAY</code> with <code translate="no">element_type=DataType.STRUCT</code> and a <code translate="no">struct_schema</code>.</td></tr>
+<tr><td>All elements share one schema.</td><td>Every Struct element in a StructArray field follows the same subfield list and subfield data types.</td></tr>
+<tr><td><code translate="no">max_capacity</code> is required.</td><td>The number of Struct elements in one entity must not exceed the <code translate="no">max_capacity</code> configured for the StructArray field.</td></tr>
+<tr><td>Scalar <code translate="no">ARRAY</code> subfields have per-subfield <code translate="no">max_capacity</code>.</td><td>A scalar <code translate="no">ARRAY</code> subfield declares a <code translate="no">max_capacity</code> for its inner array, and Milvus rejects a Struct element whose inner array exceeds that subfield’s declared capacity. Values do not need to match across subfields. The value must be greater than 0 and must not exceed <code translate="no">proxy.maxArrayCapacity</code>, which defaults to 4096.</td></tr>
+<tr><td>Subfields can evolve in Milvus 3.0.6 and later.</td><td>Add an element-nullable subfield, or drop a subfield by its path, such as <code translate="no">chunks[lang]</code>. You cannot drop the last subfield of a StructArray field, the last vector field of the collection, or a subfield used by a Function. In earlier versions, drop the StructArray field and add it again with the updated schema.</td></tr>
+<tr><td>Nested Struct is not supported.</td><td>A Struct cannot contain nested <code translate="no">Struct</code>, <code translate="no">ArrayOfStruct</code>, or JSON subfields. Starting in Milvus 3.0.6, a Struct can contain scalar <code translate="no">ARRAY</code> subfields with one nesting level. An <code translate="no">ARRAY</code> subfield cannot hold vectors.</td></tr>
+<tr><td>Functions are not supported inside StructArray.</td><td>Do not define field functions for StructArray fields or their subfields.</td></tr>
+<tr><td>Field properties are limited on StructArray fields.</td><td>Starting in Milvus 3.0.6, <code translate="no">alter_collection_field()</code> on a StructArray field or on a subfield path accepts only <code translate="no">mmap.enabled</code>, <code translate="no">field.description</code>, and <code translate="no">warmup</code>. Other properties, such as <code translate="no">max_capacity</code> and <code translate="no">max_length</code>, are rejected.</td></tr>
+<tr><td>Text analysis is not supported on subfields.</td><td>Setting <code translate="no">enable_match</code> or <code translate="no">enable_analyzer</code> on a Struct subfield is rejected. Text indexes are built only for top-level fields.</td></tr>
 </tbody>
 </table>
-<p>Untuk contoh pembuatan skema, lihat <a href="/docs/id/create-structarray-field.md">Membuat Bidang StructArray</a>.</p>
-<h2 id="Supported-subfield-data-types" class="common-anchor-header">Tipe data subbidang yang didukung<button data-href="#Supported-subfield-data-types" class="anchor-icon" translate="no">
+<p>For schema creation examples, see <a href="/docs/id/create-structarray-field.md">Create a StructArray Field</a>.</p>
+<h2 id="Supported-subfield-data-types" class="common-anchor-header">Supported subfield data types<button data-href="#Supported-subfield-data-types" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -106,32 +105,32 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Subbidang StructArray dipetakan ke penyimpanan fisik bergaya array. Tabel berikut mencantumkan tipe fisik yang didukung dan tidak didukung:</p>
+    </button></h2><p>StructArray subfields map to physical array-style storage. The following table lists supported and unsupported physical types:</p>
 <table>
 <thead>
-<tr><th>Tipe fisik subbidang Struct</th><th>Didukung</th><th>Catatan</th></tr>
+<tr><th>Struct subfield physical type</th><th>Support</th><th>Notes</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">Array&lt;Bool&gt;</code></td><td>Didukung</td><td>Tentukan subbidang sebagai ` <code translate="no">DataType.BOOL</code>`.</td></tr>
-<tr><td><code translate="no">Array&lt;Int8/Int16/Int32/Int64&gt;</code></td><td>Didukung</td><td>Tentukan subbidang sebagai <code translate="no">DataType.INT8</code>, <code translate="no">DataType.INT16</code>, <code translate="no">DataType.INT32</code>, atau <code translate="no">DataType.INT64</code>.</td></tr>
-<tr><td><code translate="no">Array&lt;Float/Double&gt;</code></td><td>Didukung</td><td>Tentukan subbidang sebagai <code translate="no">DataType.FLOAT</code> atau <code translate="no">DataType.DOUBLE</code>.</td></tr>
-<tr><td><code translate="no">Array&lt;VarChar&gt;</code></td><td>Didukung</td><td>Tentukan subbidang sebagai <code translate="no">DataType.VARCHAR</code> dan tetapkan <code translate="no">max_length</code>.</td></tr>
-<tr><td><code translate="no">ArrayOfVector&lt;FloatVector&gt;</code></td><td>Didukung</td><td>Tentukan subbidang sebagai <code translate="no">DataType.FLOAT_VECTOR</code> dan tetapkan <code translate="no">dim</code>.</td></tr>
-<tr><td><code translate="no">ArrayOfVector&lt;Float16Vector&gt;</code></td><td>Didukung</td><td>Tentukan subbidang sebagai <code translate="no">DataType.FLOAT16_VECTOR</code> dan atur <code translate="no">dim</code>.</td></tr>
-<tr><td><code translate="no">ArrayOfVector&lt;BFloat16Vector&gt;</code></td><td>Didukung</td><td>Tentukan subbidang sebagai <code translate="no">DataType.BFLOAT16_VECTOR</code> dan atur <code translate="no">dim</code>.</td></tr>
-<tr><td><code translate="no">ArrayOfVector&lt;Int8Vector&gt;</code></td><td>Didukung</td><td>Tentukan subbidang sebagai <code translate="no">DataType.INT8_VECTOR</code> dan atur <code translate="no">dim</code>.</td></tr>
-<tr><td><code translate="no">ArrayOfVector&lt;BinaryVector&gt;</code></td><td>Didukung</td><td>Tentukan subbidang sebagai <code translate="no">DataType.BINARY_VECTOR</code> dan atur <code translate="no">dim</code>.</td></tr>
-<tr><td><code translate="no">ArrayOfVector&lt;SparseFloatVector&gt;</code></td><td>Tidak didukung</td><td>Subbidang vektor sparse tidak didukung dalam bidang StructArray.</td></tr>
-<tr><td><code translate="no">Array&lt;String&gt;</code></td><td>Tidak didukung</td><td>Gunakan ` <code translate="no">VARCHAR</code>`, bukan ` <code translate="no">String</code>`.</td></tr>
-<tr><td><code translate="no">Array&lt;JSON&gt;</code></td><td>Tidak didukung</td><td>Subbidang JSON tidak didukung dalam bidang StructArray.</td></tr>
-<tr><td><code translate="no">Array&lt;Geometry&gt;</code></td><td>Tidak didukung</td><td>Subbidang geometri dan fungsi GIS tidak didukung dalam bidang StructArray.</td></tr>
-<tr><td><code translate="no">Array&lt;Text&gt;</code></td><td>Tidak didukung</td><td>Subbidang teks tidak didukung dalam bidang StructArray.</td></tr>
-<tr><td><code translate="no">Array&lt;Timestamptz&gt;</code></td><td>Tidak didukung</td><td>Subbidang timestamptz dan ekspresi berbasis waktu tidak didukung di bidang StructArray.</td></tr>
-<tr><td><code translate="no">Array&lt;Array&gt;</code></td><td>Didukung di Milvus 3.0.6 dan versi selanjutnya</td><td>Tentukan subbidang sebagai ` <code translate="no">DataType.ARRAY</code> ` dengan ` <code translate="no">element_type</code> ` skalar dan ` <code translate="no">max_capacity</code> ` untuk array dalam. Setiap elemen Struct kemudian menyimpan satu array dalam. Atur ` <code translate="no">nullable=True</code> ` pada subbidang untuk mengizinkan array dalam bernilai null dan ` <code translate="no">element_nullable=True</code> ` untuk mengizinkan nilai null di dalamnya.</td></tr>
-<tr><td><code translate="no">Array</code> <code translate="no">Array</code>, , dari vektor, , atau <code translate="no">Array</code> <code translate="no">Array</code> <code translate="no">Struct</code> <code translate="no">ArrayOfStruct</code></td><td>Tidak didukung</td><td>Penumpukan array di dalam Struct dibatasi hingga satu tingkat, array dalam tidak dapat berisi vektor, dan subbidang Struct atau Array-of-Struct yang bersarang tidak didukung.</td></tr>
+<tr><td><code translate="no">Array&lt;Bool&gt;</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.BOOL</code>.</td></tr>
+<tr><td><code translate="no">Array&lt;Int8/Int16/Int32/Int64&gt;</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.INT8</code>, <code translate="no">DataType.INT16</code>, <code translate="no">DataType.INT32</code>, or <code translate="no">DataType.INT64</code>.</td></tr>
+<tr><td><code translate="no">Array&lt;Float/Double&gt;</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.FLOAT</code> or <code translate="no">DataType.DOUBLE</code>.</td></tr>
+<tr><td><code translate="no">Array&lt;VarChar&gt;</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.VARCHAR</code> and set <code translate="no">max_length</code>.</td></tr>
+<tr><td><code translate="no">ArrayOfVector&lt;FloatVector&gt;</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.FLOAT_VECTOR</code> and set <code translate="no">dim</code>.</td></tr>
+<tr><td><code translate="no">ArrayOfVector&lt;Float16Vector&gt;</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.FLOAT16_VECTOR</code> and set <code translate="no">dim</code>.</td></tr>
+<tr><td><code translate="no">ArrayOfVector&lt;BFloat16Vector&gt;</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.BFLOAT16_VECTOR</code> and set <code translate="no">dim</code>.</td></tr>
+<tr><td><code translate="no">ArrayOfVector&lt;Int8Vector&gt;</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.INT8_VECTOR</code> and set <code translate="no">dim</code>.</td></tr>
+<tr><td><code translate="no">ArrayOfVector&lt;BinaryVector&gt;</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.BINARY_VECTOR</code> and set <code translate="no">dim</code>.</td></tr>
+<tr><td><code translate="no">ArrayOfVector&lt;SparseFloatVector&gt;</code></td><td>Not supported</td><td>Sparse vector subfields are not supported in StructArray fields.</td></tr>
+<tr><td><code translate="no">Array&lt;String&gt;</code></td><td>Not supported</td><td>Use <code translate="no">VARCHAR</code>, not <code translate="no">String</code>.</td></tr>
+<tr><td><code translate="no">Array&lt;JSON&gt;</code></td><td>Not supported</td><td>JSON subfields are not supported in StructArray fields.</td></tr>
+<tr><td><code translate="no">Array&lt;Geometry&gt;</code></td><td>Not supported</td><td>Geometry subfields and GIS functions are not supported in StructArray fields.</td></tr>
+<tr><td><code translate="no">Array&lt;Text&gt;</code></td><td>Not supported</td><td>Text subfields are not supported in StructArray fields.</td></tr>
+<tr><td><code translate="no">Array&lt;Timestamptz&gt;</code></td><td>Not supported</td><td>Timestamptz subfields and time-specific expressions are not supported in StructArray fields.</td></tr>
+<tr><td><code translate="no">Array&lt;Array&gt;</code></td><td>Supported in Milvus 3.0.6 and later</td><td>Define the subfield as <code translate="no">DataType.ARRAY</code> with a scalar <code translate="no">element_type</code> and a <code translate="no">max_capacity</code> for the inner array. Each Struct element then holds one inner array. Set <code translate="no">nullable=True</code> on the subfield to allow a null inner array and <code translate="no">element_nullable=True</code> to allow null values inside it.</td></tr>
+<tr><td><code translate="no">Array</code> of <code translate="no">Array</code> of <code translate="no">Array</code>, <code translate="no">Array</code> of vectors, <code translate="no">Struct</code>, or <code translate="no">ArrayOfStruct</code></td><td>Not supported</td><td>Array nesting inside a Struct is limited to one level, the inner array cannot hold vectors, and nested Struct or Array-of-Struct subfields are not supported.</td></tr>
 </tbody>
 </table>
-<h2 id="Nullable-and-dynamic-schema-limits" class="common-anchor-header">Batasan skema nullable dan dinamis<button data-href="#Nullable-and-dynamic-schema-limits" class="anchor-icon" translate="no">
+<h2 id="Nullable-and-dynamic-schema-limits" class="common-anchor-header">Nullable and dynamic schema limits<button data-href="#Nullable-and-dynamic-schema-limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -146,30 +145,30 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Tabel berikut menjelaskan perilaku StructArray nullable dan penambahan bidang StructArray dinamis, dengan ketentuan pernyataan ketersediaan di bawah ini:</p>
+    </button></h2><p>The following table describes nullable StructArray behavior and dynamic StructArray field addition, subject to the availability statement below:</p>
 <table>
 <thead>
-<tr><th>Kemampuan</th><th>Batasan</th></tr>
+<tr><th>Capability</th><th>Limit</th></tr>
 </thead>
 <tbody>
-<tr><td>Bidang StructArray yang dapat bernilai null</td><td>Tunduk pada pernyataan ketersediaan di bawah ini, tetapkan ` <code translate="no">nullable=True</code> ` pada induk StructArray; jangan konfigurasikan subbidang Struct sebagai nullable secara terpisah.</td></tr>
-<tr><td>Nilai NULL di Python</td><td>Gunakan ` <code translate="no">None</code> ` untuk menyisipkan nilai `StructArray` yang null di Python. Jangan gunakan ` <code translate="no">Null</code> ` atau ` <code translate="no">null</code>`.</td></tr>
-<tr><td>Cakupan null</td><td>NULL berlaku untuk seluruh bidang StructArray. Misalnya, <code translate="no">chunks=None</code> hanya valid jika <code translate="no">chunks</code> dapat bernilai null.</td></tr>
-<tr><td>Nilai StructArray yang sebagian null</td><td>Ketika bidang StructArray berisi nilai array yang valid, jangan mencampurkan array subbidang null dengan array subbidang yang valid dalam nilai yang sama.</td></tr>
-<tr><td>Null pada tingkat elemen</td><td>Didukung di Milvus 3.0.6 dan versi selanjutnya. Subbidang skalar, vektor, atau <code translate="no">ARRAY</code> dapat mengizinkan nilai null pada elemen Struct individu: <code translate="no">nullable=True</code> pada subbidang skalar atau vektor, <code translate="no">element_nullable=True</code> pada subbidang <code translate="no">ARRAY</code>. Pengaturan <code translate="no">nullable</code> tingkat baris masih berasal dari induk StructArray; pengaturan <code translate="no">nullable=True</code> pada subbidang mengaktifkan null tingkat elemen, bukan null tingkat baris.</td></tr>
-<tr><td>Elemen Struct yang null</td><td>Elemen Struct itu sendiri tidak dapat bernilai null, seperti <code translate="no">[null, {...}]</code>. Atur nilai subfield elemen tersebut menjadi null sebagai gantinya.</td></tr>
-<tr><td>Subfield yang dihilangkan</td><td>Mulai Milvus 3.0.6, Anda dapat mengabaikan subfield yang dapat bernilai null pada elemen Struct, dan Milvus akan menyimpan nilai null untuknya. Subfield yang tidak dapat bernilai null harus ada di setiap elemen Struct. Pada versi sebelumnya, setiap elemen Struct harus menyediakan setiap subfield.</td></tr>
-<tr><td>Penambahan dinamis bidang StructArray</td><td>Tunduk pada pernyataan ketersediaan di bawah ini.</td></tr>
-<tr><td>Persyaratan nullable untuk penambahan dinamis</td><td>Bidang StructArray yang ditambahkan ke koleksi yang sudah ada harus dapat bernilai null karena entitas yang sudah ada tidak memiliki nilai untuk bidang baru tersebut.</td></tr>
-<tr><td>Entitas yang sudah ada setelah penambahan dinamis</td><td>Entitas yang sudah ada mengembalik <code translate="no">null</code> untuk bidang StructArray yang ditambahkan.</td></tr>
-<tr><td>Subbidang penambahan dinamis</td><td>Didukung di Milvus 3.0.6 dan versi selanjutnya. Subbidang yang ditambahkan harus dibuat dengan nilai ` <code translate="no">nullable=True</code>`; subbidang ` <code translate="no">ARRAY</code> ` yang ditambahkan juga menerima nilai ` <code translate="no">element_nullable=True</code> ` untuk nilai `null` di dalam array dalam. Entitas yang sudah ada mengembalikan nilai `null` untuk subbidang baru di setiap elemen `Struct`-nya, dan entitas yang bidang `StructArray`-nya bernilai `null` tetap `null`.</td></tr>
+<tr><td>Nullable StructArray field</td><td>Subject to the availability statement below, set <code translate="no">nullable=True</code> on the StructArray parent; do not configure Struct subfields as nullable independently.</td></tr>
+<tr><td>NULL value in Python</td><td>Use <code translate="no">None</code> to insert a null StructArray value in Python. Do not use <code translate="no">Null</code> or <code translate="no">null</code>.</td></tr>
+<tr><td>Null scope</td><td>NULL applies to the whole StructArray field. For example, <code translate="no">chunks=None</code> is valid only when <code translate="no">chunks</code> is nullable.</td></tr>
+<tr><td>Partially null StructArray value</td><td>When a StructArray field contains a valid array value, do not mix null subfield arrays with valid subfield arrays in the same value.</td></tr>
+<tr><td>Element-level null</td><td>Supported in Milvus 3.0.6 and later. A scalar, vector, or <code translate="no">ARRAY</code> subfield can allow a null value in individual Struct elements: <code translate="no">nullable=True</code> on a scalar or vector subfield, <code translate="no">element_nullable=True</code> on an <code translate="no">ARRAY</code> subfield. The row-level <code translate="no">nullable</code> setting still comes from the StructArray parent; setting <code translate="no">nullable=True</code> on a subfield enables element-level null, not row-level null.</td></tr>
+<tr><td>Null Struct element</td><td>A Struct element itself cannot be null, such as <code translate="no">[null, {...}]</code>. Set the subfield values of the element to null instead.</td></tr>
+<tr><td>Omitted subfields</td><td>Starting in Milvus 3.0.6, you can omit an element-nullable subfield from a Struct element, and Milvus stores null for it. A subfield that is not element-nullable must be present in every Struct element. In earlier versions, every Struct element must provide every subfield.</td></tr>
+<tr><td>Dynamic add StructArray field</td><td>Subject to the availability statement below.</td></tr>
+<tr><td>Nullable requirement for dynamic add</td><td>A StructArray field added to an existing collection must be nullable because existing entities have no value for the new field.</td></tr>
+<tr><td>Existing entities after dynamic add</td><td>Existing entities return <code translate="no">null</code> for the added StructArray field.</td></tr>
+<tr><td>Dynamic add subfield</td><td>Supported in Milvus 3.0.6 and later. An added subfield must be created with <code translate="no">nullable=True</code>; an added <code translate="no">ARRAY</code> subfield additionally takes <code translate="no">element_nullable=True</code> for null values inside the inner array. Existing entities return null for the new subfield in each of their Struct elements, and entities whose StructArray field is null stay null.</td></tr>
 </tbody>
 </table>
-<p>Milvus 3.0.0 dan rilis selanjutnya mendukung bidang StructArray yang dapat bernilai null, array vektor yang dapat bernilai null, serta penambahan bidang StructArray secara dinamis baik dalam deployment Standalone maupun Distributed. Versi Milvus sebelumnya tidak mendukung kemampuan ini.</p>
-<p>Milvus 3.0.6 dan rilis selanjutnya juga mendukung nilai null pada tingkat elemen, subbidang skalar <code translate="no">ARRAY</code>, serta penambahan atau penghapusan subbidang dari bidang StructArray yang sudah ada. Kemampuan ini memerlukan Storage V2 dan tidak tersedia di koleksi eksternal.</p>
-<p>Di Zilliz Cloud, fitur-fitur ini tersedia pada On-Demand Clusters yang menjalankan Milvus 3.0.0 atau versi yang lebih baru. Serving Clusters tidak mendukung fitur-fitur ini.</p>
-<p>Untuk contoh penyisipan dengan bidang StructArray yang dapat bernilai null, lihat <a href="/docs/id/insert-data-into-structarray-fields.md">Menyisipkan Data ke dalam Bidang StructArray</a>.</p>
-<h2 id="Insert-limits" class="common-anchor-header">Batas penyisipan<button data-href="#Insert-limits" class="anchor-icon" translate="no">
+<p>Milvus 3.0.0 and later releases support nullable StructArray fields, nullable vector arrays, and dynamic StructArray field addition in both Standalone and Distributed deployments. Earlier Milvus versions do not support these capabilities.</p>
+<p>Milvus 3.0.6 and later releases additionally support element-level null values, scalar <code translate="no">ARRAY</code> subfields, and adding or dropping subfields of an existing StructArray field. These capabilities require Storage V2 and are not available in external collections.</p>
+<p>In Zilliz Cloud, these capabilities are available on On-Demand Clusters running Milvus 3.0.0 or later. Serving Clusters do not support them.</p>
+<p>For insert examples with nullable StructArray fields, see <a href="/docs/id/insert-data-into-structarray-fields.md">Insert Data into StructArray Fields</a>.</p>
+<h2 id="Insert-limits" class="common-anchor-header">Insert limits<button data-href="#Insert-limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -184,21 +183,21 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Payload penyisipan StructArray memiliki batasan berikut:</p>
+    </button></h2><p>StructArray insert payloads have the following limits:</p>
 <table>
 <thead>
-<tr><th>Batas</th><th>Rincian</th></tr>
+<tr><th>Limit</th><th>Details</th></tr>
 </thead>
 <tbody>
-<tr><td>Bentuk muatan</td><td>Sisipkan bidang StructArray sebagai array objek Struct, seperti <code translate="no">chunks: [{&quot;text&quot;: &quot;...&quot;, &quot;emb&quot;: [...]}]</code>.</td></tr>
-<tr><td>Nama subbidang</td><td>Di dalam setiap objek Struct, gunakan nama subbidang seperti <code translate="no">text</code> dan <code translate="no">emb</code>, bukan jalur seperti <code translate="no">chunks[text]</code>.</td></tr>
-<tr><td>Kesesuaian skema</td><td>Setiap elemen Struct harus sesuai dengan skema Struct. Mulai dari Milvus 3.0.6, subfield yang dapat bernilai null dapat dihilangkan atau ditetapkan ke <code translate="no">null</code> dalam elemen Struct.</td></tr>
-<tr><td>Kapasitas</td><td>Jumlah elemen Struct dalam satu entitas tidak boleh melebihi <code translate="no">max_capacity</code>.</td></tr>
-<tr><td>Dimensi vektor</td><td>Nilai vektor harus sesuai dengan ` <code translate="no">dim</code> ` yang dikonfigurasi untuk subbidang vektornya.</td></tr>
-<tr><td>Duplikasi mode pencarian</td><td>Jika Anda memerlukan pencarian EmbeddingList dan pencarian tingkat elemen, tulis vektor ke dua subbidang vektor yang terpisah.</td></tr>
+<tr><td>Payload shape</td><td>Insert the StructArray field as an array of Struct objects, such as <code translate="no">chunks: [{&quot;text&quot;: &quot;...&quot;, &quot;emb&quot;: [...]}]</code>.</td></tr>
+<tr><td>Subfield names</td><td>Inside each Struct object, use subfield names such as <code translate="no">text</code> and <code translate="no">emb</code>, not paths such as <code translate="no">chunks[text]</code>.</td></tr>
+<tr><td>Schema alignment</td><td>Each Struct element must match the Struct schema. Starting in Milvus 3.0.6, an element-nullable subfield can be omitted or set to <code translate="no">null</code> in a Struct element.</td></tr>
+<tr><td>Capacity</td><td>The number of Struct elements in one entity must not exceed <code translate="no">max_capacity</code>.</td></tr>
+<tr><td>Vector dimensions</td><td>Vector values must match the <code translate="no">dim</code> configured for their vector subfields.</td></tr>
+<tr><td>Search-mode duplication</td><td>If you need both EmbeddingList search and element-level search, write vectors to two separate vector subfields.</td></tr>
 </tbody>
 </table>
-<h2 id="Index-and-metric-limits" class="common-anchor-header">Batas indeks dan metrik<button data-href="#Index-and-metric-limits" class="anchor-icon" translate="no">
+<h2 id="Index-and-metric-limits" class="common-anchor-header">Index and metric limits<button data-href="#Index-and-metric-limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -213,21 +212,21 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Subbidang vektor StructArray dapat diindeks untuk pencarian EmbeddingList atau pencarian tingkat elemen. Subbidang vektor yang sama tidak dapat menggunakan kedua keluarga metrik tersebut karena setiap bidang vektor atau subbidang vektor hanya menerima satu indeks. Mode pencarian menggunakan keluarga metrik berikut:</p>
+    </button></h2><p>A StructArray vector subfield can be indexed for either EmbeddingList search or element-level search. The same vector subfield cannot use both metric families because each vector field or vector subfield accepts only one index. The search modes use the following metric families:</p>
 <table>
 <thead>
-<tr><th>Mode pencarian</th><th>Keluarga metrik</th><th>Tingkat hasil</th></tr>
+<tr><th>Search mode</th><th>Metric family</th><th>Result level</th></tr>
 </thead>
 <tbody>
-<tr><td>Pencarian EmbeddingList</td><td><code translate="no">MAX_SIM</code>, <code translate="no">MAX_SIM_COSINE</code>, <code translate="no">MAX_SIM_IP</code>, <code translate="no">MAX_SIM_L2</code>, atau metrik biner <code translate="no">MAX_SIM_*</code> </td><td>Hasil tingkat entitas.</td></tr>
-<tr><td>Pencarian tingkat elemen</td><td>Metrik vektor biasa seperti <code translate="no">L2</code>, <code translate="no">IP</code>, <code translate="no">COSINE</code>, <code translate="no">HAMMING</code>, atau <code translate="no">JACCARD</code></td><td>Hasil tingkat elemen yang dapat mencakup offset elemen yang cocok.</td></tr>
+<tr><td>EmbeddingList search</td><td><code translate="no">MAX_SIM</code>, <code translate="no">MAX_SIM_COSINE</code>, <code translate="no">MAX_SIM_IP</code>, <code translate="no">MAX_SIM_L2</code>, or binary <code translate="no">MAX_SIM_*</code> metrics</td><td>Entity-level results.</td></tr>
+<tr><td>Element-level search</td><td>Regular vector metrics such as <code translate="no">L2</code>, <code translate="no">IP</code>, <code translate="no">COSINE</code>, <code translate="no">HAMMING</code>, or <code translate="no">JACCARD</code></td><td>Element-level results that can include the matched element offset.</td></tr>
 </tbody>
 </table>
-<p>Gunakan subbidang vektor terpisah jika kedua mode diperlukan. Misalnya, gunakan <code translate="no">chunks[emb_list_vector]</code> untuk pencarian EmbeddingList dan <code translate="no">chunks[emb]</code> untuk pencarian tingkat elemen.</p>
-<p>Subbidang vektor StructArray dihitung sebagai bidang vektor terhadap batas tingkat koleksi <code translate="no">proxy.maxVectorFieldNum</code>, yang secara default bernilai 10. Bidang StructArray yang subbidang vektornya merupakan satu-satunya bidang vektor dalam koleksi tersebut dianggap valid, dan penghapusan bidang tersebut akan ditolak jika hal itu akan membuat koleksi tersebut tidak memiliki bidang vektor sama sekali. Pastikan jumlah total bidang vektor dan subbidang vektor tetap dalam batas versi target dan tingkatan layanan Anda.</p>
-<p>Mulai Milvus 3.0.6, subbidang vektor yang elemennya dapat bernilai null hanya mendukung pencarian tingkat elemen dengan metrik vektor biasa. Metrik <code translate="no">MAX_SIM*</code>, indeks EmbeddingList, dan pencarian EmbeddingList ditolak pada subbidang vektor yang elemennya dapat bernilai null, dan <code translate="no">AUTOINDEX</code> tidak memilih metrik <code translate="no">MAX_SIM*</code> untuk subbidang tersebut. Vektor null tidak ikut serta dalam pencarian. Indeks skalar tidak didukung pada subbidang yang memungkinkan nilai null pada elemen atau pada subbidang skalar <code translate="no">ARRAY</code>.</p>
-<p>Untuk matriks jenis indeks dan jenis metrik yang didukung, lihat <a href="/docs/id/index-structarray-fields.md">Bidang StructArray Indeks</a>.</p>
-<h2 id="Search-limits" class="common-anchor-header">Batasan pencarian<button data-href="#Search-limits" class="anchor-icon" translate="no">
+<p>Use separate vector subfields when both modes are required. For example, use <code translate="no">chunks[emb_list_vector]</code> for EmbeddingList search and <code translate="no">chunks[emb]</code> for element-level search.</p>
+<p>StructArray vector subfields count as vector fields toward the collection-level limit <code translate="no">proxy.maxVectorFieldNum</code>, which defaults to 10. A StructArray field whose vector subfields are the collection’s only vector fields is valid, and dropping such a field is rejected when it would leave the collection without a vector field. Keep the total number of vector fields and vector subfields within the limits of your target version and service tier.</p>
+<p>Starting in Milvus 3.0.6, an element-nullable vector subfield supports only element-level search with regular vector metrics. <code translate="no">MAX_SIM*</code> metrics, EmbeddingList indexes, and EmbeddingList search are rejected on element-nullable vector subfields, and <code translate="no">AUTOINDEX</code> does not select a <code translate="no">MAX_SIM*</code> metric for them. Null vectors do not participate in search. Scalar indexes are not supported on element-nullable subfields or on scalar <code translate="no">ARRAY</code> subfields.</p>
+<p>For the supported index-type and metric-type matrix, see <a href="/docs/id/index-structarray-fields.md">Index StructArray Fields</a>.</p>
+<h2 id="Search-limits" class="common-anchor-header">Search limits<button data-href="#Search-limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -242,21 +241,21 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Perilaku pencarian StructArray memiliki batasan berikut:</p>
+    </button></h2><p>StructArray search behavior has the following limits:</p>
 <table>
 <thead>
-<tr><th>Perilaku pencarian</th><th>Dukungan dan batasan</th></tr>
+<tr><th>Search behavior</th><th>Support and limits</th></tr>
 </thead>
 <tbody>
-<tr><td>Pencarian EmbeddingList Dasar</td><td>Didukung pada subbidang vektor StructArray yang diindeks dengan metrik <code translate="no">MAX_SIM*</code>. Mengembalikan hasil tingkat entitas.</td></tr>
-<tr><td>Pencarian tingkat elemen dasar</td><td>Didukung pada subbidang vektor StructArray yang diindeks dengan metrik vektor reguler. Dapat mengembalikan offset elemen yang cocok.</td></tr>
-<tr><td>Pencarian rentang</td><td>Didukung sesuai dengan mode pencarian dan dukungan indeks/metrik dari versi target. Untuk perilaku rentang pencarian hibrida pada permintaan StructArray tingkat elemen, periksa versi target Anda.</td></tr>
-<tr><td>Pencarian pengelompokan</td><td>Pencarian pengelompokan tingkat elemen dapat mengembalikan offset. Perilaku pengelompokan pencarian hibrida untuk permintaan StructArray tingkat elemen bergantung pada versi.</td></tr>
-<tr><td>Pencarian hibrida</td><td>Permintaan pencarian hibrida hanya dapat menyertakan permintaan subbidang vektor StructArray jika versi target mendukung kombinasi pencarian tersebut. Setiap permintaan tetap mengikuti keluarga metrik dari subbidang vektor yang diindeks.</td></tr>
-<tr><td>Output offset</td><td>Offset tersedia untuk hasil pencarian tingkat elemen. Pencarian EmbeddingList mengembalikan hasil tingkat entitas dan tidak menggunakan offset elemen sebagai unit hasil utama.</td></tr>
+<tr><td>Basic EmbeddingList search</td><td>Supported on StructArray vector subfields indexed with <code translate="no">MAX_SIM*</code> metrics. Returns entity-level results.</td></tr>
+<tr><td>Basic element-level search</td><td>Supported on StructArray vector subfields indexed with regular vector metrics. Can return matched element offsets.</td></tr>
+<tr><td>Range search</td><td>Supported according to the search mode and index/metric support of the target version. For hybrid search range behavior on element-level StructArray requests, check your target version.</td></tr>
+<tr><td>Grouping search</td><td>Element-level grouping search can return offsets. Hybrid search group-by behavior for element-level StructArray requests is version-gated.</td></tr>
+<tr><td>Hybrid search</td><td>A hybrid search request can include StructArray vector subfield requests only where the target version supports that search combination. Each request still follows the metric family of the indexed vector subfield.</td></tr>
+<tr><td>Offset output</td><td>Offset is available for element-level search results. EmbeddingList search returns entity-level results and does not use element offsets as the primary result unit.</td></tr>
 </tbody>
 </table>
-<h2 id="Filter-and-operator-limits" class="common-anchor-header">Batasan filter dan operator<button data-href="#Filter-and-operator-limits" class="anchor-icon" translate="no">
+<h2 id="Filter-and-operator-limits" class="common-anchor-header">Filter and operator limits<button data-href="#Filter-and-operator-limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -271,25 +270,25 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Penyaringan skalar StructArray ditangani oleh operator StructArray, seperti <code translate="no">element_filter</code> dan keluarga <code translate="no">MATCH_*</code>. Matriks dukungan predikat terperinci terdapat di <a href="/docs/id/struct-array-operators.md">StructArray Operators</a>.</p>
-<p>Secara umum:</p>
+    </button></h2><p>StructArray scalar filtering is handled by StructArray operators, such as <code translate="no">element_filter</code> and the <code translate="no">MATCH_*</code> family. The detailed predicate support matrix belongs in <a href="/docs/id/struct-array-operators.md">StructArray Operators</a>.</p>
+<p>At a high level:</p>
 <ul>
-<li><p>Gunakan ` <code translate="no">$[subfield]</code> ` hanya di dalam operator StructArray.</p></li>
-<li><p>Ekspresi filter tingkat baris juga dapat merujuk langsung ke jalur StructArray: <code translate="no">chunks[0][section]</code> untuk posisi satu elemen, <code translate="no">array_length(chunks)</code> untuk jumlah elemen, <code translate="no">array_contains(chunks[section], ...)</code> untuk nilai subbidang di seluruh elemen, dan <code translate="no">chunks is null</code> pada bidang StructArray yang dapat bernilai null.</p></li>
-<li><p>Gunakan subbidang skalar untuk predikat skalar.</p></li>
-<li><p>Jangan gunakan subbidang vektor sebagai masukan predikat skalar ber <code translate="no">$[...]</code>.</p></li>
+<li><p>Use <code translate="no">$[subfield]</code> only inside StructArray operators.</p></li>
+<li><p>Row-level filter expressions can also reference StructArray paths directly: <code translate="no">chunks[0][section]</code> for one element position, <code translate="no">array_length(chunks)</code> for the element count, <code translate="no">array_contains(chunks[section], ...)</code> for subfield values across elements, and <code translate="no">chunks is null</code> on a nullable StructArray field.</p></li>
+<li><p>Use scalar subfields for scalar predicates.</p></li>
+<li><p>Do not use vector subfields as <code translate="no">$[...]</code> scalar predicate inputs.</p></li>
 </ul>
 <ul>
-<li>Sintaks JSON path, fungsi JSON, fungsi pencocokan teks, fungsi Geometri/GIS, dan ekspresi Timestamptz tidak didukung untuk predikat tingkat elemen StructArray. Mulai dari Milvus 3.0.6, <code translate="no">array_contains</code>, <code translate="no">array_contains_any</code>, <code translate="no">array_contains_all</code>, dan <code translate="no">array_length</code> didukung pada <code translate="no">$[subfield]</code> untuk subfield skalar <code translate="no">ARRAY</code>, dan <code translate="no">$[subfield] is null</code> / <code translate="no">is not null</code> didukung untuk setiap jenis subfield.</li>
+<li>JSON path syntax, JSON functions, text match functions, Geometry / GIS functions, and Timestamptz expressions are not supported for StructArray element-level predicates. Starting in Milvus 3.0.6, <code translate="no">array_contains</code>, <code translate="no">array_contains_any</code>, <code translate="no">array_contains_all</code>, and <code translate="no">array_length</code> are supported on <code translate="no">$[subfield]</code> for scalar <code translate="no">ARRAY</code> subfields, and <code translate="no">$[subfield] is null</code> / <code translate="no">is not null</code> is supported for every subfield type.</li>
 </ul>
 <ul>
-<li>Mulai dari Milvus 3.0.6, nilai subfield null dalam elemen Struct membuat predikat elemen tersebut menjadi "tidak diketahui" alih-alih "salah". <code translate="no">element_filter</code> hanya mempertahankan elemen yang predikatnya benar, sedangkan <code translate="no">MATCH_*</code> menganggap elemen "tidak diketahui" sebagai "tidak ditemukan". Untuk detailnya, lihat <a href="/docs/id/struct-array-operators.md">Operator StructArray</a>.</li>
+<li>Starting in Milvus 3.0.6, a null subfield value in a Struct element makes the element predicate unknown rather than false. <code translate="no">element_filter</code> keeps only elements whose predicate is true, and <code translate="no">MATCH_*</code> counts an unknown element as a miss. For details, see <a href="/docs/id/struct-array-operators.md">StructArray Operators</a>.</li>
 </ul>
 <ul>
-<li>Lebih disarankan untuk menggunakan perbandingan boolean eksplisit seperti ` <code translate="no">$[has_code] == true</code> ` daripada ekspresi boolean biasa.</li>
+<li>Prefer explicit boolean comparisons such as <code translate="no">$[has_code] == true</code> instead of bare boolean expressions.</li>
 </ul>
 <p><a id="Import-limits"></a></p>
-<h2 id="Import-and-storage-limits" class="common-anchor-header">Batas impor dan penyimpanan<button data-href="#Import-and-storage-limits" class="anchor-icon" translate="no">
+<h2 id="Import-and-storage-limits" class="common-anchor-header">Import and storage limits<button data-href="#Import-and-storage-limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -306,17 +305,17 @@ summary: >-
       </svg>
     </button></h2><table>
 <thead>
-<tr><th>Batas</th><th>Rincian</th></tr>
+<tr><th>Limit</th><th>Details</th></tr>
 </thead>
 <tbody>
-<tr><td>Format file sumber</td><td>File JSON, JSONL, CSV, dan Parquet dapat berisi bidang StructArray. File NumPy menyimpan satu file per bidang tingkat atas dan tidak dapat menyediakan data StructArray; gunakan file JSON, CSV, atau Parquet untuk kumpulan data yang memiliki bidang StructArray. Untuk bentuk file, lihat <a href="/docs/id/prepare-source-data.md#StructArray-fields-in-source-files">Persiapan Data Sumber</a>.</td></tr>
-<tr><td>Format penyimpanan</td><td>Subbidang yang dapat bernilai null dan subbidang skalar <code translate="no">ARRAY</code> memerlukan Storage V2. Storage V1 tidak dapat diakses untuk koleksi yang menggunakan subbidang ini: pembuatan koleksi dan penyisipan data mungkin tampak berhasil, tetapi data gagal saat flush, yang bukan merupakan keadaan yang didukung. Storage V3 dengan pengaturan " <code translate="no">common.storage.enableGrowingSourceFlush</code> " ke " <code translate="no">true</code> " akan menolak permintaan yang menggunakan subbidang elemen nullable atau subbidang skalar " <code translate="no">ARRAY</code> ".</td></tr>
-<tr><td>Koleksi eksternal</td><td>Subbidang yang dapat bernilai null dan subbidang skalar <code translate="no">ARRAY</code> tidak didukung dalam koleksi eksternal.</td></tr>
-<tr><td>Impor cadangan dan snapshot</td><td>Impor binlog, seperti pemulihan cadangan, dan impor dari sumber snapshot akan ditolak untuk koleksi yang memiliki subfield yang dapat bernilai null atau subfield skalar <code translate="no">ARRAY</code>.</td></tr>
-<tr><td>Penurunan versi</td><td>Koleksi yang memiliki subbidang dengan elemen nullable atau subbidang skalar <code translate="no">ARRAY</code> tidak dapat dijalankan pada rilis yang lebih lama dari Milvus 3.0.6. Memutar ulang log write-ahead pada rilis yang lebih lama akan menyebabkan sistem macet. Mengupgrade kembali ke Milvus 3.0.6 atau yang lebih baru akan memulihkan data.</td></tr>
+<tr><td>Source file formats</td><td>JSON, JSONL, CSV, and Parquet files can carry StructArray fields. NumPy files hold one file per top-level field and cannot provide StructArray data; use JSON, CSV, or Parquet files for collections that have a StructArray field. For file shapes, see <a href="/docs/id/prepare-source-data.md#StructArray-fields-in-source-files">Prepare Source Data</a>.</td></tr>
+<tr><td>Storage format</td><td>Element-nullable subfields and scalar <code translate="no">ARRAY</code> subfields require Storage V2. Storage V1 cannot be reached for collections that use these subfields: creating the collection and inserting data can appear to succeed, but the data fails at flush, which is not a supported state. Storage V3 with <code translate="no">common.storage.enableGrowingSourceFlush</code> set to <code translate="no">true</code> rejects requests that use element-nullable subfields or scalar <code translate="no">ARRAY</code> subfields.</td></tr>
+<tr><td>External collections</td><td>Element-nullable subfields and scalar <code translate="no">ARRAY</code> subfields are not supported in external collections.</td></tr>
+<tr><td>Backup and snapshot import</td><td>Binlog import, such as a backup restore, and snapshot-source import are rejected for collections that have element-nullable subfields or scalar <code translate="no">ARRAY</code> subfields.</td></tr>
+<tr><td>Downgrade</td><td>Collections that have element-nullable subfields or scalar <code translate="no">ARRAY</code> subfields cannot run on a release earlier than Milvus 3.0.6. Replaying the write-ahead log on the older release panics. Re-upgrading to Milvus 3.0.6 or later recovers the data.</td></tr>
 </tbody>
 </table>
-<h2 id="Related-pages" class="common-anchor-header">Halaman terkait<button data-href="#Related-pages" class="anchor-icon" translate="no">
+<h2 id="Related-pages" class="common-anchor-header">Related pages<button data-href="#Related-pages" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -332,8 +331,8 @@ summary: >-
         ></path>
       </svg>
     </button></h2><ol>
-<li><p>Untuk membuat bidang StructArray, baca <a href="/docs/id/create-structarray-field.md">Buat Bidang StructArray</a>.</p></li>
-<li><p>Untuk menyisipkan data, baca " <a href="/docs/id/insert-data-into-structarray-fields.md">Menyisipkan Data ke Bidang StructArray</a>".</p></li>
-<li><p>Untuk membuat indeks vektor dan skalar, baca " <a href="/docs/id/index-structarray-fields.md">Indeks Bidang StructArray</a>".</p></li>
-<li><p>Untuk meninjau sintaks filter StructArray, baca " <a href="/docs/id/struct-array-operators.md">Operator StructArray</a>".</p></li>
+<li><p>To create a StructArray field, read <a href="/docs/id/create-structarray-field.md">Create a StructArray Field</a>.</p></li>
+<li><p>To insert data, read <a href="/docs/id/insert-data-into-structarray-fields.md">Insert Data into StructArray Fields</a>.</p></li>
+<li><p>To create vector and scalar indexes, read <a href="/docs/id/index-structarray-fields.md">Index StructArray Fields</a>.</p></li>
+<li><p>To review StructArray filter syntax, read <a href="/docs/id/struct-array-operators.md">StructArray Operators</a>.</p></li>
 </ol>

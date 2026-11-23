@@ -1,13 +1,11 @@
 ---
 id: pattern-matching.md
-title: Pencocokan Pola
+title: Pattern Matching
 summary: >-
-  Milvus mendukung pencocokan pola string menggunakan pola wildcard LIKE dan
-  ekspresi reguler RE2. Gunakan filter pola untuk mencocokkan awalan, akhiran,
-  substring, kode terstruktur, domain email, jalur URL, dan pola string lainnya
-  dalam kolom VARCHAR, jalur string JSON, atau elemen ARRAY.
+  Match string values with LIKE wildcard patterns or RE2 regular expressions in
+  scalar filters.
 ---
-<h1 id="Pattern-Matching" class="common-anchor-header">Pencocokan Pola<button data-href="#Pattern-Matching" class="anchor-icon" translate="no">
+<h1 id="Pattern-Matching" class="common-anchor-header">Pattern Matching<button data-href="#Pattern-Matching" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -22,21 +20,20 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Dalam aplikasi pencarian berbasis agen, pencarian vektor dan pencocokan pola bergaya grep sering kali saling melengkapi. Pencarian vektor mengambil entitas yang relevan secara semantik, sedangkan pencocokan pola mempersempit hasil tersebut berdasarkan struktur string yang tepat, seperti kode kesalahan, awalan log, domain email, jalur URL, atau pengenal.</p>
-<p>Di Milvus, Anda dapat mengekspresikan batasan pola ini dalam filter skalar menggunakan <code translate="no">LIKE</code> untuk pencocokan wildcard sederhana, serta <code translate="no">=~</code> atau <code translate="no">!~</code> untuk ekspresi reguler <a href="https://github.com/google/re2/wiki/syntax">RE2</a>. Anda dapat menggabungkan filter-filter ini dengan <code translate="no">query</code>, <code translate="no">search</code>, atau pencarian hibrida.</p>
+    </button></h1><p>Use <code translate="no">LIKE</code> for wildcard matching and <code translate="no">=~</code> or <code translate="no">!~</code> for <a href="https://github.com/google/re2/wiki/syntax">RE2</a> regular expressions. These scalar filters match string structures such as error codes, prefixes, email domains, or URL paths in <code translate="no">query</code>, <code translate="no">search</code>, and hybrid search.</p>
 <div class="alert note">
-<p>Halaman ini menjelaskan pencocokan pola dalam ekspresi filter skalar yang digunakan oleh <code translate="no">query</code>, <code translate="no">search</code>, dan pencarian hibrida. Ekspresi ini mengevaluasi nilai bidang dan tidak mengubah token yang dihasilkan oleh penganalisis. Untuk menyaring token selama analisis teks, lihat <a href="/docs/id/regex-filter.md">Filter Penganalisis Regex</a>.</p>
+<p>These filters match string values. They do not change analyzer tokens or enable token-based <code translate="no">TEXT_MATCH</code> and <code translate="no">PHRASE_MATCH</code>. See <a href="/docs/id/regex-filter.md">Regex Analyzer Filter</a> and <a href="/docs/id/keyword-match.md">Text Match</a> for those mechanisms.</p>
 </div>
-<p>Ekspresi pencocokan pola ditulis dalam parameter <code translate="no">filter</code>. Misalnya, kueri berikut mencocokkan pesan log yang berisi kode kesalahan seperti <code translate="no">E1001</code>:</p>
+<p>Pattern matching expressions are written in the <code translate="no">filter</code> parameter. For example, the following query matches log messages that contain an error code such as <code translate="no">E1001</code>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -181,12 +178,11 @@ curl --request POST \
     &quot;outputFields&quot;: [&quot;message&quot;, &quot;severity&quot;]
   }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Contoh-contoh pada halaman ini berfokus pada ekspresi yang ditetapkan ke ` <code translate="no">filter</code>`. Anda dapat menggunakan sintaks ekspresi filter yang sama dalam operasi Milvus yang menerima filter skalar, seperti ` <code translate="no">query</code>`, ` <code translate="no">search</code>`, dan pencarian hibrida.</p>
+<p>The remaining examples show the expression assigned to <code translate="no">filter</code>.</p>
 <div class="alert note">
-<p>Literal di sisi kiri ekspresi penyaringan dapat berupa nama bidang koleksi, seperti <code translate="no">message</code>, <code translate="no">email</code>, dll., yang digunakan dalam contoh di bawah ini, atau nama subbidang StructArray pada indeks elemen tertentu, seperti dalam <code translate="no">filter = 'struct[0][subfield] =~ &quot;E[0-9]{4}&quot;'</code>.</p>
-<p>Untuk detail mengenai penyaringan skalar dalam bidang StructArray, lihat <a href="/docs/id/struct-array-operators.md">Operator StructArray</a>.</p>
+<p>The left operand can be a collection field, such as <code translate="no">message</code>, or a StructArray subfield at a specific element index, such as <code translate="no">struct[0][subfield] =~ &quot;E[0-9]{4}&quot;</code>. See <a href="/docs/id/struct-array-operators.md">StructArray Operators</a>.</p>
 </div>
-<h2 id="Supported-field-types" class="common-anchor-header">Jenis bidang yang didukung<button data-href="#Supported-field-types" class="anchor-icon" translate="no">
+<h2 id="Supported-field-types" class="common-anchor-header">Supported field types<button data-href="#Supported-field-types" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -201,19 +197,19 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Pencocokan pola tersedia untuk nilai string.</p>
+    </button></h2><p>Pattern matching is available for string values.</p>
 <table>
 <thead>
-<tr><th>Target</th><th><code translate="no">LIKE</code></th><th>Regex <code translate="no">=~</code> / <code translate="no">!~</code></th><th>Catatan</th></tr>
+<tr><th>Target</th><th><code translate="no">LIKE</code></th><th>Regex <code translate="no">=~</code> / <code translate="no">!~</code></th><th>Notes</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">VARCHAR</code> bidang</td><td>Ya</td><td>Ya</td><td>Target umum untuk pencocokan pola pada bidang string.</td></tr>
-<tr><td><code translate="no">JSON</code> jalur dengan tipe konversi <code translate="no">VARCHAR</code> </td><td>Ya</td><td>Ya</td><td>Nilai jalur JSON harus berupa string agar pencocokan berhasil. Jika Anda membuat indeks pada jalur JSON untuk percepatan, atur ` <code translate="no">json_cast_type=&quot;varchar&quot;</code>`.</td></tr>
-<tr><td><code translate="no">ARRAY&lt;VARCHAR&gt;</code> elemen</td><td>Ya</td><td>Ya</td><td>Cocokkan elemen tertentu berdasarkan indeks, seperti <code translate="no">tags[0]</code>. Pencocokan pola <strong>tidak</strong> memindai semua elemen; pencocokan hanya berlaku untuk elemen pada indeks yang ditentukan.</td></tr>
-<tr><td>Numerik, Boolean, vektor, <code translate="no">TEXT</code>, atau target non-<code translate="no">VARCHAR</code> lainnya</td><td>Tidak</td><td>Tidak</td><td>Pencocokan pola hanya tersedia untuk nilai <code translate="no">VARCHAR</code>, jalur JSON yang diurai menjadi string, atau elemen <code translate="no">ARRAY&lt;VARCHAR&gt;</code> yang diindeks.</td></tr>
+<tr><td><code translate="no">VARCHAR</code> field</td><td>Yes</td><td>Yes</td><td>Typical target for pattern matching on string fields.</td></tr>
+<tr><td><code translate="no">JSON</code> path with a string value</td><td>Yes</td><td>Yes</td><td>Positive matches require string values. For index path/cast settings, see <a href="/docs/id/json-indexing.md#Understand-cast-types">JSON Indexing</a>.</td></tr>
+<tr><td><code translate="no">ARRAY&lt;VARCHAR&gt;</code> element</td><td>Yes</td><td>Yes</td><td>Match a specific element by index, such as <code translate="no">tags[0]</code>. Pattern matching does <strong>not</strong> scan all elements; it only applies to the element at the specified index.</td></tr>
+<tr><td>Numeric, Boolean, vector, <code translate="no">TEXT</code>, or other non-string targets</td><td>No</td><td>No</td><td>Patterns require string values.</td></tr>
 </tbody>
 </table>
-<h2 id="Choose-LIKE-or-regex" class="common-anchor-header">Pilih LIKE atau regex<button data-href="#Choose-LIKE-or-regex" class="anchor-icon" translate="no">
+<h2 id="Choose-LIKE-or-regex" class="common-anchor-header">Choose LIKE or regex<button data-href="#Choose-LIKE-or-regex" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -228,24 +224,22 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Pilih operator paling sederhana yang dapat mengekspresikan pola yang Anda butuhkan.</p>
-<p>Jika Anda memerlukan pencocokan string yang tepat, kami menyarankan Anda menggunakan ` <code translate="no">==</code> ` alih-alih pencocokan pola. Gunakan ` <code translate="no">LIKE</code> ` atau regex hanya jika filter perlu mencocokkan suatu pola.</p>
+    </button></h2><p>Use <code translate="no">==</code> for exact string equality; otherwise, choose an operator from the following table:</p>
 <table>
 <thead>
-<tr><th>Persyaratan</th><th>Operator yang direkomendasikan</th><th>Contoh</th><th>Deskripsi</th></tr>
+<tr><th>Requirement</th><th>Recommended operator</th><th>Example</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr><td>Kesamaan string yang tepat</td><td><code translate="no">==</code></td><td><code translate="no">status == &quot;active&quot;</code></td><td>Kesesuaian persis dari string <code translate="no">active</code>.</td></tr>
-<tr><td>Kesesuaian awalan sederhana</td><td><code translate="no">LIKE</code></td><td><code translate="no">name LIKE &quot;Prod%&quot;</code></td><td>Mencocokkan string yang dimulai dengan <code translate="no">Prod</code>.</td></tr>
-<tr><td>Kesesuaian sufiks sederhana</td><td><code translate="no">LIKE</code></td><td><code translate="no">filename LIKE &quot;%.json&quot;</code></td><td>Mencocokkan string yang diakhiri dengan <code translate="no">.json</code>.</td></tr>
-<tr><td>Kecocokan sederhana "mengandung"</td><td><code translate="no">LIKE</code></td><td><code translate="no">description LIKE &quot;%vector database%&quot;</code></td><td>Mencocokkan nilai yang mengandung <code translate="no">vector database</code> di mana saja dalam string.</td></tr>
-<tr><td>Mencocokkan kode terstruktur atau pola dengan panjang tetap</td><td><code translate="no">=~</code></td><td><code translate="no">code =~ &quot;E[0-9]{4}&quot;</code></td><td>Mencocokkan string yang secara peka huruf besar/kecil mengandung <code translate="no">E</code> diikuti oleh empat digit, seperti <code translate="no">E1001</code>.</td></tr>
-<tr><td>Pencocokan pola tanpa membedakan huruf besar-kecil</td><td><code translate="no">=~</code> dengan <code translate="no">(?i)</code></td><td><code translate="no">message =~ &quot;(?i)error&quot;</code></td><td>Mencocokkan <code translate="no">error</code>, <code translate="no">ERROR</code>, atau varian huruf besar-kecil lainnya.</td></tr>
-<tr><td>Kecualikan nilai yang cocok dengan pola regex</td><td><code translate="no">!~</code></td><td><code translate="no">message !~ &quot;^DEBUG&quot;</code></td><td>Mengecualikan string yang dimulai dengan <code translate="no">DEBUG</code>.</td></tr>
+<tr><td>Exact string equality</td><td><code translate="no">==</code></td><td><code translate="no">status == &quot;active&quot;</code></td><td>Exact match of the string <code translate="no">active</code>.</td></tr>
+<tr><td>Simple prefix match</td><td><code translate="no">LIKE</code></td><td><code translate="no">name LIKE &quot;Prod%&quot;</code></td><td>Matches strings that start with <code translate="no">Prod</code>.</td></tr>
+<tr><td>Simple suffix match</td><td><code translate="no">LIKE</code></td><td><code translate="no">filename LIKE &quot;%.json&quot;</code></td><td>Matches strings that end with <code translate="no">.json</code>.</td></tr>
+<tr><td>Simple contains match</td><td><code translate="no">LIKE</code></td><td><code translate="no">description LIKE &quot;%vector database%&quot;</code></td><td>Matches values that contain <code translate="no">vector database</code> anywhere in the string.</td></tr>
+<tr><td>Match a structured code or fixed-length pattern</td><td><code translate="no">=~</code></td><td><code translate="no">code =~ &quot;E[0-9]{4}&quot;</code></td><td>Matches strings that case-sensitively contain <code translate="no">E</code> followed by four digits, such as <code translate="no">E1001</code>.</td></tr>
+<tr><td>Case-insensitive pattern matching</td><td><code translate="no">=~</code> with <code translate="no">(?i)</code></td><td><code translate="no">message =~ &quot;(?i)error&quot;</code></td><td>Matches <code translate="no">error</code>, <code translate="no">ERROR</code>, or other case variants.</td></tr>
+<tr><td>Exclude values that match a regex pattern</td><td><code translate="no">!~</code></td><td><code translate="no">message !~ &quot;^DEBUG&quot;</code></td><td>Excludes strings that start with <code translate="no">DEBUG</code>.</td></tr>
 </tbody>
 </table>
-<p>Gunakan <code translate="no">LIKE</code> untuk pencocokan wildcard sederhana. Gunakan regex jika pola memerlukan kelas karakter, pengulangan, alternatif seperti <code translate="no">error|failed</code>, jangkar, atau pencocokan tanpa membedakan huruf besar-kecil.</p>
-<h2 id="Use-LIKE" class="common-anchor-header">Gunakan LIKE<button data-href="#Use-LIKE" class="anchor-icon" translate="no">
+<h2 id="Use-LIKE" class="common-anchor-header">Use LIKE<button data-href="#Use-LIKE" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -260,17 +254,17 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Operator <code translate="no">LIKE</code> digunakan untuk pencocokan wildcard sederhana pada nilai string. Operator ini hanya mendukung wildcard berikut:</p>
+    </button></h2><p>The <code translate="no">LIKE</code> operator is for simple wildcard matching on string values. It supports only the following wildcards:</p>
 <table>
 <thead>
-<tr><th>Karakter pengganti</th><th>Deskripsi</th></tr>
+<tr><th>Wildcard</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">%</code></td><td>Mencocokkan nol atau lebih karakter.</td></tr>
-<tr><td><code translate="no">_</code></td><td>Mencocokkan tepat satu karakter.</td></tr>
+<tr><td><code translate="no">%</code></td><td>Matches zero or more characters.</td></tr>
+<tr><td><code translate="no">_</code></td><td>Matches exactly one character.</td></tr>
 </tbody>
 </table>
-<h3 id="Common-LIKE-patterns" class="common-anchor-header">Pola LIKE yang umum<button data-href="#Common-LIKE-patterns" class="anchor-icon" translate="no">
+<h3 id="Common-LIKE-patterns" class="common-anchor-header">Common LIKE patterns<button data-href="#Common-LIKE-patterns" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -285,19 +279,19 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Gunakan posisi <code translate="no">%</code> dan <code translate="no">_</code> untuk mengontrol di mana teks tetap muncul dalam string yang cocok.</p>
+    </button></h3><p>Use the position of <code translate="no">%</code> and <code translate="no">_</code> to control where the fixed text appears in the matched string.</p>
 <table>
 <thead>
-<tr><th>Persyaratan</th><th>Pola</th><th>Contoh filter</th></tr>
+<tr><th>Requirement</th><th>Pattern</th><th>Filter example</th></tr>
 </thead>
 <tbody>
-<tr><td>Dimulai dengan awalan</td><td><code translate="no">Prod%</code></td><td><code translate="no">filter = 'name LIKE &quot;Prod%&quot;'</code></td></tr>
-<tr><td>Berakhir dengan sufiks</td><td><code translate="no">%.json</code></td><td><code translate="no">filter = 'filename LIKE &quot;%.json&quot;'</code></td></tr>
-<tr><td>Mengandung substring</td><td><code translate="no">%vector%</code></td><td><code translate="no">filter = 'description LIKE &quot;%vector%&quot;'</code></td></tr>
-<tr><td>Mencocokkan satu karakter pada posisi tetap</td><td><code translate="no">AB_%</code></td><td><code translate="no">filter = 'code LIKE &quot;AB_%&quot;'</code></td></tr>
+<tr><td>Starts with a prefix</td><td><code translate="no">Prod%</code></td><td><code translate="no">filter = 'name LIKE &quot;Prod%&quot;'</code></td></tr>
+<tr><td>Ends with a suffix</td><td><code translate="no">%.json</code></td><td><code translate="no">filter = 'filename LIKE &quot;%.json&quot;'</code></td></tr>
+<tr><td>Contains a substring</td><td><code translate="no">%vector%</code></td><td><code translate="no">filter = 'description LIKE &quot;%vector%&quot;'</code></td></tr>
+<tr><td>Matches one character at a fixed position</td><td><code translate="no">AB_%</code></td><td><code translate="no">filter = 'code LIKE &quot;AB_%&quot;'</code></td></tr>
 </tbody>
 </table>
-<h3 id="LIKE-matching-behavior" class="common-anchor-header">Perilaku pencocokan LIKE<button data-href="#LIKE-matching-behavior" class="anchor-icon" translate="no">
+<h3 id="LIKE-matching-behavior" class="common-anchor-header">LIKE matching behavior<button data-href="#LIKE-matching-behavior" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -312,9 +306,8 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Gunakan ` <code translate="no">LIKE</code> ` untuk pencocokan awalan, akhiran, mengandung, dan karakter tunggal pada posisi tetap. ` <code translate="no">LIKE</code> ` tidak mendukung kelas karakter seperti ` <code translate="no">[0-9]</code>`, alternatif seperti ` <code translate="no">error|failed</code>`, jumlah pengulangan seperti ` <code translate="no">{4}</code>`, jangkar seperti ` <code translate="no">^</code> ` atau ` <code translate="no">$</code>`, atau bendera tidak peka huruf besar-kecil seperti ` <code translate="no">(?i)</code>`. Gunakan regex untuk pola-pola tersebut.</p>
-<p>Gunakan ` <code translate="no">==</code> ` untuk kesamaan string penuh yang tepat. Gunakan ` <code translate="no">LIKE</code> ` hanya jika filter memerlukan pencocokan karakter pengganti.</p>
-<h3 id="Escaping-wildcards-in-a-LIKE-pattern" class="common-anchor-header">Mengescap karakter pengganti dalam pola LIKE<button data-href="#Escaping-wildcards-in-a-LIKE-pattern" class="anchor-icon" translate="no">
+    </button></h3><p>Use <code translate="no">LIKE</code> for prefix, suffix, contains, and fixed-position single-character matches. <code translate="no">LIKE</code> does not support character classes such as <code translate="no">[0-9]</code>, alternation such as <code translate="no">error|failed</code>, repeat counts such as <code translate="no">{4}</code>, anchors such as <code translate="no">^</code> or <code translate="no">$</code>, or case-insensitive flags such as <code translate="no">(?i)</code>. Use regex for those patterns.</p>
+<h3 id="Escaping-wildcards-in-a-LIKE-pattern" class="common-anchor-header">Escaping wildcards in a LIKE pattern<button data-href="#Escaping-wildcards-in-a-LIKE-pattern" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -329,14 +322,14 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Dalam pola <code translate="no">LIKE</code>, <code translate="no">%</code> cocok dengan nol atau lebih karakter, sedangkan <code translate="no">_</code> cocok dengan tepat satu karakter. Untuk mencocokkan <code translate="no">%</code>, <code translate="no">_</code>, atau <code translate="no">\</code> secara literal, lakukan escaping pada karakter tersebut dengan tanda backslash (<code translate="no">\</code>):</p>
+    </button></h3><p>To match <code translate="no">%</code>, <code translate="no">_</code>, or <code translate="no">\</code> literally, escape the character with a backslash (<code translate="no">\</code>):</p>
 <ul>
-<li><code translate="no">name LIKE r&quot;\%&quot;</code> cocok dengan nilai literal <code translate="no">%</code>.</li>
-<li><code translate="no">name LIKE r&quot;\_%&quot;</code> cocok dengan nilai yang dimulai dengan karakter literal <code translate="no">_</code>.</li>
-<li><code translate="no">name LIKE r&quot;\\%&quot;</code> cocok dengan nilai yang dimulai dengan tanda garis miring terbalik literal.</li>
+<li><code translate="no">name LIKE r&quot;\%&quot;</code> matches the literal value <code translate="no">%</code>.</li>
+<li><code translate="no">name LIKE r&quot;\_%&quot;</code> matches values that start with a literal <code translate="no">_</code>.</li>
+<li><code translate="no">name LIKE r&quot;\\%&quot;</code> matches values that start with a literal backslash.</li>
 </ul>
-<p>Literal string mentah, ditulis sebagai <code translate="no">r&quot;...&quot;</code> atau <code translate="no">r'...'</code>, mempertahankan tanda garis miring terbalik apa adanya dalam ekspresi filter Milvus. Penggunaan literal string mentah direkomendasikan untuk <code translate="no">LIKE</code> dan pola regex yang mengandung tanda garis miring terbalik. Tanpa literal string mentah, literal string biasa tetap memproses urutan pelarian sebelum pola dievaluasi, sehingga mungkin diperlukan lebih banyak tanda garis miring terbalik.</p>
-<h2 id="Use-regex" class="common-anchor-header">Gunakan regex<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Use-regex" class="anchor-icon" translate="no">
+<p>Raw string literals, written as <code translate="no">r&quot;...&quot;</code> or <code translate="no">r'...'</code>, keep backslashes verbatim in Milvus filter expressions. They are recommended for <code translate="no">LIKE</code> and regex patterns that contain backslashes. Without a raw string, ordinary string literals still process escape sequences before the pattern is evaluated, so more backslashes may be required.</p>
+<h2 id="Use-regex" class="common-anchor-header">Use regex<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Use-regex" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -351,18 +344,17 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Gunakan filter regex jika pola memerlukan fitur ekspresi reguler seperti kelas karakter, pengulangan, alternatif, jangkar, atau pencocokan yang tidak membedakan huruf besar-kecil. Milvus menerapkan ekspresi reguler <a href="https://github.com/google/re2/wiki/syntax">RE2</a> ke nilai string.</p>
-<p>Sisi kanan dari <code translate="no">=~</code> atau <code translate="no">!~</code> harus berupa literal string.</p>
+    </button></h2><p>Regex supports character classes, repetition, alternation, anchors, and case-insensitive matching. The right operand of <code translate="no">=~</code> or <code translate="no">!~</code> must be a string literal:</p>
 <table>
 <thead>
-<tr><th>Operator</th><th>Arti</th><th>Contoh</th></tr>
+<tr><th>Operator</th><th>Meaning</th><th>Example</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">=~</code></td><td>Mencocokkan nilai yang memenuhi pola regex.</td><td><code translate="no">filter = 'message =~ &quot;E[0-9]{4}&quot;'</code></td></tr>
-<tr><td><code translate="no">!~</code></td><td>Mengecualikan nilai yang memenuhi pola regex.</td><td><code translate="no">filter = 'message !~ &quot;^DEBUG&quot;'</code></td></tr>
+<tr><td><code translate="no">=~</code></td><td>Matches values that satisfy the regex pattern.</td><td><code translate="no">filter = 'message =~ &quot;E[0-9]{4}&quot;'</code></td></tr>
+<tr><td><code translate="no">!~</code></td><td>Excludes values that satisfy the regex pattern.</td><td><code translate="no">filter = 'message !~ &quot;^DEBUG&quot;'</code></td></tr>
 </tbody>
 </table>
-<h3 id="Using-raw-string-literals" class="common-anchor-header">Menggunakan literal string mentah<button data-href="#Using-raw-string-literals" class="anchor-icon" translate="no">
+<h3 id="Using-raw-string-literals" class="common-anchor-header">Using raw string literals<button data-href="#Using-raw-string-literals" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -377,17 +369,16 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Literal string mentah direkomendasikan untuk pola regex yang mengandung tanda garis miring terbalik. Dalam string mentah, yang ditulis sebagai <code translate="no">r&quot;...&quot;</code> atau <code translate="no">r'...'</code>, tanda garis miring terbalik diteruskan ke mesin regex apa adanya. Hal ini menghindari proses pelarian (escaping) tambahan yang diperlukan oleh literal string biasa.</p>
-<p>Contoh:</p>
+    </button></h3><p>Use raw string literals (<code translate="no">r&quot;...&quot;</code> or <code translate="no">r'...'</code>) to pass backslashes verbatim to RE2, avoiding the extra escaping in ordinary filter strings:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">r&#x27;filename =~ r&quot;\.json$&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -405,9 +396,9 @@ curl --request POST \
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;filename =~ r&quot;\.json$&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Ini mencocokkan string yang diakhiri dengan <code translate="no">.json</code>, seperti <code translate="no">report.json</code>.</p>
-<p>Tanpa string mentah dalam ekspresi filter Milvus, literal string biasa memproses urutan pelarian sebelum pola regex dievaluasi. Oleh karena itu, karakter literal yang dilindungi mungkin memerlukan tanda garis miring terbalik tambahan dalam string bahasa host.</p>
-<h3 id="Common-regex-patterns" class="common-anchor-header">Pola regex umum<button data-href="#Common-regex-patterns" class="anchor-icon" translate="no">
+<p>This matches strings that end with <code translate="no">.json</code>, such as <code translate="no">report.json</code>.</p>
+<p>Without a raw string in the Milvus filter expression, ordinary string literals process escape sequences before the regex pattern is evaluated. Escaped literal characters may therefore require additional backslashes in the host-language string.</p>
+<h3 id="Common-regex-patterns" class="common-anchor-header">Common regex patterns<button data-href="#Common-regex-patterns" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -422,32 +413,32 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Contoh berikut menggunakan sintaks RE2 umum dalam ekspresi filter Milvus. Untuk sintaks regex lengkap, lihat referensi <a href="https://github.com/google/re2/wiki/syntax">sintaks RE2</a>.</p>
+    </button></h3><p>The following examples use common RE2 syntax in Milvus filter expressions. For complete regex syntax, refer to the <a href="https://github.com/google/re2/wiki/syntax">RE2 syntax</a> reference.</p>
 <table>
 <thead>
-<tr><th>Persyaratan</th><th>Pola</th><th>Contoh filter</th></tr>
+<tr><th>Requirement</th><th>Pattern</th><th>Filter example</th></tr>
 </thead>
 <tbody>
-<tr><td>Mengandung teks literal</td><td><code translate="no">error</code></td><td><code translate="no">filter = 'message =~ &quot;error&quot;'</code></td></tr>
-<tr><td>Dimulai dengan awalan</td><td><code translate="no">^ERR</code></td><td><code translate="no">filter = 'code =~ &quot;^ERR&quot;'</code></td></tr>
-<tr><td>Berakhir dengan sufiks</td><td><code translate="no">\.json$</code></td><td><code translate="no">filter = 'filename =~ &quot;\\.json$&quot;'</code></td></tr>
-<tr><td>Mencocokkan urutan angka</td><td><code translate="no">[0-9]+</code></td><td><code translate="no">filter = 'message =~ &quot;[0-9]+&quot;'</code></td></tr>
-<tr><td>Cocok dengan jumlah digit tetap</td><td><code translate="no">[0-9]{4}</code></td><td><code translate="no">filter = 'code =~ &quot;[0-9]{4}&quot;'</code></td></tr>
-<tr><td>Cocok dengan domain email</td><td><code translate="no">@example\.com$</code></td><td><code translate="no">filter = 'email =~ &quot;@example\\.com$&quot;'</code></td></tr>
-<tr><td>Mencocokkan tanpa membedakan huruf besar-kecil</td><td><code translate="no">(?i)error</code></td><td><code translate="no">filter = 'message =~ &quot;(?i)error&quot;'</code></td></tr>
-<tr><td>Mencocokkan string lengkap</td><td><code translate="no">^prod-[0-9]+$</code></td><td><code translate="no">filter = 'name =~ &quot;^prod-[0-9]+$&quot;'</code></td></tr>
+<tr><td>Contains literal text</td><td><code translate="no">error</code></td><td><code translate="no">filter = 'message =~ &quot;error&quot;'</code></td></tr>
+<tr><td>Starts with a prefix</td><td><code translate="no">^ERR</code></td><td><code translate="no">filter = 'code =~ &quot;^ERR&quot;'</code></td></tr>
+<tr><td>Ends with a suffix</td><td><code translate="no">\.json$</code></td><td><code translate="no">filter = 'filename =~ &quot;\\.json$&quot;'</code></td></tr>
+<tr><td>Matches a digit sequence</td><td><code translate="no">[0-9]+</code></td><td><code translate="no">filter = 'message =~ &quot;[0-9]+&quot;'</code></td></tr>
+<tr><td>Matches a fixed number of digits</td><td><code translate="no">[0-9]{4}</code></td><td><code translate="no">filter = 'code =~ &quot;[0-9]{4}&quot;'</code></td></tr>
+<tr><td>Matches an email domain</td><td><code translate="no">@example\.com$</code></td><td><code translate="no">filter = 'email =~ &quot;@example\\.com$&quot;'</code></td></tr>
+<tr><td>Matches case-insensitively</td><td><code translate="no">(?i)error</code></td><td><code translate="no">filter = 'message =~ &quot;(?i)error&quot;'</code></td></tr>
+<tr><td>Matches the full string</td><td><code translate="no">^prod-[0-9]+$</code></td><td><code translate="no">filter = 'name =~ &quot;^prod-[0-9]+$&quot;'</code></td></tr>
 </tbody>
 </table>
-<p>Untuk mencocokkan salah satu dari beberapa kata, gunakan alternatif dengan <code translate="no">|</code>:</p>
+<p>To match one of several words, use alternation with <code translate="no">|</code>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;message =~ &quot;error|failed|timeout&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -465,16 +456,16 @@ curl --request POST \
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;message =~ &quot;error|failed|timeout&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Saat mencocokkan metakarakter regex secara harfiah, lakukan escape pada pola regex tersebut. Misalnya, untuk mencocokkan titik harfiah (<code translate="no">\.</code> dalam regex), tulis <code translate="no">\\.</code> dalam string sumber Python, Java, Go, atau Node.js:</p>
+<p>When matching regex metacharacters literally, escape them in the regex pattern. For example, to match a literal dot (<code translate="no">\.</code> in regex), write <code translate="no">\\.</code> in a Python, Java, Go, or Node.js source string:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;email =~ &quot;@gmail\\.com$&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -492,8 +483,10 @@ curl --request POST \
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;email =~ &quot;@gmail\\.com$&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Catatan: Filter regex Milvus mengikuti sintaks RE2. Jika pola regex menggunakan sintaks yang tidak didukung oleh RE2 atau tidak valid, Milvus akan menolak ekspresi filter tersebut. Untuk detail mengenai metakarakter regex, bendera, dan perilaku pencocokan, lihat referensi <a href="https://github.com/google/re2/wiki/syntax">sintaks RE2</a>.</p>
-<h3 id="Matching-behavior" class="common-anchor-header">Perilaku pencocokan<button data-href="#Matching-behavior" class="anchor-icon" translate="no">
+<div class="alert note">
+<p>Milvus rejects invalid regex patterns and syntax that <a href="https://github.com/google/re2/wiki/syntax">RE2</a> does not support.</p>
+</div>
+<h3 id="Matching-behavior" class="common-anchor-header">Matching behavior<button data-href="#Matching-behavior" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -508,17 +501,17 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><strong>Pencocokan substring</strong></p>
-<p>Pencocokan regex Milvus menggunakan semantik substring. Pola tidak perlu cocok dengan seluruh nilai bidang. Misalnya, filter berikut cocok dengan baik <code translate="no">E1001</code> maupun <code translate="no">failed with E1001 after retry</code>:</p>
+    </button></h3><p><strong>Substring matching</strong></p>
+<p>Milvus regex matching uses substring semantics. The pattern does not need to match the entire field value. For example, the following filter matches both <code translate="no">E1001</code> and <code translate="no">failed with E1001 after retry</code>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;message =~ &quot;E[0-9]{4}&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -536,16 +529,16 @@ curl --request POST \
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;message =~ &quot;E[0-9]{4}&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Untuk mencocokkan seluruh nilai bidang, gunakan jangkar <code translate="no">^</code> dan <code translate="no">$</code>:</p>
+<p>To match the entire field value, use the <code translate="no">^</code> and <code translate="no">$</code> anchors:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Match only values that are exactly E followed by four digits</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;code =~ &quot;^E[0-9]{4}$&quot;&#x27;</span>
@@ -570,17 +563,17 @@ filter := <span class="hljs-string">`code =~ &quot;^E[0-9]{4}$&quot;`</span>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># Match only values that are exactly E followed by four digits</span>
 filter=<span class="hljs-string">&#x27;code =~ &quot;^E[0-9]{4}$&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>Kolom VARCHAR yang dapat bernilai null</strong></p>
-<p>Filter regex tidak mencocokkan nilai null. Hal ini berlaku untuk <code translate="no">=~</code> dan <code translate="no">!~</code>. Jika Anda ingin mengecualikan pola regex tetapi tetap mempertahankan nilai null, tambahkan <code translate="no">OR field IS NULL</code> secara eksplisit:</p>
+<p><strong>Nullable VARCHAR fields</strong></p>
+<p>Regex filters do not match null values. This applies to both <code translate="no">=~</code> and <code translate="no">!~</code>. If you want to exclude a regex pattern but keep null values, explicitly add <code translate="no">OR field IS NULL</code>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;message !~ &quot;^DEBUG&quot; OR message IS NULL&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -598,18 +591,18 @@ filter=<span class="hljs-string">&#x27;code =~ &quot;^E[0-9]{4}$&quot;&#x27;</sp
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;message !~ &quot;^DEBUG&quot; OR message IS NULL&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>Jalur JSON</strong></p>
-<p>Untuk jalur JSON, filter regex berperilaku berbeda ketika jalur tersebut tidak ada, bernilai null, atau menghasilkan nilai non-string:</p>
+<p><strong>JSON paths</strong></p>
+<p>For JSON paths, regex filters behave differently when the path is missing, null, or resolves to a non-string value:</p>
 <table>
 <thead>
-<tr><th>Filter</th><th>Termasuk nilai yang hilang/null/bukan string?</th><th>Catatan</th></tr>
+<tr><th>Filter</th><th>Includes missing/null/non-string values?</th><th>Notes</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">json_field[&quot;path&quot;] =~ &quot;pattern&quot;</code></td><td>Tidak</td><td>Hanya cocok dengan nilai string yang memenuhi pola regex.</td></tr>
-<tr><td><code translate="no">json_field[&quot;path&quot;] !~ &quot;pattern&quot;</code></td><td>Ya</td><td>Mengembalikan entitas yang jalurnya hilang, null, bukan string, atau string yang tidak sesuai dengan pola regex.</td></tr>
+<tr><td><code translate="no">json_field[&quot;path&quot;] =~ &quot;pattern&quot;</code></td><td>No</td><td>Matches only string values that satisfy the regex pattern.</td></tr>
+<tr><td><code translate="no">json_field[&quot;path&quot;] !~ &quot;pattern&quot;</code></td><td>Yes</td><td>Returns entities where the path is missing, null, non-string, or a string that does not match the regex pattern.</td></tr>
 </tbody>
 </table>
-<h2 id="Accelerate-pattern-matching-with-indexes" class="common-anchor-header">Mempercepat pencocokan pola dengan indeks<button data-href="#Accelerate-pattern-matching-with-indexes" class="anchor-icon" translate="no">
+<h2 id="Accelerate-pattern-matching-with-indexes" class="common-anchor-header">Accelerate pattern matching with indexes<button data-href="#Accelerate-pattern-matching-with-indexes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -624,16 +617,7 @@ filter=<span class="hljs-string">&#x27;code =~ &quot;^E[0-9]{4}$&quot;&#x27;</sp
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus mendukung beberapa jenis indeks pada bidang string yang dapat digunakan bersama dengan filter " <code translate="no">LIKE</code> " dan regex pada bidang " <code translate="no">VARCHAR</code> " atau jalur string JSON, seperti <code translate="no">NGRAM</code>, <code translate="no">STL_SORT</code>, <code translate="no">INVERTED</code>, dan <code translate="no">BITMAP</code>. Pencocokan pola dapat berfungsi tanpa indeks, tetapi indeks dapat meningkatkan kinerja pada dataset besar.</p>
-<p>Efektivitas indeks bergantung pada ekspresi pola, kemampuan Milvus untuk mengekstrak substring literal tetap, serta kardinalitas dan distribusi bidang target. Pola bergaya awalan seperti <code translate="no">name LIKE &quot;Prod%&quot;</code> mungkin memerlukan strategi indeks yang berbeda dibandingkan pola infiks atau sufiks seperti <code translate="no">description LIKE &quot;%vector%&quot;</code> atau <code translate="no">filename LIKE &quot;%.json&quot;</code>.</p>
-<p>Gunakan tabel berikut sebagai titik awal, lalu lakukan pengujian kinerja dengan beban kerja Anda sendiri:</p>
-<table>
-<thead>
-<tr><th>Pola atau karakteristik data</th><th>Indeks yang perlu dipertimbangkan</th><th>Catatan</th></tr>
-</thead>
-<tbody>
-<tr><td>Mengandung substring literal tetap, seperti <code translate="no">message =~ &quot;error.*timeout&quot;</code> atau <code translate="no">message LIKE &quot;%database%&quot;</code></td><td><code translate="no">NGRAM</code></td><td>Berguna jika Milvus dapat mengekstrak substring literal yang bermakna dari pola tersebut. Untuk detailnya, lihat <a href="/docs/id/ngram.md">NGRAM</a>.</td></tr>
-<tr><td>Filter string awalan, tepat, atau mirip kesetaraan, terutama pada bidang dengan kardinalitas rendah hingga sedang</td><td><code translate="no">STL_SORT</code>, <code translate="no">INVERTED</code>, atau <code translate="no">BITMAP</code></td><td>Mungkin lebih efektif jika bidang memiliki nilai yang berulang atau jika filter mendekati pencocokan eksak. Untuk detailnya, lihat <a href="/docs/id/stl-sort.md">STL_SORT</a>, <a href="/docs/id/inverted.md">INVERTED</a>, dan <a href="/docs/id/bitmap.md">BITMAP</a>.</td></tr>
-<tr><td>Pola regex tanpa literal tetap, atau pola yang didominasi oleh kelas karakter, token pendek, atau karakter pengganti</td><td>Lakukan pengujian kinerja sebelum mengandalkan akselerasi indeks</td><td>Pola-pola ini mungkin memberikan selektivitas indeks yang terbatas dan dapat beralih ke pemindaian yang lebih luas.</td></tr>
-</tbody>
-</table>
+    </button></h2><p>Pattern matching works without a scalar index. For acceleration options and their eligibility conditions, see <a href="/docs/id/scalar_index.md#String-pattern-indexes">String-pattern index selection</a>. For JSON path indexes, check the <a href="/docs/id/json-indexing.md#Index-requirements">JSON-specific prerequisites</a>.</p>
+<div class="alert note">
+<p>Query planning can simplify a LIKE expression without wildcards to equality, or a simple anchored regex to equality, prefix, or suffix matching. For example, <code translate="no">name =~ &quot;^abc$&quot;</code> becomes an equality test and follows equality lookup support. Check index support for the operation after this simplification, not only for the operator written in the original expression.</p>
+</div>

@@ -1,12 +1,12 @@
 ---
 id: manage-partitions.md
-title: إدارة الأقسام
+title: Manage Partitions
 summary: >-
-  القسم هو مجموعة فرعية من مجموعة ما. يتشارك كل قسم نفس بنية البيانات مع
-  المجموعة الأم، لكنه لا يحتوي إلا على مجموعة فرعية من البيانات الموجودة في
-  المجموعة. تساعدك هذه الصفحة على فهم كيفية إدارة الأقسام.
+  A partition is a subset of a collection. Each partition shares the same data
+  structure with its parent collection but contains only a subset of the data in
+  the collection. This page helps you understand how to manage partitions.
 ---
-<h1 id="Manage-Partitions" class="common-anchor-header">إدارة الأقسام<button data-href="#Manage-Partitions" class="anchor-icon" translate="no">
+<h1 id="Manage-Partitions" class="common-anchor-header">Manage Partitions<button data-href="#Manage-Partitions" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -21,8 +21,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>القسم هو مجموعة فرعية من مجموعة رئيسية. يشترك كل قسم في نفس بنية البيانات مع المجموعة الرئيسية، لكنه لا يحتوي إلا على مجموعة فرعية من البيانات الموجودة في المجموعة الرئيسية. تساعدك هذه الصفحة على فهم كيفية إدارة الأقسام.</p>
-<h2 id="Overview" class="common-anchor-header">نظرة عامة<button data-href="#Overview" class="anchor-icon" translate="no">
+    </button></h1><p>A partition is a subset of a collection. Each partition shares the same data structure with its parent collection but contains only a subset of the data in the collection. This page helps you understand how to manage partitions.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,14 +37,14 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>عند إنشاء مجموعة، يقوم Milvus أيضًا بإنشاء قسم باسم <strong>_default</strong> داخل المجموعة. إذا لم تكن تنوي إضافة أي أقسام أخرى، فستدخل جميع الكيانات التي يتم إدراجها في المجموعة إلى القسم الافتراضي، كما تُجرى جميع عمليات البحث والاستعلامات داخل القسم الافتراضي.</p>
-<p>يمكنك إضافة المزيد من الأقسام وإدراج الكيانات فيها بناءً على معايير معينة. بعد ذلك، يمكنك تقييد عمليات البحث والاستعلامات داخل أقسام معينة، مما يحسّن أداء البحث.</p>
-<p>يمكن أن تحتوي المجموعة على 1,024 قسمًا كحد أقصى.</p>
+    </button></h2><p>When creating a collection, Milvus also creates a partition named <strong>_default</strong> in the collection. If you are not going to add any other partitions, all entities inserted into the collection go into the default partition, and all searches and queries are also carried out within the default partition.</p>
+<p>You can add more partitions and insert entities into them based on certain criteria. Then you can restrict your searches and queries within certain partitions, improving search performance.</p>
+<p>A collection can have a maximum of 1,024 partitions.</p>
 <div class="alert note">
-<p>ميزة <strong>«مفتاح القسم»</strong> هي ميزة لتحسين البحث تعتمد على الأقسام، وتسمح لـ Milvus بتوزيع الكيانات على أقسام مختلفة بناءً على القيم الموجودة في حقل عددي محدد. تساعد هذه الميزة في تنفيذ الاستخدام المتعدد الموجه نحو الأقسام وتحسين أداء البحث.</p>
-<p>لن يتم مناقشة هذه الميزة في هذه الصفحة. لمعرفة المزيد، راجع <a href="/docs/ar/use-partition-key.md">استخدام مفتاح التقسيم</a>.</p>
+<p>The <strong>Partition Key</strong> feature is a search optimization based on partitions and allows Milvus to distribute entities into different partitions based on the values in a specific scalar field. This feature helps implement partition-oriented multi-tenancy and improves search performance.</p>
+<p>This feature will not be discussed on this page. To find more, refer to <a href="/docs/ar/use-partition-key.md">Use Partition Key</a>.</p>
 </div>
-<h2 id="List-Partitions" class="common-anchor-header">قائمة الأقسام<button data-href="#List-Partitions" class="anchor-icon" translate="no">
+<h2 id="List-Partitions" class="common-anchor-header">List Partitions<button data-href="#List-Partitions" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -59,16 +59,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>عند إنشاء مجموعة، يقوم Milvus أيضًا بإنشاء قسم باسم <strong>_default</strong> داخل المجموعة. يمكنك سرد الأقسام الموجودة في المجموعة على النحو التالي.</p>
+    </button></h2><p>When creating a collection, Milvus also creates a partition named <strong>_default</strong> in the collection. You can list the partitions in a collection as follows.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -241,7 +241,7 @@ curl --request POST \
 <span class="hljs-comment">#     ]</span>
 <span class="hljs-comment"># }</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Create-Partition" class="common-anchor-header">إنشاء قسم<button data-href="#Create-Partition" class="anchor-icon" translate="no">
+<h2 id="Create-Partition" class="common-anchor-header">Create Partition<button data-href="#Create-Partition" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -256,16 +256,16 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يمكنك إضافة المزيد من الأقسام إلى المجموعة وإدراج الكيانات في هذه الأقسام بناءً على معايير معينة.</p>
+    </button></h2><p>You can add more partitions to the collection and insert entities into these partitions based on certain criteria.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.create_partition(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,
@@ -433,7 +433,7 @@ curl --request POST \
 <span class="hljs-comment">#     ]</span>
 <span class="hljs-comment"># }</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Check-for-a-Specific-Partition" class="common-anchor-header">التحقق من وجود قسم معين<button data-href="#Check-for-a-Specific-Partition" class="anchor-icon" translate="no">
+<h2 id="Check-for-a-Specific-Partition" class="common-anchor-header">Check for a Specific Partition<button data-href="#Check-for-a-Specific-Partition" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -448,16 +448,16 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>توضح مقتطفات الكود التالية كيفية التحقق من وجود قسم في مجموعة معينة.</p>
+    </button></h2><p>The following code snippets demonstrate how to check whether a partition exists in a specific collection.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">res = client.has_partition(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,
@@ -559,7 +559,7 @@ curl --request POST \
 <span class="hljs-comment">#     }</span>
 <span class="hljs-comment"># }</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Load-and-Release-Partitions" class="common-anchor-header">تحميل الأقسام وإطلاقها<button data-href="#Load-and-Release-Partitions" class="anchor-icon" translate="no">
+<h2 id="Load-and-Release-Partitions" class="common-anchor-header">Load and Release Partitions<button data-href="#Load-and-Release-Partitions" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -574,8 +574,8 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يمكنك تحميل أو تحرير قسم واحد أو أقسام معينة بشكل منفصل.</p>
-<h3 id="Load-Partitions" class="common-anchor-header">تحميل الأقسام<button data-href="#Load-Partitions" class="anchor-icon" translate="no">
+    </button></h2><p>You can separately load or release one or certain partitions.</p>
+<h3 id="Load-Partitions" class="common-anchor-header">Load Partitions<button data-href="#Load-Partitions" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -590,16 +590,16 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>يمكنك تحميل أقسام محددة في مجموعة بشكل منفصل. تجدر الإشارة إلى أن حالة تحميل المجموعة تظل غير محملة إذا كان هناك قسم غير محمل في المجموعة.</p>
+    </button></h3><p>You can separately load specific partitions in a collection. It is worth noting that the load status of a collection stays unloaded if there is an unloaded partition in the collection.</p>
 <div class="multipleCode">
-   <a href="#python">بايثون</a>
- <a href="#java">   جافا</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.load_partitions(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,
@@ -770,7 +770,7 @@ curl --request POST \
 <span class="hljs-comment">#     }</span>
 <span class="hljs-comment"># }</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Release-Partitions" class="common-anchor-header">تحرير الأقسام<button data-href="#Release-Partitions" class="anchor-icon" translate="no">
+<h3 id="Release-Partitions" class="common-anchor-header">Release Partitions<button data-href="#Release-Partitions" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -785,16 +785,16 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>يمكنك أيضًا تحرير أقسام محددة.</p>
+    </button></h3><p>You can also release specific partitions.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.release_partitions(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,
@@ -958,7 +958,7 @@ curl --request POST \
 <span class="hljs-comment">#     }</span>
 <span class="hljs-comment"># }</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Data-Operations-Within-Partitions" class="common-anchor-header">عمليات البيانات داخل الأقسام<button data-href="#Data-Operations-Within-Partitions" class="anchor-icon" translate="no">
+<h2 id="Data-Operations-Within-Partitions" class="common-anchor-header">Data Operations Within Partitions<button data-href="#Data-Operations-Within-Partitions" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -973,7 +973,7 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Insert-and-Delete-Entities" class="common-anchor-header">إدراج الكيانات وحذفها<button data-href="#Insert-and-Delete-Entities" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Insert-and-Delete-Entities" class="common-anchor-header">Insert and Delete Entities<button data-href="#Insert-and-Delete-Entities" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -988,13 +988,13 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>يمكنك تنفيذ عمليات الإدراج و"upsert" والحذف في عمليات محددة. لمزيد من التفاصيل، راجع</p>
+    </button></h3><p>You can perform insert, upsert, and delete operations in specific operations. For details, refer to</p>
 <ul>
-<li><p><a href="/docs/ar/insert-update-delete.md#Insert-Entities-into-a-Partition">إدراج الكيانات في القسم</a></p></li>
-<li><p><a href="/docs/ar/upsert-entities.md#Upsert-entities-in-a-partition">تحديث وإدراج الكيانات في القسم</a></p></li>
-<li><p><a href="/docs/ar/delete-entities.md#Delete-Entities-from-Partitions">حذف الكيانات من القسم</a></p></li>
+<li><p><a href="/docs/ar/insert-update-delete.md#Insert-Entities-into-a-Partition">Insert Entities into Partition</a></p></li>
+<li><p><a href="/docs/ar/upsert-entities.md#Upsert-entities-in-a-partition">Upsert Entities into Partition</a></p></li>
+<li><p><a href="/docs/ar/delete-entities.md#Delete-Entities-from-Partitions">Delete Entities from Partition</a></p></li>
 </ul>
-<h3 id="Search-and-Query" class="common-anchor-header">البحث والاستعلام<button data-href="#Search-and-Query" class="anchor-icon" translate="no">
+<h3 id="Search-and-Query" class="common-anchor-header">Search and Query<button data-href="#Search-and-Query" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1009,12 +1009,12 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>يمكنك إجراء عمليات البحث والاستعلام داخل أقسام محددة. لمزيد من التفاصيل، راجع</p>
+    </button></h3><p>You can conduct searches and queries within specific partitions. For details, refer to</p>
 <ul>
-<li><p><a href="/docs/ar/single-vector-search.md#ANN-Search-in-Partition">إجراء عمليات بحث ANN داخل الأقسام</a></p></li>
-<li><p><a href="/docs/ar/get-and-scalar-query.md#Queries-in-Partitions">إجراء تصفية البيانات الوصفية داخل الأقسام</a></p></li>
+<li><p><a href="/docs/ar/single-vector-search.md#ANN-Search-in-Partition">Conduct ANN Searches within Partitions</a></p></li>
+<li><p><a href="/docs/ar/get-and-scalar-query.md#Queries-in-Partitions">Conduct Metadata Filtering within Partitions</a></p></li>
 </ul>
-<h2 id="Drop-Partition" class="common-anchor-header">إزالة القسم<button data-href="#Drop-Partition" class="anchor-icon" translate="no">
+<h2 id="Drop-Partition" class="common-anchor-header">Drop Partition<button data-href="#Drop-Partition" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1029,16 +1029,16 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يمكنك حذف الأقسام التي لم تعد هناك حاجة إليها. قبل حذف قسم ما، تأكد من أن القسم قد تم تحريره.</p>
+    </button></h2><p>You can drop partitions that are no longer needed. Before dropping a partition, ensure that the partition has been released.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.release_partitions(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,

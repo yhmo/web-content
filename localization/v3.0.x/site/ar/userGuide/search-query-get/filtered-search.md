@@ -1,15 +1,15 @@
 ---
 id: filtered-search.md
-title: البحث المُصفى
+title: Filtered Search
 summary: >-
-  يُجري البحث باستخدام الشبكة العصبية الاصطناعية (ANN) عملية البحث عن التضمينات
-  المتجهة الأكثر تشابهاً مع التضمينات المتجهة المحددة. ومع ذلك، قد لا تكون نتائج
-  البحث صحيحة دائماً. يمكنك تضمين شروط تصفية في طلب البحث بحيث يقوم Milvus
-  بتصفية البيانات الوصفية قبل إجراء عمليات البحث باستخدام الشبكة العصبية
-  الاصطناعية، مما يقلل نطاق البحث من المجموعة بأكملها ليقتصر على الكيانات التي
-  تتطابق مع شروط التصفية المحددة.
+  An ANN search finds vector embeddings most similar to specified vector
+  embeddings. However, the search results may not always be correct. You can
+  include filtering conditions in a search request so that Milvus conducts
+  metadata filtering before conducting ANN searches, reducing the search scope
+  from the whole collection to only the entities matching the specified
+  filtering conditions.
 ---
-<h1 id="Filtered-Search" class="common-anchor-header">البحث المُصفى<button data-href="#Filtered-Search" class="anchor-icon" translate="no">
+<h1 id="Filtered-Search" class="common-anchor-header">Filtered Search<button data-href="#Filtered-Search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -24,8 +24,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>يبحث البحث باستخدام الشبكة العصبية الاصطناعية (ANN) عن التضمينات المتجهة الأكثر تشابهاً مع التضمينات المتجهة المحددة. ومع ذلك، قد لا تكون نتائج البحث صحيحة دائماً. يمكنك تضمين شروط التصفية في طلب البحث بحيث يقوم Milvus بتصفية البيانات الوصفية قبل إجراء عمليات البحث باستخدام الشبكة العصبية الاصطناعية (ANN)، مما يقلل نطاق البحث من المجموعة بأكملها إلى الكيانات التي تتطابق مع شروط التصفية المحددة فقط.</p>
-<h2 id="Overview" class="common-anchor-header">نظرة عامة<button data-href="#Overview" class="anchor-icon" translate="no">
+    </button></h1><p>An ANN search finds vector embeddings most similar to specified vector embeddings. However, the search results may not always be correct. You can include filtering conditions in a search request so that Milvus conducts metadata filtering before conducting ANN searches, reducing the search scope from the whole collection to only the entities matching the specified filtering conditions.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -40,8 +40,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>في Milvus، يتم تصنيف عمليات البحث المُصفَّاة إلى نوعين — <strong>التصفية القياسية</strong> <strong>والتصفية التكرارية</strong> — اعتمادًا على المرحلة التي يتم فيها تطبيق التصفية.</p>
-<h3 id="Standard-filtering" class="common-anchor-header">التصفية القياسية<button data-href="#Standard-filtering" class="anchor-icon" translate="no">
+    </button></h2><p>In Milvus, filtered searches are categorized into two types — <strong>standard filtering</strong> and <strong>iterative filtering</strong> — depending on the stage at which the filtering is applied.</p>
+<h3 id="Standard-filtering" class="common-anchor-header">Standard filtering<button data-href="#Standard-filtering" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -56,20 +56,25 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>إذا كانت المجموعة تحتوي على كل من التضمينات المتجهة وبياناتها الوصفية، فيمكنك تصفية البيانات الوصفية قبل إجراء البحث باستخدام الشبكة العصبية الاصطناعية (ANN) لتحسين مدى صلة نتائج البحث. بمجرد أن يتلقى Milvus طلب بحث يحتوي على شرط تصفية، فإنه يقصر نطاق البحث على الكيانات التي تتطابق مع شرط التصفية المحدد.</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/filtered-search.png" alt="Filtered Search" class="doc-image" id="filtered-search" /> 
-   <span>البحث المُصفى</span>
-  
- </span></p>
-<p>كما هو موضح في الرسم البياني أعلاه، يتضمن طلب البحث " <code translate="no">chunk like &quot;%red%&quot;</code> " كشرط تصفية، مما يشير إلى أن Milvus يجب أن يجري البحث باستخدام الشبكة العصبية الاصطناعية (ANN) ضمن جميع الكيانات التي تحتوي على الكلمة " <code translate="no">red</code> " في حقل " <code translate="no">chunk</code> ". على وجه التحديد، يقوم Milvus بما يلي:</p>
+    </button></h3><p>If a collection contains both vector embeddings and their metadata, you can filter metadata before ANN search to improve the relevancy of the search result. Once Milvus receives a search request carrying a filtering condition, it restricts the search scope within the entities matching the specified filtering condition.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/filtered-search.png" alt="Filtered Search" class="doc-image" id="filtered-search" />
+    <span>Filtered Search</span>
+  </span>
+</p>
+<p>As shown in the above diagram, the search request carries <code translate="no">chunk like &quot;%red%&quot;</code> as the filtering condition, indicating that Milvus should conduct the ANN search within all the entities that have the word <code translate="no">red</code> in the <code translate="no">chunk</code> field. Specifically, Milvus does the following:</p>
 <ul>
-<li><p>تصفية الكيانات التي تتطابق مع شروط التصفية الواردة في طلب البحث.</p></li>
-<li><p>إجراء البحث باستخدام الشبكة العصبية الاصطناعية (ANN) ضمن الكيانات التي تمت تصفيتها.</p></li>
-<li><p>إرجاع الكيانات K الأعلى.</p></li>
+<li><p>Filter entities that match the filtering conditions carried in the search request.</p></li>
+<li><p>Conduct the ANN search within the filtered entities.</p></li>
+<li><p>Returns top-K entities.</p></li>
 </ul>
-<h3 id="Iterative-filtering" class="common-anchor-header">التصفية التكرارية<button data-href="#Iterative-filtering" class="anchor-icon" translate="no">
+<div class="alert note">
+<p>Starting in Milvus 3.0.3, you can use <code translate="no">IS NULL</code> and <code translate="no">IS NOT NULL</code> in query and search filters on ordinary vector fields to select entities whose vector field is NULL or non-NULL, respectively.</p>
+<p>To find entities whose <code translate="no">embedding</code> field is NULL, use <code translate="no">query()</code> with the filter <code translate="no">embedding IS NULL</code>. This filter is also valid in <code translate="no">search()</code>. However, searching on <code translate="no">embedding</code> with this filter returns no hits: entities without an <code translate="no">embedding</code> value have no vector to compare with the query vector.</p>
+<p>For supported types, syntax, and examples, see <a href="/docs/ar/basic-operators.md#IS-NULL-and-IS-NOT-NULL-operators">IS NULL and IS NOT NULL operators</a>.</p>
+</div>
+<h3 id="Iterative-filtering" class="common-anchor-header">Iterative filtering<button data-href="#Iterative-filtering" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -84,17 +89,17 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>تعمل عملية التصفية القياسية على تضييق نطاق البحث بشكل فعال إلى نطاق صغير. ومع ذلك، قد تؤدي تعبيرات التصفية شديدة التعقيد إلى تأخير كبير في البحث. في مثل هذه الحالات، يمكن أن تكون التصفية التكرارية بديلاً، مما يساعد على تقليل عبء العمل الناتج عن التصفية القياسية.</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/iterative-filtering.png" alt="Iterative Filtering" class="doc-image" id="iterative-filtering" /> 
-   <span>التصفية التكرارية</span>
-  
- </span></p>
-<p>كما هو موضح في الرسم البياني أعلاه، يقوم البحث باستخدام التصفية التكرارية بإجراء البحث المتجهي على شكل تكرارات. يخضع كل كيان يتم إرجاعه بواسطة المكرر لعملية التصفية القياسية، وتستمر هذه العملية حتى يتم الوصول إلى النتائج المحددة لأفضل K كيانات.</p>
-<p>تقلل هذه الطريقة بشكل كبير من عدد الكيانات الخاضعة للتصفية القياسية، مما يجعلها مفيدة بشكل خاص للتعامل مع تعبيرات التصفية شديدة التعقيد.</p>
-<p>ومع ذلك، من المهم ملاحظة أن المكرر يعالج الكيانات واحدًا تلو الآخر. وقد يؤدي هذا النهج التسلسلي إلى أوقات معالجة أطول أو مشكلات محتملة في الأداء، خاصةً عندما يخضع عدد كبير من الكيانات للتصفية القياسية.</p>
-<h2 id="Examples" class="common-anchor-header">أمثلة<button data-href="#Examples" class="anchor-icon" translate="no">
+    </button></h3><p>The standard filtering process effectively narrows the search scope to a small range. However, overly complex filtering expressions may result in very high search latency. In such cases, iterative filtering can serve as an alternative, helping to reduce the workload of scalar filtering.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/iterative-filtering.png" alt="Iterative Filtering" class="doc-image" id="iterative-filtering" />
+    <span>Iterative Filtering</span>
+  </span>
+</p>
+<p>As illustrated in the diagram above, a search with iterative filtering performs the vector search in iterations. Each entity returned by the iterator undergoes scalar filtering, and this process continues until the specified topK results are achieved.</p>
+<p>This method significantly reduces the number of entities subjected to scalar filtering, making it especially beneficial for handling highly complex filtering expressions.</p>
+<p>However, it’s important to note that the iterator processes entities one at a time. This sequential approach can lead to longer processing times or potential performance issues, especially when a large number of entities are subjected to scalar filtering.</p>
+<h2 id="Examples" class="common-anchor-header">Examples<button data-href="#Examples" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -109,7 +114,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يوضح هذا القسم كيفية إجراء بحث مُصفى. تفترض مقتطفات الكود في هذا القسم أن الكيانات التالية موجودة بالفعل في مجموعتك. يحتوي كل كيان على أربعة حقول، وهي <strong>id</strong> <strong>وvector</strong> <strong>وcolor</strong> <strong>وlikes</strong>. تستخدم الأمثلة مجموعة محملة باسم <code translate="no">my_collection</code> مع حقل <code translate="no">vector</code> خماسي الأبعاد مُفهرس باستخدام المقياس <code translate="no">COSINE</code>.</p>
+    </button></h2><p>This section demonstrates how to conduct a filtered search. Code snippets in this section assume you already have the following entities in your collection. Each entity has four fields, namely <strong>id</strong>, <strong>vector</strong>, <strong>color</strong>, and <strong>likes</strong>. The examples use a loaded collection named <code translate="no">my_collection</code> with a five-dimensional <code translate="no">vector</code> field indexed with the <code translate="no">COSINE</code> metric.</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">[</span>
     <span class="hljs-punctuation">{</span><span class="hljs-attr">&quot;id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;vector&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-number">0.3580376395471989</span><span class="hljs-punctuation">,</span> <span class="hljs-number">-0.6023495712049978</span><span class="hljs-punctuation">,</span> <span class="hljs-number">0.18414012509913835</span><span class="hljs-punctuation">,</span> <span class="hljs-number">-0.26286205330961354</span><span class="hljs-punctuation">,</span> <span class="hljs-number">0.9029438446296592</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;color&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;pink_8682&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;likes&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">165</span><span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
     <span class="hljs-punctuation">{</span><span class="hljs-attr">&quot;id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;vector&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-number">0.19886812562848388</span><span class="hljs-punctuation">,</span> <span class="hljs-number">0.06023560599112088</span><span class="hljs-punctuation">,</span> <span class="hljs-number">0.6976963061752597</span><span class="hljs-punctuation">,</span> <span class="hljs-number">0.2614474506242501</span><span class="hljs-punctuation">,</span> <span class="hljs-number">0.838729485096104</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;color&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;red_7025&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;likes&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">25</span><span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
@@ -124,10 +129,10 @@ summary: >-
 <span class="hljs-punctuation">]</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>إذا كانت متجهات الاستعلام موجودة بالفعل في المجموعة المستهدفة، ففكر في استخدام <code translate="no">ids</code> بدلاً من استردادها قبل إجراء عمليات البحث. لمزيد من التفاصيل، راجع <a href="/docs/ar/primary-key-search.md">«البحث</a> باستخدام <a href="/docs/ar/primary-key-search.md">المفتاح الأساسي</a>».</p>
+<p>If the query vectors already exist in the target collection, consider using <code translate="no">ids</code> instead of retrieving them before searches. For details, refer to <a href="/docs/ar/primary-key-search.md">Primary-Key Search</a>.</p>
 </div>
-<p>تستخدم الأمثلة PyMilvus 3.0.2، وJava SDK 3.0.10، وGo SDK 3.0.0 (<code translate="no">client/v3</code>)، وRust SDK 3.0.2، وC++ SDK 3.0.4، وNodeJS SDK 3.0.6، وC# SDK 3.0.0.</p>
-<h3 id="Search-with-standard-filtering" class="common-anchor-header">البحث باستخدام التصفية القياسية<button data-href="#Search-with-standard-filtering" class="anchor-icon" translate="no">
+<p>The examples use PyMilvus 3.0.2, Java SDK 3.0.10, Go SDK 3.0.0 (<code translate="no">client/v3</code>), Rust SDK 3.0.2, C++ SDK 3.0.4, NodeJS SDK 3.0.6, and C# SDK 3.0.0.</p>
+<h3 id="Search-with-standard-filtering" class="common-anchor-header">Search with standard filtering<button data-href="#Search-with-standard-filtering" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -142,16 +147,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>توضح مقتطفات الكود التالية عملية بحث باستخدام التصفية القياسية، ويحتوي الطلب في مقتطف الكود التالي على شرط تصفية وعدة حقول إخراج.</p>
+    </button></h3><p>The following code snippets demonstrate a search with standard filtering, and the request in the following code snippet carries a filtering condition and several output fields.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -395,8 +400,8 @@ curl --request POST \
 <span class="hljs-comment"># Illustrative response; scores and cost can vary.</span>
 <span class="hljs-comment"># {&quot;code&quot;:0,&quot;cost&quot;:0,&quot;data&quot;:[{&quot;color&quot;:&quot;red_4794&quot;,&quot;distance&quot;:0.5975796,&quot;id&quot;:4,&quot;likes&quot;:122},{&quot;color&quot;:&quot;red_9392&quot;,&quot;distance&quot;:-0.2499619,&quot;id&quot;:6,&quot;likes&quot;:58}],&quot;topks&quot;:[2]}</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>شرط التصفية الوارد في طلب البحث هو <code translate="no">color like &quot;red%&quot; and likes &gt; 50</code>. ويستخدم عامل «and» لتضمين شرطين: الأول يطلب الكيانات التي تحتوي على قيمة تبدأ بـ <code translate="no">red</code> في حقل <code translate="no">color</code> ، والثاني يطلب الكيانات التي تحتوي على قيمة أكبر من <code translate="no">50</code> في حقل <code translate="no">likes</code>. لا يوجد سوى كيانين يستوفيان هذه المتطلبات. مع تعيين «top-K» على « <code translate="no">5</code> »، سيقوم Milvus بحساب المسافة بين هذين الكيانين ومتجه الاستعلام، ثم إرجاعهما كنتائج البحث.</p>
-<p>يوضح المثال التالي شكل نتائج Python مع درجات جيب التمام التوضيحية. قد تختلف الدرجات باختلاف دقة العدد العائم. تظهر حقول الإخراج المطلوبة فقط في <code translate="no">entity</code> ؛ وتُرجع أمثلة REST تلك الحقول في المستوى الأعلى لكل نتيجة.</p>
+<p>The filtering condition carried in the search request reads <code translate="no">color like &quot;red%&quot; and likes &gt; 50</code>. It uses the and operator to include two conditions: the first one asks for entities that have a value starting with <code translate="no">red</code> in the <code translate="no">color</code> field, and the other asks for entities with a value greater than <code translate="no">50</code> in the <code translate="no">likes</code> field. There are only two entities meeting these requirements. With the top-K set to <code translate="no">5</code>, Milvus will calculate the distance between these two entities to the query vector and return them as the search results.</p>
+<p>The following example shows the shape of the Python results with illustrative cosine scores. Scores can vary with floating-point precision. Only the requested output fields appear in <code translate="no">entity</code>; the REST examples return those fields at the top level of each hit.</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">[</span>
     <span class="hljs-punctuation">{</span>
         <span class="hljs-attr">&quot;id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">4</span><span class="hljs-punctuation">,</span>
@@ -416,8 +421,8 @@ curl --request POST \
     <span class="hljs-punctuation">}</span>
 <span class="hljs-punctuation">]</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>لمزيد من المعلومات حول العوامل الحسابية التي يمكنك استخدامها في تصفية البيانات الوصفية، راجع <a href="/docs/ar/boolean.md">شرح التصفية</a>.</p>
-<h3 id="Search-with-iterative-filtering" class="common-anchor-header">البحث باستخدام التصفية التكرارية<button data-href="#Search-with-iterative-filtering" class="anchor-icon" translate="no">
+<p>For more information on the operators you can use in metadata filtering, refer to <a href="/docs/ar/boolean.md">Filtering Explained</a>.</p>
+<h3 id="Search-with-iterative-filtering" class="common-anchor-header">Search with iterative filtering<button data-href="#Search-with-iterative-filtering" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -432,16 +437,16 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>لإجراء بحث مُصفى باستخدام التصفية التكرارية، يمكنك اتباع الخطوات التالية:</p>
+    </button></h3><p>To conduct a filtered search with iterative filtering, you can do as follows:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 

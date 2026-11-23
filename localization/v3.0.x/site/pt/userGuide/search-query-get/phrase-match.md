@@ -2,13 +2,12 @@
 id: phrase-match.md
 title: Phrase MatchCompatible with Milvus 2.5.17+
 summary: >-
-  A correspondência de frase permite-lhe pesquisar documentos que contenham os
-  termos da sua consulta como uma frase exata. Por predefinição, as palavras têm
-  de aparecer na mesma ordem e diretamente adjacentes umas às outras. Por
-  exemplo, uma consulta por «robótica e aprendizagem automática» corresponde a
-  texto como «…modelos típicos de robótica e aprendizagem automática…», em que
-  as palavras «robótica», «máquina» e «aprendizagem» aparecem em sequência, sem
-  outras palavras entre elas.
+  Phrase match lets you search for documents containing your query terms as an
+  exact phrase. By default, the words must appear in the same order and directly
+  adjacent to one another. For example, a query for "robotics machine learning"
+  matches text like "…typical robotics machine learning models…", where the
+  words "robotics", "machine", and "learning" appear in sequence with no other
+  words between them.
 beta: Milvus 2.5.17+
 ---
 <h1 id="Phrase-Match" class="common-anchor-header">Phrase Match<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.5.17+</span><button data-href="#Phrase-Match" class="anchor-icon" translate="no">

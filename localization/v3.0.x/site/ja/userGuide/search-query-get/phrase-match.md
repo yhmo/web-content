@@ -2,9 +2,12 @@
 id: phrase-match.md
 title: Phrase MatchCompatible with Milvus 2.5.17+
 summary: >-
-  フレーズ一致では、検索クエリの用語がそのままのフレーズとして含まれるドキュメントを検索できます。デフォルトでは、単語は同じ順序で、かつ互いに隣接して出現している必要があります。
-  たとえば、「robotics machine
-  learning」というクエリでは、「…典型的なロボティクス・機械学習モデル…」といったテキストが一致します。この場合、「robotics」、「machine」、「learning」という単語が、その間に他の単語を挟まずに連続して出現しています。
+  Phrase match lets you search for documents containing your query terms as an
+  exact phrase. By default, the words must appear in the same order and directly
+  adjacent to one another. For example, a query for "robotics machine learning"
+  matches text like "…typical robotics machine learning models…", where the
+  words "robotics", "machine", and "learning" appear in sequence with no other
+  words between them.
 beta: Milvus 2.5.17+
 ---
 <h1 id="Phrase-Match" class="common-anchor-header">Phrase Match<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.5.17+</span><button data-href="#Phrase-Match" class="anchor-icon" translate="no">

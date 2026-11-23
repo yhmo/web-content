@@ -1,10 +1,12 @@
 ---
 id: alter-external-collection-schema.md
-title: 變更外部集合結構Compatible with Milvus 3.0.x
-summary: 瞭解如何在現有的外部集合中，從外部資料來源揭露額外的欄位。
+title: Alter External Collection SchemaCompatible with Milvus 3.0.x
+summary: >-
+  Learn how to expose an additional field from an external data source in an
+  existing external collection.
 beta: Milvus 3.0.x
 ---
-<h1 id="Alter-External-Collection-Schema" class="common-anchor-header">變更外部集合結構<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Alter-External-Collection-Schema" class="anchor-icon" translate="no">
+<h1 id="Alter-External-Collection-Schema" class="common-anchor-header">Alter External Collection Schema<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Alter-External-Collection-Schema" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -19,9 +21,9 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>建立外部集合後，外部資料來源往往會隨時間演變。例如，一個已儲存嵌入向量的湖屋資料表，日後可能會新增一個標量欄位（例如分數、類別或時間戳記），而您可能希望在查詢結果中回傳該欄位，或將其用於篩選條件。</p>
-<p>與其重新建立外部集合或將來源資料複製到 Milvus，不如新增一個 Milvus 欄位，使其對應至外部資料來源中的現有欄位。新增欄位後，請刷新外部集合，以便在查詢和搜尋中使用該新欄位。</p>
-<h2 id="Limits" class="common-anchor-header">限制<button data-href="#Limits" class="anchor-icon" translate="no">
+    </button></h1><p>External data sources often evolve after you create an external collection. For example, a lakehouse table that already stores embeddings might later include a new scalar field, such as a score, category, or timestamp, that you want to return in query results or use in filters.</p>
+<p>Instead of recreating the external collection or copying the source data into Milvus, add a Milvus field that maps to the existing field in the external data source. After adding the field, refresh the external collection so the new field can be used in queries and searches.</p>
+<h2 id="Limits" class="common-anchor-header">Limits<button data-href="#Limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,12 +39,12 @@ beta: Milvus 3.0.x
         ></path>
       </svg>
     </button></h2><ul>
-<li>外部集合目前支援在建立後新增欄位。其他模式變更，例如刪除欄位、重新命名欄位、變更欄位資料類型、變更向量維度，或重新映射<code translate="no">external_field</code> ，均不被支援。</li>
-<li>您只能新增在外部資料來源中已存在的欄位。此操作會將現有的外部欄位映射至 Milvus 欄位，並不會在外部資料來源中建立新欄位，也不會回填來源資料。</li>
-<li>不支援將<code translate="no">SPARSE_FLOAT_VECTOR</code> 欄位新增至現有的外部集合。</li>
-<li>不支援將 StructArray 欄位新增至現有的外部集合。若您的外部集合需要 StructArray 欄位，請在建立集合時於集合架構中定義該欄位。</li>
+<li>External collections currently support adding fields after creation. Other schema changes, such as dropping fields, renaming fields, changing field data types, changing vector dimensions, or remapping <code translate="no">external_field</code>, are not supported.</li>
+<li>You can only add a field that already exists in the external data source. This operation maps an existing external field to a Milvus field. It does not create a new field in the external data source or backfill source data.</li>
+<li>Adding <code translate="no">SPARSE_FLOAT_VECTOR</code> fields to an existing external collection is not supported.</li>
+<li>Adding StructArray fields to an existing external collection is not supported. If your external collection needs a StructArray field, define it in the collection schema when you create the collection.</li>
 </ul>
-<h2 id="Add-a-field" class="common-anchor-header">新增欄位<button data-href="#Add-a-field" class="anchor-icon" translate="no">
+<h2 id="Add-a-field" class="common-anchor-header">Add a field<button data-href="#Add-a-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -57,9 +59,9 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>在將欄位新增至外部集合之前，請先確認該欄位已存在於外部資料來源中。接著呼叫 `<code translate="no">add_collection_field()</code> ` 方法，並將 `<code translate="no">external_field</code> ` 設定為外部資料來源中的欄位名稱，以在 Milvus 中公開該欄位。將 `<code translate="no">data_type</code> ` 設定為與外部資料來源中該欄位相符的 Milvus 資料型別。例如，若映射的欄位儲存雙精度數值，請使用 `<code translate="no">DataType.DOUBLE</code>`。</p>
-<p>與受管集合不同，新增欄位的值會在您刷新外部集合後，從外部資料來源讀取。</p>
-<h3 id="Add-a-scalar-field" class="common-anchor-header">新增標量欄位<button data-href="#Add-a-scalar-field" class="anchor-icon" translate="no">
+    </button></h2><p>Before adding a field to an external collection, verify that the field already exists in the external data source. Then call <code translate="no">add_collection_field()</code> to expose that field in Milvus by setting <code translate="no">external_field</code> to the field name in the external data source. Set <code translate="no">data_type</code> to the Milvus data type that matches the field in the external data source. For example, if the mapped field stores double-precision values, use <code translate="no">DataType.DOUBLE</code>.</p>
+<p>Unlike managed collections, values for the added field are read from the external data source after you refresh the external collection.</p>
+<h3 id="Add-a-scalar-field" class="common-anchor-header">Add a scalar field<button data-href="#Add-a-scalar-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -74,16 +76,16 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>若要將該欄位包含在查詢結果中或用於篩選條件，請使用 `<code translate="no">add_collection_field()</code> ` 來新增標量欄位。以下範例新增了一個名為 `<code translate="no">score</code> ` 的欄位，該欄位映射至外部資料來源中的 `<code translate="no">score</code> ` 欄位。</p>
+    </button></h3><p>Use <code translate="no">add_collection_field()</code> to add a scalar field when you want to return the field in query results or use it in filters. The following example adds a <code translate="no">score</code> field that maps to the <code translate="no">score</code> field in the external data source.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   CSharp</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 ```python
 from pymilvus import DataType, MilvusClient
@@ -96,7 +98,7 @@ collection_name="product_embeddings",
 field_name="score",
 data_type=DataType.DOUBLE,
 nullable=True,
-# 下一行高亮顯示
+# highlight-next-line
 external_field="score",
 )</p>
 <pre><code translate="no">
@@ -160,8 +162,8 @@ client.<span class="hljs-title function_ invoke__">add_collection_field</span>(
 <span class="hljs-comment"># collection (POST /v2/vectordb/collections/fields/add routes through</span>
 <span class="hljs-comment"># AlterCollectionSchema, which rejects external collections).</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>在此範例中，<code translate="no">score</code> 是 Milvus 的欄位名稱，而<code translate="no">external_field=&quot;score&quot;</code> 將其映射至外部資料來源中的<code translate="no">score</code> 欄位。由於該欄位是在資料集建立完成後才新增的，因此需設定<code translate="no">nullable=True</code> 。</p>
-<h3 id="Add-a-vector-field" class="common-anchor-header">新增向量欄位<button data-href="#Add-a-vector-field" class="anchor-icon" translate="no">
+<p>In this example, <code translate="no">score</code> is the Milvus field name and <code translate="no">external_field=&quot;score&quot;</code> maps it to the <code translate="no">score</code> field in the external data source. Set <code translate="no">nullable=True</code> because the field is added after the collection has already been created.</p>
+<h3 id="Add-a-vector-field" class="common-anchor-header">Add a vector field<button data-href="#Add-a-vector-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -176,17 +178,17 @@ client.<span class="hljs-title function_ invoke__">add_collection_field</span>(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>若外部資料來源已包含向量值，您亦可新增向量欄位。請將向量欄位<code translate="no">data_type</code> 及<code translate="no">dim</code> 設定為與外部資料來源中的向量欄位相符。</p>
-<p>以下範例新增了一個名為<code translate="no">image_embedding_v2</code> 的密集向量欄位。</p>
+    </button></h3><p>You can also add a vector field if the external data source already contains the vector values. Set the vector <code translate="no">data_type</code> and <code translate="no">dim</code> to match the vector field in the external data source.</p>
+<p>The following example adds a dense vector field named <code translate="no">image_embedding_v2</code>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   CSharp</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 ```python
 client.add_collection_field(
@@ -244,16 +246,16 @@ client.add_collection_field(
 <span class="hljs-comment"># collection (POST /v2/vectordb/collections/fields/add routes through</span>
 <span class="hljs-comment"># AlterCollectionSchema, which rejects external collections).</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>若您計劃對已新增的向量欄位執行向量搜尋，請在重新整理外部集合之前，先為該欄位建立索引。</p>
+<p>If you plan to run vector search on the added vector field, create an index for the field before refreshing the external collection.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 ```python
 index_params = client.prepare_index_params()

@@ -2,12 +2,11 @@
 id: scalar_index.md
 related_key: scalar_index
 summary: >-
-  Скалярные индексы ускоряют фильтрацию по невекторным полям. В данном
-  справочнике объясняется, как Milvus выбирает скалярные индексы, какие типы
-  индексов можно указать и какие типы данных поддерживает каждый индекс.
-title: Скалярный индекс
+  Compare scalar index types, check field compatibility, and understand
+  automatic index selection.
+title: Scalar Index
 ---
-<h1 id="Scalar-Index" class="common-anchor-header">Скалярный индекс<button data-href="#Scalar-Index" class="anchor-icon" translate="no">
+<h1 id="Scalar-Index" class="common-anchor-header">Scalar Index<button data-href="#Scalar-Index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -22,9 +21,13 @@ title: Скалярный индекс
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Скалярные индексы ускоряют фильтрацию по невекторным полям, таким как категории, цены, временные метки и местоположения. Когда выражение фильтра сужает поиск, скалярный индекс позволяет Milvus находить соответствующие объекты без сканирования поля.</p>
-<p>Если вы не уверены, какой индекс выбрать, воспользуйтесь функцией « <code translate="no">AUTOINDEX</code> ». Указывать тип индекса вручную следует только в том случае, если требуется определённое поведение.</p>
-<h2 id="Choosing-a-scalar-index" class="common-anchor-header">Выбор скалярного индекса<button data-href="#Choosing-a-scalar-index" class="anchor-icon" translate="no">
+    </button></h1><p>Scalar indexes can accelerate <a href="/docs/ru/boolean.md">filtering</a> on non-vector fields. Use this overview to choose an index, check field compatibility, and understand automatic selection.</p>
+<p>Consider indexing fields used in frequent or slow filters. For each field you include in the index-creation request, choose one of two options:</p>
+<ul>
+<li><strong>Specify an index type:</strong> Choose one compatible with the field’s data type and your filters.</li>
+<li><strong>Use <code translate="no">AUTOINDEX</code>:</strong> Set <code translate="no">index_type</code> to <code translate="no">AUTOINDEX</code> to let Milvus choose a type. See <a href="#AUTOINDEX-behavior">AUTOINDEX behavior</a>.</li>
+</ul>
+<h2 id="Index-types" class="common-anchor-header">Index types<button data-href="#Index-types" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -39,35 +42,30 @@ title: Скалярный индекс
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>В приведенной ниже таблице указаны индексы, которые Milvus выбирает по умолчанию при использовании <code translate="no">AUTOINDEX</code>, а также типы индексов, которые можно указать вручную для каждого типа данных.</p>
+    </button></h2><p><a id="Supported-predicates"></a>
+<a id="Comparisons-and-membership"></a>
+<a id="String-patterns"></a></p>
+<p>Open an index guide for its supported filters, parameters, and creation steps:</p>
 <table>
 <thead>
-<tr><th>Тип данных</th><th>AUTOINDEX по умолчанию</th><th>Типы индексов для ручной настройки</th></tr>
+<tr><th>Index type</th><th>Use for</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">BOOL</code></td><td><code translate="no">BITMAP</code></td><td><code translate="no">INVERTED</code>, <code translate="no">BITMAP</code></td></tr>
-<tr><td><code translate="no">INT8</code>, <code translate="no">INT16</code>, <code translate="no">INT32</code>, <code translate="no">INT64</code></td><td><code translate="no">HYBRID</code></td><td><code translate="no">INVERTED</code>, <code translate="no">BITMAP</code>, <code translate="no">STL_SORT</code></td></tr>
-<tr><td><code translate="no">FLOAT</code>, <code translate="no">DOUBLE</code></td><td><code translate="no">HYBRID</code></td><td><code translate="no">INVERTED</code>, <code translate="no">STL_SORT</code></td></tr>
-<tr><td><code translate="no">VARCHAR</code></td><td><code translate="no">HYBRID</code></td><td><code translate="no">INVERTED</code>, <code translate="no">BITMAP</code>, <code translate="no">STL_SORT</code>, <code translate="no">TRIE</code>, <code translate="no">NGRAM</code>, <code translate="no">FMINDEX</code></td></tr>
-<tr><td><code translate="no">TIMESTAMPTZ</code></td><td><code translate="no">STL_SORT</code></td><td><code translate="no">STL_SORT</code></td></tr>
-<tr><td><code translate="no">GEOMETRY</code></td><td><code translate="no">RTREE</code></td><td><code translate="no">RTREE</code></td></tr>
-<tr><td><code translate="no">JSON</code> с приведением типа к скалярному значению или массиву</td><td><code translate="no">HYBRID</code></td><td>Зависит от <code translate="no">json_cast_type</code>; см. <a href="#JSON-field-indexing">индексирование полей JSON</a>.</td></tr>
-<tr><td><code translate="no">ARRAY&lt;BOOL&gt;</code></td><td><code translate="no">BITMAP</code></td><td><code translate="no">INVERTED</code>, <code translate="no">BITMAP</code>, <code translate="no">STL_SORT</code></td></tr>
-<tr><td><code translate="no">ARRAY&lt;INT8&gt;</code> через <code translate="no">ARRAY&lt;INT64&gt;</code></td><td><code translate="no">HYBRID</code></td><td><code translate="no">INVERTED</code>, <code translate="no">BITMAP</code>, <code translate="no">STL_SORT</code></td></tr>
-<tr><td><code translate="no">ARRAY&lt;FLOAT&gt;</code>, <code translate="no">ARRAY&lt;DOUBLE&gt;</code></td><td><code translate="no">HYBRID</code></td><td><code translate="no">INVERTED</code>, <code translate="no">STL_SORT</code></td></tr>
-<tr><td><code translate="no">ARRAY&lt;VARCHAR&gt;</code></td><td><code translate="no">HYBRID</code></td><td><code translate="no">INVERTED</code>, <code translate="no">BITMAP</code>, <code translate="no">STL_SORT</code></td></tr>
-<tr><td><code translate="no">TEXT</code></td><td>Не поддерживается</td><td>Нет</td></tr>
+<tr><td><a href="/docs/ru/inverted.md">INVERTED</a></td><td>Equality, membership, and range filters.</td></tr>
+<tr><td><a href="/docs/ru/bitmap.md">BITMAP</a></td><td>Fields with few distinct values, such as status codes.</td></tr>
+<tr><td><a href="/docs/ru/stl-sort.md">STL_SORT</a></td><td>Value lookups and range filters.</td></tr>
+<tr><td><a href="/docs/ru/trie.md">TRIE</a></td><td>Exact string lookups and prefix matching on <code translate="no">VARCHAR</code> fields.</td></tr>
+<tr><td><a href="/docs/ru/ngram.md">NGRAM</a></td><td>LIKE and eligible regex filters.</td></tr>
+<tr><td><a href="/docs/ru/rtree.md">RTREE</a></td><td>Spatial filters on <code translate="no">GEOMETRY</code> fields.</td></tr>
 </tbody>
 </table>
-<p><code translate="no">HYBRID</code> — это внутренняя стратегия, а не тип, который можно указать напрямую. См. раздел <a href="#How-AUTOINDEX-selects">«Как работает AUTOINDEX</a>».</p>
-<p>Применяются следующие ограничения:</p>
-<ul>
-<li><strong>Первичные ключи:</strong> оператор « <code translate="no">BITMAP</code> » недоступен для полей, являющихся первичными ключами.</li>
-<li><strong>Массивы:</strong> рекурсивные массивы и массивы с элементами, допускающими значение NULL, не поддерживают скалярную индексацию, включая <code translate="no">AUTOINDEX</code>. Обычные массивы поддерживают элементы типа Boolean, integer, floating-point и VARCHAR.</li>
-<li><strong>Массивы структур:</strong> скалярные подполя индексируются по отдельности. Их поддержка может отличаться от поддержки обычных массивов; например, подполе структуры типа «логическое» не поддерживает явное использование <code translate="no">STL_SORT</code>.</li>
-<li><strong>TEXT:</strong> Созданные пользователем скалярные индексы, включая <code translate="no">AUTOINDEX</code>, недоступны. Анализ текста и поиск по алгоритму BM25 используют отдельные механизмы.</li>
-</ul>
-<h2 id="Index-types" class="common-anchor-header">Типы индексов<button data-href="#Index-types" class="anchor-icon" translate="no">
+<p>Check the field compatibility table below and the selected index’s filter support before creating an index.</p>
+<p><details id="Filter-execution">
+<summary><strong>How filters use indexes</strong></summary></p>
+<p>An index serves only eligible expressions; other filters can scan the data. Arithmetic and comparisons between fields do not inherit literal-lookup acceleration. For logical combinations and NULL tests, see <a href="/docs/ru/basic-operators.md">Basic Operators</a>.</p>
+<p></details></p>
+<p><a id="Choosing-a-scalar-index"></a></p>
+<h2 id="Supported-field-types" class="common-anchor-header">Supported field types<button data-href="#Supported-field-types" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -82,78 +80,52 @@ title: Скалярный индекс
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><table>
+    </button></h2><p><a id="Array-JSON-and-spatial-predicates"></a>
+<a id="JSON-field-indexing"></a></p>
+<p>Find your field’s data type to see its supported explicit indexes. In array rows, <code translate="no">ARRAY&lt;T&gt;</code> means <code translate="no">ARRAY</code> with <code translate="no">element_type=T</code>:</p>
+<table>
 <thead>
-<tr><th>Тип индекса</th><th>Назначение</th></tr>
+<tr><th>Field type</th><th>Explicit index types</th><th>Conditions</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">INVERTED</code></td><td>Универсальные фильтры равенства, принадлежности и диапазона.</td></tr>
-<tr><td><code translate="no">BITMAP</code></td><td>Поля с небольшим количеством различных значений; компактная побитовая фильтрация.</td></tr>
-<tr><td><code translate="no">STL_SORT</code></td><td>Поиск отсортированных значений и фильтрация по диапазону.</td></tr>
-<tr><td><code translate="no">TRIE</code></td><td>Равенство строк и сопоставление префиксов.</td></tr>
-<tr><td><code translate="no">NGRAM</code></td><td>Использование оператора LIKE и регулярных выражений для строк путем сужения круга подходящих кандидатов.</td></tr>
-<tr><td><code translate="no">FMINDEX</code></td><td>Точное сопоставление префиксов, суффиксов и вставных подстрок.</td></tr>
-<tr><td><code translate="no">RTREE</code></td><td>Пространственная фильтрация по полям GEOMETRY.</td></tr>
+<tr><td><code translate="no">BOOL</code></td><td><code translate="no">INVERTED</code>, <code translate="no">BITMAP</code></td><td>Scalar Boolean fields do not support <code translate="no">STL_SORT</code>.</td></tr>
+<tr><td><code translate="no">INT8</code>, <code translate="no">INT16</code>, <code translate="no">INT32</code>, <code translate="no">INT64</code></td><td><code translate="no">INVERTED</code>, <code translate="no">BITMAP</code>, <code translate="no">STL_SORT</code></td><td><code translate="no">BITMAP</code> is unavailable on primary-key fields.</td></tr>
+<tr><td><code translate="no">FLOAT</code>, <code translate="no">DOUBLE</code></td><td><code translate="no">INVERTED</code>, <code translate="no">STL_SORT</code></td><td>Explicit <code translate="no">BITMAP</code> is unavailable.</td></tr>
+<tr><td><code translate="no">VARCHAR</code></td><td><code translate="no">INVERTED</code>, <code translate="no">BITMAP</code>, <code translate="no">STL_SORT</code>, <code translate="no">TRIE</code>, <code translate="no">NGRAM</code></td><td><code translate="no">BITMAP</code> is unavailable on primary-key fields. See <a href="#String-pattern-indexes">index selection by filter</a>.</td></tr>
+<tr><td><code translate="no">TIMESTAMPTZ</code></td><td><code translate="no">STL_SORT</code></td><td>See <a href="/docs/ru/timestamptz-field.md">TIMESTAMPTZ Field</a>.</td></tr>
+<tr><td><code translate="no">GEOMETRY</code></td><td><code translate="no">RTREE</code></td><td>See <a href="/docs/ru/rtree.md">RTREE</a>.</td></tr>
+<tr><td><code translate="no">ARRAY&lt;BOOL&gt;</code></td><td><code translate="no">INVERTED</code>, <code translate="no">BITMAP</code></td><td>See <a href="/docs/ru/array_data_type.md#Array-index-support">Array index support</a>.</td></tr>
+<tr><td><code translate="no">ARRAY&lt;INT8&gt;</code>, <code translate="no">ARRAY&lt;INT16&gt;</code>, <code translate="no">ARRAY&lt;INT32&gt;</code>, <code translate="no">ARRAY&lt;INT64&gt;</code></td><td><code translate="no">INVERTED</code>, <code translate="no">BITMAP</code></td><td>See <a href="/docs/ru/array_data_type.md#Array-index-support">Array index support</a>.</td></tr>
+<tr><td><code translate="no">ARRAY&lt;FLOAT&gt;</code>, <code translate="no">ARRAY&lt;DOUBLE&gt;</code></td><td><code translate="no">INVERTED</code></td><td>See <a href="/docs/ru/array_data_type.md#Array-index-support">Array index support</a>.</td></tr>
+<tr><td><code translate="no">ARRAY&lt;VARCHAR&gt;</code></td><td><code translate="no">INVERTED</code>, <code translate="no">BITMAP</code></td><td>See <a href="/docs/ru/array_data_type.md#Array-index-support">Array index support</a>.</td></tr>
+<tr><td><code translate="no">JSON</code></td><td>Depends on the indexed path and cast type.</td><td>Check <a href="/docs/ru/json-indexing.md#Understand-cast-types">JSON path compatibility and requirements</a>.</td></tr>
+<tr><td>StructArray non-vector subfields</td><td>Depends on the subfield’s data type.</td><td>Index subfields separately; <code translate="no">BOOL</code> subfields cannot use explicit <code translate="no">STL_SORT</code>. See <a href="/docs/ru/index-structarray-fields.md#Create-scalar-indexes">subfield rules</a>.</td></tr>
+<tr><td><code translate="no">TEXT</code></td><td>None</td><td>User-created scalar indexes, including <code translate="no">AUTOINDEX</code>, are unavailable.</td></tr>
 </tbody>
 </table>
-<p>Примеры создания, параметры индекса и поддерживаемые запросы см. в разделах <a href="/docs/ru/bitmap.md">BITMAP</a>, <a href="/docs/ru/inverted.md">INVERTED</a>, <a href="/docs/ru/ngram.md">NGRAM</a>, <a href="/docs/ru/stl-sort.md">STL_SORT</a>, <a href="/docs/ru/trie.md">TRIE</a>, <a href="/docs/ru/fmindex.md">FMINDEX</a> и <a href="/docs/ru/rtree.md">RTREE</a>.</p>
-<h2 id="How-AUTOINDEX-selects" class="common-anchor-header">Как происходит выбор индекса с помощью AUTOINDEX<button data-href="#How-AUTOINDEX-selects" class="anchor-icon" translate="no">
-      <svg translate="no"
-        aria-hidden="true"
-        focusable="false"
-        height="20"
-        version="1.1"
-        viewBox="0 0 16 16"
-        width="16"
-      >
-        <path
-          fill="#0092E4"
-          fill-rule="evenodd"
-          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
-        ></path>
-      </svg>
-    </button></h2><p>С помощью параметра ` <code translate="no">AUTOINDEX</code>` Milvus выбирает индекс на основе типа поля, конфигурации сервера и, для некоторых полей, количества различных значений (кардинальности). Выбор по умолчанию приведён в разделе <a href="#Choosing-a-scalar-index">«Выбор скалярного индекса</a>».</p>
-<p>Для большинства полей при использовании параметра ` <code translate="no">AUTOINDEX</code> ` применяется внутренняя стратегия ` <code translate="no">HYBRID</code> `, которая выбирает индекс по кардинальности:</p>
-<ul>
-<li><strong><code translate="no">BITMAP</code></strong> когда сборка содержит менее 100 различных значений;</li>
-<li><strong><code translate="no">STL_SORT</code></strong> если сборка содержит 100 или более различных значений.</li>
-</ul>
-<p>Для массивных индексов применяется отдельная политика совместимости: их ветвь для высокой кардинальности использует « <code translate="no">STL_SORT</code> », если кластер это поддерживает, а в противном случае — « <code translate="no">INVERTED</code> ». См. раздел <a href="#Version-compatibility">«Совместимость версий</a>».</p>
-<p><code translate="no">HYBRID</code> является исключительно внутренним — его нельзя указать напрямую. Внутренний выбор также может использовать индекс, недоступный в качестве явного варианта для данного поля, например растровую индексацию для значений с плавающей запятой.</p>
+<div class="alert note">
 <blockquote>
-<p>Эти параметры выбора являются значениями по умолчанию. Администраторы могут изменять их с помощью <code translate="no">scalarAutoIndex.params.build</code>. По умолчанию для параметра <code translate="no">scalarAutoIndex.enable</code> установлено значение <code translate="no">false</code>, которое по-прежнему разрешает явное использование <code translate="no">AUTOINDEX</code> и выбор, когда тип индекса не указан; установка значения <code translate="no">true</code> также применяет автоматический выбор к иначе допустимым ручным запросам.</p>
+<p>Scalar indexes, including <code translate="no">AUTOINDEX</code>, do not support recursive ARRAY fields or arrays with nullable elements. See <a href="/docs/ru/array_data_type.md#Array-index-support">Array index support</a> for ordinary-array filters and <a href="/docs/ru/index-structarray-fields.md#Create-scalar-indexes">Index StructArray Fields</a> for subfield rules.</p>
 </blockquote>
-<h2 id="JSON-field-indexing" class="common-anchor-header">Индексирование полей JSON<button data-href="#JSON-field-indexing" class="anchor-icon" translate="no">
-      <svg translate="no"
-        aria-hidden="true"
-        focusable="false"
-        height="20"
-        version="1.1"
-        viewBox="0 0 16 16"
-        width="16"
-      >
-        <path
-          fill="#0092E4"
-          fill-rule="evenodd"
-          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
-        ></path>
-      </svg>
-    </button></h2><p>Для индексирования значений JSON укажите <code translate="no">json_cast_type</code>, чтобы указать тип значений, подлежащих индексированию. Этот параметр обязателен как для автоматического, так и для ручного индексирования. Используйте <code translate="no">json_path</code> для указания пути; если он опущен, Milvus использует имя поля, указанное в запросе.</p>
+</div>
+<p><details id="String-pattern-indexes">
+<summary><strong>Choose an index for VARCHAR filters</strong></summary></p>
+<p>For a <code translate="no">VARCHAR</code> field, compare compatible indexes based on your filters:</p>
 <table>
 <thead>
-<tr><th>json_cast_type</th><th>AUTOINDEX (по умолчанию)</th><th>Типы ручной индексации</th></tr>
+<tr><th>Filtering need</th><th>Index guides and conditions</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">BOOL</code></td><td><code translate="no">HYBRID</code></td><td><code translate="no">INVERTED</code>, <code translate="no">BITMAP</code></td></tr>
-<tr><td><code translate="no">DOUBLE</code></td><td><code translate="no">HYBRID</code></td><td><code translate="no">INVERTED</code>, <code translate="no">STL_SORT</code></td></tr>
-<tr><td><code translate="no">VARCHAR</code></td><td><code translate="no">HYBRID</code></td><td><code translate="no">INVERTED</code>, <code translate="no">BITMAP</code>, <code translate="no">STL_SORT</code>, <code translate="no">NGRAM</code></td></tr>
-<tr><td><code translate="no">ARRAY_BOOL</code></td><td><code translate="no">HYBRID</code></td><td><code translate="no">INVERTED</code>, <code translate="no">STL_SORT</code></td></tr>
-<tr><td><code translate="no">ARRAY_DOUBLE</code></td><td><code translate="no">HYBRID</code></td><td><code translate="no">INVERTED</code>, <code translate="no">STL_SORT</code></td></tr>
-<tr><td><code translate="no">ARRAY_VARCHAR</code></td><td><code translate="no">HYBRID</code></td><td><code translate="no">INVERTED</code>, <code translate="no">STL_SORT</code></td></tr>
+<tr><td>Exact string lookups and prefixes</td><td><a href="/docs/ru/trie.md#Queries-accelerated-by-TRIE">TRIE</a>, <a href="/docs/ru/stl-sort.md#Queries-accelerated-by-STLSORT">STL_SORT</a>, or <a href="/docs/ru/inverted.md#Queries-accelerated-by-INVERTED">INVERTED</a>.</td></tr>
+<tr><td>Few distinct string values</td><td><a href="/docs/ru/bitmap.md#Queries-accelerated-by-BITMAP">BITMAP</a>; patterns are evaluated against indexed values.</td></tr>
+<tr><td>LIKE or regex with suitable fixed literals</td><td><a href="/docs/ru/ngram.md#Queries-accelerated-by-NGRAM">NGRAM</a> on <code translate="no">VARCHAR</code> fields or JSON string paths, subject to gram-length and recheck conditions.</td></tr>
+<tr><td>Regex without usable fixed literals</td><td>The query can scan data or evaluate many indexed values; check the selected index’s conditions.</td></tr>
 </tbody>
 </table>
-<p>Необязательный параметр <code translate="no">json_cast_function=&quot;STRING_TO_DOUBLE&quot;</code> преобразует строковые значения для приведения типа <code translate="no">DOUBLE</code>. Его нельзя использовать с другими типами приведения. Ни <code translate="no">TRIE</code>, ни <code translate="no">FMINDEX</code> не поддерживают поля JSON.</p>
-<h2 id="Supported-predicates" class="common-anchor-header">Поддерживаемые предикаты<button data-href="#Supported-predicates" class="anchor-icon" translate="no">
+<p>Ranges on <code translate="no">VARCHAR</code> use string ordering, even when strings contain numbers. Index use depends on query planning, extractable literals, cardinality, and data distribution. See <a href="/docs/ru/pattern-matching.md#Accelerate-pattern-matching-with-indexes">Pattern Matching</a> for planning rules. For JSON string paths, check the path and cast requirements in <a href="/docs/ru/json-indexing.md">JSON Indexing</a>.</p>
+<p></details></p>
+<p><a id="How-AUTOINDEX-selects"></a></p>
+<h2 id="AUTOINDEX-behavior" class="common-anchor-header">AUTOINDEX behavior<button data-href="#AUTOINDEX-behavior" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -168,80 +140,37 @@ title: Скалярный индекс
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>В приведённых ниже таблицах показано, для оценки каких предикатов может использоваться каждый индекс. <strong>Поддержка индекса не гарантирует, что Milvus будет использовать этот индекс для каждого запроса.</strong> Milvus может сканировать данные полей, если индекс не подходит для конкретного выражения или шаблона.</p>
-<h3 id="Comparisons-and-membership" class="common-anchor-header">Сравнения и принадлежность<button data-href="#Comparisons-and-membership" class="anchor-icon" translate="no">
-      <svg translate="no"
-        aria-hidden="true"
-        focusable="false"
-        height="20"
-        version="1.1"
-        viewBox="0 0 16 16"
-        width="16"
-      >
-        <path
-          fill="#0092E4"
-          fill-rule="evenodd"
-          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
-        ></path>
-      </svg>
-    </button></h3><p>К операторам равенства и принадлежности относятся: <code translate="no">==</code>, <code translate="no">!=</code>, <code translate="no">in</code> и <code translate="no">not in</code>. К операторам сравнения диапазонов относятся: <code translate="no">&lt;</code>, <code translate="no">&lt;=</code>, <code translate="no">&gt;</code>, <code translate="no">&gt;=</code>, а также выражения типа <code translate="no">10 &lt;= price &lt; 50</code>.</p>
+    </button></h2><p>Set <code translate="no">index_type</code> to <code translate="no">AUTOINDEX</code> in each selected field’s index definition. Milvus chooses a type using the data type and, where applicable, the number of distinct values in each index build:</p>
 <table>
 <thead>
-<tr><th>Тип индекса</th><th>Типы данных полей</th><th>Предикаты, поддерживаемые индексом</th></tr>
+<tr><th>Field type</th><th>Default selection</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">INVERTED</code></td><td><code translate="no">BOOL</code></td><td>Равенство и принадлежность</td></tr>
-<tr><td><code translate="no">INVERTED</code></td><td>Целые числа, <code translate="no">FLOAT</code>, <code translate="no">DOUBLE</code>, <code translate="no">VARCHAR</code></td><td>Равенство, принадлежность и диапазоны</td></tr>
-<tr><td><code translate="no">BITMAP</code></td><td><code translate="no">BOOL</code></td><td>Равенство и принадлежность</td></tr>
-<tr><td><code translate="no">BITMAP</code></td><td>Целые числа, <code translate="no">VARCHAR</code></td><td>Равенство, принадлежность и интервалы</td></tr>
-<tr><td><code translate="no">STL_SORT</code></td><td>Целые числа, <code translate="no">FLOAT</code>, <code translate="no">DOUBLE</code>, <code translate="no">TIMESTAMPTZ</code>, <code translate="no">VARCHAR</code></td><td>Равенство, принадлежность и диапазоны</td></tr>
-<tr><td><code translate="no">TRIE</code></td><td><code translate="no">VARCHAR</code></td><td>Равенство, принадлежность и диапазоны; при вычислении диапазона может быть посещено несколько индексированных строк</td></tr>
-<tr><td><code translate="no">NGRAM</code></td><td><code translate="no">VARCHAR</code></td><td>Только шаблоны строк; отсутствует прямой поиск по равенству, принадлежности или диапазону</td></tr>
-<tr><td><code translate="no">FMINDEX</code></td><td><code translate="no">VARCHAR</code></td><td>Только строковые шаблоны; отсутствует прямой поиск по равенству, принадлежности или диапазону</td></tr>
-<tr><td><code translate="no">RTREE</code></td><td><code translate="no">GEOMETRY</code></td><td>Пространственные предикаты, перечисленные ниже</td></tr>
-<tr><td><code translate="no">AUTOINDEX</code></td><td>Поддерживаемые скалярные типы</td><td>Зависит от выбранного индекса. Внутренние выборки типа « <code translate="no">HYBRID</code> » используют возможности соответствующего растрового, отсортированного или инвертированного индекса.</td></tr>
+<tr><td><code translate="no">BOOL</code>, <code translate="no">ARRAY&lt;BOOL&gt;</code></td><td><code translate="no">BITMAP</code></td></tr>
+<tr><td><code translate="no">INT8</code>, <code translate="no">INT16</code>, <code translate="no">INT32</code>, <code translate="no">INT64</code>, <code translate="no">FLOAT</code>, <code translate="no">DOUBLE</code>, <code translate="no">VARCHAR</code></td><td><code translate="no">BITMAP</code> for fewer than 100 distinct values; otherwise <code translate="no">STL_SORT</code>.</td></tr>
+<tr><td><code translate="no">ARRAY</code> with <code translate="no">element_type</code> set to <code translate="no">INT8</code>, <code translate="no">INT16</code>, <code translate="no">INT32</code>, <code translate="no">INT64</code>, <code translate="no">FLOAT</code>, <code translate="no">DOUBLE</code>, or <code translate="no">VARCHAR</code></td><td><code translate="no">BITMAP</code> for fewer than 100 distinct elements; otherwise <code translate="no">INVERTED</code>.</td></tr>
+<tr><td><code translate="no">JSON</code> paths cast to <code translate="no">BOOL</code>, <code translate="no">DOUBLE</code>, or <code translate="no">VARCHAR</code></td><td><code translate="no">INVERTED</code> by default in 3.0. The <a href="/docs/ru/json-indexing.md#Index-requirements">JSON opt-in setup</a> enables the scalar bitmap/sorted strategy above.</td></tr>
+<tr><td><code translate="no">JSON</code> paths cast to <code translate="no">ARRAY_BOOL</code>, <code translate="no">ARRAY_DOUBLE</code>, or <code translate="no">ARRAY_VARCHAR</code></td><td>Use explicit <code translate="no">INVERTED</code>; the default 3.0.6 mapping rejects automatic selection for these casts.</td></tr>
+<tr><td><code translate="no">TIMESTAMPTZ</code></td><td><code translate="no">STL_SORT</code></td></tr>
+<tr><td><code translate="no">GEOMETRY</code></td><td><code translate="no">RTREE</code></td></tr>
+<tr><td><code translate="no">TEXT</code></td><td>Not supported.</td></tr>
 </tbody>
 </table>
-<p>При сравнении диапазонов VARCHAR значения строк сравниваются, а не интерпретируются как числа. В таблице описаны сравнения только с литеральными значениями; это не означает, что арифметические выражения или сравнения между двумя полями получают такое же ускорение за счет индекса.</p>
-<h3 id="String-patterns" class="common-anchor-header">Строковые шаблоны<button data-href="#String-patterns" class="anchor-icon" translate="no">
-      <svg translate="no"
-        aria-hidden="true"
-        focusable="false"
-        height="20"
-        version="1.1"
-        viewBox="0 0 16 16"
-        width="16"
-      >
-        <path
-          fill="#0092E4"
-          fill-rule="evenodd"
-          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
-        ></path>
-      </svg>
-    </button></h3><p>Эта таблица применима к полям типа VARCHAR. Для строк-путей JSON используйте индекс и приведение типа <code translate="no">VARCHAR</code>, поддерживаемые таблицей индексирования JSON; в этом случае применяется соответствующее поведение строк.</p>
+<div class="alert note">
+<blockquote>
+<p>For a supported scalar field, an index definition that omits <code translate="no">index_type</code> also requests automatic selection. Fields not included in the request are not indexed.</p>
+</blockquote>
+</div>
+<p><a id="Version-compatibility"></a></p>
+<p><details>
+<summary><strong>Selection details</strong></summary></p>
 <ul>
-<li><strong>Да:</strong> индекс возвращает точные совпадения.</li>
-<li><strong>Проверка индексированных значений:</strong> Milvus оценивает шаблон по строкам, хранящимся в индексе, что может потребовать просмотра множества различных строк.</li>
-<li><strong>Варианты:</strong> индекс сужает круг возможных совпадений, после чего Milvus проверяет исходные значения.</li>
-<li><strong>Сканирование:</strong> индекс не обслуживает предикат; Milvus использует другой допустимый путь или сканирует поле.</li>
+<li><strong>Internal layouts:</strong> <code translate="no">AUTOINDEX</code> can select layouts unavailable as explicit choices, such as bitmap indexing for <code translate="no">FLOAT</code> and <code translate="no">DOUBLE</code>. The cardinality-based strategy is called <code translate="no">HYBRID</code> internally; you cannot specify it directly. The selected index determines which filters can use it.</li>
+<li><strong>Cardinality threshold:</strong> <a id="Cardinality-threshold"></a>Set <code translate="no">bitmap_cardinality_limit</code> (range: 1–1000) to override the default threshold. Values below it use bitmap; at or above it, the data type’s high-cardinality layout applies. Explicit <code translate="no">INVERTED</code>, <code translate="no">STL_SORT</code>, and <code translate="no">BITMAP</code> builds bypass cardinality-based selection and ignore this threshold.</li>
+<li><strong>Administrator overrides:</strong> Change type mappings through <code translate="no">scalarAutoIndex.params.build</code>. <code translate="no">scalarAutoIndex.enable=false</code> (default) still allows explicit <code translate="no">AUTOINDEX</code>; <code translate="no">true</code> also applies automatic selection to valid manual requests.</li>
 </ul>
-<table>
-<thead>
-<tr><th>Тип индекса</th><th>Префикс <code translate="no">like &quot;abc%&quot;</code></th><th>Суффикс <code translate="no">like &quot;%abc&quot;</code></th><th>Подстрока <code translate="no">like &quot;%abc%&quot;</code></th><th>Общий LIKE <code translate="no">like &quot;a%b_c&quot;</code></th><th>Регулярное выражение <code translate="no">=~ &quot;a.*b&quot;</code></th></tr>
-</thead>
-<tbody>
-<tr><td><code translate="no">INVERTED</code></td><td>Да</td><td>Сканирование</td><td>Сканирование</td><td>Да</td><td>Сканировать</td></tr>
-<tr><td><code translate="no">BITMAP</code></td><td>Проверить индексированные значения</td><td>Проверить индексированные значения</td><td>Проверить индексированные значения</td><td>Проверить индексированные значения</td><td>Проверить индексированные значения</td></tr>
-<tr><td><code translate="no">STL_SORT</code></td><td>Да</td><td>Проверить индексированные значения</td><td>Проверить индексированные значения</td><td>Проверить индексированные значения</td><td>Проверить индексированные значения</td></tr>
-<tr><td><code translate="no">TRIE</code></td><td>Да</td><td>Проверить индексированные значения</td><td>Проверить индексированные значения</td><td>Проверить индексированные значения</td><td>Проверить индексированные значения</td></tr>
-<tr><td><code translate="no">NGRAM</code></td><td>Кандидаты</td><td>Кандидаты</td><td>Кандидаты; точные совпадения с литералом в пределах заданного диапазона длины грамма</td><td>Варианты</td><td>Варианты</td></tr>
-<tr><td><code translate="no">FMINDEX</code></td><td>Да</td><td>Да</td><td>Да</td><td>Кандидаты</td><td>Кандидаты</td></tr>
-</tbody>
-</table>
-<p>Эти записи описывают оператор после планирования запроса. Milvus может упростить литеральный шаблон LIKE до проверки на равенство, а простое регулярное выражение с анкором — до проверки на равенство, префикс или суффикс; например, <code translate="no">name =~ &quot;^abc$&quot;</code> превращается в проверку на равенство и обрабатывается в соответствии с таблицей равенства.</p>
-<p><code translate="no">INVERTED</code> простые формы с суффиксом и подстрокой обрабатываются как сканирование, даже если для более сложных шаблонов LIKE можно использовать индекс. Для выражения « <code translate="no">NGRAM</code> » требуется литеральный текст длиной не менее <code translate="no">min_gram</code> символов; для общего шаблона LIKE каждый непустой фрагмент литерала должен соответствовать этому минимуму, а ускорение работы с регулярными выражениями зависит от извлечения подходящих литералов. В противном случае Milvus выполняет сканирование данных. Оператор ` <code translate="no">FMINDEX</code> ` также может выбрать сканирование, если шаблон обеспечивает незначительную полезную фильтрацию или его обработка через индекс слишком затратна.</p>
-<p>Это предикаты со строковыми значениями. Функции на основе токенов, такие как <code translate="no">TEXT_MATCH</code> и <code translate="no">PHRASE_MATCH</code>, используют индексирование по совпадению текста, настраиваемое через свойства полей; выбор скалярного индекса <code translate="no">INVERTED</code> не включает эти функции.</p>
-<h3 id="Array-JSON-and-spatial-predicates" class="common-anchor-header">Предикаты массивов, JSON и пространственные предикаты<button data-href="#Array-JSON-and-spatial-predicates" class="anchor-icon" translate="no">
+<p></details></p>
+<h2 id="Whats-next" class="common-anchor-header">What’s next<button data-href="#Whats-next" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -256,122 +185,15 @@ title: Скалярный индекс
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><table>
-<thead>
-<tr><th>Тип индекса</th><th>Тип данных или приведение</th><th>Предикаты, которые могут использовать индекс</th><th>Примечания</th></tr>
-</thead>
-<tbody>
-<tr><td><code translate="no">INVERTED</code>, <code translate="no">BITMAP</code>, <code translate="no">STL_SORT</code> или допустимый выбор из <code translate="no">AUTOINDEX</code> </td><td>Обычные массивы с поддерживаемыми типами элементов</td><td><code translate="no">ARRAY_CONTAINS</code>, <code translate="no">ARRAY_CONTAINS_ANY</code>, <code translate="no">ARRAY_CONTAINS_ALL</code></td><td>Соответствует элементам независимо от их позиции. Ограничения по индексу и типу по-прежнему действуют.</td></tr>
-<tr><td><code translate="no">INVERTED</code>, <code translate="no">STL_SORT</code></td><td>Обычные массивы значений типа Boolean, integer или VARCHAR</td><td><code translate="no">==</code> по всему массиву и <code translate="no">!=</code></td><td>Можно использовать кандидаты индекса, за которыми следует проверка исходных массивов. Для массивов с плавающей запятой используется сканирование; битовые индексы не поддерживают этот путь кандидата.</td></tr>
-<tr><td><code translate="no">INVERTED</code>, <code translate="no">BITMAP</code>, <code translate="no">STL_SORT</code> или допустимый выбор <code translate="no">AUTOINDEX</code> </td><td>JSON-пути, приведенные к типу <code translate="no">BOOL</code>, <code translate="no">DOUBLE</code> или <code translate="no">VARCHAR</code></td><td>Сравнения и проверка принадлежности, соответствующие типу приведения</td><td>Индексированный путь и преобразование должны соответствовать запросу. Шаблоны строк соответствуют приведенной выше таблице.</td></tr>
-<tr><td><code translate="no">NGRAM</code></td><td>JSON-пути, преобразованные в <code translate="no">VARCHAR</code></td><td>шаблоны LIKE и регулярных выражений</td><td>Используются те же правила допустимости шаблонов, что и для индексов VARCHAR NGRAM.</td></tr>
-<tr><td><code translate="no">INVERTED</code>, <code translate="no">STL_SORT</code> или допустимый выбор <code translate="no">AUTOINDEX</code> </td><td>JSON-пути, преобразованные в <code translate="no">ARRAY_BOOL</code>, <code translate="no">ARRAY_DOUBLE</code> или <code translate="no">ARRAY_VARCHAR</code></td><td><code translate="no">JSON_CONTAINS</code>, <code translate="no">JSON_CONTAINS_ANY</code>, <code translate="no">JSON_CONTAINS_ALL</code></td><td>Требуются совместимые типы элементов. Операнды смешанного типа или с вложенными массивами могут переходить на сканирование.</td></tr>
-<tr><td>Индексы путей JSON</td><td>Индексированные пути JSON</td><td><code translate="no">exists</code></td><td>Проверяет, существует ли путь, что отличается от проверки его значения или от проверки, является ли всё поле нулевым.</td></tr>
-<tr><td><code translate="no">RTREE</code></td><td><code translate="no">GEOMETRY</code></td><td><code translate="no">ST_EQUALS</code>, <code translate="no">ST_INTERSECTS</code>, <code translate="no">ST_CONTAINS</code>, <code translate="no">ST_WITHIN</code>, <code translate="no">ST_TOUCHES</code>, <code translate="no">ST_OVERLAPS</code>, <code translate="no">ST_CROSSES</code>, <code translate="no">ST_DWITHIN</code></td><td>Использует ограничительные прямоугольники для поиска кандидатов, а затем проверяет точное пространственное соотношение. <code translate="no">ST_ISVALID</code> не использует RTREE.</td></tr>
-</tbody>
-</table>
-<p>Поддержка вхождения в массив не подразумевает поиск по индексу элемента в конкретной позиции, как, например, в <code translate="no">values[0]</code>, или по длине массива. Равенство всего массива также должно проверять порядок и длину, что невозможно установить только на основе принадлежности элементов.</p>
-<p><code translate="no">IS NULL</code> и <code translate="no">IS NOT NULL</code> используют информацию о допустимости и не требуют конкретного скалярного типа индекса. Вы можете комбинировать предикаты с <code translate="no">and</code>, <code translate="no">or</code> и <code translate="no">not</code>; каждая часть может использовать свой собственный допустимый путь выполнения.</p>
-<h2 id="Version-compatibility" class="common-anchor-header">Совместимость версий<button data-href="#Version-compatibility" class="anchor-icon" translate="no">
-      <svg translate="no"
-        aria-hidden="true"
-        focusable="false"
-        height="20"
-        version="1.1"
-        viewBox="0 0 16 16"
-        width="16"
-      >
-        <path
-          fill="#0092E4"
-          fill-rule="evenodd"
-          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
-        ></path>
-      </svg>
-    </button></h2><p>Большинство скалярных индексов — <code translate="no">BITMAP</code>, <code translate="no">INVERTED</code>, <code translate="no">STL_SORT</code>, <code translate="no">TRIE</code> и <code translate="no">NGRAM</code> для обычных скалярных полей — не имеют требований к версии. Приведенные ниже требования применяются только к более новым комбинациям: индексам на массивах полей, индексам JSON-path и <code translate="no">FMINDEX</code>.</p>
-<p>В этих требованиях используются номера версий механизма скалярных индексов — внутренний счетчик возможностей, отличный от номеров выпусков программного обеспечения Milvus.</p>
-<table>
-<thead>
-<tr><th>Возможность</th><th>Требование</th></tr>
-</thead>
-<tbody>
-<tr><td>Явное <code translate="no">FMINDEX</code></td><td>Версия механизма скалярного индексирования 5 или более поздняя</td></tr>
-<tr><td>Явная поддержка сортировки массивов по ключу ( <code translate="no">STL_SORT</code> ) для обычных массивов</td><td>Движок скалярных индексов версии 3 или более поздней, с включенной поддержкой сортировки массивов</td></tr>
-<tr><td><code translate="no">HYBRID</code> выбор <code translate="no">STL_SORT</code> для обычных массивов</td><td>Движок скалярных индексов версии 5 или более поздней, с включенной поддержкой сортировки массивов</td></tr>
-<tr><td><code translate="no">BITMAP</code>, <code translate="no">STL_SORT</code> или <code translate="no">HYBRID</code> для скалярных путей JSON</td><td>Движок скалярного индексирования версии 4 или более поздней</td></tr>
-<tr><td><code translate="no">STL_SORT</code> или <code translate="no">HYBRID</code> для типизированных путей к массивам JSON</td><td>Движок скалярных индексов версии 3 или более поздней, с включенной поддержкой сортировки массивов</td></tr>
-</tbody>
-</table>
-<p>Если требование совместимости с массивами или JSON не выполняется, затронутые автоматические запросы могут переключиться на <code translate="no">INVERTED</code>, а явные запросы с неподдерживаемыми комбинациями завершаются с ошибкой. Для обычных массивов <code translate="no">HYBRID</code> ветвь с высокой кардинальностью продолжает использовать <code translate="no">INVERTED</code> до тех пор, пока не станет доступна сортированная индексация.</p>
-<h2 id="Performance-considerations" class="common-anchor-header">Соображения по производительности<button data-href="#Performance-considerations" class="anchor-icon" translate="no">
-      <svg translate="no"
-        aria-hidden="true"
-        focusable="false"
-        height="20"
-        version="1.1"
-        viewBox="0 0 16 16"
-        width="16"
-      >
-        <path
-          fill="#0092E4"
-          fill-rule="evenodd"
-          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
-        ></path>
-      </svg>
-    </button></h2><p>Производительность индекса зависит от распределения данных и фильтров, используемых вашим приложением. Кардинальность, длина строк, длина массива и количество совпадающих сущностей могут влиять на использование памяти и задержку запроса. Сравните индексы, используя репрезентативные данные и выражения фильтров, и одновременно измерьте использование памяти, время построения и задержку запроса.</p>
-<h3 id="Estimating-memory-requirements" class="common-anchor-header">Оценка требований к памяти<button data-href="#Estimating-memory-requirements" class="anchor-icon" translate="no">
-      <svg translate="no"
-        aria-hidden="true"
-        focusable="false"
-        height="20"
-        version="1.1"
-        viewBox="0 0 16 16"
-        width="16"
-      >
-        <path
-          fill="#0092E4"
-          fill-rule="evenodd"
-          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
-        ></path>
-      </svg>
-    </button></h3><p>Приведённые ниже формулы дают приблизительное представление о объёме памяти, необходимом для скалярного индекса после загрузки при отключенном отображении в памяти. Формулы <code translate="no">STL_SORT</code> предполагают наличие обычных скалярных полей без нулевых значений.</p>
+    </button></h2><p><a id="Performance-considerations"></a>
+<a id="Estimating-memory-requirements"></a></p>
+<p>Choose a guide for your next task:</p>
 <ul>
-<li><code translate="no">N</code>: количество сущностей.</li>
-<li><code translate="no">D</code>: количество уникальных значений.</li>
-<li><code translate="no">l</code>: средняя длина уникальных строк в <strong>байтах</strong>.</li>
-<li><code translate="no">S</code>: размер построенного индекса до сжатия при хранении, в <strong>байтах</strong>.</li>
+<li><strong>Create an index:</strong> Use the <a href="#Index-types">index guide</a> for parameters and creation examples.</li>
+<li><strong>Plan resources:</strong> See memory guidance for <a href="/docs/ru/stl-sort.md#Memory-considerations">STL_SORT</a>, <a href="/docs/ru/bitmap.md#Memory-considerations">BITMAP</a>, <a href="/docs/ru/inverted.md#Memory-considerations">INVERTED</a>, or <a href="/docs/ru/ngram.md#Memory-considerations">NGRAM</a>. Compare memory use, build time, and query latency with representative data and filters.</li>
+<li><strong>Configure text search:</strong> <a href="/docs/ru/keyword-match.md">Text Match</a> and <a href="/docs/ru/full-text-search.md">Full Text Search</a> cover text analysis, BM25, <code translate="no">TEXT_MATCH</code>, and <code translate="no">PHRASE_MATCH</code>. A scalar <code translate="no">INVERTED</code> index does not enable these mechanisms.</li>
 </ul>
-<table>
-<thead>
-<tr><th>Тип индекса</th><th>Приблизительный объём памяти в байтах</th><th>Интуитивное представление</th></tr>
-</thead>
-<tbody>
-<tr><td><code translate="no">STL_SORT</code> на <code translate="no">INT8</code>, <code translate="no">INT16</code>, <code translate="no">INT32</code> или <code translate="no">FLOAT</code></td><td><code translate="no">12 * N</code></td><td>Около 12 байт на каждую сущность.</td></tr>
-<tr><td><code translate="no">STL_SORT</code> на <code translate="no">INT64</code>, <code translate="no">DOUBLE</code> или <code translate="no">TIMESTAMPTZ</code></td><td><code translate="no">20 * N</code></td><td>Около 20 байт на один объект для более крупных значений.</td></tr>
-<tr><td><code translate="no">STL_SORT</code> на <code translate="no">VARCHAR</code></td><td><code translate="no">8 * N + (l + 16) * D</code></td><td>Повторяющиеся строки используют общее хранилище, поэтому меньшее количество уникальных строк обычно означает меньший объем памяти.</td></tr>
-<tr><td><code translate="no">BITMAP</code>, с использованием плотных растровых карт</td><td><code translate="no">(D + 1) * N / 8</code></td><td>Каждому уникальному значению требуется примерно один бит на сущность плюс одна растровая карта для отслеживания допустимых сущностей.</td></tr>
-<tr><td><code translate="no">INVERTED</code> или <code translate="no">NGRAM</code></td><td><code translate="no">S</code></td><td>Начните с размера, приблизительно равного размеру построенного индекса.</td></tr>
-<tr><td><code translate="no">FMINDEX</code></td><td><code translate="no">2 * S</code></td><td>Заложите примерно вдвое больший размер, чем у построенного индекса.</td></tr>
-</tbody>
-</table>
-<p>Поделите результат на <code translate="no">1024 * 1024</code>, чтобы преобразовать байты в <strong>MiB</strong>. Например, индекс <code translate="no">STL_SORT</code> для одного миллиона непустых значений типа <code translate="no">INT64</code> требует примерно <strong>19 MiB</strong> для своих основных структур данных. Для полей VARCHAR, где каждая строка уникальна, оценка упрощается до <code translate="no">(l + 24) * N</code>; один миллион уникальных строк, средний размер которых составляет 32 байта, даёт примерно <strong>53 MiB</strong>.</p>
-<p>Формула BITMAP описывает хранение плотной растровой карты; включение опционального кэша смещений добавляет примерно <code translate="no">8 * N</code> байт в 64-битной системе. Для <code translate="no">INVERTED</code>, <code translate="no">NGRAM</code> и <code translate="no">FMINDEX</code> создайте индекс на репрезентативных данных, чтобы получить <code translate="no">S</code> — размер исходных данных не заменяет размер построенного индекса. Для <code translate="no">AUTOINDEX</code> используйте формулу для фактически выбранного индекса, примените оценки к каждому сегменту, а затем суммируйте их по загруженным сегментам и репликам.</p>
-<p>Это приблизительные цифры для планирования, а не ограничения по памяти. Они не учитывают временную память, используемую во время построения, загрузки и запросов, и более чувствительны к уникальным значениям и распределению данных для строковых и растровых индексов, чем для числовых <code translate="no">STL_SORT</code>. Фиксированный процент точности не гарантируется. Для отображения в памяти, устаревших форматов индексов, массивов и полей JSON требуется отдельное измерение. Перед определением размера развертывания проверьте фактическое использование памяти с помощью репрезентативных данных и запросов и оставьте запас на пиковое использование.</p>
-<h2 id="Whats-next" class="common-anchor-header">Дальнейшие действия<button data-href="#Whats-next" class="anchor-icon" translate="no">
-      <svg translate="no"
-        aria-hidden="true"
-        focusable="false"
-        height="20"
-        version="1.1"
-        viewBox="0 0 16 16"
-        width="16"
-      >
-        <path
-          fill="#0092E4"
-          fill-rule="evenodd"
-          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
-        ></path>
-      </svg>
-    </button></h2><ul>
-<li>Примеры создания и настройки индексов см. в разделах <a href="/docs/ru/bitmap.md">BITMAP</a>, <a href="/docs/ru/inverted.md">INVERTED</a>, <a href="/docs/ru/ngram.md">NGRAM</a>, <a href="/docs/ru/stl-sort.md">STL_SORT</a>, <a href="/docs/ru/trie.md">TRIE</a>, <a href="/docs/ru/fmindex.md">FMINDEX</a> и <a href="/docs/ru/rtree.md">RTREE</a>.</li>
-<li>Описание полей и схемы коллекций см. в разделе <a href="/docs/ru/schema.md">«Объяснение схем</a>».</li>
-</ul>
+<p><details id="Drop-index-compatibility">
+<summary><strong>Dropping scalar indexes on older Milvus releases</strong></summary></p>
+<p>In Milvus v2.6.3 or earlier, release the collection before dropping a scalar index. From v2.6.4 onward, you can drop it without releasing the collection.</p>
+<p></details></p>

@@ -1,9 +1,11 @@
 ---
 id: default-values.md
-title: 기본값
-summary: 엔티티 삽입 시 누락된 값을 채우도록 스칼라 필드에 기본값을 설정합니다.
+title: Default Values
+summary: >-
+  Set default values for scalar fields so Milvus fills missing values during
+  entity insertion.
 ---
-<h1 id="Default-Values" class="common-anchor-header">기본값<button data-href="#Default-Values" class="anchor-icon" translate="no">
+<h1 id="Default-Values" class="common-anchor-header">Default Values<button data-href="#Default-Values" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,9 +20,9 @@ summary: 엔티티 삽입 시 누락된 값을 채우도록 스칼라 필드에 
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Milvus에서는 스칼라 필드(기본 필드 제외)에 대한 기본값을 설정할 수 있습니다. 필드에 기본값이 설정되어 있는 경우, 삽입 중에 데이터가 제공되지 않으면 Milvus는 자동으로 이 값을 적용합니다.</p>
-<p>기본값은 기존 기본값 설정을 유지하여 다른 데이터베이스 시스템에서 Milvus로 데이터 마이그레이션을 간소화합니다. 또한 삽입 시 값이 불확실한 필드에 기본값을 사용할 수도 있습니다.</p>
-<h2 id="Limits" class="common-anchor-header">제한 사항<button data-href="#Limits" class="anchor-icon" translate="no">
+    </button></h1><p>Milvus allows you to set default values for scalar fields (excluding the primary field). When a field has a default value configured, Milvus automatically applies this value if no data is provided during insertion.</p>
+<p>Default values simplify data migration from other database systems to Milvus by preserving existing default value settings. You can also use default values for fields where values might be uncertain at the time of insertion.</p>
+<h2 id="Limits" class="common-anchor-header">Limits<button data-href="#Limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -36,11 +38,11 @@ summary: 엔티티 삽입 시 누락된 값을 채우도록 스칼라 필드에 
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>스칼라 필드만 기본값을 지원합니다. 기본 필드와 벡터 필드는 기본값을 가질 수 없습니다.</p></li>
-<li><p><code translate="no">JSON</code> 및 <code translate="no">ARRAY</code> 필드는 기본값을 지원하지 않습니다.</p></li>
-<li><p>기본값은 컬렉션 생성 중에만 구성할 수 있으며 이후에는 수정할 수 없습니다.</p></li>
+<li><p>Only scalar fields support default values. The primary field and vector fields cannot have default values.</p></li>
+<li><p><code translate="no">JSON</code> and <code translate="no">ARRAY</code> fields do not support default values.</p></li>
+<li><p>Default values can only be configured during collection creation and cannot be modified afterward.</p></li>
 </ul>
-<h2 id="Set-default-values" class="common-anchor-header">기본값 설정하기<button data-href="#Set-default-values" class="anchor-icon" translate="no">
+<h2 id="Set-default-values" class="common-anchor-header">Set default values<button data-href="#Set-default-values" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -55,10 +57,15 @@ summary: 엔티티 삽입 시 누락된 값을 채우도록 스칼라 필드에 
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>컬렉션을 만들 때 <code translate="no">add_field()</code> 에서 <code translate="no">default_value</code> 매개 변수를 사용하여 필드의 기본값을 정의합니다.</p>
-<p>다음 예제에서는 기본값이 <code translate="no">age</code> 기본값은 <code translate="no">18</code>, <code translate="no">status</code> 기본값은 <code translate="no">&quot;active&quot;</code> 인 두 개의 스칼라 필드가 있는 컬렉션을 만듭니다.</p>
+    </button></h2><p>When creating a collection, use the <code translate="no">default_value</code> parameter in <code translate="no">add_field()</code> to define the default value for a field.</p>
+<p>The following example creates a collection with two scalar fields that have default values: <code translate="no">age</code> defaults to <code translate="no">18</code> and <code translate="no">status</code> defaults to <code translate="no">&quot;active&quot;</code>.</p>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
 
 client = MilvusClient(uri=<span class="hljs-string">&#x27;http://localhost:19530&#x27;</span>)
@@ -89,7 +96,7 @@ client.create_collection(collection_name=<span class="hljs-string">&quot;my_coll
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Insert-entities" class="common-anchor-header">엔티티 삽입<button data-href="#Insert-entities" class="anchor-icon" translate="no">
+<h2 id="Insert-entities" class="common-anchor-header">Insert entities<button data-href="#Insert-entities" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -104,9 +111,14 @@ client.create_collection(collection_name=<span class="hljs-string">&quot;my_coll
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>데이터를 삽입할 때 기본값이 있는 필드를 생략하거나 명시적으로 NULL로 설정하면 Milvus는 자동으로 구성된 기본값을 사용합니다.</p>
+    </button></h2><p>When inserting data, if you omit a field that has a default value or explicitly set it to NULL, Milvus automatically uses the configured default value.</p>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">data = [
     <span class="hljs-comment"># All fields provided explicitly</span>
     {<span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-number">1</span>, <span class="hljs-string">&quot;vector&quot;</span>: [<span class="hljs-number">0.1</span>, <span class="hljs-number">0.2</span>, <span class="hljs-number">0.3</span>, <span class="hljs-number">0.4</span>, <span class="hljs-number">0.5</span>], <span class="hljs-string">&quot;age&quot;</span>: <span class="hljs-number">30</span>, <span class="hljs-string">&quot;status&quot;</span>: <span class="hljs-string">&quot;premium&quot;</span>},
@@ -128,7 +140,7 @@ client.insert(collection_name=<span class="hljs-string">&quot;my_collection&quot
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Search-and-query-with-default-values" class="common-anchor-header">기본값으로 검색 및 쿼리<button data-href="#Search-and-query-with-default-values" class="anchor-icon" translate="no">
+<h2 id="Search-and-query-with-default-values" class="common-anchor-header">Search and query with default values<button data-href="#Search-and-query-with-default-values" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -143,10 +155,15 @@ client.insert(collection_name=<span class="hljs-string">&quot;my_collection&quot
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>기본값을 포함하는 엔티티는 벡터 검색 및 스칼라 필터링 중에 다른 엔티티와 동일하게 작동합니다. <code translate="no">search</code> 및 <code translate="no">query</code> 작업 모두에서 기본값을 기준으로 필터링할 수 있습니다.</p>
-<p>다음 예는 <code translate="no">age</code> 이 기본값 <code translate="no">18</code> 과 같은 엔티티를 검색하는 예제입니다:</p>
+    </button></h2><p>Entities containing default values behave the same as any other entities during vector searches and scalar filtering. You can filter by default values in both <code translate="no">search</code> and <code translate="no">query</code> operations.</p>
+<p>The following example searches for entities where <code translate="no">age</code> equals the default value <code translate="no">18</code>:</p>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">res = client.search(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,
     data=[[<span class="hljs-number">0.1</span>, <span class="hljs-number">0.2</span>, <span class="hljs-number">0.4</span>, <span class="hljs-number">0.3</span>, <span class="hljs-number">0.5</span>]],
@@ -169,16 +186,21 @@ client.insert(collection_name=<span class="hljs-string">&quot;my_collection&quot
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
 <p><details></p>
-<p><summary>예상 출력</summary></p>
+<p><summary>Expected output</summary></p>
 <pre><code translate="no" class="language-plaintext">Output:
 Search results (age == 18):
   id: 2, age: 18, status: active
   id: 4, age: 18, status: inactive
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<p>기본값을 직접 일치시켜 엔티티를 쿼리할 수도 있습니다:</p>
+<p>You can also query entities by matching default values directly:</p>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Query entities where age equals the default value (18)</span>
 default_age_results = client.query(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,
@@ -210,7 +232,7 @@ default_status_results = client.query(
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
 <p><details></p>
-<p><summary>예상 출력</summary></p>
+<p><summary>Expected output</summary></p>
 <pre><code translate="no" class="language-plaintext">Query results (age == 18):
   id: 2, age: 18, status: active
   id: 4, age: 18, status: inactive
@@ -220,7 +242,7 @@ Query results (status == &#x27;active&#x27;):
   id: 3, age: 25, status: active
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<h2 id="Applicable-rules" class="common-anchor-header">적용 가능한 규칙<button data-href="#Applicable-rules" class="anchor-icon" translate="no">
+<h2 id="Applicable-rules" class="common-anchor-header">Applicable rules<button data-href="#Applicable-rules" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -235,49 +257,49 @@ Query results (status == &#x27;active&#x27;):
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>필드에 대해 <code translate="no">nullable</code> 및 <code translate="no">default_value</code> 을 모두 구성한 경우, 다음 규칙에 따라 Milvus가 삽입 중에 NULL 입력 또는 누락된 필드 값을 처리하는 방식이 결정됩니다.</p>
+    </button></h2><p>When both <code translate="no">nullable</code> and <code translate="no">default_value</code> are configured for a field, the following rules determine how Milvus handles NULL input or missing field values during insertion.</p>
 <table>
    <tr>
-     <th><p>Null 가능</p></th>
-     <th><p>기본값</p></th>
-     <th><p>사용자 입력</p></th>
-     <th><p>결과</p></th>
+     <th><p>Nullable</p></th>
+     <th><p>Default Value</p></th>
+     <th><p>User Input</p></th>
+     <th><p>Result</p></th>
    </tr>
    <tr>
      <td><p>✅</p></td>
-     <td><p>✅ (NULL이 아님)</p></td>
-     <td><p>NULL 또는 생략</p></td>
-     <td><p>기본값 사용</p></td>
+     <td><p>✅ (non-NULL)</p></td>
+     <td><p>NULL or omitted</p></td>
+     <td><p>Uses the default value</p></td>
    </tr>
    <tr>
      <td><p>✅</p></td>
      <td><p>❌</p></td>
-     <td><p>NULL 또는 생략</p></td>
-     <td><p>NULL로 저장</p></td>
+     <td><p>NULL or omitted</p></td>
+     <td><p>Stored as NULL</p></td>
    </tr>
    <tr>
      <td><p>❌</p></td>
-     <td><p>✅ (비 NULL)</p></td>
-     <td><p>NULL 또는 생략</p></td>
-     <td><p>기본값 사용</p></td>
+     <td><p>✅ (non-NULL)</p></td>
+     <td><p>NULL or omitted</p></td>
+     <td><p>Uses the default value</p></td>
    </tr>
    <tr>
      <td><p>❌</p></td>
      <td><p>❌</p></td>
-     <td><p>NULL 또는 생략</p></td>
-     <td><p>오류를 던집니다.</p></td>
+     <td><p>NULL or omitted</p></td>
+     <td><p>Throws an error</p></td>
    </tr>
    <tr>
      <td><p>❌</p></td>
      <td><p>✅ (NULL)</p></td>
-     <td><p>NULL 또는 생략</p></td>
-     <td><p>오류를 발생시킵니다.</p></td>
+     <td><p>NULL or omitted</p></td>
+     <td><p>Throws an error</p></td>
    </tr>
 </table>
-<p><strong>핵심 사항:</strong></p>
+<p><strong>Key takeaways:</strong></p>
 <ul>
-<li><p>필드에 NULL이 아닌 기본값이 있는 경우 <code translate="no">nullable</code> 활성화 여부에 관계없이 해당 값이 사용됩니다.</p></li>
-<li><p><code translate="no">nullable=True</code> 이지만 기본값이 설정되지 않은 경우 필드에 NULL이 저장됩니다.</p></li>
-<li><p><code translate="no">nullable=False</code> 에 기본값이 설정되지 않은 경우 오류와 함께 삽입이 실패합니다.</p></li>
-<li><p>NULL이 아닌 필드에 NULL 기본값을 설정하면 유효하지 않으며 오류가 발생합니다.</p></li>
+<li><p>When a field has a non-NULL default value, that value is used regardless of whether <code translate="no">nullable</code> is enabled.</p></li>
+<li><p>When <code translate="no">nullable=True</code> but no default value is set, the field stores NULL.</p></li>
+<li><p>When <code translate="no">nullable=False</code> and no default value is set, insertion fails with an error.</p></li>
+<li><p>Setting a NULL default value on a non-nullable field is invalid and causes an error.</p></li>
 </ul>

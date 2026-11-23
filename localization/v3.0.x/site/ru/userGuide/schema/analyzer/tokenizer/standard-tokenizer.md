@@ -1,11 +1,11 @@
 ---
 id: standard-tokenizer.md
-title: Стандартный токенизатор
+title: Standard Tokenizer
 summary: >-
-  Стандартный токенизатор в Milvus объединяет последовательные буквы и цифровые
-  символы Unicode в токены, разделяя их на токены по другим символам.
+  The standard tokenizer in Milvus groups consecutive Unicode letters and
+  numeric characters into tokens, splitting at other characters.
 ---
-<h1 id="Standard-Tokenizer" class="common-anchor-header">Стандартный токенизатор<button data-href="#Standard-Tokenizer" class="anchor-icon" translate="no">
+<h1 id="Standard-Tokenizer" class="common-anchor-header">Standard Tokenizer<button data-href="#Standard-Tokenizer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,8 +20,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Токенизатор « <code translate="no">standard</code> » в Milvus группирует последовательные буквы и цифровые символы Unicode в токены, разделяя их на другие символы.</p>
-<h2 id="Tokenization-rules" class="common-anchor-header">Правила токенизации<button data-href="#Tokenization-rules" class="anchor-icon" translate="no">
+    </button></h1><p>The <code translate="no">standard</code> tokenizer in Milvus groups consecutive Unicode letters and numeric characters into tokens, splitting at other characters.</p>
+<h2 id="Tokenization-rules" class="common-anchor-header">Tokenization rules<button data-href="#Tokenization-rules" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -36,28 +36,28 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Токенизатор <code translate="no">standard</code> сохраняет в одном токене последовательные символы, принадлежащие к следующим наборам:</p>
+    </button></h2><p>The <code translate="no">standard</code> tokenizer keeps consecutive characters that belong to the following sets in the same token:</p>
 <ul>
-<li><strong>Символы ASCII:</strong> буквы <code translate="no">A-Z</code> и <code translate="no">a-z</code>, а также цифры <code translate="no">0-9</code>.</li>
-<li><strong>Не-ASCII-символы:</strong> символы со свойством Unicode « <code translate="no">Alphabetic</code> » или одной из числовых общих категорий <code translate="no">Nd</code>, <code translate="no">Nl</code> или <code translate="no">No</code>.</li>
+<li><strong>ASCII characters:</strong> letters <code translate="no">A-Z</code> and <code translate="no">a-z</code>, and digits <code translate="no">0-9</code>.</li>
+<li><strong>Non-ASCII characters:</strong> characters with the Unicode <code translate="no">Alphabetic</code> property or one of the numeric general categories <code translate="no">Nd</code>, <code translate="no">Nl</code>, or <code translate="no">No</code>.</li>
 </ul>
 <table>
 <thead>
-<tr><th>Свойство или категория Unicode</th><th>Значение</th><th>Примеры символов, сохраняемых в токенах</th></tr>
+<tr><th>Unicode property or category</th><th>Meaning</th><th>Examples of characters retained in tokens</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">Alphabetic</code></td><td>Буквы различных систем письма, включая китайские иероглифы и японские каны, а также некоторые комбинирующие знаки</td><td><code translate="no">中文测试</code>, <code translate="no">カタカナ</code></td></tr>
-<tr><td><code translate="no">Nd</code> (<code translate="no">Decimal_Number</code>)</td><td>Цифры десятичной системы</td><td><code translate="no">٣</code></td></tr>
-<tr><td><code translate="no">Nl</code> (<code translate="no">Letter_Number</code>)</td><td>Цифры, похожие на буквы</td><td><code translate="no">Ⅷ</code></td></tr>
-<tr><td><code translate="no">No</code> (<code translate="no">Other_Number</code>)</td><td>Другие числовые символы, такие как цифры в кружках, надстрочные индексы и дроби</td><td><code translate="no">①²¾</code></td></tr>
+<tr><td><code translate="no">Alphabetic</code></td><td>Letters across writing systems, including Chinese characters and Japanese kana, and some combining marks</td><td><code translate="no">中文测试</code>, <code translate="no">カタカナ</code></td></tr>
+<tr><td><code translate="no">Nd</code> (<code translate="no">Decimal_Number</code>)</td><td>Decimal digits</td><td><code translate="no">٣</code></td></tr>
+<tr><td><code translate="no">Nl</code> (<code translate="no">Letter_Number</code>)</td><td>Letter-like numeric characters</td><td><code translate="no">Ⅷ</code></td></tr>
+<tr><td><code translate="no">No</code> (<code translate="no">Other_Number</code>)</td><td>Other numeric characters, such as circled numbers, superscripts, and fractions</td><td><code translate="no">①²¾</code></td></tr>
 </tbody>
 </table>
-<p>Символы, не входящие в эти наборы, разделяют токены и игнорируются. К ним относятся пробелы, знаки препинания, подчеркивания (<code translate="no">_</code>), дефисы (<code translate="no">-</code>), апострофы (<code translate="no">'</code>) и символы, такие как <code translate="no">+</code>, <code translate="no">$</code> и <code translate="no">😀</code>. Последовательные разделители не образуют пустых токенов.</p>
-<p>Классификация символов соответствует стандарту Rust <a href="https://doc.rust-lang.org/std/primitive.char.html#method.is_alphanumeric"><code translate="no">char::is_alphanumeric()</code></a>. Определения свойств см. в <a href="https://www.unicode.org/reports/tr44/">Приложении № 44 к стандарту Unicode</a>. Полные списки символов Unicode 17.0 доступны по адресу <a href="https://www.unicode.org/Public/17.0.0/ucd/DerivedCoreProperties.txt"><code translate="no">DerivedCoreProperties.txt</code></a> по адресу <code translate="no">Alphabetic</code> и <a href="https://www.unicode.org/Public/17.0.0/ucd/extracted/DerivedGeneralCategory.txt"><code translate="no">DerivedGeneralCategory.txt</code></a> для <code translate="no">Nd</code>, <code translate="no">Nl</code> и <code translate="no">No</code>. Принадлежность символов зависит от данных Unicode, используемых в развернутой версии.</p>
-<p>В приведённых ниже примерах используется <code translate="no">{&quot;tokenizer&quot;: &quot;standard&quot;}</code> без фильтров. Токенизатор сохраняет регистр букв и не разбивает непрерывный китайский текст на отдельные слова.</p>
+<p>Characters outside these sets separate tokens and are discarded. These include whitespace, punctuation, underscores (<code translate="no">_</code>), hyphens (<code translate="no">-</code>), apostrophes (<code translate="no">'</code>), and symbols such as <code translate="no">+</code>, <code translate="no">$</code>, and <code translate="no">😀</code>. Consecutive separators do not produce empty tokens.</p>
+<p>Character classification follows Rust’s <a href="https://doc.rust-lang.org/std/primitive.char.html#method.is_alphanumeric"><code translate="no">char::is_alphanumeric()</code></a>. For property definitions, see <a href="https://www.unicode.org/reports/tr44/">Unicode Standard Annex #44</a>. The complete Unicode 17.0 character lists are available in <a href="https://www.unicode.org/Public/17.0.0/ucd/DerivedCoreProperties.txt"><code translate="no">DerivedCoreProperties.txt</code></a> for <code translate="no">Alphabetic</code> and <a href="https://www.unicode.org/Public/17.0.0/ucd/extracted/DerivedGeneralCategory.txt"><code translate="no">DerivedGeneralCategory.txt</code></a> for <code translate="no">Nd</code>, <code translate="no">Nl</code>, and <code translate="no">No</code>. Character membership depends on the Unicode data used by the deployed version.</p>
+<p>The following examples use <code translate="no">{&quot;tokenizer&quot;: &quot;standard&quot;}</code> with no filters. The tokenizer preserves letter case and does not segment continuous Chinese text into individual words.</p>
 <table>
 <thead>
-<tr><th>Входные данные</th><th>Выходные токены</th></tr>
+<tr><th>Input</th><th>Output tokens</th></tr>
 </thead>
 <tbody>
 <tr><td><code translate="no">foo_bar-can't😀123</code></td><td><code translate="no">[&quot;foo&quot;, &quot;bar&quot;, &quot;can&quot;, &quot;t&quot;, &quot;123&quot;]</code></td></tr>
@@ -66,7 +66,7 @@ summary: >-
 <tr><td><code translate="no">Hello,World!</code></td><td><code translate="no">[&quot;Hello&quot;, &quot;World&quot;]</code></td></tr>
 </tbody>
 </table>
-<h2 id="Configuration" class="common-anchor-header">Настройка<button data-href="#Configuration" class="anchor-icon" translate="no">
+<h2 id="Configuration" class="common-anchor-header">Configuration<button data-href="#Configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -81,16 +81,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Чтобы настроить анализатор с использованием токенизатора <code translate="no">standard</code>, установите для параметра <code translate="no">tokenizer</code> значение <code translate="no">standard</code> в файле <code translate="no">analyzer_params</code>.</p>
+    </button></h2><p>To configure an analyzer using the <code translate="no">standard</code> tokenizer, set <code translate="no">tokenizer</code> to <code translate="no">standard</code> in <code translate="no">analyzer_params</code>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>,
@@ -128,16 +128,16 @@ analyzerParams=<span class="hljs-string">&#x27;{
   &quot;tokenizer&quot;: &quot;standard&quot;
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Токенизатор <code translate="no">standard</code> может работать в сочетании с одним или несколькими фильтрами. Например, в следующем коде определяется анализатор, использующий токенизатор <code translate="no">standard</code> и фильтр <code translate="no">lowercase</code>:</p>
+<p>The <code translate="no">standard</code> tokenizer can work in conjunction with one or more filters. For example, the following code defines an analyzer that uses the <code translate="no">standard</code> tokenizer and <code translate="no">lowercase</code> filter:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>,
@@ -186,10 +186,10 @@ analyzerParams=<span class="hljs-string">&#x27;{
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>Для упрощения настройки можно использовать <a href="/docs/ru/standard-analyzer.md"><code translate="no">standard</code></a><a href="/docs/ru/standard-analyzer.md">анализатор</a>, который объединяет токенизатор <code translate="no">standard</code> с <a href="/docs/ru/lowercase-filter.md"><code translate="no">lowercase</code></a><a href="/docs/ru/lowercase-filter.md"> фильтром</a>.</p>
+<p>For simpler setup, you may choose to use the <a href="/docs/ru/standard-analyzer.md"><code translate="no">standard</code></a> <a href="/docs/ru/standard-analyzer.md">analyzer</a>, which combines the <code translate="no">standard</code> tokenizer with the <a href="/docs/ru/lowercase-filter.md"><code translate="no">lowercase</code></a><a href="/docs/ru/lowercase-filter.md"> filter</a>.</p>
 </div>
-<p>После определения <code translate="no">analyzer_params</code> вы можете применить их к полю <code translate="no">VARCHAR</code> при определении схемы коллекции. Это позволяет Milvus обрабатывать текст в этом поле с использованием указанного анализатора для эффективной токенизации и фильтрации. Подробности см. в разделе <a href="/docs/ru/analyzer-overview.md#Example-use">«Пример использования</a>».</p>
-<h2 id="Examples" class="common-anchor-header">Примеры<button data-href="#Examples" class="anchor-icon" translate="no">
+<p>After defining <code translate="no">analyzer_params</code>, you can apply them to a <code translate="no">VARCHAR</code> field when defining a collection schema. This allows Milvus to process the text in that field using the specified analyzer for efficient tokenization and filtering. For details, refer to <a href="/docs/ru/analyzer-overview.md#Example-use">Example use</a>.</p>
+<h2 id="Examples" class="common-anchor-header">Examples<button data-href="#Examples" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -204,8 +204,8 @@ analyzerParams=<span class="hljs-string">&#x27;{
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Прежде чем применять конфигурацию анализатора к схеме вашей коллекции, проверьте его поведение с помощью метода <code translate="no">run_analyzer</code>.</p>
-<h3 id="Analyzer-configuration" class="common-anchor-header">Конфигурация анализатора<button data-href="#Analyzer-configuration" class="anchor-icon" translate="no">
+    </button></h2><p>Before applying the analyzer configuration to your collection schema, verify its behavior using the <code translate="no">run_analyzer</code> method.</p>
+<h3 id="Analyzer-configuration" class="common-anchor-header">Analyzer configuration<button data-href="#Analyzer-configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -221,14 +221,14 @@ analyzerParams=<span class="hljs-string">&#x27;{
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>,
@@ -277,7 +277,7 @@ analyzerParams=<span class="hljs-string">&#x27;{
   ]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Verification-using-runanalyzer" class="common-anchor-header">Проверка с помощью <code translate="no">run_analyzer</code><button data-href="#Verification-using-runanalyzer" class="anchor-icon" translate="no">
+<h3 id="Verification-using-runanalyzer" class="common-anchor-header">Verification using <code translate="no">run_analyzer</code><button data-href="#Verification-using-runanalyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -293,14 +293,14 @@ analyzerParams=<span class="hljs-string">&#x27;{
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> (
     MilvusClient,
@@ -464,7 +464,7 @@ curl --request POST \
     &quot;analyzerParams&quot;: &quot;{\&quot;tokenizer\&quot;: \&quot;standard\&quot;, \&quot;filter\&quot;: [\&quot;lowercase\&quot;]}&quot;
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Expected-output" class="common-anchor-header">Ожидаемый результат<button data-href="#Expected-output" class="anchor-icon" translate="no">
+<h3 id="Expected-output" class="common-anchor-header">Expected output<button data-href="#Expected-output" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"

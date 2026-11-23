@@ -1,12 +1,14 @@
 ---
 id: number.md
-title: 부울 및 숫자
+title: Boolean & Number
 summary: >-
-  부울형 또는 숫자형 필드는 부울 값이나 숫자 값을 저장하는 스칼라 필드입니다. 이러한 값은 두 가지 가능한 값 중 하나이거나, 정수 및
-  소수(부동소수점 수)일 수 있습니다. 이 필드들은 일반적으로 수량, 측정값 또는 논리적·수학적 처리가 필요한 데이터를 표현하는 데
-  사용됩니다.
+  A boolean or number field is a scalar field that stores boolean or numeric
+  values. These values can be one of two possible values or whole numbers
+  (integers) and decimal numbers (floating-point numbers). They are typically
+  used to represent quantities, measurements, or any data that needs to be
+  logically or mathematically processed.
 ---
-<h1 id="Boolean--Number" class="common-anchor-header">부울 및 숫자<button data-href="#Boolean--Number" class="anchor-icon" translate="no">
+<h1 id="Boolean--Number" class="common-anchor-header">Boolean & Number<button data-href="#Boolean--Number" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -21,27 +23,27 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>부울 또는 숫자 필드는 부울 값이나 숫자 값을 저장하는 스칼라 필드입니다. 이러한 값은 두 가지 가능한 값 중 하나이거나,<strong>정수</strong> 및 소수(<strong>부동 소수점 수</strong>)일 수 있습니다. 이들은 일반적으로 수량, 측정값 또는 논리적·수학적 처리가 필요한 데이터를 표현하는 데 사용됩니다.</p>
-<p>아래 표는 Milvus 클러스터에서 사용할 수 있는 숫자 필드의 데이터 유형을 설명합니다.</p>
+    </button></h1><p>A boolean or number field is a scalar field that stores boolean or numeric values. These values can be one of two possible values or whole numbers (<strong>integers</strong>) and decimal numbers (<strong>floating-point numbers</strong>). They are typically used to represent quantities, measurements, or any data that needs to be logically or mathematically processed.</p>
+<p>The table below describes the data types of number fields available in Milvus clusters.</p>
 <table>
 <thead>
-<tr><th>필드 유형</th><th>설명</th></tr>
+<tr><th>Field Type</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">BOOL</code></td><td><code translate="no">true</code> 또는 <code translate="no">false</code> 를 저장하는 부울 유형으로, 이진 상태를 표현하는 데 적합합니다.</td></tr>
-<tr><td><code translate="no">INT8</code></td><td>8비트 정수로, 범위가 작은 정수 데이터를 저장하는 데 적합합니다.</td></tr>
-<tr><td><code translate="no">INT16</code></td><td>16비트 정수로, 중간 범위의 정수 데이터를 저장하는 데 적합합니다.</td></tr>
-<tr><td><code translate="no">INT32</code></td><td>32비트 정수형으로, 제품 수량이나 사용자 ID와 같은 일반적인 정수 데이터 저장에 이상적입니다.</td></tr>
-<tr><td><code translate="no">INT64</code></td><td>64비트 정수형으로, 타임스탬프나 식별자 등 범위가 큰 데이터를 저장하는 데 적합합니다.</td></tr>
-<tr><td><code translate="no">FLOAT</code></td><td>32비트 부동 소수점 숫자: 등급이나 온도와 같이 일반적인 정밀도가 필요한 데이터에 사용됩니다.</td></tr>
-<tr><td><code translate="no">DOUBLE</code></td><td>64비트 배정밀도 부동 소수점: 재무 정보나 과학적 계산과 같은 고정밀도 데이터에 사용됩니다.</td></tr>
+<tr><td><code translate="no">BOOL</code></td><td>Boolean type for storing <code translate="no">true</code> or <code translate="no">false</code>, suitable for describing binary states.</td></tr>
+<tr><td><code translate="no">INT8</code></td><td>8-bit integer, suitable for storing small-range integer data.</td></tr>
+<tr><td><code translate="no">INT16</code></td><td>16-bit integer, for medium-range integer data.</td></tr>
+<tr><td><code translate="no">INT32</code></td><td>32-bit integer, ideal for general integer data storage like product quantities or user IDs.</td></tr>
+<tr><td><code translate="no">INT64</code></td><td>64-bit integer, suitable for storing large-range data like timestamps or identifiers.</td></tr>
+<tr><td><code translate="no">FLOAT</code></td><td>32-bit floating-point number, for data requiring general precision, such as ratings or temperature.</td></tr>
+<tr><td><code translate="no">DOUBLE</code></td><td>64-bit double-precision floating-point number, for high-precision data like financial information or scientific calculations.</td></tr>
 </tbody>
 </table>
-<p>부울 필드를 선언하려면 <code translate="no">datatype</code> 을 <code translate="no">BOOL</code> 로 설정하기만 하면 됩니다. 숫자 필드를 선언하려면 사용 가능한 숫자 데이터 유형 중 하나로 설정하기만 하면 됩니다. 예를 들어, 정수 필드의 경우 <code translate="no">DataType.INT64</code>, 부동 소수점 필드의 경우 <code translate="no">DataType.FLOAT</code> 를 사용합니다.</p>
+<p>To declare a boolean field, simply set <code translate="no">datatype</code> to <code translate="no">BOOL</code>. To declare a number field, simply set that to one of the available numeric data types. For example, <code translate="no">DataType.INT64</code> for an integer field or <code translate="no">DataType.FLOAT</code> for a floating-point field.</p>
 <div class="alert note">
-<p>Milvus는 부울 및 숫자 필드에 대해 null 값과 기본값을 지원합니다. 이러한 기능을 사용하려면 <code translate="no">nullable</code> 을 <code translate="no">True</code> 으로 설정하고, <code translate="no">default_value</code> 을 숫자 값으로 설정하십시오. 자세한 내용은 <a href="/docs/ko/nullable-and-default.md">‘Nullable &amp; Default’를</a> 참조하십시오.</p>
+<p>Milvus supports null values and default values for boolean and number fields. To enable these features, set <code translate="no">nullable</code> to <code translate="no">True</code> and <code translate="no">default_value</code> to a numeric value. For details, refer to <a href="/docs/ko/nullable-and-default.md">Nullable & Default</a>.</p>
 </div>
-<h2 id="Add-boolean-and-number-fields" class="common-anchor-header">부울 및 숫자 필드 추가<button data-href="#Add-boolean-and-number-fields" class="anchor-icon" translate="no">
+<h2 id="Add-boolean-and-number-fields" class="common-anchor-header">Add boolean and number fields<button data-href="#Add-boolean-and-number-fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -56,24 +58,24 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>부울 또는 숫자 데이터를 저장하려면 컬렉션 스키마에 해당 유형의 필드를 정의하십시오. 다음은 두 개의 숫자 필드가 포함된 컬렉션 스키마의 예입니다:</p>
+    </button></h2><p>To store boolean or numeric data, define corresponding types of fields in your collection schema. Below is an example of a collection schema with two number fields:</p>
 <ul>
-<li><p><code translate="no">age</code>: 정수 데이터를 저장하며, null 값을 허용하고, 기본값은 <code translate="no">18</code> 입니다.</p></li>
-<li><p><code translate="no">broken</code>: 부울 데이터를 저장하며, null 값을 허용하지만 기본값은 없습니다.</p></li>
-<li><p><code translate="no">price</code>: 부동 소수점 데이터를 저장하며, null 값을 허용하지만 기본값은 없습니다.</p></li>
+<li><p><code translate="no">age</code>: stores integer data, allows null values, and has a default value of <code translate="no">18</code>.</p></li>
+<li><p><code translate="no">broken</code>: stores boolean data, allows null values, but does not have a default value.</p></li>
+<li><p><code translate="no">price</code>: stores float data, allows null values, but does not have a default value.</p></li>
 </ul>
 <div class="alert note">
-<p>스키마를 정의할 때 ` <code translate="no">enable_dynamic_field=True</code> `를 설정하면, Milvus는 사전에 정의되지 않은 스칼라 필드를 삽입할 수 있도록 허용합니다. 그러나 이로 인해 쿼리 및 관리의 복잡성이 증가하여 성능에 영향을 미칠 수 있습니다. 자세한 내용은 <a href="/docs/ko/enable-dynamic-field.md">‘동적 필드(Dynamic Field</a>)’를 참조하십시오.</p>
+<p>If you set <code translate="no">enable_dynamic_field=True</code> when defining the schema, Milvus allows you to insert scalar fields that were not defined in advance. However, this may increase the complexity of queries and management, potentially impacting performance. For more information, refer to <a href="/docs/ko/enable-dynamic-field.md">Dynamic Field</a>.</p>
 </div>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Import necessary libraries</span>
 <span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
@@ -345,7 +347,7 @@ schema.Fields.Add(FieldSchema.CreateFloatVector(<span class="hljs-string">&quot;
     ]
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Set-index-params" class="common-anchor-header">인덱스 매개변수 설정<button data-href="#Set-index-params" class="anchor-icon" translate="no">
+<h2 id="Set-index-params" class="common-anchor-header">Set index params<button data-href="#Set-index-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -360,17 +362,17 @@ schema.Fields.Add(FieldSchema.CreateFloatVector(<span class="hljs-string">&quot;
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>인덱싱은 검색 및 쿼리 성능을 향상시키는 데 도움이 됩니다. Milvus 클러스터에서 인덱싱은 벡터 필드의 경우 필수이지만, 스칼라 필드의 경우 선택 사항입니다.</p>
-<p>다음 예제는 벡터 필드 ` <code translate="no">embedding</code> `와 스칼라 필드 ` <code translate="no">age</code>`에 대해 모두 ` <code translate="no">AUTOINDEX</code> ` 인덱스 유형을 사용하여 인덱스를 생성합니다. 이 유형을 사용하면 Milvus는 데이터 유형에 따라 가장 적합한 인덱스를 자동으로 선택합니다. 자세한 내용은 <a href="/docs/ko/index-explained.md">‘인덱스 설명’을</a> 참조하십시오.</p>
+    </button></h2><p>Indexing helps improve search and query performance. In Milvus clusters, indexing is mandatory for vector fields but optional for scalar fields.</p>
+<p>The following example creates indexes on the vector field <code translate="no">embedding</code> and the scalar field <code translate="no">age</code>, both using the <code translate="no">AUTOINDEX</code> index type. With this type, Milvus automatically selects the most suitable index based on the data type. For details, refer to <a href="/docs/ko/index-explained.md">Index Explained</a>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Set index params</span>
 
@@ -478,7 +480,7 @@ indexOption2 := milvusclient.NewCreateIndexOption(<span class="hljs-string">&quo
         }
     ]&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Create-collection" class="common-anchor-header">컬렉션 생성<button data-href="#Create-collection" class="anchor-icon" translate="no">
+<h2 id="Create-collection" class="common-anchor-header">Create collection<button data-href="#Create-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -493,16 +495,16 @@ indexOption2 := milvusclient.NewCreateIndexOption(<span class="hljs-string">&quo
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>스키마와 인덱스가 정의되면, 숫자 필드를 포함하는 컬렉션을 생성합니다.</p>
+    </button></h2><p>Once the schema and indexes are defined, create a collection that includes number fields.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Create Collection</span>
 client.create_collection(
@@ -596,7 +598,7 @@ client
     \&quot;indexParams\&quot;: <span class="hljs-variable">$indexParams</span>
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Insert-data" class="common-anchor-header">데이터 삽입<button data-href="#Insert-data" class="anchor-icon" translate="no">
+<h2 id="Insert-data" class="common-anchor-header">Insert data<button data-href="#Insert-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -611,16 +613,16 @@ client
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>컬렉션을 생성한 후, 스키마에 부합하는 엔티티를 삽입합니다.</p>
+    </button></h2><p>After creating the collection, insert entities that match the schema.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Sample data</span>
 data = [
@@ -797,7 +799,7 @@ milvus::InsertResponse response;
     &quot;collectionName&quot;: &quot;my_collection&quot;
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Query-with-filter-expressions" class="common-anchor-header">필터 표현식을 사용한 쿼리<button data-href="#Query-with-filter-expressions" class="anchor-icon" translate="no">
+<h2 id="Query-with-filter-expressions" class="common-anchor-header">Query with filter expressions<button data-href="#Query-with-filter-expressions" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -812,17 +814,17 @@ milvus::InsertResponse response;
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>엔티티를 삽입한 후, ` <code translate="no">query</code> ` 메서드를 사용하여 지정된 필터 표현식과 일치하는 엔티티를 검색합니다.</p>
-<p><code translate="no">age</code> 값이 30보다 큰 엔티티를 가져오려면:</p>
+    </button></h2><p>After inserting entities, use the <code translate="no">query</code> method to retrieve entities that match the specified filter expressions.</p>
+<p>To retrieve entities where the <code translate="no">age</code> is greater than 30:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;age &gt; 30&#x27;</span>
 
@@ -959,16 +961,16 @@ Console.WriteLine(res);
 
 <span class="hljs-comment">## {&quot;code&quot;:0,&quot;cost&quot;:0,&quot;data&quot;:[{&quot;age&quot;:30,&quot;pk&quot;:2,&quot;price&quot;:149.5},{&quot;age&quot;:35,&quot;pk&quot;:3,&quot;price&quot;:199.99}]}</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">price</code> 가 null인 엔티티를 가져오려면:</p>
+<p>To retrieve entities where the <code translate="no">price</code> is null:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;price is null&#x27;</span>
 
@@ -1102,16 +1104,16 @@ curl --request POST \
   &quot;outputFields&quot;: [&quot;age&quot;, &quot;price&quot;, &quot;pk&quot;]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">age</code> 의 값이 ` <code translate="no">18</code>`인 엔티티를 가져오려면 아래의 표현식을 사용하십시오. ` <code translate="no">age</code> `의 기본값은 ` <code translate="no">18</code>`이므로, 예상 결과에는 ` <code translate="no">age</code> `가 명시적으로 ` <code translate="no">18</code> `로 설정된 엔티티나 ` <code translate="no">age</code> `가 null로 설정된 엔티티가 포함되어야 합니다.</p>
+<p>To retrieve entities where <code translate="no">age</code> has the value <code translate="no">18</code>, use the following expression below. As the default value of <code translate="no">age</code> is <code translate="no">18</code>, the expected result should include entities with <code translate="no">age</code> explicitly set to <code translate="no">18</code> or with <code translate="no">age</code> set to null.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;age == 18&#x27;</span>
 
@@ -1248,7 +1250,7 @@ curl --request POST \
   &quot;outputFields&quot;: [&quot;age&quot;, &quot;price&quot;, &quot;pk&quot;]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Vector-search-with-filter-expressions" class="common-anchor-header">필터 표현식을 사용한 벡터 검색<button data-href="#Vector-search-with-filter-expressions" class="anchor-icon" translate="no">
+<h2 id="Vector-search-with-filter-expressions" class="common-anchor-header">Vector search with filter expressions<button data-href="#Vector-search-with-filter-expressions" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1263,16 +1265,16 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>기본적인 숫자 필드 필터링 외에도, 벡터 유사도 검색을 숫자 필드 필터와 결합할 수 있습니다. 예를 들어, 다음 코드는 벡터 검색에 숫자 필드 필터를 추가하는 방법을 보여줍니다:</p>
+    </button></h2><p>In addition to basic number field filtering, you can combine vector similarity searches with number field filters. For example, the following code shows how to add a number field filter to a vector search:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&quot;25 &lt;= age &lt;= 35&quot;</span>
 
@@ -1452,4 +1454,4 @@ Console.WriteLine(searchResp);
 
 <span class="hljs-comment">## {&quot;code&quot;:0,&quot;cost&quot;:0,&quot;data&quot;:[{&quot;age&quot;:35,&quot;distance&quot;:-0.19054288,&quot;id&quot;:3,&quot;price&quot;:199.99},{&quot;age&quot;:30,&quot;distance&quot;:-0.20163085,&quot;id&quot;:2,&quot;price&quot;:149.5},{&quot;age&quot;:25,&quot;distance&quot;:-0.2364331,&quot;id&quot;:1,&quot;price&quot;:99.99}]}</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>이 예제에서는 먼저 쿼리 벡터를 정의하고, 검색 과정에서 필터 조건 <code translate="no">25 &lt;= age &lt;= 35</code> 을 추가합니다. 이를 통해 검색 결과가 쿼리 벡터와 유사할 뿐만 아니라 지정된 연령 범위도 충족하도록 보장합니다. 자세한 내용은 <a href="/docs/ko/boolean.md">‘필터링 설명’을</a> 참조하십시오.</p>
+<p>In this example, we first define a query vector and add a filter condition <code translate="no">25 &lt;= age &lt;= 35</code> during the search. This ensures that the search results are not only similar to the query vector but also meet the specified age range. For more information, refer to <a href="/docs/ko/boolean.md">Filtering Explained</a>.</p>

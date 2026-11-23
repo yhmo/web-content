@@ -1,13 +1,14 @@
 ---
 id: voyage-ai-ranker.md
-title: مصنف Voyage AI RankerCompatible with Milvus 2.6.x
+title: Voyage AI RankerCompatible with Milvus 2.6.x
 summary: >-
-  يعمل مصنف Voyage AI Ranker على الاستفادة من أجهزة إعادة الترتيب المتخصصة في
-  Voyage AI لتعزيز ملاءمة البحث من خلال إعادة الترتيب الدلالي. وهو يوفر إمكانات
-  إعادة ترتيب عالية الأداء مُحسّنة للجيل المعزز للاسترجاع (RAG) وتطبيقات البحث.
+  The Voyage AI Ranker leverages Voyage AI's specialized rerankers to enhance
+  search relevance through semantic reranking. It provides high-performance
+  reranking capabilities optimized for retrieval-augmented generation (RAG) and
+  search applications.
 beta: Milvus 2.6.x
 ---
-<h1 id="Voyage-AI-Ranker" class="common-anchor-header">مصنف Voyage AI Ranker<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#Voyage-AI-Ranker" class="anchor-icon" translate="no">
+<h1 id="Voyage-AI-Ranker" class="common-anchor-header">Voyage AI Ranker<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#Voyage-AI-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -22,15 +23,15 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>يعمل مصنف Voyage AI Ranker على الاستفادة من أدوات إعادة الترتيب المتخصصة <a href="https://www.voyageai.com/">في Voyage AI</a> لتعزيز ملاءمة البحث من خلال إعادة الترتيب الدلالي. وهو يوفر إمكانات إعادة ترتيب عالية الأداء مُحسّنة للجيل المعزز للاسترجاع (RAG) وتطبيقات البحث.</p>
-<p>يُعدّ Voyage AI Ranker ذا قيمة خاصة للتطبيقات التي تتطلب</p>
+    </button></h1><p>The Voyage AI Ranker leverages <a href="https://www.voyageai.com/">Voyage AI’s</a> specialized rerankers to enhance search relevance through semantic reranking. It provides high-performance reranking capabilities optimized for retrieval-augmented generation (RAG) and search applications.</p>
+<p>Voyage AI Ranker is particularly valuable for applications requiring:</p>
 <ul>
-<li><p>فهم دلالي متقدم مع نماذج مدربة خصيصًا لمهام إعادة الترتيب</p></li>
-<li><p>معالجة عالية الأداء مع استدلال محسّن لأعباء عمل الإنتاج</p></li>
-<li><p>ضوابط اقتطاع مرنة للتعامل مع أطوال المستندات المتنوعة</p></li>
-<li><p>أداء مضبوط بدقة عبر متغيرات النماذج المختلفة (إعادة الترتيب 2، إعادة الترتيب المخفف، إلخ)</p></li>
+<li><p>Advanced semantic understanding with models specifically trained for reranking tasks</p></li>
+<li><p>High-performance processing with optimized inference for production workloads</p></li>
+<li><p>Flexible truncation controls for handling diverse document lengths</p></li>
+<li><p>Fine-tuned performance across different model variants (rerank-2, rerank-lite, etc.)</p></li>
 </ul>
-<h2 id="Prerequisites" class="common-anchor-header">المتطلبات الأساسية<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -45,16 +46,16 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>قبل تنفيذ Voyage AI Ranker في Milvus، تأكد من أن لديك:</p>
+    </button></h2><p>Before implementing Voyage AI Ranker in Milvus, ensure you have:</p>
 <ul>
-<li><p>مجموعة Milvus تحتوي على حقل <code translate="no">VARCHAR</code> يحتوي على النص المراد إعادة تصنيفه</p></li>
-<li><p>مفتاح Voyage AI API صالح مع إمكانية الوصول إلى معيدي التصنيف. قم بالتسجيل في <a href="https://www.voyageai.com/">منصة Voyage AI</a> للحصول على بيانات اعتماد واجهة برمجة التطبيقات الخاصة بك. يمكنك إما</p>
+<li><p>A Milvus collection with a <code translate="no">VARCHAR</code> field containing the text to be reranked</p></li>
+<li><p>A valid Voyage AI API key with access to rerankers. Sign up at <a href="https://www.voyageai.com/">Voyage AI’s platform</a> to obtain your API credentials. You can either:</p>
 <ul>
-<li><p>تعيين متغير البيئة <code translate="no">VOYAGE_API_KEY</code> ، أو</p></li>
-<li><p>تحديد مفتاح واجهة برمجة التطبيقات مباشرةً في تكوين المُصنِّف</p></li>
+<li><p>Set the <code translate="no">VOYAGE_API_KEY</code> environment variable, or</p></li>
+<li><p>Specify the API key directly in the ranker configuration</p></li>
 </ul></li>
 </ul>
-<h2 id="Create-a-Voyage-AI-ranker-function" class="common-anchor-header">إنشاء وظيفة مصنف Voyage AI<button data-href="#Create-a-Voyage-AI-ranker-function" class="anchor-icon" translate="no">
+<h2 id="Create-a-Voyage-AI-ranker-function" class="common-anchor-header">Create a Voyage AI ranker function<button data-href="#Create-a-Voyage-AI-ranker-function" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -69,9 +70,14 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>لاستخدام مصنف Voyage AI Ranker في تطبيق Milvus الخاص بك، قم بإنشاء كائن دالة تحدد كيفية عمل إعادة الترتيب. سيتم تمرير هذه الدالة إلى عمليات بحث Milvus لتحسين ترتيب النتائج.</p>
+    </button></h2><p>To use Voyage AI Ranker in your Milvus application, create a Function object that specifies how the reranking should operate. This function will be passed to Milvus search operations to enhance result ranking.</p>
 <div class="multipleCode">
-   <a href="#python">بايثون</a> <a href="#java">جافا جافا</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, Function, FunctionType
 
 <span class="hljs-comment"># Connect to your Milvus server</span>
@@ -123,7 +129,7 @@ CreateCollectionReq.<span class="hljs-type">Function</span> <span class="hljs-va
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Voyage-AI-ranker-specific-parameters" class="common-anchor-header">معلمات خاصة بمصنّف Voyage AI<button data-href="#Voyage-AI-ranker-specific-parameters" class="anchor-icon" translate="no">
+<h3 id="Voyage-AI-ranker-specific-parameters" class="common-anchor-header">Voyage AI ranker-specific parameters<button data-href="#Voyage-AI-ranker-specific-parameters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -138,61 +144,61 @@ CreateCollectionReq.<span class="hljs-type">Function</span> <span class="hljs-va
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>المعلمات التالية خاصة بمصنّف Voyage AI:</p>
+    </button></h3><p>The following parameters are specific to the Voyage AI ranker:</p>
 <table>
    <tr>
-     <th><p><strong>المعلمة</strong></p></th>
-     <th><p><strong>مطلوبة؟</strong></p></th>
-     <th><p><strong>الوصف</strong></p></th>
-     <th><p><strong>القيمة / مثال</strong></p></th>
+     <th><p><strong>Parameter</strong></p></th>
+     <th><p><strong>Required?</strong></p></th>
+     <th><p><strong>Description</strong></p></th>
+     <th><p><strong>Value / Example</strong></p></th>
    </tr>
    <tr>
      <td><p><code translate="no">reranker</code></p></td>
-     <td><p>نعم</p></td>
-     <td><p>يجب ضبطها على <code translate="no">"model"</code> لتمكين إعادة ترتيب النماذج.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Must be set to <code translate="no">"model"</code> to enable model reranking.</p></td>
      <td><p><code translate="no">"model"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">provider</code></p></td>
-     <td><p>نعم</p></td>
-     <td><p>مزود خدمة النموذج المراد استخدامه لإعادة ترتيب النماذج.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>The model service provider to use for reranking.</p></td>
      <td><p><code translate="no">"voyageai"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">model_name</code></p></td>
-     <td><p>نعم</p></td>
-     <td><p>مُعيد ترتيب Voyage AI لاستخدامه من النماذج المدعومة على منصة Voyage AI.</p><p>للاطلاع على قائمة أدوات إعادة الترتيب المتاحة، راجع<a href="https://docs.voyageai.com/docs/reranker"> وثائق</a> <a href="https://docs.voyageai.com/docs/reranker">Voyage AI</a>.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>The Voyage AI reranker to use from supported models on Voyage AI platform.</p><p>For a list of rerankers available, refer to <a href="https://docs.voyageai.com/docs/reranker">Voyage AI</a><a href="https://docs.voyageai.com/docs/reranker"> documentation</a>.</p></td>
      <td><p><code translate="no">"rerank-2.5"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">queries</code></p></td>
-     <td><p>نعم</p></td>
-     <td><p>قائمة سلاسل الاستعلامات التي يستخدمها نموذج إعادة الترتيب لحساب درجات الملاءمة. يجب أن يتطابق عدد سلاسل الاستعلامات مع عدد الاستعلامات في عملية البحث بالضبط (حتى عند استخدام ناقلات الاستعلام بدلاً من النص)، وإلا سيتم الإبلاغ عن خطأ.</p></td>
-     <td><p><em>["استعلام البحث"]</em></p></td>
+     <td><p>Yes</p></td>
+     <td><p>List of query strings used by the rerank model to calculate relevance scores. The number of query strings must match exactly the number of queries in your search operation (even when using query vectors instead of text), otherwise an error will be reported.</p></td>
+     <td><p><em>["search query"]</em></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">max_client_batch_size</code></p></td>
-     <td><p>لا</p></td>
-     <td><p>نظرًا لأن خدمات النماذج قد لا تعالج جميع البيانات في وقت واحد، فإن هذا يضبط حجم الدُفعات للوصول إلى خدمة النماذج في طلبات متعددة.</p></td>
-     <td><p><code translate="no">128</code> (افتراضي)</p></td>
+     <td><p>No</p></td>
+     <td><p>Since model services may not process all data at once, this sets the batch size for accessing the model service in multiple requests.</p></td>
+     <td><p><code translate="no">128</code> (default)</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">truncation</code></p></td>
-     <td><p>لا</p></td>
-     <td><p>ما إذا كان سيتم اقتطاع المدخلات لتلبية "حد طول السياق" على الاستعلام والمستندات.</p><ul><li><p>إذا كان <code translate="no">True</code> ، فسيتم اقتطاع الاستعلام والمستندات لتتناسب مع حد طول السياق، قبل معالجتها بواسطة نموذج إعادة الترتيب.</p></li><li><p>إذا كان <code translate="no">False</code> ، فسيتم رفع خطأ عندما يتجاوز الاستعلام 8000 رمز لـ <code translate="no">rerank-2.5</code> و <code translate="no">rerank-2.5-lite</code> ؛ و 4000 رمز لـ <code translate="no">rerank-2</code> ؛ و 2000 رمز لـ <code translate="no">rerank-2-lite</code> و <code translate="no">rerank-1</code> ؛ و 1000 رمز لـ <code translate="no">rerank-lite-1</code> ، أو عندما يتجاوز مجموع عدد الرموز في الاستعلام وعدد الرموز في أي مستند واحد 16000 لـ <code translate="no">rerank-2</code> ؛ و 8000 لـ <code translate="no">rerank-2-lite</code> و <code translate="no">rerank-1</code> ؛ و 4000 لـ <code translate="no">rerank-lite-1</code>.</p></li></ul></td>
-     <td><p><code translate="no">True</code> (افتراضي) أو <code translate="no">False</code></p></td>
+     <td><p>No</p></td>
+     <td><p>Whether to truncate the input to satisfy the "context length limit" on the query and the documents.</p><ul><li><p>If <code translate="no">True</code>, the query and documents will be truncated to fit within the context length limit, before processed by the reranker model.</p></li><li><p>If <code translate="no">False</code>, an error will be raised when the query exceeds 8,000 tokens for <code translate="no">rerank-2.5</code> and <code translate="no">rerank-2.5-lite</code>; 4,000 tokens for <code translate="no">rerank-2</code>; 2,000 tokens <code translate="no">rerank-2-lite</code> and <code translate="no">rerank-1</code>; and 1,000 tokens for <code translate="no">rerank-lite-1</code>, or the sum of the number of tokens in the query and the number of tokens in any single document exceeds 16,000 for <code translate="no">rerank-2</code>; 8,000 for <code translate="no">rerank-2-lite</code> and <code translate="no">rerank-1</code>; and 4,000 for <code translate="no">rerank-lite-1</code>.</p></li></ul></td>
+     <td><p><code translate="no">True</code> (default) or <code translate="no">False</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">credential</code></p></td>
-     <td><p>لا يوجد</p></td>
-     <td><p>بيانات اعتماد المصادقة للوصول إلى خدمات Voyage AI API. إذا لم يتم تحديدها، سيبحث النظام عن متغير البيئة <code translate="no">VOYAGE_API_KEY</code>.</p></td>
-     <td><p><em>"your-voyage-API-API-key"</em></p></td>
+     <td><p>No</p></td>
+     <td><p>Authentication credential for accessing Voyage AI API services. If not specified, the system will look for the <code translate="no">VOYAGE_API_KEY</code> environment variable.</p></td>
+     <td><p><em>"your-voyage-api-key"</em></p></td>
    </tr>
 </table>
 <div class="alert note">
-<p>للحصول على المعلمات العامة المشتركة بين جميع مصنفات النماذج (على سبيل المثال، <code translate="no">provider</code> ، <code translate="no">queries</code>)، راجع <a href="/docs/ar/model-ranker-overview.md#Create-a-model-ranker">إنشاء مصنف نموذج</a>.</p>
+<p>For general parameters shared across all model rankers (e.g., <code translate="no">provider</code>, <code translate="no">queries</code>), refer to <a href="/docs/ar/v2.6.x/model-ranker-overview.md#Create-a-model-ranker">Create a model ranker</a>.</p>
 </div>
-<h2 id="Apply-to-standard-vector-search" class="common-anchor-header">التطبيق على البحث المتجه القياسي<button data-href="#Apply-to-standard-vector-search" class="anchor-icon" translate="no">
+<h2 id="Apply-to-standard-vector-search" class="common-anchor-header">Apply to standard vector search<button data-href="#Apply-to-standard-vector-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -207,9 +213,14 @@ CreateCollectionReq.<span class="hljs-type">Function</span> <span class="hljs-va
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>لتطبيق Voyage AI Ranker على بحث متجه قياسي:</p>
+    </button></h2><p>To apply Voyage AI Ranker to a standard vector search:</p>
 <div class="multipleCode">
-   <a href="#python">بايثون</a> <a href="#java">جافا جافا</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Execute search with Voyage AI reranker</span>
 results = client.search(
     collection_name=<span class="hljs-string">&quot;your_collection&quot;</span>,

@@ -2,9 +2,8 @@
 id: get-and-scalar-query.md
 title: Query
 summary: >-
-  Используйте методы `Query`, `Get` и `QueryIterator` для извлечения сущностей,
-  фильтрации метаданных, сортировки результатов запросов и агрегирования
-  скалярных значений в Milvus.
+  Use Query, Get, and QueryIterator to retrieve entities, filter metadata, sort
+  query results, and aggregate scalar values in Milvus.
 ---
 <h1 id="Query" class="common-anchor-header">Query<button data-href="#Query" class="anchor-icon" translate="no">
       <svg translate="no"

@@ -1,10 +1,7 @@
 ---
 id: rtree.md
 title: RTREECompatible with Milvus 2.6.4+
-summary: >-
-  RTREE 인덱스는 GEOMETRY 필드에 대한 쿼리 성능을 향상시키는 트리 기반 데이터 구조입니다. 컬렉션에 점, 선, 다각형과 같은
-  기하학적 객체를 WKT(Well-known text) 형식으로 저장하고 있으며, 공간 필터링 성능을 높이고자 한다면 RTREE가 이상적인
-  선택입니다.
+summary: Use RTREE to accelerate spatial filtering on GEOMETRY fields.
 beta: Milvus 2.6.4+
 ---
 <h1 id="RTREE" class="common-anchor-header">RTREE<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.4+</span><button data-href="#RTREE" class="anchor-icon" translate="no">
@@ -22,8 +19,8 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p><code translate="no">RTREE</code> 인덱스는 Milvus에서 <code translate="no">GEOMETRY</code> 필드에 대한 쿼리 속도를 높여주는 트리 기반 데이터 구조입니다. 컬렉션에 점, 선, 다각형과 같은 기하학적 객체를 <a href="https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry">WKT(Well-known text)</a> 형식으로 저장하고 있으며, 공간 필터링 속도를 높이고자 한다면 <code translate="no">RTREE</code> 가 이상적인 선택입니다.</p>
-<h2 id="How-it-works" class="common-anchor-header">작동 원리<button data-href="#How-it-works" class="anchor-icon" translate="no">
+    </button></h1><p><code translate="no">RTREE</code> accelerates spatial filtering on <code translate="no">GEOMETRY</code> fields containing points, lines, or polygons in <a href="https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry">Well-known text (WKT)</a> format.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -38,8 +35,7 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus는 <code translate="no">RTREE</code> 인덱스를 사용하여 다음의 두 단계 과정을 거쳐 기하 데이터를 효율적으로 구성하고 필터링합니다.</p>
-<h3 id="Phase-1-Build-the-index" class="common-anchor-header">1단계: 인덱스 구축<button data-href="#Phase-1-Build-the-index" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Supported-data-types" class="common-anchor-header">Supported data types<button data-href="#Supported-data-types" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -54,39 +50,76 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><ol>
-<li><p><strong>리프 노드 생성:</strong> 각 기하 객체에 대해 해당 객체를 완전히 포함하는 가장 작은 직사각형인 <a href="https://en.wikipedia.org/wiki/Minimum_bounding_rectangle">최소 경계 사각형</a> (MBR)을 계산하고, 이를 리프 노드로 저장합니다.</p></li>
-<li><p><strong>더 큰 상자로 그룹화:</strong> 인접한 리프 노드를 함께 묶고, 각 그룹을 새로운 MBR로 감싸 내부 노드를 형성합니다. 예를 들어, 그룹 <strong>B에는</strong> <strong>D와</strong> <strong>E가</strong> 포함되고, 그룹 <strong>C에는</strong> <strong>F와</strong> <strong>G가</strong> 포함됩니다.</p></li>
-<li><p><strong>루트 노드 추가:</strong> 모든 내부 그룹을 포함하는 MBR을 가진 루트 노드를 추가하여, 높이가 균형 잡힌 트리 구조를 만듭니다.</p></li>
+    </button></h3><p><code translate="no">GEOMETRY</code> fields. See <a href="/docs/ko/geometry-field.md">Geometry Field</a> for field definitions.</p>
+<p><a id="Supported-filters"></a></p>
+<h3 id="Filter-acceleration" class="common-anchor-header">Filter acceleration<button data-href="#Filter-acceleration" class="anchor-icon" translate="no">
+      <svg translate="no"
+        aria-hidden="true"
+        focusable="false"
+        height="20"
+        version="1.1"
+        viewBox="0 0 16 16"
+        width="16"
+      >
+        <path
+          fill="#0092E4"
+          fill-rule="evenodd"
+          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+        ></path>
+      </svg>
+    </button></h3><p><code translate="no">RTREE</code> finds candidates using bounding boxes, then Milvus checks the exact spatial relation. It supports the following <a href="/docs/ko/geometry-operators.md">geometry operators</a>:</p>
+<ul>
+<li><code translate="no">ST_EQUALS</code>, <code translate="no">ST_INTERSECTS</code>, <code translate="no">ST_CONTAINS</code>, and <code translate="no">ST_WITHIN</code>.</li>
+<li><code translate="no">ST_TOUCHES</code>, <code translate="no">ST_OVERLAPS</code>, <code translate="no">ST_CROSSES</code>, and <code translate="no">ST_DWITHIN</code>.</li>
+</ul>
+<p><code translate="no">ST_ISVALID</code> does not use <code translate="no">RTREE</code>. Without an eligible index, spatial filters scan the field.</p>
+<div class="alert note">
+<blockquote>
+<p>These are index capabilities, not limits on valid filter expressions. See <a href="/docs/ko/scalar_index.md#Filter-execution">Scalar Index</a> for shared lookup constraints. For <code translate="no">AND</code>, <code translate="no">OR</code>, <code translate="no">NOT</code>, and NULL tests (<code translate="no">IS NULL</code>, <code translate="no">IS NOT NULL</code>), see <a href="/docs/ko/basic-operators.md">Basic Operators</a>.</p>
+</blockquote>
+</div>
+<p><a id="How-it-works"></a></p>
+<h3 id="How-RTREE-works" class="common-anchor-header">How RTREE works<button data-href="#How-RTREE-works" class="anchor-icon" translate="no">
+      <svg translate="no"
+        aria-hidden="true"
+        focusable="false"
+        height="20"
+        version="1.1"
+        viewBox="0 0 16 16"
+        width="16"
+      >
+        <path
+          fill="#0092E4"
+          fill-rule="evenodd"
+          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+        ></path>
+      </svg>
+    </button></h3><p><a id="Phase-1-Build-the-index"></a>
+<a id="Phase-2-Accelerate-queries"></a></p>
+<p><details>
+<summary><strong>View the build and query process</strong></summary></p>
+<p>Milvus uses an <code translate="no">RTREE</code> index to efficiently organize and filter geometry data, following a two-phase process:</p>
+<p><strong>Phase 1: Build the index</strong></p>
+<ol>
+<li><p><strong>Create leaf nodes:</strong> For each geometry object, calculate its <a href="https://en.wikipedia.org/wiki/Minimum_bounding_rectangle">Minimum Bounding Rectangle</a> (MBR), which is the smallest rectangle that fully contains the object, and store it as a leaf node.</p></li>
+<li><p><strong>Group into larger boxes:</strong> Cluster nearby leaf nodes together and wrap each group with a new MBR, forming internal nodes. For example, group <strong>B</strong> contains <strong>D</strong> and <strong>E</strong>; group <strong>C</strong> contains <strong>F</strong> and <strong>G</strong>.</p></li>
+<li><p><strong>Add the root node:</strong> Add a root node whose MBR covers all internal groups, resulting in a height-balanced tree structure.</p></li>
 </ol>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/how-retree-works.png" alt="How Retree Works" class="doc-image" id="how-retree-works" /> 
-   <span>Retree의 작동 원리</span>
-  
- </span></p>
-<h3 id="Phase-2-Accelerate-queries" class="common-anchor-header">2단계: 쿼리 가속화<button data-href="#Phase-2-Accelerate-queries" class="anchor-icon" translate="no">
-      <svg translate="no"
-        aria-hidden="true"
-        focusable="false"
-        height="20"
-        version="1.1"
-        viewBox="0 0 16 16"
-        width="16"
-      >
-        <path
-          fill="#0092E4"
-          fill-rule="evenodd"
-          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
-        ></path>
-      </svg>
-    </button></h3><ol>
-<li><p><strong>쿼리 MBR 형성:</strong> 쿼리 지오메트리에 대한 MBR을 계산합니다.</p></li>
-<li><p><strong>분기 가지치기:</strong> 루트에서 시작하여 쿼리 MBR을 각 내부 노드와 비교합니다. MBR이 쿼리 MBR과 교차하지 않는 분기는 건너뜁니다.</p></li>
-<li><p><strong>후보 수집:</strong> 교차하는 분기로 내려가 후보 리프 노드를 수집합니다.</p></li>
-<li><p><strong>정확한 일치:</strong> 각 후보에 대해 정확한 공간 술어를 수행하여 진정한 일치 항목을 결정합니다.</p></li>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/how-retree-works.png" alt="How Retree Works" class="doc-image" id="how-retree-works" />
+    <span>How Retree Works</span>
+  </span>
+</p>
+<p><strong>Phase 2: Accelerate queries</strong></p>
+<ol>
+<li><p><strong>Form the query MBR:</strong> Calculate the MBR for your query geometry.</p></li>
+<li><p><strong>Prune branches:</strong> Starting at the root, compare the query MBR to each internal node. Skip any branches whose MBR does not intersect with the query MBR.</p></li>
+<li><p><strong>Collect candidates:</strong> Descend into intersecting branches to gather candidate leaf nodes.</p></li>
+<li><p><strong>Exact match:</strong> For each candidate, perform an exact spatial predicate to determine true matches.</p></li>
 </ol>
-<h2 id="Create-an-RTREE-index" class="common-anchor-header">RTREE 인덱스 생성<button data-href="#Create-an-RTREE-index" class="anchor-icon" translate="no">
+<p></details></p>
+<h2 id="Create-an-RTREE-index" class="common-anchor-header">Create an RTREE index<button data-href="#Create-an-RTREE-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -101,16 +134,16 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>컬렉션 스키마에 정의된 <code translate="no">GEOMETRY</code> 필드에 대해 <code translate="no">RTREE</code> 인덱스를 생성할 수 있습니다.</p>
+    </button></h2><p>You can create an <code translate="no">RTREE</code> index on a <code translate="no">GEOMETRY</code> field defined in your collection schema.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -278,7 +311,7 @@ curl --request POST \
     ]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Query-with-RTREE" class="common-anchor-header">RTREE를 사용한 쿼리<button data-href="#Query-with-RTREE" class="anchor-icon" translate="no">
+<h2 id="Query-with-RTREE" class="common-anchor-header">Query with RTREE<button data-href="#Query-with-RTREE" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -293,9 +326,8 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">filter</code> 표현식에서 기하 연산자를 사용하여 필터링합니다. 대상 <code translate="no">GEOMETRY</code> 필드에 <code translate="no">RTREE</code> 가 존재하면 Milvus는 이를 사용하여 후보를 자동으로 제거합니다. 인덱스가 없는 경우 필터링은 전체 스캔으로 대체됩니다.</p>
-<p>사용 가능한 기하형 연산자의 전체 목록은 <a href="/docs/ko/geometry-operators.md">‘기하형 연산자’를</a> 참조하십시오.</p>
-<h3 id="Example-1-Filter-only" class="common-anchor-header">예제 1: 필터링만 수행<button data-href="#Example-1-Filter-only" class="anchor-icon" translate="no">
+    </button></h2><p>The following examples use an indexed <code translate="no">GEOMETRY</code> field named <code translate="no">geo</code>.</p>
+<h3 id="Example-1-Filter-only" class="common-anchor-header">Example 1: Filter only<button data-href="#Example-1-Filter-only" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -310,16 +342,16 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>주어진 다각형 내의 모든 기하 객체를 찾습니다:</p>
+    </button></h3><p>Find all geometric objects within a given polygon:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">filter_expr = <span class="hljs-string">&quot;ST_WITHIN(geo, &#x27;POLYGON ((0 0, 10 0, 10 10, 0 10, 0 0))&#x27;)&quot;</span>
 
@@ -433,7 +465,7 @@ curl --request POST \
 }
 EOF
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-2-Vector-search-+-spatial-filter" class="common-anchor-header">예제 2: 벡터 검색 + 공간 필터<button data-href="#Example-2-Vector-search-+-spatial-filter" class="anchor-icon" translate="no">
+<h3 id="Example-2-Vector-search-+-spatial-filter" class="common-anchor-header">Example 2: Vector search + spatial filter<button data-href="#Example-2-Vector-search-+-spatial-filter" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -448,16 +480,16 @@ EOF
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>선과 교차하는 가장 가까운 벡터를 찾습니다:</p>
+    </button></h3><p>Find the nearest vectors that also intersect a line:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Assume you&#x27;ve also created an index on &quot;vec&quot; and loaded the collection.</span>
 query_vec = [[<span class="hljs-number">0.1</span>, <span class="hljs-number">0.2</span>, <span class="hljs-number">0.3</span>, <span class="hljs-number">0.4</span>, <span class="hljs-number">0.5</span>]]
@@ -597,8 +629,8 @@ curl --request POST \
 }
 EOF
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">GEOMETRY</code> 필드 사용 방법에 대한 자세한 내용은 <a href="/docs/ko/geometry-field.md">Geometry Field를</a> 참조하십시오.</p>
-<h2 id="Drop-an-index" class="common-anchor-header">인덱스 삭제<button data-href="#Drop-an-index" class="anchor-icon" translate="no">
+<p>For more information on how to use a <code translate="no">GEOMETRY</code> field, refer to <a href="/docs/ko/geometry-field.md">Geometry Field</a>.</p>
+<h2 id="Drop-an-index" class="common-anchor-header">Drop an index<button data-href="#Drop-an-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -613,22 +645,21 @@ EOF
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">drop_index()</code> 메서드를 사용하여 컬렉션에서 기존 인덱스를 제거합니다.</p>
+    </button></h2><p>Use the <code translate="no">drop_index()</code> method to remove an existing index from a collection.</p>
 <div class="alert note">
-<ul>
-<li><p><strong>v2.6.3</strong> 이하 버전에서는 스칼라 인덱스를 삭제하기 전에 컬렉션을 해제해야 합니다.</p></li>
-<li><p><strong>v2.6.4부터는</strong> 스칼라 인덱스가 더 이상 필요하지 않으면 컬렉션을 먼저 해제할 필요 없이 직접 삭제할 수 있습니다.</p></li>
-</ul>
+<blockquote>
+<p>For release requirements when dropping a scalar index, see <a href="/docs/ko/scalar_index.md#Drop-index-compatibility">Scalar Index</a>.</p>
+</blockquote>
 </div>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.drop_index(
     collection_name=<span class="hljs-string">&quot;geo_demo&quot;</span>,   <span class="hljs-comment"># Name of the collection</span>

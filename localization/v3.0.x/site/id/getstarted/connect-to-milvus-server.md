@@ -1,11 +1,11 @@
 ---
 id: connect-to-milvus-server.md
-title: Menghubungkan ke Server Milvus
+title: Connect to Milvus Server
 summary: >-
-  Topik ini menjelaskan cara membuat koneksi klien ke server Milvus dan
-  mengonfigurasi opsi koneksi umum.
+  This topic describes how to establish a client connection to a Milvus server
+  and configure common connection options.
 ---
-<h1 id="Connect-to-Milvus-Server" class="common-anchor-header">Menghubungkan ke Server Milvus<button data-href="#Connect-to-Milvus-Server" class="anchor-icon" translate="no">
+<h1 id="Connect-to-Milvus-Server" class="common-anchor-header">Connect to Milvus Server<button data-href="#Connect-to-Milvus-Server" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,8 +20,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Topik ini menjelaskan cara membuat koneksi klien ke server Milvus dan mengonfigurasi opsi koneksi umum.</p>
-<h2 id="Prerequisites" class="common-anchor-header">Prasyarat<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+    </button></h1><p>This topic describes how to establish a client connection to a Milvus server and configure common connection options.</p>
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,11 +37,11 @@ summary: >-
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>SDK bahasa Anda telah terinstal. Untuk detailnya, lihat <a href="/docs/id/install-pymilvus.md">Python SDK</a>, <a href="/docs/id/install-java.md">Java</a> <a href="/docs/id/install-go.md">SDK, Go SDK</a>, atau <a href="/docs/id/install-node.md">Nodejs SDK</a>.</p></li>
-<li><p>Alamat server Milvus (untuk default lokal: <code translate="no">http://localhost:19530</code>, port proxy <strong>19530</strong>).</p></li>
-<li><p>Jika <a href="/docs/id/authenticate.md">autentikasi diaktifkan</a>, berikan <strong>token</strong> atau <strong>nama pengguna + kata sandi</strong>. Token dapat berupa <code translate="no">username:password</code> (misalnya, <code translate="no">root:Milvus</code>). Lihat <a href="/docs/id/authenticate.md">Mengautentikasi Akses Pengguna</a> dan <a href="/docs/id/users_and_roles.md">Membuat Pengguna &amp; Peran</a> untuk detailnya.</p></li>
+<li><p>The SDK of your language installed. For details, refer to <a href="/docs/id/install-pymilvus.md">Python SDK</a>, <a href="/docs/id/install-java.md">Java SDK</a>, <a href="/docs/id/install-go.md">Go SDK</a>, or <a href="/docs/id/install-node.md">Nodejs SDK</a>.</p></li>
+<li><p>A Milvus server address (for local default: <code translate="no">http://localhost:19530</code>, proxy port <strong>19530</strong>).</p></li>
+<li><p>If <a href="/docs/id/authenticate.md">authentication is enabled</a>, provide either a <strong>token</strong> or a <strong>username + password</strong>. A token can be <code translate="no">username:password</code> (e.g., <code translate="no">root:Milvus</code>). See <a href="/docs/id/authenticate.md">Authenticate User Access</a> and <a href="/docs/id/users_and_roles.md">Create Users & Roles</a> for details.</p></li>
 </ul>
-<h2 id="Connect-by-URI-authentication-disabled" class="common-anchor-header">Hubungkan dengan URI (autentikasi dinonaktifkan)<button data-href="#Connect-by-URI-authentication-disabled" class="anchor-icon" translate="no">
+<h2 id="Connect-by-URI-authentication-disabled" class="common-anchor-header">Connect by URI (authentication disabled)<button data-href="#Connect-by-URI-authentication-disabled" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -56,9 +56,14 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Gunakan alamat server Milvus (misal: <code translate="no">http://localhost:19530</code>) untuk membuat koneksi.</p>
+    </button></h2><p>Use the Milvus server address (e.g. <code translate="no">http://localhost:19530</code>) to establish a connection.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client = MilvusClient(<span class="hljs-string">&quot;http://localhost:19530&quot;</span>)
@@ -93,7 +98,7 @@ curl -X POST <span class="hljs-string">&quot;http://<span class="hljs-variable">
     -H <span class="hljs-string">&quot;Request-Timeout: 10&quot;</span> \
     -d <span class="hljs-string">&#x27;{}&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Connect-with-credentials-authentication-enabled" class="common-anchor-header">Menghubungkan dengan kredensial (autentikasi diaktifkan)<button data-href="#Connect-with-credentials-authentication-enabled" class="anchor-icon" translate="no">
+<h2 id="Connect-with-credentials-authentication-enabled" class="common-anchor-header">Connect with credentials (authentication enabled)<button data-href="#Connect-with-credentials-authentication-enabled" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -108,9 +113,14 @@ curl -X POST <span class="hljs-string">&quot;http://<span class="hljs-variable">
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Sediakan <strong>token</strong> dalam bentuk <code translate="no">&quot;username:password&quot;</code> atau pisahkan <code translate="no">user</code> dan <code translate="no">password</code>. Admin bawaan default adalah <code translate="no">root:Milvus</code> (ubah ini untuk produksi).</p>
+    </button></h2><p>Provide either a <strong>token</strong> in the form <code translate="no">&quot;username:password&quot;</code> or separate <code translate="no">user</code> and <code translate="no">password</code>. The default built-in admin is <code translate="no">root:Milvus</code> (change this for production).</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 <span class="hljs-comment"># Token form</span>
@@ -162,9 +172,9 @@ curl -X POST <span class="hljs-string">&quot;http://<span class="hljs-variable">
     -d <span class="hljs-string">&#x27;{}&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>Format token adalah <code translate="no">&quot;&lt;username&gt;:&lt;password&gt;&quot;</code>. Dokumen secara eksplisit mencatat <code translate="no">root:Milvus</code> sebagai kredensial default, dan panduan <a href="/docs/id/users_and_roles.md">Membuat Pengguna &amp; Peran</a> mencakup pengelolaan pengguna.</p>
+<p>Token format is <code translate="no">&quot;&lt;username&gt;:&lt;password&gt;&quot;</code>. The docs explicitly note <code translate="no">root:Milvus</code> as the default credential, and the <a href="/docs/id/users_and_roles.md">Create Users & Roles</a> guide covers managing users.</p>
 </div>
-<h2 id="Configure-a-timeout" class="common-anchor-header">Mengonfigurasi batas waktu<button data-href="#Configure-a-timeout" class="anchor-icon" translate="no">
+<h2 id="Configure-a-timeout" class="common-anchor-header">Configure a timeout<button data-href="#Configure-a-timeout" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -179,9 +189,14 @@ curl -X POST <span class="hljs-string">&quot;http://<span class="hljs-variable">
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Tetapkan batas waktu default pada koneksi klien:</p>
+    </button></h2><p>Set a default timeout on the client connection:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>, timeout=<span class="hljs-number">1000</span>) <span class="hljs-comment"># If not set, the timeout defaults to 10s</span>
@@ -229,11 +244,11 @@ curl -X POST <span class="hljs-string">&quot;http://<span class="hljs-variable">
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
 <ul>
-<li><p>Untuk SDK yang tercantum di atas, batas waktu ini hanya digunakan saat membuat koneksi dan tidak berfungsi sebagai batas waktu default untuk operasi API lainnya.</p></li>
-<li><p>Untuk RESTful API, <code translate="no">Request-Timeout</code> adalah batas waktu per permintaan dalam hitungan detik (tidak seperti Java <code translate="no">rpcDeadlineMs</code> dan Node.js <code translate="no">timeout</code>, yang dalam milidetik), jadi sertakanlah pada setiap panggilan yang membutuhkan batas waktu.</p></li>
+<li><p>For the SDKs listed above, this timeout is used only when establishing connections and does not serve as a default timeout for other API operations.</p></li>
+<li><p>For the RESTful API, <code translate="no">Request-Timeout</code> is a per-request deadline in seconds (unlike Java’s <code translate="no">rpcDeadlineMs</code> and the Node.js <code translate="no">timeout</code>, which are in milliseconds), so include it on every call that needs a deadline.</p></li>
 </ul>
 </div>
-<h2 id="Connect-to-a-specific-database" class="common-anchor-header">Menghubungkan ke basis data tertentu<button data-href="#Connect-to-a-specific-database" class="anchor-icon" translate="no">
+<h2 id="Connect-to-a-specific-database" class="common-anchor-header">Connect to a specific database<button data-href="#Connect-to-a-specific-database" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -248,9 +263,14 @@ curl -X POST <span class="hljs-string">&quot;http://<span class="hljs-variable">
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Pilih basis data target selama konstruksi dengan <code translate="no">db_name</code>. Anda juga dapat mengganti nanti menggunakan <code translate="no">using_database()</code>.</p>
+    </button></h2><p>Choose the target database during construction with <code translate="no">db_name</code>. You can also switch later using <code translate="no">using_database()</code>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 <span class="hljs-comment"># Set the database when creating the client</span>
@@ -312,9 +332,9 @@ curl -X POST <span class="hljs-string">&quot;http://<span class="hljs-variable">
     }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>Lihat panduan <a href="/docs/id/manage_databases.md">Basis Data</a> untuk membuat, mendaftarkan, dan mendeskripsikan basis data, dan untuk tugas-tugas manajemen basis data yang lebih luas.</p>
+<p>See the <a href="/docs/id/manage_databases.md">Database</a> guide for creating, listing, and describing databases, and for broader database management tasks.</p>
 </div>
-<h2 id="Whats-next" class="common-anchor-header">Apa selanjutnya<button data-href="#Whats-next" class="anchor-icon" translate="no">
+<h2 id="Whats-next" class="common-anchor-header">What’s next<button data-href="#Whats-next" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -330,7 +350,7 @@ curl -X POST <span class="hljs-string">&quot;http://<span class="hljs-variable">
         ></path>
       </svg>
     </button></h2><ul>
-<li><p><a href="/docs/id/create-collection.md">Membuat Koleksi</a></p></li>
-<li><p><a href="/docs/id/insert-update-delete.md">Menyisipkan Entitas</a></p></li>
-<li><p><a href="/docs/id/single-vector-search.md">Pencarian Vektor Dasar</a></p></li>
+<li><p><a href="/docs/id/create-collection.md">Create Collection</a></p></li>
+<li><p><a href="/docs/id/insert-update-delete.md">Insert Entities</a></p></li>
+<li><p><a href="/docs/id/single-vector-search.md">Basic Vector Search</a></p></li>
 </ul>

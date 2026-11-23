@@ -2,12 +2,11 @@
 id: hnsw-sq.md
 title: HNSW_SQ
 summary: >-
-  HNSW_SQ сочетает в себе иерархические навигационные графы «малого мира» (HNSW)
-  со скалярной квантованием (SQ), создавая усовершенствованный метод векторной
-  индексации, который обеспечивает контролируемый компромисс между размером и
-  точностью. По сравнению со стандартным HNSW этот тип индекса сохраняет высокую
-  скорость обработки запросов, хотя время построения индекса при этом
-  незначительно увеличивается.
+  HNSW_SQ combines Hierarchical Navigable Small World (HNSW) graphs with Scalar
+  Quantization (SQ), creating an advanced vector indexing method that offers a
+  controllable size-versus-accuracy trade-off. Compared to standard HNSW, this
+  index type maintains high query processing speed while introducing a slight
+  increase in index construction time.
 ---
 <h1 id="HNSWSQ" class="common-anchor-header">HNSW_SQ<button data-href="#HNSWSQ" class="anchor-icon" translate="no">
       <svg translate="no"
@@ -24,8 +23,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p><strong>HNSW_SQ</strong> сочетает в себе иерархические навигационные графы «малого мира» (HNSW) со скалярной квантованием (SQ), создавая усовершенствованный метод векторной индексации, который обеспечивает контролируемый компромисс между размером и точностью. По сравнению со стандартным <a href="/docs/ru/hnsw.md">HNSW</a> этот тип индекса сохраняет высокую скорость обработки запросов, хотя время построения индекса при этом незначительно увеличивается.</p>
-<h2 id="Overview" class="common-anchor-header">Обзор<button data-href="#Overview" class="anchor-icon" translate="no">
+    </button></h1><p><strong>HNSW_SQ</strong> combines Hierarchical Navigable Small World (HNSW) graphs with Scalar Quantization (SQ), creating an advanced vector indexing method that offers a controllable size-versus-accuracy trade-off. Compared to standard <a href="/docs/ru/hnsw.md">HNSW</a>, this index type maintains high query processing speed while introducing a slight increase in index construction time.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -40,7 +39,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>HNSW_SQ сочетает в себе две технологии индексирования: <strong>HNSW</strong> для быстрой навигации на основе графов и <strong>SQ</strong> для эффективного сжатия векторов.</p>
+    </button></h2><p>HNSW_SQ combines two indexing techniques: <strong>HNSW</strong> for fast graph-based navigation and <strong>SQ</strong> for efficient vector compression.</p>
 <h3 id="HNSW" class="common-anchor-header">HNSW<button data-href="#HNSW" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -56,8 +55,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>HNSW строит многоуровневый граф, в котором каждый узел соответствует вектору в наборе данных. В этом графе узлы соединяются на основе их сходства, что обеспечивает быстрый обход пространства данных. Иерархическая структура позволяет алгоритму поиска сужать круг потенциальных соседей, что значительно ускоряет процесс поиска в высокоразмерных пространствах.</p>
-<p>Дополнительную информацию см. в разделе <a href="/docs/ru/hnsw.md">HNSW</a>.</p>
+    </button></h3><p>HNSW constructs a multi-layer graph where each node corresponds to a vector in the dataset. In this graph, nodes are connected based on their similarity, enabling rapid traversal through the data space. The hierarchical structure allows the search algorithm to narrow down the candidate neighbors, significantly accelerating the search process in high-dimensional spaces.</p>
+<p>For more information, refer to <a href="/docs/ru/hnsw.md">HNSW</a>.</p>
 <h3 id="SQ" class="common-anchor-header">SQ<button data-href="#SQ" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -73,18 +72,18 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>SQ — это метод сжатия векторов путем их представления с использованием меньшего количества битов. Например:</p>
+    </button></h3><p>SQ is a method for compressing vectors by representing them with fewer bits. For instance:</p>
 <ul>
-<li><p><strong>SQ8</strong> использует 8 бит, отображая значения на 256 уровней.  Дополнительную информацию см. в разделе <a href="/docs/ru/ivf-sq8.md#SQ8">IVF_SQ8</a>.</p></li>
-<li><p><strong>SQ6</strong> использует 6 битов для представления каждого значения с плавающей запятой, что даёт 64 дискретных уровня.</p></li>
+<li><p><strong>SQ8</strong> uses 8 bits, mapping values into 256 levels.  For more information, refer to <a href="/docs/ru/ivf-sq8.md#SQ8">IVF_SQ8</a>.</p></li>
+<li><p><strong>SQ6</strong> uses 6 bits to represent each floating-point value, resulting in 64 discrete levels.</p></li>
 </ul>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/hnsw-sq.png" alt="Hnsw Sq" class="doc-image" id="hnsw-sq" /> 
-   <span>Hnsw Sq</span>
-  
- </span></p>
-<p>Такое снижение точности значительно уменьшает объем занимаемой памяти и ускоряет вычисления, сохраняя при этом основную структуру данных.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/hnsw-sq.png" alt="Hnsw Sq" class="doc-image" id="hnsw-sq" />
+    <span>Hnsw Sq</span>
+  </span>
+</p>
+<p>This reduction in precision dramatically decreases the memory footprint and speeds up the computation while retaining the essential structure of the data.</p>
 <h3 id="SQ4U" class="common-anchor-header">SQ4U<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.8+</span><button data-href="#SQ4U" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -100,20 +99,20 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Для сценариев, требующих экстремально высокой скорости запросов и минимального использования памяти, Milvus представляет « <code translate="no">SQ4U</code> » — 4-битное равномерное скалярное квантование. Это агрессивная форма скалярного квантования, которая сжимает значение с плавающей запятой каждого измерения в <strong>4-битное</strong> целое число без знака.</p>
-<p>Буква «U» в аббревиатуре SQ4U означает «Uniform» (равномерная). В отличие от неравномерного скалярного квантования, при котором минимальные и максимальные значения обычно вычисляются независимо для каждого измерения (квантование по измерениям), SQ4U применяет стратегию <strong>глобального равномерного квантования</strong>:</p>
+    </button></h3><p>For scenarios demanding extreme query speed and minimal memory usage, Milvus introduces <code translate="no">SQ4U</code> , a 4-bit Uniform Scalar Quantization. This is an aggressive form of scalar quantization that compresses each dimension’s floating-point value into a <strong>4-bit</strong> unsigned integer.</p>
+<p>The “U” in SQ4U stands for Uniform. Unlike non-uniform Scalar Quantization, which typically calculates minimum and maximum values independently for each dimension (Per-Dimension Quantization), SQ4U enforces a <strong>Global Uniform Quantization</strong> strategy:</p>
 <ol>
-<li><p><strong>Глобальная статистика</strong>: система вычисляет <strong>единое</strong> минимальное значение <code translate="no">vmin</code> и <strong>единый</strong> диапазон значений <code translate="no">vdiff</code>, которые применяются ко <strong>всем измерениям</strong> вектора (или ко всему сегменту вектора).</p></li>
-<li><p><strong>Равномерное отображение</strong>: глобальный диапазон значений делится на 16 равных интервалов. Каждое значение с плавающей запятой в векторе, независимо от того, к какому измерению оно относится, отображается в 4-битное целое число (0–15) с использованием этих общих параметров.</p></li>
+<li><p><strong>Global Statistics</strong>: The system calculates a <strong>single</strong> minimum value <code translate="no">vmin</code> and a <strong>single</strong> value range <code translate="no">vdiff</code> that applies to <strong>all dimensions</strong> of the vector (or the entire vector segment).</p></li>
+<li><p><strong>Uniform Mapping</strong>: The global value range is divided into 16 equal intervals. Every floating-point value in the vector, regardless of which dimension it belongs to, is mapped to a 4-bit integer (0–15) using these shared parameters.</p></li>
 </ol>
-<p><strong>Преимущества в производительности:</strong></p>
+<p><strong>Performance Advantages:</strong></p>
 <ul>
-<li><p><strong>Коэффициент сжатия 8:</strong> уменьшает размер в 8 раз по сравнению с <code translate="no">FP32</code> и в 2 раза по сравнению с <code translate="no">SQ8</code>, что значительно снижает нагрузку на пропускную способность памяти — часто являющуюся узким местом при векторном поиске.</p></li>
-<li><p><strong>Оптимизация SIMD:</strong> компактная структура позволяет современным процессорам (AVX2/AVX-512) обрабатывать больше измерений за один такт. Важно, что использование глобальных параметров устраняет необходимость загрузки изменяющихся значений масштаба/смещения во время вычисления расстояния, что позволяет поддерживать полную загрузку конвейера команд.</p></li>
-<li><p><strong>Эффективность кэша:</strong> меньший размер векторов означает, что в кэш процессора помещается больше данных, что снижает задержку, вызванную доступом к памяти.</p></li>
+<li><p><strong>8x Compression Ratio:</strong> Reduces size by 8x compared to <code translate="no">FP32</code> and 2x compared to <code translate="no">SQ8</code>, significantly lowering memory bandwidth pressure—often the bottleneck in vector search.</p></li>
+<li><p><strong>SIMD Optimization:</strong> The compact structure allows modern CPUs (AVX2/AVX-512) to process more dimensions per cycle. Crucially, the use of global parameters eliminates the need to load varying scale/offset values during distance calculation, keeping the instruction pipeline fully saturated.</p></li>
+<li><p><strong>Cache Efficiency:</strong> Smaller vector sizes mean more data fits into the CPU cache, reducing latency caused by memory access.</p></li>
 </ul>
 <div class="alert note">
-<p>Благодаря совместному использованию глобальных параметров алгоритм SQ4U демонстрирует наилучшую производительность при работе с нормализованными данными или наборами данных с однородным распределением значений по всем измерениям.</p>
+<p>Due to its global parameter sharing, SQ4U performs best on normalized data or datasets with consistent value distributions across dimensions.</p>
 </div>
 <h3 id="HNSW-+-SQ" class="common-anchor-header">HNSW + SQ<button data-href="#HNSW-+-SQ" class="anchor-icon" translate="no">
       <svg translate="no"
@@ -130,20 +129,20 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>HNSW_SQ объединяет преимущества алгоритмов HNSW и SQ, обеспечивая эффективный приближенный поиск ближайших соседей. Принцип работы следующий:</p>
+    </button></h3><p>HNSW_SQ combines the strengths of HNSW and SQ to enable efficient approximate nearest neighbor search. Here’s how the process works:</p>
 <ol>
-<li><p><strong>Сжатие данных:</strong> SQ сжимает векторы с помощью алгоритма сжатия векторов по коэффициентам ( <code translate="no">sq_type</code>, например, SQ6 или SQ8), что снижает использование памяти. Такое сжатие может снизить точность, но позволяет системе обрабатывать более крупные наборы данных.</p></li>
-<li><p><strong>Построение графа:</strong> сжатые векторы используются для построения графа HNSW. Поскольку данные сжаты, результирующий граф имеет меньший размер, что ускоряет поиск.</p></li>
-<li><p><strong>Поиск кандидатов:</strong> при подаче вектора-запроса алгоритм использует сжатые данные для быстрого выявления набора соседей-кандидатов из графа HNSW.</p></li>
-<li><p><strong>(Необязательно) Уточнение результатов:</strong> первоначальные результаты-кандидаты можно уточнить для повышения точности на основе следующих параметров:</p>
+<li><p><strong>Data Compression:</strong> SQ compresses the vectors using the <code translate="no">sq_type</code> (for example, SQ6 or SQ8), which reduces memory usage. This compression may lower precision, but it allows the system to handle larger datasets.</p></li>
+<li><p><strong>Graph Construction:</strong> The compressed vectors are used to build an HNSW graph. Because the data is compressed, the resulting graph is smaller and faster to search.</p></li>
+<li><p><strong>Candidate Retrieval:</strong> When a query vector is provided, the algorithm uses the compressed data to quickly identify a pool of candidate neighbors from the HNSW graph.</p></li>
+<li><p><strong>(Optional) Result Refinement:</strong> The initial candidate results can be refined for better accuracy, based on the following parameters:</p>
 <ul>
-<li><p><code translate="no">refine</code>: Определяет, активирован ли этот этап уточнения. При значении « <code translate="no">true</code> » система пересчитывает расстояния, используя представления с более высокой точностью или несжатые представления.</p></li>
-<li><p><code translate="no">refine_type</code>: Указывает уровень точности данных, используемых при уточнении (например, SQ6, SQ8, BF16). Выбор более высокой точности, такой как « <code translate="no">FP32</code> », может дать более точные результаты, но требует большего объёма памяти. Этот уровень точности должен превышать точность исходного сжатого набора данных, заданную параметром « <code translate="no">sq_type</code> ».</p></li>
-<li><p><code translate="no">refine_k</code>: Выступает в качестве коэффициента увеличения. Например, если значение top <em>k</em> равно 100, а <code translate="no">refine_k</code> равно 2, система заново ранжирует 200 лучших кандидатов и возвращает 100 лучших, повышая общую точность.</p></li>
+<li><p><code translate="no">refine</code>: Controls whether this refinement step is activated. When set to <code translate="no">true</code>, the system recalculates distances using higher-precision or uncompressed representations.</p></li>
+<li><p><code translate="no">refine_type</code>: Specifies the precision level of data used during refinement (e.g., SQ6, SQ8, BF16). A higher-precision choice such as <code translate="no">FP32</code> can yield more accurate results but requires more memory. This must exceed the precision of the original compressed data set by <code translate="no">sq_type</code>.</p></li>
+<li><p><code translate="no">refine_k</code>: Acts as a magnification factor. For instance, if your top <em>k</em> is 100 and <code translate="no">refine_k</code> is 2, the system re-ranks the top 200 candidates and returns the best 100, enhancing overall accuracy.</p></li>
 </ul></li>
 </ol>
-<p>Полный список параметров и допустимых значений см. в разделе <a href="/docs/ru/hnsw-sq.md#Index-params">«Параметры индекса</a>».</p>
-<h2 id="Build-index" class="common-anchor-header">Построение индекса<button data-href="#Build-index" class="anchor-icon" translate="no">
+<p>For a full list of parameters and valid values, refer to <a href="/docs/ru/hnsw-sq.md#Index-params">Index params</a>.</p>
+<h2 id="Build-index" class="common-anchor-header">Build index<button data-href="#Build-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -158,7 +157,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Чтобы построить индекс <code translate="no">HNSW_SQ</code> для векторного поля в Milvus, используйте метод <code translate="no">add_index()</code>, указав <code translate="no">index_type</code>, <code translate="no">metric_type</code> и дополнительные параметры для индекса.</p>
+    </button></h2><p>To build an <code translate="no">HNSW_SQ</code> index on a vector field in Milvus, use the <code translate="no">add_index()</code> method, specifying the <code translate="no">index_type</code>, <code translate="no">metric_type</code>, and additional parameters for the index.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 <span class="hljs-comment"># Prepare index building params</span>
@@ -178,14 +177,14 @@ index_params.add_index(
     } <span class="hljs-comment"># Index building params</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>В данной конфигурации:</p>
+<p>In this configuration:</p>
 <ul>
-<li><p><code translate="no">index_type</code>: Тип создаваемого индекса. В данном примере установите значение <code translate="no">HNSW_SQ</code>.</p></li>
-<li><p><code translate="no">metric_type</code>: Метод, используемый для вычисления расстояния между векторами. Поддерживаемые значения: <code translate="no">COSINE</code>, <code translate="no">L2</code> и <code translate="no">IP</code>. Подробности см. в разделе <a href="/docs/ru/metric.md">«Типы метрик</a>».</p></li>
-<li><p><code translate="no">params</code>: Дополнительные параметры конфигурации для построения индекса. Подробности см. в разделе <a href="/docs/ru/hnsw-sq.md#Index-building-params">«Параметры построения индекса</a>».</p></li>
+<li><p><code translate="no">index_type</code>: The type of index to be built. In this example, set the value to <code translate="no">HNSW_SQ</code>.</p></li>
+<li><p><code translate="no">metric_type</code>: The method used to calculate the distance between vectors. Supported values include <code translate="no">COSINE</code>, <code translate="no">L2</code>, and <code translate="no">IP</code>. For details, refer to <a href="/docs/ru/metric.md">Metric Types</a>.</p></li>
+<li><p><code translate="no">params</code>: Additional configuration options for building the index. For details, refer to <a href="/docs/ru/hnsw-sq.md#Index-building-params">Index building params</a>.</p></li>
 </ul>
-<p>После настройки параметров индекса можно создать индекс, непосредственно вызвав метод ` <code translate="no">create_index()</code> ` или передав параметры индекса в методе ` <code translate="no">create_collection</code> `. Подробности см. в разделе <a href="/docs/ru/create-collection.md">«Создание коллекции</a>».</p>
-<h2 id="Search-on-index" class="common-anchor-header">Поиск по индексу<button data-href="#Search-on-index" class="anchor-icon" translate="no">
+<p>Once the index parameters are configured, you can create the index by using the <code translate="no">create_index()</code> method directly or passing the index params in the <code translate="no">create_collection</code> method. For details, refer to <a href="/docs/ru/create-collection.md">Create Collection</a>.</p>
+<h2 id="Search-on-index" class="common-anchor-header">Search on index<button data-href="#Search-on-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -200,7 +199,7 @@ index_params.add_index(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>После построения индекса и вставки сущностей можно выполнять поиск по схожести в индексе.</p>
+    </button></h2><p>Once the index is built and entities are inserted, you can perform similarity searches on the index.</p>
 <pre><code translate="no" class="language-python">search_params = {
     <span class="hljs-string">&quot;params&quot;</span>: {
         <span class="hljs-string">&quot;ef&quot;</span>: <span class="hljs-number">10</span>, <span class="hljs-comment"># Parameter controlling query time/accuracy trade-off</span>
@@ -216,11 +215,11 @@ res = MilvusClient.search(
     search_params=search_params
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>В данной конфигурации:</p>
+<p>In this configuration:</p>
 <ul>
-<li><code translate="no">params</code>: Дополнительные параметры настройки для поиска по индексу. Подробности см. в разделе <a href="/docs/ru/hnsw-sq.md#Index-specific-search-params">«Параметры поиска, специфичные для индекса</a>».</li>
+<li><code translate="no">params</code>: Additional configuration options for searching on the index. For details, refer to <a href="/docs/ru/hnsw-sq.md#Index-specific-search-params">Index-specific search params</a>.</li>
 </ul>
-<h2 id="Index-params" class="common-anchor-header">Параметры индекса<button data-href="#Index-params" class="anchor-icon" translate="no">
+<h2 id="Index-params" class="common-anchor-header">Index params<button data-href="#Index-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -235,8 +234,8 @@ res = MilvusClient.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>В этом разделе представлен обзор параметров, используемых для построения индекса и выполнения поиска по индексу.</p>
-<h3 id="Index-building-params" class="common-anchor-header">Параметры построения индекса<button data-href="#Index-building-params" class="anchor-icon" translate="no">
+    </button></h2><p>This section provides an overview of the parameters used for building an index and performing searches on the index.</p>
+<h3 id="Index-building-params" class="common-anchor-header">Index building params<button data-href="#Index-building-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -251,52 +250,52 @@ res = MilvusClient.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>В следующей таблице перечислены параметры, которые можно настроить в <code translate="no">params</code> при <a href="/docs/ru/hnsw-sq.md#share-PRYPd4xBJonkoZxPpNWcdnebnNh">построении индекса</a>.</p>
+    </button></h3><p>The following table lists the parameters that can be configured in <code translate="no">params</code> when <a href="/docs/ru/hnsw-sq.md#share-PRYPd4xBJonkoZxPpNWcdnebnNh">building an index</a>.</p>
 <table>
    <tr>
      <th></th>
-     <th><p>Параметр</p></th>
-     <th><p>Описание</p></th>
-     <th><p>Диапазон значений</p></th>
-     <th><p>Рекомендации по настройке</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Description</p></th>
+     <th><p>Value Range</p></th>
+     <th><p>Tuning Suggestion</p></th>
    </tr>
    <tr>
      <td><p>HNSW</p></td>
      <td><p><code translate="no">M</code></p></td>
-     <td><p>Максимальное количество связей (или ребер), которые может иметь каждый узел в графе, включая как исходящие, так и входящие ребра.</p><p>Этот параметр напрямую влияет как на построение индекса, так и на поиск.</p></td>
-     <td><p><strong>Тип</strong>: Целое число</p><p><strong>Диапазон</strong>: [2, 2048]</p><p><strong>Значение по умолчанию</strong>: <code translate="no">30</code> (до 30 исходящих и 30 входящих ребер на узел)</p></td>
-     <td><p>Более высокое значение <code translate="no">M</code>, как правило, обеспечивает <strong>более высокую точность</strong>, но <strong>увеличивает нагрузку на память</strong> и <strong>замедляет как построение индекса, так и поиск</strong>.</p><p>Рассмотрите возможность увеличения <code translate="no">M</code> для наборов данных с высокой размерностью или в тех случаях, когда крайне важен высокий показатель recall.</p><p>Уменьшение значения <code translate="no">M</code> следует рассматривать в тех случаях, когда основными приоритетами являются объем используемой памяти и скорость поиска.</p><p>В большинстве случаев мы рекомендуем устанавливать значение в пределах диапазона: [5, 100].</p></td>
+     <td><p>Maximum number of connections （or edges) each node can have in the graph, including both outgoing and incoming edges.</p><p>This parameter directly affects both index construction and search.</p></td>
+     <td><p><strong>Type</strong>: Integer</p><p><strong>Range</strong>: [2, 2048]</p><p><strong>Default value</strong>: <code translate="no">30</code> (up to 30 outgoing and 30 incoming edges per node)</p></td>
+     <td><p>A larger <code translate="no">M</code> generally leads to <strong>higher accuracy</strong> but <strong>increases memory overhead</strong> and <strong>slows down both index building and search</strong>.</p><p>Consider increasing <code translate="no">M</code> for datasets with high dimensionality or when high recall is crucial.</p><p>Consider decreasing <code translate="no">M</code> when memory usage and search speed are primary concerns.</p><p>In most cases, we recommend you set a value within this range: [5, 100].</p></td>
    </tr>
    <tr>
      <td></td>
      <td><p><code translate="no">efConstruction</code></p></td>
-     <td><p>Количество соседей-кандидатов, рассматриваемых для установления связи при построении индекса.</p><p>Для каждого нового элемента оценивается более широкий набор кандидатов, но максимальное количество фактически устанавливаемых связей по-прежнему ограничено параметром ` <code translate="no">M</code>`.</p></td>
-     <td><p><strong>Тип</strong>: Целое число</p><p><strong>Диапазон</strong>: [1, <em>int_max</em>]</p><p><strong>Значение по умолчанию</strong>: <code translate="no">360</code></p></td>
-     <td><p>Более высокое значение параметра ` <code translate="no">efConstruction</code> `, как правило, приводит к <strong>повышению точности индекса</strong>, так как проанализируется больше потенциальных связей. Однако это также приводит к <strong>увеличению времени индексирования и объёма используемой памяти</strong> во время построения.</p><p>Рассмотрите возможность увеличения значения <code translate="no">efConstruction</code> для повышения точности, особенно в сценариях, где время индексирования не является критическим фактором.</p><p>Рассмотрите возможность уменьшения значения <code translate="no">efConstruction</code> для ускорения построения индекса, если имеются ограничения по ресурсам.</p><p>В большинстве случаев мы рекомендуем устанавливать значение в пределах диапазона [50, 500].</p></td>
+     <td><p>Number of candidate neighbors considered for connection during index construction.</p><p>A larger pool of candidates is evaluated for each new element, but the maximum number of connections actually established is still limited by <code translate="no">M</code>.</p></td>
+     <td><p><strong>Type</strong>: Integer</p><p><strong>Range</strong>: [1, <em>int_max</em>]</p><p><strong>Default value</strong>: <code translate="no">360</code></p></td>
+     <td><p>A higher <code translate="no">efConstruction</code> typically results in a <strong>more accurate index</strong>, as more potential connections are explored. However, this also leads to <strong>longer indexing time and increased memory usage</strong> during construction.</p><p>Consider increasing <code translate="no">efConstruction</code> for improved accuracy, especially in scenarios where indexing time is less critical.</p><p>Consider decreasing <code translate="no">efConstruction</code> to speed up index construction when resource constraints are a concern.</p><p>In most cases, we recommend you set a value within this range: [50, 500].</p></td>
    </tr>
    <tr>
      <td><p>SQ</p></td>
      <td><p><code translate="no">sq_type</code></p></td>
-     <td><p>Определяет метод скалярной квантования для сжатия векторов. Каждый вариант обеспечивает свой баланс между степенью сжатия и точностью:</p><ul><li><p><code translate="no">SQ4U</code>: Кодирует векторы с использованием 4-битной равномерной квантования. Этот режим обеспечивает максимальную скорость и степень сжатия.</p></li><li><p><code translate="no">SQ6</code>: Кодирует векторы с использованием 6-битных целых чисел.</p></li><li><p><code translate="no">SQ8</code>: Кодирует векторы с использованием 8-битных целых чисел.</p></li><li><p><code translate="no">BF16</code>: Использует формат Bfloat16.</p></li><li><p><code translate="no">FP16</code>: Использует стандартный 16-битный формат с плавающей запятой.</p></li></ul></td>
-     <td><p><strong>Тип</strong>: Строка</p><p><strong>Диапазон</strong>: [ <code translate="no">SQ4U</code>, <code translate="no">SQ6</code>, <code translate="no">SQ8</code>, <code translate="no">BF16</code>, <code translate="no">FP16</code> ]</p><p><strong>Значение по умолчанию</strong>: <code translate="no">SQ8</code></p></td>
-     <td><p>Выбор значения <code translate="no">sq_type</code> зависит от конкретных потребностей приложения. Значение <code translate="no">SQ4U</code> выбирается для обеспечения максимальной скорости и эффективности использования памяти. Значения <code translate="no">SQ6</code> или <code translate="no">SQ8</code> могут быть подходящими для сбалансированной производительности. С другой стороны, если точность имеет первостепенное значение, предпочтительными могут быть значения <code translate="no">BF16</code> или <code translate="no">FP16</code>.</p></td>
+     <td><p>Specifies the scalar quantization method for compressing vectors. Each option offers a different balance between compression and accuracy:</p><ul><li><p><code translate="no">SQ4U</code>: Encodes vectors using 4-bit uniform quantization. This mode offers the highest speed and compression.</p></li><li><p><code translate="no">SQ6</code>: Encodes vectors using 6-bit integers.</p></li><li><p><code translate="no">SQ8</code>: Encodes vectors using 8-bit integers.</p></li><li><p><code translate="no">BF16</code>: Uses the Bfloat16 format.</p></li><li><p><code translate="no">FP16</code>: Uses the standard 16-bit floating-point format.</p></li></ul></td>
+     <td><p><strong>Type</strong>: String</p><p><strong>Range</strong>: [ <code translate="no">SQ4U</code>, <code translate="no">SQ6</code>, <code translate="no">SQ8</code>, <code translate="no">BF16</code>, <code translate="no">FP16</code> ]</p><p><strong>Default value</strong>: <code translate="no">SQ8</code></p></td>
+     <td><p>The choice of <code translate="no">sq_type</code> depends on the specific application's needs. <code translate="no">SQ4U</code> is chosen  for maximum speed and memory efficiency. <code translate="no">SQ6</code> or <code translate="no">SQ8</code> might be suitable for balanced performance. On the other hand, if accuracy is paramount, <code translate="no">BF16</code> or <code translate="no">FP16</code> could be preferred.</p></td>
    </tr>
    <tr>
      <td></td>
      <td><p><code translate="no">refine</code></p></td>
-     <td><p>Булевый флаг, определяющий, применяется ли этап уточнения во время поиска. Уточнение предполагает переранжирование первоначальных результатов путем вычисления точных расстояний между вектором запроса и кандидатами.</p></td>
-     <td><p><strong>Тип</strong>: Булево значение</p><p><strong>Диапазон</strong>: [<code translate="no">true</code>, <code translate="no">false</code>]</p><p><strong>Значение по умолчанию</strong>: <code translate="no">false</code></p></td>
-     <td><p>Установите значение <code translate="no">true</code>, если требуется высокая точность и вы готовы смириться с немного более длительным временем поиска. Используйте значение <code translate="no">false</code>, если приоритетом является скорость и допустим небольшой компромисс в точности.</p></td>
+     <td><p>A boolean flag that controls whether a refinement step is applied during search. Refinement involves reranking the initial results by computing exact distances between the query vector and candidates.</p></td>
+     <td><p><strong>Type</strong>: Boolean</p><p><strong>Range</strong>: [<code translate="no">true</code>, <code translate="no">false</code>]</p><p><strong>Default value</strong>: <code translate="no">false</code></p></td>
+     <td><p>Set to <code translate="no">true</code> if high accuracy is essential and you can tolerate slightly slower search times. Use <code translate="no">false</code> if speed is a priority and a minor compromise in accuracy is acceptable.</p></td>
    </tr>
    <tr>
      <td></td>
      <td><p><code translate="no">refine_type</code></p></td>
-     <td><p>Определяет точность данных, используемых для уточнения ранжирования.</p><p>Эта точность должна быть выше, чем у сжатых векторов (как задано параметром ` <code translate="no">sq_type</code>`), что влияет как на точность переранжированных векторов, так и на их объем в памяти.</p></td>
-     <td><p><strong>Тип</strong>: Строка</p><p><strong>Диапазон</strong>: [ <code translate="no">SQ6</code>, <code translate="no">SQ8</code>, <code translate="no">BF16</code>, <code translate="no">FP16</code>, <code translate="no">FP32</code> ]</p><p><strong>Значение по умолчанию</strong>: нет</p></td>
-     <td><p>Используйте <code translate="no">FP32</code> для максимальной точности при более высоких затратах памяти или <code translate="no">SQ6</code>/<code translate="no">SQ8</code> для лучшего сжатия. <code translate="no">BF16</code> и <code translate="no">FP16</code> предлагают сбалансированную альтернативу.</p></td>
+     <td><p>Determines the precision of the data used for refinement.</p><p>This precision must be higher than that of the compressed vectors (as set by <code translate="no">sq_type</code>), affecting both the accuracy of the re-ranked vectors and their memory footprint.</p></td>
+     <td><p><strong>Type</strong>: String</p><p><strong>Range</strong>:[ <code translate="no">SQ6</code>, <code translate="no">SQ8</code>, <code translate="no">BF16</code>, <code translate="no">FP16</code>, <code translate="no">FP32</code> ]</p><p><strong>Default value</strong>: None</p></td>
+     <td><p>Use <code translate="no">FP32</code> for maximum precision at a higher memory cost, or <code translate="no">SQ6</code>/<code translate="no">SQ8</code> for better compression. <code translate="no">BF16</code> and <code translate="no">FP16</code> offer a balanced alternative.</p></td>
    </tr>
 </table>
-<h3 id="Index-specific-search-params" class="common-anchor-header">Параметры поиска, специфичные для индекса<button data-href="#Index-specific-search-params" class="anchor-icon" translate="no">
+<h3 id="Index-specific-search-params" class="common-anchor-header">Index-specific search params<button data-href="#Index-specific-search-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -311,27 +310,27 @@ res = MilvusClient.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>В следующей таблице перечислены параметры, которые можно настроить в <code translate="no">search_params.params</code> при <a href="/docs/ru/hnsw-sq.md#Search-on-index">поиске по индексу</a>. Настройки сервера могут переопределять значения по умолчанию для параметров, которые вы не указали.</p>
+    </button></h3><p>The following table lists the parameters that can be configured in <code translate="no">search_params.params</code> when <a href="/docs/ru/hnsw-sq.md#Search-on-index">searching on the index</a>. Server settings can override the defaults for parameters you omit.</p>
 <table>
    <tr>
      <th></th>
-     <th><p>Параметр</p></th>
-     <th><p>Описание</p></th>
-     <th><p>Диапазон значений</p></th>
-     <th><p>Рекомендации по настройке</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Description</p></th>
+     <th><p>Value Range</p></th>
+     <th><p>Tuning Suggestion</p></th>
    </tr>
    <tr>
      <td><p>HNSW</p></td>
      <td><p><code translate="no">ef</code></p></td>
-     <td><p>Управляет шириной поиска при поиске ближайших соседей. Определяет, сколько узлов будет посещено и оценено в качестве потенциальных ближайших соседей. </p><p>Этот параметр влияет только на процесс поиска и применяется исключительно к нижнему уровню графа.</p></td>
-     <td><p><strong>Тип</strong>: Целое число</p><p><strong>Диапазон</strong>: [1, <em>int_max</em>]</p><p><strong>Значение по умолчанию</strong>: <code translate="no">max(limit, 16)</code> для обычного поиска kNN; <code translate="no">512</code> для диапазонного поиска.</p><p>Для обычного поиска kNN явно заданное значение <code translate="no">ef</code> должно быть больше или равно <code translate="no">limit</code> (количество ближайших соседей, которые необходимо вернуть).</p></td>
-     <td><p>Более высокое значение <code translate="no">ef</code>, как правило, приводит к <strong>повышению точности поиска</strong>, так как учитывается больше потенциальных соседей. Однако это также <strong>увеличивает время поиска</strong>.</p><p>Рассмотрите возможность увеличения значения <code translate="no">ef</code>, если достижение высокого показателя recall является критически важным, а скорость поиска не столь важна.</p><p>Рассмотрите возможность уменьшения значения <code translate="no">ef</code>, чтобы ускорить поиск, особенно в тех случаях, когда допустимо небольшое снижение точности.</p><p>В большинстве случаев мы рекомендуем устанавливать значение в пределах диапазона: [K, 10K].</p></td>
+     <td><p>Controls the breadth of search during nearest neighbor retrieval. It determines how many nodes are visited and evaluated as potential nearest neighbors. </p><p>This parameter affects only the search process and applies exclusively to the bottom layer of the graph.</p></td>
+     <td><p><strong>Type</strong>: Integer</p><p><strong>Range</strong>: [1, <em>int_max</em>]</p><p><strong>Default value</strong>: <code translate="no">max(limit, 16)</code> for ordinary kNN search; <code translate="no">512</code> for range search.</p><p>For ordinary kNN search, an explicit <code translate="no">ef</code> must be greater than or equal to <code translate="no">limit</code> (the number of nearest neighbors to return).</p></td>
+     <td><p>A larger <code translate="no">ef</code> generally leads to <strong>higher search accuracy</strong> as more potential neighbors are considered. However, this also <strong>increases search time</strong>.</p><p>Consider increasing <code translate="no">ef</code> when achieving high recall is critical and search speed is less of a concern.</p><p>Consider decreasing <code translate="no">ef</code> to prioritize faster searches, especially in scenarios where a slight reduction in accuracy is acceptable.</p><p>In most cases, we recommend you set a value within this range: [K, 10K].</p></td>
    </tr>
    <tr>
      <td><p>SQ</p></td>
      <td><p><code translate="no">refine_k</code></p></td>
-     <td><p>Коэффициент увеличения, определяющий, сколько дополнительных кандидатов проверяется на этапе уточнения по сравнению с запрашиваемыми K лучшими результатами.</p></td>
-     <td><p><strong>Тип</strong>: Float</p><p><strong>Диапазон</strong>: [1, <em>float_max</em>)</p><p><strong>Значение по умолчанию</strong>: 1</p></td>
-     <td><p>Более высокие значения параметра « <code translate="no">refine_k</code> » могут повысить полноту и точность, но также увеличат время поиска и потребление ресурсов. Значение 1 означает, что в процессе уточнения учитываются только первоначальные K лучших результатов.</p></td>
+     <td><p>The magnification factor that controls how many extra candidates are examined during the refinement stage, relative to the requested top K results.</p></td>
+     <td><p><strong>Type</strong>: Float</p><p><strong>Range</strong>: [1, <em>float_max</em>)</p><p><strong>Default value</strong>: 1</p></td>
+     <td><p>Higher values of <code translate="no">refine_k</code> can improve recall and accuracy but will also increase search time and resource usage. A value of 1 means the refinement process considers only the initial top K results.</p></td>
    </tr>
 </table>

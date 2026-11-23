@@ -2,9 +2,11 @@
 id: create-structarray-field.md
 title: Create a StructArray Field
 summary: >-
-  하나의 엔티티에 구조화된 요소들의 정렬된 목록을 포함해야 할 경우 StructArray 필드를 생성합니다. StructArray 필드는 요소
-  유형이 Struct인 Array 필드입니다. 각 Struct 요소는 동일한 스키마를 따르며, 스칼라 하위 필드, 벡터 하위 필드, 그리고
-  Milvus 3.0.6부터는 스칼라 배열 하위 필드를 포함할 수 있습니다.
+  Create a StructArray field when one entity needs to contain an ordered list of
+  structured elements. A StructArray field is an Array field whose element type
+  is Struct. Each Struct element follows the same schema and can contain scalar
+  subfields, vector subfields, and, starting in Milvus 3.0.6, scalar array
+  subfields.
 ---
 <h1 id="Create-a-StructArray-Field" class="common-anchor-header">Create a StructArray Field<button data-href="#Create-a-StructArray-Field" class="anchor-icon" translate="no">
       <svg translate="no"

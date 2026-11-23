@@ -1,6 +1,6 @@
 ---
 id: cli_commands.md
-summary: Взаимодействуйте с Милвусом с помощью команд.
+summary: Interact with Milvus using commands.
 title: Milvus_CLI Command Reference
 ---
 <h1 id="MilvusCLI-Command-Reference" class="common-anchor-header">Milvus_CLI Command Reference<button data-href="#MilvusCLI-Command-Reference" class="anchor-icon" translate="no">

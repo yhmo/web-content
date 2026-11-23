@@ -1,7 +1,9 @@
 ---
 id: array-of-structs.md
 title: StructArray
-summary: StructArray 필드를 사용하여 벡터 및 스칼라 필드의 공유 스키마로 정렬된 Struct 요소를 저장합니다.
+summary: >-
+  Use StructArray fields to store ordered Struct elements with a shared schema
+  of vector and scalar fields.
 ---
 <h1 id="StructArray" class="common-anchor-header">StructArray<button data-href="#StructArray" class="anchor-icon" translate="no">
       <svg translate="no"
@@ -18,8 +20,8 @@ summary: StructArray 필드를 사용하여 벡터 및 스칼라 필드의 공�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>엔티티의 Struct 필드 배열 또는 StructArray 필드는 정렬된 Struct 요소 집합을 저장합니다. 배열의 각 Struct는 여러 벡터와 스칼라 필드로 구성된 동일한 사전 정의된 스키마를 공유합니다.</p>
-<p>다음은 StructArray 필드를 포함하는 컬렉션의 엔티티 예시입니다.</p>
+    </button></h1><p>An Array of Structs field, or a StructArray field, in an entity stores an ordered set of Struct elements. Each Struct in the Array shares the same pre-defined schema, comprising multiple vectors and scalar fields.</p>
+<p>Here’s an example of an entity from a collection that contains a StructArray field.</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
     &#x27;id&#x27;<span class="hljs-punctuation">:</span> <span class="hljs-number">0</span><span class="hljs-punctuation">,</span>
     &#x27;title&#x27;<span class="hljs-punctuation">:</span> &#x27;Walden&#x27;<span class="hljs-punctuation">,</span>
@@ -41,8 +43,8 @@ summary: StructArray 필드를 사용하여 벡터 및 스칼라 필드의 공�
 <span class="highlighted-comment-line">    <span class="hljs-comment">// hightlight-end</span></span>
 <span class="highlighted-comment-line"><span class="hljs-punctuation">}</span></span>
 <span class="highlighted-comment-line"></span><button class="copy-code-btn"></button></code></pre>
-<p>위의 예에서 <code translate="no">chunks</code> 필드는 StructArray 필드이며, 각 Struct 요소에는 <code translate="no">text</code>, <code translate="no">text_vector</code>, <code translate="no">chapter</code> 과 같은 자체 필드가 포함되어 있습니다.</p>
-<h2 id="When-to-use" class="common-anchor-header">사용 시기<button data-href="#When-to-use" class="anchor-icon" translate="no">
+<p>In the example above, the <code translate="no">chunks</code> field is a StructArray field, and each Struct element contains its own fields, namely <code translate="no">text</code>, <code translate="no">text_vector</code>, and <code translate="no">chapter</code>.</p>
+<h2 id="When-to-use" class="common-anchor-header">When to use<button data-href="#When-to-use" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -57,15 +59,15 @@ summary: StructArray 필드를 사용하여 벡터 및 스칼라 필드의 공�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>자율 주행에서 멀티모달 검색에 이르기까지 최신 AI 애플리케이션은 점점 더 중첩된 이기종 데이터에 의존하고 있습니다. 기존의 플랫 데이터 모델은<strong>'주석이 달린 청크가 많은 하나의 문서</strong>'나<strong>'여러 개의 주행 장면이 관찰되는 하나의 주행 장면</strong>'과 같은 복잡한 관계를 표현하는 데 어려움을 겪습니다. 바로 이 부분에서 Milvus의 StructArray 데이터 유형이 빛을 발합니다.</p>
-<p>StructArray 필드가 애플리케이션 시나리오에 적합한지 빠르게 결정하려면 다음 사항을 고려하세요:</p>
+    </button></h2><p>Modern AI applications, from autonomous driving to multimodal retrieval, increasingly rely on nested, heterogeneous data. Traditional flat data models struggle to represent complex relationships like "<strong>one document with many annotated chunks</strong>" or "<strong>one driving scene with multiple observed maneuvers</strong>". This is where the StructArray data type in Milvus shines.</p>
+<p>To quickly determine if the StructArray field suits your application scenarios, consider whether:</p>
 <ul>
-<li><p>데이터가 많은 주석이 달린 청크가 있는 하나의 문서와 같이 계층적 구조로 되어 있습니다.</p></li>
-<li><p>위의 예에서처럼 검색 결과는 청크가 아니라 문서여야 합니다.</p></li>
-<li><p>검색 결과에 대량의 중복 엔터티가 포함되어 있어 그룹화, 중복 제거, 순위 재지정과 같은 기술을 사용하여 최종 결과를 검색하는 데 어려움을 겪고 있습니다.</p></li>
+<li><p>Your data is in a hierarchical structure, such as one document with many annotated chunks.</p></li>
+<li><p>The search result should be the document, rather than the chunks, as in the above example.</p></li>
+<li><p>The search results contain massive duplicate entities, and you struggle to retrieve the final results using techniques such as grouping, deduplication, and reranking.</p></li>
 </ul>
-<p>위의 질문에 대한 답변이 '예'라면 StructArray를 사용해야 합니다.</p>
-<h2 id="Limits" class="common-anchor-header">제한 사항<button data-href="#Limits" class="anchor-icon" translate="no">
+<p>If your answers to the questions above are yes, you should use the StructArray.</p>
+<h2 id="Limits" class="common-anchor-header">Limits<button data-href="#Limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -81,48 +83,48 @@ summary: StructArray 필드를 사용하여 벡터 및 스칼라 필드의 공�
         ></path>
       </svg>
     </button></h2><ul>
-<li><p><strong>데이터 유형</strong></p>
-<p>컬렉션을 만들 때 배열 필드에 있는 요소의 데이터 유형으로 Struct 유형을 사용할 수 있습니다. 그러나 기존 컬렉션에 StructArray를 추가할 수 없으며, Milvus는 컬렉션 필드의 데이터 유형으로 Struct 유형을 사용하는 것을 지원하지 않습니다.</p>
-<p>배열 필드의 구조체는 동일한 스키마를 공유하므로 배열 필드를 만들 때 정의해야 합니다.</p>
-<p>Struct 스키마에는 아래 목록과 같이 벡터 및 스칼라 필드가 모두 포함됩니다:</p>
+<li><p><strong>Data types</strong></p>
+<p>When you create a collection, you can use the Struct type as the data type for the elements in an Array field. However, you cannot add a StructArray to an existing collection, and Milvus does not support using the Struct type as the data type for a collection field.</p>
+<p>The Structs in an Array field share the same schema, which should be defined when you create the Array field.</p>
+<p>A Struct schema contains both vectors and scalar fields, as listed below:</p>
 <ul>
-<li><p>적용 가능한 벡터 데이터 유형 <code translate="no">FLOAT_VECTOR</code>, <code translate="no">FLOAT16_VECTOR</code>, <code translate="no">BFLOAT16_VECTOR</code>, <code translate="no">INT8_VECTOR</code>, 및 <code translate="no">BINARY_VECTOR</code>.</p></li>
-<li><p>적용 가능한 스칼라 데이터 유형 <code translate="no">VARCHAR</code>, <code translate="no">INT8/16/32/64</code>, <code translate="no">FLOAT</code>, <code translate="no">DOUBLE</code>, 및 <code translate="no">BOOL</code>.</p></li>
+<li><p>Applicable vector data types: <code translate="no">FLOAT_VECTOR</code>, <code translate="no">FLOAT16_VECTOR</code>, <code translate="no">BFLOAT16_VECTOR</code>, <code translate="no">INT8_VECTOR</code>, and <code translate="no">BINARY_VECTOR</code>.</p></li>
+<li><p>Applicable scalar data types: <code translate="no">VARCHAR</code>, <code translate="no">INT8/16/32/64</code>, <code translate="no">FLOAT</code>, <code translate="no">DOUBLE</code>, and <code translate="no">BOOL</code>.</p></li>
 </ul>
-<p>컬렉션 수준과 구조체에서 벡터 필드 수를 모두 합쳐서 10보다 크지 않게 유지합니다.</p></li>
-<li><p><strong>Null 가능 및 기본값</strong></p>
-<p>StructArray 필드는 널 가능하지 않으며 기본값을 허용하지 않습니다.</p></li>
-<li><p><strong>함수</strong></p>
-<p>함수를 사용하여 구조체 내의 스칼라 필드에서 벡터 필드를 파생할 수 없습니다.</p></li>
-<li><p><strong>인덱스 유형 및 메트릭 유형</strong></p>
-<p>컬렉션의 모든 벡터 필드는 색인화되어야 합니다. StructArray 필드 내의 벡터 필드를 인덱싱하기 위해 Milvus는 임베딩 목록을 사용하여 각 Struct 요소의 벡터 임베딩을 구성하고 전체 임베딩 목록을 전체적으로 인덱싱합니다.</p>
-<p><code translate="no">AUTOINDEX</code> 또는 <code translate="no">HNSW</code> 을 인덱스 유형으로 사용하고 아래 나열된 메트릭 유형을 사용하여 StructArray 필드에 있는 임베딩 목록에 대한 인덱스를 만들 수 있습니다.</p>
+<p>Keep the number of vector fields both at the collection level and in the Structs combined to be no greater than or equal to 10.</p></li>
+<li><p><strong>Nullable & default values</strong></p>
+<p>A StructArray field is not nullable and does not accept any default value.</p></li>
+<li><p><strong>Function</strong></p>
+<p>You cannot use a function to derive a vector field from a scalar field within a Struct.</p></li>
+<li><p><strong>Index type & metric type</strong></p>
+<p>All vector fields in a collection must be indexed. To index a vector field within a StructArray field, Milvus uses an embedding list to organize the vector embeddings in each Struct element and indexes the entire embedding list as a whole.</p>
+<p>You can use <code translate="no">AUTOINDEX</code> or <code translate="no">HNSW</code> as the index type and any metric type listed below to build indexes for the embedding lists in a StructArray field.</p>
 <p><table>
 <tr>
-<th><p>인덱스 유형</p></th>
-<th><p>메트릭 유형</p></th>
-<th><p>설명</p></th>
+<th><p>Index type</p></th>
+<th><p>Metric type</p></th>
+<th><p>Remarks</p></th>
 </tr>
 <tr>
 <td rowspan="3"><ul><li><p><code translate="no">AUTOINDEX</code></p></li><li><p><code translate="no">HNSW</code></p></li><li><p><code translate="no">IVF_FLAT</code></p></li><li><p><code translate="no">DISKANN</code></p></li></ul></td>
 <td rowspan="3"><ul><li><p><code translate="no">MAX_SIM_COSINE</code></p></li><li><p><code translate="no">MAX_SIM_IP</code></p></li><li><p><code translate="no">MAX_SIM_L2</code></p></li></ul></td>
-<td rowspan="3"><p>다음 유형의 임베딩 목록의 경우:</p><ul><li><p><code translate="no">FLOAT_VECTOR</code></p></li><li><p><code translate="no">FLOAT16_VECTOR</code></p></li><li><p><code translate="no">BFLOAT16_VECTOR</code></p></li><li><p><code translate="no">INT8_VECTOR</code></p></li><li><p><code translate="no">BINARY_VECTOR</code></p></li></ul></td>
+<td rowspan="3"><p>For embedding lists of the following types:</p><ul><li><p><code translate="no">FLOAT_VECTOR</code></p></li><li><p><code translate="no">FLOAT16_VECTOR</code></p></li><li><p><code translate="no">BFLOAT16_VECTOR</code></p></li><li><p><code translate="no">INT8_VECTOR</code></p></li><li><p><code translate="no">BINARY_VECTOR</code></p></li></ul></td>
 </tr>
 </table></p>
-<p>Milvus가 쿼리와 임베딩 목록 간의 유사도를 계산하는 방법에 대한 자세한 내용은 <a href="/docs/ko/v2.6.x/metric.md#Maximum-similarity">최대 유사도를</a> 참조하세요.</p>
-<p>StructArray 필드의 스칼라 필드는 다음과 같은 인덱스 유형을 지원합니다:</p>
+<p>For details on how Milvus calculates the similarity between the query and an embedding list, refer to <a href="/docs/ko/v2.6.x/metric.md#Maximum-similarity">Maximum Similarity</a>.</p>
+<p>The scalar fields in the StructArray field support the following index types:</p>
 <ul>
 <li><p><code translate="no">INVERTED</code></p>
-<p>이는 일반적으로 <code translate="no">structA[color]</code> 또는 <code translate="no">structA[str_val]</code> 과 같은 문자열형 또는 범주형 필터에 적용됩니다. 자세한 내용은 <a href="/docs/ko/v2.6.x/inverted.md">INVERTED를</a> 참조하세요.</p></li>
+<p>This usually applies to string-like or categorical filters, like <code translate="no">structA[color]</code> or <code translate="no">structA[str_val]</code>. For details, refer to <a href="/docs/ko/v2.6.x/inverted.md">INVERTED</a>.</p></li>
 <li><p><code translate="no">STL_SORT</code></p>
-<p>이는 일반적으로 <code translate="no">strctA[num_val]</code> 과 같은 숫자 값의 범위 또는 순서 스타일 가속에 적용됩니다. 자세한 내용은 <a href="/docs/ko/v2.6.x/stl-sort.md">STL_SORT를</a> 참조하세요.</p></li>
+<p>This usually applies to range or order-style acceleration on numeric values, like <code translate="no">strctA[num_val]</code>. For details, refer to <a href="/docs/ko/v2.6.x/stl-sort.md">STL_SORT</a>.</p></li>
 </ul></li>
-<li><p><strong>데이터 업서트</strong></p>
-<p>구조체는 병합 모드에서 업서트를 지원하지 않습니다. 그러나 재정의 모드에서는 여전히 업서트를 수행하여 구조체의 데이터를 업데이트할 수 있습니다. 병합 모드와 재정의 모드에서 업서트의 차이점에 대한 자세한 내용은 <a href="/docs/ko/v2.6.x/upsert-entities.md#Overview">엔티티 업서트를</a> 참조하십시오.</p></li>
-<li><p><strong>스칼라 필터링</strong></p>
-<p><strong>일치 계열의</strong> <strong>요소 필터</strong> 및 <strong>연산자를</strong> 사용하여 StructArray 필드의 스칼라 하위 필드에 대해 스칼라 필터링을 수행할 수 있습니다. 자세한 내용은 <a href="/docs/ko/v2.6.x/array-of-structs.md#Scalar-filtering-in-a-StructArray-field">StructArray 필드에서 스칼라 필터링을</a> 참조하십시오.</p></li>
+<li><p><strong>Upsert data</strong></p>
+<p>Structs do not support upsert in merge mode. However, you can still perform upserts in override mode to update data in Structs. For details about the differences between upsert in merge mode and override mode, refer to <a href="/docs/ko/v2.6.x/upsert-entities.md#Overview">Upsert Entities</a>.</p></li>
+<li><p><strong>Scalar filtering</strong></p>
+<p>You can use <strong>element filters</strong> and <strong>operators in the match family</strong> to conduct scalar filtering against a scalar sub-field in a StructArray field. For details, refer to <a href="/docs/ko/v2.6.x/array-of-structs.md#Scalar-filtering-in-a-StructArray-field">Scalar filtering in a StructArray field</a>.</p></li>
 </ul>
-<h2 id="Add-a-StructArray" class="common-anchor-header">StructArray 추가하기<button data-href="#Add-a-StructArray" class="anchor-icon" translate="no">
+<h2 id="Add-a-StructArray" class="common-anchor-header">Add a StructArray<button data-href="#Add-a-StructArray" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -137,17 +139,22 @@ summary: StructArray 필드를 사용하여 벡터 및 스칼라 필드의 공�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus에서 StructArray 필드를 추가하려면 컬렉션을 생성할 때 배열 필드를 정의하고 해당 요소의 데이터 유형을 Struct로 설정해야 합니다. 그 과정은 다음과 같습니다:</p>
+    </button></h2><p>To add a StructArray field in Milvus, you need to define an array field when creating a collection, and set the data type for its elements to Struct. The process is as follows:</p>
 <ol>
-<li><p>컬렉션 스키마에 필드를 배열 필드로 추가할 때 필드의 데이터 유형을 <code translate="no">DataType.ARRAY</code> 로 설정합니다.</p></li>
-<li><p>필드의 <code translate="no">element_type</code> 속성을 <code translate="no">DataType.STRUCT</code> 으로 설정하여 필드를 Struct 배열로 만듭니다.</p></li>
-<li><p>Struct 스키마를 만들고 필수 필드를 포함합니다. 그런 다음 필드의 <code translate="no">struct_schema</code> 속성에서 Struct 스키마를 참조합니다.</p></li>
-<li><p>필드의 <code translate="no">max_capacity</code> 속성을 적절한 값으로 설정하여 각 엔티티가 이 필드에 포함할 수 있는 구조체의 최대 개수를 지정합니다.</p></li>
-<li><p><strong>(선택 사항</strong>) Struct 요소 내의 모든 필드에 <code translate="no">mmap.enabled</code> 을 설정하여 Struct의 핫 데이터와 콜드 데이터의 균형을 맞출 수 있습니다.</p></li>
+<li><p>Set the data type of a field to <code translate="no">DataType.ARRAY</code> when adding the field as an Array field to the collection schema.</p></li>
+<li><p>Set the field’s <code translate="no">element_type</code> attribute to <code translate="no">DataType.STRUCT</code> to make the field a Struct Array.</p></li>
+<li><p>Create a Struct schema and include the required fields. Then, reference the Struct schema in the field’s <code translate="no">struct_schema</code> attribute.</p></li>
+<li><p>Set the field’s <code translate="no">max_capacity</code> attribute to an appropriate value to specify the maximum number of Structs each entity can contain in this field.</p></li>
+<li><p>(<strong>Optional</strong>) You can set <code translate="no">mmap.enabled</code> for any field within the Struct element to balance the hot and cold data in the Struct.</p></li>
 </ol>
-<p>다음은 StructArray 필드를 포함하는 컬렉션 스키마를 정의하는 방법입니다:</p>
+<p>Here’s how you can define a collection schema that includes a StructArray field:</p>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#go">Go</a> <a href="#javascript">NodeJS</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
 
 client = MilvusClient(
@@ -358,8 +365,8 @@ SCHEMA=<span class="hljs-string">&#x27;{
   ]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>위 코드 예제에서 강조 표시된 줄은 컬렉션 스키마에 StructArray를 포함하는 방법을 보여줍니다.</p>
-<h2 id="Set-index-params" class="common-anchor-header">인덱스 매개변수 설정<button data-href="#Set-index-params" class="anchor-icon" translate="no">
+<p>The highlighted lines in the code example above illustrate how to include a StructArray in a collection schema.</p>
+<h2 id="Set-index-params" class="common-anchor-header">Set index params<button data-href="#Set-index-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -374,9 +381,9 @@ SCHEMA=<span class="hljs-string">&#x27;{
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>컬렉션의 벡터 필드와 Struct 요소에 정의된 벡터 필드를 포함한 모든 벡터 필드에 대해 인덱싱은 필수입니다.</p>
-<p>적용 가능한 인덱스 매개변수는 인덱스 유형에 따라 다릅니다. 적용 가능한 인덱스 매개변수에 대한 자세한 내용은 <a href="/docs/ko/v2.6.x/index-explained.md">인덱스 설명</a> 및 선택한 인덱스 유형에 대한 설명서를 참조하세요.</p>
-<h3 id="Index-an-embedding-list" class="common-anchor-header">임베딩 목록 색인하기<button data-href="#Index-an-embedding-list" class="anchor-icon" translate="no">
+    </button></h2><p>Indexing is mandatory for all vector fields, including both the vector fields in the collection and those defined in the element Struct.</p>
+<p>The applicable index parameters vary by index type. For details on applicable index parameters, refer to <a href="/docs/ko/v2.6.x/index-explained.md">Index Explained</a> and the documentation for your selected index type.</p>
+<h3 id="Index-an-embedding-list" class="common-anchor-header">Index an embedding list<button data-href="#Index-an-embedding-list" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -391,9 +398,14 @@ SCHEMA=<span class="hljs-string">&#x27;{
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>임베딩 목록을 색인하려면 해당 인덱스 유형을 <code translate="no">AUTOINDEX</code> 또는 위에 나열된 적용 가능한 인덱스 유형 중 하나로 설정하고 나열된 Milvus용 메트릭 유형을 사용하여 임베딩 목록 간의 유사성을 측정해야 합니다.</p>
+    </button></h3><p>To index an embedding list, you need to set its index type to <code translate="no">AUTOINDEX</code>  or any of the applicable index types listed above, and use an listed metric type for Milvus to measure the similarities between embedding lists.</p>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#go">Go</a> <a href="#javascript">NodeJS</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Create index parameters</span>
 index_params = client.prepare_index_params()
 
@@ -461,7 +473,7 @@ INDEX_PARAMS=<span class="hljs-string">&#x27;[
   }
 ]&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Index-a-scalar-struct-sub-field" class="common-anchor-header">스칼라 구조체 하위 필드 색인하기<button data-href="#Index-a-scalar-struct-sub-field" class="anchor-icon" translate="no">
+<h3 id="Index-a-scalar-struct-sub-field" class="common-anchor-header">Index a scalar struct sub-field<button data-href="#Index-a-scalar-struct-sub-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -476,10 +488,15 @@ INDEX_PARAMS=<span class="hljs-string">&#x27;[
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>스칼라 구조체 하위 필드에 인덱스를 생성할 때, Milvus는 실제로 행 수준이 아닌 <strong>요소 수준에서</strong> 인덱스를 생성하여 스칼라 필터링 속도를 높입니다.</p>
-<p>다음 코드 스니펫은 <code translate="no">chunks[text]</code> 이라는 이름의 스칼라 구조체 하위 필드에 인덱스를 생성합니다.</p>
+    </button></h3><p>When you create indexes on a scalar struct sub-field, Milvus actually builds the index at the <strong>element level</strong>, not at the row level, to accelerate scalar filtering.</p>
+<p>The following code snippet creates an index on a scalar struct sub-field named <code translate="no">chunks[text]</code>.</p>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#go">Go</a> <a href="#javascript">NodeJS</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">index_params.add_index(
     field_name=<span class="hljs-string">&quot;chunks[text]&quot;</span>,
     index_type=<span class="hljs-string">&quot;INVERTED&quot;</span>
@@ -503,7 +520,7 @@ INDEX_PARAMS=<span class="hljs-string">&#x27;[
     &quot;indexType&quot;: &quot;INVERTED&quot;
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Create-a-collection" class="common-anchor-header">컬렉션 만들기<button data-href="#Create-a-collection" class="anchor-icon" translate="no">
+<h2 id="Create-a-collection" class="common-anchor-header">Create a collection<button data-href="#Create-a-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -518,9 +535,14 @@ INDEX_PARAMS=<span class="hljs-string">&#x27;[
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>스키마와 인덱스가 준비되면 StructArray 필드를 포함하는 컬렉션을 만들 수 있습니다.</p>
+    </button></h2><p>Once the schema and index are ready, you can create a collection that includes a StructArray field.</p>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#go">Go</a> <a href="#javascript">NodeJS</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">client.create_collection(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,
     schema=schema,
@@ -555,7 +577,7 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
     \&quot;indexParams\&quot;: <span class="hljs-variable">$INDEX_PARAMS</span>
   }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Insert-data" class="common-anchor-header">데이터 삽입<button data-href="#Insert-data" class="anchor-icon" translate="no">
+<h2 id="Insert-data" class="common-anchor-header">Insert data<button data-href="#Insert-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -570,9 +592,14 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>컬렉션을 생성한 후 다음과 같이 구조체 배열을 포함하는 데이터를 삽입할 수 있습니다.</p>
+    </button></h2><p>After creating the collection, you can insert data that includes Arrays of Structs as follows.</p>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#go">Go</a> <a href="#javascript">NodeJS</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Sample data</span>
 data = {
     <span class="hljs-string">&#x27;title&#x27;</span>: <span class="hljs-string">&#x27;Walden&#x27;</span>,
@@ -689,7 +716,7 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
   }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
 <p><details></p>
-<p><summary>데이터가 더 필요하신가요?</summary></p>
+<p><summary>Need more data?</summary></p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> json
 <span class="hljs-keyword">import</span> random
 <span class="hljs-keyword">from</span> typing <span class="hljs-keyword">import</span> <span class="hljs-type">List</span>, <span class="hljs-type">Dict</span>, <span class="hljs-type">Any</span>
@@ -770,7 +797,7 @@ data = [generate_record(i) <span class="hljs-keyword">for</span> i <span class="
 client.insert(collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>, data=data)
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<h2 id="Vector-search-in-a-StructArray-field" class="common-anchor-header">StructArray 필드에서 벡터 검색하기<button data-href="#Vector-search-in-a-StructArray-field" class="anchor-icon" translate="no">
+<h2 id="Vector-search-in-a-StructArray-field" class="common-anchor-header">Vector search in a StructArray field<button data-href="#Vector-search-in-a-StructArray-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -785,14 +812,19 @@ client.insert(collection_name=<span class="hljs-string">&quot;my_collection&quot
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>컬렉션의 벡터 필드와 StructArray에서 벡터 검색을 수행할 수 있습니다.</p>
-<p>구체적으로, 검색 요청의 <code translate="no">anns_field</code> 매개변수 값으로 StructArray 필드 이름과 Struct 요소 내의 대상 벡터 필드 이름을 연결하고 <code translate="no">EmbeddingList</code> 을 사용하여 쿼리 벡터를 깔끔하게 정리해야 합니다.</p>
+    </button></h2><p>You can perform vector searches on the vector fields of a collection and in a StructArray.</p>
+<p>Specifically, you should concatenate the name of the StructArray field and those of the target vector fields within Struct elements as the value for the <code translate="no">anns_field</code> parameter in a search request, and use <code translate="no">EmbeddingList</code> to organize query vectors neatly.</p>
 <div class="alert note">
-<p>Milvus는 StructArray의 임베딩 목록에 대한 검색 쿼리 벡터를 보다 깔끔하게 정리할 수 있도록 <code translate="no">EmbeddingList</code> 을 제공합니다. 각 <code translate="no">EmbeddingList</code> 은 최소한 벡터 임베딩을 포함하며 그 대가로 여러 개의 topK 엔티티를 기대합니다.</p>
-<p>그러나 <code translate="no">EmbeddingList</code> 은 범위 검색이나 그룹화 검색 매개변수 없이 <code translate="no">search()</code> 요청에만 사용할 수 있으며 <code translate="no">search_iterator()</code> 요청에는 사용할 수 없습니다.</p>
+<p>Milvus provides <code translate="no">EmbeddingList</code> to help you organize query vectors for searches against an embedding list in a StructArray more neatly. Each <code translate="no">EmbeddingList</code> contains at least a vector embedding and expects a number of topK entities in return.</p>
+<p>However, <code translate="no">EmbeddingList</code> can be used only in <code translate="no">search()</code> requests without range search or grouping search parameters, let alone <code translate="no">search_iterator()</code> requests.</p>
 </div>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#go">Go</a> <a href="#javascript">NodeJS</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus.client.embedding_list <span class="hljs-keyword">import</span> EmbeddingList
 
 <span class="hljs-comment"># each query embedding list triggers a single search</span>
@@ -866,10 +898,10 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
     \&quot;outputFields\&quot;: [\&quot;chunks[text]\&quot;]
   }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>위의 검색 요청은 <code translate="no">chunks[text_vector]</code> 을 사용하여 Struct 요소의 <code translate="no">text_vector</code> 필드를 참조합니다. 이 구문을 사용하여 <code translate="no">anns_field</code> 및 <code translate="no">output_fields</code> 매개 변수를 설정할 수 있습니다.</p>
-<p>출력은 가장 유사한 세 개의 엔티티 목록이 될 것입니다.</p>
+<p>The above search request uses <code translate="no">chunks[text_vector]</code> to refer to the <code translate="no">text_vector</code> field in Struct elements. You can use this syntax to set the <code translate="no">anns_field</code> and <code translate="no">output_fields</code> parameters.</p>
+<p>The output would be a list of the three most similar entities.</p>
 <p><details></p>
-<p><summary>출력</summary></p>
+<p><summary>Output</summary></p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># [</span>
 <span class="hljs-comment">#     [</span>
 <span class="hljs-comment">#         {</span>
@@ -912,9 +944,14 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
 <span class="hljs-comment"># ]</span>
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<p><code translate="no">data</code> 매개변수에 여러 임베딩 목록을 포함시켜 각 임베딩 목록에 대한 검색 결과를 검색할 수도 있습니다.</p>
+<p>You can also include multiple embedding lists in the <code translate="no">data</code> parameter to retrieve search results for each of these embedding lists.</p>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#go">Go</a> <a href="#javascript">NodeJS</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># a search with multiple embedding lists</span>
 results = client.search(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,
@@ -971,9 +1008,9 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
     \&quot;outputFields\&quot;: [\&quot;chunks[text]\&quot;]
   }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>출력은 각 임베딩 목록에 대해 가장 유사한 3개 엔티티의 목록입니다.</p>
+<p>The output would be a list of the three most similar entities for each embedding list.</p>
 <p><details></p>
-<p><summary>출력</summary></p>
+<p><summary>Output</summary></p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># [</span>
 <span class="hljs-comment">#   [</span>
 <span class="hljs-comment">#     {</span>
@@ -1049,8 +1086,8 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
 <span class="hljs-comment"># ]</span>
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<p>위의 코드 예시에서 <code translate="no">embeddingList1</code> 은 하나의 벡터를 포함하는 임베딩 목록이고 <code translate="no">embeddingList2</code> 은 두 개의 벡터를 포함합니다. 각각은 별도의 검색 요청을 트리거하고 상위 K개의 유사한 엔티티 목록을 기대합니다.</p>
-<h2 id="Scalar-filtering-in-a-StructArray-field" class="common-anchor-header">StructArray 필드에서 스칼라 필터링하기<button data-href="#Scalar-filtering-in-a-StructArray-field" class="anchor-icon" translate="no">
+<p>In the above code example, <code translate="no">embeddingList1</code> is an embedding list of one vector, while <code translate="no">embeddingList2</code> contains two vectors. Each triggers a separate search request and expects a list of top-K similar entities.</p>
+<h2 id="Scalar-filtering-in-a-StructArray-field" class="common-anchor-header">Scalar filtering in a StructArray field<button data-href="#Scalar-filtering-in-a-StructArray-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1065,8 +1102,8 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><strong>일치 계열의</strong> <strong>요소 필터와</strong> <strong>연산자를</strong> 사용하여 StructArray의 스칼라 하위 필드에 대해 스칼라 필터링을 수행할 수 있습니다. 위의 두 연산자 유형에 대한 자세한 내용과 예제는 <a href="/docs/ko/v2.6.x/struct-array-operators.md">구조체 연산자 배열을</a> 참조하세요.</p>
-<h3 id="Element-filters" class="common-anchor-header">요소 필터<button data-href="#Element-filters" class="anchor-icon" translate="no">
+    </button></h2><p>You can use <strong>element filters</strong> and <strong>operators in the match family</strong> to conduct scalar filtering against a scalar sub-field in a StructArray. For more details and examples on the two operator types above, refer to <a href="/docs/ko/v2.6.x/struct-array-operators.md">Array of Structs Operators</a>.</p>
+<h3 id="Element-filters" class="common-anchor-header">Element filters<button data-href="#Element-filters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1081,18 +1118,18 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>엔티티의 StructArray 필드에 있는 하나 이상의 요소가 술어를 만족하는지 확인하는 엔티티 수준 필터입니다. 예를 들어, 다음 요소 필터는 <code translate="no">text</code> 하위 필드에 "Red"로 시작하는 청크를 하나 이상 포함하는 엔티티를 반환합니다.</p>
+    </button></h3><p>This is an entity-level filter that checks whether at least one element in the StructArray field of an entity satisfies the predicate. For example, the following element filter returns entities that contain at least one chunk that starts with “Red” in the <code translate="no">text</code> sub-field.</p>
 <pre><code translate="no" class="language-python">element_filter(chunks, $[text] LIKE <span class="hljs-string">&quot;Red%&quot;</span>)
 <button class="copy-code-btn"></button></code></pre>
-<p>요소별로 평가되는 술어에는 거의 모든 비교, 범위 및 산술 연산자를 사용할 수 있으며 논리 연산자를 사용하여 동일한 요소에 여러 조건을 결합할 수 있습니다. 자세한 내용은 <a href="/docs/ko/v2.6.x/basic-operators.md">기본 연산자를</a> 참조하세요.</p>
-<p>필터링된 검색 또는 쿼리 요청에 여러 개의 스칼라 필터링 표현식이 있는 경우 아래와 같이 모든 엔티티 수준 필터 표현식 뒤에 요소 필터 표현식을 배치합니다.</p>
+<p>You can use almost all comparison, range, and arithmetic operators in the predicate, which is evaluated per element, and the logical operators can be used to combine multiple conditions on the same element. For details, refer to <a href="/docs/ko/v2.6.x/basic-operators.md">Basic Operators</a>.</p>
+<p>If multiple scalar-filtering expressions are present in a filtered search or a query request, place the element filter expression after all entity-level filter expressions, as shown below.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># correct</span>
 <span class="hljs-built_in">id</span> &gt; <span class="hljs-number">0</span> &amp;&amp; element_filter(chunks, $[x] &gt; <span class="hljs-number">1</span>)
 
 <span class="hljs-comment"># incorrect, resulting errors</span>
 element_filter(chunks, $[x] &gt; <span class="hljs-number">1</span>) &amp;&amp; <span class="hljs-built_in">id</span> &gt; <span class="hljs-number">0</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Match-family-operators" class="common-anchor-header">일치 패밀리 연산자<button data-href="#Match-family-operators" class="anchor-icon" translate="no">
+<h3 id="Match-family-operators" class="common-anchor-header">Match family operators<button data-href="#Match-family-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1107,20 +1144,20 @@ element_filter(chunks, $[x] &gt; <span class="hljs-number">1</span>) &amp;&amp; 
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>일치 패밀리 연산자는 StructArray 필드에서도 작동합니다. 단순히 요소의 존재 여부를 확인하는 대신 요소 술어를 만족해야 하는 요소의 수(또는 비율)를 결정할 수 있습니다.</p>
+    </button></h3><p>The match family operators work over a StructArray field too. Instead of simply checking whether an element exists, you can determine how many elements (or what proportion) must satisfy an element predicate.</p>
 <ul>
 <li><p><code translate="no">MATCH_ANY(chunks, $[text] LIKE &quot;Red%&quot;)</code></p>
-<p>이는 <code translate="no">text</code> 하위 필드에 "Red"로 시작하는 청크를 하나 이상 포함하는 엔티티를 반환합니다(의미상 <code translate="no">element_filter</code> 와 동일).</p></li>
+<p>This returns entities that contain at least one chunk that starts with “Red” in the <code translate="no">text</code> sub-field; semantically, this is equivalent to <code translate="no">element_filter</code>.</p></li>
 <li><p><code translate="no">MATCH_ALL(chunks, $[text] LIKE &quot;Red%&quot;)</code></p>
-<p>모든 청크의 텍스트 하위 필드가 "Red"로 시작하는 엔터티를 반환합니다.</p></li>
+<p>This returns entities whose text sub-fields in all chunks start with "Red".</p></li>
 <li><p><code translate="no">MATCH_LEAST(chunks, $[text] LIKE &quot;Red%&quot;, k)</code></p>
-<p><code translate="no">text</code> 하위 필드에 "Red"로 시작하는 청크가 최소 <code translate="no">k</code> 개 이상 포함된 엔터티를 반환합니다.</p></li>
+<p>This returns entities that contain at least <code translate="no">k</code> chunks that start with “Red” in the <code translate="no">text</code> sub-field.</p></li>
 <li><p><code translate="no">MATCH_MOST(chunks, $[text] LIKE &quot;Red%&quot;, k)</code></p>
-<p><code translate="no">text</code> 하위 필드에 "Red"로 시작하는 청크가 최대 <code translate="no">k</code> 개 포함된 엔터티를 반환합니다.</p></li>
+<p>This returns entities that contain at most <code translate="no">k</code> chunks that start with “Red” in the <code translate="no">text</code> sub-field.</p></li>
 <li><p><code translate="no">MATCH_EXACT(chunks, $[text] LIKE &quot;Red%&quot;, k)</code></p>
-<p><code translate="no">text</code> 하위 필드에 "Red"로 시작하는 <code translate="no">k</code> 청크가 정확히 포함된 엔터티를 반환합니다.</p></li>
+<p>This returns entities that contain exactly <code translate="no">k</code> chunks that start with “Red” in the <code translate="no">text</code> sub-field.</p></li>
 </ul>
-<h2 id="Next-steps" class="common-anchor-header">다음 단계<button data-href="#Next-steps" class="anchor-icon" translate="no">
+<h2 id="Next-steps" class="common-anchor-header">Next steps<button data-href="#Next-steps" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1135,4 +1172,4 @@ element_filter(chunks, $[x] &gt; <span class="hljs-number">1</span>) &amp;&amp; 
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>기본 StructArray 데이터 타입의 개발은 복잡한 데이터 구조를 처리하는 Milvus의 기능이 크게 발전했음을 의미합니다. 사용 사례를 더 잘 이해하고 이 새로운 기능을 최대한 활용하려면 <a href="/docs/ko/v2.6.x/best-practices-for-array-of-structs.md">구조 배열을 사용한 스키마 설계를</a> 읽어보시기 바랍니다.</p>
+    </button></h2><p>The development of a native StructArray data type represents a major advancement in Milvus’s capability to handle complex data structures. To better understand its use cases and maximize this new feature, you are encouraged to read <a href="/docs/ko/v2.6.x/best-practices-for-array-of-structs.md">Schema Design Using an Array of Structs</a>.</p>

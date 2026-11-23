@@ -1,7 +1,9 @@
 ---
 id: upsert-entities.md
 title: Upsert Entities
-summary: 업서트(upsert) 연산은 컬렉션에 엔티티를 삽입하거나 업데이트할 수 있는 편리한 방법을 제공합니다.
+summary: >-
+  The upsert operation provides a convenient way to insert or update entities in
+  a collection.
 ---
 <h1 id="Upsert-Entities" class="common-anchor-header">Upsert Entities<button data-href="#Upsert-Entities" class="anchor-icon" translate="no">
       <svg translate="no"

@@ -1,9 +1,11 @@
 ---
 id: standard-tokenizer.md
-title: 标准分词器
-summary: Milvus 中的标准分词器会将连续的 Unicode 字母和数字字符聚合为词元，并在其他字符处进行分割。
+title: Standard Tokenizer
+summary: >-
+  The standard tokenizer in Milvus groups consecutive Unicode letters and
+  numeric characters into tokens, splitting at other characters.
 ---
-<h1 id="Standard-Tokenizer" class="common-anchor-header">标准分词器<button data-href="#Standard-Tokenizer" class="anchor-icon" translate="no">
+<h1 id="Standard-Tokenizer" class="common-anchor-header">Standard Tokenizer<button data-href="#Standard-Tokenizer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,8 +20,8 @@ summary: Milvus 中的标准分词器会将连续的 Unicode 字母和数字字�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Milvus 中的<code translate="no">standard</code> 分词器会将连续的 Unicode 字母和数字字符聚合为词，并在其他字符处进行分割。</p>
-<h2 id="Tokenization-rules" class="common-anchor-header">分词规则<button data-href="#Tokenization-rules" class="anchor-icon" translate="no">
+    </button></h1><p>The <code translate="no">standard</code> tokenizer in Milvus groups consecutive Unicode letters and numeric characters into tokens, splitting at other characters.</p>
+<h2 id="Tokenization-rules" class="common-anchor-header">Tokenization rules<button data-href="#Tokenization-rules" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -34,28 +36,28 @@ summary: Milvus 中的标准分词器会将连续的 Unicode 字母和数字字�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">standard</code> 分词器会将属于以下集合的连续字符保留在同一个词元中：</p>
+    </button></h2><p>The <code translate="no">standard</code> tokenizer keeps consecutive characters that belong to the following sets in the same token:</p>
 <ul>
-<li><strong>ASCII 字符：</strong>字母<code translate="no">A-Z</code> 和<code translate="no">a-z</code> ，以及数字<code translate="no">0-9</code> 。</li>
-<li><strong>非 ASCII 字符：</strong>具有 Unicode<code translate="no">Alphabetic</code> 属性，或属于以下数值通用类别之一的字符：<code translate="no">Nd</code> 、<code translate="no">Nl</code> 或<code translate="no">No</code> 。</li>
+<li><strong>ASCII characters:</strong> letters <code translate="no">A-Z</code> and <code translate="no">a-z</code>, and digits <code translate="no">0-9</code>.</li>
+<li><strong>Non-ASCII characters:</strong> characters with the Unicode <code translate="no">Alphabetic</code> property or one of the numeric general categories <code translate="no">Nd</code>, <code translate="no">Nl</code>, or <code translate="no">No</code>.</li>
 </ul>
 <table>
 <thead>
-<tr><th>Unicode属性或类别</th><th>含义</th><th>在令牌中保留的字符示例</th></tr>
+<tr><th>Unicode property or category</th><th>Meaning</th><th>Examples of characters retained in tokens</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">Alphabetic</code></td><td>跨书写系统的字母，包括汉字和日语假名，以及某些组合符号</td><td><code translate="no">中文测试</code>,<code translate="no">カタカナ</code></td></tr>
-<tr><td><code translate="no">Nd</code> (<code translate="no">Decimal_Number</code>)</td><td>十进制数字</td><td><code translate="no">٣</code></td></tr>
-<tr><td><code translate="no">Nl</code> (<code translate="no">Letter_Number</code>)</td><td>类似字母的数字字符</td><td><code translate="no">Ⅷ</code></td></tr>
-<tr><td><code translate="no">No</code> (<code translate="no">Other_Number</code>)</td><td>其他数字字符，例如带圈数字、上标和分数</td><td><code translate="no">①²¾</code></td></tr>
+<tr><td><code translate="no">Alphabetic</code></td><td>Letters across writing systems, including Chinese characters and Japanese kana, and some combining marks</td><td><code translate="no">中文测试</code>, <code translate="no">カタカナ</code></td></tr>
+<tr><td><code translate="no">Nd</code> (<code translate="no">Decimal_Number</code>)</td><td>Decimal digits</td><td><code translate="no">٣</code></td></tr>
+<tr><td><code translate="no">Nl</code> (<code translate="no">Letter_Number</code>)</td><td>Letter-like numeric characters</td><td><code translate="no">Ⅷ</code></td></tr>
+<tr><td><code translate="no">No</code> (<code translate="no">Other_Number</code>)</td><td>Other numeric characters, such as circled numbers, superscripts, and fractions</td><td><code translate="no">①²¾</code></td></tr>
 </tbody>
 </table>
-<p>这些集合之外的字符用于分隔令牌，并将被丢弃。这些字符包括空格、标点符号、下划线（<code translate="no">_</code> ）、连字符（<code translate="no">-</code> ）、撇号（<code translate="no">'</code> ）以及诸如<code translate="no">+</code> 、<code translate="no">$</code> 和<code translate="no">😀</code> 等符号。连续的分隔符不会产生空令牌。</p>
-<p>字符分类遵循 Rust 的 <a href="https://doc.rust-lang.org/std/primitive.char.html#method.is_alphanumeric"><code translate="no">char::is_alphanumeric()</code></a>。有关属性定义，请参阅<a href="https://www.unicode.org/reports/tr44/">《Unicode标准附录第44号</a>》。完整的Unicode 17.0字符列表可在 <a href="https://www.unicode.org/Public/17.0.0/ucd/DerivedCoreProperties.txt"><code translate="no">DerivedCoreProperties.txt</code></a><code translate="no">Alphabetic</code> 以及 <a href="https://www.unicode.org/Public/17.0.0/ucd/extracted/DerivedGeneralCategory.txt"><code translate="no">DerivedGeneralCategory.txt</code></a><code translate="no">Nd</code> 、<code translate="no">Nl</code> 以及<code translate="no">No</code> 。字符的归属取决于部署版本所使用的 Unicode 数据。</p>
-<p>以下示例使用未应用任何过滤器的<code translate="no">{&quot;tokenizer&quot;: &quot;standard&quot;}</code> 。该分词器保留字母大小写，且不会将连续的中文文本分割为单个词。</p>
+<p>Characters outside these sets separate tokens and are discarded. These include whitespace, punctuation, underscores (<code translate="no">_</code>), hyphens (<code translate="no">-</code>), apostrophes (<code translate="no">'</code>), and symbols such as <code translate="no">+</code>, <code translate="no">$</code>, and <code translate="no">😀</code>. Consecutive separators do not produce empty tokens.</p>
+<p>Character classification follows Rust’s <a href="https://doc.rust-lang.org/std/primitive.char.html#method.is_alphanumeric"><code translate="no">char::is_alphanumeric()</code></a>. For property definitions, see <a href="https://www.unicode.org/reports/tr44/">Unicode Standard Annex #44</a>. The complete Unicode 17.0 character lists are available in <a href="https://www.unicode.org/Public/17.0.0/ucd/DerivedCoreProperties.txt"><code translate="no">DerivedCoreProperties.txt</code></a> for <code translate="no">Alphabetic</code> and <a href="https://www.unicode.org/Public/17.0.0/ucd/extracted/DerivedGeneralCategory.txt"><code translate="no">DerivedGeneralCategory.txt</code></a> for <code translate="no">Nd</code>, <code translate="no">Nl</code>, and <code translate="no">No</code>. Character membership depends on the Unicode data used by the deployed version.</p>
+<p>The following examples use <code translate="no">{&quot;tokenizer&quot;: &quot;standard&quot;}</code> with no filters. The tokenizer preserves letter case and does not segment continuous Chinese text into individual words.</p>
 <table>
 <thead>
-<tr><th>输入</th><th>输出分词结果</th></tr>
+<tr><th>Input</th><th>Output tokens</th></tr>
 </thead>
 <tbody>
 <tr><td><code translate="no">foo_bar-can't😀123</code></td><td><code translate="no">[&quot;foo&quot;, &quot;bar&quot;, &quot;can&quot;, &quot;t&quot;, &quot;123&quot;]</code></td></tr>
@@ -64,7 +66,7 @@ summary: Milvus 中的标准分词器会将连续的 Unicode 字母和数字字�
 <tr><td><code translate="no">Hello,World!</code></td><td><code translate="no">[&quot;Hello&quot;, &quot;World&quot;]</code></td></tr>
 </tbody>
 </table>
-<h2 id="Configuration" class="common-anchor-header">配置<button data-href="#Configuration" class="anchor-icon" translate="no">
+<h2 id="Configuration" class="common-anchor-header">Configuration<button data-href="#Configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -79,16 +81,16 @@ summary: Milvus 中的标准分词器会将连续的 Unicode 字母和数字字�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>要使用<code translate="no">standard</code> 分词器配置分析器，请在<code translate="no">analyzer_params</code> 中将<code translate="no">tokenizer</code> 设置为<code translate="no">standard</code> 。</p>
+    </button></h2><p>To configure an analyzer using the <code translate="no">standard</code> tokenizer, set <code translate="no">tokenizer</code> to <code translate="no">standard</code> in <code translate="no">analyzer_params</code>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>,
@@ -126,16 +128,16 @@ analyzerParams=<span class="hljs-string">&#x27;{
   &quot;tokenizer&quot;: &quot;standard&quot;
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">standard</code> 分词器可与一个或多个过滤器配合使用。例如，以下代码定义了一个使用<code translate="no">standard</code> 分词器和<code translate="no">lowercase</code> 过滤器的分析器：</p>
+<p>The <code translate="no">standard</code> tokenizer can work in conjunction with one or more filters. For example, the following code defines an analyzer that uses the <code translate="no">standard</code> tokenizer and <code translate="no">lowercase</code> filter:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>,
@@ -184,10 +186,10 @@ analyzerParams=<span class="hljs-string">&#x27;{
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>为了简化配置，您可以选择使用 <a href="/docs/zh/standard-analyzer.md"><code translate="no">standard</code></a><a href="/docs/zh/standard-analyzer.md">分析器</a>，它将<code translate="no">standard</code> 分词器与 <a href="/docs/zh/lowercase-filter.md"><code translate="no">lowercase</code></a><a href="/docs/zh/lowercase-filter.md"> 过滤器</a>。</p>
+<p>For simpler setup, you may choose to use the <a href="/docs/zh/standard-analyzer.md"><code translate="no">standard</code></a> <a href="/docs/zh/standard-analyzer.md">analyzer</a>, which combines the <code translate="no">standard</code> tokenizer with the <a href="/docs/zh/lowercase-filter.md"><code translate="no">lowercase</code></a><a href="/docs/zh/lowercase-filter.md"> filter</a>.</p>
 </div>
-<p>定义<code translate="no">analyzer_params</code> 后，您可以在定义Collection模式时将其应用于<code translate="no">VARCHAR</code> 字段。这使Milvus能够使用指定的分析器对该字段中的文本进行高效分词和过滤。详情请参阅<a href="/docs/zh/analyzer-overview.md#Example-use">“使用示例”</a>。</p>
-<h2 id="Examples" class="common-anchor-header">示例<button data-href="#Examples" class="anchor-icon" translate="no">
+<p>After defining <code translate="no">analyzer_params</code>, you can apply them to a <code translate="no">VARCHAR</code> field when defining a collection schema. This allows Milvus to process the text in that field using the specified analyzer for efficient tokenization and filtering. For details, refer to <a href="/docs/zh/analyzer-overview.md#Example-use">Example use</a>.</p>
+<h2 id="Examples" class="common-anchor-header">Examples<button data-href="#Examples" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -202,8 +204,8 @@ analyzerParams=<span class="hljs-string">&#x27;{
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>在将分析器配置应用到 Collection Schema 之前，请使用 `<code translate="no">run_analyzer</code> ` 方法验证其行为。</p>
-<h3 id="Analyzer-configuration" class="common-anchor-header">分析器配置<button data-href="#Analyzer-configuration" class="anchor-icon" translate="no">
+    </button></h2><p>Before applying the analyzer configuration to your collection schema, verify its behavior using the <code translate="no">run_analyzer</code> method.</p>
+<h3 id="Analyzer-configuration" class="common-anchor-header">Analyzer configuration<button data-href="#Analyzer-configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -219,14 +221,14 @@ analyzerParams=<span class="hljs-string">&#x27;{
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>,
@@ -275,7 +277,7 @@ analyzerParams=<span class="hljs-string">&#x27;{
   ]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Verification-using-runanalyzer" class="common-anchor-header">使用以下方式进行验证<code translate="no">run_analyzer</code><button data-href="#Verification-using-runanalyzer" class="anchor-icon" translate="no">
+<h3 id="Verification-using-runanalyzer" class="common-anchor-header">Verification using <code translate="no">run_analyzer</code><button data-href="#Verification-using-runanalyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -291,14 +293,14 @@ analyzerParams=<span class="hljs-string">&#x27;{
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> (
     MilvusClient,
@@ -462,7 +464,7 @@ curl --request POST \
     &quot;analyzerParams&quot;: &quot;{\&quot;tokenizer\&quot;: \&quot;standard\&quot;, \&quot;filter\&quot;: [\&quot;lowercase\&quot;]}&quot;
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Expected-output" class="common-anchor-header">预期输出<button data-href="#Expected-output" class="anchor-icon" translate="no">
+<h3 id="Expected-output" class="common-anchor-header">Expected output<button data-href="#Expected-output" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"

@@ -1,15 +1,14 @@
 ---
 id: random-sampling.md
-title: ZufallsstichprobenCompatible with Milvus 2.6.x
+title: Random SamplingCompatible with Milvus 2.6.x
 summary: >-
-  Bei der Arbeit mit großen Datensätzen ist es oft nicht erforderlich, alle
-  Daten zu verarbeiten, um Erkenntnisse zu gewinnen oder die Filterlogik zu
-  testen. Zufallsstichproben bieten eine Lösung, indem sie es Ihnen ermöglichen,
-  mit einer statistisch repräsentativen Teilmenge Ihrer Daten zu arbeiten und so
-  die Abfragezeit und den Ressourcenverbrauch erheblich zu reduzieren.
+  When working with large-scale datasets, you often don't need to process all
+  your data to gain insights or test filtering logic. Random sampling provides a
+  solution by allowing you to work with a statistically representative subset of
+  your data, significantly reducing query time and resource consumption.
 beta: Milvus 2.6.x
 ---
-<h1 id="Random-Sampling" class="common-anchor-header">Zufallsstichproben<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#Random-Sampling" class="anchor-icon" translate="no">
+<h1 id="Random-Sampling" class="common-anchor-header">Random Sampling<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#Random-Sampling" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -24,13 +23,13 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Bei der Arbeit mit großen Datensätzen ist es oft nicht erforderlich, alle Daten zu verarbeiten, um Erkenntnisse zu gewinnen oder die Filterlogik zu testen. Zufallsstichproben bieten eine Lösung, indem sie es Ihnen ermöglichen, mit einer statistisch repräsentativen Teilmenge Ihrer Daten zu arbeiten, was die Abfragezeit und den Ressourcenverbrauch erheblich reduziert.</p>
-<p>Das Random Sampling arbeitet auf Segmentebene und gewährleistet eine effiziente Leistung, während die Zufälligkeit der Stichprobe über die Datenverteilung Ihrer Sammlung hinweg erhalten bleibt.</p>
-<p><strong>Wichtige Anwendungsfälle:</strong></p>
+    </button></h1><p>When working with large-scale datasets, you often don’t need to process all your data to gain insights or test filtering logic. Random sampling provides a solution by allowing you to work with a statistically representative subset of your data, significantly reducing query time and resource consumption.</p>
+<p>Random sampling operates at the segment level, ensuring efficient performance while maintaining the randomness of the sample across your collection’s data distribution.</p>
+<p><strong>Key use cases:</strong></p>
 <ul>
-<li><p><strong>Datenexploration</strong>: Schnelle Vorschau auf Struktur und Inhalt der Sammlung bei minimalem Ressourcenverbrauch</p></li>
-<li><p><strong>Entwicklungstests</strong>: Testen Sie komplexe Filterlogik an überschaubaren Datenproben vor der vollständigen Bereitstellung</p></li>
-<li><p><strong>Ressourcenoptimierung</strong>: Reduzieren Sie die Rechenkosten für Sondierungsabfragen und statistische Analysen</p></li>
+<li><p><strong>Data exploration</strong>: Quickly preview collection structure and content with minimal resource usage</p></li>
+<li><p><strong>Development testing</strong>: Test complex filtering logic on manageable data samples before full deployment</p></li>
+<li><p><strong>Resource optimization</strong>: Reduce computational costs for exploratory queries and statistical analysis</p></li>
 </ul>
 <h2 id="Syntax" class="common-anchor-header">Syntax<button data-href="#Syntax" class="anchor-icon" translate="no">
       <svg translate="no"
@@ -48,7 +47,12 @@ beta: Milvus 2.6.x
         ></path>
       </svg>
     </button></h2><div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#go">Go</a> <a href="#javascript">NodeJS</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&quot;RANDOM_SAMPLE(sampling_factor)&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-java"><span class="hljs-type">String</span> <span class="hljs-variable">filter</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;RANDOM_SAMPLE(sampling_factor)&quot;</span>
@@ -59,16 +63,16 @@ beta: Milvus 2.6.x
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>Parameter:</strong></p>
+<p><strong>Parameters:</strong></p>
 <ul>
-<li><code translate="no">sampling_factor</code>: Ein Stichprobenfaktor im Bereich (0, 1), ohne Berücksichtigung der Grenzen. Zum Beispiel wählt <code translate="no">RANDOM_SAMPLE(0.001)</code> ungefähr 0,1% der Ergebnisse aus.</li>
+<li><code translate="no">sampling_factor</code>: A sampling factor in the range (0, 1), excluding the boundaries. For example, <code translate="no">RANDOM_SAMPLE(0.001)</code> selects approximately 0.1% of the results.</li>
 </ul>
-<p><strong>Wichtige Regeln:</strong></p>
+<p><strong>Important rules:</strong></p>
 <ul>
-<li><p>Die Groß- und Kleinschreibung wird nicht berücksichtigt (<code translate="no">RANDOM_SAMPLE</code> oder <code translate="no">random_sample</code>)</p></li>
-<li><p>Der Stichprobenfaktor muss im Bereich (0, 1) liegen und darf keine Grenzen haben.</p></li>
+<li><p>The expression is case-insensitive (<code translate="no">RANDOM_SAMPLE</code> or <code translate="no">random_sample</code>)</p></li>
+<li><p>The sampling factor must be in the range (0, 1), excluding boundaries</p></li>
 </ul>
-<h2 id="Combine-with-other-filters" class="common-anchor-header">Kombinieren mit anderen Filtern<button data-href="#Combine-with-other-filters" class="anchor-icon" translate="no">
+<h2 id="Combine-with-other-filters" class="common-anchor-header">Combine with other filters<button data-href="#Combine-with-other-filters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -83,9 +87,14 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Der Zufallsstichproben-Operator muss mit anderen Filterausdrücken über die logische <code translate="no">AND</code> kombiniert werden. Bei der Kombination von Filtern wendet Milvus zunächst die anderen Bedingungen an und führt dann eine Zufallsstichprobe auf die Ergebnismenge durch.</p>
+    </button></h2><p>The random sampling operator must be combined with other filtering expressions using logical <code translate="no">AND</code>. When combining filters, Milvus first applies the other conditions and then performs random sampling on the result set.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#go">Go</a> <a href="#javascript">NodeJS</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Correct: Filter first, then sample</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;color == &quot;red&quot; AND RANDOM_SAMPLE(0.001)&#x27;</span>
 <span class="hljs-comment"># Processing: Find all red items → Sample 0.1% of those red items</span>
@@ -113,7 +122,7 @@ filter := <span class="hljs-string">&#x27;color == &quot;red&quot; OR RANDOM_SAM
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Examples" class="common-anchor-header">Beispiele<button data-href="#Examples" class="anchor-icon" translate="no">
+<h2 id="Examples" class="common-anchor-header">Examples<button data-href="#Examples" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -128,9 +137,29 @@ filter := <span class="hljs-string">&#x27;color == &quot;red&quot; OR RANDOM_SAM
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Example-1-Data-exploration" class="common-anchor-header">Beispiel 1: Datenexploration</h3><p>Schnelle Vorschau auf die Struktur Ihrer Sammlung:</p>
+    </button></h2><h3 id="Example-1-Data-exploration" class="common-anchor-header">Example 1: Data exploration<button data-href="#Example-1-Data-exploration" class="anchor-icon" translate="no">
+      <svg translate="no"
+        aria-hidden="true"
+        focusable="false"
+        height="20"
+        version="1.1"
+        viewBox="0 0 16 16"
+        width="16"
+      >
+        <path
+          fill="#0092E4"
+          fill-rule="evenodd"
+          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+        ></path>
+      </svg>
+    </button></h3><p>Quickly preview your collection structure:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#go">Go</a> <a href="#javascript">NodeJS</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>)
@@ -204,9 +233,29 @@ fmt.Println(<span class="hljs-string">&quot;product_name: &quot;</span>, resultS
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-2-Combined-filtering-with-random-sampling" class="common-anchor-header">Beispiel 2: Kombinierte Filterung mit Stichproben</h3><p>Testen Sie die Filterlogik an einer überschaubaren Teilmenge:</p>
+<h3 id="Example-2-Combined-filtering-with-random-sampling" class="common-anchor-header">Example 2: Combined filtering with random sampling<button data-href="#Example-2-Combined-filtering-with-random-sampling" class="anchor-icon" translate="no">
+      <svg translate="no"
+        aria-hidden="true"
+        focusable="false"
+        height="20"
+        version="1.1"
+        viewBox="0 0 16 16"
+        width="16"
+      >
+        <path
+          fill="#0092E4"
+          fill-rule="evenodd"
+          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+        ></path>
+      </svg>
+    </button></h3><p>Test filtering logic on a manageable subset:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#go">Go</a> <a href="#javascript">NodeJS</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># First filter by category and price, then sample 0.5% of results</span>
 filter_expression = <span class="hljs-string">&#x27;category == &quot;electronics&quot; AND price &gt; 100 AND RANDOM_SAMPLE(0.005)&#x27;</span>
 
@@ -244,9 +293,29 @@ resultSet, err := client.Query(ctx, milvusclient.NewQueryOption(<span class="hlj
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-3-Quick-analytics" class="common-anchor-header">Beispiel 3: Schnelle Analysen</h3><p>Schnelle statistische Analysen auf gefilterten Daten durchführen:</p>
+<h3 id="Example-3-Quick-analytics" class="common-anchor-header">Example 3: Quick analytics<button data-href="#Example-3-Quick-analytics" class="anchor-icon" translate="no">
+      <svg translate="no"
+        aria-hidden="true"
+        focusable="false"
+        height="20"
+        version="1.1"
+        viewBox="0 0 16 16"
+        width="16"
+      >
+        <path
+          fill="#0092E4"
+          fill-rule="evenodd"
+          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+        ></path>
+      </svg>
+    </button></h3><p>Perform rapid statistical analysis on filtered data:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#go">Go</a> <a href="#javascript">NodeJS</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Get insights from ~0.1% of premium customer data</span>
 filter_expression = <span class="hljs-string">&#x27;customer_tier == &quot;premium&quot; AND region == &#x27;</span>North America<span class="hljs-string">&#x27; AND RANDOM_SAMPLE(0.001)&#x27;</span>
 
@@ -291,9 +360,29 @@ resultSet, err := client.Query(ctx, milvusclient.NewQueryOption(<span class="hlj
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-4-Combined-with-vector-search" class="common-anchor-header">Beispiel 4: Kombiniert mit Vektorsuche</h3><p>Verwenden Sie Zufallsstichproben in gefilterten Suchszenarien:</p>
+<h3 id="Example-4-Combined-with-vector-search" class="common-anchor-header">Example 4: Combined with vector search<button data-href="#Example-4-Combined-with-vector-search" class="anchor-icon" translate="no">
+      <svg translate="no"
+        aria-hidden="true"
+        focusable="false"
+        height="20"
+        version="1.1"
+        viewBox="0 0 16 16"
+        width="16"
+      >
+        <path
+          fill="#0092E4"
+          fill-rule="evenodd"
+          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+        ></path>
+      </svg>
+    </button></h3><p>Use random sampling in filtered search scenarios:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#go">Go</a> <a href="#javascript">NodeJS</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Search for similar products within a sampled subset</span>
 search_results = client.search(
     collection_name=<span class="hljs-string">&quot;product_catalog&quot;</span>,
@@ -354,7 +443,7 @@ resultSets, err := client.Search(ctx, milvusclient.NewSearchOption(
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Best-practices" class="common-anchor-header">Beste Praktiken<button data-href="#Best-practices" class="anchor-icon" translate="no">
+<h2 id="Best-practices" class="common-anchor-header">Best practices<button data-href="#Best-practices" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -370,8 +459,8 @@ resultSets, err := client.Search(ctx, milvusclient.NewSearchOption(
         ></path>
       </svg>
     </button></h2><ul>
-<li><p><strong>Fangen Sie klein an</strong>: Beginnen Sie mit kleineren Stichprobenfaktoren (0,001-0,01) für eine erste Erkundung</p></li>
-<li><p><strong>Entwicklungs-Workflow</strong>: Stichproben während der Entwicklung verwenden, für Produktionsabfragen entfernen</p></li>
-<li><p><strong>Statistische Aussagekraft</strong>: Größere Stichproben liefern genauere statistische Darstellungen</p></li>
-<li><p><strong>Leistungstests</strong>: Überwachung der Abfrageleistung und Anpassung der Stichprobenfaktoren nach Bedarf</p></li>
+<li><p><strong>Start small</strong>: Begin with smaller sampling factors (0.001-0.01) for initial exploration</p></li>
+<li><p><strong>Development workflow</strong>: Use sampling during development, remove for production queries</p></li>
+<li><p><strong>Statistical validity</strong>: Larger samples provide more accurate statistical representations</p></li>
+<li><p><strong>Performance testing</strong>: Monitor query performance and adjust sampling factors as needed</p></li>
 </ul>

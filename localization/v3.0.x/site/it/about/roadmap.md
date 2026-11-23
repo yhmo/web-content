@@ -1,12 +1,12 @@
 ---
 id: roadmap.md
-title: Roadmap di Milvus
+title: Milvus Roadmap
 related_key: Milvus roadmap
 summary: >-
-  Scopri la roadmap di Milvus relativa a ricerca, analisi, evoluzione degli
-  schemi, integrazione con i data lake e prestazioni nelle versioni 3.0 e 3.1.
+  Explore the Milvus roadmap for search, analytics, schema evolution, lake
+  integration, and performance across the 3.0 and 3.1 releases.
 ---
-<h1 id="Milvus-Roadmap" class="common-anchor-header">Roadmap di Milvus<button data-href="#Milvus-Roadmap" class="anchor-icon" translate="no">
+<h1 id="Milvus-Roadmap" class="common-anchor-header">Milvus Roadmap<button data-href="#Milvus-Roadmap" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -21,9 +21,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Milvus 3.0 riunisce il recupero multivettoriale, le query in stile SQL, schemi flessibili e l'accesso ai dati nell'archivio di tipo "data lake". Le fasi successive si basano su queste fondamenta con query più ricche, modelli di dati più ampi e miglioramenti in termini di prestazioni e scalabilità. Questa roadmap delinea tali priorità per Milvus open source.</p>
-<p>Milvus 3.0 è disponibile al pubblico a partire dalla <strong>versione 3.0.1</strong>. Le funzionalità rilasciate riportate di seguito sono state introdotte nella <strong>versione 3.0.0</strong>; le funzionalità in anteprima e quelle attivabili su richiesta sono indicate dove compaiono. La serie <strong>3.0.x</strong> estende queste funzionalità, mentre la versione <strong>3.1 è prevista per dicembre 2026</strong>. Le funzionalità pianificate e le date previste potrebbero subire variazioni man mano che lo sviluppo procede.</p>
-<h2 id="Search-and-retrieval" class="common-anchor-header">Ricerca e recupero<button data-href="#Search-and-retrieval" class="anchor-icon" translate="no">
+    </button></h1><p>Milvus 3.0 brings together multi-vector retrieval, SQL-style querying, flexible schemas, and access to data in lake storage. The next stages build on that foundation with richer queries, broader data models, and improvements to performance and scale. This roadmap outlines those priorities for open-source Milvus.</p>
+<p>Milvus 3.0 is generally available starting with <strong>v3.0.1</strong>. The released capabilities below were introduced in <strong>v3.0.0</strong>; preview features and opt-in capabilities are identified where they appear. The <strong>3.0.x</strong> series extends these capabilities, while <strong>3.1 targets December 2026</strong>. Planned features and target dates may change as development progresses.</p>
+<h2 id="Search-and-retrieval" class="common-anchor-header">Search and retrieval<button data-href="#Search-and-retrieval" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -38,19 +38,19 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>La roadmap relativa al recupero si concentra sulla combinazione di un maggior numero di segnali di rilevanza all’interno di Milvus, dalla corrispondenza testuale e dalle rappresentazioni multivettoriali al riordino dei risultati e ai filtri dei risultati di ricerca.</p>
-<p><strong>Disponibile nella versione 3.0</strong></p>
+    </button></h2><p>The retrieval roadmap focuses on combining more relevance signals within Milvus, from text matching and multi-vector representations to reranking and search-result facets.</p>
+<p><strong>Available in 3.0</strong></p>
 <ul>
-<li><strong>Recupero multivettoriale:</strong> la ricerca StructArray supporta Muvera e Lemur, con l’ <code translate="no">element_filter</code> per il filtraggio a livello di elemento. Le politiche di corrispondenza includono <code translate="no">MATCH_ANY</code>, <code translate="no">MATCH_ALL</code>, <code translate="no">MATCH_LEAST</code>, <code translate="no">MATCH_MOST</code> e <code translate="no">MATCH_EXACT</code>.</li>
-<li><strong>Corrispondenza e somiglianza del testo:</strong> i dizionari personalizzati e i sinonimi adattano il recupero del testo alle esigenze dell’applicazione. Il filtraggio Regex supporta la corrispondenza dei pattern, mentre MinHash supporta il rilevamento dei quasi-duplicati.</li>
-<li><strong>Riorganizzazione dei risultati e inferenza:</strong> Milvus 3.0 introduce una serie iniziale di funzionalità di riorganizzazione dei risultati tramite Function Chain, insieme all’Hugging Face Inference Provider. Le restanti funzionalità di Function Chain sono previste per la versione 3.0.x.</li>
-<li><strong>Aggregazione dei risultati di ricerca:</strong> l’aggregazione dei risultati di ricerca fornisce filtri (facets) sui risultati della ricerca.</li>
+<li><strong>Multi-vector retrieval:</strong> StructArray search supports Muvera and Lemur, with <code translate="no">element_filter</code> for element-level filtering. Match policies include <code translate="no">MATCH_ANY</code>, <code translate="no">MATCH_ALL</code>, <code translate="no">MATCH_LEAST</code>, <code translate="no">MATCH_MOST</code>, and <code translate="no">MATCH_EXACT</code>.</li>
+<li><strong>Text matching and similarity:</strong> Custom dictionaries and synonyms adapt text retrieval to application needs. Regex filtering supports pattern matching, and MinHash supports near-duplicate detection.</li>
+<li><strong>Reranking and inference:</strong> Milvus 3.0 introduces an initial set of Function Chain reranking capabilities, along with the Hugging Face Inference Provider. The remaining Function Chain capabilities are planned for 3.0.x.</li>
+<li><strong>Search aggregation:</strong> Search aggregation provides facets over search results.</li>
 </ul>
-<p><strong>Previsto per la versione 3.0.x</strong></p>
-<p>La serie 3.0.x prevede l’aggiunta della corrispondenza approssimativa e delle statistiche globali, oltre al supporto completo della Function Chain.</p>
-<p><strong>Previsto per la versione 3.1</strong></p>
-<p>I piani includono il recupero basato su Grep, una più stretta integrazione della ricerca del vicino più prossimo approssimativo (ANN) e il filtraggio tramite fusione ANN-filtro, oltre a miglioramenti al recupero sparsa.</p>
-<h2 id="Analytics-and-SQL-style-querying" class="common-anchor-header">Analisi e query in stile SQL<button data-href="#Analytics-and-SQL-style-querying" class="anchor-icon" translate="no">
+<p><strong>Planned for 3.0.x</strong></p>
+<p>The 3.0.x series is planned to add fuzzy matching and global statistics, and complete Function Chain support.</p>
+<p><strong>Planned for 3.1</strong></p>
+<p>Plans include Grep-based retrieval, tighter integration of approximate nearest neighbor (ANN) search and filtering through ANN-filter fusion, and improvements to sparse retrieval.</p>
+<h2 id="Analytics-and-SQL-style-querying" class="common-anchor-header">Analytics and SQL-style querying<button data-href="#Analytics-and-SQL-style-querying" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -65,17 +65,17 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus sta ampliando il proprio motore di query in modo che le applicazioni possano ordinare e aggregare i dati parallelamente al recupero. La fase successiva prevede l’aggiunta di join, viste materializzate e calcoli personalizzati.</p>
-<p><strong>Disponibile nella versione 3.0</strong></p>
-<p>Le query e la ricerca supportano l’ordinamento con <code translate="no">ORDER BY</code>. L’aggregazione delle query aggiunge <code translate="no">GROUP BY</code> per il calcolo di statistiche raggruppate.</p>
-<p><strong>In programma per la versione 3.1</strong></p>
+    </button></h2><p>Milvus is extending its query engine so applications can sort and aggregate data alongside retrieval. The next stage adds joins, materialized views, and custom computation.</p>
+<p><strong>Available in 3.0</strong></p>
+<p>Query and search support sorting with <code translate="no">ORDER BY</code>. Query Aggregation adds <code translate="no">GROUP BY</code> for computing grouped statistics.</p>
+<p><strong>Planned for 3.1</strong></p>
 <ul>
-<li><strong>Query più avanzate:</strong> introduzione dei join, a partire dai semi-join, e delle Materialized View Collections.</li>
-<li><strong>Aggiornamenti dei dati e integrità:</strong> supporto per gli aggiornamenti in loco e la deduplicazione della chiave primaria durante l’acquisizione.</li>
-<li><strong>Iterazione delle query e semantica JSON:</strong> aggiunta di un iteratore di query con stato, JSON <code translate="no">GROUP BY</code> e semantica NULL per SQL e JSON.</li>
-<li><strong>Calcoli personalizzati:</strong> supporto delle funzioni definite dall’utente (UDF) in Python.</li>
+<li><strong>Richer queries:</strong> Introduce joins, starting with semi-joins, and Materialized View Collections.</li>
+<li><strong>Data updates and integrity:</strong> Support in-place updates and primary-key deduplication during ingestion.</li>
+<li><strong>Query iteration and JSON semantics:</strong> Add a stateful query iterator, JSON <code translate="no">GROUP BY</code>, and SQL / JSON NULL semantics.</li>
+<li><strong>Custom computation:</strong> Support Python user-defined functions (UDFs).</li>
 </ul>
-<h2 id="Flexible-schema-and-data-types" class="common-anchor-header">Schema e tipi di dati flessibili<button data-href="#Flexible-schema-and-data-types" class="anchor-icon" translate="no">
+<h2 id="Flexible-schema-and-data-types" class="common-anchor-header">Flexible schema and data types<button data-href="#Flexible-schema-and-data-types" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -90,19 +90,19 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Il lavoro sullo schema si concentra sull’evoluzione delle collezioni esistenti e sulla rappresentazione di una gamma più ampia di dati. Copre le modifiche ai campi, le strutture multivettoriali, il testo lungo e la scadenza delle entità.</p>
-<p><strong>Disponibile nella versione 3.0</strong></p>
+    </button></h2><p>Schema work focuses on evolving existing collections and representing a wider range of data. It covers field changes, multi-vector structures, long text, and entity expiration.</p>
+<p><strong>Available in 3.0</strong></p>
 <ul>
-<li><strong>Modifiche allo schema online:</strong> le collezioni esistenti supportano l’aggiunta di campi online, inclusi campi vettoriali e di tipo <code translate="no">Array&lt;Struct&gt;</code>. L’eliminazione dei campi è disponibile in <strong>anteprima</strong> e potrebbe presentare alcune limitazioni.</li>
-<li><strong>Backfill per i dati esistenti:</strong> il backfill esterno utilizza lo Spark Connector. Il backfill interno associa una funzione BM25 o MinHash a una collezione e ne calcola l’output sui dati esistenti.</li>
-<li><strong>Dati di testo e multivettoriali:</strong> il tipo ` <code translate="no">TEXT</code> ` memorizza testo lungo, mentre `StructArray` supporta il recupero in fase di interazione tardiva tramite ` <code translate="no">MAX_SIM</code>`. ` <code translate="no">TEXT</code> ` richiede l’attivazione di Storage V3.</li>
-<li><strong>Valori NULL e scadenza:</strong> i campi vettoriali accettano valori NULL e il tempo di vita (TTL) a livello di entità controlla la scadenza.</li>
+<li><strong>Online schema changes:</strong> Existing collections support online field addition, including vector and <code translate="no">Array&lt;Struct&gt;</code> fields. Dropping fields is available in <strong>preview</strong> and may have limitations.</li>
+<li><strong>Backfill for existing data:</strong> External backfill uses the Spark Connector. Internal backfill attaches a BM25 or MinHash function to a collection and computes its output over existing data.</li>
+<li><strong>Text and multi-vector data:</strong> The <code translate="no">TEXT</code> type stores long text, while StructArray supports late-interaction retrieval through <code translate="no">MAX_SIM</code>. <code translate="no">TEXT</code> requires opt-in Storage V3.</li>
+<li><strong>NULL values and expiration:</strong> Vector fields accept NULL values, and entity-level time to live (TTL) controls expiration.</li>
 </ul>
-<p><strong>In programma per la versione 3.0.x</strong></p>
-<p>I miglioramenti previsti allo schema ampliano il supporto di StructArray per i tipi, i valori NULL e l’aggiunta e la rimozione di campi. Aggiungono inoltre il supporto per le formule molecolari e i filtri " <code translate="no">IS NULL</code> " e " <code translate="no">IS NOT NULL</code> " per i campi vettoriali.</p>
-<p><strong>In programma per la versione 3.1</strong></p>
-<p>Le prossime estensioni del modello di dati includono JSON e Struct annidati, chiavi primarie composite, collezioni senza campi vettoriali e vettori sparsi in StructList.</p>
-<h2 id="Lake-integration-and-data-versioning" class="common-anchor-header">Integrazione con i data lake e controllo delle versioni dei dati<button data-href="#Lake-integration-and-data-versioning" class="anchor-icon" translate="no">
+<p><strong>Planned for 3.0.x</strong></p>
+<p>Planned schema enhancements expand StructArray support for types, NULL values, and field addition and removal. They also add molecular formula support and <code translate="no">IS NULL</code> / <code translate="no">IS NOT NULL</code> filters for vector fields.</p>
+<p><strong>Planned for 3.1</strong></p>
+<p>The next data-model extensions include nested JSON and Struct, composite primary keys, collections without vector fields, and sparse vectors in StructList.</p>
+<h2 id="Lake-integration-and-data-versioning" class="common-anchor-header">Lake integration and data versioning<button data-href="#Lake-integration-and-data-versioning" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -117,18 +117,18 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus sta sviluppando una più stretta integrazione con lo storage Lake e l’elaborazione in batch. Le collezioni esterne consentono di accedere ai dati nel luogo in cui risiedono, mentre gli snapshot costituiscono la base per il versioning dei dati.</p>
-<p><strong>Disponibile nella versione 3.0</strong></p>
+    </button></h2><p>Milvus is developing closer integration with lake storage and batch processing. External collections provide access to data where it resides, while snapshots provide a foundation for data versioning.</p>
+<p><strong>Available in 3.0</strong></p>
 <ul>
-<li><strong>Accesso ai dati esterni:</strong> External Collection supporta dati in formato Lance, Parquet e Iceberg.</li>
-<li><strong>Snapshot e integrazione batch:</strong> lo snapshot acquisisce una versione dei dati della collezione e lo Spark Connector supporta i flussi di lavoro batch.</li>
-<li><strong>Base di archiviazione:</strong> Storage V3 (Loon) offre il supporto opzionale per Vortex e Lance. È disabilitato per impostazione predefinita e si abilita tramite <code translate="no">common.storage.useLoonFFI</code>. Sia gli snapshot che l’ <code translate="no">TEXT</code> e dipendono da esso.</li>
+<li><strong>External data access:</strong> External Collection supports Lance, Parquet, and Iceberg data.</li>
+<li><strong>Snapshots and batch integration:</strong> Snapshot captures a version of collection data, and the Spark Connector supports batch workflows.</li>
+<li><strong>Storage foundation:</strong> Storage V3 (Loon) provides opt-in Vortex and Lance support. It is disabled by default and is enabled through <code translate="no">common.storage.useLoonFFI</code>. Both Snapshot and <code translate="no">TEXT</code> depend on it.</li>
 </ul>
-<p><strong>In programma per la versione 3.0.x</strong></p>
-<p>I miglioramenti previsti consentiranno a uno snapshot di raccolta Milvus di fungere da raccolta esterna. Il supporto per le tabelle esterne si estenderà inoltre allo shredding JSON, all’aggiunta di campi funzione e alla rimozione di campi.</p>
-<p><strong>In programma per la versione 3.1</strong></p>
-<p>I piani includono indici sparsi e scalari basati su S3, insieme alla cancellazione tramite importazione.</p>
-<h2 id="Performance-indexing-and-scale" class="common-anchor-header">Prestazioni, indicizzazione e scalabilità<button data-href="#Performance-indexing-and-scale" class="anchor-icon" translate="no">
+<p><strong>Planned for 3.0.x</strong></p>
+<p>Planned enhancements allow a Milvus collection snapshot to serve as an external collection. External-table support also expands to JSON shredding, function-field addition, and field removal.</p>
+<p><strong>Planned for 3.1</strong></p>
+<p>Plans include S3-based sparse and scalar indexes, along with deletion through import.</p>
+<h2 id="Performance-indexing-and-scale" class="common-anchor-header">Performance, indexing, and scale<button data-href="#Performance-indexing-and-scale" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -143,22 +143,22 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>La roadmap delle prestazioni riguarda gli indici di recupero, l’esecuzione delle query e la crescita del cluster. Affronta inoltre il ripristino e le query che richiedono la lettura dei dati dall’object storage.</p>
-<p><strong>Disponibile nella versione 3.0</strong></p>
+    </button></h2><p>The performance roadmap covers retrieval indexes, query execution, and cluster growth. It also addresses recovery and queries that must read data from object storage.</p>
+<p><strong>Available in 3.0</strong></p>
 <ul>
-<li><strong>Indicizzazione sparsa:</strong> la revisione degli indici sparsi introduce SINDI.</li>
-<li><strong>Scelta dell’indice:</strong> l’indice passthrough di <code translate="no">FAISS</code> accetta stringhe di index-factory Faiss, con opzioni che includono SVS, Panorama, PQ, IVFPQ e ScaNN. L’indicizzazione DiskANN è disponibile anche per le liste incorporate (EmbList).</li>
-<li><strong>Compattazione:</strong> Force Merge offre un controllo esplicito sulla fusione dei segmenti.</li>
+<li><strong>Sparse indexing:</strong> The sparse index overhaul introduces SINDI.</li>
+<li><strong>Index choice:</strong> The <code translate="no">FAISS</code> passthrough index accepts Faiss index-factory strings, with options including SVS, Panorama, PQ, IVFPQ, and ScaNN. DiskANN indexing is also available for embedding lists (EmbList).</li>
+<li><strong>Compaction:</strong> Force Merge provides explicit control over segment merging.</li>
 </ul>
-<p><strong>In programma per la versione 3.1</strong></p>
+<p><strong>Planned for 3.1</strong></p>
 <ul>
-<li><strong>Query sensibili allo storage:</strong> Aggiunta la propagazione dei predicati per Vortex, inclusi il pruning a livello di pagina e gli indici di salto.</li>
-<li><strong>Crescita del cluster e multi-tenant:</strong> supporto alla suddivisione degli shard, alle chiavi di sharding personalizzate e alle ottimizzazioni multi-tenant.</li>
-<li><strong>Esecuzione delle query e indicizzazione:</strong> sviluppo di QueryView, miglioramento del supporto per le collezioni di grandi dimensioni, riduzione dei risultati in streaming e supporto di più indici.</li>
-<li><strong>Affidabilità delle scritture:</strong> supporto delle scritture idempotenti.</li>
-<li><strong>Caching su storage a oggetti:</strong> utilizzo di Talon come cache S3 per migliorare il ripristino in caso di guasto e le prestazioni delle query inattive.</li>
+<li><strong>Storage-aware queries:</strong> Add predicate pushdown for Vortex, including page-level pruning and skip indexes.</li>
+<li><strong>Cluster growth and tenancy:</strong> Support shard splitting, custom sharding keys, and multi-tenancy optimizations.</li>
+<li><strong>Query execution and indexing:</strong> Develop QueryView, improve support for wide collections, stream result reduction, and support multiple indexes.</li>
+<li><strong>Write reliability:</strong> Support idempotent writes.</li>
+<li><strong>Object-storage caching:</strong> Use Talon as an S3 cache to improve failure recovery and cold-query performance.</li>
 </ul>
-<h2 id="Beyond-31" class="common-anchor-header">Oltre la versione 3.1<button data-href="#Beyond-31" class="anchor-icon" translate="no">
+<h2 id="Beyond-31" class="common-anchor-header">Beyond 3.1<button data-href="#Beyond-31" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -173,8 +173,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Il lavoro a lungo termine include il "time-travel" e il rollback degli snapshot. La loro portata e i tempi di rilascio devono ancora essere confermati.</p>
-<h2 id="Help-shape-the-roadmap" class="common-anchor-header">Contribuisci a definire la roadmap<button data-href="#Help-shape-the-roadmap" class="anchor-icon" translate="no">
+    </button></h2><p>Longer-term work includes time-travel and snapshot rollback. Their scope and release timing remain to be confirmed.</p>
+<h2 id="Help-shape-the-roadmap" class="common-anchor-header">Help shape the roadmap<button data-href="#Help-shape-the-roadmap" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -189,5 +189,5 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Condividi i carichi di lavoro, i limiti e le richieste di funzionalità rilevanti per le tue applicazioni nelle <a href="https://github.com/milvus-io/milvus/discussions">Discussioni su GitHub</a>. Segnala i bug tramite <a href="https://github.com/milvus-io/milvus/issues">le Issue di GitHub</a>.</p>
-<p>Per contribuire con codice o documentazione, inizia dalla <a href="https://github.com/milvus-io/milvus/blob/master/CONTRIBUTING.md">Guida per i contributori</a>.</p>
+    </button></h2><p>Share the workloads, limitations, and feature requests that matter to your applications in <a href="https://github.com/milvus-io/milvus/discussions">GitHub Discussions</a>. Report bugs through <a href="https://github.com/milvus-io/milvus/issues">GitHub Issues</a>.</p>
+<p>To contribute code or documentation, start with the <a href="https://github.com/milvus-io/milvus/blob/master/CONTRIBUTING.md">Contributor’s Guide</a>.</p>

@@ -2,9 +2,8 @@
 id: ivf-rabitq-fastscan.md
 title: IVF_RABITQ_FASTSCANCompatible with Milvus 3.0.x
 summary: >-
-  IVF_RABITQ_FASTSCAN combina la técnica IVF, la cuantificación binaria RaBitQ y
-  el escaneo por lotes SIMD para ofrecer una búsqueda vectorial de alto
-  rendimiento y eficiente en cuanto al uso de la memoria.
+  IVF_RABITQ_FASTSCAN combines IVF, RaBitQ binary quantization, and SIMD batch
+  scanning to provide memory-efficient, high-throughput vector search.
 beta: Milvus 3.0.x
 ---
 <h1 id="IVFRABITQFASTSCAN" class="common-anchor-header">IVF_RABITQ_FASTSCAN<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#IVFRABITQFASTSCAN" class="anchor-icon" translate="no">
@@ -22,9 +21,9 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p><code translate="no">IVF_RABITQ_FASTSCAN</code> combina la partición IVF, la cuantificación binaria RaBitQ y el procesamiento por lotes FastScan. Almacena códigos RaBitQ de un bit para los vectores de la base de datos y procesa los códigos en bloques de 32 vectores de la base de datos compatibles con SIMD. Esto lo convierte en una buena opción para cargas de trabajo de alto rendimiento con limitaciones de memoria que puedan aceptar resultados aproximados.</p>
-<p>Elige <code translate="no">IVF_RABITQ_FASTSCAN</code> en lugar de <a href="/docs/es/ivf-rabitq.md">IVF_RABITQ</a> cuando las búsquedas analicen muchos candidatos y el rendimiento sea el objetivo principal. El coste de configuración por consulta de FastScan se amortiza a lo largo de los bloques de código empaquetados, por lo que suele ser más beneficioso para grandes conjuntos de datos o listas IVF largas. Para colecciones pequeñas o búsquedas que examinan pocos candidatos, utiliza en su lugar <code translate="no">IVF_RABITQ</code>. También admite cuantificación de consultas configurable, más tipos de refinamiento e iteradores.</p>
-<h2 id="How-it-works" class="common-anchor-header">Cómo funciona<button data-href="#How-it-works" class="anchor-icon" translate="no">
+    </button></h1><p><code translate="no">IVF_RABITQ_FASTSCAN</code> combines IVF partitioning, RaBitQ binary quantization, and FastScan batch processing. It stores one-bit RaBitQ codes for database vectors and processes the codes in SIMD-friendly blocks of 32 database vectors. This makes it a good choice for high-throughput, memory-constrained workloads that can accept approximate results.</p>
+<p>Choose <code translate="no">IVF_RABITQ_FASTSCAN</code> over <a href="/docs/es/ivf-rabitq.md">IVF_RABITQ</a> when searches scan many candidates and throughput is the primary goal. FastScan’s per-query setup cost is amortized across packed code blocks, so it is typically more beneficial for large datasets or long IVF lists. For small collections or searches that inspect few candidates, use <code translate="no">IVF_RABITQ</code> instead. It also supports configurable query quantization, more refinement types, and iterators.</p>
+<h2 id="How-it-works" class="common-anchor-header">How it works<button data-href="#How-it-works" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -39,16 +38,16 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">IVF_RABITQ_FASTSCAN</code> utiliza las siguientes etapas:</p>
+    </button></h2><p><code translate="no">IVF_RABITQ_FASTSCAN</code> uses the following stages:</p>
 <ol>
-<li><strong>Partición IVF</strong>: IVF agrupa los vectores en clústeres de « <code translate="no">nlist</code> » y busca los clústeres más cercanos mediante <code translate="no">nprobe</code>.</li>
-<li><strong>Codificación RaBitQ</strong>: cada residual de vector se codifica como un código RaBitQ de un bit por dimensión.</li>
-<li><strong>FastScan</strong>: el índice agrupa los códigos para un procesamiento por lotes SIMD optimizado para la caché. Evalúa 32 vectores de la base de datos en cada lote.</li>
-<li><strong>Refinamiento opcional</strong>: cuando está habilitado, un refinador FP32 vuelve a puntuar los candidatos antes de que Milvus devuelva los resultados finales.</li>
+<li><strong>IVF partitioning</strong>: IVF groups vectors into <code translate="no">nlist</code> clusters and searches the <code translate="no">nprobe</code> closest clusters.</li>
+<li><strong>RaBitQ encoding</strong>: Each vector residual is encoded as a one-bit-per-dimension RaBitQ code.</li>
+<li><strong>FastScan</strong>: The index packs codes for cache-friendly, SIMD batch processing. It evaluates 32 database vectors in each batch.</li>
+<li><strong>Optional refinement</strong>: When enabled, an FP32 refiner re-scores candidates before Milvus returns the final results.</li>
 </ol>
-<p>El índice Faiss subyacente es <code translate="no">IndexIVFRaBitQFastScan</code>. Knowhere lo envuelve con una transformación de rotación aleatoria y, opcionalmente, añade un refinador FP32.</p>
-<p>FastScan realiza tareas de configuración por consulta, como la creación y cuantificación de tablas de consulta relacionadas con la búsqueda, antes de escanear los bloques de código empaquetados. Compara el rendimiento tanto de <code translate="no">IVF_RABITQ</code> como de <code translate="no">IVF_RABITQ_FASTSCAN</code> con tus datos y parámetros de búsqueda.</p>
-<h2 id="Build-index" class="common-anchor-header">Crear un índice<button data-href="#Build-index" class="anchor-icon" translate="no">
+<p>The underlying Faiss index is <code translate="no">IndexIVFRaBitQFastScan</code>. Knowhere wraps it with a random rotation transform and optionally adds an FP32 refiner.</p>
+<p>FastScan performs per-query setup work, such as building and quantizing query-related lookup tables, before scanning packed code blocks. Benchmark both <code translate="no">IVF_RABITQ</code> and <code translate="no">IVF_RABITQ_FASTSCAN</code> with your data and search parameters.</p>
+<h2 id="Build-index" class="common-anchor-header">Build index<button data-href="#Build-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -63,7 +62,7 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Para crear un índice de <code translate="no">IVF_RABITQ_FASTSCAN</code> en un campo vectorial en Milvus, utiliza el método <code translate="no">add_index()</code>, especificando <code translate="no">index_type</code>, <code translate="no">metric_type</code> y los parámetros adicionales para el índice.</p>
+    </button></h2><p>To build an <code translate="no">IVF_RABITQ_FASTSCAN</code> index on a vector field in Milvus, use the <code translate="no">add_index()</code> method, specifying the <code translate="no">index_type</code>, <code translate="no">metric_type</code>, and additional parameters for the index.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 <span class="hljs-comment"># Prepare index building params</span>
@@ -81,14 +80,14 @@ index_params.add_index(
 <span class="highlighted-comment-line">    } <span class="hljs-comment"># Index building params</span></span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>En esta configuración:</p>
+<p>In this configuration:</p>
 <ul>
-<li><p><code translate="no">index_type</code>: El tipo de índice que se va a crear. En este ejemplo, establezca el valor en « <code translate="no">IVF_RABITQ_FASTSCAN</code> ».</p></li>
-<li><p><code translate="no">metric_type</code>: El método utilizado para calcular la distancia entre vectores. Los valores admitidos incluyen <code translate="no">COSINE</code>, <code translate="no">L2</code> y <code translate="no">IP</code>. Para obtener más detalles, consulte <a href="/docs/es/metric.md">Tipos</a> de <a href="/docs/es/metric.md">métricas</a>.</p></li>
-<li><p><code translate="no">params</code>: Opciones de configuración adicionales para la creación del índice. Para obtener más información, consulte <a href="/docs/es/ivf-rabitq-fastscan.md#Index-building-params">«Parámetros de creación</a> de <a href="/docs/es/ivf-rabitq-fastscan.md#Index-building-params">índices</a>».</p></li>
+<li><p><code translate="no">index_type</code>: The type of index to be built. In this example, set the value to <code translate="no">IVF_RABITQ_FASTSCAN</code>.</p></li>
+<li><p><code translate="no">metric_type</code>: The method used to calculate the distance between vectors. Supported values include <code translate="no">COSINE</code>, <code translate="no">L2</code>, and <code translate="no">IP</code>. For details, refer to <a href="/docs/es/metric.md">Metric Types</a>.</p></li>
+<li><p><code translate="no">params</code>: Additional configuration options for building the index. For details, refer to <a href="/docs/es/ivf-rabitq-fastscan.md#Index-building-params">Index building params</a>.</p></li>
 </ul>
-<p>Una vez configurados los parámetros del índice, puede crear el índice utilizando directamente el método <code translate="no">create_index()</code> o pasando los parámetros del índice en el método <code translate="no">create_collection</code>. Para obtener más información, consulte <a href="/docs/es/create-collection.md">Crear colección</a>.</p>
-<h2 id="Search-on-index" class="common-anchor-header">Búsqueda en el índice<button data-href="#Search-on-index" class="anchor-icon" translate="no">
+<p>Once the index parameters are configured, you can create the index by using the <code translate="no">create_index()</code> method directly or passing the index params in the <code translate="no">create_collection</code> method. For details, refer to <a href="/docs/es/create-collection.md">Create Collection</a>.</p>
+<h2 id="Search-on-index" class="common-anchor-header">Search on index<button data-href="#Search-on-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -103,8 +102,8 @@ index_params.add_index(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Una vez creado el índice e insertadas las entidades, puede realizar búsquedas de similitud en el índice.</p>
-<p>Establezca ` <code translate="no">nprobe</code> ` para controlar el número de clústeres IVF que se van a buscar. Si el índice se ha creado con refinamiento, utilice ` <code translate="no">refine_k</code> ` para controlar el conjunto de candidatos que se pasa al refinador FP32.</p>
+    </button></h2><p>Once the index is built and entities are inserted, you can perform similarity searches on the index.</p>
+<p>Set <code translate="no">nprobe</code> to control how many IVF clusters are searched. If the index was built with refinement, use <code translate="no">refine_k</code> to control the candidate pool passed to the FP32 refiner.</p>
 <pre><code translate="no" class="language-python">client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>) <span class="hljs-comment"># Replace with your Milvus server address</span>
 
 search_params = {
@@ -122,14 +121,14 @@ res = client.search(
 <span class="highlighted-wrapper-line">    search_params=search_params</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>En esta configuración:</p>
+<p>In this configuration:</p>
 <ul>
-<li><code translate="no">params</code>: Opciones de configuración adicionales para la búsqueda en el índice. Para más detalles, consulte <a href="/docs/es/ivf-rabitq-fastscan.md#Index-specific-search-params">«Parámetros de búsqueda específicos del índice</a>».</li>
+<li><code translate="no">params</code>: Additional configuration options for searching on the index. For details, refer to <a href="/docs/es/ivf-rabitq-fastscan.md#Index-specific-search-params">Index-specific search params</a>.</li>
 </ul>
 <div class="alert note">
-<p>A diferencia de « <code translate="no">IVF_RABITQ</code> », « <code translate="no">IVF_RABITQ_FASTSCAN</code> » no acepta el parámetro de búsqueda « <code translate="no">rbq_bits_query</code> ». FastScan siempre utiliza internamente una cuantificación de consultas de 8 bits, por lo que debe omitirse « <code translate="no">rbq_bits_query</code> » o establecerse en « <code translate="no">0</code> »; se rechazan los valores superiores.</p>
+<p>Unlike <code translate="no">IVF_RABITQ</code>, <code translate="no">IVF_RABITQ_FASTSCAN</code> does not accept the <code translate="no">rbq_bits_query</code> search parameter. FastScan always uses 8-bit query quantization internally, so omit <code translate="no">rbq_bits_query</code> or set it to <code translate="no">0</code>; larger values are rejected.</p>
 </div>
-<h2 id="Index-params" class="common-anchor-header">Parámetros del índice<button data-href="#Index-params" class="anchor-icon" translate="no">
+<h2 id="Index-params" class="common-anchor-header">Index params<button data-href="#Index-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -144,8 +143,8 @@ res = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Esta sección ofrece una visión general de los parámetros utilizados para crear un índice y realizar búsquedas en él.</p>
-<h3 id="Index-building-params" class="common-anchor-header">Parámetros de creación de índices<button data-href="#Index-building-params" class="anchor-icon" translate="no">
+    </button></h2><p>This section provides an overview of the parameters used for building an index and performing searches on the index.</p>
+<h3 id="Index-building-params" class="common-anchor-header">Index building params<button data-href="#Index-building-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -160,37 +159,37 @@ res = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>La siguiente tabla enumera los parámetros que se pueden configurar en <code translate="no">params</code> al <a href="/docs/es/ivf-rabitq-fastscan.md#Build-index">crear un índice</a>.</p>
+    </button></h3><p>The following table lists the parameters that can be configured in <code translate="no">params</code> when <a href="/docs/es/ivf-rabitq-fastscan.md#Build-index">building an index</a>.</p>
 <table>
    <tr>
      <th></th>
-     <th><p>Parámetro</p></th>
-     <th><p>Descripción</p></th>
-     <th><p>Rango de valores</p></th>
-     <th><p>Sugerencia de ajuste</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Description</p></th>
+     <th><p>Value Range</p></th>
+     <th><p>Tuning Suggestion</p></th>
    </tr>
    <tr>
      <td><p>IVF</p></td>
      <td><p><code translate="no">nlist</code></p></td>
-     <td><p>El número de clústeres que se crearán mediante el algoritmo k-means durante la creación del índice. Cada clúster, representado por un centroide, almacena una lista de vectores. Al aumentar este parámetro se reduce el número de vectores en cada clúster, lo que da lugar a particiones más pequeñas y específicas.</p></td>
-     <td><p><strong>Tipo</strong>: Entero<br><strong>Rango</strong>: [1, 65536]<br><strong>Valor por defecto</strong>: <code translate="no">128</code></p></td>
-     <td><p>Los valores más altos de « <code translate="no">nlist</code> » mejoran la recuperación al crear clústeres más refinados, pero aumentan el tiempo de creación del índice. Optimiza en función del tamaño del conjunto de datos y de los recursos disponibles. En la mayoría de los casos, te recomendamos que establezcas un valor dentro de este rango: [32, 4096].</p></td>
+     <td><p>The number of clusters to create using the k-means algorithm during index building. Each cluster, represented by a centroid, stores a list of vectors. Increasing this parameter reduces the number of vectors in each cluster, creating smaller, more focused partitions.</p></td>
+     <td><p><strong>Type</strong>: Integer<br><strong>Range</strong>: [1, 65536]<br><strong>Default value</strong>: <code translate="no">128</code></p></td>
+     <td><p>Larger <code translate="no">nlist</code> values improve recall by creating more refined clusters but increase index building time. Optimize based on dataset size and available resources. In most cases, we recommend you set a value within this range: [32, 4096].</p></td>
    </tr>
    <tr>
      <td rowspan="2"><p>RaBitQ</p></td>
      <td><p><code translate="no">refine</code></p></td>
-     <td><p>Habilita el proceso de refinamiento y almacena los datos refinados. <code translate="no">IVF_RABITQ_FASTSCAN</code> solo admite el refinamiento en FP32.</p></td>
-     <td><p><strong>Tipo</strong>: Booleano<br><strong>Intervalo</strong>: [<code translate="no">true</code>, <code translate="no">false</code>]<br><strong>Valor por defecto</strong>: <code translate="no">false</code></p></td>
-     <td><p>Establecer en <code translate="no">true</code> si se necesita una tasa de recuperación de 0,9 o superior. Habilitar el refinamiento mejora la precisión, pero aumenta los requisitos de almacenamiento y el tiempo de creación del índice.</p></td>
+     <td><p>Enables the refine process and stores the refined data. <code translate="no">IVF_RABITQ_FASTSCAN</code> supports FP32 refinement only.</p></td>
+     <td><p><strong>Type</strong>: Boolean<br><strong>Range</strong>: [<code translate="no">true</code>, <code translate="no">false</code>]<br><strong>Default value</strong>: <code translate="no">false</code></p></td>
+     <td><p>Set to <code translate="no">true</code> if a 0.9+ recall rate is needed. Enabling refinement improves accuracy but increases storage requirements and index building time.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">refine_type</code></p></td>
-     <td><p>Define la representación de datos utilizada para el refinamiento cuando <code translate="no">refine</code> está habilitado. Solo es obligatorio cuando <code translate="no">refine</code> es <code translate="no">true</code>.</p></td>
-     <td><p><strong>Tipo</strong>: Cadena<br><strong>Rango</strong>: [<code translate="no">FP32</code>, <code translate="no">FLAT</code>]<br><strong>Valor por defecto</strong>: Ninguno</p></td>
-     <td><p><code translate="no">IVF_RABITQ_FASTSCAN</code> Solo admite el refinamiento FP32, y <code translate="no">FLAT</code> es idéntico a <code translate="no">FP32</code>. La coincidencia de valores no distingue entre mayúsculas y minúsculas.</p></td>
+     <td><p>Defines the data representation used for refining when <code translate="no">refine</code> is enabled. Required only when <code translate="no">refine</code> is <code translate="no">true</code>.</p></td>
+     <td><p><strong>Type</strong>: String<br><strong>Range</strong>: [<code translate="no">FP32</code>, <code translate="no">FLAT</code>]<br><strong>Default value</strong>: None</p></td>
+     <td><p><code translate="no">IVF_RABITQ_FASTSCAN</code> supports FP32 refinement only, and <code translate="no">FLAT</code> is identical to <code translate="no">FP32</code>. Value matching is case-insensitive.</p></td>
    </tr>
 </table>
-<h3 id="Index-specific-search-params" class="common-anchor-header">Parámetros de búsqueda específicos del índice<button data-href="#Index-specific-search-params" class="anchor-icon" translate="no">
+<h3 id="Index-specific-search-params" class="common-anchor-header">Index-specific search params<button data-href="#Index-specific-search-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -205,37 +204,37 @@ res = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>La siguiente tabla enumera los parámetros que se pueden configurar en <code translate="no">search_params.params</code> al <a href="/docs/es/ivf-rabitq-fastscan.md#Search-on-index">realizar búsquedas en el índice</a>.</p>
+    </button></h3><p>The following table lists the parameters that can be configured in <code translate="no">search_params.params</code> when <a href="/docs/es/ivf-rabitq-fastscan.md#Search-on-index">searching on the index</a>.</p>
 <table>
    <tr>
      <th></th>
-     <th><p>Parámetro</p></th>
-     <th><p>Descripción</p></th>
-     <th><p>Rango de valores</p></th>
-     <th><p>Sugerencia de ajuste</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Description</p></th>
+     <th><p>Value Range</p></th>
+     <th><p>Tuning Suggestion</p></th>
    </tr>
    <tr>
      <td><p>IVF</p></td>
      <td><p><code translate="no">nprobe</code></p></td>
-     <td><p>El número de clústeres en los que buscar candidatos. Un valor más alto permite buscar en más clústeres, lo que mejora la recuperación al ampliar el alcance de la búsqueda, pero a costa de una mayor latencia de la consulta.</p></td>
-     <td><p><strong>Tipo</strong>: Entero<br><strong>Rango</strong>: [1, <em>nlist</em>]<br><strong>Valor por defecto</strong>: <code translate="no">8</code></p></td>
-     <td><p>Aumentar este valor mejora la recuperación, pero puede ralentizar la búsqueda. Establece <code translate="no">nprobe</code> de forma proporcional a <code translate="no">nlist</code> para equilibrar velocidad y precisión. En la mayoría de los casos, te recomendamos que establezcas un valor dentro de este rango: [1, <em>nlist</em>].</p></td>
+     <td><p>The number of clusters to search for candidates. Higher values allow more clusters to be searched, improving recall by expanding the search scope but at the cost of increased query latency.</p></td>
+     <td><p><strong>Type</strong>: Integer<br><strong>Range</strong>: [1, <em>nlist</em>]<br><strong>Default value</strong>: <code translate="no">8</code></p></td>
+     <td><p>Increasing this value improves recall but may slow down the search. Set <code translate="no">nprobe</code> proportionally to <code translate="no">nlist</code> to balance speed and accuracy. In most cases, we recommend you set a value within this range: [1, <em>nlist</em>].</p></td>
    </tr>
    <tr>
      <td rowspan="2"><p>RaBitQ</p></td>
      <td><p><code translate="no">refine_k</code></p></td>
-     <td><p>El proceso de refinamiento utiliza una cuantificación de mayor calidad para seleccionar el número necesario de vecinos más cercanos de un conjunto de candidatos <code translate="no">refine_k</code> veces mayor, elegido mediante IVF_RABITQ_FASTSCAN. No tiene ningún efecto si el refinamiento está desactivado.</p></td>
-     <td><p><strong>Tipo</strong>: Float<br><strong>Intervalo</strong>: [1, <em>float_max</em>)<br><strong>Valor por defecto</strong>: <code translate="no">1</code></p></td>
-     <td><p>Los valores « <code translate="no">refine_k</code> » más altos reducen el QPS, pero aumentan la tasa de recuperación. Empieza con <code translate="no">1</code> y prueba los valores <code translate="no">2</code>, <code translate="no">3</code>, <code translate="no">4</code> y <code translate="no">5</code> para encontrar el equilibrio óptimo entre el QPS y la recuperación para tu conjunto de datos.</p></td>
+     <td><p>The refining process uses higher quality quantization to pick the needed number of nearest neighbors from a <code translate="no">refine_k</code> times larger pool of candidates chosen using IVF_RABITQ_FASTSCAN. Has no effect if refinement is disabled.</p></td>
+     <td><p><strong>Type</strong>: Float<br><strong>Range</strong>: [1, <em>float_max</em>)<br><strong>Default value</strong>: <code translate="no">1</code></p></td>
+     <td><p>Higher <code translate="no">refine_k</code> values decrease QPS but increase recall rate. Start with <code translate="no">1</code> and test values <code translate="no">2</code>, <code translate="no">3</code>, <code translate="no">4</code>, and <code translate="no">5</code> to find the optimal trade-off between QPS and recall for your dataset.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">rbq_bits_query</code></p></td>
-     <td><p>Establece si se aplica una cuantificación escalar adicional a un vector de consulta. <strong>No es compatible con <code translate="no">IVF_RABITQ_FASTSCAN</code></strong>: el índice siempre utiliza internamente una cuantificación de consulta de 8 bits. Omita este parámetro o establézcalo en <code translate="no">0</code>; se rechazan los valores superiores a <code translate="no">0</code>.</p></td>
-     <td><p><strong>Tipo</strong>: Entero<br><strong>Rango</strong>: [0, 0]<br><strong>Valor por defecto</strong>: <code translate="no">0</code></p></td>
-     <td><p>Déjalo sin configurar. Para la cuantificación de consultas configurable, utiliza <a href="/docs/es/ivf-rabitq.md">IVF_RABITQ</a> en su lugar.</p></td>
+     <td><p>Sets whether additional scalar quantization of a query vector is applied. <strong>Not supported on <code translate="no">IVF_RABITQ_FASTSCAN</code></strong>: the index always uses 8-bit query quantization internally. Omit this parameter or set it to <code translate="no">0</code>; values greater than <code translate="no">0</code> are rejected.</p></td>
+     <td><p><strong>Type</strong>: Integer<br><strong>Range</strong>: [0, 0]<br><strong>Default value</strong>: <code translate="no">0</code></p></td>
+     <td><p>Leave it unset. For configurable query quantization, use <a href="/docs/es/ivf-rabitq.md">IVF_RABITQ</a> instead.</p></td>
    </tr>
 </table>
-<h2 id="Limitations" class="common-anchor-header">Limitaciones<button data-href="#Limitations" class="anchor-icon" translate="no">
+<h2 id="Limitations" class="common-anchor-header">Limitations<button data-href="#Limitations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -251,10 +250,10 @@ res = client.search(
         ></path>
       </svg>
     </button></h2><ul>
-<li>FastScan utiliza una codificación fija de la base de datos RaBitQ de 1 bit y una cuantificación de consultas de 8 bits. Se debe omitir « <code translate="no">rbq_bits_query</code> » o establecerlo en « <code translate="no">0</code> ».</li>
-<li>Solo se admite el refinamiento FP32 (equivalente a <code translate="no">FLAT</code>).</li>
-<li>No se admiten iteradores.</li>
-<li>Se trata de un índice de CPU. No se ejecuta en la GPU.</li>
-<li>El rendimiento real depende de la compatibilidad de la CPU con SIMD, la dimensión del vector, <code translate="no">nlist</code>, <code translate="no">nprobe</code> y la distribución de los datos. Realiza pruebas de rendimiento con tu carga de trabajo antes de implementarlo en producción.</li>
+<li>FastScan uses a fixed 1-bit RaBitQ database encoding and 8-bit query quantization. <code translate="no">rbq_bits_query</code> must be omitted or set to <code translate="no">0</code>.</li>
+<li>Only FP32 (equivalently <code translate="no">FLAT</code>) refinement is supported.</li>
+<li>Iterators are not supported.</li>
+<li>This is a CPU index. It does not run on GPU.</li>
+<li>Actual performance depends on CPU SIMD support, vector dimension, <code translate="no">nlist</code>, <code translate="no">nprobe</code>, and data distribution. Benchmark it with your workload before deploying it to production.</li>
 </ul>
-<p>Para la variante RaBitQ que no es FastScan y sus opciones de refinamiento adicionales, consulta <a href="/docs/es/ivf-rabitq.md">IVF_RABITQ</a>.</p>
+<p>For the non-FastScan RaBitQ variant and its additional refinement options, see <a href="/docs/es/ivf-rabitq.md">IVF_RABITQ</a>.</p>

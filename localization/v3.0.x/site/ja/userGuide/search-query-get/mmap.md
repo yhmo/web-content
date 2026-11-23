@@ -1,11 +1,15 @@
 ---
 id: mmap.md
-title: mmapの使用
+title: Use mmap
 summary: >-
-  メモリマッピング（Mmap）により、ディスク上の大容量ファイルへの直接メモリアクセスが可能となり、Milvusはインデックスとデータをメモリとハードドライブの両方に保存できるようになります。このアプローチにより、アクセス頻度に基づいたデータ配置ポリシーを最適化でき、検索パフォーマンスに大きな影響を与えることなく、コレクションのストレージ容量を拡張することができます。
-  このページでは、Milvusがmmapを活用して、高速かつ効率的なデータの保存と取得を実現する仕組みについて解説します。
+  Memory mapping (Mmap) enables direct memory access to large files on disk,
+  allowing Milvus to store indexes and data in both memory and hard drives. This
+  approach helps optimize data placement policy based on access frequency,
+  expanding storage capacity for collections without significantly impacting
+  search performance. This page helps you understand how Milvus uses mmap to
+  enable fast and efficient data storage and retrieval.
 ---
-<h1 id="Use-mmap" class="common-anchor-header">mmapの使用<button data-href="#Use-mmap" class="anchor-icon" translate="no">
+<h1 id="Use-mmap" class="common-anchor-header">Use mmap<button data-href="#Use-mmap" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,8 +24,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>メモリマッピング（mmap）を使用することで、ディスク上の大容量ファイルへの直接メモリアクセスが可能になり、Milvusはインデックスとデータをメモリとハードドライブの両方に保存できるようになります。このアプローチにより、アクセス頻度に基づいたデータ配置ポリシーを最適化でき、検索パフォーマンスに大きな影響を与えることなく、コレクションのストレージ容量を拡張できます。 このページでは、Milvusがmmapを活用して、高速かつ効率的なデータの保存と取得を実現する仕組みについて解説します。</p>
-<h2 id="Overview" class="common-anchor-header">概要<button data-href="#Overview" class="anchor-icon" translate="no">
+    </button></h1><p>Memory mapping (Mmap) enables direct memory access to large files on disk, allowing Milvus to store indexes and data in both memory and hard drives. This approach helps optimize data placement policy based on access frequency, expanding storage capacity for collections without significantly impacting search performance. This page helps you understand how Milvus uses mmap to enable fast and efficient data storage and retrieval.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -36,18 +40,18 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvusは、コレクションを使用してベクトル埋め込みとそのメタデータを整理しており、コレクションの各行は1つのエンティティを表します。下の左図に示すように、ベクトルフィールドにはベクトル埋め込みが格納され、スカラーフィールドにはそのメタデータが格納されます。特定のフィールドに対してインデックスを作成し、コレクションを読み込むと、Milvusは作成されたインデックスとフィールドの生データをメモリに読み込みます。</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/mmap-illustrated.png" alt="Mmap Illustrated" class="doc-image" id="mmap-illustrated" /> 
-   <span>mmapの仕組み</span>
-  
- </span></p>
-<p>Milvusはメモリ集約型のデータベースシステムであり、利用可能なメモリ容量によってコレクションの容量が決まります。データサイズがメモリ容量を超える場合、大量のデータを含むフィールドをメモリに読み込むことは不可能です。これは、AI駆動型アプリケーションではよくあるケースです。</p>
-<p>このような問題を解決するため、Milvusではmmapを導入し、コレクション内のホットデータとコールドデータの読み込みバランスを調整しています。上の右図に示すように、特定のフィールドの生データをメモリに完全に読み込むのではなく、メモリマップするようにMilvusを設定できます。 これにより、メモリの問題を気にすることなくフィールドに直接メモリアクセスを行い、コレクションの容量を拡張することができます。</p>
-<p>左図と右図のデータ配置手順を比較すると、左図の方が右図よりもメモリ使用量がはるかに多いことがわかります。 mmapを有効にすると、本来メモリに読み込まれるはずだったデータがハードドライブにオフロードされ、オペレーティングシステムのページキャッシュにキャッシュされるため、メモリ使用量が削減されます。ただし、キャッシュヒットに失敗すると、パフォーマンスが低下する可能性があります。詳細については、<a href="https://en.wikipedia.org/wiki/Mmap">こちらの記事</a>をご参照ください。</p>
-<p>Milvusでmmapを設定する際、常に遵守すべき原則があります。それは、頻繁にアクセスされるデータとインデックスは常にメモリに完全に読み込んだままにし、それ以外の領域のデータに対してのみmmapを使用することです。</p>
-<h2 id="Use-mmap-in-Milvus" class="common-anchor-header">Milvusでのmmapの使用<button data-href="#Use-mmap-in-Milvus" class="anchor-icon" translate="no">
+    </button></h2><p>Milvus uses collections to organize vector embeddings and their metadata, and each row in the collection represents an entity. As shown in the left figure below, the vector field stores vector embeddings, and the scalar fields store their metadata. When you have created indexes on certain fields and loaded the collection, Milvus loads the created indexes and field raw data into memory.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/mmap-illustrated.png" alt="Mmap Illustrated" class="doc-image" id="mmap-illustrated" />
+    <span>Mmap Illustrated</span>
+  </span>
+</p>
+<p>Milvus is a memory-intensive database system, and the memory size available determines the capacity of a collection. Loading fields containing a large volume of data into memory is impossible if the data size exceeds the memory capacity, which is the usual case for AI-driven applications.</p>
+<p>To resolve such issues, Milvus introduces mmap to balance the loading of hot and cold data in collections. As shown in the right figure above, you can configure Milvus to memory-maps the raw data in certain fields instead of fully loading them into memory. This way, you can gain direct memory access to the fields without worrying about memory issues and extend the capacity of the collection.</p>
+<p>By comparing the data placement procedures in the left and right figures, you can figure out that the memory usage is much higher in the left figure than in the right one. With mmap enabled, the data that should have been loaded into memory is offloaded into the hard drive and cached in the page cache of the operating system, reducing memory footprint. However, cache hit failures may result in performance degradation. For details, refer to <a href="https://en.wikipedia.org/wiki/Mmap">this article</a>.</p>
+<p>When you configure mmap on Milvus, there is always a principle for you to adhere to: Always keep the frequently accessed data and indexes fully loaded into memory and use mmap for those in the remaining fields.</p>
+<h2 id="Use-mmap-in-Milvus" class="common-anchor-header">Use mmap in Milvus<button data-href="#Use-mmap-in-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -62,8 +66,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus では、グローバル、フィールド、インデックス、コレクションの各レベルで階層的な mmap 設定が可能です。この際、インデックスおよびフィールドレベルの設定はコレクションレベルより優先され、コレクションレベルの設定はグローバルレベルより優先されます。</p>
-<h3 id="Global-mmap-settings" class="common-anchor-header">グローバルなmmap設定<button data-href="#Global-mmap-settings" class="anchor-icon" translate="no">
+    </button></h2><p>Milvus provides hierarchical mmap settings at global, field, index, and collection levels, where index and field levels take precedence over collection level, and collection level over global level.</p>
+<h3 id="Global-mmap-settings" class="common-anchor-header">Global mmap settings<button data-href="#Global-mmap-settings" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -78,7 +82,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>クラスタレベルの設定はグローバル設定であり、優先順位が最も低くなります。Milvusでは、<code translate="no">milvus.yaml</code> にmmap関連の設定がいくつか用意されています。これらの設定は、クラスタ内のすべてのコレクションに適用されます。</p>
+    </button></h3><p>The cluster-level setting is the global setting and has the lowest precedence. Milvus provides several mmap-related settings in <code translate="no">milvus.yaml</code>. These settings will apply to all collections in the cluster.</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-string">...</span>
 <span class="hljs-attr">queryNode:</span>
   <span class="hljs-attr">mmap:</span>
@@ -92,39 +96,39 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <table>
    <tr>
-     <th><p>設定項目</p></th>
-     <th><p>説明</p></th>
-     <th><p>デフォルト値</p></th>
+     <th><p>Configure Item</p></th>
+     <th><p>Description</p></th>
+     <th><p>Default Value</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">queryNode.mmap.scalarField</code></p></td>
-     <td><p>すべてのスカラーフィールドの生データをメモリにマッピングするかどうかを指定します。これを `<code translate="no">true</code> ` に設定すると、Milvus はこのコレクションに対するロードリクエストを受信した際に、スカラーフィールドデータを完全にロードする代わりに、コレクションのスカラーフィールドの生データをメモリにマッピングします。</p></td>
+     <td><p>Specifies whether to map the raw data of all scalar fields into memory. Setting this to <code translate="no">true</code> makes Milvus map the raw data of scalar field data of a collection into memory instead of fully loading it upon receiving a load request against this collection.</p></td>
      <td><p><code translate="no">false</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">queryNode.mmap.scalarIndex</code></p></td>
-     <td><p>すべてのスカラーフィールドのインデックスをメモリにマッピングするかどうかを指定します。これを `<code translate="no">true</code> ` に設定すると、Milvus はそのコレクションに対する読み込みリクエストを受信した際に、スカラーフィールドのインデックスを完全に読み込むのではなく、メモリにマッピングします。</p><p>現在、以下のインデックスタイプを使用するスカラーフィールドのみがサポートされています：</p><ul><li>INVERTED</li></ul></td>
+     <td><p>Specifies whether to map all scalar field indexes into memory. Setting this to <code translate="no">true</code> makes Milvus map scalar field indexes of a collection into memory instead of fully loading them upon receiving a load request against this collection.</p><p>Currently, only the scalar field using the following index type is supported:</p><ul><li>INVERTED</li></ul></td>
      <td><p><code translate="no">false</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">queryNode.mmap.vectorField</code></p></td>
-     <td><p>すべてのベクトルフィールドの生データをメモリにマッピングするかどうかを指定します。これを `<code translate="no">true</code> ` に設定すると、Milvus はこのコレクションに対するロードリクエストを受信した際に、ベクトルフィールドデータを完全に読み込む代わりに、コレクションのベクトルフィールドの生データをメモリにマッピングします。</p></td>
+     <td><p>Specifies whether to map the raw data of all vector fields into memory. Setting this to <code translate="no">true</code> makes Milvus map the raw data of vector field data of a collection into memory instead of fully loading it upon receiving a load request against this collection.</p></td>
      <td><p><code translate="no">false</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">queryNode.mmap.vectorIndex</code></p></td>
-     <td><p>すべてのベクトルフィールドインデックスをメモリにマッピングするかどうかを指定します。これを<code translate="no">true</code> に設定すると、Milvusはコレクションに対するロードリクエストを受信した際に、ベクトルフィールドインデックスを完全に読み込むのではなく、メモリにマッピングします。</p><p>現在、以下のインデックスタイプを使用するベクトルフィールドのみがサポートされています：</p><ul><li><p>FLAT</p></li><li><p>IVF_FLAT</p></li><li><p>IVF_SQ8</p></li><li><p>IVF_PQ</p></li><li><p>BIN_FLAT</p></li><li><p>BIN_IVF_FLAT</p></li><li><p>HNSW</p></li><li><p>SCANN</p></li><li><p>SPARSE_INVERTED_INDEX</p></li><li><p>SPARSE_WAND</p></li></ul></td>
+     <td><p>Specifies whether to map all vector field indexes into memory. Setting this to <code translate="no">true</code> makes Milvus map vector field indexes of a collection into memory instead of fully loading them upon receiving a load request against this collection.</p><p>Currently, only the vector fields using the following index types are supported:</p><ul><li><p>FLAT</p></li><li><p>IVF_FLAT</p></li><li><p>IVF_SQ8</p></li><li><p>IVF_PQ</p></li><li><p>BIN_FLAT</p></li><li><p>BIN_IVF_FLAT</p></li><li><p>HNSW</p></li><li><p>SCANN</p></li><li><p>SPARSE_INVERTED_INDEX</p></li><li><p>SPARSE_WAND</p></li></ul></td>
      <td><p><code translate="no">false</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">queryNode.mmap.mmapDirPath</code></p></td>
-     <td><p>メモリマップされたファイルへのパスを指定します。指定しない場合は、デフォルト値が適用されます。 </p><p>デフォルト値に含まれる「<code translate="no">localStorage.path</code> 」というプレースホルダーは、Milvus QueryNodesのハードドライブを指します。mmapの利点を最大限に活用するため、QueryNodesには高性能なハードドライブが搭載されていることを確認してください。</p></td>
+     <td><p>Specifies the path to the memory-mapped files. The default value applies if this is left unspecified. </p><p>The <code translate="no">localStorage.path</code> placeholder in the default value indicates the hard drive of Milvus QueryNodes. Ensure that your QueryNodes have a high-performance hard drive for optimal mmap advantages.</p></td>
      <td><p><code translate="no">{localStorage.path}/mmap</code></p></td>
    </tr>
 </table>
-<p>上記の設定をMilvusクラスタに適用するには、「<a href="/docs/ja/configure-helm.md#Configure-Milvus-via-configuration-file">Helmを使用したMilvusの構成</a>」および<a href="/docs/ja/configure_operator.md">「Milvusオペレーターを使用したMilvusの構成</a>」の手順に従ってください。</p>
-<p>特定のユースケースにおいて、グローバルな mmap 設定では柔軟性に欠ける場合があります。特定のコレクションやそのインデックスに別の設定を適用するには、コレクション、フィールド、またはインデックスごとに個別の mmap 設定を行うことを検討してください。mmap 設定の変更を有効にするには、コレクションをリリースしてからロードし直す必要があります。</p>
-<h3 id="Field-specific-mmap-settings" class="common-anchor-header">フィールド固有の mmap 設定<button data-href="#Field-specific-mmap-settings" class="anchor-icon" translate="no">
+<p>To apply the above settings to your Milvus cluster, please follow the steps in <a href="/docs/ja/configure-helm.md#Configure-Milvus-via-configuration-file">Configure Milvus with Helm</a> and <a href="/docs/ja/configure_operator.md">Configure Milvus with Milvus Operators</a>.</p>
+<p>Sometimes, global mmap settings are not flexible when facing particular use cases. To apply alternate settings to a specific collection or its indexes, consider configuring mmap specific to a collection, a field, or an index. You need to release and load a collection before the changes to the mmap settings take effect.</p>
+<h3 id="Field-specific-mmap-settings" class="common-anchor-header">Field-specific mmap settings<button data-href="#Field-specific-mmap-settings" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -139,14 +143,14 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>フィールド固有のmmapを設定するには、フィールドを追加する際に<code translate="no">mmap_enabled</code> パラメータを含める必要があります。このパラメータを<code translate="no">True</code> に設定することで、この特定のフィールドでmmapを有効にできます。</p>
-<p>以下の例は、フィールドを追加する際にフィールド固有のmmapを設定する方法を示しています。</p>
+    </button></h3><p>To configure field-specific mmap, you need to include the <code translate="no">mmap_enabled</code> parameter when you add a field. You can enable mmap on this specific field by setting this parameter to <code translate="no">True</code>.</p>
+<p>The following example demonstrates how to configure field-specific mmap when you add a field.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
 
@@ -266,7 +270,46 @@ client.alterCollectionField(AlterCollectionFieldReq.builder()
     <span class="hljs-attr">properties</span>: {<span class="hljs-string">&quot;mmap_enable&quot;</span>: <span class="hljs-literal">true</span>}
 });
 <button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-go"><span class="hljs-comment">// go</span>
+<pre><code translate="no" class="language-go"><span class="hljs-keyword">import</span> (
+    <span class="hljs-string">&quot;context&quot;</span>
+    <span class="hljs-string">&quot;fmt&quot;</span>
+
+    <span class="hljs-string">&quot;github.com/milvus-io/milvus/client/v3/entity&quot;</span>
+    <span class="hljs-string">&quot;github.com/milvus-io/milvus/client/v3/milvusclient&quot;</span>
+)
+
+ctx, cancel := context.WithCancel(context.Background())
+<span class="hljs-keyword">defer</span> cancel()
+
+client, err := milvusclient.New(ctx, &amp;milvusclient.ClientConfig{
+    Address: <span class="hljs-string">&quot;http://localhost:19530&quot;</span>,
+    APIKey:  <span class="hljs-string">&quot;root:Milvus&quot;</span>,
+})
+<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+    fmt.Printf(<span class="hljs-string">&quot;Failed to connect to Milvus: %s\n&quot;</span>, err.Error())
+    <span class="hljs-keyword">return</span>
+}
+<span class="hljs-keyword">defer</span> client.Close(ctx)
+
+schema := entity.NewSchema().
+    WithField(entity.NewField().WithName(<span class="hljs-string">&quot;id&quot;</span>).WithDataType(entity.FieldTypeInt64).WithIsPrimaryKey(<span class="hljs-literal">true</span>).WithIsAutoID(<span class="hljs-literal">false</span>)).
+    WithField(entity.NewField().WithName(<span class="hljs-string">&quot;vector&quot;</span>).WithDataType(entity.FieldTypeFloatVector).WithDim(<span class="hljs-number">5</span>)).
+    WithField(entity.NewField().WithName(<span class="hljs-string">&quot;doc_chunk&quot;</span>).WithDataType(entity.FieldTypeVarChar).WithMaxLength(<span class="hljs-number">512</span>).
+        WithTypeParams(<span class="hljs-string">&quot;mmap.enabled&quot;</span>, <span class="hljs-string">&quot;false&quot;</span>))
+
+err = client.CreateCollection(ctx, milvusclient.NewCreateCollectionOption(<span class="hljs-string">&quot;my_collection&quot;</span>, schema))
+<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+    fmt.Printf(<span class="hljs-string">&quot;Failed to create collection: %s\n&quot;</span>, err.Error())
+    <span class="hljs-keyword">return</span>
+}
+
+err = client.AlterCollectionFieldProperty(ctx,
+    milvusclient.NewAlterCollectionFieldPropertiesOption(<span class="hljs-string">&quot;my_collection&quot;</span>, <span class="hljs-string">&quot;doc_chunk&quot;</span>).
+        WithProperty(<span class="hljs-string">&quot;mmap.enabled&quot;</span>, <span class="hljs-literal">true</span>))
+<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+    fmt.Printf(<span class="hljs-string">&quot;Failed to alter field properties: %s\n&quot;</span>, err.Error())
+    <span class="hljs-keyword">return</span>
+}
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment">#restful</span>
 <span class="hljs-built_in">export</span> TOKEN=<span class="hljs-string">&quot;root:Milvus&quot;</span>
@@ -333,10 +376,10 @@ curl --request POST \
 
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>大容量のデータを格納するフィールドについては、mmapの有効化を検討してください。スカラーフィールドとベクトルフィールドの両方がサポートされています。</p>
+<p>Consider enabling mmap for the fields that store large-volume data. Both scalar fields and vector fields are supported.</p>
 </div>
-<p>その後、上記で作成したスキーマを使用してコレクションを作成できます。コレクションを読み込むリクエストを受信すると、Milvus<strong>はdoc_chunkフィールドの</strong>生データをメモリにメモリマップします。</p>
-<h3 id="Index-specific-mmap-settings" class="common-anchor-header">インデックス固有のmmap設定<button data-href="#Index-specific-mmap-settings" class="anchor-icon" translate="no">
+<p>Then, you can create a collection using the above-created schema. Upon receiving a request to load the collection, Milvus uses memory-maps the raw data of the <strong>doc_chunk</strong> field into memory.</p>
+<h3 id="Index-specific-mmap-settings" class="common-anchor-header">Index-specific mmap settings<button data-href="#Index-specific-mmap-settings" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -351,14 +394,14 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>インデックス固有のmmapを設定するには、インデックスを追加する際に、インデックスパラメータに<code translate="no">mmap.enable</code> プロパティを含める必要があります。このプロパティを<code translate="no">true</code> に設定することで、この特定のインデックスでmmapを有効にできます。</p>
-<p>以下の例は、インデックスを追加する際にインデックス固有の mmap を設定する方法を示しています。</p>
+    </button></h3><p>To configure index-specific mmap, you need to include the <code translate="no">mmap.enable</code> property in the index parameters when you add the index. You can enable mmap on this specific index by setting the property to <code translate="no">true</code>.</p>
+<p>The following example demonstrates how to configure index-specific mmap when you add an index.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Add a varchar field</span>
 schema.add_field(
@@ -421,7 +464,42 @@ client.alterIndexProperties(AlterIndexPropertiesReq.builder()
     <span class="hljs-attr">properties</span>:{<span class="hljs-string">&quot;mmap.enabled&quot;</span>: <span class="hljs-literal">true</span>}
 });
 <button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-go"><span class="hljs-comment">// go</span>
+<pre><code translate="no" class="language-go"><span class="hljs-keyword">import</span> (
+    <span class="hljs-string">&quot;context&quot;</span>
+    <span class="hljs-string">&quot;fmt&quot;</span>
+    <span class="hljs-string">&quot;github.com/milvus-io/milvus/client/v3/index&quot;</span>
+    <span class="hljs-string">&quot;github.com/milvus-io/milvus/client/v3/milvusclient&quot;</span>
+)
+
+ctx, cancel := context.WithCancel(context.Background())
+<span class="hljs-keyword">defer</span> cancel()
+
+client, err := milvusclient.New(ctx, &amp;milvusclient.ClientConfig{
+    Address: <span class="hljs-string">&quot;http://localhost:19530&quot;</span>,
+    APIKey:  <span class="hljs-string">&quot;root:Milvus&quot;</span>,
+})
+<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+    fmt.Printf(<span class="hljs-string">&quot;Failed to connect to Milvus: %s\n&quot;</span>, err.Error())
+    <span class="hljs-keyword">return</span>
+}
+<span class="hljs-keyword">defer</span> client.Close(ctx)
+
+indexOption := milvusclient.NewCreateIndexOption(<span class="hljs-string">&quot;my_collection&quot;</span>, <span class="hljs-string">&quot;title&quot;</span>, index.NewInvertedIndex())
+indexOption.WithExtraParam(<span class="hljs-string">&quot;mmap.enabled&quot;</span>, <span class="hljs-literal">false</span>)
+
+_, err = client.CreateIndex(ctx, indexOption)
+<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+    fmt.Printf(<span class="hljs-string">&quot;Failed to create index: %s\n&quot;</span>, err.Error())
+    <span class="hljs-keyword">return</span>
+}
+
+err = client.AlterIndexProperties(ctx,
+    milvusclient.NewAlterIndexPropertiesOption(<span class="hljs-string">&quot;my_collection&quot;</span>, <span class="hljs-string">&quot;title&quot;</span>).
+        WithProperty(<span class="hljs-string">&quot;mmap.enabled&quot;</span>, <span class="hljs-literal">true</span>))
+<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+    fmt.Printf(<span class="hljs-string">&quot;Failed to alter index properties: %s\n&quot;</span>, err.Error())
+    <span class="hljs-keyword">return</span>
+}
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <span class="hljs-built_in">export</span> TOKEN=<span class="hljs-string">&quot;root:Milvus&quot;</span>
@@ -458,10 +536,10 @@ curl --request POST \
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>これは、ベクトルフィールドとスカラーフィールドの両方のインデックスに適用されます。</p>
+<p>This applies to the indexes of both vector and scalar fields.</p>
 </div>
-<p>その後、コレクション内でインデックスパラメータを参照できるようになります。コレクションを読み込むリクエストを受信すると、Milvusは<strong>title</strong>フィールドのインデックスをメモリにマッピングします。</p>
-<h3 id="Collection-specific-mmap-settings" class="common-anchor-header">コレクション固有の mmap 設定<button data-href="#Collection-specific-mmap-settings" class="anchor-icon" translate="no">
+<p>Then you can reference the index parameters in a collection. Upon receiving a request to load the collection, Milvus memory-maps the index of the <strong>title</strong> field into memory.</p>
+<h3 id="Collection-specific-mmap-settings" class="common-anchor-header">Collection-specific mmap settings<button data-href="#Collection-specific-mmap-settings" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -476,14 +554,14 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>コレクション全体に適用されるmmap戦略を設定するには、コレクション作成のリクエストに<code translate="no">mmap.enabled</code> プロパティを含める必要があります。このプロパティを<code translate="no">true</code> に設定することで、コレクションのmmapを有効にできます。</p>
-<p>以下の例は、<strong>my_collection</strong>という名前のコレクションを作成する際に mmap を有効にする方法を示しています。コレクションの読み込みリクエストを受信すると、Milvus はすべてのフィールドの生データをメモリにメモリマップします。</p>
+    </button></h3><p>To configure a collection-wide mmap strategy, you need to include the <code translate="no">mmap.enabled</code> property in the request to create a collection. You can enable mmap for a collection by setting this property to <code translate="no">true</code>.</p>
+<p>The following example demonstrates how to enable mmap in a collection named <strong>my_collection</strong> upon its creation. Upon receiving a request to load the collection, Milvus memory-maps the raw data of all fields into memory.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Enable mmap when creating a collection</span>
 client.create_collection(
@@ -505,7 +583,38 @@ client.createCollection(req);
     <span class="hljs-attr">properties</span>: { <span class="hljs-string">&quot;mmap.enabled&quot;</span>: <span class="hljs-literal">false</span> }
 });
 <button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-go"><span class="hljs-comment">// go</span>
+<pre><code translate="no" class="language-go"><span class="hljs-keyword">import</span> (
+    <span class="hljs-string">&quot;context&quot;</span>
+    <span class="hljs-string">&quot;fmt&quot;</span>
+
+    <span class="hljs-string">&quot;github.com/milvus-io/milvus/client/v3/entity&quot;</span>
+    <span class="hljs-string">&quot;github.com/milvus-io/milvus/client/v3/milvusclient&quot;</span>
+)
+
+ctx, cancel := context.WithCancel(context.Background())
+<span class="hljs-keyword">defer</span> cancel()
+
+client, err := milvusclient.New(ctx, &amp;milvusclient.ClientConfig{
+    Address: <span class="hljs-string">&quot;http://localhost:19530&quot;</span>,
+    APIKey:  <span class="hljs-string">&quot;root:Milvus&quot;</span>,
+})
+<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+    fmt.Printf(<span class="hljs-string">&quot;Failed to connect to Milvus: %s\n&quot;</span>, err.Error())
+    <span class="hljs-keyword">return</span>
+}
+<span class="hljs-keyword">defer</span> client.Close(ctx)
+
+schema := entity.NewSchema().
+    WithField(entity.NewField().WithName(<span class="hljs-string">&quot;id&quot;</span>).WithDataType(entity.FieldTypeInt64).WithIsPrimaryKey(<span class="hljs-literal">true</span>).WithIsAutoID(<span class="hljs-literal">false</span>)).
+    WithField(entity.NewField().WithName(<span class="hljs-string">&quot;vector&quot;</span>).WithDataType(entity.FieldTypeFloatVector).WithDim(<span class="hljs-number">5</span>))
+
+err = client.CreateCollection(ctx,
+    milvusclient.NewCreateCollectionOption(<span class="hljs-string">&quot;my_collection&quot;</span>, schema).
+        WithProperty(<span class="hljs-string">&quot;mmap.enabled&quot;</span>, <span class="hljs-string">&quot;true&quot;</span>))
+<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+    fmt.Printf(<span class="hljs-string">&quot;Failed to create collection: %s\n&quot;</span>, err.Error())
+    <span class="hljs-keyword">return</span>
+}
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">curl --request POST \
 --url <span class="hljs-string">&quot;<span class="hljs-variable">${CLUSTER_ENDPOINT}</span>/v2/vectordb/collections/create&quot;</span> \
@@ -520,13 +629,13 @@ client.createCollection(req);
     }
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>既存のコレクションの mmap 設定を変更することも可能です。</p>
+<p>You can also change the mmap settings of an existing collection.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Release collection before change mmap settings</span>
 client.release_collection(<span class="hljs-string">&quot;my_collection&quot;</span>)
@@ -576,7 +685,44 @@ client.loadCollection(LoadCollectionReq.builder()
     <span class="hljs-attr">collection_name</span>: <span class="hljs-string">&quot;my_collection&quot;</span>
 });
 <button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-go"><span class="hljs-comment">// go</span>
+<pre><code translate="no" class="language-go"><span class="hljs-keyword">import</span> (
+    <span class="hljs-string">&quot;context&quot;</span>
+    <span class="hljs-string">&quot;fmt&quot;</span>
+    <span class="hljs-string">&quot;github.com/milvus-io/milvus/client/v3/milvusclient&quot;</span>
+)
+
+ctx, cancel := context.WithCancel(context.Background())
+<span class="hljs-keyword">defer</span> cancel()
+
+client, err := milvusclient.New(ctx, &amp;milvusclient.ClientConfig{
+    Address: <span class="hljs-string">&quot;http://localhost:19530&quot;</span>,
+    APIKey:  <span class="hljs-string">&quot;root:Milvus&quot;</span>,
+})
+<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+    fmt.Printf(<span class="hljs-string">&quot;Failed to connect to Milvus: %s\n&quot;</span>, err.Error())
+    <span class="hljs-keyword">return</span>
+}
+<span class="hljs-keyword">defer</span> client.Close(ctx)
+
+err = client.ReleaseCollection(ctx, milvusclient.NewReleaseCollectionOption(<span class="hljs-string">&quot;my_collection&quot;</span>))
+<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+    fmt.Printf(<span class="hljs-string">&quot;Failed to release collection: %s\n&quot;</span>, err.Error())
+    <span class="hljs-keyword">return</span>
+}
+
+err = client.AlterCollectionProperties(ctx,
+    milvusclient.NewAlterCollectionPropertiesOption(<span class="hljs-string">&quot;my_collection&quot;</span>).
+        WithProperty(<span class="hljs-string">&quot;mmap.enabled&quot;</span>, <span class="hljs-literal">false</span>))
+<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+    fmt.Printf(<span class="hljs-string">&quot;Failed to alter collection properties: %s\n&quot;</span>, err.Error())
+    <span class="hljs-keyword">return</span>
+}
+
+_, err = client.LoadCollection(ctx, milvusclient.NewLoadCollectionOption(<span class="hljs-string">&quot;my_collection&quot;</span>))
+<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+    fmt.Printf(<span class="hljs-string">&quot;Failed to load collection: %s\n&quot;</span>, err.Error())
+    <span class="hljs-keyword">return</span>
+}
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <span class="hljs-built_in">export</span> CLUSTER_ENDPOINT=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>
@@ -612,4 +758,4 @@ curl --request POST \
     &quot;collectionName&quot;: &quot;my_collection&quot;
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>プロパティを変更するにはコレクションを解放し、変更を反映させるにはコレクションを再読み込みする必要があります。</p>
+<p>You need to release the collection to make changes to its properties and reload the collection to make the changes take effect.</p>

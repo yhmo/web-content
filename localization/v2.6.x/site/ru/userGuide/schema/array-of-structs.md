@@ -1,11 +1,11 @@
 ---
 id: array-of-structs.md
-title: Массив структур
+title: StructArray
 summary: >-
-  Используйте поля StructArray для хранения упорядоченных элементов Struct с
-  общей схемой векторных и скалярных полей.
+  Use StructArray fields to store ordered Struct elements with a shared schema
+  of vector and scalar fields.
 ---
-<h1 id="StructArray" class="common-anchor-header">Массив структур<button data-href="#StructArray" class="anchor-icon" translate="no">
+<h1 id="StructArray" class="common-anchor-header">StructArray<button data-href="#StructArray" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,8 +20,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Поле Array of Structs, или StructArray, в сущности хранит упорядоченный набор элементов Struct. Каждая структура в массиве имеет одну и ту же предопределенную схему, состоящую из нескольких векторов и скалярных полей.</p>
-<p>Вот пример сущности из коллекции, содержащей поле StructArray.</p>
+    </button></h1><p>An Array of Structs field, or a StructArray field, in an entity stores an ordered set of Struct elements. Each Struct in the Array shares the same pre-defined schema, comprising multiple vectors and scalar fields.</p>
+<p>Here’s an example of an entity from a collection that contains a StructArray field.</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
     &#x27;id&#x27;<span class="hljs-punctuation">:</span> <span class="hljs-number">0</span><span class="hljs-punctuation">,</span>
     &#x27;title&#x27;<span class="hljs-punctuation">:</span> &#x27;Walden&#x27;<span class="hljs-punctuation">,</span>
@@ -43,8 +43,8 @@ summary: >-
 <span class="highlighted-comment-line">    <span class="hljs-comment">// hightlight-end</span></span>
 <span class="highlighted-comment-line"><span class="hljs-punctuation">}</span></span>
 <span class="highlighted-comment-line"></span><button class="copy-code-btn"></button></code></pre>
-<p>В приведенном примере поле <code translate="no">chunks</code> является полем StructArray, а каждый элемент Struct содержит свои собственные поля, а именно <code translate="no">text</code>, <code translate="no">text_vector</code> и <code translate="no">chapter</code>.</p>
-<h2 id="When-to-use" class="common-anchor-header">Когда использовать<button data-href="#When-to-use" class="anchor-icon" translate="no">
+<p>In the example above, the <code translate="no">chunks</code> field is a StructArray field, and each Struct element contains its own fields, namely <code translate="no">text</code>, <code translate="no">text_vector</code>, and <code translate="no">chapter</code>.</p>
+<h2 id="When-to-use" class="common-anchor-header">When to use<button data-href="#When-to-use" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -59,15 +59,15 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Современные приложения искусственного интеллекта, от автономного вождения до мультимодального поиска, все чаще опираются на вложенные разнородные данные. Традиционные плоские модели данных с трудом справляются с представлением сложных отношений, таких как<strong>"один документ с множеством аннотированных фрагментов</strong>" или<strong>"одна сцена вождения с множеством наблюдаемых маневров</strong>". Именно здесь тип данных StructArray в Milvus проявляет себя наилучшим образом.</p>
-<p>Чтобы быстро определить, подходит ли поле StructArray для ваших сценариев применения, подумайте, подходят ли:</p>
+    </button></h2><p>Modern AI applications, from autonomous driving to multimodal retrieval, increasingly rely on nested, heterogeneous data. Traditional flat data models struggle to represent complex relationships like "<strong>one document with many annotated chunks</strong>" or "<strong>one driving scene with multiple observed maneuvers</strong>". This is where the StructArray data type in Milvus shines.</p>
+<p>To quickly determine if the StructArray field suits your application scenarios, consider whether:</p>
 <ul>
-<li><p>Ваши данные имеют иерархическую структуру, например, один документ с множеством аннотированных фрагментов.</p></li>
-<li><p>Результатом поиска должен быть документ, а не фрагменты, как в примере выше.</p></li>
-<li><p>Результаты поиска содержат большое количество дубликатов, и вы с трудом извлекаете конечные результаты, используя такие методы, как группировка, дедупликация и повторное ранжирование.</p></li>
+<li><p>Your data is in a hierarchical structure, such as one document with many annotated chunks.</p></li>
+<li><p>The search result should be the document, rather than the chunks, as in the above example.</p></li>
+<li><p>The search results contain massive duplicate entities, and you struggle to retrieve the final results using techniques such as grouping, deduplication, and reranking.</p></li>
 </ul>
-<p>Если ваши ответы на вопросы выше утвердительны, вам следует использовать StructArray.</p>
-<h2 id="Limits" class="common-anchor-header">Ограничения<button data-href="#Limits" class="anchor-icon" translate="no">
+<p>If your answers to the questions above are yes, you should use the StructArray.</p>
+<h2 id="Limits" class="common-anchor-header">Limits<button data-href="#Limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -83,48 +83,48 @@ summary: >-
         ></path>
       </svg>
     </button></h2><ul>
-<li><p><strong>Типы данных</strong></p>
-<p>При создании коллекции вы можете использовать тип Struct в качестве типа данных для элементов в поле Array. Однако вы не можете добавить StructArray в существующую коллекцию, и Milvus не поддерживает использование типа Struct в качестве типа данных для поля коллекции.</p>
-<p>Структуры в поле Array имеют одну и ту же схему, которая должна быть определена при создании поля Array.</p>
-<p>Схема Struct содержит как векторные, так и скалярные поля, как указано ниже:</p>
+<li><p><strong>Data types</strong></p>
+<p>When you create a collection, you can use the Struct type as the data type for the elements in an Array field. However, you cannot add a StructArray to an existing collection, and Milvus does not support using the Struct type as the data type for a collection field.</p>
+<p>The Structs in an Array field share the same schema, which should be defined when you create the Array field.</p>
+<p>A Struct schema contains both vectors and scalar fields, as listed below:</p>
 <ul>
-<li><p>Применимые типы векторных данных: <code translate="no">FLOAT_VECTOR</code>, <code translate="no">FLOAT16_VECTOR</code>, <code translate="no">BFLOAT16_VECTOR</code>, <code translate="no">INT8_VECTOR</code> и <code translate="no">BINARY_VECTOR</code>.</p></li>
-<li><p>Применяемые скалярные типы данных: <code translate="no">VARCHAR</code>, <code translate="no">INT8/16/32/64</code>, <code translate="no">FLOAT</code>, <code translate="no">DOUBLE</code>, и <code translate="no">BOOL</code>.</p></li>
+<li><p>Applicable vector data types: <code translate="no">FLOAT_VECTOR</code>, <code translate="no">FLOAT16_VECTOR</code>, <code translate="no">BFLOAT16_VECTOR</code>, <code translate="no">INT8_VECTOR</code>, and <code translate="no">BINARY_VECTOR</code>.</p></li>
+<li><p>Applicable scalar data types: <code translate="no">VARCHAR</code>, <code translate="no">INT8/16/32/64</code>, <code translate="no">FLOAT</code>, <code translate="no">DOUBLE</code>, and <code translate="no">BOOL</code>.</p></li>
 </ul>
-<p>Следите за тем, чтобы количество векторных полей как на уровне коллекции, так и в объединенных структурах было не больше или равно 10.</p></li>
-<li><p><strong>Нулевые значения и значения по умолчанию</strong></p>
-<p>Поле StructArray не является нулевым и не принимает значения по умолчанию.</p></li>
-<li><p><strong>Функция</strong></p>
-<p>Вы не можете использовать функцию для получения векторного поля из скалярного поля внутри Struct.</p></li>
-<li><p><strong>Тип индекса и тип метрики</strong></p>
-<p>Все векторные поля в коллекции должны быть проиндексированы. Чтобы проиндексировать векторное поле в поле StructArray, Milvus использует список вкраплений для организации векторных вкраплений в каждом элементе Struct и индексирует весь список вкраплений как единое целое.</p>
-<p>Вы можете использовать <code translate="no">AUTOINDEX</code> или <code translate="no">HNSW</code> в качестве типа индекса и любой метрический тип, перечисленный ниже, чтобы построить индексы для списков вкраплений в поле StructArray.</p>
+<p>Keep the number of vector fields both at the collection level and in the Structs combined to be no greater than or equal to 10.</p></li>
+<li><p><strong>Nullable & default values</strong></p>
+<p>A StructArray field is not nullable and does not accept any default value.</p></li>
+<li><p><strong>Function</strong></p>
+<p>You cannot use a function to derive a vector field from a scalar field within a Struct.</p></li>
+<li><p><strong>Index type & metric type</strong></p>
+<p>All vector fields in a collection must be indexed. To index a vector field within a StructArray field, Milvus uses an embedding list to organize the vector embeddings in each Struct element and indexes the entire embedding list as a whole.</p>
+<p>You can use <code translate="no">AUTOINDEX</code> or <code translate="no">HNSW</code> as the index type and any metric type listed below to build indexes for the embedding lists in a StructArray field.</p>
 <p><table>
 <tr>
-<th><p>Тип индекса</p></th>
-<th><p>Метрический тип</p></th>
-<th><p>Примечания</p></th>
+<th><p>Index type</p></th>
+<th><p>Metric type</p></th>
+<th><p>Remarks</p></th>
 </tr>
 <tr>
 <td rowspan="3"><ul><li><p><code translate="no">AUTOINDEX</code></p></li><li><p><code translate="no">HNSW</code></p></li><li><p><code translate="no">IVF_FLAT</code></p></li><li><p><code translate="no">DISKANN</code></p></li></ul></td>
 <td rowspan="3"><ul><li><p><code translate="no">MAX_SIM_COSINE</code></p></li><li><p><code translate="no">MAX_SIM_IP</code></p></li><li><p><code translate="no">MAX_SIM_L2</code></p></li></ul></td>
-<td rowspan="3"><p>Для списков встраивания следующих типов:</p><ul><li><p><code translate="no">FLOAT_VECTOR</code></p></li><li><p><code translate="no">FLOAT16_VECTOR</code></p></li><li><p><code translate="no">BFLOAT16_VECTOR</code></p></li><li><p><code translate="no">INT8_VECTOR</code></p></li><li><p><code translate="no">BINARY_VECTOR</code></p></li></ul></td>
+<td rowspan="3"><p>For embedding lists of the following types:</p><ul><li><p><code translate="no">FLOAT_VECTOR</code></p></li><li><p><code translate="no">FLOAT16_VECTOR</code></p></li><li><p><code translate="no">BFLOAT16_VECTOR</code></p></li><li><p><code translate="no">INT8_VECTOR</code></p></li><li><p><code translate="no">BINARY_VECTOR</code></p></li></ul></td>
 </tr>
 </table></p>
-<p>Подробные сведения о том, как Milvus вычисляет сходство между запросом и списком вложений, см. в разделе <a href="/docs/ru/v2.6.x/metric.md#Maximum-similarity">Максимальное сходство</a>.</p>
-<p>Скалярные поля в поле StructArray поддерживают следующие типы индексов:</p>
+<p>For details on how Milvus calculates the similarity between the query and an embedding list, refer to <a href="/docs/ru/v2.6.x/metric.md#Maximum-similarity">Maximum Similarity</a>.</p>
+<p>The scalar fields in the StructArray field support the following index types:</p>
 <ul>
 <li><p><code translate="no">INVERTED</code></p>
-<p>Обычно это относится к строкоподобным или категориальным фильтрам, например <code translate="no">structA[color]</code> или <code translate="no">structA[str_val]</code>. Подробнее см. в разделе <a href="/docs/ru/v2.6.x/inverted.md">INVERTED</a>.</p></li>
+<p>This usually applies to string-like or categorical filters, like <code translate="no">structA[color]</code> or <code translate="no">structA[str_val]</code>. For details, refer to <a href="/docs/ru/v2.6.x/inverted.md">INVERTED</a>.</p></li>
 <li><p><code translate="no">STL_SORT</code></p>
-<p>Обычно это относится к ускорению диапазона или порядка для числовых значений, например <code translate="no">strctA[num_val]</code>. Подробнее см. в разделе <a href="/docs/ru/v2.6.x/stl-sort.md">STL_SORT</a>.</p></li>
+<p>This usually applies to range or order-style acceleration on numeric values, like <code translate="no">strctA[num_val]</code>. For details, refer to <a href="/docs/ru/v2.6.x/stl-sort.md">STL_SORT</a>.</p></li>
 </ul></li>
-<li><p><strong>Данные для апсерт</strong></p>
-<p>Структуры не поддерживают апсерт в режиме слияния. Однако вы можете выполнять апсерт в режиме переопределения для обновления данных в структурах. Подробнее о различиях между апсерт в режиме слияния и в режиме переопределения см. в разделе <a href="/docs/ru/v2.6.x/upsert-entities.md#Overview">Апсерт сущностей</a>.</p></li>
-<li><p><strong>Скалярная фильтрация</strong></p>
-<p>Вы можете использовать <strong>фильтры элементов</strong> и <strong>операторы семейства match</strong> для скалярной фильтрации по скалярному подполю в поле StructArray. Подробнее см. в разделе <a href="/docs/ru/v2.6.x/array-of-structs.md#Scalar-filtering-in-a-StructArray-field">Скалярная фильтрация в поле StructArray</a>.</p></li>
+<li><p><strong>Upsert data</strong></p>
+<p>Structs do not support upsert in merge mode. However, you can still perform upserts in override mode to update data in Structs. For details about the differences between upsert in merge mode and override mode, refer to <a href="/docs/ru/v2.6.x/upsert-entities.md#Overview">Upsert Entities</a>.</p></li>
+<li><p><strong>Scalar filtering</strong></p>
+<p>You can use <strong>element filters</strong> and <strong>operators in the match family</strong> to conduct scalar filtering against a scalar sub-field in a StructArray field. For details, refer to <a href="/docs/ru/v2.6.x/array-of-structs.md#Scalar-filtering-in-a-StructArray-field">Scalar filtering in a StructArray field</a>.</p></li>
 </ul>
-<h2 id="Add-a-StructArray" class="common-anchor-header">Добавление массива StructArray<button data-href="#Add-a-StructArray" class="anchor-icon" translate="no">
+<h2 id="Add-a-StructArray" class="common-anchor-header">Add a StructArray<button data-href="#Add-a-StructArray" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -139,17 +139,22 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Чтобы добавить поле StructArray в Milvus, вам нужно определить поле массива при создании коллекции и установить тип данных для его элементов на Struct. Процесс выглядит следующим образом:</p>
+    </button></h2><p>To add a StructArray field in Milvus, you need to define an array field when creating a collection, and set the data type for its elements to Struct. The process is as follows:</p>
 <ol>
-<li><p>Установите тип данных поля <code translate="no">DataType.ARRAY</code> при добавлении поля как поля Array в схему коллекции.</p></li>
-<li><p>Установите для атрибута <code translate="no">element_type</code> поля значение <code translate="no">DataType.STRUCT</code>, чтобы сделать поле массивом Struct.</p></li>
-<li><p>Создайте схему Struct и включите в нее необходимые поля. Затем сделайте ссылку на схему Struct в атрибуте поля <code translate="no">struct_schema</code>.</p></li>
-<li><p>Установите для атрибута <code translate="no">max_capacity</code> поля соответствующее значение, чтобы указать максимальное количество структур, которые каждая сущность может содержать в этом поле.</p></li>
-<li><p><strong>(Необязательно</strong>) Вы можете установить <code translate="no">mmap.enabled</code> для любого поля в элементе Struct, чтобы сбалансировать горячие и холодные данные в Struct.</p></li>
+<li><p>Set the data type of a field to <code translate="no">DataType.ARRAY</code> when adding the field as an Array field to the collection schema.</p></li>
+<li><p>Set the field’s <code translate="no">element_type</code> attribute to <code translate="no">DataType.STRUCT</code> to make the field a Struct Array.</p></li>
+<li><p>Create a Struct schema and include the required fields. Then, reference the Struct schema in the field’s <code translate="no">struct_schema</code> attribute.</p></li>
+<li><p>Set the field’s <code translate="no">max_capacity</code> attribute to an appropriate value to specify the maximum number of Structs each entity can contain in this field.</p></li>
+<li><p>(<strong>Optional</strong>) You can set <code translate="no">mmap.enabled</code> for any field within the Struct element to balance the hot and cold data in the Struct.</p></li>
 </ol>
-<p>Вот как можно определить схему коллекции, включающую поле StructArray:</p>
+<p>Here’s how you can define a collection schema that includes a StructArray field:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#go">Go</a> <a href="#javascript">NodeJS</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
 
 client = MilvusClient(
@@ -360,8 +365,8 @@ SCHEMA=<span class="hljs-string">&#x27;{
   ]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Выделенные строки в примере кода выше иллюстрируют, как включить StructArray в схему коллекции.</p>
-<h2 id="Set-index-params" class="common-anchor-header">Установка индексных параметров<button data-href="#Set-index-params" class="anchor-icon" translate="no">
+<p>The highlighted lines in the code example above illustrate how to include a StructArray in a collection schema.</p>
+<h2 id="Set-index-params" class="common-anchor-header">Set index params<button data-href="#Set-index-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -376,9 +381,9 @@ SCHEMA=<span class="hljs-string">&#x27;{
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Индексирование является обязательным для всех векторных полей, включая как векторные поля в коллекции, так и поля, определенные в элементе Struct.</p>
-<p>Применимые параметры индекса зависят от типа индекса. Для получения подробной информации о применимых параметрах индекса обратитесь к разделу <a href="/docs/ru/v2.6.x/index-explained.md">Объяснение индекса</a> и документации по выбранному типу индекса.</p>
-<h3 id="Index-an-embedding-list" class="common-anchor-header">Индексирование списка встраивания<button data-href="#Index-an-embedding-list" class="anchor-icon" translate="no">
+    </button></h2><p>Indexing is mandatory for all vector fields, including both the vector fields in the collection and those defined in the element Struct.</p>
+<p>The applicable index parameters vary by index type. For details on applicable index parameters, refer to <a href="/docs/ru/v2.6.x/index-explained.md">Index Explained</a> and the documentation for your selected index type.</p>
+<h3 id="Index-an-embedding-list" class="common-anchor-header">Index an embedding list<button data-href="#Index-an-embedding-list" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -393,9 +398,14 @@ SCHEMA=<span class="hljs-string">&#x27;{
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Чтобы проиндексировать список встраивания, необходимо установить тип индекса <code translate="no">AUTOINDEX</code> или любой из применимых типов индексов, перечисленных выше, и использовать указанный тип метрики для Milvus для измерения сходства между списками встраивания.</p>
+    </button></h3><p>To index an embedding list, you need to set its index type to <code translate="no">AUTOINDEX</code>  or any of the applicable index types listed above, and use an listed metric type for Milvus to measure the similarities between embedding lists.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#go">Go</a> <a href="#javascript">NodeJS</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Create index parameters</span>
 index_params = client.prepare_index_params()
 
@@ -463,7 +473,7 @@ INDEX_PARAMS=<span class="hljs-string">&#x27;[
   }
 ]&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Index-a-scalar-struct-sub-field" class="common-anchor-header">Индексирование вложенного поля скалярной структуры<button data-href="#Index-a-scalar-struct-sub-field" class="anchor-icon" translate="no">
+<h3 id="Index-a-scalar-struct-sub-field" class="common-anchor-header">Index a scalar struct sub-field<button data-href="#Index-a-scalar-struct-sub-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -478,10 +488,15 @@ INDEX_PARAMS=<span class="hljs-string">&#x27;[
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Когда вы создаете индексы для скалярного подполя struct, Milvus фактически строит индекс на <strong>уровне элемента</strong>, а не на уровне строки, чтобы ускорить скалярную фильтрацию.</p>
-<p>Следующий фрагмент кода создает индекс на подполе scalar struct с именем <code translate="no">chunks[text]</code>.</p>
+    </button></h3><p>When you create indexes on a scalar struct sub-field, Milvus actually builds the index at the <strong>element level</strong>, not at the row level, to accelerate scalar filtering.</p>
+<p>The following code snippet creates an index on a scalar struct sub-field named <code translate="no">chunks[text]</code>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#go">Go</a> <a href="#javascript">NodeJS</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">index_params.add_index(
     field_name=<span class="hljs-string">&quot;chunks[text]&quot;</span>,
     index_type=<span class="hljs-string">&quot;INVERTED&quot;</span>
@@ -505,7 +520,7 @@ INDEX_PARAMS=<span class="hljs-string">&#x27;[
     &quot;indexType&quot;: &quot;INVERTED&quot;
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Create-a-collection" class="common-anchor-header">Создание коллекции<button data-href="#Create-a-collection" class="anchor-icon" translate="no">
+<h2 id="Create-a-collection" class="common-anchor-header">Create a collection<button data-href="#Create-a-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -520,9 +535,14 @@ INDEX_PARAMS=<span class="hljs-string">&#x27;[
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Когда схема и индекс готовы, можно создать коллекцию, включающую поле StructArray.</p>
+    </button></h2><p>Once the schema and index are ready, you can create a collection that includes a StructArray field.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#go">Go</a> <a href="#javascript">NodeJS</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">client.create_collection(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,
     schema=schema,
@@ -557,7 +577,7 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
     \&quot;indexParams\&quot;: <span class="hljs-variable">$INDEX_PARAMS</span>
   }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Insert-data" class="common-anchor-header">Вставка данных<button data-href="#Insert-data" class="anchor-icon" translate="no">
+<h2 id="Insert-data" class="common-anchor-header">Insert data<button data-href="#Insert-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -572,9 +592,14 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>После создания коллекции вы можете вставить данные, включающие массивы структур, следующим образом.</p>
+    </button></h2><p>After creating the collection, you can insert data that includes Arrays of Structs as follows.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#go">Go</a> <a href="#javascript">NodeJS</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Sample data</span>
 data = {
     <span class="hljs-string">&#x27;title&#x27;</span>: <span class="hljs-string">&#x27;Walden&#x27;</span>,
@@ -691,7 +716,7 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
   }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
 <p><details></p>
-<p><summary>Нужно больше данных?</summary></p>
+<p><summary>Need more data?</summary></p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> json
 <span class="hljs-keyword">import</span> random
 <span class="hljs-keyword">from</span> typing <span class="hljs-keyword">import</span> <span class="hljs-type">List</span>, <span class="hljs-type">Dict</span>, <span class="hljs-type">Any</span>
@@ -772,7 +797,7 @@ data = [generate_record(i) <span class="hljs-keyword">for</span> i <span class="
 client.insert(collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>, data=data)
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<h2 id="Vector-search-in-a-StructArray-field" class="common-anchor-header">Векторный поиск в поле StructArray<button data-href="#Vector-search-in-a-StructArray-field" class="anchor-icon" translate="no">
+<h2 id="Vector-search-in-a-StructArray-field" class="common-anchor-header">Vector search in a StructArray field<button data-href="#Vector-search-in-a-StructArray-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -787,14 +812,19 @@ client.insert(collection_name=<span class="hljs-string">&quot;my_collection&quot
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Вы можете выполнять векторный поиск в векторных полях коллекции и в StructArray.</p>
-<p>В частности, вы должны объединить имя поля StructArray и имена целевых векторных полей в элементах Struct в качестве значения параметра <code translate="no">anns_field</code> в поисковом запросе и использовать <code translate="no">EmbeddingList</code> для аккуратной организации векторов запроса.</p>
+    </button></h2><p>You can perform vector searches on the vector fields of a collection and in a StructArray.</p>
+<p>Specifically, you should concatenate the name of the StructArray field and those of the target vector fields within Struct elements as the value for the <code translate="no">anns_field</code> parameter in a search request, and use <code translate="no">EmbeddingList</code> to organize query vectors neatly.</p>
 <div class="alert note">
-<p>Milvus предоставляет <code translate="no">EmbeddingList</code>, чтобы помочь вам более аккуратно организовать векторы запросов для поиска по списку вложений в StructArray. Каждый <code translate="no">EmbeddingList</code> содержит по меньшей мере векторное вложение и ожидает в ответ некоторое количество сущностей topK.</p>
-<p>Однако <code translate="no">EmbeddingList</code> можно использовать только в запросах <code translate="no">search()</code> без параметров поиска по диапазону или группировке, не говоря уже о запросах <code translate="no">search_iterator()</code>.</p>
+<p>Milvus provides <code translate="no">EmbeddingList</code> to help you organize query vectors for searches against an embedding list in a StructArray more neatly. Each <code translate="no">EmbeddingList</code> contains at least a vector embedding and expects a number of topK entities in return.</p>
+<p>However, <code translate="no">EmbeddingList</code> can be used only in <code translate="no">search()</code> requests without range search or grouping search parameters, let alone <code translate="no">search_iterator()</code> requests.</p>
 </div>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#go">Go</a> <a href="#javascript">NodeJS</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus.client.embedding_list <span class="hljs-keyword">import</span> EmbeddingList
 
 <span class="hljs-comment"># each query embedding list triggers a single search</span>
@@ -868,10 +898,10 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
     \&quot;outputFields\&quot;: [\&quot;chunks[text]\&quot;]
   }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>В приведенном выше поисковом запросе используется <code translate="no">chunks[text_vector]</code> для ссылки на поле <code translate="no">text_vector</code> в элементах Struct. Вы можете использовать этот синтаксис для задания параметров <code translate="no">anns_field</code> и <code translate="no">output_fields</code>.</p>
-<p>В результате будет получен список из трех наиболее похожих сущностей.</p>
+<p>The above search request uses <code translate="no">chunks[text_vector]</code> to refer to the <code translate="no">text_vector</code> field in Struct elements. You can use this syntax to set the <code translate="no">anns_field</code> and <code translate="no">output_fields</code> parameters.</p>
+<p>The output would be a list of the three most similar entities.</p>
 <p><details></p>
-<p><summary>Выход</summary></p>
+<p><summary>Output</summary></p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># [</span>
 <span class="hljs-comment">#     [</span>
 <span class="hljs-comment">#         {</span>
@@ -914,9 +944,14 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
 <span class="hljs-comment"># ]</span>
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<p>В параметр <code translate="no">data</code> можно также включить несколько списков встраивания, чтобы получить результаты поиска для каждого из этих списков встраивания.</p>
+<p>You can also include multiple embedding lists in the <code translate="no">data</code> parameter to retrieve search results for each of these embedding lists.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#go">Go</a> <a href="#javascript">NodeJS</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># a search with multiple embedding lists</span>
 results = client.search(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,
@@ -973,9 +1008,9 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
     \&quot;outputFields\&quot;: [\&quot;chunks[text]\&quot;]
   }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>В результате будет получен список из трех наиболее похожих сущностей для каждого списка встраивания.</p>
+<p>The output would be a list of the three most similar entities for each embedding list.</p>
 <p><details></p>
-<p><summary>Вывод</summary></p>
+<p><summary>Output</summary></p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># [</span>
 <span class="hljs-comment">#   [</span>
 <span class="hljs-comment">#     {</span>
@@ -1051,8 +1086,8 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
 <span class="hljs-comment"># ]</span>
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<p>В приведенном выше примере кода <code translate="no">embeddingList1</code> - это список встраивания, состоящий из одного вектора, а <code translate="no">embeddingList2</code> содержит два вектора. Каждый из них запускает отдельный поисковый запрос и ожидает список топ-K похожих сущностей.</p>
-<h2 id="Scalar-filtering-in-a-StructArray-field" class="common-anchor-header">Скалярная фильтрация в поле StructArray<button data-href="#Scalar-filtering-in-a-StructArray-field" class="anchor-icon" translate="no">
+<p>In the above code example, <code translate="no">embeddingList1</code> is an embedding list of one vector, while <code translate="no">embeddingList2</code> contains two vectors. Each triggers a separate search request and expects a list of top-K similar entities.</p>
+<h2 id="Scalar-filtering-in-a-StructArray-field" class="common-anchor-header">Scalar filtering in a StructArray field<button data-href="#Scalar-filtering-in-a-StructArray-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1067,8 +1102,8 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Вы можете использовать <strong>фильтры элементов</strong> и <strong>операторы семейства match</strong> для проведения скалярной фильтрации по скалярному подполю в StructArray. Более подробную информацию и примеры двух вышеуказанных типов операторов см. в разделе <a href="/docs/ru/v2.6.x/struct-array-operators.md">Операторы массива структур</a>.</p>
-<h3 id="Element-filters" class="common-anchor-header">Фильтры элементов<button data-href="#Element-filters" class="anchor-icon" translate="no">
+    </button></h2><p>You can use <strong>element filters</strong> and <strong>operators in the match family</strong> to conduct scalar filtering against a scalar sub-field in a StructArray. For more details and examples on the two operator types above, refer to <a href="/docs/ru/v2.6.x/struct-array-operators.md">Array of Structs Operators</a>.</p>
+<h3 id="Element-filters" class="common-anchor-header">Element filters<button data-href="#Element-filters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1083,18 +1118,18 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Это фильтр на уровне сущности, который проверяет, удовлетворяет ли предикату хотя бы один элемент в поле StructArray сущности. Например, следующий фильтр элементов возвращает сущности, которые содержат хотя бы один чанк, начинающийся с "Red" в подполе <code translate="no">text</code>.</p>
+    </button></h3><p>This is an entity-level filter that checks whether at least one element in the StructArray field of an entity satisfies the predicate. For example, the following element filter returns entities that contain at least one chunk that starts with “Red” in the <code translate="no">text</code> sub-field.</p>
 <pre><code translate="no" class="language-python">element_filter(chunks, $[text] LIKE <span class="hljs-string">&quot;Red%&quot;</span>)
 <button class="copy-code-btn"></button></code></pre>
-<p>В предикате, который оценивается для каждого элемента, можно использовать почти все операторы сравнения, диапазона и арифметические операторы, а логические операторы можно использовать для объединения нескольких условий для одного элемента. Подробнее см. в разделе <a href="/docs/ru/v2.6.x/basic-operators.md">Основные операторы</a>.</p>
-<p>Если в отфильтрованном поиске или запросе присутствует несколько выражений скалярной фильтрации, поместите выражение фильтрации элемента после всех выражений фильтрации уровня сущности, как показано ниже.</p>
+<p>You can use almost all comparison, range, and arithmetic operators in the predicate, which is evaluated per element, and the logical operators can be used to combine multiple conditions on the same element. For details, refer to <a href="/docs/ru/v2.6.x/basic-operators.md">Basic Operators</a>.</p>
+<p>If multiple scalar-filtering expressions are present in a filtered search or a query request, place the element filter expression after all entity-level filter expressions, as shown below.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># correct</span>
 <span class="hljs-built_in">id</span> &gt; <span class="hljs-number">0</span> &amp;&amp; element_filter(chunks, $[x] &gt; <span class="hljs-number">1</span>)
 
 <span class="hljs-comment"># incorrect, resulting errors</span>
 element_filter(chunks, $[x] &gt; <span class="hljs-number">1</span>) &amp;&amp; <span class="hljs-built_in">id</span> &gt; <span class="hljs-number">0</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Match-family-operators" class="common-anchor-header">Операторы семейства совпадений<button data-href="#Match-family-operators" class="anchor-icon" translate="no">
+<h3 id="Match-family-operators" class="common-anchor-header">Match family operators<button data-href="#Match-family-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1109,20 +1144,20 @@ element_filter(chunks, $[x] &gt; <span class="hljs-number">1</span>) &amp;&amp; 
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Операторы семейства совпадений работают и над полем StructArray. Вместо того чтобы просто проверять, существует ли элемент, можно определить, сколько элементов (или какая доля) должны удовлетворять предикату элемента.</p>
+    </button></h3><p>The match family operators work over a StructArray field too. Instead of simply checking whether an element exists, you can determine how many elements (or what proportion) must satisfy an element predicate.</p>
 <ul>
 <li><p><code translate="no">MATCH_ANY(chunks, $[text] LIKE &quot;Red%&quot;)</code></p>
-<p>Это возвращает сущности, которые содержат хотя бы один чанк, начинающийся с "Red" в подполе <code translate="no">text</code>; семантически это эквивалентно <code translate="no">element_filter</code>.</p></li>
+<p>This returns entities that contain at least one chunk that starts with “Red” in the <code translate="no">text</code> sub-field; semantically, this is equivalent to <code translate="no">element_filter</code>.</p></li>
 <li><p><code translate="no">MATCH_ALL(chunks, $[text] LIKE &quot;Red%&quot;)</code></p>
-<p>Это возвращает сущности, чьи текстовые подполя во всех чанках начинаются с "Red".</p></li>
+<p>This returns entities whose text sub-fields in all chunks start with "Red".</p></li>
 <li><p><code translate="no">MATCH_LEAST(chunks, $[text] LIKE &quot;Red%&quot;, k)</code></p>
-<p>Это возвращает сущности, содержащие не менее <code translate="no">k</code> блоков, которые начинаются с "Red" в подполе <code translate="no">text</code>.</p></li>
+<p>This returns entities that contain at least <code translate="no">k</code> chunks that start with “Red” in the <code translate="no">text</code> sub-field.</p></li>
 <li><p><code translate="no">MATCH_MOST(chunks, $[text] LIKE &quot;Red%&quot;, k)</code></p>
-<p>Возвращаются сущности, содержащие не более <code translate="no">k</code> блоков, начинающихся с "Red" в подполе <code translate="no">text</code>.</p></li>
+<p>This returns entities that contain at most <code translate="no">k</code> chunks that start with “Red” in the <code translate="no">text</code> sub-field.</p></li>
 <li><p><code translate="no">MATCH_EXACT(chunks, $[text] LIKE &quot;Red%&quot;, k)</code></p>
-<p>Возвращаются сущности, содержащие ровно <code translate="no">k</code> фрагментов, начинающихся с "Red" в подполе <code translate="no">text</code>.</p></li>
+<p>This returns entities that contain exactly <code translate="no">k</code> chunks that start with “Red” in the <code translate="no">text</code> sub-field.</p></li>
 </ul>
-<h2 id="Next-steps" class="common-anchor-header">Следующие шаги<button data-href="#Next-steps" class="anchor-icon" translate="no">
+<h2 id="Next-steps" class="common-anchor-header">Next steps<button data-href="#Next-steps" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1137,4 +1172,4 @@ element_filter(chunks, $[x] &gt; <span class="hljs-number">1</span>) &amp;&amp; 
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Разработка собственного типа данных StructArray представляет собой значительный прогресс в возможностях Milvus по работе со сложными структурами данных. Чтобы лучше понять примеры использования и максимально использовать эту новую функцию, рекомендуем вам прочитать <a href="/docs/ru/v2.6.x/best-practices-for-array-of-structs.md">"Проектирование схем с использованием массива структур</a>".</p>
+    </button></h2><p>The development of a native StructArray data type represents a major advancement in Milvus’s capability to handle complex data structures. To better understand its use cases and maximize this new feature, you are encouraged to read <a href="/docs/ru/v2.6.x/best-practices-for-array-of-structs.md">Schema Design Using an Array of Structs</a>.</p>

@@ -1,13 +1,17 @@
 ---
 id: language-identifier.md
-title: 语言识别器Compatible with Milvus v2.5.15+
+title: Language IdentifierCompatible with Milvus v2.5.15+
 summary: >-
-  language_identifier 是一个专门的分词器，旨在通过自动化语言分析过程来增强 Milvus
-  的文本搜索能力。其主要功能是检测文本字段的语言，然后动态应用最适合该语言的预配置分析器。
-  对于需要处理多种语言的应用程序而言，这尤其有价值，因为它消除了针对每个输入手动分配语言的必要性。
+  The language_identifier is a specialized tokenizer designed to enhance the
+  text search capabilities of Milvus by automating the language analysis
+  process. Its primary function is to detect the language of a text field and
+  then dynamically apply a pre-configured analyzer that is most suitable for
+  that language. This is particularly valuable for applications that handle a
+  variety of languages, as it eliminates the need for manual language assignment
+  on a per-input basis.
 beta: Milvus v2.5.15+
 ---
-<h1 id="Language-Identifier" class="common-anchor-header">语言识别器<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus v2.5.15+</span><button data-href="#Language-Identifier" class="anchor-icon" translate="no">
+<h1 id="Language-Identifier" class="common-anchor-header">Language Identifier<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus v2.5.15+</span><button data-href="#Language-Identifier" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -22,9 +26,9 @@ beta: Milvus v2.5.15+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p><code translate="no">language_identifier</code> 是一款专门的分词器，旨在通过自动化语言分析过程来增强 Milvus 的文本搜索能力。其主要功能是检测文本字段的语言，然后动态应用最适合该语言的预配置分析器。 对于处理多种语言的应用程序而言，这尤其具有价值，因为它消除了针对每个输入手动分配语言的必要性。</p>
-<p>通过将文本数据智能地路由到相应的处理管道，<code translate="no">language_identifier</code> 简化了多语言数据的摄取流程，并确保后续搜索和检索操作中能进行准确的分词处理。</p>
-<h2 id="Language-detection-workflow" class="common-anchor-header">语言检测工作流<button data-href="#Language-detection-workflow" class="anchor-icon" translate="no">
+    </button></h1><p>The <code translate="no">language_identifier</code> is a specialized tokenizer designed to enhance the text search capabilities of Milvus by automating the language analysis process. Its primary function is to detect the language of a text field and then dynamically apply a pre-configured analyzer that is most suitable for that language. This is particularly valuable for applications that handle a variety of languages, as it eliminates the need for manual language assignment on a per-input basis.</p>
+<p>By intelligently routing text data to the appropriate processing pipeline, the <code translate="no">language_identifier</code> streamlines multilingual data ingestion and ensures accurate tokenization for subsequent search and retrieval operations.</p>
+<h2 id="Language-detection-workflow" class="common-anchor-header">Language detection workflow<button data-href="#Language-detection-workflow" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -39,24 +43,24 @@ beta: Milvus v2.5.15+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">language_identifier</code> 通过一系列步骤来处理文本字符串，用户必须了解该工作流，才能正确配置该组件。</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/language-detection-workflow.png" alt="Language Detection Workflow" class="doc-image" id="language-detection-workflow" /> 
-   <span>语言检测工作流</span>
-  
- </span></p>
+    </button></h2><p>The <code translate="no">language_identifier</code> performs a series of steps to process a text string, a workflow that is critical for users to understand how to configure it correctly.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/language-detection-workflow.png" alt="Language Detection Workflow" class="doc-image" id="language-detection-workflow" />
+    <span>Language Detection Workflow</span>
+  </span>
+</p>
 <ol>
-<li><p><strong>输入：</strong>工作流以文本字符串作为输入开始。</p></li>
-<li><p><strong>语言检测：</strong>该字符串首先被传递给语言检测引擎，该引擎会尝试识别语言。Milvus 支持两种引擎：<strong>whatlang</strong>和<strong>lingua</strong>。</p></li>
-<li><p><strong>分析器选择：</strong></p>
+<li><p><strong>Input:</strong> The workflow begins with a text string as input.</p></li>
+<li><p><strong>Language detection:</strong> This string is first passed to a language detection engine, which attempts to identify the language. Milvus supports two engines: <strong>whatlang</strong> and <strong>lingua</strong>.</p></li>
+<li><p><strong>Analyzer selection:</strong></p>
 <ul>
-<li><p><strong>成功：</strong>如果成功检测到语言，系统会检查所检测到的语言名称在您的<code translate="no">analyzers</code> 词典中是否配置了相应的分析器。如果找到匹配项，系统将对输入文本应用指定的分析器。例如，检测到的“普通话”文本将被路由到<code translate="no">jieba</code> 分词器。</p></li>
-<li><p><strong>备用方案：</strong>如果检测失败，或者虽然成功检测到语言但您未为此语言提供特定的分析器，系统将默认使用预配置的<strong>默认分析器</strong>。这一点需要特别说明：<code translate="no">default</code> 分析器既适用于检测失败的情况，也适用于没有匹配分析器的情况。</p></li>
+<li><p><strong>Success:</strong> If the language is successfully detected, the system checks if the detected language name has a corresponding analyzer configured in your <code translate="no">analyzers</code> dictionary. If a match is found, the system applies the specified analyzer to the input text. For example, a detected “Mandarin” text would be routed to a <code translate="no">jieba</code> tokenizer.</p></li>
+<li><p><strong>Fallback:</strong> If detection fails, or if a language is successfully detected but you have not provided a specific analyzer for it, the system defaults to a pre-configured <strong>default analyzer</strong>. This is a crucial point of clarification; the <code translate="no">default</code> analyzer is a fallback for both detection failure and an absence of a matching analyzer.</p></li>
 </ul></li>
 </ol>
-<p>选择适当的分析器后，文本将被分词并处理，从而完成工作流。</p>
-<h2 id="Available-language-detection-engines" class="common-anchor-header">可用的语言检测引擎<button data-href="#Available-language-detection-engines" class="anchor-icon" translate="no">
+<p>After the appropriate analyzer is chosen, the text is tokenized and processed, completing the workflow.</p>
+<h2 id="Available-language-detection-engines" class="common-anchor-header">Available language detection engines<button data-href="#Available-language-detection-engines" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -71,37 +75,37 @@ beta: Milvus v2.5.15+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus 提供两种语言检测引擎供选择：</p>
+    </button></h2><p>Milvus offers a choice between two language detection engines:</p>
 <ul>
 <li><p><a href="https://github.com/greyblake/whatlang-rs">whatlang</a></p></li>
 <li><p><a href="https://github.com/pemistahl/lingua">lingua</a></p></li>
 </ul>
-<p>具体选择取决于您应用程序的性能和准确性要求。</p>
+<p>The selection depends on the specific performance and accuracy requirements of your application.</p>
 <table>
    <tr>
-     <th><p>引擎</p></th>
-     <th><p>速度</p></th>
-     <th><p>精度</p></th>
-     <th><p>输出格式</p></th>
-     <th><p>最适合</p></th>
+     <th><p>Engine</p></th>
+     <th><p>Speed</p></th>
+     <th><p>Accuracy</p></th>
+     <th><p>Output Format</p></th>
+     <th><p>Best For</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">whatlang</code></p></td>
-     <td><p>快速</p></td>
-     <td><p>适用于大多数语言</p></td>
-     <td><p>语言名称（例如：<code translate="no">"English"</code> 、<code translate="no">"Mandarin"</code> 、<code translate="no">"Japanese"</code> ）</p><p><strong>参考：</strong> <a href="https://github.com/greyblake/whatlang-rs/blob/master/SUPPORTED_LANGUAGES.md">支持语言表中的“语言”列</a></p></td>
-     <td><p>速度至关重要的实时应用程序</p></td>
+     <td><p>Fast</p></td>
+     <td><p>Good for most languages</p></td>
+     <td><p>Language names (e.g., <code translate="no">"English"</code>,  <code translate="no">"Mandarin"</code>, <code translate="no">"Japanese"</code>)</p><p><strong>Reference:</strong> <a href="https://github.com/greyblake/whatlang-rs/blob/master/SUPPORTED_LANGUAGES.md">Language column in supported languages table</a></p></td>
+     <td><p>Real-time applications where speed is critical</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">lingua</code></p></td>
-     <td><p>较慢</p></td>
-     <td><p>精度更高，特别是对于短文本</p></td>
-     <td><p>英语语言名称（例如：<code translate="no">"English"</code> 、<code translate="no">"Chinese"</code> 、<code translate="no">"Japanese"</code> ）</p><p><strong>参考：</strong> <a href="https://github.com/pemistahl/lingua?tab=readme-ov-file#3-which-languages-are-supported">支持的语言列表</a></p></td>
-     <td><p>准确性比速度更重要的应用</p></td>
+     <td><p>Slower</p></td>
+     <td><p>Higher precision, especially for short texts</p></td>
+     <td><p>English language names (e.g., <code translate="no">"English"</code>, <code translate="no">"Chinese"</code>, <code translate="no">"Japanese"</code>)</p><p><strong>Reference:</strong> <a href="https://github.com/pemistahl/lingua?tab=readme-ov-file#3-which-languages-are-supported">Supported languages list</a></p></td>
+     <td><p>Applications where accuracy is more important than speed</p></td>
    </tr>
 </table>
-<p>一个关键的考虑因素是引擎的命名约定。虽然两个引擎返回的语言名称均为英文，但它们对某些语言使用了不同的术语（例如，<code translate="no">whatlang</code> 返回<code translate="no">Mandarin</code> ，而<code translate="no">lingua</code> 返回<code translate="no">Chinese</code> ）。分析器的键必须与所选检测引擎返回的名称完全匹配。</p>
-<h2 id="Configuration" class="common-anchor-header">配置<button data-href="#Configuration" class="anchor-icon" translate="no">
+<p>A critical consideration is the engine’s naming convention. While both engines return language names in English, they use different terms for some languages (e.g., <code translate="no">whatlang</code> returns <code translate="no">Mandarin</code>, while <code translate="no">lingua</code> returns <code translate="no">Chinese</code>). The analyzer’s key must be an exact match to the name returned by the chosen detection engine.</p>
+<h2 id="Configuration" class="common-anchor-header">Configuration<button data-href="#Configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -116,8 +120,8 @@ beta: Milvus v2.5.15+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>要正确使用<code translate="no">language_identifier</code> 词法分析器，必须执行以下步骤来定义并应用其配置。</p>
-<h3 id="Step-1-Choose-your-languages-and-analyzers" class="common-anchor-header">步骤 1：选择语言和分析器<button data-href="#Step-1-Choose-your-languages-and-analyzers" class="anchor-icon" translate="no">
+    </button></h2><p>To correctly use the <code translate="no">language_identifier</code> tokenizer, the following steps must be taken to define and apply its configuration.</p>
+<h3 id="Step-1-Choose-your-languages-and-analyzers" class="common-anchor-header">Step 1: Choose your languages and analyzers<button data-href="#Step-1-Choose-your-languages-and-analyzers" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -132,43 +136,43 @@ beta: Milvus v2.5.15+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>配置<code translate="no">language_identifier</code> 的核心在于根据您计划支持的具体语言来定制分析器。该系统通过将检测到的语言与正确的分析器进行匹配来工作，因此此步骤对于准确的文本处理至关重要。</p>
-<p>下表提供了语言与合适 Milvus 分析器的推荐映射关系。该表作为语言检测引擎输出结果与最佳处理工具之间的桥梁。</p>
+    </button></h3><p>The core of setting up the <code translate="no">language_identifier</code> is tailoring your analyzers to the specific languages you plan to support. The system works by matching the detected language with the correct analyzer, so this step is crucial for accurate text processing.</p>
+<p>Below is a recommended mapping of languages to suitable Milvus analyzers. This table serves as a bridge between the output of the language detection engine and the best tool for the job.</p>
 <table>
    <tr>
-     <th><p>语言（检测器输出）</p></th>
-     <th><p>推荐分析器</p></th>
-     <th><p>描述</p></th>
+     <th><p>Language (Detector Output)</p></th>
+     <th><p>Recommended Analyzer</p></th>
+     <th><p>Description</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">English</code></p></td>
      <td><p><code translate="no">type: english</code></p></td>
-     <td><p>标准英语分词，包含词干提取和停用词过滤。</p></td>
+     <td><p>Standard English tokenization with stemming and stop-word filtering.</p></td>
    </tr>
    <tr>
-     <td><p><code translate="no">Mandarin</code> （通过 whatlang）或<code translate="no">Chinese</code> （通过 lingua）</p></td>
+     <td><p><code translate="no">Mandarin</code> (via whatlang) or <code translate="no">Chinese</code> (via lingua)</p></td>
      <td><p><code translate="no">tokenizer: jieba</code></p></td>
-     <td><p>针对非空格分隔文本的中文分词。</p></td>
+     <td><p>Chinese word segmentation for non-space-delimited text.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">Japanese</code></p></td>
      <td><p><code translate="no">tokenizer: icu</code></p></td>
-     <td><p>一款适用于包括日语在内的复杂字符系统的稳健分词器。</p></td>
+     <td><p>A robust tokenizer for complex scripts, including Japanese.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">French</code></p></td>
-     <td><p><code translate="no">type: standard</code>,<code translate="no">filter: ["lowercase", "asciifolding"]</code></p></td>
-     <td><p>可处理法语重音符号和特殊字符的自定义配置。</p></td>
+     <td><p><code translate="no">type: standard</code>, <code translate="no">filter: ["lowercase", "asciifolding"]</code></p></td>
+     <td><p>A custom configuration that handles French accents and characters.</p></td>
    </tr>
 </table>
 <div class="alert note">
 <ul>
-<li><p><strong>匹配是关键：</strong>分析器的名称<strong>必须与</strong>检测引擎输出的语言<strong>完全一致</strong>。例如，如果您使用的是<code translate="no">whatlang</code> ，则中文文本的键必须为<code translate="no">Mandarin</code> 。</p></li>
-<li><p><strong>最佳实践：</strong>上表提供了几种常见语言的推荐配置，但并非详尽无遗。有关选择分析器的更全面指南，请参阅《<a href="/docs/zh/choose-the-right-analyzer-for-your-use-case.md">根据您的用例选择合适的分析器</a>》。</p></li>
-<li><p><strong>检测器输出</strong>：有关检测引擎返回的语言名称完整列表，请参阅<a href="https://github.com/greyblake/whatlang-rs">Whatlang 支持的语言表</a>和<a href="https://github.com/pemistahl/lingua-rs">Lingua 支持的语言列表</a>。</p></li>
+<li><p><strong>Matching is Key:</strong> The name of your analyzer <strong>must exactly match</strong> the language output of the detection engine. For instance, if you’re using <code translate="no">whatlang</code>, the key for Chinese text must be <code translate="no">Mandarin</code>.</p></li>
+<li><p><strong>Best practices:</strong> The table above provides recommended configurations for a few common languages, but it is not an exhaustive list. For a more comprehensive guide on choosing analyzers, refer to <a href="/docs/zh/choose-the-right-analyzer-for-your-use-case.md">Choose the Right Analyzer for Your Use Case</a>.</p></li>
+<li><p><strong>Detector output</strong>: For a complete list of language names returned by the detection engines, refer to <a href="https://github.com/greyblake/whatlang-rs">Whatlang supported languages table</a> and the <a href="https://github.com/pemistahl/lingua-rs">Lingua supported languages list</a>.</p></li>
 </ul>
 </div>
-<h3 id="Step-2-Define-analyzerparams" class="common-anchor-header">步骤 2：定义 analyzer_params<button data-href="#Step-2-Define-analyzerparams" class="anchor-icon" translate="no">
+<h3 id="Step-2-Define-analyzerparams" class="common-anchor-header">Step 2: Define analyzer_params<button data-href="#Step-2-Define-analyzerparams" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -183,40 +187,40 @@ beta: Milvus v2.5.15+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>要在 Milvus 中使用<code translate="no">language_identifier</code> 词法分析器，请创建一个包含以下关键组件的字典：</p>
-<p><strong>必填组件：</strong></p>
+    </button></h3><p>To use the <code translate="no">language_identifier</code> tokenizer in Milvus, create a dictionary containing these key components:</p>
+<p><strong>Required components:</strong></p>
 <ul>
-<li><p><code translate="no">analyzers</code> config set – 包含所有分析器配置的字典，其中必须包含：</p>
+<li><p><code translate="no">analyzers</code> config set – A dictionary containing all analyzer configurations, which must include:</p>
 <ul>
-<li><p><code translate="no">default</code> – 语言检测失败或未找到匹配分析器时使用的备用分析器</p></li>
-<li><p><strong>特定语言的分析器</strong>——每个分析器均定义为 `<code translate="no">&lt;analyzer_name&gt;: &lt;analyzer_config&gt;</code>`，其中：</p>
+<li><p><code translate="no">default</code> – The fallback analyzer used when language detection fails or no matching analyzer is found</p></li>
+<li><p><strong>Language-specific analyzers</strong> – Each defined as <code translate="no">&lt;analyzer_name&gt;: &lt;analyzer_config&gt;</code>, where:</p>
 <ul>
-<li><p><code translate="no">analyzer_name</code> 与您所选检测引擎的输出相匹配（例如：<code translate="no">&quot;English&quot;</code> 、<code translate="no">&quot;Japanese&quot;</code> ）</p></li>
-<li><p><code translate="no">analyzer_config</code> 遵循标准分析器参数格式（参见<a href="/docs/zh/analyzer-overview.md#Analyzer-types">“分析器概述</a>”）</p></li>
+<li><p><code translate="no">analyzer_name</code> matches your chosen detection engine’s output (e.g., <code translate="no">&quot;English&quot;</code>, <code translate="no">&quot;Japanese&quot;</code>)</p></li>
+<li><p><code translate="no">analyzer_config</code> follows standard analyzer parameter format (see <a href="/docs/zh/analyzer-overview.md#Analyzer-types">Analyzer Overview</a>)</p></li>
 </ul></li>
 </ul></li>
 </ul>
-<p><strong>可选组件：</strong></p>
+<p><strong>Optional components:</strong></p>
 <ul>
-<li><p><code translate="no">identifier</code> – 指定要使用的语言检测引擎（<code translate="no">whatlang</code> 或<code translate="no">lingua</code> ）。若未指定，则默认为<code translate="no">whatlang</code> </p></li>
-<li><p><code translate="no">mapping</code> – 为您的分析器创建自定义别名，允许您使用描述性名称，而非检测引擎的精确输出格式</p></li>
+<li><p><code translate="no">identifier</code> – Specifies which language detection engine to use (<code translate="no">whatlang</code> or <code translate="no">lingua</code>). Defaults to <code translate="no">whatlang</code> if not specified</p></li>
+<li><p><code translate="no">mapping</code> – Creates custom aliases for your analyzers, allowing you to use descriptive names instead of the detection engine’s exact output format</p></li>
 </ul>
-<p>词法分析器的工作原理是：首先检测输入文本的语言，然后从您的配置中选择合适的分析器。如果检测失败或不存在匹配的分析器，它会自动回退到您的<code translate="no">default</code> 分析器。</p>
-<h4 id="Recommended-Direct-name-matching" class="common-anchor-header">推荐做法：直接名称匹配</h4><p>您的分析器名称应与所选语言检测引擎的输出完全一致。这种方法更简单，且可避免潜在的混淆。</p>
-<p>对于<code translate="no">whatlang</code> 和<code translate="no">lingua</code> ，请使用其各自文档中显示的语言名称：</p>
+<p>The tokenizer works by first detecting the language of input text, then selecting the appropriate analyzer from your configuration. If detection fails or no matching analyzer exists, it automatically falls back to your <code translate="no">default</code> analyzer.</p>
+<h4 id="Recommended-Direct-name-matching" class="common-anchor-header">Recommended: Direct name matching</h4><p>Your analyzer names should exactly match the output of your chosen language detection engine. This approach is simpler and avoids potential confusion.</p>
+<p>For both <code translate="no">whatlang</code> and <code translate="no">lingua</code>, use the language names as shown in their respective documentation:</p>
 <ul>
-<li><p><a href="https://github.com/greyblake/whatlang-rs/blob/master/SUPPORTED_LANGUAGES.md">whatlang 支持的语言</a>（请参考“<strong>Language</strong>”列）</p></li>
-<li><p><a href="https://github.com/pemistahl/lingua?tab=readme-ov-file#3-which-languages-are-supported">lingua 支持的语言</a></p></li>
+<li><p><a href="https://github.com/greyblake/whatlang-rs/blob/master/SUPPORTED_LANGUAGES.md">whatlang supported languages</a> (use the "<strong>Language</strong>" column)</p></li>
+<li><p><a href="https://github.com/pemistahl/lingua?tab=readme-ov-file#3-which-languages-are-supported">lingua supported languages</a></p></li>
 </ul>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: {
@@ -369,16 +373,16 @@ analyzerParams=<span class="hljs-string">&#x27;{
   }
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h4 id="Alternative-approach-Custom-names-with-mapping" class="common-anchor-header">替代方法：使用映射的自定义名称</h4><p>如果您更倾向于使用自定义分析器名称，或者需要与现有配置保持兼容性，可以使用<code translate="no">mapping</code> 参数。这将为您的分析器创建别名——原始检测引擎名称和自定义名称均可正常使用。</p>
+<h4 id="Alternative-approach-Custom-names-with-mapping" class="common-anchor-header">Alternative approach: Custom names with mapping</h4><p>If you prefer to use custom analyzer names or need to maintain compatibility with existing configurations, you can use the <code translate="no">mapping</code> parameter. This creates aliases for your analyzers—both the original detection engine names and your custom names will work.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: {
@@ -559,8 +563,8 @@ analyzerParams=<span class="hljs-string">&#x27;{
   }
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>定义<code translate="no">analyzer_params</code> 后，您可以在定义Collection Schema时将其应用于<code translate="no">VARCHAR</code> 字段。这使Milvus能够使用指定的分析器处理该字段中的文本，从而实现高效的分词和过滤。有关详细信息，请参阅<a href="/docs/zh/analyzer-overview.md#Example-use">“使用示例”</a>。</p>
-<h2 id="Examples" class="common-anchor-header">示例<button data-href="#Examples" class="anchor-icon" translate="no">
+<p>After defining <code translate="no">analyzer_params</code>, you can apply them to a <code translate="no">VARCHAR</code> field when defining a collection schema. This allows Milvus to process the text in that field using the specified analyzer for efficient tokenization and filtering. For details, refer to <a href="/docs/zh/analyzer-overview.md#Example-use">Example use</a>.</p>
+<h2 id="Examples" class="common-anchor-header">Examples<button data-href="#Examples" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -575,8 +579,8 @@ analyzerParams=<span class="hljs-string">&#x27;{
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>以下是一些适用于常见场景的现成配置。每个示例都包含配置和验证代码，以便您立即测试该设置。</p>
-<h3 id="English-and-Chinese-detection" class="common-anchor-header">英语和中文检测<button data-href="#English-and-Chinese-detection" class="anchor-icon" translate="no">
+    </button></h2><p>Here are some ready-to-use configurations for common scenarios. Each example includes both the configuration and verification code so you can test the setup immediately.</p>
+<h3 id="English-and-Chinese-detection" class="common-anchor-header">English and Chinese detection<button data-href="#English-and-Chinese-detection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -592,14 +596,14 @@ analyzerParams=<span class="hljs-string">&#x27;{
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -889,7 +893,7 @@ status = client-&gt;<span class="hljs-built_in">RunAnalyzer</span>(cn_request, c
     &quot;text&quot;: [&quot;The Milvus vector database is built for scale!&quot;]
   }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="European-languages-with-accent-normalization" class="common-anchor-header">带重音符号的欧洲语言规范化<button data-href="#European-languages-with-accent-normalization" class="anchor-icon" translate="no">
+<h3 id="European-languages-with-accent-normalization" class="common-anchor-header">European languages with accent normalization<button data-href="#European-languages-with-accent-normalization" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -905,14 +909,14 @@ status = client-&gt;<span class="hljs-built_in">RunAnalyzer</span>(cn_request, c
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -1167,7 +1171,7 @@ status = client-&gt;<span class="hljs-built_in">RunAnalyzer</span>(request, resp
     &quot;text&quot;: [&quot;Café français très délicieux&quot;]
   }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Expected-output" class="common-anchor-header">预期输出<button data-href="#Expected-output" class="anchor-icon" translate="no">
+<h3 id="Expected-output" class="common-anchor-header">Expected output<button data-href="#Expected-output" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1182,10 +1186,10 @@ status = client-&gt;<span class="hljs-built_in">RunAnalyzer</span>(request, resp
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>上述欧洲语言示例按顺序生成以下分词结果。SDK 的响应对象和打印格式因语言而异；REST 响应中包含这些分词结果，详见<code translate="no">data.results[].tokens[].token</code> 。英语和中文检测示例的分词序列取决于检测器为每个输入选择的分析器，因此此处不予重现。</p>
+    </button></h3><p>The European example above produces the following tokens in order. SDK response objects and printed formatting vary by language; the REST response contains these tokens at <code translate="no">data.results[].tokens[].token</code>. The token sequence for the English and Chinese detection example depends on which analyzer the detector selects for each input, so it is not reproduced here.</p>
 <pre><code translate="no" class="language-plaintext">French: [&#x27;cafe&#x27;, &#x27;francais&#x27;, &#x27;tres&#x27;, &#x27;delicieux&#x27;]
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Usage-notes" class="common-anchor-header">使用说明<button data-href="#Usage-notes" class="anchor-icon" translate="no">
+<h2 id="Usage-notes" class="common-anchor-header">Usage notes<button data-href="#Usage-notes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1201,7 +1205,7 @@ status = client-&gt;<span class="hljs-built_in">RunAnalyzer</span>(request, resp
         ></path>
       </svg>
     </button></h2><ul>
-<li><p><strong>每个字段仅处理一种语言：</strong>该功能将字段视为单一、同质的文本单元进行处理。其设计旨在处理不同数据记录中出现的多种语言，例如一条记录包含英语句子，而下一条记录包含法语句子。</p></li>
-<li><p><strong>不支持混合语言字符串：</strong>该功能<strong>不</strong>适用于处理包含多种语言文本的单个字符串。例如，<code translate="no">VARCHAR</code> 中的单个字段若同时包含英语句子和引用的日语短语，将被视为单一语言进行处理。</p></li>
-<li><p><strong>主导语言处理：</strong>在混合语言场景中，检测引擎通常会识别出主导语言，并将相应的分析器应用于整个文本。这将导致嵌入的异国语言文本分词效果不佳或无法分词。</p></li>
+<li><p><strong>Single-language per field:</strong> It operates on a field as a single, homogenous unit of text. It is designed to handle different languages across different data records, such as one record containing an English sentence and the next containing a French sentence.</p></li>
+<li><p><strong>No mixed-language strings:</strong> It is <strong>not</strong> designed to handle a single string that contains text from multiple languages. For example, a single <code translate="no">VARCHAR</code> field containing both an English sentence and a quoted Japanese phrase will be processed as a single language.</p></li>
+<li><p><strong>Dominant language processing:</strong> In mixed-language scenarios, the detection engine will likely identify the dominant language, and the corresponding analyzer will be applied to the entire text. This will result in poor or no tokenization for the embedded foreign text.</p></li>
 </ul>

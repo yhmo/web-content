@@ -1,12 +1,13 @@
 ---
 id: vllm-ranker.md
-title: vLLM ランカーCompatible with Milvus 2.6.x
+title: vLLM RankerCompatible with Milvus 2.6.x
 summary: >-
-  vLLM
-  RankerはvLLM推論フレームワークを活用し、セマンティック・リランキングによって検索結果の関連性を高める。これは、従来のベクトル類似性を超える、検索結果の順序付けへの高度なアプローチである。
+  The vLLM Ranker leverages the vLLM inference framework to enhance search
+  relevance through semantic reranking. It represents an advanced approach to
+  search result ordering that goes beyond traditional vector similarity.
 beta: Milvus 2.6.x
 ---
-<h1 id="vLLM-Ranker" class="common-anchor-header">vLLM ランカー<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#vLLM-Ranker" class="anchor-icon" translate="no">
+<h1 id="vLLM-Ranker" class="common-anchor-header">vLLM Ranker<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#vLLM-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -21,15 +22,15 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>vLLM Rankerは、<a href="https://docs.vllm.ai/en/latest/index.html">vLLM</a>推論フレームワークを活用し、セマンティック・リランキングによって検索結果の関連性を高めます。vLLM Rankerは、従来のベクトル類似度を超える、検索結果の順序付けのための高度なアプローチです。</p>
-<p>vLLM Rankerは、以下のような精度と文脈が重要なアプリケーションに特に有効です：</p>
+    </button></h1><p>The vLLM Ranker leverages the <a href="https://docs.vllm.ai/en/latest/index.html">vLLM</a> inference framework to enhance search relevance through semantic reranking. It represents an advanced approach to search result ordering that goes beyond traditional vector similarity.</p>
+<p>vLLM Ranker is particularly valuable for applications where precision and context are critical, such as:</p>
 <ul>
-<li><p>概念の深い理解を必要とする技術文書検索</p></li>
-<li><p>意味的関係がキーワードのマッチングを凌駕する研究用データベース</p></li>
-<li><p>ユーザーの問題と適切な解決策をマッチングさせる必要のあるカスタマーサポートシステム</p></li>
-<li><p>商品属性とユーザーの意図を理解する必要があるEコマース検索</p></li>
+<li><p>Technical documentation search requiring deep understanding of concepts</p></li>
+<li><p>Research databases where semantic relationships outweigh keyword matching</p></li>
+<li><p>Customer support systems that need to match user problems with relevant solutions</p></li>
+<li><p>E-commerce search that must understand product attributes and user intent</p></li>
 </ul>
-<h2 id="Prerequisites" class="common-anchor-header">前提条件<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -44,10 +45,10 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>MilvusにvLLMランカーを実装する前に、以下を確認してください：</p>
+    </button></h2><p>Before implementing vLLM Ranker in Milvus, ensure you have:</p>
 <ul>
-<li><p>Milvusコレクションに<code translate="no">VARCHAR</code> 、ランク付けされるテキストが含まれていること。</p></li>
-<li><p>リランキング機能を持つ実行中のvLLMサービス。vLLM サービスのセットアップに関する詳細な手順については、<a href="https://docs.vllm.ai/en/latest/getting_started/installation.html">vLLM の公式ドキュメントを</a>参照してください。vLLMサービスの可用性を確認する：</p>
+<li><p>A Milvus collection with a <code translate="no">VARCHAR</code> field containing the text to be reranked</p></li>
+<li><p>A running vLLM service with reranking capabilities. For detailed instructions on setting up a vLLM service, refer to the <a href="https://docs.vllm.ai/en/latest/getting_started/installation.html">official vLLM documentation</a>. To verify vLLM service availability:</p>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># Replace YOUR_VLLM_ENDPOINT_URL with the actual URL (e.g., http://&lt;service-ip&gt;:&lt;port&gt;/v1/rerank)</span>
 <span class="hljs-comment"># Replace &#x27;BAAI/bge-reranker-base&#x27; if you deployed a different model</span>
 
@@ -65,10 +66,10 @@ curl -X <span class="hljs-string">&#x27;POST&#x27;</span> \
   ]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>成功したレスポンスは、OpenAI rerank API のレスポンスと同様に、関連性スコアでランク付けされたドキュメントを返すはずです。</p>
-<p>その他のサーバ引数やオプションについては、<a href="https://docs.vllm.ai/en/latest/serving/openai_compatible_server.html#re-rank-api">vLLM OpenAI Compatible Server ドキュメントを</a>参照してください。</p></li>
+<p>A successful response should return the documents ranked by relevance scores, similar to the OpenAI rerank API response.</p>
+<p>Refer to the <a href="https://docs.vllm.ai/en/latest/serving/openai_compatible_server.html#re-rank-api">vLLM OpenAI Compatible Server documentation</a> for more server arguments and options.</p></li>
 </ul>
-<h2 id="Create-a-vLLM-ranker-function" class="common-anchor-header">vLLM ランカー関数の作成<button data-href="#Create-a-vLLM-ranker-function" class="anchor-icon" translate="no">
+<h2 id="Create-a-vLLM-ranker-function" class="common-anchor-header">Create a vLLM ranker function<button data-href="#Create-a-vLLM-ranker-function" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -83,9 +84,14 @@ curl -X <span class="hljs-string">&#x27;POST&#x27;</span> \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>milvusアプリケーションでvLLMランカーを使用するには、再ランクの動作方法を指定するFunctionオブジェクトを作成します。この関数はMilvusの検索操作に渡され、結果のランキングを向上させます。</p>
+    </button></h2><p>To use vLLM Ranker in your Milvus application, create a Function object that specifies how the reranking should operate. This function will be passed to Milvus search operations to enhance result ranking.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, Function, FunctionType
 
 <span class="hljs-comment"># Connect to your Milvus server</span>
@@ -135,7 +141,7 @@ CreateCollectionReq.<span class="hljs-type">Function</span> <span class="hljs-va
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="vLLM-ranker-specific-parameters" class="common-anchor-header">vLLMランカー固有のパラメータ<button data-href="#vLLM-ranker-specific-parameters" class="anchor-icon" translate="no">
+<h3 id="vLLM-ranker-specific-parameters" class="common-anchor-header">vLLM ranker-specific parameters<button data-href="#vLLM-ranker-specific-parameters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -150,55 +156,55 @@ CreateCollectionReq.<span class="hljs-type">Function</span> <span class="hljs-va
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>以下のパラメータはvLLMランカー固有のものです：</p>
+    </button></h3><p>The following parameters are specific to the vLLM ranker:</p>
 <table>
    <tr>
-     <th><p>パラメータ</p></th>
-     <th><p>必須か？</p></th>
-     <th><p>説明</p></th>
-     <th><p>値 / 例</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Required?</p></th>
+     <th><p>Description</p></th>
+     <th><p>Value / Example</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">reranker</code></p></td>
-     <td><p>必須</p></td>
-     <td><p>モデルの再ランキングを有効にするには、<code translate="no">"model"</code> に設定する必要がある。</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Must be set to <code translate="no">"model"</code> to enable model reranking.</p></td>
      <td><p><code translate="no">"model"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">provider</code></p></td>
      <td><p>Yes</p></td>
-     <td><p>リランキングに使用するモデルサービスプロバイダ。</p></td>
+     <td><p>The model service provider to use for reranking.</p></td>
      <td><p><code translate="no">"vllm"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">queries</code></p></td>
-     <td><p>はい</p></td>
-     <td><p>リランクモデルが関連性スコアの算出に使用するクエリ文字列のリスト。クエリ文字列の数は、検索操作のクエリの数と正確に一致する必要があります（テキストの代わりにクエリベクタを使用する場合でも）。</p></td>
-     <td><p><em>[検索クエリ］</em></p></td>
+     <td><p>Yes</p></td>
+     <td><p>List of query strings used by the rerank model to calculate relevance scores. The number of query strings must match exactly the number of queries in your search operation (even when using query vectors instead of text), otherwise an error will be reported.</p></td>
+     <td><p><em>["search query"]</em></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">endpoint</code></p></td>
-     <td><p>はい</p></td>
-     <td><p>vLLMサービスのアドレス。</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Your vLLM service address.</p></td>
      <td><p><code translate="no">"http://localhost:8080"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">max_client_batch_size</code></p></td>
-     <td><p>いいえ</p></td>
-     <td><p>モデルサービスは一度にすべてのデータを処理しない場合があるため、複数のリクエストでモデルサービスにアクセスする際のバッチサイズを設定します。</p></td>
-     <td><p><code translate="no">32</code> (デフォルト)</p></td>
+     <td><p>No</p></td>
+     <td><p>Since model services may not process all data at once, this sets the batch size for accessing the model service in multiple requests.</p></td>
+     <td><p><code translate="no">32</code> (default)</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">truncate_prompt_tokens</code></p></td>
-     <td><p>いいえ</p></td>
-     <td><p>整数<em>k</em> に設定すると、プロンプトの最後の<em>k 個の</em>トークンのみを使用します (つまり、左の切り捨て)。デフォルトはNone(切り捨てなし)。</p></td>
+     <td><p>No</p></td>
+     <td><p>If set to an integer <em>k</em>, will use only the last <em>k</em> tokens from the prompt (i.e., left truncation). Defaults to None (i.e., no truncation).</p></td>
      <td><p><code translate="no">256</code></p></td>
    </tr>
 </table>
 <div class="alert note">
-<p>すべてのモデル・ランカーで共有される一般的なパラメータ（例：<code translate="no">provider</code> 、<code translate="no">queries</code> ）については、<a href="/docs/ja/model-ranker-overview.md#Create-a-model-ranker">モデル・ランカーを作成するを</a>参照。</p>
+<p>For general parameters shared across all model rankers (e.g., <code translate="no">provider</code>, <code translate="no">queries</code>), refer to <a href="/docs/ja/v2.6.x/model-ranker-overview.md#Create-a-model-ranker">Create a model ranker</a>.</p>
 </div>
-<h2 id="Apply-to-standard-vector-search" class="common-anchor-header">標準ベクトル探索への適用<button data-href="#Apply-to-standard-vector-search" class="anchor-icon" translate="no">
+<h2 id="Apply-to-standard-vector-search" class="common-anchor-header">Apply to standard vector search<button data-href="#Apply-to-standard-vector-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -213,9 +219,14 @@ CreateCollectionReq.<span class="hljs-type">Function</span> <span class="hljs-va
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>vLLM ランカーを標準的なベクトル探索に適用する：</p>
+    </button></h2><p>To apply vLLM Ranker to a standard vector search:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Execute search with vLLM reranking</span>
 results = client.search(
     collection_name=<span class="hljs-string">&quot;your_collection&quot;</span>,

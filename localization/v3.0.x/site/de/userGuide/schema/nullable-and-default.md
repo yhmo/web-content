@@ -1,11 +1,11 @@
 ---
 id: nullable-and-default.md
-title: Nullfähige Felder
+title: Nullable Fields
 summary: >-
-  Konfigurieren Sie Felder, die Nullwerte zulassen, sowie Standardwerte,
-  einschließlich Schema, Einfüge-, Index-, Such- und Filterverhalten.
+  Configure nullable fields and default values, including schema, insert, index,
+  search, and filter behavior.
 ---
-<h1 id="Nullable-Fields" class="common-anchor-header">Nullfähige Felder<button data-href="#Nullable-Fields" class="anchor-icon" translate="no">
+<h1 id="Nullable-Fields" class="common-anchor-header">Nullable Fields<button data-href="#Nullable-Fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,14 +20,14 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Milvus unterstützt nullfähige Felder, bei denen ein Feldwert fehlen oder explizit auf NULL gesetzt werden kann. Die Nullfähigkeit wird auf Schemaebene definiert und gilt einheitlich für alle Vorgänge der Datenerfassung, Indizierung, Suche und Abfrage.</p>
-<p>Verwenden Sie nullfähige Felder, wenn:</p>
+    </button></h1><p>Milvus supports nullable fields, which allow a field value to be missing or explicitly set to NULL. Nullability is defined at the schema level and applies consistently across data ingestion, indexing, search, and query operations.</p>
+<p>Use nullable fields when:</p>
 <ul>
-<li>Daten aus externen Systemen eingelesen werden, die fehlende Werte zulassen.</li>
-<li>bestimmte Metadaten optional sind oder nur für einen Teil des Datensatzes verfügbar sind.</li>
-<li>Vektor-Einbettungen asynchron generiert und später eingefügt werden.</li>
+<li>Data is ingested from external systems that allow missing values.</li>
+<li>Some metadata is optional or only available for part of the dataset.</li>
+<li>Vector embeddings are generated asynchronously and inserted later.</li>
 </ul>
-<h2 id="Limits" class="common-anchor-header">Einschränkungen<button data-href="#Limits" class="anchor-icon" translate="no">
+<h2 id="Limits" class="common-anchor-header">Limits<button data-href="#Limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -43,12 +43,11 @@ summary: >-
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>Vektorfelder, die NULL-Werte zulassen, unterstützen keine Filterausdrücke vom Typ „ <code translate="no">IS NULL</code> “ oder „ <code translate="no">IS NOT NULL</code> “. Sie können Entitäten nicht explizit danach filtern, ob der Wert eines Vektorfelds NULL ist.</p></li>
-<li><p>Ab Milvus 3.0.0 kann das übergeordnete <a href="/docs/de/array-of-structs.md">StructArray-Feld</a> nullfähig sein. Setzen Sie „ <code translate="no">nullable=True</code> “ für das übergeordnete StructArray-Feld, nicht für einzelne Unterfelder. NULL gilt für das gesamte StructArray-Feld, nicht für ein einzelnes Struct-Element, und Milvus überträgt die Nullfähigkeit des übergeordneten Feldes intern auf dessen Unterfelder. Ein StructArray-Feld, das einer bestehenden Sammlung hinzugefügt wird, muss nullfähig sein, damit bestehende Entitäten für das neue Feld den Wert NULL zurückgeben können. Ab Milvus 3.0.6 kann ein Unterfeld zusätzlich einen NULL-Wert in einem einzelnen Struct-Element zulassen: „ <code translate="no">nullable=True</code> “ für ein skalares oder vektorales Unterfeld, „ <code translate="no">element_nullable=True</code> “ für ein Array-Unterfeld; ein Struct-Element selbst kann weiterhin nicht NULL sein. Weitere Informationen finden Sie unter <a href="/docs/de/structarray-limits.md#Nullable-and-dynamic-schema-limits">„StructArray-Beschränkungen</a>“.</p></li>
-<li><p>Das Attribut „nullable“ wird beim Anlegen eines Feldes festgelegt und kann anschließend nicht mehr geändert werden. Sie können die Nullbarkeit für ein bestehendes Feld nicht aktivieren oder deaktivieren.</p></li>
-<li><p>Als nullfähig markierte Felder können nicht als Partitionsschlüssel verwendet werden. Partitionsschlüsselfelder müssen immer gültige, nicht-null Werte enthalten. Weitere Informationen finden Sie unter <a href="/docs/de/use-partition-key.md">„Partitionsschlüssel verwenden</a>“.</p></li>
+<li><p>Starting in Milvus 3.0.0, the parent <a href="/docs/de/array-of-structs.md">StructArray</a> field can be nullable. Set <code translate="no">nullable=True</code> on the parent StructArray field, not on individual subfields. NULL applies to the whole StructArray field, not to an individual Struct element, and Milvus propagates the parent’s nullability to its subfields internally. A StructArray field added to an existing collection must be nullable so existing entities can return NULL for the new field. Starting in Milvus 3.0.6, a subfield can additionally allow a NULL value in an individual Struct element: <code translate="no">nullable=True</code> on a scalar or vector subfield, <code translate="no">element_nullable=True</code> on an array subfield; a Struct element itself still cannot be NULL. For details, refer to <a href="/docs/de/structarray-limits.md#Nullable-and-dynamic-schema-limits">StructArray Limits</a>.</p></li>
+<li><p>The nullable attribute is defined when a field is created and cannot be modified afterward. You cannot enable or disable nullability for an existing field.</p></li>
+<li><p>Fields marked as nullable cannot be used as partition keys. Partition key fields must always contain valid, non-null values. For more information, refer to <a href="/docs/de/use-partition-key.md">Use Partition Key</a>.</p></li>
 </ul>
-<h2 id="What-is-a-nullable-field" class="common-anchor-header">Was ist ein nullfähiges Feld?<button data-href="#What-is-a-nullable-field" class="anchor-icon" translate="no">
+<h2 id="What-is-a-nullable-field" class="common-anchor-header">What is a nullable field?<button data-href="#What-is-a-nullable-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -63,22 +62,22 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>In Milvus wird durch ein Feldattribut auf Schemaebene namens „ <code translate="no">nullable</code> “ gesteuert, ob ein Feld einen NULL-Wert speichern darf.</p>
-<p>Wenn ein Feld mit „ <code translate="no">nullable=True</code> “ definiert ist, lässt Milvus zu, dass der Feldwert bei der Dateneingabe fehlt. In der Praxis behandelt Milvus die folgenden beiden Eingaben als gleichwertig und speichert den Feldwert als NULL:</p>
+    </button></h2><p>In Milvus, whether a field is allowed to store a NULL value is controlled by a schema-level field attribute named <code translate="no">nullable</code>.</p>
+<p>When a field is defined with <code translate="no">nullable=True</code>, Milvus allows the field value to be missing during data ingestion. In practice, Milvus treats the following two inputs as equivalent and stores the field value as NULL:</p>
 <ul>
-<li>Das Feld wird in der Eingabeentität weggelassen.</li>
-<li>Das Feld wird explizit auf NULL gesetzt (z. B. ` <code translate="no">None</code> ` in Python).</li>
+<li>The field is omitted from the input entity.</li>
+<li>The field is explicitly set to NULL (for example, <code translate="no">None</code> in Python).</li>
 </ul>
-<p>Wenn ein Feld nicht als nullfähig definiert ist (Standardverhalten), muss jede Entität einen gültigen Wert für dieses Feld bereitstellen. Das Weglassen des Feldes oder die explizite Zuweisung eines NULL-Werts führt dazu, dass der Einfüge- oder Importvorgang fehlschlägt.</p>
-<p>Das Attribut „nullable“ wird sowohl für <strong>Skalar- als auch</strong> für <strong>Vektorfelder</strong> in einem Sammlungsschema unterstützt. Ab Milvus 3.0.0 wird es auch für das übergeordnete StructArray-Feld unterstützt. Konfigurieren Sie Struct-Unterfelder nicht unabhängig voneinander als auf Zeilenebene nullfähig; definieren Sie die Nullfähigkeit auf Zeilenebene für das übergeordnete StructArray, und Milvus überträgt diese Einstellung intern auf dessen Unterfelder. Um NULL für einen Unterfeldwert innerhalb einzelner „Struct“-Elemente zuzulassen (Nullbarkeit auf Elementebene), setzen Sie in Milvus 3.0.6 und höher „ <code translate="no">nullable=True</code> “ für ein skalares oder Vektor-Unterfeld oder „ <code translate="no">element_nullable=True</code> “ für ein Array-Unterfeld; siehe <a href="/docs/de/create-structarray-field.md#allow-null-values-in-struct-elements--milvus-306">„Erstellen eines StructArray-Feldes</a>“.</p>
+<p>If a field is not defined as nullable (the default behavior), every entity must provide a valid value for that field. Omitting the field or explicitly assigning a NULL value will cause the insert or import operation to fail.</p>
+<p>The nullable attribute is supported for both <strong>scalar and vector fields</strong> in a collection schema. Starting in Milvus 3.0.0, it is also supported on the parent StructArray field. Do not configure Struct subfields as row-level nullable independently; define row-level nullability on the StructArray parent and Milvus propagates that setting to its subfields internally. To allow NULL for a subfield value inside individual Struct elements (element-level null), set <code translate="no">nullable=True</code> on a scalar or vector subfield or <code translate="no">element_nullable=True</code> on an array subfield in Milvus 3.0.6 and later; refer to <a href="/docs/de/create-structarray-field.md#allow-null-values-in-struct-elements--milvus-306">Create a StructArray Field</a>.</p>
 <div class="alert note">
-<p>Die Nullbarkeit legt fest, ob ein Feldwert fehlen darf; sie definiert jedoch nicht, welcher Wert verwendet wird, wenn ein Feld fehlt.</p>
+<p>Nullability determines whether a field value may be missing; it does not define what value is used when a field is missing.</p>
 <ul>
-<li>Wenn ein nullfähiges Feld ohne Standardwert konfiguriert ist, führt das Weglassen des Feldes zu einem gespeicherten NULL-Wert.</li>
-<li>Wenn ein Standardwert konfiguriert ist, speichert Milvus möglicherweise stattdessen den Standardwert. Weitere Informationen finden Sie unter <a href="/docs/de/default-values.md">„Standardwerte</a>“.</li>
+<li>If a nullable field is configured without a default value, omitting the field results in a stored NULL value.</li>
+<li>If a default value is configured, Milvus may store the default value instead. For details, see <a href="/docs/de/default-values.md">Default Values</a>.</li>
 </ul>
 </div>
-<h2 id="Define-a-nullable-field-in-the-collection-schema" class="common-anchor-header">Definieren Sie ein nullfähiges Feld im Sammlungsschema<button data-href="#Define-a-nullable-field-in-the-collection-schema" class="anchor-icon" translate="no">
+<h2 id="Define-a-nullable-field-in-the-collection-schema" class="common-anchor-header">Define a nullable field in the collection schema<button data-href="#Define-a-nullable-field-in-the-collection-schema" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -93,17 +92,17 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Um nullfähige Felder zu verwenden, müssen Sie bei der Definition des Sammlungsschemas das Attribut „nullable“ aktivieren.</p>
-<p>In diesem Beispiel definiert das Sammlungsschema ein Vektorfeld namens „ <code translate="no">embedding</code> “ mit der Eigenschaft „ <code translate="no">nullable=True</code> “. Dadurch können Entitäten in der Sammlung den Vektorwert weglassen oder ihn bei der Datenerfassung explizit auf NULL setzen.</p>
+    </button></h2><p>To use nullable fields, you must enable the nullable attribute when defining the collection schema.</p>
+<p>In this example, the collection schema defines a vector field named <code translate="no">embedding</code> with <code translate="no">nullable=True</code>. This allows entities in the collection to omit the vector value or explicitly set it to NULL during data ingestion.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
 
@@ -323,25 +322,25 @@ curl --request POST \
     }
   }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>In diesem Schema:</p>
+<p>In this schema:</p>
 <ul>
-<li>Das Feld „ <code translate="no">embedding</code> “ ist explizit als nullfähig gekennzeichnet.</li>
-<li>Entitäten können das Feld „ <code translate="no">embedding</code> “ weglassen oder ihm beim Einfügen einen NULL-Wert zuweisen.</li>
-<li>Die Entscheidung, NULL-Werte zuzulassen, wird bei der Erstellung der Sammlung festgelegt.</li>
+<li>The <code translate="no">embedding</code> field is explicitly marked as nullable.</li>
+<li>Entities may omit the <code translate="no">embedding</code> field or assign it a NULL value during insertion.</li>
+<li>The decision to allow NULL values is fixed at collection creation time.</li>
 </ul>
-<p>Der Übersichtlichkeit halber konzentrieren sich die folgenden Beispiele auf ein nullfähiges Vektorfeld (<code translate="no">embedding</code>). Die Definition nullfähiger Skalarfelder ist optional und für die weitere Verwendung dieses Leitfadens nicht erforderlich.</p>
+<p>For clarity, the following examples focus on a nullable vector field (<code translate="no">embedding</code>). Defining nullable scalar fields is optional and not required to follow the rest of this guide.</p>
 <p><details>
-<summary>Optional: Definieren eines nullfähigen Skalarfelds</summary></p>
-<p>Skalarfelder können ebenfalls mithilfe desselben Attributs „ <code translate="no">nullable</code> “ als nullfähig definiert werden und unterliegen bei der Erfassung denselben Regeln. Beispiel:</p>
+<summary>Optional: Define a nullable scalar field</summary></p>
+<p>Scalar fields can also be defined as nullable using the same <code translate="no">nullable</code> attribute and follow the same rules during ingestion. For example:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">schema.add_field(
     field_name=<span class="hljs-string">&quot;age&quot;</span>,
@@ -388,7 +387,7 @@ schema.Fields.Add(<span class="hljs-keyword">new</span> FieldSchema(<span class=
 <span class="hljs-comment"># { &quot;fieldName&quot;: &quot;age&quot;, &quot;dataType&quot;: &quot;Int64&quot;, &quot;nullable&quot;: true }</span>
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<h2 id="Insert-behavior-with-missing-or-NULL-values" class="common-anchor-header">Einfügeverhalten bei fehlenden oder NULL-Werten<button data-href="#Insert-behavior-with-missing-or-NULL-values" class="anchor-icon" translate="no">
+<h2 id="Insert-behavior-with-missing-or-NULL-values" class="common-anchor-header">Insert behavior with missing or NULL values<button data-href="#Insert-behavior-with-missing-or-NULL-values" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -403,17 +402,17 @@ schema.Fields.Add(<span class="hljs-keyword">new</span> FieldSchema(<span class=
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Sobald ein Feld im Sammlungsschema als nullfähig definiert ist, erlaubt Milvus, dass der Feldwert bei der Dateneingabe fehlt oder explizit auf NULL gesetzt wird.</p>
-<p>Das folgende Beispiel fügt drei Entitäten in die unter <a href="#Define-a-nullable-field-in-the-collection-schema">„Ein nullfähiges Feld im Sammlungsschema definieren</a>“ erstellte Sammlung ein und veranschaulicht dabei diese verschiedenen Fälle.</p>
+    </button></h2><p>Once a field is defined as nullable in the collection schema, Milvus allows the field value to be missing or explicitly set to NULL during data ingestion.</p>
+<p>The example below inserts three entities into the collection created in <a href="#Define-a-nullable-field-in-the-collection-schema">Define a nullable field in the collection schema</a>, demonstrating these different cases.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">data = [
     {
@@ -562,13 +561,13 @@ status = client-&gt;<span class="hljs-built_in">Insert</span>(milvus::<span clas
     ]
   }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>In diesem Beispiel:</p>
+<p>In this example:</p>
 <ul>
-<li>Entität <strong>id = 1</strong> liefert einen gültigen Vektorwert.</li>
-<li>Entität <strong>mit ID = 2</strong> weist dem Feld „ <code translate="no">embedding</code> “ explizit den Wert NULL zu.</li>
-<li>Entität <strong>mit ID = 3</strong> lässt das Feld „ <code translate="no">embedding</code> “ vollständig weg; Milvus speichert es als NULL.</li>
+<li>Entity <strong>id = 1</strong> provides a valid vector value.</li>
+<li>Entity <strong>id = 2</strong> explicitly assigns a NULL value to the <code translate="no">embedding</code> field.</li>
+<li>Entity <strong>id = 3</strong> omits the <code translate="no">embedding</code> field entirely; Milvus stores it as NULL.</li>
 </ul>
-<h2 id="Index-behavior-on-nullable-fields" class="common-anchor-header">Verhalten des Indexes bei nullfähigen Feldern<button data-href="#Index-behavior-on-nullable-fields" class="anchor-icon" translate="no">
+<h2 id="Index-behavior-on-nullable-fields" class="common-anchor-header">Index behavior on nullable fields<button data-href="#Index-behavior-on-nullable-fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -583,21 +582,21 @@ status = client-&gt;<span class="hljs-built_in">Insert</span>(milvus::<span clas
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Nach dem Einfügen von Daten können Sie wie gewohnt einen Index auf einem nullfähigen Feld erstellen. Der wesentliche Unterschied besteht darin, wie Milvus NULL-Werte während der Indexerstellung behandelt:</p>
+    </button></h2><p>After inserting data, you can build an index on a nullable field as usual. The key difference is how Milvus handles NULL values during index construction:</p>
 <ul>
-<li>Nur Entitäten mit Nicht-NULL-Werten werden in den Index aufgenommen.</li>
-<li>Entitäten mit NULL-Werten werden übersprungen und sind nicht am Indexaufbau beteiligt.</li>
+<li>Only entities with non-null values are added to the index.</li>
+<li>Entities with NULL values are skipped and do not participate in index building.</li>
 </ul>
-<p>Bei einem nullfähigen Vektorfeld bedeutet dies, dass nur Entitäten mit gültigen Vektoren anhand der Vektorähnlichkeit durchsuchbar sind.</p>
+<p>For a nullable vector field, this means only entities with valid vectors become searchable by vector similarity.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Set index parameters</span>
 index_params = client.prepare_index_params()
@@ -748,12 +747,12 @@ curl --request POST \
   --header <span class="hljs-string">&quot;Request-Timeout: 10&quot;</span> \
   -d <span class="hljs-string">&#x27;{&quot;collectionName&quot;: &quot;my_collection&quot;}&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Zu diesem Zeitpunkt:</p>
+<p>At this point:</p>
 <ul>
-<li>Entitäten mit gültigen Einbettungswerten sind indiziert und für die Suche bereit.</li>
-<li>Entitäten, deren Einbettung NULL ist, verbleiben in der Sammlung, werden jedoch nicht in den Vektorindex aufgenommen.</li>
+<li>Entities with valid embedding values are indexed and ready for search.</li>
+<li>Entities whose embedding is NULL remain in the collection, but they are not included in the vector index.</li>
 </ul>
-<h2 id="Search-behavior-with-nullable-fields" class="common-anchor-header">Suchverhalten bei nullfähigen Feldern<button data-href="#Search-behavior-with-nullable-fields" class="anchor-icon" translate="no">
+<h2 id="Search-behavior-with-nullable-fields" class="common-anchor-header">Search behavior with nullable fields<button data-href="#Search-behavior-with-nullable-fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -768,23 +767,23 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Wenn Sie Suchvorgänge für ein nullfähiges Feld durchführen, wertet Milvus nur Entitäten mit Nicht-Null-Werten für das bei der Suche verwendete Feld aus. Entitäten, deren Vektorfeld NULL ist, werden automatisch übersprungen.</p>
-<p>Bei einem nullfähigen Vektorfeld wie beispielsweise „ <code translate="no">embedding</code> “ in diesem Beispiel gilt:</p>
+    </button></h2><p>When you perform search operations on a nullable field, Milvus evaluates only entities with non-null values for the field used in the search. Entities whose vector field is NULL are skipped automatically.</p>
+<p>For a nullable vector field such as <code translate="no">embedding</code> in this example:</p>
 <ul>
-<li>werden nur Entitäten mit gültigen Vektorwerten ausgewertet und in die Rangliste aufgenommen.</li>
-<li>Entitäten mit NULL-Vektoren verursachen keine Fehler.</li>
-<li>Wenn die Anzahl der gültigen Vektoren kleiner ist als die angeforderte Anzahl von „ <code translate="no">topK</code> “ (<code translate="no">limit</code>), gibt Milvus möglicherweise weniger Ergebnisse zurück als unter <code translate="no">limit</code>.</li>
+<li>Only entities with valid vector values are evaluated and ranked.</li>
+<li>Entities with NULL vectors do not cause errors.</li>
+<li>If the number of valid vectors is smaller than the requested <code translate="no">topK</code> (<code translate="no">limit</code>), Milvus may return fewer results than <code translate="no">limit</code>.</li>
 </ul>
-<p>Das folgende Beispiel führt eine Vektorsuche auf dem nullfähigen Vektorfeld „ <code translate="no">embedding</code> “ durch:</p>
+<p>The following example performs a vector search on the nullable vector field <code translate="no">embedding</code>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">res = client.search(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,
@@ -913,13 +912,13 @@ Console.WriteLine(res);
     &quot;outputFields&quot;: [&quot;embedding&quot;]
   }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Bei dieser Suche:</p>
+<p>In this search:</p>
 <ul>
-<li>werden nur Entitäten mit Nicht-Null-Werten für „ <code translate="no">embedding</code> “ als Kandidaten berücksichtigt.</li>
-<li>Entitäten mit NULL-Werten für „ <code translate="no">embedding</code> “ werden von der Auswertung ausgeschlossen.</li>
-<li>Die Anzahl der zurückgegebenen Ergebnisse hängt davon ab, wie viele gültige Vektoren in der Sammlung vorhanden sind.</li>
+<li>Only entities with non-null <code translate="no">embedding</code> values are considered candidates.</li>
+<li>Entities with NULL values for <code translate="no">embedding</code> are excluded from evaluation.</li>
+<li>The number of returned results depends on how many valid vectors exist in the collection.</li>
 </ul>
-<h2 id="Query-and-filtering-implications" class="common-anchor-header">Auswirkungen auf Abfragen und Filterung<button data-href="#Query-and-filtering-implications" class="anchor-icon" translate="no">
+<h2 id="Query-and-filtering-implications" class="common-anchor-header">Query and filtering implications<button data-href="#Query-and-filtering-implications" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -934,18 +933,22 @@ Console.WriteLine(res);
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Die vorherigen Beispiele konzentrieren sich auf Vektorfelder. In diesem Abschnitt wird beschrieben, wie sich NULL-Werte in <strong>skalaren Filterausdrücken</strong> verhalten.</p>
-<p>Skalarfelder können mit „ <code translate="no">nullable=True</code> “ definiert werden und unterliegen denselben Erfassungsregeln wie Vektorfelder. <strong>NULL-Skalarwerte werden in Filterausdrücken</strong> jedoch <strong>immer als „false“ ausgewertet</strong>. Verwenden Sie „ <code translate="no">IS NULL</code> “ oder „ <code translate="no">IS NOT NULL</code> “, um Entitäten danach auszuwählen, ob ein Skalarfeld den Wert NULL aufweist.</p>
-<p>Beispiel: Bei einem nullfähigen Skalarfeld „ <code translate="no">age</code> “ wählt der folgende Filter Entitäten aus, deren Alter größer als 18 ist:</p>
+    </button></h2><div class="alert note">
+<p>Starting in Milvus 3.0.3, you can use <code translate="no">IS NULL</code> and <code translate="no">IS NOT NULL</code> in query and search filters on ordinary vector fields to select entities whose vector field is NULL or non-NULL, respectively.</p>
+<p>To find entities whose <code translate="no">embedding</code> field is NULL, use <code translate="no">query()</code> with the filter <code translate="no">embedding IS NULL</code>. This filter is also valid in <code translate="no">search()</code>. However, searching on <code translate="no">embedding</code> with this filter returns no hits: entities without an <code translate="no">embedding</code> value have no vector to compare with the query vector.</p>
+<p>For supported types, syntax, and examples, see <a href="/docs/de/basic-operators.md#IS-NULL-and-IS-NOT-NULL-operators">IS NULL and IS NOT NULL operators</a>.</p>
+</div>
+<p>For scalar fields defined with <code translate="no">nullable=True</code>, comparison conditions such as <code translate="no">age &gt; 18</code> or <code translate="no">status == &quot;active&quot;</code> do not match entities where the compared field is NULL.</p>
+<p>For example, given a nullable scalar field <code translate="no">age</code>, the following filter selects entities whose age is greater than 18:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">expr = <span class="hljs-string">&quot;age &gt; 18&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -971,17 +974,17 @@ Console.WriteLine(res);
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># Use in query/search filter parameter, for example:</span>
 <span class="hljs-comment"># &quot;filter&quot;: &quot;age &gt; 18&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Entitäten, bei denen „ <code translate="no">age</code> “ den Wert NULL hat, werden aus den Ergebnissen ausgeschlossen, da ein NULL-Wert die Filterbedingung nicht erfüllt.</p>
-<p>Ebenso stimmen Gleichheitsprüfungen nicht mit NULL-Werten überein. Zum Beispiel:</p>
+<p>Entities where <code translate="no">age</code> is NULL are excluded from the results because a NULL value does not satisfy the filter condition.</p>
+<p>Similarly, equality checks do not match NULL values. For example:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">expr = <span class="hljs-string">&#x27;status == &quot;active&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -1006,8 +1009,8 @@ Console.WriteLine(res);
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># &quot;filter&quot;: &quot;status == \&quot;active\&quot;&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Entitäten, bei denen „ <code translate="no">status</code> “ NULL ist, werden aus den Ergebnissen ausgeschlossen.</p>
-<h2 id="Nullable-fields-and-default-values" class="common-anchor-header">Nullfähige Felder und Standardwerte<button data-href="#Nullable-fields-and-default-values" class="anchor-icon" translate="no">
+<p>Entities where <code translate="no">status</code> is NULL are excluded from the results.</p>
+<h2 id="Nullable-fields-and-default-values" class="common-anchor-header">Nullable fields and default values<button data-href="#Nullable-fields-and-default-values" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1022,24 +1025,24 @@ Console.WriteLine(res);
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Wenn für ein Feld sowohl „ <code translate="no">nullable</code> “ als auch „ <code translate="no">default_value</code> “ konfiguriert sind, legen die folgenden Regeln fest, wie Milvus bei der Einfügung mit NULL-Eingaben oder fehlenden Feldwerten umgeht.</p>
+    </button></h2><p>When both <code translate="no">nullable</code> and <code translate="no">default_value</code> are configured for a field, the following rules determine how Milvus handles NULL input or missing field values during insertion.</p>
 <table>
 <thead>
-<tr><th>Null-Zulassung aktiviert</th><th>Standardwert</th><th>Benutzereingabe (NULL oder weggelassen)</th><th>Ergebnis</th></tr>
+<tr><th>Nullable enabled</th><th>Default value</th><th>User input (NULL or omitted)</th><th>Result</th></tr>
 </thead>
 <tbody>
-<tr><td>Ja</td><td>Ja (nicht NULL)</td><td>NULL oder ausgelassen</td><td>Verwendet den Standardwert</td></tr>
-<tr><td>Ja</td><td>Nein</td><td>NULL oder ausgelassen</td><td>Wird als NULL gespeichert</td></tr>
-<tr><td>Nein</td><td>Ja (nicht NULL)</td><td>NULL oder ausgelassen</td><td>Verwendet den Standardwert</td></tr>
-<tr><td>Nein</td><td>Nein</td><td>NULL oder weggelassen</td><td>Löst einen Fehler aus</td></tr>
-<tr><td>Nein</td><td>Ja (Standardwert: NULL)</td><td>NULL oder ausgelassen</td><td>Löst einen Fehler aus</td></tr>
+<tr><td>Yes</td><td>Yes (non-NULL)</td><td>NULL or omitted</td><td>Uses the default value</td></tr>
+<tr><td>Yes</td><td>No</td><td>NULL or omitted</td><td>Stored as NULL</td></tr>
+<tr><td>No</td><td>Yes (non-NULL)</td><td>NULL or omitted</td><td>Uses the default value</td></tr>
+<tr><td>No</td><td>No</td><td>NULL or omitted</td><td>Throws an error</td></tr>
+<tr><td>No</td><td>Yes (NULL default)</td><td>NULL or omitted</td><td>Throws an error</td></tr>
 </tbody>
 </table>
-<p><strong>Wichtige Erkenntnisse:</strong></p>
+<p><strong>Key takeaways:</strong></p>
 <ul>
-<li>Wenn ein Feld einen Nicht-NULL-Standardwert hat, wird dieser Wert unabhängig davon verwendet, ob „ <code translate="no">nullable</code> “ aktiviert ist.</li>
-<li>Wenn „ <code translate="no">nullable=True</code> “ aktiviert ist, aber kein Standardwert festgelegt wurde, wird in dem Feld NULL gespeichert.</li>
-<li>Wenn „ <code translate="no">nullable=False</code> “ aktiviert ist und kein Standardwert festgelegt wurde, schlägt das Einfügen mit einer Fehlermeldung fehl.</li>
-<li>Das Festlegen eines NULL-Standardwerts für ein nicht-NULL-fähiges Feld ist ungültig und führt zu einem Fehler.</li>
+<li>When a field has a non-NULL default value, that value is used regardless of whether <code translate="no">nullable</code> is enabled.</li>
+<li>When <code translate="no">nullable=True</code> but no default value is set, the field stores NULL.</li>
+<li>When <code translate="no">nullable=False</code> and no default value is set, insertion fails with an error.</li>
+<li>Setting a NULL default value on a non-nullable field is invalid and causes an error.</li>
 </ul>
-<p>Ausführliche Beispiele und Informationen zur Verwendung der API für Standardwerte finden Sie unter <a href="/docs/de/default-values.md">„Standardwerte</a>“.</p>
+<p>For full examples and API usage for defaults, see <a href="/docs/de/default-values.md">Default Values</a>.</p>

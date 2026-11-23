@@ -2,9 +2,9 @@
 id: configure_datacoord.md
 related_key: configure
 group: system_configuration.md
-summary: 'Узнайте, как настроить dataCoord для работы с Milvus.'
+summary: Learn how to configure dataCoord for Milvus.
 ---
-<h1 id="dataCoord-related-Configurations" class="common-anchor-header">Настройки, связанные с dataCoord<button data-href="#dataCoord-related-Configurations" class="anchor-icon" translate="no">
+<h1 id="dataCoord-related-Configurations" class="common-anchor-header">dataCoord-related Configurations<button data-href="#dataCoord-related-Configurations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,13 +37,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.channel.watchTimeoutInterval">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Таймаут при наблюдении за каналами (в секундах). Прогресс обновления наблюдения тиклером Datanode сбрасывает таймер таймаута.      </td>
+      <td>        Timeout on watching channels (in seconds). Datanode tickler update watch progress will reset timeout timer.      </td>
       <td>300</td>
     </tr>
   </tbody>
@@ -66,13 +66,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.channel.legacyVersionWithoutRPCWatch">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Datanodes версий &lt;= этой считаются устаревшими узлами, которые не поддерживают watch() на основе RPC. Это используется только во время постепенного обновления, когда устаревшие узлы не получают новые каналы.      </td>
+      <td>        Datanodes <= this version are considered as legacy nodes, which doesn't have rpc based watch(). This is only used during rolling upgrade where legacy nodes won't get new channels      </td>
       <td>2.4.1</td>
     </tr>
   </tbody>
@@ -95,13 +95,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.channel.balanceSilentDuration">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Промежуток времени, по истечении которого менеджер каналов запускает фоновую балансировку каналов      </td>
+      <td>        The duration after which the channel manager start background channel balancing      </td>
       <td>300</td>
     </tr>
   </tbody>
@@ -124,13 +124,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.channel.balanceInterval">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Интервал, с которым менеджер каналов проверяет состояние балансировки каналов dml.      </td>
+      <td>        The interval with which the channel manager check dml channel balance status      </td>
       <td>360</td>
     </tr>
   </tbody>
@@ -153,13 +153,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.channel.checkInterval">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Интервал в секундах, с которым менеджер каналов обновляет состояния каналов.      </td>
+      <td>        The interval in seconds with which the channel manager advances channel states      </td>
       <td>1</td>
     </tr>
   </tbody>
@@ -182,13 +182,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.channel.notifyChannelOperationTimeout">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Таймаут уведомлений об операциях канала (в секундах).      </td>
+      <td>        Timeout notifing channel operations (in seconds).      </td>
       <td>5</td>
     </tr>
   </tbody>
@@ -211,13 +211,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.segment.maxSize">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Максимальный размер сегмента, единица измерения: МБ. Параметры datacoord.segment.maxSize и datacoord.segment.sealProportion совместно определяют, можно ли запечатать сегмент.      </td>
+      <td>        The maximum size of a segment, unit: MB. datacoord.segment.maxSize and datacoord.segment.sealProportion together determine if a segment can be sealed.      </td>
       <td>1024</td>
     </tr>
   </tbody>
@@ -240,13 +240,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.segment.diskSegmentMaxSize">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Максимальный размер сегмента в МБ для коллекции с дисковым индексом.      </td>
+      <td>        Maximun size of a segment in MB for collection which has Disk index      </td>
       <td>2048</td>
     </tr>
   </tbody>
@@ -269,14 +269,14 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.segment.sealProportion">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Минимальная доля от datacoord.segment.maxSize, необходимая для запечатывания сегмента. Параметры datacoord.segment.maxSize и datacoord.segment.sealProportion совместно определяют, можно ли запечатать сегмент.      </td>
-      <td>0,12</td>
+      <td>        The minimum proportion to datacoord.segment.maxSize to seal a segment. datacoord.segment.maxSize and datacoord.segment.sealProportion together determine if a segment can be sealed.      </td>
+      <td>0.12</td>
     </tr>
   </tbody>
 </table>
@@ -298,14 +298,14 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.segment.sealProportionJitter">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Коэффициент джиттера доли запечатывания сегмента, значение по умолчанию 0,1 (10 %); если доля запечатывания составляет 12 %, а джиттер = 0,1, фактически применяемый коэффициент будет составлять 10,8–12 %      </td>
-      <td>0,1</td>
+      <td>        segment seal proportion jitter ratio, default value 0.1(10%), if seal proportion is 12%, with jitter=0.1, the actuall applied ratio will be 10.8~12%      </td>
+      <td>0.1</td>
     </tr>
   </tbody>
 </table>
@@ -327,13 +327,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.segment.assignmentExpiration">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Время истечения назначения сегмента, единица измерения: мс      </td>
+      <td>        Expiration time of the segment assignment, unit: ms      </td>
       <td>2000</td>
     </tr>
   </tbody>
@@ -356,13 +356,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.segment.allocLatestExpireAttempt">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Время, в течение которого после перезапуска будет предприниматься попытка выделить последнее значение lastExpire из rootCoord.      </td>
+      <td>        The time attempting to alloc latest lastExpire from rootCoord after restart      </td>
       <td>200</td>
     </tr>
   </tbody>
@@ -385,13 +385,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.segment.maxLife">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Максимальный срок жизни сегмента в секундах: 24*60*60      </td>
+      <td>        The max lifetime of segment in seconds, 24*60*60      </td>
       <td>86400</td>
     </tr>
   </tbody>
@@ -414,16 +414,16 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.segment.maxIdleTime">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-        <li>Если сегмент не принимал записи DML в течение maxIdleTime, а его размер превышает</li>      
-        <li>minSizeFromIdleToSealed, Milvus автоматически запечатает его.</li>      
-        <li>Максимальное время простоя сегмента в секундах: 10*60.</li>      </td>
+        <li>If a segment didn't accept dml records in maxIdleTime and the size of segment is greater than</li>      
+        <li>minSizeFromIdleToSealed, Milvus will automatically seal it.</li>      
+        <li>The max idle time of segment in seconds, 10*60.</li>      </td>
       <td>600</td>
     </tr>
   </tbody>
@@ -446,13 +446,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.segment.minSizeFromIdleToSealed">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Минимальный размер сегмента в МБ, при котором он может перейти из состояния запечатанного в состояние простоя.      </td>
+      <td>        The min size in MB of segment which can be idle from sealed.      </td>
       <td>16</td>
     </tr>
   </tbody>
@@ -475,15 +475,15 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.segment.maxBinlogFileNumber">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-        <li>Максимальное количество файлов бинарного журнала (которое равно количеству файлов бинарного журнала первичного ключа) для одного сегмента; </li>      
-        <li>сегмент будет запечатан, если количество файлов бинарного журнала достигнет максимального значения.</li>      </td>
+        <li>The max number of binlog (which is equal to the binlog file num of primary key) for one segment, </li>      
+        <li>the segment will be sealed if the number of binlog file reaches to max value.</li>      </td>
       <td>32</td>
     </tr>
   </tbody>
@@ -506,14 +506,14 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.segment.smallProportion">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Сегмент считается «небольшим», если количество строк в нём меньше      </td>
-      <td>0,5</td>
+      <td>        The segment is considered as "small segment" when its # of rows is smaller than      </td>
+      <td>0.5</td>
     </tr>
   </tbody>
 </table>
@@ -535,16 +535,16 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.segment.compactableProportion">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-        <li>(smallProportion * максимальное количество строк в сегменте).</li>      
-        <li>Уплотнение будет выполняться для небольших сегментов, если после уплотнения сегмент будет иметь</li>      </td>
-      <td>0,85</td>
+        <li>(smallProportion * segment max # of rows).</li>      
+        <li>A compaction will happen on small segments if the segment after compaction will have</li>      </td>
+      <td>0.85</td>
     </tr>
   </tbody>
 </table>
@@ -566,17 +566,17 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.segment.expansionRate">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-        <li>более (доля, подлежащая уплотнению * максимальное количество строк в сегменте) строк.</li>      
-        <li>ДОЛЖНО БЫТЬ БОЛЬШЕ ИЛИ РАВНО <smallProportion>!!!</li>      
-        <li>Во время уплотнения размер сегмента по количеству строк может превышать максимальное количество строк в сегменте на (expansionRate-1) * 100%. </li>      </td>
-      <td>1,25</td>
+        <li>over (compactableProportion * segment max # of rows) rows.</li>      
+        <li>MUST BE GREATER THAN OR EQUAL TO <smallProportion>!!!</li>      
+        <li>During compaction, the size of segment # of rows is able to exceed segment max # of rows by (expansionRate-1) * 100%. </li>      </td>
+      <td>1.25</td>
     </tr>
   </tbody>
 </table>
@@ -598,15 +598,15 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.sealPolicy.channel.growingSegmentsMemSize">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-        <li>Пороговое значение размера в МБ; если общий размер растущих сегментов каждого шарда </li>      
-        <li>превышает этот порог, самый большой растущий сегмент будет запечатан.</li>      </td>
+        <li>The size threshold in MB, if the total size of growing segments of each shard </li>      
+        <li>exceeds this threshold, the largest growing segment will be sealed.</li>      </td>
       <td>4096</td>
     </tr>
   </tbody>
@@ -629,13 +629,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.autoUpgradeSegmentIndex">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        определяет, следует ли автоматически обновлять индекс сегмента до версии индексного движка      </td>
+      <td>        whether auto upgrade segment index to index engine's version      </td>
       <td>false</td>
     </tr>
   </tbody>
@@ -658,13 +658,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.segmentFlushInterval">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Минимальная продолжительность интервала (единица измерения: секунды) между операциями сброса данных в одном и том же сегменте      </td>
+      <td>        the minimal interval duration(unit: Seconds) between flusing operation on same segment      </td>
       <td>2</td>
     </tr>
   </tbody>
@@ -687,15 +687,15 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.enableCompaction">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-        <li>Значение переключателя, определяющее, следует ли включить уплотнение сегментов. </li>      
-        <li>Уплотнение объединяет сегменты небольшого размера в один большой сегмент и удаляет объекты, срок хранения которых в Time Travel истек.</li>      </td>
+        <li>Switch value to control if to enable segment compaction. </li>      
+        <li>Compaction merges small-size segments into a large segment, and clears the entities deleted beyond the rentention duration of Time Travel.</li>      </td>
       <td>true</td>
     </tr>
   </tbody>
@@ -718,15 +718,15 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.compaction.enableAutoCompaction">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-        <li>Значение переключателя, определяющее, следует ли включить автоматическую уплотнение сегментов, в ходе которой data coord в фоновом режиме находит и объединяет сегменты, подлежащие уплотнению.</li>      
-        <li>Эта настройка вступает в силу только в том случае, если для параметра dataCoord.enableCompaction установлено значение true.</li>      </td>
+        <li>Switch value to control if to enable automatic segment compaction during which data coord locates and merges compactable segments in the background.</li>      
+        <li>This configuration takes effect only when dataCoord.enableCompaction is set as true.</li>      </td>
       <td>true</td>
     </tr>
   </tbody>
@@ -749,13 +749,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.compaction.storageVersion.enabled">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th>
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Позволяет ли уплотнение перезаписывать подходящие существующие данные в текущую версию хранилища. Этот параметр можно обновлять.      </td>
+      <td>        Whether compaction can rewrite eligible existing data to the current storage version. This parameter is refreshable.      </td>
       <td>true</td>
     </tr>
   </tbody>
@@ -778,13 +778,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.compaction.bumpSchemaVersion.enabled">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th>
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Указывает, может ли уплотнение применять изменения версии схемы к существующим данным, включая заполнение полей, сгенерированных недавно добавленной функцией. Этот параметр можно обновлять.      </td>
+      <td>        Whether compaction can apply schema-version changes to existing data, including backfill for fields generated by a newly added Function. This parameter is refreshable.      </td>
       <td>false</td>
     </tr>
   </tbody>
@@ -807,18 +807,18 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.compaction.taskPrioritizer">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-        <li>Приоритет задачи уплотнения, варианты: [default, level, mix]. </li>      
-        <li>Значение по умолчанию — FIFO.</li>      
-        <li>level — приоритет определяется по уровню: сначала уплотнения L0, затем смешанные уплотнения, затем кластерные уплотнения.</li>      
-        <li>«mix» — приоритет определяется уровнем: сначала уплотнения mix, затем уплотнения L0, затем уплотнения кластеризации.</li>      </td>
-      <td>по умолчанию</td>
+        <li>compaction task prioritizer, options: [default, level, mix]. </li>      
+        <li>default is FIFO.</li>      
+        <li>level is prioritized by level: L0 compactions first, then mix compactions, then clustering compactions.</li>      
+        <li>mix is prioritized by level: mix compactions first, then L0 compactions, then clustering compactions.</li>      </td>
+      <td>default</td>
     </tr>
   </tbody>
 </table>
@@ -840,13 +840,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.compaction.taskQueueCapacity">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Размер очереди задач уплотнения      </td>
+      <td>        compaction task queue size      </td>
       <td>100000</td>
     </tr>
   </tbody>
@@ -869,13 +869,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.compaction.dropTolerance">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Задача уплотнения будет удалена по истечении времени (в секундах), превышающего указанное значение      </td>
+      <td>        Compaction task will be cleaned after finish longer than this time(in seconds)      </td>
       <td>86400</td>
     </tr>
   </tbody>
@@ -898,13 +898,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.compaction.gcInterval">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Интервал времени в секундах для сборки мусора при уплотнении данных.      </td>
+      <td>        The time interval in seconds for compaction gc      </td>
       <td>1800</td>
     </tr>
   </tbody>
@@ -927,13 +927,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.compaction.mix.triggerInterval">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Интервал времени в секундах для запуска уплотнения смеси      </td>
+      <td>        The time interval in seconds to trigger mix compaction      </td>
       <td>60</td>
     </tr>
   </tbody>
@@ -956,13 +956,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.compaction.levelzero.triggerInterval">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Интервал времени в секундах для запуска уплотнения L0      </td>
+      <td>        The time interval in seconds for trigger L0 compaction      </td>
       <td>10</td>
     </tr>
   </tbody>
@@ -985,13 +985,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.compaction.levelzero.forceTrigger.minSize">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Минимальный размер в байтах, при достижении которого запускается уплотнение LevelZero; по умолчанию — 8 МБ      </td>
+      <td>        The minmum size in bytes to force trigger a LevelZero Compaction, default as 8MB      </td>
       <td>8388608</td>
     </tr>
   </tbody>
@@ -1014,13 +1014,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.compaction.levelzero.forceTrigger.maxSize">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Максимальный размер в байтах, при достижении которого принудительно запускается уплотнение LevelZero; значение по умолчанию — 64 МБ.      </td>
+      <td>        The maxmum size in bytes to force trigger a LevelZero Compaction, default as 64MB      </td>
       <td>67108864</td>
     </tr>
   </tbody>
@@ -1043,13 +1043,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.compaction.levelzero.forceTrigger.deltalogMinNum">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Минимальное количество файлов deltalog, при котором принудительно запускается уплотнение LevelZero.      </td>
+      <td>        The minimum number of deltalog files to force trigger a LevelZero Compaction      </td>
       <td>10</td>
     </tr>
   </tbody>
@@ -1072,13 +1072,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.compaction.levelzero.forceTrigger.deltalogMaxNum">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Максимальное количество файлов deltalog, при котором принудительно запускается уплотнение LevelZero; значение по умолчанию — 30.      </td>
+      <td>        The maxmum number of deltalog files to force trigger a LevelZero Compaction, default as 30      </td>
       <td>30</td>
     </tr>
   </tbody>
@@ -1101,14 +1101,14 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.compaction.single.ratio.threshold">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Пороговое соотношение сегмента, при котором запускается однократная уплотнение; значение по умолчанию — 0,2.      </td>
-      <td>0,2</td>
+      <td>        The ratio threshold of a segment to trigger a single compaction, default as 0.2      </td>
+      <td>0.2</td>
     </tr>
   </tbody>
 </table>
@@ -1130,13 +1130,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.compaction.single.deltalog.maxsize">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Размер журнала дельты сегмента, при достижении которого запускается однократная уплотнение; значение по умолчанию — 16 МБ      </td>
+      <td>        The deltalog size of a segment to trigger a single compaction, default as 16MB      </td>
       <td>16777216</td>
     </tr>
   </tbody>
@@ -1159,13 +1159,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.compaction.single.deltalog.maxnum">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Количество дельта-журналов сегмента, при достижении которого запускается уплотнение; по умолчанию — 200.      </td>
+      <td>        The deltalog count of a segment to trigger a compaction, default as 200      </td>
       <td>200</td>
     </tr>
   </tbody>
@@ -1188,13 +1188,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.compaction.single.expiredlog.maxsize">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Размер устаревшего журнала сегмента, при достижении которого запускается уплотнение; значение по умолчанию — 10 МБ.      </td>
+      <td>        The expired log size of a segment to trigger a compaction, default as 10MB      </td>
       <td>10485760</td>
     </tr>
   </tbody>
@@ -1217,13 +1217,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.compaction.clustering.enable">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Включить уплотнение кластеров      </td>
+      <td>        Enable clustering compaction      </td>
       <td>true</td>
     </tr>
   </tbody>
@@ -1246,13 +1246,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.compaction.clustering.autoEnable">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Включить автоматическую уплотнение кластеров      </td>
+      <td>        Enable auto clustering compaction      </td>
       <td>false</td>
     </tr>
   </tbody>
@@ -1275,13 +1275,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.compaction.clustering.triggerInterval">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Интервал запуска уплотнения кластеров в секундах      </td>
+      <td>        clustering compaction trigger interval in seconds      </td>
       <td>600</td>
     </tr>
   </tbody>
@@ -1304,13 +1304,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.compaction.clustering.minInterval">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Минимальный интервал между выполнениями уплотнения кластеров для одной коллекции, позволяющий избежать избыточного уплотнения      </td>
+      <td>        The minimum interval between clustering compaction executions of one collection, to avoid redundant compaction      </td>
       <td>3600</td>
     </tr>
   </tbody>
@@ -1333,13 +1333,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.compaction.clustering.maxInterval">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Если кластеризованная уплотнение коллекции не выполнялось дольше, чем maxInterval, принудительно выполнить уплотнение      </td>
+      <td>        If a collection haven't been clustering compacted for longer than maxInterval, force compact      </td>
       <td>259200</td>
     </tr>
   </tbody>
@@ -1362,14 +1362,14 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.compaction.clustering.newDataSizeThreshold">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Если размер новых данных превышает newDataSizeThreshold, выполнить уплотнение кластеров      </td>
-      <td>512 м</td>
+      <td>        If new data size is large than newDataSizeThreshold, execute clustering compaction      </td>
+      <td>512m</td>
     </tr>
   </tbody>
 </table>
@@ -1391,14 +1391,14 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.compaction.clustering.maxTrainSizeRatio">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Максимальное соотношение размера данных при обучении методом K-средних; если оно превышает указанное значение, выполняется понижение разрешения для соблюдения этого ограничения      </td>
-      <td>0,8</td>
+      <td>        max data size ratio in Kmeans train, if larger than it, will down sampling to meet this limit      </td>
+      <td>0.8</td>
     </tr>
   </tbody>
 </table>
@@ -1420,13 +1420,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.compaction.clustering.maxCentroidsNum">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Максимальное количество центроидов при обучении методом K-средних      </td>
+      <td>        maximum centroids number in Kmeans train      </td>
       <td>10240</td>
     </tr>
   </tbody>
@@ -1449,13 +1449,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.compaction.clustering.minCentroidsNum">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Минимальное количество центроидов при обучении методом K-средних      </td>
+      <td>        minimum centroids number in Kmeans train      </td>
       <td>16</td>
     </tr>
   </tbody>
@@ -1478,14 +1478,14 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.compaction.clustering.minClusterSizeRatio">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Минимальный размер кластера / средний размер при обучении методом K-средних      </td>
-      <td>0,01</td>
+      <td>        minimum cluster size / avg size in Kmeans train      </td>
+      <td>0.01</td>
     </tr>
   </tbody>
 </table>
@@ -1507,13 +1507,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.compaction.clustering.maxClusterSizeRatio">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        максимальный размер кластера / средний размер при обучении методом K-средних      </td>
+      <td>        maximum cluster size / avg size in Kmeans train      </td>
       <td>10</td>
     </tr>
   </tbody>
@@ -1536,13 +1536,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.compaction.clustering.maxClusterSize">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        максимальный размер кластера при обучении методом K-средних      </td>
+      <td>        maximum cluster size in Kmeans train      </td>
       <td>5g</td>
     </tr>
   </tbody>
@@ -1565,13 +1565,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.syncSegmentsInterval">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Интервал времени для регулярной синхронизации сегментов      </td>
+      <td>        The time interval for regularly syncing segments      </td>
       <td>300</td>
     </tr>
   </tbody>
@@ -1594,13 +1594,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.index.memSizeEstimateMultiplier">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Если размер памяти не настроен процедурой индексации, коэффициент для расчета размера памяти, необходимой для данных индекса      </td>
+      <td>        When the memory size is not setup by index procedure, multiplier to estimate the memory size of index data      </td>
       <td>2</td>
     </tr>
   </tbody>
@@ -1623,13 +1623,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.enableGarbageCollection">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Значение переключателя, определяющее, следует ли включить сборку мусора для очистки отброшенных данных в сервисе MinIO или S3.      </td>
+      <td>        Switch value to control if to enable garbage collection to clear the discarded data in MinIO or S3 service.      </td>
       <td>true</td>
     </tr>
   </tbody>
@@ -1652,13 +1652,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.gc.interval">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Интервал, с которым data coord выполняет сборку мусора, единица измерения: секунда.      </td>
+      <td>        The interval at which data coord performs garbage collection, unit: second.      </td>
       <td>3600</td>
     </tr>
   </tbody>
@@ -1681,13 +1681,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.gc.missingTolerance">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Продолжительность хранения незаписанных файлов двоичного журнала (binlog). Установка достаточно большого значения для этого параметра позволяет избежать ошибочного удаления вновь созданных файлов binlog, в которых отсутствуют метаданные. Единица измерения: секунда.      </td>
+      <td>        The retention duration of the unrecorded binary log (binlog) files. Setting a reasonably large value for this parameter avoids erroneously deleting the newly created binlog files that lack metadata. Unit: second.      </td>
       <td>86400</td>
     </tr>
   </tbody>
@@ -1710,13 +1710,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.gc.dropTolerance">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Срок хранения файлов binlog удаленных сегментов до их очистки, единица измерения: секунда.      </td>
+      <td>        The retention duration of the binlog files of the deleted segments before they are cleared, unit: second.      </td>
       <td>10800</td>
     </tr>
   </tbody>
@@ -1739,13 +1739,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.gc.removeConcurrent">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        количество параллельных goroutine для удаления удаленных объектов S3      </td>
+      <td>        number of concurrent goroutines to remove dropped s3 objects      </td>
       <td>32</td>
     </tr>
   </tbody>
@@ -1768,13 +1768,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.gc.scanInterval">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        интервал сканирования для очистки «сиротских» файлов (файлов, находящихся в OSS, но не зарегистрированных в метаданных) в хранилище объектов, в часах      </td>
+      <td>        orphan file (file on oss but has not been registered on meta) on object storage garbage collection scanning interval in hours      </td>
       <td>168</td>
     </tr>
   </tbody>
@@ -1797,13 +1797,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.gc.lob.enabled">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th>
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Включить ли очистку неиспользуемых файлов LOB, созданных для значений поля TEXT.      </td>
+      <td>        Whether to enable garbage collection for unreferenced LOB files created for TEXT field values.      </td>
       <td>true</td>
     </tr>
   </tbody>
@@ -1826,13 +1826,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.gc.lob.safetyWindow">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th>
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Минимальный срок хранения (в секундах), по истечении которого файл LOB типа TEXT без ссылок может быть удален в ходе сборки мусора.      </td>
+      <td>        The minimum age, in seconds, that an unreferenced TEXT LOB file must reach before garbage collection can delete it.      </td>
       <td>3600</td>
     </tr>
   </tbody>
@@ -1855,13 +1855,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.gc.lob.checkInterval">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th>
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Интервал (в секундах), с которым Milvus сканирует хранилище в поисках неиспользуемых файлов LOB, созданных для значений полей TEXT.      </td>
+      <td>        The interval, in seconds, at which Milvus scans storage for unreferenced LOB files created for TEXT field values.      </td>
       <td>1800</td>
     </tr>
   </tbody>
@@ -1884,13 +1884,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.brokerTimeout">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        5000 мс, таймаут RPC-запроса брокера dataCoord      </td>
+      <td>        5000ms, dataCoord broker rpc timeout      </td>
       <td>5000</td>
     </tr>
   </tbody>
@@ -1913,13 +1913,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.autoBalance">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Включить автоматическую балансировку      </td>
+      <td>        Enable auto balance      </td>
       <td>true</td>
     </tr>
   </tbody>
@@ -1942,13 +1942,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.checkAutoBalanceConfigInterval">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Интервал проверки настроек автоматической балансировки      </td>
+      <td>        the interval of check auto balance config      </td>
       <td>10</td>
     </tr>
   </tbody>
@@ -1971,13 +1971,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.import.filesPerPreImportTask">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Максимальное количество файлов, разрешенное для одной задачи предварительной импорта.      </td>
+      <td>        The maximum number of files allowed per pre-import task.      </td>
       <td>2</td>
     </tr>
   </tbody>
@@ -2000,13 +2000,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.import.taskRetention">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Период хранения в секундах для задач в состоянии «Завершено» или «Сбой».      </td>
+      <td>        The retention period in seconds for tasks in the Completed or Failed state.      </td>
       <td>10800</td>
     </tr>
   </tbody>
@@ -2029,13 +2029,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.import.maxSizeInMBPerImportTask">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Чтобы избежать создания мелких сегментов, мы будем перегруппировывать импортируемые файлы. Этот параметр представляет собой сумму размеров файлов в каждой группе (каждой задаче ImportTask).      </td>
+      <td>        To prevent generating of small segments, we will re-group imported files. This parameter represents the sum of file sizes in each group (each ImportTask).      </td>
       <td>6144</td>
     </tr>
   </tbody>
@@ -2058,13 +2058,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.import.scheduleInterval">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Интервал планирования импорта, измеряемый в секундах.      </td>
+      <td>        The interval for scheduling import, measured in seconds.      </td>
       <td>2</td>
     </tr>
   </tbody>
@@ -2087,13 +2087,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.import.checkIntervalHigh">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Интервал проверки импорта, измеряемый в секундах, установлен на высокую частоту для средства проверки импорта.      </td>
+      <td>        The interval for checking import, measured in seconds, is set to a high frequency for the import checker.      </td>
       <td>2</td>
     </tr>
   </tbody>
@@ -2116,13 +2116,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.import.checkIntervalLow">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Интервал проверки импорта, измеряемый в секундах, установлен на низкую частоту для средства проверки импорта.      </td>
+      <td>        The interval for checking import, measured in seconds, is set to a low frequency for the import checker.      </td>
       <td>120</td>
     </tr>
   </tbody>
@@ -2145,13 +2145,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.import.maxImportFileNumPerReq">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Максимальное количество файлов, разрешенное для одного запроса на импорт.      </td>
+      <td>        The maximum number of files allowed per single import request.      </td>
       <td>1024</td>
     </tr>
   </tbody>
@@ -2174,13 +2174,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.import.maxImportJobNum">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Максимальное количество заданий импорта, которые выполняются или находятся в очереди.      </td>
+      <td>        Maximum number of import jobs that are executing or pending.      </td>
       <td>1024</td>
     </tr>
   </tbody>
@@ -2203,13 +2203,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.import.waitForIndex">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Указывает, ожидает ли операция импорта завершения построения индекса.      </td>
+      <td>        Indicates whether the import operation waits for the completion of index building.      </td>
       <td>true</td>
     </tr>
   </tbody>
@@ -2232,13 +2232,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.gracefulStopTimeout">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        секунд. Принудительная остановка узла без плавного завершения работы      </td>
+      <td>        seconds. force stop node without graceful stop      </td>
       <td>5</td>
     </tr>
   </tbody>
@@ -2261,13 +2261,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.slot.clusteringCompactionUsage">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Использование слотов заданием уплотнения кластера.      </td>
+      <td>        slot usage of clustering compaction job.      </td>
       <td>16</td>
     </tr>
   </tbody>
@@ -2290,13 +2290,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.slot.mixCompactionUsage">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Использование слотов заданием уплотнения смешанного типа.      </td>
+      <td>        slot usage of mix compaction job.      </td>
       <td>8</td>
     </tr>
   </tbody>
@@ -2319,13 +2319,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.slot.l0DeleteCompactionUsage">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Использование слотов заданием уплотнения l0.      </td>
+      <td>        slot usage of l0 compaction job.      </td>
       <td>8</td>
     </tr>
   </tbody>
@@ -2348,13 +2348,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.ip">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        TCP/IP-адрес dataCoord. Если не указан, используется первый адрес, поддерживающий одноадресную передачу      </td>
+      <td>        TCP/IP address of dataCoord. If not specified, use the first unicastable address      </td>
       <td></td>
     </tr>
   </tbody>
@@ -2377,13 +2377,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.port">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        TCP-порт dataCoord      </td>
+      <td>        TCP port of dataCoord      </td>
       <td>13333</td>
     </tr>
   </tbody>
@@ -2406,13 +2406,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.grpc.serverMaxSendSize">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Максимальный размер каждого RPC-запроса, который может отправить dataCoord, единица измерения: байт      </td>
+      <td>        The maximum size of each RPC request that the dataCoord can send, unit: byte      </td>
       <td>536870912</td>
     </tr>
   </tbody>
@@ -2435,13 +2435,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.grpc.serverMaxRecvSize">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Максимальный размер каждого RPC-запроса, который может принимать dataCoord, единица измерения: байт      </td>
+      <td>        The maximum size of each RPC request that the dataCoord can receive, unit: byte      </td>
       <td>268435456</td>
     </tr>
   </tbody>
@@ -2464,13 +2464,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.grpc.clientMaxSendSize">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Максимальный размер каждого RPC-запроса, который могут отправлять клиенты на dataCoord, единица измерения: байт      </td>
+      <td>        The maximum size of each RPC request that the clients on dataCoord can send, unit: byte      </td>
       <td>268435456</td>
     </tr>
   </tbody>
@@ -2493,13 +2493,13 @@ summary: 'Узнайте, как настроить dataCoord для работ�
     </button></h2><table id="dataCoord.grpc.clientMaxRecvSize">
   <thead>
     <tr>
-      <th class="width80">Описание</th>
-      <th class="width20">Значение по умолчанию</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Максимальный размер каждого RPC-запроса, который могут принимать клиенты на dataCoord, единица измерения: байт      </td>
+      <td>        The maximum size of each RPC request that the clients on dataCoord can receive, unit: byte      </td>
       <td>536870912</td>
     </tr>
   </tbody>

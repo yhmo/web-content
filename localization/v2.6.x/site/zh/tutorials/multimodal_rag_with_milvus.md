@@ -1,9 +1,9 @@
 ---
 id: multimodal_rag_with_milvus.md
-summary: 使用 Milvus 的多模式 RAG
-title: 使用 Milvus 制作多模式 RAG
+summary: Multimodal RAG with Milvus
+title: Multimodal RAG with Milvus
 ---
-<h1 id="Multimodal-RAG-with-Milvus" class="common-anchor-header">使用 Milvus 制作多模式 RAG<button data-href="#Multimodal-RAG-with-Milvus" class="anchor-icon" translate="no">
+<h1 id="Multimodal-RAG-with-Milvus" class="common-anchor-header">Multimodal RAG with Milvus<button data-href="#Multimodal-RAG-with-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,12 +20,12 @@ title: 使用 Milvus 制作多模式 RAG
       </svg>
     </button></h1><p><a href="https://colab.research.google.com/github/milvus-io/bootcamp/blob/master/tutorials/quickstart/multimodal_rag_with_milvus.ipynb" target="_parent"><img translate="no" src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 <a href="https://github.com/milvus-io/bootcamp/blob/master/tutorials/quickstart/multimodal_rag_with_milvus.ipynb" target="_blank"><img translate="no" src="https://img.shields.io/badge/View%20on%20GitHub-555555?style=flat&logo=github&logoColor=white" alt="GitHub Repository"/></a></p>
-<p>如果您想体验本教程的最终效果，可以直接进入<a href="https://demos.milvus.io/multimodal-image-search/">在线演示</a>。</p>
+<p>If you want to experience the final effect of this tutorial, you can go directly to <a href="https://demos.milvus.io/multimodal-image-search/">online demo</a>.</p>
 <p><img translate="no" src="https://raw.githubusercontent.com/milvus-io/bootcamp/master/tutorials/quickstart/apps/multimodal_rag_with_milvus/pics/step3.jpg
 "/></p>
-<p>本教程展示了由 Milvus、<a href="https://github.com/FlagOpen/FlagEmbedding/tree/master/FlagEmbedding/visual">可视化 BGE 模型</a>和<a href="https://openai.com/index/hello-gpt-4o/">GPT-4o</a> 支持的多模态 RAG。通过该系统，用户可以上传图片并编辑文本说明，由 BGE 组成的检索模型进行处理，搜索候选图片。然后，GPT-4o 作为 Reranker，选择最合适的图像，并提供选择背后的理由。这种强大的组合实现了无缝、直观的图像搜索体验，利用 Milvus 实现高效检索，利用 BGE 模型实现精确的图像处理和匹配，利用 GPT-4o 实现高级 Rerankers。</p>
+<p>This tutorial showcases the multimodal RAG powered by Milvus, <a href="https://github.com/FlagOpen/FlagEmbedding/tree/master/FlagEmbedding/visual">Visualized BGE model</a>, and <a href="https://openai.com/index/hello-gpt-4o/">GPT-4o</a>. With this system, users are able to upload an image and edit text instructions, which are processed by BGE’s composed retrieval model to search for candidate images. GPT-4o then acts as a reranker, selecting the most suitable image and providing the rationale behind the choice. This powerful combination enables a seamless and intuitive image search experience, leveraging Milvus for efficient retrieval, BGE model for precise image processing and matching, and GPT-4o for advanced reranking.</p>
 <p><img translate="no" src="/docs/v2.6.x/assets/multimodal_rag_with_milvus.png" width="100%" /></p>
-<h2 id="Preparation" class="common-anchor-header">准备工作<button data-href="#Preparation" class="anchor-icon" translate="no">
+<h2 id="Preparation" class="common-anchor-header">Preparation<button data-href="#Preparation" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -40,7 +40,7 @@ title: 使用 Milvus 制作多模式 RAG
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Install-Dependencies" class="common-anchor-header">安装依赖项<button data-href="#Install-Dependencies" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Install-Dependencies" class="common-anchor-header">Install Dependencies<button data-href="#Install-Dependencies" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -61,9 +61,9 @@ title: 使用 Milvus 制作多模式 RAG
 <span class="hljs-meta prompt_">$ </span><span class="language-bash">pip install -e FlagEmbedding</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>如果您使用的是 Google Colab，要启用刚刚安装的依赖项，可能需要<strong>重新启动运行时</strong>（点击屏幕上方的 "运行时 "菜单，从下拉菜单中选择 "重新启动会话"）。</p>
+<p>If you are using Google Colab, to enable dependencies just installed, you may need to <strong>restart the runtime</strong> (click on the “Runtime” menu at the top of the screen, and select “Restart session” from the dropdown menu).</p>
 </div>
-<h3 id="Download-Data" class="common-anchor-header">下载数据<button data-href="#Download-Data" class="anchor-icon" translate="no">
+<h3 id="Download-Data" class="common-anchor-header">Download Data<button data-href="#Download-Data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -78,15 +78,15 @@ title: 使用 Milvus 制作多模式 RAG
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>以下命令将下载示例数据并解压缩到本地文件夹"./images_folder "中，其中包括</p>
+    </button></h3><p>The following command will download the example data and extract to a local folder “./images_folder” including:</p>
 <ul>
-<li><strong>图像</strong>：<a href="https://github.com/hyp1231/AmazonReviews2023">Amazon Reviews 2023</a>的子集，包含 "Appliance"、"Cell_Phones_and_Accessories "和 "Electronics "类别中的约 900 张图片。</li>
-<li><strong>豹子.jpg</strong>：查询图片示例。</li>
+<li><strong>images</strong>: A subset of <a href="https://github.com/hyp1231/AmazonReviews2023">Amazon Reviews 2023</a> as containing approximately 900 images from the categories "Appliance", "Cell_Phones_and_Accessories", and "Electronics".</li>
+<li><strong>leopard.jpg</strong>: An example query image.</li>
 </ul>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">wget https://github.com/milvus-io/bootcamp/releases/download/data/amazon_reviews_2023_subset.tar.gz</span>
 <span class="hljs-meta prompt_">$ </span><span class="language-bash">tar -xzf amazon_reviews_2023_subset.tar.gz</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Load-Embedding-Model" class="common-anchor-header">加载嵌入模型<button data-href="#Load-Embedding-Model" class="anchor-icon" translate="no">
+<h3 id="Load-Embedding-Model" class="common-anchor-header">Load Embedding Model<button data-href="#Load-Embedding-Model" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -101,11 +101,11 @@ title: 使用 Milvus 制作多模式 RAG
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>我们将使用可视化 BGE 模型 "bge-visualized-base-en-v1.5 "来生成图像和文本的嵌入模型。</p>
-<p><strong>1.下载权重</strong></p>
+    </button></h3><p>We will use the Visualized BGE model “bge-visualized-base-en-v1.5” to generate embeddings for both images and text.</p>
+<p><strong>1. Download weight</strong></p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">wget https://huggingface.co/BAAI/bge-visualized/resolve/main/Visualized_base_en_v1.5.pth</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>2.构建编码器</strong></p>
+<p><strong>2. Build encoder</strong></p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> torch
 <span class="hljs-keyword">from</span> visual_bge.modeling <span class="hljs-keyword">import</span> Visualized_BGE
 
@@ -130,7 +130,7 @@ model_name = <span class="hljs-string">&quot;BAAI/bge-base-en-v1.5&quot;</span>
 model_path = <span class="hljs-string">&quot;./Visualized_base_en_v1.5.pth&quot;</span>  <span class="hljs-comment"># Change to your own value if using a different model path</span>
 encoder = Encoder(model_name, model_path)
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Load-Data" class="common-anchor-header">加载数据<button data-href="#Load-Data" class="anchor-icon" translate="no">
+<h2 id="Load-Data" class="common-anchor-header">Load Data<button data-href="#Load-Data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -145,8 +145,8 @@ encoder = Encoder(model_name, model_path)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>本节将把示例图像与相应的嵌入式数据一起加载到数据库中。</p>
-<h3 id="Generate-embeddings" class="common-anchor-header">生成嵌入词<button data-href="#Generate-embeddings" class="anchor-icon" translate="no">
+    </button></h2><p>This section will load example images into the database with corresponding embeddings.</p>
+<h3 id="Generate-embeddings" class="common-anchor-header">Generate embeddings<button data-href="#Generate-embeddings" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -161,7 +161,7 @@ encoder = Encoder(model_name, model_path)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>从数据目录中加载所有 jpeg 图像，并应用编码器将图像转换为嵌入式内容。</p>
+    </button></h3><p>Load all jpeg images from the data directory and apply the encoder to convert images to embeddings.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> os
 <span class="hljs-keyword">from</span> tqdm <span class="hljs-keyword">import</span> tqdm
 <span class="hljs-keyword">from</span> glob <span class="hljs-keyword">import</span> glob
@@ -187,7 +187,7 @@ image_dict = {}
 
 Number of encoded images: 900
 </code></pre>
-<h3 id="Insert-into-Milvus" class="common-anchor-header">插入 Milvus<button data-href="#Insert-into-Milvus" class="anchor-icon" translate="no">
+<h3 id="Insert-into-Milvus" class="common-anchor-header">Insert into Milvus<button data-href="#Insert-into-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -202,13 +202,13 @@ Number of encoded images: 900
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>将带有相应路径和嵌入信息的图片插入 Milvus Collections。</p>
+    </button></h3><p>Insert images with corresponding paths and embeddings into Milvus collection.</p>
 <div class="alert note">
-<p>至于<code translate="no">MilvusClient</code> 的参数：</p>
+<p>As for the argument of <code translate="no">MilvusClient</code>:</p>
 <ul>
-<li>将<code translate="no">uri</code> 设置为本地文件，如<code translate="no">./milvus_demo.db</code> ，是最方便的方法，因为它会自动利用<a href="https://milvus.io/docs/milvus_lite.md">Milvus Lite</a>将所有数据存储在此文件中。</li>
-<li>如果数据规模较大，可以在<a href="https://milvus.io/docs/quickstart.md">docker 或 kubernetes</a> 上设置性能更强的 Milvus 服务器。在此设置中，请使用服务器 uri，例如<code translate="no">http://localhost:19530</code> ，作为您的<code translate="no">uri</code> 。</li>
-<li>如果你想使用<a href="https://zilliz.com/cloud">Zilliz Cloud</a>（Milvus 的全托管云服务），请调整<code translate="no">uri</code> 和<code translate="no">token</code> ，它们与 Zilliz Cloud 中的<a href="https://docs.zilliz.com/docs/on-zilliz-cloud-console#free-cluster-details">公共端点和 Api 密钥</a>相对应。</li>
+<li>Setting the <code translate="no">uri</code> as a local file, e.g. <code translate="no">./milvus_demo.db</code>, is the most convenient method, as it automatically utilizes <a href="https://milvus.io/docs/milvus_lite.md">Milvus Lite</a> to store all data in this file.</li>
+<li>If you have large scale of data, you can set up a more performant Milvus server on <a href="https://milvus.io/docs/quickstart.md">docker or kubernetes</a>. In this setup, please use the server uri, e.g.<code translate="no">http://localhost:19530</code>, as your <code translate="no">uri</code>.</li>
+<li>If you want to use <a href="https://zilliz.com/cloud">Zilliz Cloud</a>, the fully managed cloud service for Milvus, adjust the <code translate="no">uri</code> and <code translate="no">token</code>, which correspond to the <a href="https://docs.zilliz.com/docs/on-zilliz-cloud-console#free-cluster-details">Public Endpoint and Api key</a> in Zilliz Cloud.</li>
 </ul>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
@@ -247,7 +247,7 @@ DEBUG:pymilvus.milvus_client.milvus_client:Successfully created an index on coll
  'ids': [451537887696781312, 451537887696781313, ..., 451537887696782211],
  'cost': 0}
 </code></pre>
-<h2 id="Multimodal-Search-with-Generative-Reranker" class="common-anchor-header">使用生成式 Reranker 进行多模态搜索<button data-href="#Multimodal-Search-with-Generative-Reranker" class="anchor-icon" translate="no">
+<h2 id="Multimodal-Search-with-Generative-Reranker" class="common-anchor-header">Multimodal Search with Generative Reranker<button data-href="#Multimodal-Search-with-Generative-Reranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -262,8 +262,8 @@ DEBUG:pymilvus.milvus_client.milvus_client:Successfully created an index on coll
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>在本节中，我们将首先通过多模态查询搜索相关图片，然后使用 LLM 服务对结果进行 Reranker，并找出带有解释的最佳结果。</p>
-<h3 id="Run-search" class="common-anchor-header">运行搜索<button data-href="#Run-search" class="anchor-icon" translate="no">
+    </button></h2><p>In this section, we will firstly search for relevant images by a multimodal query and then use LLM service to rerank the results and find the best one with explanation.</p>
+<h3 id="Run-search" class="common-anchor-header">Run search<button data-href="#Run-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -278,7 +278,7 @@ DEBUG:pymilvus.milvus_client.milvus_client:Successfully created an index on coll
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>现在，我们准备使用由图像和文本指令组成的查询数据执行高级图像搜索。</p>
+    </button></h3><p>Now we are ready to perform the advanced image search with query data composed of both image and text instruction.</p>
 <pre><code translate="no" class="language-python">query_image = os.path.join(
     data_dir, <span class="hljs-string">&quot;leopard.jpg&quot;</span>
 )  <span class="hljs-comment"># Change to your own query image path</span>
@@ -300,7 +300,7 @@ retrieved_images = [hit.get(<span class="hljs-string">&quot;entity&quot;</span>)
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no">['./images_folder/images/518Gj1WQ-RL._AC_.jpg', './images_folder/images/41n00AOfWhL._AC_.jpg', './images_folder/images/51Wqge9HySL._AC_.jpg', './images_folder/images/51R2SZiywnL._AC_.jpg', './images_folder/images/516PebbMAcL._AC_.jpg', './images_folder/images/51RrgfYKUfL._AC_.jpg', './images_folder/images/515DzQVKKwL._AC_.jpg', './images_folder/images/51BsgVw6RhL._AC_.jpg', './images_folder/images/51INtcXu9FL._AC_.jpg']
 </code></pre>
-<h3 id="Rerank-with-GPT-4o" class="common-anchor-header">使用 GPT-4o 重新排名<button data-href="#Rerank-with-GPT-4o" class="anchor-icon" translate="no">
+<h3 id="Rerank-with-GPT-4o" class="common-anchor-header">Rerank with GPT-4o<button data-href="#Rerank-with-GPT-4o" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -315,8 +315,8 @@ retrieved_images = [hit.get(<span class="hljs-string">&quot;entity&quot;</span>)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>我们将使用 LLM 对图像进行排序，并根据用户查询和检索结果为最佳结果生成解释。</p>
-<p><strong>1.创建全景图</strong></p>
+    </button></h3><p>We will use an LLM to rank images and generate an explanation for the best result based on the user query and retrieved results.</p>
+<p><strong>1. Create a panoramic view</strong></p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
 <span class="hljs-keyword">import</span> cv2
 
@@ -432,7 +432,7 @@ row_count = <span class="hljs-number">3</span>
     panoramic_image = np.hstack([query_image_null, panoramic_image])
     <span class="hljs-keyword">return</span> panoramic_image
 <button class="copy-code-btn"></button></code></pre>
-<p>将查询图像和检索到的图像与全景图中的索引结合起来。</p>
+<p>Combine the query image and retrieved images with indices in a panoramic view.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> PIL <span class="hljs-keyword">import</span> Image
 
 combined_image_path = os.path.join(data_dir, <span class="hljs-string">&quot;combined_image.jpg&quot;</span>)
@@ -444,11 +444,13 @@ show_combined_image = combined_image.resize((<span class="hljs-number">300</span
 show_combined_image.show()
 <button class="copy-code-btn"></button></code></pre>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="/docs/v2.6.x/assets/multimodal_rag_with_milvus_22_0.png" alt="Create a panoramic view" class="doc-image" id="create-a-panoramic-view" />
-   </span> <span class="img-wrapper"> <span>创建全景视图</span> </span></p>
-<p><strong>2.Rerankers 和解释</strong></p>
-<p>我们将把组合图像发送到多模态 LLM 服务，同时发送适当的提示，以便对检索到的结果进行排序和解释。要启用 GPT-4o 作为 LLM，您需要准备<a href="https://platform.openai.com/docs/quickstart">OpenAI API 密钥</a>。</p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/multimodal_rag_with_milvus_22_0.png" alt="Create a panoramic view" class="doc-image" id="create-a-panoramic-view" />
+    <span>Create a panoramic view</span>
+  </span>
+</p>
+<p><strong>2. Rerank and explain</strong></p>
+<p>We will send the combined image to multimodal LLM service together with proper prompts to rank the retrieved results with explanation. To enable GPT-4o as the LLM, you need to prepare your <a href="https://platform.openai.com/docs/quickstart">OpenAI API Key</a>.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> requests
 <span class="hljs-keyword">import</span> base64
 
@@ -517,12 +519,12 @@ openai_api_key = <span class="hljs-string">&quot;sk-***&quot;</span>  <span clas
 
     <span class="hljs-keyword">return</span> ranked_indices, explanation
 <button class="copy-code-btn"></button></code></pre>
-<p>获取排序后的图像指数以及最佳结果的原因：</p>
+<p>Get the image indices after ranking and the reason for the best result:</p>
 <pre><code translate="no" class="language-python">ranked_indices, explanation = generate_ranking_explanation(
     combined_image_path, query_text
 )
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>3.显示最佳结果并给出解释</strong></p>
+<p><strong>3. Display the best result with explanation</strong></p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">print</span>(explanation)
 
 best_index = ranked_indices[<span class="hljs-number">0</span>]
@@ -533,10 +535,12 @@ best_img.show()
 <pre><code translate="no">Reasons: The most suitable item for the user's query intent is index 6 because the instruction specifies a phone case with the theme of the image, which is a leopard. The phone case with index 6 has a thematic design resembling the leopard pattern, making it the closest match to the user's request for a phone case with the image theme.
 </code></pre>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="/docs/v2.6.x/assets/multimodal_rag_with_milvus_28_1.png" alt="The best result" class="doc-image" id="the-best-result" />
-   </span> <span class="img-wrapper"> <span>最佳结果</span> </span></p>
-<h3 id="Quick-Deploy" class="common-anchor-header">快速部署<button data-href="#Quick-Deploy" class="anchor-icon" translate="no">
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/multimodal_rag_with_milvus_28_1.png" alt="The best result" class="doc-image" id="the-best-result" />
+    <span>The best result</span>
+  </span>
+</p>
+<h3 id="Quick-Deploy" class="common-anchor-header">Quick Deploy<button data-href="#Quick-Deploy" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -551,4 +555,4 @@ best_img.show()
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>要了解如何使用本教程启动在线演示，请参阅<a href="https://github.com/milvus-io/bootcamp/tree/master/tutorials/quickstart/apps/multimodal_rag_with_milvus">示例应用程序</a>。</p>
+    </button></h3><p>To learn about how to start an online demo with this tutorial, please refer to <a href="https://github.com/milvus-io/bootcamp/tree/master/tutorials/quickstart/apps/multimodal_rag_with_milvus">the example application</a>.</p>

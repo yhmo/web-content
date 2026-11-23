@@ -2,11 +2,10 @@
 id: text-highlighter.md
 title: Text HighlighterCompatible with Milvus 2.6.8+
 summary: >-
-  L'evidenziatore di Milvus contrassegna i termini corrispondenti nei campi di
-  testo racchiudendoli in tag personalizzabili. L'evidenziazione aiuta a
-  spiegare il motivo della corrispondenza di un documento, migliora la
-  leggibilità dei risultati e supporta una visualizzazione avanzata nelle
-  applicazioni di ricerca e RAG.
+  The Highlighter in Milvus annotates matched terms in text fields by wrapping
+  them with customizable tags. Highlighting helps explain why a document
+  matches, improves result readability, and supports rich rendering in search
+  and RAG applications.
 beta: Milvus 2.6.8+
 ---
 <h1 id="Text-Highlighter" class="common-anchor-header">Text Highlighter<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.8+</span><button data-href="#Text-Highlighter" class="anchor-icon" translate="no">

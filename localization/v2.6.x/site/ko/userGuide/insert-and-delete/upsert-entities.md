@@ -1,9 +1,11 @@
 ---
 id: upsert-entities.md
-title: 엔티티 삽입
-summary: 업서트 작업은 컬렉션에 엔티티를 삽입하거나 업데이트하는 편리한 방법을 제공합니다.
+title: Upsert Entities
+summary: >-
+  The upsert operation provides a convenient way to insert or update entities in
+  a collection.
 ---
-<h1 id="Upsert-Entities" class="common-anchor-header">엔티티 삽입<button data-href="#Upsert-Entities" class="anchor-icon" translate="no">
+<h1 id="Upsert-Entities" class="common-anchor-header">Upsert Entities<button data-href="#Upsert-Entities" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,8 +20,8 @@ summary: 업서트 작업은 컬렉션에 엔티티를 삽입하거나 업데이
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p><code translate="no">upsert</code> 작업은 컬렉션에 엔티티를 삽입하거나 업데이트하는 편리한 방법을 제공합니다.</p>
-<h2 id="Overview" class="common-anchor-header">개요<button data-href="#Overview" class="anchor-icon" translate="no">
+    </button></h1><p>The <code translate="no">upsert</code> operation provides a convenient way to insert or update entities in a collection.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -34,9 +36,9 @@ summary: 업서트 작업은 컬렉션에 엔티티를 삽입하거나 업데이
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">upsert</code> 을 사용하여 업서트 요청에 제공된 기본 키가 컬렉션에 존재하는지 여부에 따라 새 엔터티를 삽입하거나 기존 엔터티를 업데이트할 수 있습니다. 기본 키를 찾을 수 없는 경우 삽입 작업이 수행됩니다. 그렇지 않으면 업데이트 작업이 수행됩니다.</p>
-<p>Milvus의 업서트는 <strong>오버라이드</strong> 또는 <strong>병합</strong> 모드에서 작동합니다.</p>
-<h3 id="Upsert-in-override-mode" class="common-anchor-header">재정의 모드에서 업서트<button data-href="#Upsert-in-override-mode" class="anchor-icon" translate="no">
+    </button></h2><p>You can use <code translate="no">upsert</code> to either insert a new entity or update an existing one, depending on whether the primary key provided in the upsert request exists in the collection. If the primary key is not found, an insert operation occurs. Otherwise, an update operation will be performed.</p>
+<p>An upsert in Milvus works in either <strong>override</strong> or <strong>merge</strong> mode.</p>
+<h3 id="Upsert-in-override-mode" class="common-anchor-header">Upsert in override mode<button data-href="#Upsert-in-override-mode" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -51,14 +53,16 @@ summary: 업서트 작업은 컬렉션에 엔티티를 삽입하거나 업데이
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>재정의 모드에서 작동하는 업서트 요청은 삽입과 삭제를 결합합니다. 기존 엔티티에 대한 <code translate="no">upsert</code> 요청이 수신되면 Milvus는 요청 페이로드에 포함된 데이터를 삽입하고 동시에 데이터에 지정된 원래 기본 키로 기존 엔티티를 삭제합니다.</p>
+    </button></h3><p>An upsert request that works in override mode combines an insert and a delete. When an <code translate="no">upsert</code> request for an existing entity is received, Milvus inserts the data carried in the request payload and deletes the existing entity with the original primary key specified in the data at the same time.</p>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="/docs/v2.6.x/assets/upsert-in-override-mode.png" alt="Upsert In Override Mode" class="doc-image" id="upsert-in-override-mode" />
-   </span> <span class="img-wrapper"> <span>재정의 모드에서 업서트</span> </span></p>
-<p>대상 컬렉션의 기본 필드에 <code translate="no">autoID</code> 가 활성화된 경우 <code translate="no">upsert</code> 요청에는 여전히 대상 엔티티의 기본 키가 포함되어야 합니다. Milvus는 제공된 기본 키를 사용하여 대체할 엔티티를 찾고, 요청 페이로드에 포함된 데이터에 대한 새 기본 키를 생성한 후 삽입합니다.</p>
-<p><code translate="no">nullable</code> 가 활성화된 필드의 경우 업데이트가 필요하지 않은 경우 <code translate="no">upsert</code> 요청에서 생략할 수 있습니다.</p>
-<h3 id="Upsert-in-merge-mode--Milvus-v262+" class="common-anchor-header">병합 모드에서 업서트<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus v2.6.2+</span><button data-href="#Upsert-in-merge-mode--Milvus-v262+" class="anchor-icon" translate="no">
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/upsert-in-override-mode.png" alt="Upsert In Override Mode" class="doc-image" id="upsert-in-override-mode" />
+    <span>Upsert In Override Mode</span>
+  </span>
+</p>
+<p>If the target collection has <code translate="no">autoID</code> enabled on its primary field, the <code translate="no">upsert</code> request must still include the primary key of the target entity. Milvus uses the provided primary key to locate the entity to replace, and generates a new primary key for the data carried in the request payload before inserting it.</p>
+<p>For fields with <code translate="no">nullable</code> enabled, you can omit them in the <code translate="no">upsert</code> request if they do not require any updates.</p>
+<h3 id="Upsert-in-merge-mode" class="common-anchor-header">Upsert in merge mode<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus v2.6.2+</span><button data-href="#Upsert-in-merge-mode" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -73,15 +77,17 @@ summary: 업서트 작업은 컬렉션에 엔티티를 삽입하거나 업데이
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">partial_update</code> 플래그를 사용하여 병합 모드에서 업서트 요청을 작동시킬 수도 있습니다. 이렇게 하면 요청 페이로드에 업데이트가 필요한 필드만 포함할 수 있습니다.</p>
+    </button></h3><p>You can also use the <code translate="no">partial_update</code> flag to make an upsert request work in merge mode. This allows you to include only the fields that need updating in the request payload.</p>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="/docs/v2.6.x/assets/upsert-in-merge-mode.png" alt="Upsert In Merge Mode" class="doc-image" id="upsert-in-merge-mode" />
-   </span> <span class="img-wrapper"> <span>병합 모드에서 업서트</span> </span></p>
-<p>병합을 수행하려면 기본 키 및 새 값으로 업데이트할 필드와 함께 <code translate="no">upsert</code> 요청에서 <code translate="no">partial_update</code> 을 <code translate="no">True</code> 으로 설정합니다.</p>
-<p>이러한 요청을 받으면 Milvus는 강력한 일관성을 가진 쿼리를 수행하여 엔티티를 검색하고, 요청의 데이터를 기반으로 필드 값을 업데이트하고, 수정된 데이터를 삽입한 다음 요청에 포함된 원래 기본 키로 기존 엔티티를 삭제합니다.</p>
-<p><code translate="no">ARRAY</code> 필드의 경우 병합 모드는 <code translate="no">ARRAY_APPEND</code> 과 <code translate="no">ARRAY_REMOVE</code> 의 두 가지 연산자를 지원합니다. 이러한 연산자를 사용하면 먼저 엔티티를 쿼리하여 현재 값을 검색하지 않고도 기존 <code translate="no">ARRAY</code> 필드에 요소를 추가하거나 일치하는 요소를 제거할 수 있습니다. 자세한 내용은 <a href="/docs/ko/v2.6.x/upsert-entities.md#Upsert-ARRAY-fields-with-partial-update-operators">부분 업데이트 연산자를 사용하여 배열 필드 대체하기를</a> 참조하세요.</p>
-<h3 id="Upsert-behaviors-special-notes" class="common-anchor-header">업서트 동작: 특별 참고 사항<button data-href="#Upsert-behaviors-special-notes" class="anchor-icon" translate="no">
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/upsert-in-merge-mode.png" alt="Upsert In Merge Mode" class="doc-image" id="upsert-in-merge-mode" />
+    <span>Upsert In Merge Mode</span>
+  </span>
+</p>
+<p>To perform a merge, set <code translate="no">partial_update</code> to <code translate="no">True</code> in the <code translate="no">upsert</code> request along with the primary key and the fields to update with their new values.</p>
+<p>Upon receiving such a request, Milvus performs a query with strong consistency to retrieve the entity, updates the field values based on the data in the request, inserts the modified data, and then deletes the existing entity with the original primary key carried in the request.</p>
+<p>For <code translate="no">ARRAY</code> fields, merge mode supports two operators: <code translate="no">ARRAY_APPEND</code> and <code translate="no">ARRAY_REMOVE</code>. These operators let you append elements to or remove matching elements from an existing <code translate="no">ARRAY</code> field without first querying the entity to retrieve its current value. For details, refer to <a href="/docs/ko/v2.6.x/upsert-entities.md#Upsert-ARRAY-fields-with-partial-update-operators">Upsert ARRAY fields with partial-update operators</a>.</p>
+<h3 id="Upsert-behaviors-special-notes" class="common-anchor-header">Upsert behaviors: special notes<button data-href="#Upsert-behaviors-special-notes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -96,30 +102,30 @@ summary: 업서트 작업은 컬렉션에 엔티티를 삽입하거나 업데이
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>병합 기능을 사용하기 전에 고려해야 할 몇 가지 특별한 주의 사항이 있습니다. 다음 사례에서는 <code translate="no">title</code> 및 <code translate="no">issue</code> 이라는 두 개의 스칼라 필드와 기본 키 <code translate="no">id</code> 및 <code translate="no">vector</code> 이라는 벡터 필드가 있는 컬렉션이 있다고 가정합니다.</p>
+    </button></h3><p>There are several special notes you should consider before using the merge feature. The following cases assume that you have a collection with two scalar fields named <code translate="no">title</code> and <code translate="no">issue</code>, along with a primary key <code translate="no">id</code> and a vector field called <code translate="no">vector</code>.</p>
 <ul>
-<li><p><code translate="no">nullable</code> 이 활성화된<strong>필드를 업서트합니다</strong> <strong>.</strong></p>
-<p><code translate="no">issue</code> 필드는 null일 수 있다고 가정합니다. 이러한 필드를 업서트할 때 주의하세요:</p>
+<li><p><strong>Upsert fields with</strong> <code translate="no">nullable</code> <strong>enabled.</strong></p>
+<p>Suppose that the <code translate="no">issue</code> field can be null. When you upsert these fields, note that:</p>
 <ul>
-<li><p><code translate="no">upsert</code> 요청에서 <code translate="no">issue</code> 필드를 생략하고 <code translate="no">partial_update</code> 를 비활성화하면 <code translate="no">issue</code> 필드가 원래 값을 유지하는 대신 <code translate="no">null</code> 로 업데이트됩니다.</p></li>
-<li><p><code translate="no">issue</code> 필드의 원래 값을 유지하려면 <code translate="no">partial_update</code> 을 활성화하고 <code translate="no">issue</code> 필드를 생략하거나 <code translate="no">issue</code> 필드를 원래 값과 함께 <code translate="no">upsert</code> 요청에 포함시켜야 합니다.</p></li>
+<li><p>If you omit the <code translate="no">issue</code> field in the <code translate="no">upsert</code> request and disable <code translate="no">partial_update</code>, the <code translate="no">issue</code> field will be updated to <code translate="no">null</code> instead of retaining its original value.</p></li>
+<li><p>To preserve the original value of the <code translate="no">issue</code> field, you need either to enable <code translate="no">partial_update</code> and omit the <code translate="no">issue</code> field or include the <code translate="no">issue</code> field with its original value in the <code translate="no">upsert</code> request.</p></li>
 </ul></li>
-<li><p><strong>동적 필드에서 키 업서트</strong>.</p>
-<p>예제 컬렉션에서 동적 키를 활성화했고 엔티티의 동적 필드에 있는 키-값 쌍이 <code translate="no">{&quot;author&quot;: &quot;John&quot;, &quot;year&quot;: 2020, &quot;tags&quot;: [&quot;fiction&quot;]}</code> 과 유사하다고 가정해 보겠습니다.</p>
-<p><code translate="no">author</code>, <code translate="no">year</code>, 또는 <code translate="no">tags</code> 와 같은 키로 엔티티를 삽입하거나 다른 키를 추가할 때 주의하세요:</p>
+<li><p><strong>Upsert keys in the dynamic field</strong>.</p>
+<p>Suppose that you have enabled the dynamic key in the example collection, and the key-value pairs in the dynamic field of an entity are similar to <code translate="no">{&quot;author&quot;: &quot;John&quot;, &quot;year&quot;: 2020, &quot;tags&quot;: [&quot;fiction&quot;]}</code>.</p>
+<p>When you upsert the entity with keys, such as <code translate="no">author</code>, <code translate="no">year</code>, or <code translate="no">tags</code>, or add other keys, note that:</p>
 <ul>
-<li><p><code translate="no">partial_update</code> 을 비활성화한 상태로 업서트하는 경우 기본 동작은 <strong>재정의입니다</strong>. 즉, 동적 필드의 값은 요청에 포함된 모든 스키마 정의되지 않은 필드와 그 값에 의해 재정의됩니다.</p>
-<p>예를 들어 요청에 포함된 데이터가 <code translate="no">{&quot;author&quot;: &quot;Jane&quot;, &quot;genre&quot;: &quot;fantasy&quot;}</code> 인 경우 대상 엔티티의 동적 필드에 있는 키-값 쌍이 해당 값으로 업데이트됩니다.</p></li>
-<li><p><code translate="no">partial_update</code> 을 활성화한 상태로 업서트하면 기본 동작은 <strong>병합입니다</strong>. 즉, 동적 필드의 값은 요청에 포함된 모든 스키마 정의되지 않은 필드 및 해당 값과 병합됩니다.</p>
-<p>예를 들어 요청에 포함된 데이터가 <code translate="no">{&quot;author&quot;: &quot;John&quot;, &quot;year&quot;: 2020, &quot;tags&quot;: [&quot;fiction&quot;]}</code> 인 경우 대상 엔티티의 동적 필드에 있는 키-값 쌍은 업서트 후 <code translate="no">{&quot;author&quot;: &quot;John&quot;, &quot;year&quot;: 2020, &quot;tags&quot;: [&quot;fiction&quot;], &quot;genre&quot;: &quot;fantasy&quot;}</code> 이 됩니다.</p></li>
+<li><p>If you upsert with <code translate="no">partial_update</code> disabled, the default behavior is to <strong>override</strong>. It means that the value of the dynamic field will be overridden by all non-schema-defined fields included in the request and their values.</p>
+<p>For example, if the data included in the request is <code translate="no">{&quot;author&quot;: &quot;Jane&quot;, &quot;genre&quot;: &quot;fantasy&quot;}</code>, the key-value pairs in the dynamic field of the target entity will be updated to that.</p></li>
+<li><p>If you upsert with <code translate="no">partial_update</code> enabled, the default behavior is to <strong>merge</strong>. It means that the value of the dynamic field will merge with all non-schema-defined fields included in the request and their values.</p>
+<p>For example, if the data included in the request is <code translate="no">{&quot;author&quot;: &quot;John&quot;, &quot;year&quot;: 2020, &quot;tags&quot;: [&quot;fiction&quot;]}</code>, the key-value pairs in the dynamic field of the target entity will become <code translate="no">{&quot;author&quot;: &quot;John&quot;, &quot;year&quot;: 2020, &quot;tags&quot;: [&quot;fiction&quot;], &quot;genre&quot;: &quot;fantasy&quot;}</code> after the upsert.</p></li>
 </ul></li>
-<li><p><strong>JSON 필드 업서트.</strong></p>
-<p>예제 컬렉션에 <code translate="no">extras</code> 이라는 스키마 정의 JSON 필드가 있고 엔티티의 이 JSON 필드에 있는 키-값 쌍이 <code translate="no">{&quot;author&quot;: &quot;John&quot;, &quot;year&quot;: 2020, &quot;tags&quot;: [&quot;fiction&quot;]}</code> 과 유사하다고 가정해 보겠습니다.</p>
-<p>엔티티의 <code translate="no">extras</code> 필드에 수정된 JSON 데이터를 삽입할 때 JSON 필드는 전체로 취급되며 개별 키를 선택적으로 업데이트할 수 없다는 점에 유의하세요. 즉, JSON 필드는 <strong>병합</strong> 모드에서 업서트 기능을 지원하지 <strong>않습니다</strong>.</p></li>
-<li><p><code translate="no">ARRAY</code> <strong>필드를</strong><strong>업서트합니다</strong> <strong>.</strong></p>
-<p>병합 모드에서 <code translate="no">ARRAY</code> 필드는 <code translate="no">ARRAY_APPEND</code> 및 <code translate="no">ARRAY_REMOVE</code> 부분 업데이트 연산자를 지원합니다. 전체 배열 값을 바꾸지 않고 기존 <code translate="no">ARRAY</code> 필드에 요소를 추가하거나 일치하는 요소를 제거하려는 경우 이러한 연산자를 사용합니다.</p></li>
+<li><p><strong>Upsert a JSON field.</strong></p>
+<p>Suppose that the example collection has a schema-defined JSON field named <code translate="no">extras</code>, and the key-value pairs in this JSON field of an entity are similar to <code translate="no">{&quot;author&quot;: &quot;John&quot;, &quot;year&quot;: 2020, &quot;tags&quot;: [&quot;fiction&quot;]}</code>.</p>
+<p>When you upsert the <code translate="no">extras</code> field of an entity with modified JSON data, note that the JSON field is treated as a whole, and you cannot update individual keys selectively. In other words, the JSON field <strong>DOES NOT</strong> support upsert in <strong>merge</strong> mode.</p></li>
+<li><p><strong>Upsert an</strong> <code translate="no">ARRAY</code> <strong>field.</strong></p>
+<p>In merge mode, <code translate="no">ARRAY</code> fields support the <code translate="no">ARRAY_APPEND</code> and <code translate="no">ARRAY_REMOVE</code> partial-update operators. Use these operators when you want to add elements to, or remove matching elements from, an existing <code translate="no">ARRAY</code> field without replacing the entire array value.</p></li>
 </ul>
-<h3 id="Limits--Restrictions" class="common-anchor-header">제한 및 제한 사항<button data-href="#Limits--Restrictions" class="anchor-icon" translate="no">
+<h3 id="Limits--Restrictions" class="common-anchor-header">Limits & Restrictions<button data-href="#Limits--Restrictions" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -134,15 +140,15 @@ summary: 업서트 작업은 컬렉션에 엔티티를 삽입하거나 업데이
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>위의 내용을 바탕으로 몇 가지 제한 및 제한 사항을 준수해야 합니다:</p>
+    </button></h3><p>Based on the above content, there are several limits and restrictions to follow:</p>
 <ul>
-<li><p><code translate="no">upsert</code> 요청에는 <code translate="no">autoID</code> 이 활성화된 경우에도 항상 대상 엔티티의 기본 키가 포함되어야 합니다. <code translate="no">autoID</code> 컬렉션의 경우, 요청의 기본 키는 대체할 기존 엔티티를 식별합니다. Milvus는 삽입된 대체 엔티티에 대한 새 기본 키를 생성합니다.</p></li>
-<li><p>대상 컬렉션이 로드되어 있고 쿼리에 사용할 수 있어야 합니다.</p></li>
-<li><p>요청에 지정된 모든 필드는 대상 컬렉션의 스키마에 존재해야 합니다.</p></li>
-<li><p>요청에 지정된 모든 필드의 값은 스키마에 정의된 데이터 유형과 일치해야 합니다.</p></li>
-<li><p>함수를 사용하여 다른 필드에서 파생된 필드의 경우, Milvus는 재계산을 허용하기 위해 업서트 중에 파생된 필드를 제거합니다.</p></li>
+<li><p>The <code translate="no">upsert</code> request must always include the primary keys of the target entities, even when <code translate="no">autoID</code> is enabled. For <code translate="no">autoID</code> collections, the primary keys in the request identify the existing entities to replace. Milvus generates new primary keys for the inserted replacement entities.</p></li>
+<li><p>The target collection must be loaded and available for queries.</p></li>
+<li><p>All fields specified in the request must exist in the schema of the target collection.</p></li>
+<li><p>The values of all fields specified in the request must match the data types defined in the schema.</p></li>
+<li><p>For any field derived from another using functions, Milvus will remove the derived field during the upsert to allow recalculation.</p></li>
 </ul>
-<h2 id="Upsert-entities-in-a-collection" class="common-anchor-header">컬렉션의 엔티티 업서트<button data-href="#Upsert-entities-in-a-collection" class="anchor-icon" translate="no">
+<h2 id="Upsert-entities-in-a-collection" class="common-anchor-header">Upsert entities in a collection<button data-href="#Upsert-entities-in-a-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -157,10 +163,15 @@ summary: 업서트 작업은 컬렉션에 엔티티를 삽입하거나 업데이
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>이 섹션에서는 <code translate="no">my_collection</code> 이라는 컬렉션에 엔티티를 삽입하겠습니다. 이 컬렉션에는 <code translate="no">id</code>, <code translate="no">vector</code>, <code translate="no">title</code>, <code translate="no">issue</code> 이라는 두 개의 필드만 있습니다. <code translate="no">id</code> 필드는 기본 필드이고 <code translate="no">title</code> 및 <code translate="no">issue</code> 필드는 스칼라 필드입니다.</p>
-<p>컬렉션에 존재하는 경우 세 개의 엔티티는 업서트 요청에 포함된 엔티티에 의해 재정의됩니다.</p>
+    </button></h2><p>In this section, we will upsert entities into a collection named <code translate="no">my_collection</code>. This collection has only two fields, named <code translate="no">id</code>, <code translate="no">vector</code>, <code translate="no">title</code>, and <code translate="no">issue</code>. The <code translate="no">id</code> field is the primary field, while the <code translate="no">title</code> and <code translate="no">issue</code> fields are scalar fields.</p>
+<p>The three entities, if exists in the collection, will be overridden by those included the upsert request.</p>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client = MilvusClient(
@@ -326,7 +337,7 @@ curl --request POST \
 <span class="hljs-comment">#     }</span>
 <span class="hljs-comment"># }</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Upsert-entities-in-a-partition" class="common-anchor-header">파티션의 엔티티 업서트<button data-href="#Upsert-entities-in-a-partition" class="anchor-icon" translate="no">
+<h2 id="Upsert-entities-in-a-partition" class="common-anchor-header">Upsert entities in a partition<button data-href="#Upsert-entities-in-a-partition" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -341,10 +352,15 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>지정된 파티션에 엔티티를 업서트할 수도 있습니다. 다음 코드 조각은 컬렉션에 <strong>PartitionA라는</strong> 파티션이 있다고 가정합니다.</p>
-<p>파티션에 존재하는 경우 세 개의 엔티티가 요청에 포함된 엔티티로 재정의됩니다.</p>
+    </button></h2><p>You can also upsert entities into a specified partition. The following code snippets assume that you have a partition named <strong>PartitionA</strong> in your collection.</p>
+<p>The three entities, if exists in the partition, will be overridden by those included in the request.</p>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">data=[
     {
         <span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-number">10</span>, 
@@ -474,7 +490,7 @@ curl --request POST \
 <span class="hljs-comment">#     }</span>
 <span class="hljs-comment"># }</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Upsert-entities-in-merge-mode--Milvus-v262+" class="common-anchor-header">병합 모드에서 엔티티 업서트<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus v2.6.2+</span><button data-href="#Upsert-entities-in-merge-mode--Milvus-v262+" class="anchor-icon" translate="no">
+<h2 id="Upsert-entities-in-merge-mode" class="common-anchor-header">Upsert entities in merge mode<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus v2.6.2+</span><button data-href="#Upsert-entities-in-merge-mode" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -489,13 +505,18 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>다음 코드 예제는 부분 업데이트가 있는 엔티티를 업서트하는 방법을 보여줍니다. 업데이트가 필요한 필드와 새 값만 명시적인 부분 업데이트 플래그와 함께 제공하세요.</p>
-<p>다음 예제에서는 업서트 요청에 지정된 엔티티의 <code translate="no">issue</code> 필드가 요청에 포함된 값으로 업데이트됩니다.</p>
+    </button></h2><p>The following code example demonstrates how to upsert entities with partial updates. Provide only the fields needing updates and their new values, along with the explicit partial update flag.</p>
+<p>In the following example, the <code translate="no">issue</code> field of the entities specified in the upsert request will be updated to the values included in the request.</p>
 <div class="alert note">
-<p>병합 모드에서 업서트를 수행할 때는 요청에 포함된 엔티티의 필드 집합이 동일한지 확인하세요. 다음 코드 조각과 같이 업서트할 엔티티가 두 개 이상 있다고 가정할 때 오류를 방지하고 데이터 무결성을 유지하려면 동일한 필드를 포함하는 것이 중요합니다.</p>
+<p>When performing an upsert in merge mode, ensure that the entities involved in the request have the same set of fields. Suppose there are two or more entities to be upserted, as shown in the following code snippet, it is important that they include identical fields to prevent errors and maintain data integrity.</p>
 </div>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#go">Go</a> <a href="#javascript">NodeJS</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">data=[
     {
         <span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-number">1</span>,
@@ -613,7 +634,7 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
 <span class="hljs-comment">#     }</span>
 <span class="hljs-comment"># }</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Upsert-ARRAY-fields-with-partial-update-operators--Milvus-v2617+" class="common-anchor-header">부분 업데이트 연산자로 배열 필드 업서트하기<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus v2.6.17+</span><button data-href="#Upsert-ARRAY-fields-with-partial-update-operators--Milvus-v2617+" class="anchor-icon" translate="no">
+<h2 id="Upsert-ARRAY-fields-with-partial-update-operators" class="common-anchor-header">Upsert ARRAY fields with partial-update operators<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus v2.6.17+</span><button data-href="#Upsert-ARRAY-fields-with-partial-update-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -628,10 +649,15 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>부분 업데이트 연산자가 도입되기 전에는 <code translate="no">ARRAY</code> 필드의 일부를 업데이트하려면 기존 배열을 쿼리하고 애플리케이션 코드에서 변경한 다음 전체 대체 값을 업서트하는 클라이언트 측 읽기-수정-쓰기 흐름이 필요했습니다. 부분 업데이트 연산자를 사용하면 추가하거나 제거할 요소만 전송할 수 있으므로 클라이언트 측 로직이 줄어들고 업서트 전에 추가 읽기를 피할 수 있습니다.</p>
-<p>기본 키 <code translate="no">1</code> 를 가진 엔티티에 <code translate="no">tags = [&quot;new&quot;, &quot;trial&quot;]</code> 이 이미 있다고 가정해 보겠습니다. 부분 업데이트 연산자가 없으면 배열에 <code translate="no">&quot;premium&quot;</code> 을 추가하려면 전체 대체 배열을 업서트해야 합니다:</p>
+    </button></h2><p>Before partial-update operators were introduced, updating part of an <code translate="no">ARRAY</code> field required a client-side read-modify-write flow: query the existing array, change it in application code, and upsert the full replacement value. Partial-update operators let you send only the elements to append or remove, which reduces client-side logic and avoids the extra read before the upsert.</p>
+<p>Suppose the entity with primary key <code translate="no">1</code> already has <code translate="no">tags = [&quot;new&quot;, &quot;trial&quot;]</code>. Without partial-update operators, adding <code translate="no">&quot;premium&quot;</code> to the array requires upserting the full replacement array:</p>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">client.upsert(
     collection_name=<span class="hljs-string">&quot;users&quot;</span>,
 <span class="highlighted-comment-line">    data=[{<span class="hljs-string">&quot;pk&quot;</span>: <span class="hljs-number">1</span>, <span class="hljs-string">&quot;tags&quot;</span>: [<span class="hljs-string">&quot;new&quot;</span>, <span class="hljs-string">&quot;trial&quot;</span>, <span class="hljs-string">&quot;premium&quot;</span>]}],</span>
@@ -654,9 +680,14 @@ client.upsert(UpsertReq.builder()
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">ARRAY_APPEND</code> 를 사용하면 추가할 요소만 전송합니다:</p>
+<p>With <code translate="no">ARRAY_APPEND</code>, send only the element to add:</p>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> FieldOp
 
 client.upsert(
@@ -687,9 +718,9 @@ client.upsert(UpsertReq.builder()
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p><code translate="no">field_ops</code> 을 통해 두 연산자를 필드에 연결하면 암시적으로 부분 업데이트 시맨틱이 활성화됩니다. 따라서 <code translate="no">field_ops</code> 과 함께 <code translate="no">partial_update=True</code> 을 전달할 필요가 <strong>없습니다</strong>.</p>
+<p>Attaching either operator to a field via <code translate="no">field_ops</code> implicitly enables partial-update semantics. Therefore, you do <strong>not</strong> need to pass <code translate="no">partial_update=True</code> alongside <code translate="no">field_ops</code>.</p>
 </div>
-<h3 id="Limits" class="common-anchor-header">제한 사항<button data-href="#Limits" class="anchor-icon" translate="no">
+<h3 id="Limits" class="common-anchor-header">Limits<button data-href="#Limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -705,12 +736,12 @@ client.upsert(UpsertReq.builder()
         ></path>
       </svg>
     </button></h3><ul>
-<li>페이로드 값은 대상 <code translate="no">ARRAY</code> 필드의 <code translate="no">element_type</code> 와 일치해야 합니다. 예를 들어 대상 필드가 <code translate="no">ARRAY&lt;VARCHAR&gt;</code> 인 경우 페이로드에는 문자열 값이 포함되어야 합니다.</li>
-<li><code translate="no">ARRAY_APPEND</code> 및 <code translate="no">ARRAY_REMOVE</code> 은 <code translate="no">element_type</code> 이 <code translate="no">BOOL</code>, <code translate="no">INT8</code>, <code translate="no">INT16</code>, <code translate="no">INT32</code>, <code translate="no">INT64</code>, <code translate="no">FLOAT</code>, <code translate="no">DOUBLE</code> 또는 <code translate="no">VARCHAR</code> 인 <code translate="no">ARRAY</code> 필드를 지원합니다.</li>
-<li><code translate="no">ARRAY_APPEND</code> 작업 후 결과 배열 길이는 필드의 <code translate="no">max_capacity</code> 을 초과하지 않아야 합니다.</li>
-<li>동일한 엔티티에 대한 동시 업서트는 요청 간에 원자적이지 않습니다. 두 요청이 동시에 동일한 <code translate="no">ARRAY</code> 필드를 업데이트하는 경우 나중에 쓰면 이전 요청을 덮어쓸 수 있습니다. 모든 동시 변경 사항을 보존해야 하는 경우 애플리케이션 수준 조정을 사용하세요.</li>
+<li>The payload values must match the <code translate="no">element_type</code> of the target <code translate="no">ARRAY</code> field. For example, if the target field is <code translate="no">ARRAY&lt;VARCHAR&gt;</code>, the payload must contain string values.</li>
+<li><code translate="no">ARRAY_APPEND</code> and <code translate="no">ARRAY_REMOVE</code> support <code translate="no">ARRAY</code> fields whose <code translate="no">element_type</code> is <code translate="no">BOOL</code>, <code translate="no">INT8</code>, <code translate="no">INT16</code>, <code translate="no">INT32</code>, <code translate="no">INT64</code>, <code translate="no">FLOAT</code>, <code translate="no">DOUBLE</code>, or <code translate="no">VARCHAR</code>.</li>
+<li>After an <code translate="no">ARRAY_APPEND</code> operation, the resulting array length must not exceed the field’s <code translate="no">max_capacity</code>.</li>
+<li>Concurrent upserts to the same entity are not atomic across requests. If two requests update the same <code translate="no">ARRAY</code> field at the same time, the later write can overwrite the earlier one. Use application-level coordination if you need to preserve all concurrent changes.</li>
 </ul>
-<h3 id="Example" class="common-anchor-header">예제<button data-href="#Example" class="anchor-icon" translate="no">
+<h3 id="Example" class="common-anchor-header">Example<button data-href="#Example" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -725,9 +756,14 @@ client.upsert(UpsertReq.builder()
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>다음 예제에서는 기본 키 <code translate="no">pk</code>, 유형이 <code translate="no">ARRAY&lt;VARCHAR&gt;</code> 인 <code translate="no">tags</code> 필드 및 <code translate="no">embedding</code> 벡터 필드가 있는 작은 <code translate="no">users</code> 컬렉션을 사용합니다. 먼저 초기 값이 <code translate="no">tags</code> 인 두 개의 엔티티를 삽입한 다음 <code translate="no">ARRAY_APPEND</code> 및 <code translate="no">ARRAY_REMOVE</code> 을 사용하여 각 연산자가 저장된 배열을 변경하는 방법을 보여줍니다.</p>
+    </button></h3><p>The following example uses a small <code translate="no">users</code> collection with a primary key <code translate="no">pk</code>, a <code translate="no">tags</code> field of type <code translate="no">ARRAY&lt;VARCHAR&gt;</code>, and an <code translate="no">embedding</code> vector field. It first inserts two entities with initial <code translate="no">tags</code> values, then uses <code translate="no">ARRAY_APPEND</code> and <code translate="no">ARRAY_REMOVE</code> to show how each operator changes the stored array.</p>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> DataType, FieldOp, MilvusClient
 
 client = MilvusClient(

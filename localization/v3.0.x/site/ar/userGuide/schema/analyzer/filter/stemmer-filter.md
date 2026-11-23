@@ -2,10 +2,10 @@
 id: stemmer-filter.md
 title: Stemmer
 summary: >-
-  يعمل مرشح استخلاص الجذور على اختزال الكلمات إلى صيغتها الأساسية أو الجذرية (ما
-  يُعرف باسم «استخلاص الجذور»)، مما يسهل مطابقة الكلمات ذات المعاني المتشابهة
-  عبر مختلف صيغ التصريف. ويدعم مرشح استخلاص الجذور لغات متعددة، مما يتيح إجراء
-  عمليات بحث وفهرسة فعالة في سياقات لغوية متنوعة.
+  The stemmer filter reduces words to their base or root form (known as
+  stemming), making it easier to match words with similar meanings across
+  different inflections. The stemmer filter supports multiple languages,
+  allowing for effective search and indexing in various linguistic contexts.
 ---
 <h1 id="Stemmer" class="common-anchor-header">Stemmer<button data-href="#Stemmer" class="anchor-icon" translate="no">
       <svg translate="no"
@@ -22,8 +22,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>يعمل مرشح " <code translate="no">stemmer</code> " على اختزال الكلمات إلى صيغتها الأساسية أو الجذرية (المعروفة باسم "الاستخلاص")، مما يسهل مطابقة الكلمات ذات المعاني المتشابهة عبر مختلف صيغ التصريف. يدعم مرشح " <code translate="no">stemmer</code> " لغات متعددة، مما يتيح إجراء عمليات بحث وفهرسة فعالة في سياقات لغوية متنوعة.</p>
-<h2 id="Configuration" class="common-anchor-header">التكوين<button data-href="#Configuration" class="anchor-icon" translate="no">
+    </button></h1><p>The <code translate="no">stemmer</code> filter reduces words to their base or root form (known as stemming), making it easier to match words with similar meanings across different inflections. The <code translate="no">stemmer</code> filter supports multiple languages, allowing for effective search and indexing in various linguistic contexts.</p>
+<h2 id="Configuration" class="common-anchor-header">Configuration<button data-href="#Configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -38,16 +38,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يُعد مرشح « <code translate="no">stemmer</code> » مرشحًا مخصصًا في Milvus. لاستخدامه، حدد « <code translate="no">&quot;type&quot;: &quot;stemmer&quot;</code> » في تكوين المرشح، إلى جانب المعلمة « <code translate="no">language</code> » لتحديد اللغة المطلوبة لعملية «الاستخلاص».</p>
+    </button></h2><p>The <code translate="no">stemmer</code> filter is a custom filter in Milvus. To use it, specify <code translate="no">&quot;type&quot;: &quot;stemmer&quot;</code> in the filter configuration, along with a <code translate="no">language</code> parameter to select the desired language for stemming.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>,
@@ -125,19 +125,19 @@ analyzerParams=<span class="hljs-string">&#x27;{
   ]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>يقبل مرشح « <code translate="no">stemmer</code> » المعلمات القابلة للتكوين التالية.</p>
+<p>The <code translate="no">stemmer</code> filter accepts the following configurable parameters.</p>
 <table>
 <thead>
-<tr><th>المعلمة</th><th>الوصف</th></tr>
+<tr><th>Parameter</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">language</code></td><td>يحدد اللغة لعملية استخلاص الجذور. تشمل اللغات المدعومة: <code translate="no">&quot;arabic&quot;</code> ، <code translate="no">&quot;danish&quot;</code> ، <code translate="no">&quot;dutch&quot;</code> ، <code translate="no">&quot;english&quot;</code> ، <code translate="no">&quot;finnish&quot;</code> ، <code translate="no">&quot;french&quot;</code> ، <code translate="no">&quot;german&quot;</code> ، <code translate="no">&quot;greek&quot;</code> ، <code translate="no">&quot;hungarian&quot;</code> ، <code translate="no">&quot;italian&quot;</code> ، <code translate="no">&quot;norwegian&quot;</code> ، <code translate="no">&quot;portuguese&quot;</code> ، <code translate="no">&quot;romanian&quot;</code> ، <code translate="no">&quot;russian&quot;</code> ، <code translate="no">&quot;spanish&quot;</code> ، <code translate="no">&quot;swedish&quot;</code> ، <code translate="no">&quot;tamil&quot;</code> ، <code translate="no">&quot;turkish&quot;</code></td></tr>
+<tr><td><code translate="no">language</code></td><td>Specifies the language for the stemming process. Supported languages include: <code translate="no">&quot;arabic&quot;</code>, <code translate="no">&quot;danish&quot;</code>, <code translate="no">&quot;dutch&quot;</code>, <code translate="no">&quot;english&quot;</code>, <code translate="no">&quot;finnish&quot;</code>, <code translate="no">&quot;french&quot;</code>, <code translate="no">&quot;german&quot;</code>, <code translate="no">&quot;greek&quot;</code>, <code translate="no">&quot;hungarian&quot;</code>, <code translate="no">&quot;italian&quot;</code>, <code translate="no">&quot;norwegian&quot;</code>, <code translate="no">&quot;portuguese&quot;</code>, <code translate="no">&quot;romanian&quot;</code>, <code translate="no">&quot;russian&quot;</code>, <code translate="no">&quot;spanish&quot;</code>, <code translate="no">&quot;swedish&quot;</code>, <code translate="no">&quot;tamil&quot;</code>, <code translate="no">&quot;turkish&quot;</code></td></tr>
 </tbody>
 </table>
-<p>يعمل مرشح " <code translate="no">stemmer</code> " على المصطلحات التي يولدها أداة التقطيع (tokenizer)، لذا يجب استخدامه بالاقتران مع أداة التقطيع.</p>
-<p>بالنسبة للنص العربي، استخدم المحلل المدمج <a href="/docs/ar/arabic-analyzer.md"><code translate="no">arabic</code></a> في معظم الحالات. يتضمن المحلل المدمج عملية استخلاص الجذور العربية إلى جانب تطبيع النص العربي، وتطبيع الأرقام العشرية، وإزالة الكلمات الممنوعة العربية. استخدم مرشح <code translate="no">stemmer</code> مباشرةً فقط عندما تحتاج إلى إنشاء مسار محلل مخصص.</p>
-<p>بعد تعريف <code translate="no">analyzer_params</code> ، يمكنك تطبيقها على حقل <code translate="no">VARCHAR</code> عند تعريف مخطط المجموعة. وهذا يسمح لـ Milvus بمعالجة النص في هذا الحقل باستخدام أداة التحليل المحددة من أجل التقطيع والتصفية بكفاءة. لمزيد من التفاصيل، راجع <a href="/docs/ar/analyzer-overview.md#Example-use">مثال الاستخدام</a>.</p>
-<h2 id="Examples" class="common-anchor-header">أمثلة<button data-href="#Examples" class="anchor-icon" translate="no">
+<p>The <code translate="no">stemmer</code> filter operates on the terms generated by the tokenizer, so it must be used in combination with a tokenizer.</p>
+<p>For Arabic text, use the built-in <a href="/docs/ar/arabic-analyzer.md"><code translate="no">arabic</code></a> analyzer in most cases. The built-in analyzer includes Arabic stemming together with Arabic normalization, decimal digit normalization, and Arabic stop-word removal. Use the <code translate="no">stemmer</code> filter directly only when you need to build a custom analyzer pipeline.</p>
+<p>After defining <code translate="no">analyzer_params</code>, you can apply them to a <code translate="no">VARCHAR</code> field when defining a collection schema. This allows Milvus to process the text in that field using the specified analyzer for efficient tokenization and filtering. For details, refer to <a href="/docs/ar/analyzer-overview.md#Example-use">Example use</a>.</p>
+<h2 id="Examples" class="common-anchor-header">Examples<button data-href="#Examples" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -152,8 +152,8 @@ analyzerParams=<span class="hljs-string">&#x27;{
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>قبل تطبيق تكوين المحلل على مخطط المجموعة الخاص بك، تحقق من سلوكه باستخدام طريقة <code translate="no">run_analyzer</code>.</p>
-<h3 id="Analyzer-configuration" class="common-anchor-header">تكوين المحلل<button data-href="#Analyzer-configuration" class="anchor-icon" translate="no">
+    </button></h2><p>Before applying the analyzer configuration to your collection schema, verify its behavior using the <code translate="no">run_analyzer</code> method.</p>
+<h3 id="Analyzer-configuration" class="common-anchor-header">Analyzer configuration<button data-href="#Analyzer-configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -169,14 +169,14 @@ analyzerParams=<span class="hljs-string">&#x27;{
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>,
@@ -254,7 +254,7 @@ analyzerParams=<span class="hljs-string">&#x27;{
   ]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Verification-using-runanalyzer" class="common-anchor-header">التحقق باستخدام <code translate="no">run_analyzer</code><button data-href="#Verification-using-runanalyzer" class="anchor-icon" translate="no">
+<h3 id="Verification-using-runanalyzer" class="common-anchor-header">Verification using <code translate="no">run_analyzer</code><button data-href="#Verification-using-runanalyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -270,14 +270,14 @@ analyzerParams=<span class="hljs-string">&#x27;{
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> (
     MilvusClient,
@@ -444,7 +444,7 @@ curl --request POST \
     &quot;analyzerParams&quot;: &quot;{\&quot;tokenizer\&quot;: \&quot;standard\&quot;, \&quot;filter\&quot;: [{\&quot;type\&quot;: \&quot;stemmer\&quot;, \&quot;language\&quot;: \&quot;english\&quot;}]}&quot;
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Expected-output" class="common-anchor-header">الناتج المتوقع<button data-href="#Expected-output" class="anchor-icon" translate="no">
+<h3 id="Expected-output" class="common-anchor-header">Expected output<button data-href="#Expected-output" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"

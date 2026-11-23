@@ -1,10 +1,10 @@
 ---
 id: snapshot-use-cases.md
-title: スナップショットの活用例Compatible with Milvus 3.0.x
-summary: このガイドでは、スナップショットの一般的な活用例をご紹介します。
+title: Snapshot Use CasesCompatible with Milvus 3.0.x
+summary: 'In this guide, you will find common use cases for snapshots.'
 beta: Milvus 3.0.x
 ---
-<h1 id="Snapshot-Use-Cases" class="common-anchor-header">スナップショットの活用例<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Snapshot-Use-Cases" class="anchor-icon" translate="no">
+<h1 id="Snapshot-Use-Cases" class="common-anchor-header">Snapshot Use Cases<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Snapshot-Use-Cases" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -19,8 +19,8 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>このガイドでは、スナップショットの一般的な利用例について解説します。</p>
-<h2 id="Data-backup-and-restoration" class="common-anchor-header">データのバックアップと復元<button data-href="#Data-backup-and-restoration" class="anchor-icon" translate="no">
+    </button></h1><p>In this guide, you will find common use cases for snapshots.</p>
+<h2 id="Data-backup-and-restoration" class="common-anchor-header">Data backup and restoration<button data-href="#Data-backup-and-restoration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -35,38 +35,38 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>スナップショットは、データの特定の時点の状態を素早く取得したイメージであり、迅速なロールバックやテスト（数日から数週間）に適しています。一方、バックアップは独立した完全なコピーであり、長期的な災害復旧（数週間から数年）や、ストレージ全体の障害に対するより確実な保護を目的として、別途保存されます。</p>
-<p>以下の表は、スナップショットとバックアップを比較したものです。</p>
+    </button></h2><p>Snapshots are quick, point-in-time images of data, suitable for fast rollbacks or testing (days to weeks). At the same time, backups are independent, complete copies stored separately for long-term disaster recovery (weeks to years) and for better protection against total storage failure.</p>
+<p>The following table compares snapshots and backups.</p>
 <table>
    <tr>
      <th></th>
-     <th><p>バックアップ</p></th>
-     <th><p>スナップショット</p></th>
+     <th><p>Backup</p></th>
+     <th><p>Snapshot</p></th>
    </tr>
    <tr>
-     <td><p>バックアップの作成</p></td>
-     <td><p>すべてのデータファイルをコピーする（時間がかかる）</p></td>
-     <td><p>メタデータのみを作成（数ミリ秒）</p></td>
+     <td><p>Backup creation</p></td>
+     <td><p>Copies all data files (time-consuming)</p></td>
+     <td><p>Creates metadata only (in milliseconds)</p></td>
    </tr>
    <tr>
-     <td><p>復元</p></td>
-     <td><p>データをインポートし、インデックスを再構築します</p></td>
-     <td><p>既存のデータファイルとインデックスファイルのみをコピーします</p></td>
+     <td><p>Restoration</p></td>
+     <td><p>Imports data and rebuilds indexes</p></td>
+     <td><p>Copies existing data and index files only</p></td>
    </tr>
    <tr>
-     <td><p>パフォーマンス</p></td>
-     <td><p>処理が遅く、リソースを大量に消費する</p></td>
-     <td><p>高速で軽量（数秒～数分）</p></td>
+     <td><p>Performance</p></td>
+     <td><p>Slow and resource-intensive</p></td>
+     <td><p>Fast and lightweight (in seconds to minutes)</p></td>
    </tr>
    <tr>
-     <td><p>システムへの影響</p></td>
-     <td><p>I/OおよびCPU使用率が高い</p></td>
-     <td><p>影響は最小限</p></td>
+     <td><p>System impact</p></td>
+     <td><p>High I/O and CPU usage</p></td>
+     <td><p>Minimal impact</p></td>
    </tr>
 </table>
-<p>スナップショットの作成には通常ミリ秒単位の時間がかかり、復元にはデータ量に応じて数秒から数分かかります。</p>
-<p>スナップショットの制限、制約、およびシステムへの影響の詳細については、「<a href="/docs/ja/snapshots.md">スナップショット</a>」を参照してください。</p>
-<h2 id="Data-processing-with-external-collections" class="common-anchor-header">外部コレクションを使用したデータ処理<button data-href="#Data-processing-with-external-collections" class="anchor-icon" translate="no">
+<p>Creating a snapshot usually takes milliseconds, and restoring it takes seconds to minutes, depending on the data volume.</p>
+<p>For more details on snapshot limits, restrictions, and their system impacts, refer to <a href="/docs/ja/snapshots.md">Snapshots</a>.</p>
+<h2 id="Data-processing-with-external-collections" class="common-anchor-header">Data processing with external collections<button data-href="#Data-processing-with-external-collections" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -81,9 +81,9 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>スナップショットは、分析や検証ワークロード向けに、特定の時点における安定したデータソースを提供できます。Milvusのスナップショットについては、スナップショットファイルを汎用的なSpark入力として直接読み込むのではなく、<code translate="no">milvus-table</code> という外部コレクション形式を使用してください。 Milvusスナップショットには、コレクションのメタデータ、セグメントマニフェスト、削除ログ、および主キーの統計情報が格納されているため、Milvusでは正しいスキーマと削除のセマンティクスを維持するために、スナップショットのメタデータJSONと<code translate="no">milvus-table</code> リーダーが必要です。</p>
-<p>このワークフローは、スナップショットデータに対してクエリ可能な外部コレクションを作成します。メインカラムのデータは引き続きスナップショットソースから参照され、リフレッシュ処理によってソースの StorageV3 マニフェストがターゲットの外部セグメントにマッピングされます。</p>
-<h3 id="Step-1-Get-the-snapshot-metadata-path" class="common-anchor-header">ステップ 1: スナップショットのメタデータパスを取得する<button data-href="#Step-1-Get-the-snapshot-metadata-path" class="anchor-icon" translate="no">
+    </button></h2><p>Snapshots can provide stable, point-in-time sources for analytical or validation workloads. For Milvus snapshots, use the <code translate="no">milvus-table</code> external collection format instead of reading snapshot files directly as generic Spark input. A Milvus snapshot stores collection metadata, segment manifests, delete logs, and primary-key statistics, so Milvus needs the snapshot metadata JSON and the <code translate="no">milvus-table</code> reader to preserve the correct schema and delete semantics.</p>
+<p>This workflow creates a queryable external collection over the snapshot data. The main column data remains referenced from the snapshot source, and refresh maps the source StorageV3 manifests into target external segments.</p>
+<h3 id="Step-1-Get-the-snapshot-metadata-path" class="common-anchor-header">Step 1: Get the snapshot metadata path<button data-href="#Step-1-Get-the-snapshot-metadata-path" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -98,7 +98,7 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>通常の Milvus コレクションからスナップショットを作成するか選択し、そのスナップショットを記述してオブジェクトストレージ上の場所を取得します。</p>
+    </button></h3><p>Create or choose a snapshot from a normal Milvus collection, and then describe it to get its object-storage location.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> DataType, MilvusClient
 
 client = MilvusClient(
@@ -114,7 +114,7 @@ snapshot_info = client.describe_snapshot(
 
 external_source = <span class="hljs-string">f&quot;s3://bucket/<span class="hljs-subst">{snapshot_info.s3_location}</span>&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Step-2-Create-and-refresh-a-milvus-table-external-collection" class="common-anchor-header">ステップ 2: `<code translate="no">milvus-table</code> ` 外部コレクションの作成とリフレッシュ<button data-href="#Step-2-Create-and-refresh-a-milvus-table-external-collection" class="anchor-icon" translate="no">
+<h3 id="Step-2-Create-and-refresh-a-milvus-table-external-collection" class="common-anchor-header">Step 2: Create and refresh a <code translate="no">milvus-table</code> external collection<button data-href="#Step-2-Create-and-refresh-a-milvus-table-external-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -129,7 +129,7 @@ external_source = <span class="hljs-string">f&quot;s3://bucket/<span class="hljs
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>スナップショットソースコレクションとスキーマが一致する外部コレクションを作成します。「<code translate="no">external_spec.format</code> 」を「<code translate="no">&quot;milvus-table&quot;</code> 」に設定し、各ターゲットデータフィールドの「<code translate="no">external_field</code> 」を対応するソースフィールド名に設定します。</p>
+    </button></h3><p>Create an external collection whose schema matches the snapshot source collection. Set <code translate="no">external_spec.format</code> to <code translate="no">&quot;milvus-table&quot;</code>, and set each target data field’s <code translate="no">external_field</code> to the corresponding source field name.</p>
 <pre><code translate="no" class="language-python">schema = client.create_schema(
     external_source=external_source,
     external_spec=<span class="hljs-string">&quot;&quot;&quot;{
@@ -165,4 +165,4 @@ job_id = client.refresh_external_collection(
     collection_name=<span class="hljs-string">&quot;snapshot_external_collection&quot;</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>更新が完了したら、インデックスを作成し、外部コレクションにデータをロードして、スナップショットをバックエンドとするビューに対して検索やクエリ操作を実行できます。</p>
+<p>After refresh completes, you can create indexes, load the external collection, and run search or query operations against the snapshot-backed view.</p>

@@ -1,11 +1,11 @@
 ---
 id: manage-file-resources.md
-title: Verwalten von Dateiressourcen
+title: Manage File Resources
 summary: >-
-  Registrieren und verwalten Sie externe Wörterbuchdateien, die
-  Milvus-Textanalysatoren zur Laufzeit laden können.
+  Register and manage external dictionary files that Milvus text analyzers can
+  load at runtime.
 ---
-<h1 id="Manage-File-Resources" class="common-anchor-header">Verwalten von Dateiressourcen<button data-href="#Manage-File-Resources" class="anchor-icon" translate="no">
+<h1 id="Manage-File-Resources" class="common-anchor-header">Manage File Resources<button data-href="#Manage-File-Resources" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,35 +20,35 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Eine <strong>Dateiressource</strong> ist ein vom Server registrierter Verweis auf eine externe Wörterbuchdatei, die von Textanalysatoren zur Laufzeit verwendet wird. In Milvus 3.0 können vier Analyzer-Komponenten ihre Wörterbücher aus einer Dateiressource laden, anstatt aus einem Inline-Array:</p>
+    </button></h1><p>A <strong>file resource</strong> is a server-registered reference to an external dictionary file that text analyzers consume at runtime. In Milvus 3.0, four analyzer components can load their dictionaries from a file resource instead of from an inline array:</p>
 <table>
    <tr>
-     <th><p><strong>Analyzer-Komponente</strong></p></th>
-     <th><p><strong>Parameter, der eine Dateiressource akzeptiert</strong></p></th>
+     <th><p><strong>Analyzer component</strong></p></th>
+     <th><p><strong>Parameter that accepts a file resource</strong></p></th>
    </tr>
    <tr>
-     <td><p><a href="/docs/de/jieba-tokenizer.md">Jieba Tokenisierer</a></p></td>
+     <td><p><a href="/docs/de/jieba-tokenizer.md">Jieba tokenizer</a></p></td>
      <td><p><code translate="no">extra_dict_file</code></p></td>
    </tr>
    <tr>
-     <td><p><a href="/docs/de/stop-filter.md">Stop-Filter</a></p></td>
+     <td><p><a href="/docs/de/stop-filter.md">Stop filter</a></p></td>
      <td><p><code translate="no">stop_words_file</code></p></td>
    </tr>
    <tr>
-     <td><p><a href="/docs/de/decompounder-filter.md">Decompounder-Filter</a></p></td>
+     <td><p><a href="/docs/de/decompounder-filter.md">Decompounder filter</a></p></td>
      <td><p><code translate="no">word_list_file</code></p></td>
    </tr>
    <tr>
-     <td><p><a href="/docs/de/synonym-filter.md">Synonym-Filter</a></p></td>
+     <td><p><a href="/docs/de/synonym-filter.md">Synonym filter</a></p></td>
      <td><p><code translate="no">synonyms_file</code></p></td>
    </tr>
 </table>
-<p>Dateiressourcen lösen zwei praktische Probleme mit Inline-Wörterbuch-Arrays:</p>
+<p>File resources solve two practical problems with inline dictionary arrays:</p>
 <ul>
-<li><p>Echte Wörterbücher sind groß. Ein chinesisches Jieba-Vokabular kann Zehntausende von Zeilen umfassen; Synonymtabellen bestehen normalerweise aus Tausenden von Regeln. Sie in die Konfiguration des Analysators einzubinden ist unpraktisch.</p></li>
-<li><p>Ein und dasselbe Wörterbuch wird normalerweise in mehreren Sammlungen verwendet. Durch die einmalige Registrierung und die anschließende Referenzierung über den Namen werden die Schemata klein gehalten und die Aktualisierung des Wörterbuchs wird zu einem einzigen Vorgang.</p></li>
+<li><p>Real dictionaries are large. A Chinese Jieba vocabulary can be tens of thousands of lines; synonym tables are typically thousands of rules. Inlining them into analyzer configuration is impractical.</p></li>
+<li><p>The same dictionary is usually shared across collections. Registering it once, then referencing it by name, keeps schemas small and makes dictionary updates a single operation.</p></li>
 </ul>
-<h2 id="File-resource-types" class="common-anchor-header">Datei-Ressourcen-Typen<button data-href="#File-resource-types" class="anchor-icon" translate="no">
+<h2 id="File-resource-types" class="common-anchor-header">File resource types<button data-href="#File-resource-types" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -63,29 +63,29 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus unterstützt zwei Arten von Dateiressourcen mit unterschiedlichen Verwaltungsaufgaben:</p>
+    </button></h2><p>Milvus supports two file resource types with different management responsibilities:</p>
 <table>
    <tr>
-     <th><p><strong>Typ</strong></p></th>
-     <th><p><strong>Wo sich die Datei befindet</strong></p></th>
-     <th><p><strong>Wer verwaltet die Datei</strong></p></th>
-     <th><p><strong>Anpassen</strong></p></th>
+     <th><p><strong>Type</strong></p></th>
+     <th><p><strong>Where the file lives</strong></p></th>
+     <th><p><strong>Who manages the file</strong></p></th>
+     <th><p><strong>Fit</strong></p></th>
    </tr>
    <tr>
-     <td><p><strong>Entfernt</strong></p></td>
-     <td><p>In dem Objektspeicher (MinIO / S3 / GCS / Azure), für den Ihr Milvus-Cluster bereits konfiguriert ist</p></td>
-     <td><p>Milvus, über die Client-APIs <code translate="no">add_file_resource</code> / <code translate="no">remove_file_resource</code> / <code translate="no">list_file_resources</code> </p></td>
-     <td><p>Empfohlen für die meisten Einsätze.</p></td>
+     <td><p><strong>Remote</strong></p></td>
+     <td><p>In the object store (MinIO / S3 / GCS / Azure) that your Milvus cluster is already configured to use</p></td>
+     <td><p>Milvus, via the <code translate="no">add_file_resource</code> / <code translate="no">remove_file_resource</code> / <code translate="no">list_file_resources</code> client APIs</p></td>
+     <td><p>Recommended for most deployments.</p></td>
    </tr>
    <tr>
-     <td><p><strong>Lokal</strong></p></td>
-     <td><p>Unter demselben absoluten Pfad auf dem lokalen Dateisystem jeder Milvus-Komponente (DataNode, QueryNode, StreamingNode)</p></td>
-     <td><p>Sie - mounten Sie die Datei selbst, zum Beispiel über ein Kubernetes-Volume</p></td>
-     <td><p>Open-Source / selbst gehostete Szenarien, in denen Sie es vorziehen, Wörterbuchdateien außerhalb von Milvus zu verwalten.</p></td>
+     <td><p><strong>Local</strong></p></td>
+     <td><p>At the same absolute path on the local filesystem of every Milvus component (DataNode, QueryNode, StreamingNode)</p></td>
+     <td><p>You — mount the file yourself, for example via a Kubernetes volume</p></td>
+     <td><p>Open-source / self-hosted scenarios where you prefer to manage dictionary files outside Milvus.</p></td>
    </tr>
 </table>
-<p>Der Rest dieser Seite geht auf beide Arten ein, beginnend mit dem häufigeren Remote-Typ.</p>
-<h2 id="Prerequisites" class="common-anchor-header">Voraussetzungen<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+<p>The rest of this page walks through both types, starting with the more common remote type.</p>
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -101,10 +101,10 @@ summary: >-
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>Für <strong>Remote-Dateiressourcen</strong> muss Ihr Milvus-Einsatz mit einem Objektspeicher konfiguriert sein. Die meisten Einsätze sind bereits so konfiguriert - überprüfen Sie den Abschnitt <code translate="no">minio:</code> Ihres <code translate="no">milvus.yaml</code> (oder die entsprechenden Helm-Diagrammwerte). Beachten Sie die Werte <code translate="no">bucketName</code> und <code translate="no">rootPath</code>; Sie benötigen sie bei der Registrierung von Dateiressourcen.</p></li>
-<li><p>Bei <strong>lokalen</strong> Dateiressourcen müssen Sie in der Lage sein, Dateien auf jedem Milvus-Pod/Container unter demselben absoluten Pfad abzulegen. Wie Sie dies tun, hängt von Ihrem Einsatz ab (Bind-Mount, ConfigMap-gestütztes Volume, Init-Container usw.).</p></li>
+<li><p>For <strong>Remote</strong> file resources, your Milvus deployment must be configured with an object store. Most deployments already are — check the <code translate="no">minio:</code> section of your <code translate="no">milvus.yaml</code> (or the equivalent Helm chart values). Note the <code translate="no">bucketName</code> and <code translate="no">rootPath</code> values; you will need them when registering file resources.</p></li>
+<li><p>For <strong>Local</strong> file resources, you must be able to place files on every Milvus pod / container at the same absolute path. How you do that depends on your deployment (bind mount, ConfigMap-backed volume, init container, etc.).</p></li>
 </ul>
-<h2 id="Register-a-remote-file-resource" class="common-anchor-header">Registrieren einer entfernten Dateiressource<button data-href="#Register-a-remote-file-resource" class="anchor-icon" translate="no">
+<h2 id="Register-a-remote-file-resource" class="common-anchor-header">Register a remote file resource<button data-href="#Register-a-remote-file-resource" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -119,8 +119,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Die Registrierung einer entfernten Dateiressource ist ein dreistufiger Arbeitsablauf: <strong>Hochladen</strong> der Datei in den Objektspeicher, <strong>Registrierung</strong> bei Milvus unter einem gewählten Namen, dann <strong>Verweis</strong> auf die Datei von jedem Analysator, der sie benötigt.</p>
-<h3 id="Step-1-Upload-the-dictionary-file-to-object-storage" class="common-anchor-header">Schritt 1. Hochladen der Wörterbuchdatei in den Objektspeicher<button data-href="#Step-1-Upload-the-dictionary-file-to-object-storage" class="anchor-icon" translate="no">
+    </button></h2><p>Registering a remote file resource is a three-step workflow: <strong>upload</strong> the file to object storage, <strong>register</strong> it with Milvus under a chosen name, then <strong>reference</strong> it from any analyzer that needs it.</p>
+<h3 id="Step-1-Upload-the-dictionary-file-to-object-storage" class="common-anchor-header">Step 1. Upload the dictionary file to object storage<button data-href="#Step-1-Upload-the-dictionary-file-to-object-storage" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -135,15 +135,15 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Verwenden Sie Ihr eigenes Tool (<code translate="no">mc</code>, <code translate="no">aws s3 cp</code>, <code translate="no">boto3</code>, oder einen beliebigen S3-kompatiblen Client), um die Datei in den Bucket zu legen, für den Milvus konfiguriert ist.</p>
-<p>Zum Beispiel, wenn <code translate="no">milvus.yaml</code> enthält:</p>
+    </button></h3><p>Use your own tooling (<code translate="no">mc</code>, <code translate="no">aws s3 cp</code>, <code translate="no">boto3</code>, or any S3-compatible client) to put the file in the bucket that Milvus is configured to use.</p>
+<p>For example, if <code translate="no">milvus.yaml</code> contains:</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">minio:</span>
   <span class="hljs-attr">bucketName:</span> <span class="hljs-string">milvus-bucket</span>
   <span class="hljs-attr">rootPath:</span> <span class="hljs-string">file</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Das Hochladen einer Datei mit dem Namen <code translate="no">chinese_terms.txt</code> und dem Präfix <code translate="no">rootPath</code> legt das Objekt unter <code translate="no">s3://milvus-bucket/file/chinese_terms.txt</code> ab.</p>
-<p>Das Argument <code translate="no">path</code>, das Sie in Schritt 2 an <code translate="no">add_file_resource</code> übergeben, ist der <strong>vollständige Objektschlüssel, einschließlich des Präfixes rootPath</strong> - im obigen Beispiel also <code translate="no">path=&quot;file/chinese_terms.txt&quot;</code>. Ein Pfad ohne das Präfix (z. B. nur <code translate="no">&quot;chinese_terms.txt&quot;</code>) wird mit dem Fehler <code translate="no">file resource path not exist</code> zurückgewiesen.</p>
-<h3 id="Step-2-Register-the-file-with-addfileresource" class="common-anchor-header">Schritt 2. Registrieren Sie die Datei mit <code translate="no">add_file_resource</code><button data-href="#Step-2-Register-the-file-with-addfileresource" class="anchor-icon" translate="no">
+<p>Uploading a file named <code translate="no">chinese_terms.txt</code> with <code translate="no">rootPath</code> as the prefix places the object at <code translate="no">s3://milvus-bucket/file/chinese_terms.txt</code>.</p>
+<p>The <code translate="no">path</code> argument you will pass to <code translate="no">add_file_resource</code> in Step 2 is the <strong>full object key, including the rootPath prefix</strong> — for the example above, <code translate="no">path=&quot;file/chinese_terms.txt&quot;</code>. A path without the prefix (for example, just <code translate="no">&quot;chinese_terms.txt&quot;</code>) is rejected with the error <code translate="no">file resource path not exist</code>.</p>
+<h3 id="Step-2-Register-the-file-with-addfileresource" class="common-anchor-header">Step 2. Register the file with <code translate="no">add_file_resource</code><button data-href="#Step-2-Register-the-file-with-addfileresource" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -167,9 +167,9 @@ client.add_file_resource(
     path=<span class="hljs-string">&quot;file/chinese_terms.txt&quot;</span>,       <span class="hljs-comment"># full S3 object key, including the rootPath prefix</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">add_file_resource</code> validiert synchron: der Aufruf kehrt erst zurück, nachdem Milvus bestätigt hat, dass das Objekt unter <code translate="no">path</code> im konfigurierten Objektspeicher existiert. Fehlt das Objekt, löst der Aufruf <code translate="no">MilvusException(code=65535, &quot;file resource path not exist&quot;)</code> aus - laden Sie zuerst die Datei hoch und versuchen Sie es dann erneut.</p>
-<p>Der Aufruf ist idempotent. Wenn <code translate="no">add_file_resource</code> zweimal mit denselben <code translate="no">name</code> und <code translate="no">path</code> aufgerufen wird, werden keine Duplikate erzeugt.</p>
-<h3 id="Step-3-Reference-the-file-resource-from-an-analyzer" class="common-anchor-header">Schritt 3. Verweis auf die Dateiressource von einem Analyzer<button data-href="#Step-3-Reference-the-file-resource-from-an-analyzer" class="anchor-icon" translate="no">
+<p><code translate="no">add_file_resource</code> validates synchronously: the call returns only after Milvus has confirmed that the object exists at <code translate="no">path</code> in the configured object store. If the object is missing, the call raises <code translate="no">MilvusException(code=65535, &quot;file resource path not exist&quot;)</code> — upload the file first, then retry.</p>
+<p>The call is idempotent. Calling <code translate="no">add_file_resource</code> twice with the same <code translate="no">name</code> and <code translate="no">path</code> does not create duplicates.</p>
+<h3 id="Step-3-Reference-the-file-resource-from-an-analyzer" class="common-anchor-header">Step 3. Reference the file resource from an analyzer<button data-href="#Step-3-Reference-the-file-resource-from-an-analyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -184,16 +184,16 @@ client.add_file_resource(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Wo immer ein Analyzer-Parameter einen Dateiverweis akzeptiert (<code translate="no">extra_dict_file</code>, <code translate="no">stop_words_file</code>, <code translate="no">word_list_file</code>, <code translate="no">synonyms_file</code>), verwenden Sie die kanonische Remote-Form:</p>
+    </button></h3><p>Wherever an analyzer parameter accepts a file reference (<code translate="no">extra_dict_file</code>, <code translate="no">stop_words_file</code>, <code translate="no">word_list_file</code>, <code translate="no">synonyms_file</code>), use the canonical remote form:</p>
 <pre><code translate="no" class="language-python">{
     <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;remote&quot;</span>,
     <span class="hljs-string">&quot;resource_name&quot;</span>: <span class="hljs-string">&quot;chinese_terms&quot;</span>,    <span class="hljs-comment"># must match the name in add_file_resource</span>
     <span class="hljs-string">&quot;file_name&quot;</span>: <span class="hljs-string">&quot;chinese_terms.txt&quot;</span>,    <span class="hljs-comment"># filename only — Milvus uses this to identify the file inside the resource</span>
 }
 <button class="copy-code-btn"></button></code></pre>
-<p>Alle vier Analyzer-Parameter verwenden die gleiche Form; nur der sie umgebende Analyzer-Schlüssel unterscheidet sich. Konkrete Beispiele für einzelne Analysatoren finden Sie unter Jieba tokenizer, Stop filter, Decompounder filter und Synonym filter.</p>
-<p>Die Parameternamen lauten <code translate="no">resource_name</code> und <code translate="no">file_name</code> - nicht <code translate="no">name</code> und <code translate="no">file</code>. Die Verwendung von <code translate="no">name</code> / <code translate="no">file</code> (oder <code translate="no">&quot;type&quot;: &quot;resource&quot;</code> anstelle von <code translate="no">&quot;type&quot;: &quot;remote&quot;</code>) löst <code translate="no">MilvusException</code> bei der Erstellung des Analysators mit einer Meldung wie <code translate="no">resource name of remote file ... must be set</code> aus.</p>
-<h2 id="List-file-resources" class="common-anchor-header">Dateiressourcen auflisten<button data-href="#List-file-resources" class="anchor-icon" translate="no">
+<p>All four analyzer parameters use the same shape; only the surrounding analyzer key differs. For concrete per-analyzer examples, see Jieba tokenizer, Stop filter, Decompounder filter, and Synonym filter.</p>
+<p>The parameter names are <code translate="no">resource_name</code> and <code translate="no">file_name</code> — not <code translate="no">name</code> and <code translate="no">file</code>. Using <code translate="no">name</code> / <code translate="no">file</code> (or <code translate="no">&quot;type&quot;: &quot;resource&quot;</code> instead of <code translate="no">&quot;type&quot;: &quot;remote&quot;</code>) raises <code translate="no">MilvusException</code> at analyzer-creation time with a message like <code translate="no">resource name of remote file ... must be set</code>.</p>
+<h2 id="List-file-resources" class="common-anchor-header">List file resources<button data-href="#List-file-resources" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -213,8 +213,8 @@ client.add_file_resource(
     <span class="hljs-built_in">print</span>(r.name, r.path)
 <span class="hljs-comment"># chinese_terms file/chinese_terms.txt</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">list_file_resources()</code> gibt eine Liste von <code translate="no">FileResourceInfo</code> Objekten zurück, jedes mit den Attributen <code translate="no">.name</code> und <code translate="no">.path</code>. Der leere Cluster gibt <code translate="no">[]</code> zurück. Es gibt kein <code translate="no">get</code> pro Ressource; <code translate="no">list_file_resources</code> ist die einzige Lese-API.</p>
-<h2 id="Remove-a-file-resource" class="common-anchor-header">Entfernen einer Dateiressource<button data-href="#Remove-a-file-resource" class="anchor-icon" translate="no">
+<p><code translate="no">list_file_resources()</code> returns a list of <code translate="no">FileResourceInfo</code> objects, each with <code translate="no">.name</code> and <code translate="no">.path</code> attributes. The empty cluster returns <code translate="no">[]</code>. There is no per-resource <code translate="no">get</code>; <code translate="no">list_file_resources</code> is the only read API.</p>
+<h2 id="Remove-a-file-resource" class="common-anchor-header">Remove a file resource<button data-href="#Remove-a-file-resource" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -231,9 +231,9 @@ client.add_file_resource(
       </svg>
     </button></h2><pre><code translate="no" class="language-python">client.remove_file_resource(name=<span class="hljs-string">&quot;chinese_terms&quot;</span>)
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">remove_file_resource</code> ist idempotent: der Aufruf für einen Namen, der nicht existiert, gibt <code translate="no">None</code> zurück, ohne dass eine Erhöhung erfolgt.</p>
-<p>Bevor Sie eine Dateiressource entfernen, löschen oder ändern Sie alle Sammlungen, deren Analyzer-Konfigurationen auf sie verweisen. Wenn man eine Dateiressource so lange behält, bis keine Sammlung mehr von ihr abhängt, vermeidet man das Risiko, dass Suchvorgänge des Analyzers fehlschlagen, nachdem die Ressource entfernt wurde.</p>
-<h2 id="Use-a-local-file-resource" class="common-anchor-header">Verwenden Sie eine lokale Dateiressource<button data-href="#Use-a-local-file-resource" class="anchor-icon" translate="no">
+<p><code translate="no">remove_file_resource</code> is idempotent: calling it for a name that does not exist returns <code translate="no">None</code> without raising.</p>
+<p>Before removing a file resource, drop or alter any collections whose analyzer configurations reference it. Keeping a file resource around until no collection depends on it avoids the risk of analyzer lookups failing after the resource is gone.</p>
+<h2 id="Use-a-local-file-resource" class="common-anchor-header">Use a local file resource<button data-href="#Use-a-local-file-resource" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -248,15 +248,15 @@ client.add_file_resource(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Eine <strong>lokale</strong> Dateiressource verweist direkt auf einen Pfad im lokalen Dateisystem der einzelnen Milvus-Komponenten. Es gibt keinen Aufruf von <code translate="no">add_file_resource</code> - Milvus verfolgt keine lokalen Ressourcen. Sie platzieren die Datei unter demselben absoluten Pfad auf jedem relevanten Pod oder Container selbst und referenzieren sie dann über den Pfad:</p>
+    </button></h2><p>A <strong>local</strong> file resource points directly at a path on the local filesystem of each Milvus component. There is no <code translate="no">add_file_resource</code> call — Milvus does not track local resources. You place the file at the same absolute path on every relevant pod or container yourself, then reference it by path:</p>
 <pre><code translate="no" class="language-python">{
     <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;local&quot;</span>,
     <span class="hljs-string">&quot;path&quot;</span>: <span class="hljs-string">&quot;/var/lib/milvus/dicts/chinese_terms.txt&quot;</span>,
 }
 <button class="copy-code-btn"></button></code></pre>
-<p>Lokale Dateiressourcen sind nur in Bereitstellungen gültig, in denen Sie die Dateisysteme von DataNodes, QueryNodes und StreamingNodes kontrollieren - typischerweise selbst gehostetes Milvus auf Bare-Metal oder auf einem Kubernetes-Cluster, wo Sie einen Volume-Mount hinzufügen können. Die Datei muss auf jeder Komponente unter genau demselben absoluten Pfad vorhanden sein; andernfalls schlagen einige Knoten beim Laden des Analyzers fehl.</p>
-<p>Die Datei wird geöffnet, wenn der Analyzer zum ersten Mal erstellt wird. Wenn der Pfad zu diesem Zeitpunkt nicht existiert, schlägt die Erstellung des Analyzers mit <code translate="no">MilvusException(code=2000, &quot;IOError: No such file or directory&quot;)</code> fehl.</p>
-<h2 id="Considerations" class="common-anchor-header">Überlegungen<button data-href="#Considerations" class="anchor-icon" translate="no">
+<p>Local file resources are only valid in deployments where you control the filesystems of DataNodes, QueryNodes, and StreamingNodes — typically self-hosted Milvus on bare-metal or on a Kubernetes cluster where you can add a volume mount. The file must exist at exactly the same absolute path on every component; otherwise some nodes fail when loading the analyzer.</p>
+<p>The file is opened when the analyzer is first created. If the path does not exist at that point, the analyzer creation fails with <code translate="no">MilvusException(code=2000, &quot;IOError: No such file or directory&quot;)</code>.</p>
+<h2 id="Considerations" class="common-anchor-header">Considerations<button data-href="#Considerations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -272,7 +272,7 @@ client.add_file_resource(
         ></path>
       </svg>
     </button></h2><ul>
-<li><p><strong>Die clusterweite Verfügbarkeit ist nicht sofort gegeben.</strong> Nachdem <code translate="no">add_file_resource</code> zurückgekehrt ist, synchronisiert Milvus die Datei mit jeder Komponente, die sie benötigt. Während dieses kurzen Zeitfensters kann die Erstellung einer Sammlung, die auf die Ressource verweist, auf Knoten, die noch nicht synchronisiert wurden, fehlschlagen. Die typische Lösung ist, den Erstellungsaufruf nach ein paar Sekunden zu wiederholen.</p></li>
-<li><p><strong>Entfernen Sie nur, wenn keine Sammlung von der Ressource abhängt.</strong> Löschen oder ändern Sie jede Sammlung, deren Analyzer-Konfiguration auf die Ressource verweist, bevor Sie <code translate="no">remove_file_resource</code> aufrufen, um zu vermeiden, dass Analyzer-Lookups die Datei nicht finden.</p></li>
-<li><p><strong>Nur Metadaten.</strong> <code translate="no">list_file_resources()</code> gibt <code translate="no">name</code> und <code translate="no">path</code> zurück - es gibt keine Größe, Prüfsumme, Upload-Zeit oder andere Metadaten. Verfolgen Sie die Wörterbuchversionen mit Ihrer eigenen Namenskonvention, wenn Sie sie benötigen.</p></li>
+<li><p><strong>Cluster-wide availability is not instantaneous.</strong> After <code translate="no">add_file_resource</code> returns, Milvus synchronizes the file to every component that needs it. During this brief window, a collection that references the resource may fail to create on nodes that have not yet synced. The typical fix is to retry the create call after a few seconds.</p></li>
+<li><p><strong>Remove only when no collection depends on the resource.</strong> Drop or alter any collection whose analyzer configuration references the resource before calling <code translate="no">remove_file_resource</code>, to avoid analyzer lookups that fail to find the file.</p></li>
+<li><p><strong>Metadata only.</strong> <code translate="no">list_file_resources()</code> returns <code translate="no">name</code> and <code translate="no">path</code> — there is no size, checksum, upload time, or other metadata. Keep track of dictionary versions with your own naming convention if you need it.</p></li>
 </ul>

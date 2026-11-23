@@ -1,7 +1,9 @@
 ---
 id: set-collection-ttl.md
 title: Set Collection TTL
-summary: 오래된 데이터가 자동으로 만료되도록 컬렉션 수준 또는 엔티티 수준의 TTL 정책을 구성합니다.
+summary: >-
+  Configure collection-level or entity-level TTL policies to expire stale data
+  automatically.
 ---
 <h1 id="Set-Collection-TTL" class="common-anchor-header">Set Collection TTL<button data-href="#Set-Collection-TTL" class="anchor-icon" translate="no">
       <svg translate="no"

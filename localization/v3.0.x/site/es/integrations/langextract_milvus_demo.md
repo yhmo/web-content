@@ -1,11 +1,11 @@
 ---
 id: langextract_milvus_demo.md
 summary: >-
-  Esta guía muestra cómo utilizar LangExtract con Milvus para crear un sistema
-  inteligente de procesamiento y recuperación de documentos.
-title: Integración de LangExtract + Milvus
+  This guide demonstrates how to use LangExtract with Milvus to build an
+  intelligent document processing and retrieval system.
+title: LangExtract + Milvus Integration
 ---
-<h1 id="LangExtract-+-Milvus-Integration" class="common-anchor-header">Integración de LangExtract + Milvus<button data-href="#LangExtract-+-Milvus-Integration" class="anchor-icon" translate="no">
+<h1 id="LangExtract-+-Milvus-Integration" class="common-anchor-header">LangExtract + Milvus Integration<button data-href="#LangExtract-+-Milvus-Integration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -26,10 +26,10 @@ title: Integración de LangExtract + Milvus
 <a href="https://github.com/milvus-io/bootcamp/blob/master/integration/langextract_milvus_demo.ipynb" target="_blank">
 <img translate="no" src="https://img.shields.io/badge/View%20on%20GitHub-555555?style=flat&logo=github&logoColor=white" alt="GitHub Repository"/>
 </a></p>
-<p>Esta guía demuestra cómo utilizar <a href="https://github.com/google/langextract">LangExtract</a> con <a href="https://milvus.io/">Milvus</a> para construir un sistema inteligente de procesamiento y recuperación de documentos.</p>
-<p>LangExtract es una biblioteca Python que utiliza modelos lingüísticos amplios (LLM) para extraer información estructurada de documentos de texto no estructurados con una base de origen precisa. El sistema combina las capacidades de extracción de LangExtract con el almacenamiento vectorial de Milvus para permitir tanto la búsqueda por similitud semántica como el filtrado preciso de metadatos.</p>
-<p>Esta integración es especialmente valiosa para la gestión de contenidos, la búsqueda semántica, el descubrimiento de conocimientos y la creación de sistemas de recomendación basados en los atributos de los documentos extraídos.</p>
-<h2 id="Prerequisites" class="common-anchor-header">Requisitos previos<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+<p>This guide demonstrates how to use <a href="https://github.com/google/langextract">LangExtract</a> with <a href="https://milvus.io/">Milvus</a> to build an intelligent document processing and retrieval system.</p>
+<p>LangExtract is a Python library that uses Large Language Models (LLMs) to extract structured information from unstructured text documents with precise source grounding. The system combines LangExtract’s extraction capabilities with Milvus’s vector storage to enable both semantic similarity search and precise metadata filtering.</p>
+<p>This integration is particularly valuable for content management, semantic search, knowledge discovery, and building recommendation systems based on extracted document attributes.</p>
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -44,18 +44,18 @@ title: Integración de LangExtract + Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Antes de ejecutar este cuaderno, asegúrate de tener instaladas las siguientes dependencias:</p>
+    </button></h2><p>Before running this notebook, make sure you have the following dependencies installed:</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">pip install --upgrade pymilvus milvus-lite langextract google-genai requests tqdm pandas</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>Si utilizas Google Colab, para activar las dependencias que acabas de instalar, es posible que tengas que <strong>reiniciar el tiempo de ejecución</strong> (haz clic en el menú "Tiempo de ejecución" en la parte superior de la pantalla y selecciona "Reiniciar sesión" en el menú desplegable).</p>
+<p>If you are using Google Colab, to enable dependencies just installed, you may need to <strong>restart the runtime</strong> (click on the “Runtime” menu at the top of the screen, and select “Restart session” from the dropdown menu).</p>
 </div>
-<p>En este ejemplo utilizaremos Gemini como LLM. Deberá preparar la <a href="https://aistudio.google.com/app/apikey">clave api</a> <code translate="no">GEMINI_API_KEY</code> como variable de entorno.</p>
+<p>We will use Gemini as the LLM in this example. You should prepare the <a href="https://aistudio.google.com/app/apikey">api key</a> <code translate="no">GEMINI_API_KEY</code> as an environment variable.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> os
 
 os.environ[<span class="hljs-string">&quot;GEMINI_API_KEY&quot;</span>] = <span class="hljs-string">&quot;AIza*****************&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Define-the-LangExtract-+-Milvus-pipeline" class="common-anchor-header">Definir el proceso LangExtract + Milvus<button data-href="#Define-the-LangExtract-+-Milvus-pipeline" class="anchor-icon" translate="no">
+<h2 id="Define-the-LangExtract-+-Milvus-pipeline" class="common-anchor-header">Define the LangExtract + Milvus pipeline<button data-href="#Define-the-LangExtract-+-Milvus-pipeline" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -70,7 +70,7 @@ os.environ[<span class="hljs-string">&quot;GEMINI_API_KEY&quot;</span>] = <span 
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Definiremos el pipeline que utiliza LangExtract para la extracción de información estructurada y Milvus como almacén de vectores.</p>
+    </button></h2><p>We will define the pipeline that uses LangExtract for structured information extraction and Milvus as the vector store.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> langextract <span class="hljs-keyword">as</span> lx
 <span class="hljs-keyword">import</span> textwrap
 <span class="hljs-keyword">from</span> google <span class="hljs-keyword">import</span> genai
@@ -78,7 +78,7 @@ os.environ[<span class="hljs-string">&quot;GEMINI_API_KEY&quot;</span>] = <span 
 <span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
 <span class="hljs-keyword">import</span> uuid
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Configuration-and-Setup" class="common-anchor-header">Configuración<button data-href="#Configuration-and-Setup" class="anchor-icon" translate="no">
+<h2 id="Configuration-and-Setup" class="common-anchor-header">Configuration and Setup<button data-href="#Configuration-and-Setup" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -93,14 +93,14 @@ os.environ[<span class="hljs-string">&quot;GEMINI_API_KEY&quot;</span>] = <span 
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Vamos a configurar nuestros parámetros globales para la integración. Utilizaremos el modelo de incrustación de Gemini para generar representaciones vectoriales para nuestros documentos.</p>
+    </button></h2><p>Let’s configure our global parameters for the integration. We’ll use Gemini’s embedding model to generate vector representations for our documents.</p>
 <pre><code translate="no" class="language-python">genai_client = genai.Client()
 
 COLLECTION_NAME = <span class="hljs-string">&quot;document_extractions&quot;</span>
 EMBEDDING_MODEL = <span class="hljs-string">&quot;gemini-embedding-001&quot;</span>
 EMBEDDING_DIM = <span class="hljs-number">3072</span>  <span class="hljs-comment"># Default dimension for gemini-embedding-001</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Initialize-Milvus-Client" class="common-anchor-header">Inicializar el cliente Milvus<button data-href="#Initialize-Milvus-Client" class="anchor-icon" translate="no">
+<h2 id="Initialize-Milvus-Client" class="common-anchor-header">Initialize Milvus Client<button data-href="#Initialize-Milvus-Client" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -115,18 +115,18 @@ EMBEDDING_DIM = <span class="hljs-number">3072</span>  <span class="hljs-comment
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Ahora vamos a inicializar nuestro cliente Milvus. Utilizaremos un archivo de base de datos local por simplicidad, pero esto puede escalarse fácilmente a un despliegue de servidor Milvus completo.</p>
+    </button></h2><p>Now let’s initialize our Milvus client. We’ll use a local database file for simplicity, but this can easily be scaled to a full Milvus server deployment.</p>
 <pre><code translate="no" class="language-python">client = MilvusClient(uri=<span class="hljs-string">&quot;./milvus_demo.db&quot;</span>)
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>En cuanto al argumento de <code translate="no">MilvusClient</code>:</p>
+<p>As for the argument of <code translate="no">MilvusClient</code>:</p>
 <ul>
-<li>Establecer el <code translate="no">uri</code> como un archivo local, por ejemplo<code translate="no">./milvus.db</code>, es el método más conveniente, ya que utiliza automáticamente <a href="https://milvus.io/docs/milvus_lite.md">Milvus Lite</a> para almacenar todos los datos en este archivo.</li>
-<li>Si tiene una gran escala de datos, puede configurar un servidor Milvus más eficiente en <a href="https://milvus.io/docs/quickstart.md">docker o kubernetes</a>. En esta configuración, por favor utilice la uri del servidor, por ejemplo<code translate="no">http://localhost:19530</code>, como su <code translate="no">uri</code>.</li>
-<li>Si desea utilizar <a href="https://zilliz.com/cloud">Zilliz Cloud</a>, el servicio en la nube totalmente gestionado para Milvus, ajuste <code translate="no">uri</code> y <code translate="no">token</code>, que corresponden al <a href="https://docs.zilliz.com/docs/on-zilliz-cloud-console#free-cluster-details">punto final público y a la clave Api</a> en Zilliz Cloud.</li>
+<li>Setting the <code translate="no">uri</code> as a local file, e.g.<code translate="no">./milvus.db</code>, is the most convenient method, as it automatically utilizes <a href="https://milvus.io/docs/milvus_lite.md">Milvus Lite</a> to store all data in this file.</li>
+<li>If you have large scale of data, you can set up a more performant Milvus server on <a href="https://milvus.io/docs/quickstart.md">docker or kubernetes</a>. In this setup, please use the server uri, e.g.<code translate="no">http://localhost:19530</code>, as your <code translate="no">uri</code>.</li>
+<li>If you want to use <a href="https://zilliz.com/cloud">Zilliz Cloud</a>, the fully managed cloud service for Milvus, adjust the <code translate="no">uri</code> and <code translate="no">token</code>, which correspond to the <a href="https://docs.zilliz.com/docs/on-zilliz-cloud-console#free-cluster-details">Public Endpoint and Api key</a> in Zilliz Cloud.</li>
 </ul>
 </div>
-<h2 id="Sample-Data-Preparation" class="common-anchor-header">Ejemplo de preparación de datos<button data-href="#Sample-Data-Preparation" class="anchor-icon" translate="no">
+<h2 id="Sample-Data-Preparation" class="common-anchor-header">Sample Data Preparation<button data-href="#Sample-Data-Preparation" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -141,7 +141,7 @@ EMBEDDING_DIM = <span class="hljs-number">3072</span>  <span class="hljs-comment
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Para esta demostración, utilizaremos descripciones de películas como documentos de muestra. Esto demuestra la capacidad de LangExtract para extraer información estructurada como géneros, personajes y temas a partir de texto no estructurado.</p>
+    </button></h2><p>For this demonstration, we’ll use movie descriptions as our sample documents. This showcases LangExtract’s ability to extract structured information like genres, characters, and themes from unstructured text.</p>
 <pre><code translate="no" class="language-python">sample_documents = [
     <span class="hljs-string">&quot;John McClane fights terrorists in a Los Angeles skyscraper during Christmas Eve. The action-packed thriller features intense gunfights and explosive scenes.&quot;</span>,
     <span class="hljs-string">&quot;A young wizard named Harry Potter discovers his magical abilities at Hogwarts School. The fantasy adventure includes magical creatures and epic battles.&quot;</span>,
@@ -161,7 +161,7 @@ EMBEDDING_DIM = <span class="hljs-number">3072</span>  <span class="hljs-comment
 <pre><code translate="no">=== LangExtract + Milvus Integration Demo ===
 Preparing to process 10 documents
 </code></pre>
-<h2 id="Setting-Up-the-Milvus-Collection" class="common-anchor-header">Configuración de la colección Milvus<button data-href="#Setting-Up-the-Milvus-Collection" class="anchor-icon" translate="no">
+<h2 id="Setting-Up-the-Milvus-Collection" class="common-anchor-header">Setting Up the Milvus Collection<button data-href="#Setting-Up-the-Milvus-Collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -176,7 +176,7 @@ Preparing to process 10 documents
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Antes de almacenar los datos extraídos, debemos crear una colección Milvus con el esquema adecuado. Esta colección almacenará el texto del documento original, las incrustaciones vectoriales y los campos de metadatos extraídos.</p>
+    </button></h2><p>Before we can store our extracted data, we need to create a Milvus collection with the appropriate schema. This collection will store the original document text, vector embeddings, and extracted metadata fields.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;\n1. Setting up Milvus collection...&quot;</span>)
 
 <span class="hljs-comment"># Drop existing collection if it exists</span>
@@ -221,7 +221,7 @@ Dropped existing collection: document_extractions
 Collection 'document_extractions' created successfully
 Vector index created successfully
 </code></pre>
-<h2 id="Defining-the-Extraction-Schema" class="common-anchor-header">Definición del esquema de extracción<button data-href="#Defining-the-Extraction-Schema" class="anchor-icon" translate="no">
+<h2 id="Defining-the-Extraction-Schema" class="common-anchor-header">Defining the Extraction Schema<button data-href="#Defining-the-Extraction-Schema" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -236,7 +236,7 @@ Vector index created successfully
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>LangExtract utiliza indicaciones y ejemplos para guiar al LLM en la extracción de información estructurada. Vamos a definir nuestro esquema de extracción para las descripciones de películas, especificando qué información extraer y cómo categorizarla.</p>
+    </button></h2><p>LangExtract uses prompts and examples to guide the LLM in extracting structured information. Let’s define our extraction schema for movie descriptions, specifying what information to extract and how to categorize it.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;\n2. Extracting tags from documents...&quot;</span>)
 
 <span class="hljs-comment"># Define extraction prompt - for movie descriptions, specify attribute value ranges</span>
@@ -264,7 +264,7 @@ prompt = textwrap.dedent(
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no">2. Extracting tags from documents...
 </code></pre>
-<h2 id="Providing-Examples-for-Better-Extraction" class="common-anchor-header">Ejemplos para mejorar la extracción<button data-href="#Providing-Examples-for-Better-Extraction" class="anchor-icon" translate="no">
+<h2 id="Providing-Examples-for-Better-Extraction" class="common-anchor-header">Providing Examples for Better Extraction<button data-href="#Providing-Examples-for-Better-Extraction" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -279,7 +279,7 @@ prompt = textwrap.dedent(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Para mejorar la calidad y la coherencia de las extracciones, proporcionaremos a LangExtract algunos ejemplos. Estos ejemplos muestran el formato esperado y ayudan al modelo a comprender nuestros requisitos de extracción.</p>
+    </button></h2><p>To improve the quality and consistency of extractions, we’ll provide LangExtract with a few examples. These examples demonstrate the expected format and help the model understand our extraction requirements.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Provide examples to guide the model - n-shot examples for movie descriptions</span>
 <span class="hljs-comment"># Unify attribute keys to ensure consistency in extraction results</span>
 examples = [
@@ -359,7 +359,7 @@ extraction_results = []
 
 <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Completed tag extraction, processed <span class="hljs-subst">{<span class="hljs-built_in">len</span>(extraction_results)}</span> documents&quot;</span>)
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Processing-and-Vectorizing-the-Results" class="common-anchor-header">Procesamiento y vectorización de los resultados<button data-href="#Processing-and-Vectorizing-the-Results" class="anchor-icon" translate="no">
+<h2 id="Processing-and-Vectorizing-the-Results" class="common-anchor-header">Processing and Vectorizing the Results<button data-href="#Processing-and-Vectorizing-the-Results" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -374,7 +374,7 @@ extraction_results = []
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Ahora tenemos que procesar los resultados de la extracción y generar incrustaciones vectoriales para cada documento. También aplanaremos los atributos extraídos en campos separados para facilitar su búsqueda en Milvus.</p>
+    </button></h2><p>Now we need to process the extraction results and generate vector embeddings for each document. We’ll also flatten the extracted attributes into separate fields to make them easily searchable in Milvus.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;\n3. Processing extraction results and generating vectors...&quot;</span>)
 
 processed_data = []
@@ -451,7 +451,7 @@ Successfully generated vector: Space marines battle alien inv...
 Successfully generated vector: A detective investigates super...
 Completed data processing, ready to insert 10 records
 </code></pre>
-<h2 id="Inserting-Data-into-Milvus" class="common-anchor-header">Inserción de datos en Milvus<button data-href="#Inserting-Data-into-Milvus" class="anchor-icon" translate="no">
+<h2 id="Inserting-Data-into-Milvus" class="common-anchor-header">Inserting Data into Milvus<button data-href="#Inserting-Data-into-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -466,7 +466,7 @@ Completed data processing, ready to insert 10 records
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Con nuestros datos procesados listos, vamos a insertarlos en la colección Milvus. Esto nos permitirá realizar tanto búsquedas semánticas como un filtrado preciso de metadatos.</p>
+    </button></h2><p>With our processed data ready, let’s insert it into the Milvus collection. This will enable us to perform both semantic searches and precise metadata filtering.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;\n4. Inserting data into Milvus...&quot;</span>)
 
 <span class="hljs-keyword">if</span> processed_data:
@@ -480,7 +480,7 @@ Completed data processing, ready to insert 10 records
 Successfully inserted 10 documents into Milvus
 Insert result: {'insert_count': 10, 'ids': ['doc_f8797155', 'doc_78c7e586', 'doc_fa3a3ab5', 'doc_64981815', 'doc_3ab18cb2', 'doc_1ea42b18', 'doc_f0779243', 'doc_386590b7', 'doc_3b3ae1ab', 'doc_851089d6']}
 </code></pre>
-<h2 id="Demonstrating-Metadata-Filtering" class="common-anchor-header">Demostración del filtrado de metadatos<button data-href="#Demonstrating-Metadata-Filtering" class="anchor-icon" translate="no">
+<h2 id="Demonstrating-Metadata-Filtering" class="common-anchor-header">Demonstrating Metadata Filtering<button data-href="#Demonstrating-Metadata-Filtering" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -495,7 +495,7 @@ Insert result: {'insert_count': 10, 'ids': ['doc_f8797155', 'doc_78c7e586', 'doc
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Una de las principales ventajas de combinar LangExtract con Milvus es la posibilidad de realizar un filtrado preciso basado en los metadatos extraídos. Vamos a demostrarlo con algunas búsquedas de expresiones de filtrado.</p>
+    </button></h2><p>One of the key advantages of combining LangExtract with Milvus is the ability to perform precise filtering based on extracted metadata. Let’s demonstrate this with some filter expression searches.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;\n=== Filter Expression Search Examples ===&quot;</span>)
 
 <span class="hljs-comment"># Load collection into memory for querying</span>
@@ -553,7 +553,7 @@ Collection loaded successfully
   Genre: action sci-fi
   Character: protagonist (military)
 </code></pre>
-<h2 id="Combining-Semantic-Search-with-Metadata-Filtering" class="common-anchor-header">Combinar la búsqueda semántica con el filtrado de metadatos<button data-href="#Combining-Semantic-Search-with-Metadata-Filtering" class="anchor-icon" translate="no">
+<h2 id="Combining-Semantic-Search-with-Metadata-Filtering" class="common-anchor-header">Combining Semantic Search with Metadata Filtering<button data-href="#Combining-Semantic-Search-with-Metadata-Filtering" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -568,7 +568,7 @@ Collection loaded successfully
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>La verdadera potencia de esta integración proviene de la combinación de la búsqueda semántica vectorial con el filtrado preciso de metadatos. Esto nos permite encontrar contenido semánticamente similar mientras aplicamos restricciones específicas basadas en atributos extraídos.</p>
+    </button></h2><p>The real power of this integration comes from combining semantic vector search with precise metadata filtering. This allows us to find semantically similar content while applying specific constraints based on extracted attributes.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;\n=== Semantic Search Examples ===&quot;</span>)
 
 <span class="hljs-comment"># 1. Search for action-related content + only thriller genre</span>

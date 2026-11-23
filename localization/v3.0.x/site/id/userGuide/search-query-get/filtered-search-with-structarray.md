@@ -1,14 +1,13 @@
 ---
 id: filtered-search-with-structarray.md
-title: Pencarian Terfilter dengan StructArray
+title: Filtered Search with StructArray
 summary: >-
-  Gunakan halaman ini untuk menambahkan penyaringan skalar ke pencarian vektor
-  pada bidang StructArray. Penyaringan StructArray memiliki dua tingkatan:
-  penyaring tingkat baris memilih entitas induk, sedangkan penyaring tingkat
-  elemen membatasi elemen Struct mana saja yang ikut serta dalam pencarian
-  vektor tingkat elemen.
+  Use this page to add scalar filtering to vector search on StructArray fields.
+  StructArray filtering has two levels: row-level filters select parent
+  entities, while element-level filters constrain which Struct elements
+  participate in element-level vector search.
 ---
-<h1 id="Filtered-Search-with-StructArray" class="common-anchor-header">Pencarian Terfilter dengan StructArray<button data-href="#Filtered-Search-with-StructArray" class="anchor-icon" translate="no">
+<h1 id="Filtered-Search-with-StructArray" class="common-anchor-header">Filtered Search with StructArray<button data-href="#Filtered-Search-with-StructArray" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -23,10 +22,10 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Gunakan halaman ini untuk menambahkan penyaringan skalar ke pencarian vektor pada bidang StructArray. Penyaringan StructArray memiliki dua tingkatan: penyaring tingkat baris memilih entitas induk, sedangkan penyaring tingkat elemen membatasi elemen Struct mana yang ikut serta dalam pencarian vektor tingkat elemen.</p>
-<p>Halaman ini menggunakan koleksi ` <code translate="no">tech_articles</code> ` dari <a href="/docs/id/create-structarray-field.md">"Buat Bidang StructArray"</a>. Koleksi tersebut memiliki bidang StructArray bernama ` <code translate="no">chunks</code>`, dengan subbidang skalar seperti ` <code translate="no">section</code>`, ` <code translate="no">page</code>`, ` <code translate="no">quality_score</code>`, dan ` <code translate="no">has_code</code>`, serta subbidang vektor untuk pencarian.</p>
-<p>Sebelum menjalankan contoh-contoh ini, buatlah koleksi, masukkan data contoh, buat indeks vektor yang diperlukan, dan muat koleksi tersebut. Gunakan vektor 4-dimensi untuk bidang-bidang yang ditampilkan di sini. Setiap blok kode mengasumsikan koneksi dan variabel dari contoh-contoh sebelumnya dalam bahasa yang sama, kecuali jika mendefinisikannya kembali.</p>
-<h2 id="Choose-a-filter-type" class="common-anchor-header">Pilih jenis filter<button data-href="#Choose-a-filter-type" class="anchor-icon" translate="no">
+    </button></h1><p>Use this page to add scalar filtering to vector search on StructArray fields. StructArray filtering has two levels: row-level filters select parent entities, while element-level filters constrain which Struct elements participate in element-level vector search.</p>
+<p>This page uses the <code translate="no">tech_articles</code> collection from <a href="/docs/id/create-structarray-field.md">Create a StructArray Field</a>. The collection has a StructArray field named <code translate="no">chunks</code>, with scalar subfields such as <code translate="no">section</code>, <code translate="no">page</code>, <code translate="no">quality_score</code>, and <code translate="no">has_code</code>, plus vector subfields for search.</p>
+<p>Before running these examples, create the collection, insert the example data, create the required vector indexes, and load the collection. Use 4-dimensional vectors for the fields shown here. Each code block assumes the connection and variables from the preceding examples in the same language unless it defines them again.</p>
+<h2 id="Choose-a-filter-type" class="common-anchor-header">Choose a filter type<button data-href="#Choose-a-filter-type" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -43,19 +42,19 @@ summary: >-
       </svg>
     </button></h2><table>
 <thead>
-<tr><th>Tujuan</th><th>Gunakan</th><th>Perilaku hasil</th></tr>
+<tr><th>Goal</th><th>Use</th><th>Result behavior</th></tr>
 </thead>
 <tbody>
-<tr><td>Memfilter berdasarkan bidang skalar tingkat atas, seperti ` <code translate="no">category</code>`.</td><td>Ekspresi filter biasa.</td><td>Memilih entitas induk sebelum atau selama pencarian.</td></tr>
-<tr><td>Membatasi pencarian vektor tingkat elemen ke elemen Struct yang sesuai dengan kondisi skalar.</td><td><code translate="no">element_filter</code>.</td><td>Hanya mencari elemen Struct yang cocok dan dapat mengembalikan offset elemen yang cocok.</td></tr>
-<tr><td>Memilih entitas berdasarkan apakah ada, semua, atau sejumlah tertentu elemen Struct yang sesuai dengan predikat.</td><td><code translate="no">MATCH_ANY</code>, <code translate="no">MATCH_ALL</code>, <code translate="no">MATCH_LEAST</code>, <code translate="no">MATCH_MOST</code>, atau <code translate="no">MATCH_EXACT</code>.</td><td>Penyaringan tingkat baris. Operator-operator ini tidak mengembalikan offset secara langsung.</td></tr>
-<tr><td>Uji posisi satu elemen, hitung elemen Struct, atau periksa nilai subbidang di seluruh elemen tanpa ` <code translate="no">$[...]</code>`.</td><td>Jalur StructArray tingkat baris, seperti <code translate="no">chunks[0][section]</code>, <code translate="no">array_length(chunks)</code>, atau <code translate="no">array_contains(chunks[section], ...)</code>.</td><td>Penyaringan tingkat baris. Untuk sintaksis, lihat <a href="/docs/id/struct-array-operators.md">Operator StructArray</a>.</td></tr>
+<tr><td>Filter by a top-level scalar field, such as <code translate="no">category</code>.</td><td>Regular filter expression.</td><td>Selects parent entities before or during search.</td></tr>
+<tr><td>Constrain element-level vector search to Struct elements that match scalar conditions.</td><td><code translate="no">element_filter</code>.</td><td>Searches only matching Struct elements and can return matched element offsets.</td></tr>
+<tr><td>Select entities by whether any, all, or a specific number of Struct elements match a predicate.</td><td><code translate="no">MATCH_ANY</code>, <code translate="no">MATCH_ALL</code>, <code translate="no">MATCH_LEAST</code>, <code translate="no">MATCH_MOST</code>, or <code translate="no">MATCH_EXACT</code>.</td><td>Row-level filtering. These operators do not return offsets by themselves.</td></tr>
+<tr><td>Test one element position, count Struct elements, or check subfield values across elements without <code translate="no">$[...]</code>.</td><td>Row-level StructArray paths, such as <code translate="no">chunks[0][section]</code>, <code translate="no">array_length(chunks)</code>, or <code translate="no">array_contains(chunks[section], ...)</code>.</td><td>Row-level filtering. For syntax, see <a href="/docs/id/struct-array-operators.md">StructArray Operators</a>.</td></tr>
 </tbody>
 </table>
 <div class="alert note">
-<p>Halaman ini menjelaskan cara menggunakan filter StructArray dalam alur kerja pencarian. Untuk aturan sintaks lengkap, jenis predikat yang didukung, dan matriks predikat yang tidak didukung, lihat <a href="/docs/id/struct-array-operators.md">Operator StructArray</a>.</p>
+<p>This page explains how to use StructArray filters in search workflows. For the full syntax rules, supported predicate types, and unsupported predicate matrix, see <a href="/docs/id/struct-array-operators.md">StructArray Operators</a>.</p>
 </div>
-<h2 id="Filter-by-top-level-fields" class="common-anchor-header">Penyaringan berdasarkan bidang tingkat atas<button data-href="#Filter-by-top-level-fields" class="anchor-icon" translate="no">
+<h2 id="Filter-by-top-level-fields" class="common-anchor-header">Filter by top-level fields<button data-href="#Filter-by-top-level-fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -70,16 +69,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Gunakan ekspresi filter biasa jika kondisi tersebut berlaku untuk entitas induk, bukan untuk elemen Struct individu. Fitur ini berfungsi baik pada pencarian EmbeddingList maupun pencarian tingkat elemen.</p>
+    </button></h2><p>Use regular filter expressions when the condition belongs to the parent entity, not to an individual Struct element. This works with both EmbeddingList search and element-level search.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 <span class="hljs-keyword">from</span> pymilvus.client.embedding_list <span class="hljs-keyword">import</span> EmbeddingList
@@ -286,8 +285,8 @@ curl --request POST \
     &quot;outputFields&quot;: [&quot;doc_id&quot;, &quot;title&quot;, &quot;category&quot;, &quot;chunks[text]&quot;, &quot;chunks[section]&quot;]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Filter di atas hanya memilih entitas yang bidang tingkat atasnya ( <code translate="no">category</code> ) adalah <code translate="no">&quot;search&quot;</code>. Filter ini tidak mengidentifikasi satu elemen Struct yang cocok.</p>
-<h2 id="Filter-element-level-vector-search" class="common-anchor-header">Filter pencarian vektor tingkat elemen<button data-href="#Filter-element-level-vector-search" class="anchor-icon" translate="no">
+<p>The filter above selects only entities whose top-level <code translate="no">category</code> field is <code translate="no">&quot;search&quot;</code>. It does not identify one matched Struct element.</p>
+<h2 id="Filter-element-level-vector-search" class="common-anchor-header">Filter element-level vector search<button data-href="#Filter-element-level-vector-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -302,16 +301,16 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Gunakan ` <code translate="no">element_filter(structArrayField, predicate)</code> ` ketika kondisi skalar harus berlaku pada elemen Struct yang sama yang terlibat dalam pencarian vektor tingkat elemen. Di dalam predikat, gunakan ` <code translate="no">$[subfield]</code> ` untuk merujuk ke subbidang skalar dari elemen Struct saat ini.</p>
+    </button></h2><p>Use <code translate="no">element_filter(structArrayField, predicate)</code> when the scalar conditions must apply to the same Struct element that participates in element-level vector search. Inside the predicate, use <code translate="no">$[subfield]</code> to refer to scalar subfields of the current Struct element.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">query_vector = [<span class="hljs-number">0.19</span>, <span class="hljs-number">0.24</span>, <span class="hljs-number">0.30</span>, <span class="hljs-number">0.37</span>]
 
@@ -522,12 +521,12 @@ curl --request POST \
     &quot;outputFields&quot;: [&quot;doc_id&quot;, &quot;title&quot;, &quot;chunks[text]&quot;, &quot;chunks[section]&quot;, &quot;chunks[page]&quot;, &quot;chunks[quality_score]&quot;, &quot;chunks[has_code]&quot;]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Dalam contoh ini, predikat tingkat atas ` <code translate="no">category == &quot;search&quot;</code> ` memilih entitas kandidat, dan ` <code translate="no">element_filter</code> ` membatasi pencarian vektor tingkat elemen pada potongan di mana ` <code translate="no">section</code>`, ` <code translate="no">quality_score</code>`, dan ` <code translate="no">has_code</code> ` semuanya cocok dalam elemen Struct yang sama.</p>
+<p>In this example, the top-level predicate <code translate="no">category == &quot;search&quot;</code> selects candidate entities, and <code translate="no">element_filter</code> restricts element-level vector search to chunks where <code translate="no">section</code>, <code translate="no">quality_score</code>, and <code translate="no">has_code</code> all match in the same Struct element.</p>
 <div class="alert note">
-<p>Peringatan</p>
-<p>Saat Anda menggabungkan predikat tingkat atas dengan <code translate="no">element_filter</code>, letakkan <code translate="no">element_filter</code> di akhir ekspresi. Ekspresi filter hanya dapat berisi satu <code translate="no">element_filter</code>, dan Anda tidak dapat menyematkan <code translate="no">element_filter</code> atau <code translate="no">MATCH_*</code> di dalam operator StructArray lainnya.</p>
+<p>Warning</p>
+<p>When you combine a top-level predicate with <code translate="no">element_filter</code>, place <code translate="no">element_filter</code> at the end of the expression. A filter expression can contain only one <code translate="no">element_filter</code>, and you cannot nest <code translate="no">element_filter</code> or <code translate="no">MATCH_*</code> inside another StructArray operator.</p>
 </div>
-<h2 id="Filter-entities-with-MATCH-operators" class="common-anchor-header">Menyaring entitas dengan operator MATCH<button data-href="#Filter-entities-with-MATCH-operators" class="anchor-icon" translate="no">
+<h2 id="Filter-entities-with-MATCH-operators" class="common-anchor-header">Filter entities with MATCH operators<button data-href="#Filter-entities-with-MATCH-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -542,28 +541,28 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Gunakan operator <code translate="no">MATCH_*</code> ketika filter harus menentukan apakah entitas induk memenuhi syarat berdasarkan elemen Struct-nya. Operator ini merupakan filter tingkat baris: mereka memilih entitas, tetapi tidak mengembalikan offset elemen secara langsung.</p>
+    </button></h2><p>Use <code translate="no">MATCH_*</code> operators when the filter should decide whether a parent entity qualifies based on its Struct elements. These operators are row-level filters: they select entities, but do not return element offsets by themselves.</p>
 <table>
 <thead>
-<tr><th>Operator</th><th>Gunakan saat</th><th>Contoh</th></tr>
+<tr><th>Operator</th><th>Use it when</th><th>Example</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">MATCH_ANY</code></td><td>Setidaknya satu elemen Struct harus memenuhi predikat.</td><td><code translate="no">MATCH_ANY(chunks, $[section] == &quot;index&quot;)</code></td></tr>
-<tr><td><code translate="no">MATCH_ALL</code></td><td>Semua elemen Struct harus memenuhi predikat.</td><td><code translate="no">MATCH_ALL(chunks, $[quality_score] &gt; 0.5)</code></td></tr>
-<tr><td><code translate="no">MATCH_LEAST</code></td><td>Setidaknya <code translate="no">N</code> elemen Struct harus memenuhi predikat tersebut.</td><td><code translate="no">MATCH_LEAST(chunks, $[has_code] == true, threshold=2)</code></td></tr>
-<tr><td><code translate="no">MATCH_MOST</code></td><td>Paling banyak <code translate="no">N</code> elemen Struct harus memenuhi predikat tersebut.</td><td><code translate="no">MATCH_MOST(chunks, $[section] == &quot;appendix&quot;, threshold=1)</code></td></tr>
-<tr><td><code translate="no">MATCH_EXACT</code></td><td>Tepat <code translate="no">N</code> elemen Struct harus memenuhi predikat tersebut.</td><td><code translate="no">MATCH_EXACT(chunks, $[section] == &quot;summary&quot;, threshold=1)</code></td></tr>
+<tr><td><code translate="no">MATCH_ANY</code></td><td>At least one Struct element must satisfy the predicate.</td><td><code translate="no">MATCH_ANY(chunks, $[section] == &quot;index&quot;)</code></td></tr>
+<tr><td><code translate="no">MATCH_ALL</code></td><td>All Struct elements must satisfy the predicate.</td><td><code translate="no">MATCH_ALL(chunks, $[quality_score] &gt; 0.5)</code></td></tr>
+<tr><td><code translate="no">MATCH_LEAST</code></td><td>At least <code translate="no">N</code> Struct elements must satisfy the predicate.</td><td><code translate="no">MATCH_LEAST(chunks, $[has_code] == true, threshold=2)</code></td></tr>
+<tr><td><code translate="no">MATCH_MOST</code></td><td>At most <code translate="no">N</code> Struct elements must satisfy the predicate.</td><td><code translate="no">MATCH_MOST(chunks, $[section] == &quot;appendix&quot;, threshold=1)</code></td></tr>
+<tr><td><code translate="no">MATCH_EXACT</code></td><td>Exactly <code translate="no">N</code> Struct elements must satisfy the predicate.</td><td><code translate="no">MATCH_EXACT(chunks, $[section] == &quot;summary&quot;, threshold=1)</code></td></tr>
 </tbody>
 </table>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus.client.embedding_list <span class="hljs-keyword">import</span> EmbeddingList
 
@@ -769,8 +768,8 @@ curl --request POST \
     &quot;outputFields&quot;: [&quot;doc_id&quot;, &quot;title&quot;, &quot;category&quot;, &quot;chunks[text]&quot;, &quot;chunks[section]&quot;, &quot;chunks[quality_score]&quot;]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Gunakan ` <code translate="no">MATCH_ANY</code> ` di sini karena hasil pencarian EmbeddingList berada pada tingkat entitas. Filter ini mensyaratkan setidaknya satu chunk dalam entitas tersebut merupakan chunk ` <code translate="no">&quot;index&quot;</code> ` dengan kualitas tinggi, namun hasil pencarian itu sendiri tetap mewakili entitas induk.</p>
-<h2 id="Use-filters-in-hybrid-search" class="common-anchor-header">Gunakan filter dalam pencarian hibrida<button data-href="#Use-filters-in-hybrid-search" class="anchor-icon" translate="no">
+<p>Use <code translate="no">MATCH_ANY</code> here because the EmbeddingList search result is entity-level. The filter requires at least one chunk in the entity to be an <code translate="no">&quot;index&quot;</code> chunk with high quality, but the search result itself still represents the parent entity.</p>
+<h2 id="Use-filters-in-hybrid-search" class="common-anchor-header">Use filters in hybrid search<button data-href="#Use-filters-in-hybrid-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -785,16 +784,16 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Dalam pencarian hibrida, terapkan filter StructArray di mana kondisi tersebut harus berlaku. Terapkan kondisi entitas induk ke setiap sub-permintaan yang harus memenuhinya. Lampirkan <code translate="no">element_filter</code> hanya ke permintaan tingkat elemen StructArray yang memerlukan batasan tingkat elemen, setelah kondisi entitas induk.</p>
+    </button></h2><p>In hybrid search, apply StructArray filters where the condition should take effect. Apply a parent-entity condition to each sub-request that must satisfy it. Attach <code translate="no">element_filter</code> only to the StructArray element-level request that needs element-level constraints, after the parent-entity condition.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> AnnSearchRequest, RRFRanker
 
@@ -1060,8 +1059,8 @@ curl --request POST \
     &quot;outputFields&quot;: [&quot;doc_id&quot;, &quot;title&quot;, &quot;category&quot;, &quot;chunks[text]&quot;, &quot;chunks[section]&quot;, &quot;chunks[quality_score]&quot;]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Kedua sub-permintaan menerapkan ` <code translate="no">category == &quot;search&quot;</code>`. Ekspresi ` <code translate="no">chunk_req</code> ` juga membatasi elemen Struct yang berpartisipasi dalam pencarian vektornya. Untuk kombinasi pencarian hibrida yang didukung dan batasan versi tertentu, lihat <a href="/docs/id/hybrid-search-with-structarray.md">Pencarian Hibrida dengan StructArray</a> dan <a href="/docs/id/structarray-limits.md">Batasan StructArray</a>.</p>
-<h2 id="Predicate-support-summary" class="common-anchor-header">Ringkasan dukungan predikat<button data-href="#Predicate-support-summary" class="anchor-icon" translate="no">
+<p>Both sub-requests apply <code translate="no">category == &quot;search&quot;</code>. The <code translate="no">chunk_req</code> expression also constrains the Struct elements that participate in its vector search. For supported hybrid search combinations and version-specific limits, see <a href="/docs/id/hybrid-search-with-structarray.md">Hybrid Search with StructArray</a> and <a href="/docs/id/structarray-limits.md">StructArray Limits</a>.</p>
+<h2 id="Predicate-support-summary" class="common-anchor-header">Predicate support summary<button data-href="#Predicate-support-summary" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1076,21 +1075,21 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Gunakan subbidang skalar dalam predikat StructArray. Subbidang vektor bukanlah masukan predikat skalar.</p>
+    </button></h2><p>Use scalar subfields in StructArray predicates. Vector subfields are not scalar predicate inputs.</p>
 <table>
 <thead>
-<tr><th>Jenis subbidang</th><th>Contoh predikat umum</th></tr>
+<tr><th>Subfield type</th><th>Typical predicate examples</th></tr>
 </thead>
 <tbody>
 <tr><td><code translate="no">BOOL</code></td><td><code translate="no">$[has_code] == true</code>, <code translate="no">!($[has_code] == true)</code></td></tr>
-<tr><td>Tipe bilangan bulat</td><td><code translate="no">$[page] &gt;= 2</code>, <code translate="no">$[page] in [1, 2, 3]</code></td></tr>
+<tr><td>Integer types</td><td><code translate="no">$[page] &gt;= 2</code>, <code translate="no">$[page] in [1, 2, 3]</code></td></tr>
 <tr><td><code translate="no">FLOAT</code>, <code translate="no">DOUBLE</code></td><td><code translate="no">$[quality_score] &gt; 0.9</code>, <code translate="no">0.7 &lt; $[quality_score] &lt; 0.95</code></td></tr>
 <tr><td><code translate="no">VARCHAR</code></td><td><code translate="no">$[section] == &quot;index&quot;</code>, <code translate="no">$[text] like &quot;range%&quot;</code></td></tr>
-<tr><td>Subbidang vektor</td><td>Tidak didukung sebagai masukan predikat skalar <code translate="no">$[...]</code>. Gunakan subbidang vektor melalui pencarian vektor sebagai gantinya.</td></tr>
+<tr><td>Vector subfields</td><td>Not supported as <code translate="no">$[...]</code> scalar predicate inputs. Use vector subfields through vector search instead.</td></tr>
 </tbody>
 </table>
-<p>Untuk kasus yang tidak didukung seperti jalur JSON, fungsi pencocokan teks, fungsi Geometri, ekspresi Timestamptz, dan panggilan fungsi generik, serta untuk fungsi wadah array dan predikat null yang didukung oleh <code translate="no">$[...]</code> mulai dari Milvus 3.0.6, lihat <a href="/docs/id/struct-array-operators.md">Operator StructArray</a>.</p>
-<h2 id="Common-mistakes" class="common-anchor-header">Kesalahan umum<button data-href="#Common-mistakes" class="anchor-icon" translate="no">
+<p>For unsupported cases such as JSON paths, text match functions, Geometry functions, Timestamptz expressions, and generic function calls, and for the array container functions and null predicates that <code translate="no">$[...]</code> supports starting in Milvus 3.0.6, see <a href="/docs/id/struct-array-operators.md">StructArray Operators</a>.</p>
+<h2 id="Common-mistakes" class="common-anchor-header">Common mistakes<button data-href="#Common-mistakes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1106,14 +1105,14 @@ curl --request POST \
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>Menggunakan ` <code translate="no">$[subfield]</code> ` di luar ` <code translate="no">element_filter</code> ` atau ` <code translate="no">MATCH_*</code>`.</p></li>
-<li><p>Menggunakan <code translate="no">chunks.section</code> alih-alih sintaks operator StructArray seperti <code translate="no">element_filter(chunks, $[section] == &quot;index&quot;)</code>.</p></li>
-<li><p>Menggunakan <code translate="no">element_filter</code> saat Anda hanya memerlukan penyaringan tingkat baris. Gunakan <code translate="no">MATCH_ANY</code> sebagai gantinya jika Anda hanya perlu memilih entitas.</p></li>
-<li><p>Mengharapkan ` <code translate="no">MATCH_*</code> ` mengembalikan offset elemen. Operator-operator ini memilih entitas dan tidak mengidentifikasi satu elemen yang cocok secara mandiri.</p></li>
-<li><p>Menulis predikat boolean tanpa operator seperti <code translate="no">$[has_code]</code>. Gunakan perbandingan eksplisit seperti <code translate="no">$[has_code] == true</code>.</p></li>
-<li><p>Menempatkan ` <code translate="no">element_filter</code> ` sebelum predikat tingkat atas dalam ekspresi filter yang sama.</p></li>
+<li><p>Using <code translate="no">$[subfield]</code> outside <code translate="no">element_filter</code> or <code translate="no">MATCH_*</code>.</p></li>
+<li><p>Using <code translate="no">chunks.section</code> instead of StructArray operator syntax such as <code translate="no">element_filter(chunks, $[section] == &quot;index&quot;)</code>.</p></li>
+<li><p>Using <code translate="no">element_filter</code> when you only need row-level filtering. Use <code translate="no">MATCH_ANY</code> instead if you only need to select entities.</p></li>
+<li><p>Expecting <code translate="no">MATCH_*</code> to return element offsets. These operators select entities and do not identify one matched element by themselves.</p></li>
+<li><p>Writing bare boolean predicates such as <code translate="no">$[has_code]</code>. Use explicit comparisons such as <code translate="no">$[has_code] == true</code>.</p></li>
+<li><p>Putting <code translate="no">element_filter</code> before a top-level predicate in the same filter expression.</p></li>
 </ul>
-<h2 id="Next-steps" class="common-anchor-header">Langkah selanjutnya<button data-href="#Next-steps" class="anchor-icon" translate="no">
+<h2 id="Next-steps" class="common-anchor-header">Next steps<button data-href="#Next-steps" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1129,8 +1128,8 @@ curl --request POST \
         ></path>
       </svg>
     </button></h2><ol>
-<li><p>Untuk meninjau sintaks filter StructArray secara lengkap, baca <a href="/docs/id/struct-array-operators.md">StructArray Operators</a>.</p></li>
-<li><p>Untuk menjalankan pencarian vektor tanpa filter terlebih dahulu, baca <a href="/docs/id/basic-vector-search-with-structarray.md">Pencarian Vektor Dasar dengan StructArray</a>.</p></li>
-<li><p>Untuk membuat indeks skalar untuk filter StructArray yang sering digunakan, baca <a href="/docs/id/index-structarray-fields.md">Indeks Bidang StructArray</a>.</p></li>
-<li><p>Untuk memeriksa batasan filter dan pencarian yang spesifik versi, baca <a href="/docs/id/structarray-limits.md">Batasan StructArray</a>.</p></li>
+<li><p>To review full StructArray filter syntax, read <a href="/docs/id/struct-array-operators.md">StructArray Operators</a>.</p></li>
+<li><p>To run unfiltered vector searches first, read <a href="/docs/id/basic-vector-search-with-structarray.md">Basic Vector Search with StructArray</a>.</p></li>
+<li><p>To create scalar indexes for frequently used StructArray filters, read <a href="/docs/id/index-structarray-fields.md">Index StructArray Fields</a>.</p></li>
+<li><p>To check version-specific filter and search limits, read <a href="/docs/id/structarray-limits.md">StructArray Limits</a>.</p></li>
 </ol>

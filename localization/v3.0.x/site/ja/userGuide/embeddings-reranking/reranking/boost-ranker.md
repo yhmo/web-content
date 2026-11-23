@@ -2,8 +2,10 @@
 id: boost-ranker.md
 title: Boost RankerCompatible with Milvus v2.6.2+
 summary: >-
-  Boost Rankers
-  では、ベクトル距離に基づいて計算された意味的類似性のみに依存するのではなく、検索結果に有意義な影響を与えることができます。メタデータによるフィルタリングを用いて検索結果を迅速に調整するのに最適です。
+  Instead of relying solely on semantic similarity calculated based on vector
+  distances, Boost Rankers allow you to influence search results in a meaningful
+  way. It is ideal for quickly adjusting search results using metadata
+  filtering.
 beta: Milvus v2.6.2+
 ---
 <h1 id="Boost-Ranker" class="common-anchor-header">Boost Ranker<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus v2.6.2+</span><button data-href="#Boost-Ranker" class="anchor-icon" translate="no">
@@ -21,9 +23,9 @@ beta: Milvus v2.6.2+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>ブーストランカーを使用すると、ベクトル距離に基づいて計算された意味的類似性のみに依存するのではなく、検索結果に有意義な影響を与えることができます。メタデータによるフィルタリングを用いて検索結果を迅速に調整するのに最適です。</p>
-<p>検索リクエストにブーストランカー関数が含まれている場合、Milvus はその関数内のオプションのフィルタリング条件を使用して検索結果候補の中から一致する項目を見つけ出し、指定された重みを適用してそれらのスコアを上昇させます。これにより、最終結果における一致したエンティティの順位を上げたり下げたりすることが可能になります。</p>
-<h2 id="When-to-use-Boost-Ranker" class="common-anchor-header">Boost Rankerの使用場面<button data-href="#When-to-use-Boost-Ranker" class="anchor-icon" translate="no">
+    </button></h1><p>Instead of relying solely on semantic similarity calculated based on vector distances, Boost Rankers allow you to influence search results in a meaningful way. It is ideal for quickly adjusting search results using metadata filtering.</p>
+<p>When a search request includes a Boost Ranker function, Milvus uses the optional filtering condition within the function to find matches among search result candidates and boosts the scores of those matches by applying the specified weight, helping promote or demote the rankings of the matched entities in the final result.</p>
+<h2 id="When-to-use-Boost-Ranker" class="common-anchor-header">When to use Boost Ranker<button data-href="#When-to-use-Boost-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -38,25 +40,25 @@ beta: Milvus v2.6.2+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>クロスエンコーダーモデルや融合アルゴリズムに依存する他のランカーとは異なり、Boost Rankerはオプションのメタデータ駆動型ルールをランキングプロセスに直接組み込むため、以下のシナリオでより適しています。</p>
+    </button></h2><p>Unlike other rankers that rely on cross-encoder models or fusion algorithms, a Boost Ranker directly injects optional metadata-driven rules into the ranking process, which makes it more suitable in the following scenarios.</p>
 <table>
    <tr>
-     <th><p>ユースケース</p></th>
-     <th><p>例</p></th>
-     <th><p>Boost Rankerが効果的な理由</p></th>
+     <th><p>Use Case</p></th>
+     <th><p>Examples</p></th>
+     <th><p>Why Boost Ranker Works Well</p></th>
    </tr>
    <tr>
-     <td><p>ビジネス主導のコンテンツ優先順位付け</p></td>
-     <td><ul><li><p>eコマースの検索結果でプレミアム商品を目立たせる</p></li><li><p>ユーザーエンゲージメント指標（閲覧数、いいね、シェアなど）の高いコンテンツの可視性を高める</p></li><li><p>タイムリーさが求められる検索アプリケーションにおいて、最新のコンテンツを上位に表示</p></li><li><p>検証済みまたは信頼できる情報源からのコンテンツを優先</p></li><li><p>完全一致のフレーズや関連性の高いキーワードに合致する検索結果を優先表示</p></li></ul></td>
-     <td rowspan="2"><p>インデックスの再構築やベクトル埋め込みモデルの修正といった、時間がかかる作業を行う必要なく、オプションのメタデータフィルターをリアルタイムで適用することで、検索結果内の特定の項目を即座に上位表示または下位表示に調整できます。この仕組みにより、変化するビジネス要件に容易に適応できる、柔軟で動的な検索ランキングを実現します。</p></td>
+     <td><p>Business-driven content prioritization</p></td>
+     <td><ul><li><p>Highlight premium products in e-commerce search results</p></li><li><p>Increase visibility of content with high user engagement metrics (such as views, likes, and shares)</p></li><li><p>Elevating recent content in time-sensitive search applications</p></li><li><p>Prioritizing content from verified or trusted sources</p></li><li><p>Boosting results that match exact phrases or high-relevance keywords</p></li></ul></td>
+     <td rowspan="2"><p>Without the need to rebuild indexes or modify vector embedding models—operations that can be time-consuming—you can instantly promote or demote specific items in search results by applying optional metadata filters in real time. This mechanism enables flexible, dynamic search rankings that easily adapt to evolving business requirements.</p></td>
    </tr>
    <tr>
-     <td><p>戦略的なコンテンツの順位引き下げ</p></td>
-     <td><ul><li><p>在庫が少ないアイテムを完全に削除することなく、その表示順位を下げる</p></li><li><p>検閲を行わずに、問題となる可能性のある用語を含むコンテンツの順位を下げる</p></li><li><p>古いドキュメントの順位を下げつつ、技術検索では引き続きアクセス可能に保つ</p></li><li><p>マーケットプレイス検索において、競合他社の製品の可視性を微妙に低下させる</p></li><li><p>品質が低いとみなされるコンテンツ（書式の問題や文章が短いなど）の関連性を低下させる</p></li></ul></td>
+     <td><p>Strategic content downranking</p></td>
+     <td><ul><li><p>Reducing the prominence of items with low inventory without removing them completely</p></li><li><p>Lowering the rank of content with potentially objectionable terms without censorship</p></li><li><p>Demoting older documentation while keeping it accessible in technical searches</p></li><li><p>Subtly reducing the visibility of competitor products in marketplace searches</p></li><li><p>Decreasing relevance of content with lower quality indications (such as formatting issues, shorter length, etc.)</p></li></ul></td>
    </tr>
 </table>
-<p>また、複数の「Boost Ranker」を組み合わせて、より動的で堅牢な重み付けベースのランキング戦略を実装することも可能です。</p>
-<h2 id="Mechanism-of-Boost-Ranker" class="common-anchor-header">Boost Rankerの仕組み<button data-href="#Mechanism-of-Boost-Ranker" class="anchor-icon" translate="no">
+<p>You can also combine multiple Boost Rankers to implement a more dynamic and robust weight-based ranking strategy.</p>
+<h2 id="Mechanism-of-Boost-Ranker" class="common-anchor-header">Mechanism of Boost Ranker<button data-href="#Mechanism-of-Boost-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -71,23 +73,23 @@ beta: Milvus v2.6.2+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>次の図は、Boost Rankerの主なワークフローを示しています。</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/boost-ranker-mechanism.png" alt="Boost Ranker Mechanism" class="doc-image" id="boost-ranker-mechanism" /> 
-   <span>Boost Rankerの仕組み</span>
-  
- </span></p>
-<p>データを挿入すると、Milvus はそのデータを各セグメントに分散させます。検索時には、各セグメントが一連の候補を返し、Milvus はすべてのセグメントからのこれらの候補をランク付けして最終結果を生成します。検索リクエストに Boost Ranker が含まれている場合、Milvus は各セグメントからの候補結果にこれを適用し、精度の低下を防ぎ、再現率を向上させます。</p>
-<p>結果を確定する前に、MilvusはBoost Rankerを用いてこれらの候補を次のように処理します：</p>
+    </button></h2><p>The following diagram illustrates the main workflow of Boost Rankers.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/boost-ranker-mechanism.png" alt="Boost Ranker Mechanism" class="doc-image" id="boost-ranker-mechanism" />
+    <span>Boost Ranker Mechanism</span>
+  </span>
+</p>
+<p>When you insert data, Milvus distributes it across segments. During a search, each segment returns a set of candidates, and Milvus ranks these candidates from all segments to produce the final results. When a search request includes a Boost Ranker, Milvus applies it to the candidate results from each segment to prevent potential precision loss and improve recall.</p>
+<p>Before finalizing the results, Milvus processes these candidates with the Boost Ranker as follows:</p>
 <ol>
-<li><p>Boost Rankerで指定されたオプションのフィルタリング式を適用し、式に一致するエンティティを特定します。</p></li>
-<li><p>Boost Rankerで指定された重みを適用し、特定されたエンティティのスコアを向上させます。</p></li>
+<li><p>Applies the optional filtering expression specified in the Boost Ranker to identify the entities that match the expression.</p></li>
+<li><p>Applies the weight specified in the Boost Ranker to boost the scores of the identified entities.</p></li>
 </ol>
 <div class="alert note">
-<p>マルチベクトルハイブリッド検索では、Boost Rankerをランカーとして使用することはできません。ただし、そのサブリクエスト（<code translate="no">AnnSearchRequest</code> ）のいずれかにおいて、ランカーとして使用することは可能です。</p>
+<p>You cannot use Boost Ranker as the ranker in a multi-vector hybrid search. However, you can use it as the ranker in any of its sub-requests (<code translate="no">AnnSearchRequest</code>).</p>
 </div>
-<h2 id="Examples-of-Boost-Ranker" class="common-anchor-header">Boost Ranker の使用例<button data-href="#Examples-of-Boost-Ranker" class="anchor-icon" translate="no">
+<h2 id="Examples-of-Boost-Ranker" class="common-anchor-header">Examples of Boost Ranker<button data-href="#Examples-of-Boost-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -102,49 +104,49 @@ beta: Milvus v2.6.2+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>次の例は、関連性の高いエンティティ上位 5 件を返し、abstract ドキュメントタイプを持つエンティティのスコアに重みを加える必要があるシングルベクトル検索における Boost Ranker の使用例を示しています。</p>
+    </button></h2><p>The following example illustrates the use of a Boost Ranker in a single-vector search that requires returning the top five most relevant entities and adding weights to the scores of entities with the abstract doc type.</p>
 <ol>
-<li><p><strong>検索結果の候補をセグメントごとに収集します。</strong></p>
-<p>以下の表は、Milvus がエンティティを 2 つのセグメント（<strong>0001</strong>および<strong>0002</strong>）に分散し、各セグメントから 5 つの候補を返すことを前提としています。</p>
+<li><p><strong>Collect search result candidates in segments.</strong></p>
+<p>The following table assumes Milvus distributes entities into two segments (<strong>0001</strong> and <strong>0002</strong>), with each segment returning five candidates.</p>
 <p><table>
 <tr>
 <th><p>ID</p></th>
 <th><p>DocType</p></th>
-<th><p>スコア</p></th>
-<th><p>順位</p></th>
-<th><p>セグメント</p></th>
+<th><p>Score</p></th>
+<th><p>Rank</p></th>
+<th><p>segment</p></th>
 </tr>
 <tr>
 <td><p>117</p></td>
-<td><p>要旨</p></td>
+<td><p>abstract</p></td>
 <td><p>0.344</p></td>
 <td><p>1</p></td>
 <td><p>0001</p></td>
 </tr>
 <tr>
 <td><p>89</p></td>
-<td><p>要旨</p></td>
+<td><p>abstract</p></td>
 <td><p>0.456</p></td>
 <td><p>2</p></td>
 <td><p>0001</p></td>
 </tr>
 <tr>
 <td><p>257</p></td>
-<td><p>本文</p></td>
+<td><p>body</p></td>
 <td><p>0.578</p></td>
 <td><p>3</p></td>
 <td><p>0001</p></td>
 </tr>
 <tr>
 <td><p>358</p></td>
-<td><p>タイトル</p></td>
+<td><p>title</p></td>
 <td><p>0.788</p></td>
 <td><p>4</p></td>
 <td><p>0001</p></td>
 </tr>
 <tr>
 <td><p>168</p></td>
-<td><p>本文</p></td>
+<td><p>body</p></td>
 <td><p>0.899</p></td>
 <td><p>5</p></td>
 <td><p>0001</p></td>
@@ -158,74 +160,74 @@ beta: Milvus v2.6.2+
 </tr>
 <tr>
 <td><p>48</p></td>
-<td><p>本体</p></td>
+<td><p>body</p></td>
 <td><p>0265</p></td>
 <td><p>2</p></td>
 <td><p>0002</p></td>
 </tr>
 <tr>
 <td><p>561</p></td>
-<td><p>要旨</p></td>
+<td><p>abstract</p></td>
 <td><p>0.366</p></td>
 <td><p>3</p></td>
 <td><p>0002</p></td>
 </tr>
 <tr>
 <td><p>344</p></td>
-<td><p>要旨</p></td>
+<td><p>abstract</p></td>
 <td><p>0.444</p></td>
 <td><p>4</p></td>
 <td><p>0002</p></td>
 </tr>
 <tr>
 <td><p>276</p></td>
-<td><p>要旨</p></td>
+<td><p>abstract</p></td>
 <td><p>0.845</p></td>
 <td><p>5</p></td>
 <td><p>0002</p></td>
 </tr>
 </table></p></li>
-<li><p><strong>Boost Ranker</strong>（<code translate="no">doctype='abstract'</code> ）<strong>で指定されたフィルタリング式を適用します</strong>。</p>
-<p>以下の表の「<code translate="no">DocType</code> 」フィールドに示されているように、Milvusは、さらなる処理のために、<code translate="no">doctype</code> が<code translate="no">abstract</code> に設定されているすべてのエンティティにマークを付けます。</p>
+<li><p><strong>Apply the filtering expression specified in the Boost Ranker</strong> (<code translate="no">doctype='abstract'</code>).</p>
+<p>As denoted by the <code translate="no">DocType</code> field in the following table, Milvus will mark all entities with their <code translate="no">doctype</code> set to <code translate="no">abstract</code> for further processing.</p>
 <p><table>
 <tr>
 <th><p>ID</p></th>
 <th><p>DocType</p></th>
-<th><p>スコア</p></th>
-<th><p>ランク</p></th>
-<th><p>セグメント</p></th>
+<th><p>Score</p></th>
+<th><p>Rank</p></th>
+<th><p>segment</p></th>
 </tr>
 <tr>
 <td><p><strong>117</strong></p></td>
-<td><p><strong>要旨</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
 <td><p><strong>0.344</strong></p></td>
 <td><p><strong>1</strong></p></td>
 <td><p><strong>0001</strong></p></td>
 </tr>
 <tr>
 <td><p><strong>89</strong></p></td>
-<td><p><strong>抄録</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
 <td><p><strong>0.456</strong></p></td>
 <td><p><strong>2</strong></p></td>
 <td><p><strong>0001</strong></p></td>
 </tr>
 <tr>
 <td><p>257</p></td>
-<td><p>本文</p></td>
+<td><p>body</p></td>
 <td><p>0.578</p></td>
 <td><p>3</p></td>
 <td><p>0001</p></td>
 </tr>
 <tr>
 <td><p>358</p></td>
-<td><p>タイトル</p></td>
+<td><p>title</p></td>
 <td><p>0.788</p></td>
 <td><p>4</p></td>
 <td><p>0001</p></td>
 </tr>
 <tr>
 <td><p>168</p></td>
-<td><p>本文</p></td>
+<td><p>body</p></td>
 <td><p>0.899</p></td>
 <td><p>5</p></td>
 <td><p>0001</p></td>
@@ -239,47 +241,47 @@ beta: Milvus v2.6.2+
 </tr>
 <tr>
 <td><p>48</p></td>
-<td><p>本体</p></td>
+<td><p>body</p></td>
 <td><p>0265</p></td>
 <td><p>2</p></td>
 <td><p>0002</p></td>
 </tr>
 <tr>
 <td><p><strong>561</strong></p></td>
-<td><p><strong>要旨</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
 <td><p><strong>0.366</strong></p></td>
 <td><p><strong>3</strong></p></td>
 <td><p><strong>0002</strong></p></td>
 </tr>
 <tr>
 <td><p><strong>344</strong></p></td>
-<td><p><strong>要旨</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
 <td><p><strong>0.444</strong></p></td>
 <td><p><strong>4</strong></p></td>
 <td><p><strong>0002</strong></p></td>
 </tr>
 <tr>
 <td><p><strong>276</strong></p></td>
-<td><p><strong>要旨</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
 <td><p><strong>0.845</strong></p></td>
 <td><p><strong>5</strong></p></td>
 <td><p><strong>0002</strong></p></td>
 </tr>
 </table></p></li>
-<li><p><strong>Boost Ranker</strong>（<code translate="no">weight=0.5</code> ）<strong>で指定された重みを適用します</strong>。</p>
-<p>前のステップで特定されたすべてのエンティティに、Boost Ranker で指定された重みが乗算され、その結果、それらの順位が変更されます。</p>
+<li><p><strong>Apply the weight specified in the Boost Ranker</strong> (<code translate="no">weight=0.5</code>).</p>
+<p>All identified entities in the previous step will be multiplied by the weight specified in the Boost Ranker, resulting in changes in their ranks.</p>
 <p><table>
 <tr>
 <th><p>ID</p></th>
 <th><p>DocType</p></th>
-<th><p>スコア</p></th>
-<th><p>重み付きスコア </p><p>(= スコア × 重み)</p></th>
-<th><p>順位</p></th>
-<th><p>セグメント</p></th>
+<th><p>Score</p></th>
+<th><p>Weighted Score </p><p>(= score x weight)</p></th>
+<th><p>Rank</p></th>
+<th><p>segment</p></th>
 </tr>
 <tr>
 <td><p><strong>117</strong></p></td>
-<td><p><strong>要旨</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
 <td><p><strong>0.344</strong></p></td>
 <td><p><strong>0.172</strong></p></td>
 <td><p><strong>1</strong></p></td>
@@ -287,7 +289,7 @@ beta: Milvus v2.6.2+
 </tr>
 <tr>
 <td><p><strong>89</strong></p></td>
-<td><p><strong>要旨</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
 <td><p><strong>0.456</strong></p></td>
 <td><p><strong>0.228</strong></p></td>
 <td><p><strong>2</strong></p></td>
@@ -295,7 +297,7 @@ beta: Milvus v2.6.2+
 </tr>
 <tr>
 <td><p>257</p></td>
-<td><p>本体</p></td>
+<td><p>body</p></td>
 <td><p>0.578</p></td>
 <td><p>0.578</p></td>
 <td><p>3</p></td>
@@ -303,7 +305,7 @@ beta: Milvus v2.6.2+
 </tr>
 <tr>
 <td><p>358</p></td>
-<td><p>タイトル</p></td>
+<td><p>title</p></td>
 <td><p>0.788</p></td>
 <td><p>0.788</p></td>
 <td><p>4</p></td>
@@ -319,7 +321,7 @@ beta: Milvus v2.6.2+
 </tr>
 <tr>
 <td><p><strong>561</strong></p></td>
-<td><p><strong>要旨</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
 <td><p><strong>0.366</strong></p></td>
 <td><p><strong>0.183</strong></p></td>
 <td><p><strong>1</strong></p></td>
@@ -327,7 +329,7 @@ beta: Milvus v2.6.2+
 </tr>
 <tr>
 <td><p>46</p></td>
-<td><p>本体</p></td>
+<td><p>body</p></td>
 <td><p>0.189</p></td>
 <td><p>0.189</p></td>
 <td><p>2</p></td>
@@ -335,7 +337,7 @@ beta: Milvus v2.6.2+
 </tr>
 <tr>
 <td><p><strong>344</strong></p></td>
-<td><p><strong>要旨</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
 <td><p><strong>0.444</strong></p></td>
 <td><p><strong>0.222</strong></p></td>
 <td><p><strong>3</strong></p></td>
@@ -343,7 +345,7 @@ beta: Milvus v2.6.2+
 </tr>
 <tr>
 <td><p>48</p></td>
-<td><p>本体</p></td>
+<td><p>body</p></td>
 <td><p>0.265</p></td>
 <td><p>0.265</p></td>
 <td><p>4</p></td>
@@ -351,7 +353,7 @@ beta: Milvus v2.6.2+
 </tr>
 <tr>
 <td><p><strong>276</strong></p></td>
-<td><p><strong>要旨</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
 <td><p><strong>0.845</strong></p></td>
 <td><p><strong>0.423</strong></p></td>
 <td><p><strong>5</strong></p></td>
@@ -359,21 +361,21 @@ beta: Milvus v2.6.2+
 </tr>
 </table></p>
 <p><div class="alert note"></p>
-<p>重みには、任意の浮動小数点数を指定する必要があります。上記の例のように、スコアが小さいほど関連性が高い場合は、<strong>1</strong> 未満の重みを使用してください。それ以外の場合は、<strong>1</strong> より大きい重みを使用してください。</p>
+<p>The weight must be a floating-point number that you choose. In cases like the above example, where a smaller score indicates greater relevance, use a weight less than <strong>1</strong>. Otherwise, use a weight greater than <strong>1</strong>.</p>
 <p></div></p></li>
-<li><p><strong>重み付けされたスコアに基づいて、すべてのセグメントの候補を集計し、結果を確定します。</strong></p>
+<li><p><strong>Aggregate the candidates from all segments based on the weighted scores to finalize the results.</strong></p>
 <p><table>
 <tr>
 <th><p>ID</p></th>
 <th><p>DocType</p></th>
-<th><p>スコア</p></th>
-<th><p>重み付きスコア</p></th>
-<th><p>順位</p></th>
-<th><p>セグメント</p></th>
+<th><p>Score</p></th>
+<th><p>Weighted Score</p></th>
+<th><p>Rank</p></th>
+<th><p>segment</p></th>
 </tr>
 <tr>
 <td><p><strong>117</strong></p></td>
-<td><p><strong>要旨</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
 <td><p><strong>0.344</strong></p></td>
 <td><p><strong>0.172</strong></p></td>
 <td><p><strong>1</strong></p></td>
@@ -381,7 +383,7 @@ beta: Milvus v2.6.2+
 </tr>
 <tr>
 <td><p><strong>561</strong></p></td>
-<td><p><strong>要旨</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
 <td><p><strong>0.366</strong></p></td>
 <td><p><strong>0.183</strong></p></td>
 <td><p><strong>2</strong></p></td>
@@ -389,7 +391,7 @@ beta: Milvus v2.6.2+
 </tr>
 <tr>
 <td><p>46</p></td>
-<td><p>本体</p></td>
+<td><p>body</p></td>
 <td><p>0.189</p></td>
 <td><p>0.189</p></td>
 <td><p>3</p></td>
@@ -397,7 +399,7 @@ beta: Milvus v2.6.2+
 </tr>
 <tr>
 <td><p><strong>344</strong></p></td>
-<td><p><strong>要旨</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
 <td><p><strong>0.444</strong></p></td>
 <td><p><strong>0.222</strong></p></td>
 <td><p><strong>4</strong></p></td>
@@ -405,7 +407,7 @@ beta: Milvus v2.6.2+
 </tr>
 <tr>
 <td><p><strong>89</strong></p></td>
-<td><p><strong>要旨</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
 <td><p><strong>0.456</strong></p></td>
 <td><p><strong>0.228</strong></p></td>
 <td><p><strong>5</strong></p></td>
@@ -413,7 +415,7 @@ beta: Milvus v2.6.2+
 </tr>
 </table></p></li>
 </ol>
-<h2 id="Usage-of-Boost-Ranker" class="common-anchor-header">Boost Ranker の使用方法<button data-href="#Usage-of-Boost-Ranker" class="anchor-icon" translate="no">
+<h2 id="Usage-of-Boost-Ranker" class="common-anchor-header">Usage of Boost Ranker<button data-href="#Usage-of-Boost-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -428,8 +430,8 @@ beta: Milvus v2.6.2+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>このセクションでは、Boost Ranker を使用して単一ベクトル検索の結果に影響を与える方法の例を紹介します。</p>
-<h3 id="Create-a-Boost-Ranker" class="common-anchor-header">Boost Rankerの作成<button data-href="#Create-a-Boost-Ranker" class="anchor-icon" translate="no">
+    </button></h2><p>In this section, you will see examples of how to use Boost Ranker to influence the results of a single-vector search.</p>
+<h3 id="Create-a-Boost-Ranker" class="common-anchor-header">Create a Boost Ranker<button data-href="#Create-a-Boost-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -444,15 +446,15 @@ beta: Milvus v2.6.2+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>検索リクエストの再ランク付け関数として Boost Ranker を渡す前に、次のように Boost Ranker を再ランク付け関数として適切に定義する必要があります：</p>
+    </button></h3><p>Before passing a Boost Ranker as the reranker of a search request, you should properly define the Boost Ranker as a reranking function as follows:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> Function, FunctionType
 
@@ -544,55 +546,55 @@ rerank-&gt;<span class="hljs-built_in">SetWeight</span>(<span class="hljs-number
 <button class="copy-code-btn"></button></code></pre>
 <table>
    <tr>
-     <th><p>パラメータ</p></th>
-     <th><p>必須？</p></th>
-     <th><p>説明</p></th>
-     <th><p>値/例</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Required?</p></th>
+     <th><p>Description</p></th>
+     <th><p>Value/Example</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">name</code></p></td>
-     <td><p>はい</p></td>
-     <td><p>この関数の固有の識別子</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Unique identifier for this Function</p></td>
      <td><p><code translate="no">"boost"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">input_field_names</code></p></td>
-     <td><p>はい</p></td>
-     <td><p>関数を適用するベクトルフィールドのリスト（Boost Rankerの場合は空でなければならない）</p></td>
+     <td><p>Yes</p></td>
+     <td><p>List of vector fields to apply the function to (must be empty for Boost Ranker)</p></td>
      <td><p><code translate="no">[]</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">function_type</code></p></td>
-     <td><p>はい</p></td>
-     <td><p>呼び出す関数のタイプ。再ランク付け戦略を指定するには、<code translate="no">RERANK</code> を使用してください</p></td>
+     <td><p>Yes</p></td>
+     <td><p>The type of Function to invoke; use <code translate="no">RERANK</code> to specify a reranking strategy</p></td>
      <td><p><code translate="no">FunctionType.RERANK</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.reranker</code></p></td>
-     <td><p>はい</p></td>
-     <td><p>再ランク付け機能のタイプを指定します。</p><p>Boost Ranker を使用するには、<code translate="no">boost</code> に設定する必要があります。</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Specifies the type of the reranker.</p><p>Must be set to <code translate="no">boost</code> to use Boost Ranker.</p></td>
      <td><p><code translate="no">"boost"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.weight</code></p></td>
-     <td><p>はい</p></td>
-     <td><p>生の検索結果に含まれる一致するエンティティのスコアに掛けられる重みを指定します。</p><p>値は浮動小数点数である必要があります。 </p><ul><li><p>一致するエンティティの重要性を強調するには、スコアを上昇させる値に設定してください。</p></li><li><p>一致するエンティティの重要度を下げるには、スコアを下げる値をこのパラメータに割り当てます。</p></li></ul></td>
+     <td><p>Yes</p></td>
+     <td><p>Specifies the weight that will be multiplied by the scores of any matching entities in the raw search results.</p><p>The value should be a floating-point number. </p><ul><li><p>To emphasize the importance of matching entities, set it to a value that boosts the scores.</p></li><li><p>To demote matching entities, assign this parameter a value that lowers their scores.</p></li></ul></td>
      <td><p><code translate="no">1</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.filter</code></p></td>
-     <td><p>いいえ</p></td>
-     <td><p>検索結果のエンティティの中から一致するエンティティを特定するために使用されるフィルタ式を指定します。これは、「<a href="/docs/ja/boolean.md">フィルタリングの説明</a>」に記載されている、有効な基本的なフィルタ式であればどれでも使用できます。</p><p><strong>注</strong>：<code translate="no">==</code> 、<code translate="no">&gt;</code> 、<code translate="no">&lt;</code> などの基本演算子のみを使用してください。<code translate="no">text_match</code> や<code translate="no">phrase_match</code> などの高度な演算子を使用すると、検索パフォーマンスが低下します。</p></td>
+     <td><p>No</p></td>
+     <td><p>Specifies the filter expression that will be used to match entities among search result entities. It can be any valid basic filter expression mentioned in <a href="/docs/ja/boolean.md">Filtering Explained</a>.</p><p><strong>Note</strong>: Only use basic operators, such as <code translate="no">==</code>, <code translate="no">&gt;</code>, or <code translate="no">&lt;</code>. Using advanced operators, such as <code translate="no">text_match</code> or <code translate="no">phrase_match</code>, will degrade search performance.</p></td>
      <td><p><code translate="no">"doctype == 'abstract'"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.random_score</code></p></td>
-     <td><p>いいえ</p></td>
-     <td><p><code translate="no">0</code> と<code translate="no">1</code> の間の値をランダムに生成する乱数関数を指定します。以下の 2 つのオプション引数があります：</p><ul><li><p><code translate="no">seed</code> (number) 擬似乱数生成器（PRNG）の初期値として使用する値を指定します。</p></li><li><p><code translate="no">field</code> (文字列) 乱数を生成する際のランダム要因として使用されるフィールド名を指定します。一意の値を持つフィールドであれば十分です。</p><p>生成結果の一貫性を確保するため、<code translate="no">seed</code> と<code translate="no">field</code> の両方を設定し、同じシード値とフィールド値を使用することをお勧めします。</p></li></ul></td>
+     <td><p>No</p></td>
+     <td><p>Specifies the random function that generates a value between <code translate="no">0</code> and <code translate="no">1</code> randomly. It has the following two optional arguments:</p><ul><li><p><code translate="no">seed</code> (number) Specifies an initial value used to start a pseudorandom number generator (PRNG).</p></li><li><p><code translate="no">field</code> (string) Specifies the name of a field whose value will be used as a random factor in generating the random number. A field with unique values will suffice.</p><p>You are advised to set both <code translate="no">seed</code> and <code translate="no">field</code> to ensure consistency across generations by using the same seed and field values.</p></li></ul></td>
      <td><p><code translate="no">{"seed": 126, "field": "id"}</code></p></td>
    </tr>
 </table>
-<h3 id="Search-with-a-single-Boost-Ranker" class="common-anchor-header">単一の Boost Ranker を使用した検索<button data-href="#Search-with-a-single-Boost-Ranker" class="anchor-icon" translate="no">
+<h3 id="Search-with-a-single-Boost-Ranker" class="common-anchor-header">Search with a single Boost Ranker<button data-href="#Search-with-a-single-Boost-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -607,15 +609,15 @@ rerank-&gt;<span class="hljs-built_in">SetWeight</span>(<span class="hljs-number
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Boost Ranker 関数の準備が整ったら、検索リクエスト内でそれを参照できます。以下の例では、<strong>id</strong>、<strong>vector</strong>、<strong>doctype</strong> というフィールドを持つコレクションがすでに作成されていることを前提としています。</p>
+    </button></h3><p>Once the Boost Ranker function is ready, you can reference it in a search request. The following example assumes that you have already created a collection that has the following fields: <strong>id</strong>, <strong>vector</strong>, and <strong>doctype</strong>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -784,7 +786,7 @@ curl --request POST \
     }
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Search-with-multiple-Boost-Rankers" class="common-anchor-header">複数の Boost Ranker を使用した検索<button data-href="#Search-with-multiple-Boost-Rankers" class="anchor-icon" translate="no">
+<h3 id="Search-with-multiple-Boost-Rankers" class="common-anchor-header">Search with multiple Boost Rankers<button data-href="#Search-with-multiple-Boost-Rankers" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -799,16 +801,16 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>1回の検索で複数のBoost Rankerを組み合わせて、検索結果に影響を与えることができます。これを行うには、複数のBoost Rankerを作成し、それらを<strong>FunctionScore</strong>インスタンスで参照し、その<strong>FunctionScore</strong>インスタンスを検索リクエストのランカーとして使用します。</p>
-<p>次の例は、<strong>0.8</strong>から<strong>1.2</strong> の間の重みを適用して、特定されたすべてのエンティティのスコアを変更する方法を示しています。</p>
+    </button></h3><p>You can combine multiple Boost Rankers in a single search to influence the search results. To do so, create several Boost Rankers, reference them in a <strong>FunctionScore</strong> instance, and use the <strong>FunctionScore</strong> instance as the ranker in the search request.</p>
+<p>The following example shows how to modify the scores of all identified entities by applying a weight between <strong>0.8</strong> and <strong>1.2</strong>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, Function, FunctionType, FunctionScore
 
@@ -1097,31 +1099,31 @@ curl --request POST \
     }
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>具体的には、2つのBoost Rankerがあります。1つは検出されたすべてのエンティティに固定の重みを適用し、もう1つはそれらにランダムな重みを割り当てます。次に、これら2つのランカー<strong>をFunctionScore内で</strong>参照します。<strong>FunctionScoreでは</strong>、重みが検出されたエンティティのスコアにどのように影響するかも定義されます。</p>
-<p>以下の表は、<strong>FunctionScoreインスタンス</strong>を作成するために必要なパラメータを一覧にしたものです。</p>
+<p>Specifically, there are two Boost Rankers: one applies a fixed weight to all found entities, while the other assigns a random weight to them. Then, we reference these two rankers in a <strong>FunctionScore</strong>, which also defines how the weights influence the scores of the found entities.</p>
+<p>The following table lists the parameters required to create a <strong>FunctionScore</strong> instance.</p>
 <table>
    <tr>
-     <th><p>パラメータ</p></th>
-     <th><p>必須？</p></th>
-     <th><p>説明</p></th>
-     <th><p>値/例</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Required?</p></th>
+     <th><p>Description</p></th>
+     <th><p>Value/Example</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">functions</code></p></td>
-     <td><p>はい</p></td>
-     <td><p>リスト内のターゲット・ランカーの名前を指定します。</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Specifies the names of the target rankers in a list.</p></td>
      <td><p><code translate="no">["fix_weight_ranker", "random_weight_ranker"]</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.boost_mode</code></p></td>
-     <td><p>いいえ</p></td>
-     <td><p>指定された重みが、一致するエンティティのスコアにどのように影響するかを指定します。</p><p>指定可能な値は次のとおりです：</p><ul><li><p><code translate="no">Multiply</code></p><p>重み付けされた値が、一致するエンティティの元のスコアに指定された重みを乗じた値に等しくなることを示します。 </p><p>これがデフォルト値です。</p></li><li><p><code translate="no">Sum</code></p><p>重み付けされた値が、一致するエンティティの元のスコアと指定された重みの和に等しくなることを示します。</p></li></ul></td>
+     <td><p>No</p></td>
+     <td><p>Specifies how the specified weights influence the scores of any matching entities.</p><p>Possible values are:</p><ul><li><p><code translate="no">Multiply</code></p><p>Indicates that the weighted value is equal to the original score of a matching entity multiplied by the specified weight. </p><p>This is the default value.</p></li><li><p><code translate="no">Sum</code></p><p>Indicates that the weighted value is equal to the sum of the original score of a matching entity and the specified weight</p></li></ul></td>
      <td><p><code translate="no">"Sum"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.function_mode</code></p></td>
-     <td><p>なし</p></td>
-     <td><p>さまざまな Boost ランカーからの重み付き値の処理方法を指定します。</p><p>指定可能な値は次のとおりです。</p><ul><li><p><code translate="no">Multiply</code></p><p>一致したエンティティの最終スコアが、すべての Boost Ranker からの重み付き値の積に等しくなることを示します。</p><p>これがデフォルト値です。</p></li><li><p><code translate="no">Sum</code></p><p>一致したエンティティの最終スコアが、すべてのBoostランカーからの重み付き値の合計に等しくなることを示します。</p></li></ul></td>
+     <td><p>No</p></td>
+     <td><p>Specifies how the weighted values from various Boost Rankers are processed.</p><p>Possible values are:</p><ul><li><p><code translate="no">Multiply</code></p><p>Indicates that the final score of a matching entity is equal to the product of the weighted values from all Boost Rankers.</p><p>This is the default value.</p></li><li><p><code translate="no">Sum</code></p><p>Indicates that the final score of a matching entity is equal to the sum of the weighted values from all Boost Rankers.</p></li></ul></td>
      <td><p><code translate="no">"Sum"</code></p></td>
    </tr>
 </table>

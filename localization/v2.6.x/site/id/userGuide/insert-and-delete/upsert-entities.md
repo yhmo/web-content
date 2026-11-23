@@ -1,11 +1,11 @@
 ---
 id: upsert-entities.md
-title: Menyisipkan Entitas
+title: Upsert Entities
 summary: >-
-  Operasi upsert menyediakan cara yang nyaman untuk menyisipkan atau memperbarui
-  entitas dalam koleksi.
+  The upsert operation provides a convenient way to insert or update entities in
+  a collection.
 ---
-<h1 id="Upsert-Entities" class="common-anchor-header">Menyisipkan Entitas<button data-href="#Upsert-Entities" class="anchor-icon" translate="no">
+<h1 id="Upsert-Entities" class="common-anchor-header">Upsert Entities<button data-href="#Upsert-Entities" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,8 +20,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Operasi <code translate="no">upsert</code> menyediakan cara yang mudah untuk menyisipkan atau memperbarui entitas dalam koleksi.</p>
-<h2 id="Overview" class="common-anchor-header">Gambaran Umum<button data-href="#Overview" class="anchor-icon" translate="no">
+    </button></h1><p>The <code translate="no">upsert</code> operation provides a convenient way to insert or update entities in a collection.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -36,9 +36,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Anda dapat menggunakan <code translate="no">upsert</code> untuk menyisipkan entitas baru atau memperbarui entitas yang sudah ada, tergantung pada apakah kunci utama yang disediakan dalam permintaan upsert ada di dalam koleksi. Jika kunci utama tidak ditemukan, operasi penyisipan akan dilakukan. Jika tidak, operasi pembaruan akan dilakukan.</p>
-<p>Upsert di Milvus dapat bekerja dalam mode <strong>penggantian</strong> atau <strong>penggabungan</strong>.</p>
-<h3 id="Upsert-in-override-mode" class="common-anchor-header">Upsert dalam mode penggantian<button data-href="#Upsert-in-override-mode" class="anchor-icon" translate="no">
+    </button></h2><p>You can use <code translate="no">upsert</code> to either insert a new entity or update an existing one, depending on whether the primary key provided in the upsert request exists in the collection. If the primary key is not found, an insert operation occurs. Otherwise, an update operation will be performed.</p>
+<p>An upsert in Milvus works in either <strong>override</strong> or <strong>merge</strong> mode.</p>
+<h3 id="Upsert-in-override-mode" class="common-anchor-header">Upsert in override mode<button data-href="#Upsert-in-override-mode" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -53,14 +53,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Permintaan upsert yang bekerja dalam mode timpa menggabungkan penyisipan dan penghapusan. Ketika permintaan <code translate="no">upsert</code> untuk entitas yang sudah ada diterima, Milvus menyisipkan data yang dibawa dalam muatan permintaan dan menghapus entitas yang sudah ada dengan kunci utama asli yang ditentukan dalam data pada saat yang bersamaan.</p>
+    </button></h3><p>An upsert request that works in override mode combines an insert and a delete. When an <code translate="no">upsert</code> request for an existing entity is received, Milvus inserts the data carried in the request payload and deletes the existing entity with the original primary key specified in the data at the same time.</p>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="/docs/v2.6.x/assets/upsert-in-override-mode.png" alt="Upsert In Override Mode" class="doc-image" id="upsert-in-override-mode" />
-   </span> <span class="img-wrapper"> <span>Menyisipkan Dalam Mode Penggantian</span> </span></p>
-<p>Jika koleksi target memiliki <code translate="no">autoID</code> yang diaktifkan pada bidang utamanya, permintaan <code translate="no">upsert</code> harus tetap menyertakan kunci utama entitas target. Milvus menggunakan kunci utama yang disediakan untuk menemukan entitas yang akan diganti, dan menghasilkan kunci utama baru untuk data yang dibawa dalam muatan permintaan sebelum memasukkannya.</p>
-<p>Untuk bidang dengan <code translate="no">nullable</code> yang diaktifkan, Anda dapat menghilangkannya dalam permintaan <code translate="no">upsert</code> jika bidang tersebut tidak memerlukan pembaruan.</p>
-<h3 id="Upsert-in-merge-mode--Milvus-v262+" class="common-anchor-header">Menyisipkan dalam mode penggabungan<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus v2.6.2+</span><button data-href="#Upsert-in-merge-mode--Milvus-v262+" class="anchor-icon" translate="no">
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/upsert-in-override-mode.png" alt="Upsert In Override Mode" class="doc-image" id="upsert-in-override-mode" />
+    <span>Upsert In Override Mode</span>
+  </span>
+</p>
+<p>If the target collection has <code translate="no">autoID</code> enabled on its primary field, the <code translate="no">upsert</code> request must still include the primary key of the target entity. Milvus uses the provided primary key to locate the entity to replace, and generates a new primary key for the data carried in the request payload before inserting it.</p>
+<p>For fields with <code translate="no">nullable</code> enabled, you can omit them in the <code translate="no">upsert</code> request if they do not require any updates.</p>
+<h3 id="Upsert-in-merge-mode" class="common-anchor-header">Upsert in merge mode<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus v2.6.2+</span><button data-href="#Upsert-in-merge-mode" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -75,15 +77,17 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Anda juga dapat menggunakan bendera <code translate="no">partial_update</code> untuk membuat permintaan upsert bekerja dalam mode penggabungan. Ini memungkinkan Anda untuk menyertakan hanya bidang yang perlu diperbarui dalam muatan permintaan.</p>
+    </button></h3><p>You can also use the <code translate="no">partial_update</code> flag to make an upsert request work in merge mode. This allows you to include only the fields that need updating in the request payload.</p>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="/docs/v2.6.x/assets/upsert-in-merge-mode.png" alt="Upsert In Merge Mode" class="doc-image" id="upsert-in-merge-mode" />
-   </span> <span class="img-wrapper"> <span>Upsert dalam Mode Penggabungan</span> </span></p>
-<p>Untuk melakukan penggabungan, setel <code translate="no">partial_update</code> ke <code translate="no">True</code> dalam permintaan <code translate="no">upsert</code> bersama dengan kunci utama dan bidang yang akan diperbarui dengan nilai barunya.</p>
-<p>Setelah menerima permintaan seperti itu, Milvus melakukan kueri dengan konsistensi yang kuat untuk mengambil entitas, memperbarui nilai bidang berdasarkan data dalam permintaan, menyisipkan data yang dimodifikasi, dan kemudian menghapus entitas yang ada dengan kunci utama asli yang dibawa dalam permintaan.</p>
-<p>Untuk bidang <code translate="no">ARRAY</code>, mode penggabungan mendukung dua operator: <code translate="no">ARRAY_APPEND</code> dan <code translate="no">ARRAY_REMOVE</code>. Operator ini memungkinkan Anda menambahkan elemen atau menghapus elemen yang cocok dari bidang <code translate="no">ARRAY</code> yang sudah ada tanpa terlebih dahulu meminta entitas untuk mengambil nilai saat ini. Untuk detailnya, lihat <a href="/docs/id/v2.6.x/upsert-entities.md#Upsert-ARRAY-fields-with-partial-update-operators">Bidang ARRAY Upsert dengan operator pembaruan parsial</a>.</p>
-<h3 id="Upsert-behaviors-special-notes" class="common-anchor-header">Perilaku Upsert: catatan khusus<button data-href="#Upsert-behaviors-special-notes" class="anchor-icon" translate="no">
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/upsert-in-merge-mode.png" alt="Upsert In Merge Mode" class="doc-image" id="upsert-in-merge-mode" />
+    <span>Upsert In Merge Mode</span>
+  </span>
+</p>
+<p>To perform a merge, set <code translate="no">partial_update</code> to <code translate="no">True</code> in the <code translate="no">upsert</code> request along with the primary key and the fields to update with their new values.</p>
+<p>Upon receiving such a request, Milvus performs a query with strong consistency to retrieve the entity, updates the field values based on the data in the request, inserts the modified data, and then deletes the existing entity with the original primary key carried in the request.</p>
+<p>For <code translate="no">ARRAY</code> fields, merge mode supports two operators: <code translate="no">ARRAY_APPEND</code> and <code translate="no">ARRAY_REMOVE</code>. These operators let you append elements to or remove matching elements from an existing <code translate="no">ARRAY</code> field without first querying the entity to retrieve its current value. For details, refer to <a href="/docs/id/v2.6.x/upsert-entities.md#Upsert-ARRAY-fields-with-partial-update-operators">Upsert ARRAY fields with partial-update operators</a>.</p>
+<h3 id="Upsert-behaviors-special-notes" class="common-anchor-header">Upsert behaviors: special notes<button data-href="#Upsert-behaviors-special-notes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -98,30 +102,30 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Ada beberapa catatan khusus yang harus Anda pertimbangkan sebelum menggunakan fitur penggabungan. Kasus berikut ini mengasumsikan bahwa Anda memiliki koleksi dengan dua bidang skalar bernama <code translate="no">title</code> dan <code translate="no">issue</code>, bersama dengan kunci utama <code translate="no">id</code> dan bidang vektor bernama <code translate="no">vector</code>.</p>
+    </button></h3><p>There are several special notes you should consider before using the merge feature. The following cases assume that you have a collection with two scalar fields named <code translate="no">title</code> and <code translate="no">issue</code>, along with a primary key <code translate="no">id</code> and a vector field called <code translate="no">vector</code>.</p>
 <ul>
-<li><p>Menggabungkan<strong>field dengan</strong> <code translate="no">nullable</code> <strong>yang diaktifkan</strong>.</p>
-<p>Misalkan field <code translate="no">issue</code> bisa saja bernilai nol. Ketika Anda meng-upsert field ini, perhatikan hal tersebut:</p>
+<li><p><strong>Upsert fields with</strong> <code translate="no">nullable</code> <strong>enabled.</strong></p>
+<p>Suppose that the <code translate="no">issue</code> field can be null. When you upsert these fields, note that:</p>
 <ul>
-<li><p>Jika Anda menghilangkan bidang <code translate="no">issue</code> dalam permintaan <code translate="no">upsert</code> dan menonaktifkan <code translate="no">partial_update</code>, bidang <code translate="no">issue</code> akan diperbarui menjadi <code translate="no">null</code> alih-alih mempertahankan nilai aslinya.</p></li>
-<li><p>Untuk mempertahankan nilai asli bidang <code translate="no">issue</code>, Anda harus mengaktifkan <code translate="no">partial_update</code> dan menghilangkan bidang <code translate="no">issue</code> atau menyertakan bidang <code translate="no">issue</code> dengan nilai aslinya dalam permintaan <code translate="no">upsert</code>.</p></li>
+<li><p>If you omit the <code translate="no">issue</code> field in the <code translate="no">upsert</code> request and disable <code translate="no">partial_update</code>, the <code translate="no">issue</code> field will be updated to <code translate="no">null</code> instead of retaining its original value.</p></li>
+<li><p>To preserve the original value of the <code translate="no">issue</code> field, you need either to enable <code translate="no">partial_update</code> and omit the <code translate="no">issue</code> field or include the <code translate="no">issue</code> field with its original value in the <code translate="no">upsert</code> request.</p></li>
 </ul></li>
-<li><p>Memasukkan<strong>kunci di bidang dinamis</strong>.</p>
-<p>Misalkan Anda telah mengaktifkan kunci dinamis di koleksi contoh, dan pasangan kunci-nilai di bidang dinamis suatu entitas mirip dengan <code translate="no">{&quot;author&quot;: &quot;John&quot;, &quot;year&quot;: 2020, &quot;tags&quot;: [&quot;fiction&quot;]}</code>.</p>
-<p>Ketika Anda meng-upsert entitas dengan kunci, seperti <code translate="no">author</code>, <code translate="no">year</code>, atau <code translate="no">tags</code>, atau menambahkan kunci lain, perhatikan hal itu:</p>
+<li><p><strong>Upsert keys in the dynamic field</strong>.</p>
+<p>Suppose that you have enabled the dynamic key in the example collection, and the key-value pairs in the dynamic field of an entity are similar to <code translate="no">{&quot;author&quot;: &quot;John&quot;, &quot;year&quot;: 2020, &quot;tags&quot;: [&quot;fiction&quot;]}</code>.</p>
+<p>When you upsert the entity with keys, such as <code translate="no">author</code>, <code translate="no">year</code>, or <code translate="no">tags</code>, or add other keys, note that:</p>
 <ul>
-<li><p>Jika Anda meng-upsert dengan <code translate="no">partial_update</code> dinonaktifkan, perilaku defaultnya adalah <strong>menimpa</strong>. Artinya, nilai bidang dinamis akan ditimpa oleh semua bidang yang tidak ditentukan skema yang disertakan dalam permintaan dan nilainya.</p>
-<p>Misalnya, jika data yang disertakan dalam permintaan adalah <code translate="no">{&quot;author&quot;: &quot;Jane&quot;, &quot;genre&quot;: &quot;fantasy&quot;}</code>, pasangan kunci-nilai dalam bidang dinamis entitas target akan diperbarui ke nilai tersebut.</p></li>
-<li><p>Jika Anda mengupload dengan <code translate="no">partial_update</code> diaktifkan, perilaku defaultnya adalah <strong>menggabungkan</strong>. Artinya, nilai bidang dinamis akan digabungkan dengan semua bidang yang tidak ditentukan skema yang disertakan dalam permintaan dan nilainya.</p>
-<p>Misalnya, jika data yang disertakan dalam permintaan adalah <code translate="no">{&quot;author&quot;: &quot;John&quot;, &quot;year&quot;: 2020, &quot;tags&quot;: [&quot;fiction&quot;]}</code>, pasangan nilai-kunci dalam bidang dinamis entitas target akan menjadi <code translate="no">{&quot;author&quot;: &quot;John&quot;, &quot;year&quot;: 2020, &quot;tags&quot;: [&quot;fiction&quot;], &quot;genre&quot;: &quot;fantasy&quot;}</code> setelah upsert.</p></li>
+<li><p>If you upsert with <code translate="no">partial_update</code> disabled, the default behavior is to <strong>override</strong>. It means that the value of the dynamic field will be overridden by all non-schema-defined fields included in the request and their values.</p>
+<p>For example, if the data included in the request is <code translate="no">{&quot;author&quot;: &quot;Jane&quot;, &quot;genre&quot;: &quot;fantasy&quot;}</code>, the key-value pairs in the dynamic field of the target entity will be updated to that.</p></li>
+<li><p>If you upsert with <code translate="no">partial_update</code> enabled, the default behavior is to <strong>merge</strong>. It means that the value of the dynamic field will merge with all non-schema-defined fields included in the request and their values.</p>
+<p>For example, if the data included in the request is <code translate="no">{&quot;author&quot;: &quot;John&quot;, &quot;year&quot;: 2020, &quot;tags&quot;: [&quot;fiction&quot;]}</code>, the key-value pairs in the dynamic field of the target entity will become <code translate="no">{&quot;author&quot;: &quot;John&quot;, &quot;year&quot;: 2020, &quot;tags&quot;: [&quot;fiction&quot;], &quot;genre&quot;: &quot;fantasy&quot;}</code> after the upsert.</p></li>
 </ul></li>
-<li><p><strong>Menambah bidang JSON.</strong></p>
-<p>Misalkan koleksi contoh memiliki bidang JSON yang ditentukan skema bernama <code translate="no">extras</code>, dan pasangan nilai-kunci dalam bidang JSON entitas ini mirip dengan <code translate="no">{&quot;author&quot;: &quot;John&quot;, &quot;year&quot;: 2020, &quot;tags&quot;: [&quot;fiction&quot;]}</code>.</p>
-<p>Ketika Anda meng-upload field <code translate="no">extras</code> dari sebuah entitas dengan data JSON yang telah dimodifikasi, perhatikan bahwa field JSON tersebut diperlakukan secara keseluruhan, dan Anda tidak dapat memperbarui setiap kunci secara selektif. Dengan kata lain, bidang JSON <strong>TIDAK</strong> mendukung upsert dalam mode <strong>penggabungan</strong>.</p></li>
-<li><p><strong>Meng-upsert</strong> <strong>bidang</strong> <code translate="no">ARRAY</code> <strong>.</strong> </p>
-<p>Dalam mode penggabungan, bidang <code translate="no">ARRAY</code> mendukung operator pembaruan parsial <code translate="no">ARRAY_APPEND</code> dan <code translate="no">ARRAY_REMOVE</code>. Gunakan operator ini saat Anda ingin menambahkan elemen ke, atau menghapus elemen yang cocok dari, bidang <code translate="no">ARRAY</code> yang sudah ada tanpa mengganti seluruh nilai larik.</p></li>
+<li><p><strong>Upsert a JSON field.</strong></p>
+<p>Suppose that the example collection has a schema-defined JSON field named <code translate="no">extras</code>, and the key-value pairs in this JSON field of an entity are similar to <code translate="no">{&quot;author&quot;: &quot;John&quot;, &quot;year&quot;: 2020, &quot;tags&quot;: [&quot;fiction&quot;]}</code>.</p>
+<p>When you upsert the <code translate="no">extras</code> field of an entity with modified JSON data, note that the JSON field is treated as a whole, and you cannot update individual keys selectively. In other words, the JSON field <strong>DOES NOT</strong> support upsert in <strong>merge</strong> mode.</p></li>
+<li><p><strong>Upsert an</strong> <code translate="no">ARRAY</code> <strong>field.</strong></p>
+<p>In merge mode, <code translate="no">ARRAY</code> fields support the <code translate="no">ARRAY_APPEND</code> and <code translate="no">ARRAY_REMOVE</code> partial-update operators. Use these operators when you want to add elements to, or remove matching elements from, an existing <code translate="no">ARRAY</code> field without replacing the entire array value.</p></li>
 </ul>
-<h3 id="Limits--Restrictions" class="common-anchor-header">Batasan &amp; Pembatasan<button data-href="#Limits--Restrictions" class="anchor-icon" translate="no">
+<h3 id="Limits--Restrictions" class="common-anchor-header">Limits & Restrictions<button data-href="#Limits--Restrictions" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -136,15 +140,15 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Berdasarkan konten di atas, ada beberapa batasan dan larangan yang harus diikuti:</p>
+    </button></h3><p>Based on the above content, there are several limits and restrictions to follow:</p>
 <ul>
-<li><p>Permintaan <code translate="no">upsert</code> harus selalu menyertakan kunci utama entitas target, bahkan ketika <code translate="no">autoID</code> diaktifkan. Untuk koleksi <code translate="no">autoID</code>, kunci utama dalam permintaan mengidentifikasi entitas yang ada untuk diganti. Milvus menghasilkan kunci primer baru untuk entitas pengganti yang dimasukkan.</p></li>
-<li><p>Koleksi target harus dimuat dan tersedia untuk kueri.</p></li>
-<li><p>Semua bidang yang ditentukan dalam permintaan harus ada dalam skema koleksi target.</p></li>
-<li><p>Nilai semua field yang ditentukan dalam permintaan harus sesuai dengan tipe data yang ditentukan dalam skema.</p></li>
-<li><p>Untuk setiap field yang diturunkan dari fungsi lain yang menggunakan fungsi, Milvus akan menghapus field turunan selama upsert untuk memungkinkan penghitungan ulang.</p></li>
+<li><p>The <code translate="no">upsert</code> request must always include the primary keys of the target entities, even when <code translate="no">autoID</code> is enabled. For <code translate="no">autoID</code> collections, the primary keys in the request identify the existing entities to replace. Milvus generates new primary keys for the inserted replacement entities.</p></li>
+<li><p>The target collection must be loaded and available for queries.</p></li>
+<li><p>All fields specified in the request must exist in the schema of the target collection.</p></li>
+<li><p>The values of all fields specified in the request must match the data types defined in the schema.</p></li>
+<li><p>For any field derived from another using functions, Milvus will remove the derived field during the upsert to allow recalculation.</p></li>
 </ul>
-<h2 id="Upsert-entities-in-a-collection" class="common-anchor-header">Meng-upsert entitas-entitas dalam sebuah koleksi<button data-href="#Upsert-entities-in-a-collection" class="anchor-icon" translate="no">
+<h2 id="Upsert-entities-in-a-collection" class="common-anchor-header">Upsert entities in a collection<button data-href="#Upsert-entities-in-a-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -159,10 +163,15 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Pada bagian ini, kita akan meng-upsert entitas ke dalam sebuah koleksi bernama <code translate="no">my_collection</code>. Koleksi ini hanya memiliki dua field, yaitu <code translate="no">id</code>, <code translate="no">vector</code>, <code translate="no">title</code>, dan <code translate="no">issue</code>. Field <code translate="no">id</code> adalah field utama, sedangkan field <code translate="no">title</code> dan <code translate="no">issue</code> adalah field skalar.</p>
-<p>Ketiga entitas tersebut, jika ada di dalam koleksi, akan ditimpa oleh entitas yang disertakan dalam permintaan upsert.</p>
+    </button></h2><p>In this section, we will upsert entities into a collection named <code translate="no">my_collection</code>. This collection has only two fields, named <code translate="no">id</code>, <code translate="no">vector</code>, <code translate="no">title</code>, and <code translate="no">issue</code>. The <code translate="no">id</code> field is the primary field, while the <code translate="no">title</code> and <code translate="no">issue</code> fields are scalar fields.</p>
+<p>The three entities, if exists in the collection, will be overridden by those included the upsert request.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client = MilvusClient(
@@ -328,7 +337,7 @@ curl --request POST \
 <span class="hljs-comment">#     }</span>
 <span class="hljs-comment"># }</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Upsert-entities-in-a-partition" class="common-anchor-header">Meng-upsert entitas dalam sebuah partisi<button data-href="#Upsert-entities-in-a-partition" class="anchor-icon" translate="no">
+<h2 id="Upsert-entities-in-a-partition" class="common-anchor-header">Upsert entities in a partition<button data-href="#Upsert-entities-in-a-partition" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -343,10 +352,15 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Anda juga dapat meng-upsert entitas ke dalam partisi tertentu. Cuplikan kode berikut ini mengasumsikan bahwa Anda memiliki partisi bernama <strong>PartitionA</strong> di dalam koleksi Anda.</p>
-<p>Tiga entitas, jika ada dalam partisi, akan ditimpa oleh entitas yang disertakan dalam permintaan.</p>
+    </button></h2><p>You can also upsert entities into a specified partition. The following code snippets assume that you have a partition named <strong>PartitionA</strong> in your collection.</p>
+<p>The three entities, if exists in the partition, will be overridden by those included in the request.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">data=[
     {
         <span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-number">10</span>, 
@@ -476,7 +490,7 @@ curl --request POST \
 <span class="hljs-comment">#     }</span>
 <span class="hljs-comment"># }</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Upsert-entities-in-merge-mode--Milvus-v262+" class="common-anchor-header">Menambah entitas dalam mode penggabungan<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus v2.6.2+</span><button data-href="#Upsert-entities-in-merge-mode--Milvus-v262+" class="anchor-icon" translate="no">
+<h2 id="Upsert-entities-in-merge-mode" class="common-anchor-header">Upsert entities in merge mode<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus v2.6.2+</span><button data-href="#Upsert-entities-in-merge-mode" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -491,13 +505,18 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Contoh kode berikut ini menunjukkan cara meng-upsert entitas dengan pembaruan parsial. Sediakan hanya bidang yang membutuhkan pembaruan dan nilai barunya, bersama dengan flag pembaruan parsial eksplisit.</p>
-<p>Dalam contoh berikut ini, bidang <code translate="no">issue</code> dari entitas yang ditentukan dalam permintaan upsert akan diperbarui ke nilai yang disertakan dalam permintaan.</p>
+    </button></h2><p>The following code example demonstrates how to upsert entities with partial updates. Provide only the fields needing updates and their new values, along with the explicit partial update flag.</p>
+<p>In the following example, the <code translate="no">issue</code> field of the entities specified in the upsert request will be updated to the values included in the request.</p>
 <div class="alert note">
-<p>Ketika melakukan upsert dalam mode penggabungan, pastikan bahwa entitas yang terlibat dalam permintaan memiliki kumpulan bidang yang sama. Misalkan ada dua atau lebih entitas yang akan di-upsert, seperti yang ditunjukkan pada cuplikan kode berikut ini, penting untuk menyertakan field yang identik untuk mencegah kesalahan dan menjaga integritas data.</p>
+<p>When performing an upsert in merge mode, ensure that the entities involved in the request have the same set of fields. Suppose there are two or more entities to be upserted, as shown in the following code snippet, it is important that they include identical fields to prevent errors and maintain data integrity.</p>
 </div>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#go">Go</a> <a href="#javascript">NodeJS</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">data=[
     {
         <span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-number">1</span>,
@@ -615,7 +634,7 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
 <span class="hljs-comment">#     }</span>
 <span class="hljs-comment"># }</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Upsert-ARRAY-fields-with-partial-update-operators--Milvus-v2617+" class="common-anchor-header">Menambah bidang ARRAY dengan operator pembaruan sebagian<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus v2.6.17+</span><button data-href="#Upsert-ARRAY-fields-with-partial-update-operators--Milvus-v2617+" class="anchor-icon" translate="no">
+<h2 id="Upsert-ARRAY-fields-with-partial-update-operators" class="common-anchor-header">Upsert ARRAY fields with partial-update operators<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus v2.6.17+</span><button data-href="#Upsert-ARRAY-fields-with-partial-update-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -630,10 +649,15 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Sebelum operator partial-update diperkenalkan, memperbarui sebagian dari bidang <code translate="no">ARRAY</code> memerlukan alur baca-modifikasi-tulis sisi klien: kueri larik yang ada, ubah dalam kode aplikasi, dan masukkan nilai pengganti secara penuh. Operator pembaruan parsial memungkinkan Anda mengirim hanya elemen yang akan ditambahkan atau dihapus, yang mengurangi logika sisi klien dan menghindari pembacaan ekstra sebelum upsert.</p>
-<p>Misalkan entitas dengan kunci utama <code translate="no">1</code> sudah memiliki <code translate="no">tags = [&quot;new&quot;, &quot;trial&quot;]</code>. Tanpa operator pembaruan parsial, menambahkan <code translate="no">&quot;premium&quot;</code> ke larik membutuhkan upserting larik pengganti secara penuh:</p>
+    </button></h2><p>Before partial-update operators were introduced, updating part of an <code translate="no">ARRAY</code> field required a client-side read-modify-write flow: query the existing array, change it in application code, and upsert the full replacement value. Partial-update operators let you send only the elements to append or remove, which reduces client-side logic and avoids the extra read before the upsert.</p>
+<p>Suppose the entity with primary key <code translate="no">1</code> already has <code translate="no">tags = [&quot;new&quot;, &quot;trial&quot;]</code>. Without partial-update operators, adding <code translate="no">&quot;premium&quot;</code> to the array requires upserting the full replacement array:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">client.upsert(
     collection_name=<span class="hljs-string">&quot;users&quot;</span>,
 <span class="highlighted-comment-line">    data=[{<span class="hljs-string">&quot;pk&quot;</span>: <span class="hljs-number">1</span>, <span class="hljs-string">&quot;tags&quot;</span>: [<span class="hljs-string">&quot;new&quot;</span>, <span class="hljs-string">&quot;trial&quot;</span>, <span class="hljs-string">&quot;premium&quot;</span>]}],</span>
@@ -656,9 +680,14 @@ client.upsert(UpsertReq.builder()
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Dengan <code translate="no">ARRAY_APPEND</code>, kirimkan hanya elemen yang akan ditambahkan:</p>
+<p>With <code translate="no">ARRAY_APPEND</code>, send only the element to add:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> FieldOp
 
 client.upsert(
@@ -689,9 +718,9 @@ client.upsert(UpsertReq.builder()
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>Melampirkan salah satu operator ke sebuah field melalui <code translate="no">field_ops</code> secara implisit memungkinkan semantik pembaruan parsial. Oleh karena itu, Anda <strong>tidak</strong> perlu mengoper <code translate="no">partial_update=True</code> bersama dengan <code translate="no">field_ops</code>.</p>
+<p>Attaching either operator to a field via <code translate="no">field_ops</code> implicitly enables partial-update semantics. Therefore, you do <strong>not</strong> need to pass <code translate="no">partial_update=True</code> alongside <code translate="no">field_ops</code>.</p>
 </div>
-<h3 id="Limits" class="common-anchor-header">Batasan<button data-href="#Limits" class="anchor-icon" translate="no">
+<h3 id="Limits" class="common-anchor-header">Limits<button data-href="#Limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -707,12 +736,12 @@ client.upsert(UpsertReq.builder()
         ></path>
       </svg>
     </button></h3><ul>
-<li>Nilai payload harus sama dengan <code translate="no">element_type</code> dari bidang <code translate="no">ARRAY</code> target. Misalnya, jika bidang target adalah <code translate="no">ARRAY&lt;VARCHAR&gt;</code>, payload harus berisi nilai string.</li>
-<li><code translate="no">ARRAY_APPEND</code> dan <code translate="no">ARRAY_REMOVE</code> mendukung bidang <code translate="no">ARRAY</code> yang <code translate="no">element_type</code> nya adalah <code translate="no">BOOL</code>, <code translate="no">INT8</code>, <code translate="no">INT16</code>, <code translate="no">INT32</code>, <code translate="no">INT64</code>, <code translate="no">FLOAT</code>, <code translate="no">DOUBLE</code>, atau <code translate="no">VARCHAR</code>.</li>
-<li>Setelah operasi <code translate="no">ARRAY_APPEND</code>, panjang larik yang dihasilkan tidak boleh melebihi panjang <code translate="no">max_capacity</code>.</li>
-<li>Upgrade bersamaan ke entitas yang sama tidak bersifat atomik di seluruh permintaan. Jika dua permintaan memperbarui bidang <code translate="no">ARRAY</code> yang sama pada waktu yang sama, penulisan yang lebih akhir dapat menimpa yang sebelumnya. Gunakan koordinasi tingkat aplikasi jika Anda perlu mempertahankan semua perubahan bersamaan.</li>
+<li>The payload values must match the <code translate="no">element_type</code> of the target <code translate="no">ARRAY</code> field. For example, if the target field is <code translate="no">ARRAY&lt;VARCHAR&gt;</code>, the payload must contain string values.</li>
+<li><code translate="no">ARRAY_APPEND</code> and <code translate="no">ARRAY_REMOVE</code> support <code translate="no">ARRAY</code> fields whose <code translate="no">element_type</code> is <code translate="no">BOOL</code>, <code translate="no">INT8</code>, <code translate="no">INT16</code>, <code translate="no">INT32</code>, <code translate="no">INT64</code>, <code translate="no">FLOAT</code>, <code translate="no">DOUBLE</code>, or <code translate="no">VARCHAR</code>.</li>
+<li>After an <code translate="no">ARRAY_APPEND</code> operation, the resulting array length must not exceed the field’s <code translate="no">max_capacity</code>.</li>
+<li>Concurrent upserts to the same entity are not atomic across requests. If two requests update the same <code translate="no">ARRAY</code> field at the same time, the later write can overwrite the earlier one. Use application-level coordination if you need to preserve all concurrent changes.</li>
 </ul>
-<h3 id="Example" class="common-anchor-header">Contoh<button data-href="#Example" class="anchor-icon" translate="no">
+<h3 id="Example" class="common-anchor-header">Example<button data-href="#Example" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -727,9 +756,14 @@ client.upsert(UpsertReq.builder()
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Contoh berikut ini menggunakan koleksi kecil <code translate="no">users</code> dengan kunci utama <code translate="no">pk</code>, bidang <code translate="no">tags</code> bertipe <code translate="no">ARRAY&lt;VARCHAR&gt;</code>, dan bidang vektor <code translate="no">embedding</code>. Pertama-tama menyisipkan dua entitas dengan nilai awal <code translate="no">tags</code>, kemudian menggunakan <code translate="no">ARRAY_APPEND</code> dan <code translate="no">ARRAY_REMOVE</code> untuk menunjukkan bagaimana setiap operator mengubah larik yang tersimpan.</p>
+    </button></h3><p>The following example uses a small <code translate="no">users</code> collection with a primary key <code translate="no">pk</code>, a <code translate="no">tags</code> field of type <code translate="no">ARRAY&lt;VARCHAR&gt;</code>, and an <code translate="no">embedding</code> vector field. It first inserts two entities with initial <code translate="no">tags</code> values, then uses <code translate="no">ARRAY_APPEND</code> and <code translate="no">ARRAY_REMOVE</code> to show how each operator changes the stored array.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> DataType, FieldOp, MilvusClient
 
 client = MilvusClient(

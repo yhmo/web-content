@@ -1,11 +1,14 @@
 ---
 id: basic-operators.md
-title: 基本操作符
+title: Basic Operators
 summary: >-
-  Milvus
-  提供了一套功能丰富的基础操作符，可帮助您高效地过滤和查询数据。借助这些操作符，您可以基于标量字段、数值计算、逻辑条件等来优化搜索条件。掌握这些操作符的使用方法，对于构建精确的查询并最大限度地提高搜索效率至关重要。
+  Milvus provides a rich set of basic operators to help you filter and query
+  data efficiently. These operators allow you to refine your search conditions
+  based on scalar fields, numeric calculations, logical conditions, and more.
+  Understanding how to use these operators is crucial for building precise
+  queries and maximizing the efficiency of your searches.
 ---
-<h1 id="Basic-Operators" class="common-anchor-header">基本操作符<button data-href="#Basic-Operators" class="anchor-icon" translate="no">
+<h1 id="Basic-Operators" class="common-anchor-header">Basic Operators<button data-href="#Basic-Operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,8 +23,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Milvus 提供了一套丰富的基础操作符，可帮助您高效地过滤和查询数据。借助这些操作符，您可以基于标量字段、数值计算、逻辑条件等来优化搜索条件。掌握这些操作符的使用方法，对于构建精准的查询并最大限度地提高搜索效率至关重要。</p>
-<h2 id="Comparison-operators" class="common-anchor-header">比较操作符<button data-href="#Comparison-operators" class="anchor-icon" translate="no">
+    </button></h1><p>Milvus provides a rich set of basic operators to help you filter and query data efficiently. These operators allow you to refine your search conditions based on scalar fields, numeric calculations, logical conditions, and more. Understanding how to use these operators is crucial for building precise queries and maximizing the efficiency of your searches.</p>
+<h2 id="Comparison-operators" class="common-anchor-header">Comparison operators<button data-href="#Comparison-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -36,8 +39,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>比较操作符用于根据相等、不等或大小对数据进行筛选。它们适用于数值字段和文本字段。</p>
-<h3 id="Supported-Comparison-Operators" class="common-anchor-header">支持的比较操作符：<button data-href="#Supported-Comparison-Operators" class="anchor-icon" translate="no">
+    </button></h2><p>Comparison operators are used to filter data based on equality, inequality, or size. They are applicable to numeric and text fields.</p>
+<h3 id="Supported-Comparison-Operators" class="common-anchor-header">Supported Comparison Operators:<button data-href="#Supported-Comparison-Operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -53,14 +56,14 @@ summary: >-
         ></path>
       </svg>
     </button></h3><ul>
-<li><p><code translate="no">==</code> (等于)</p></li>
-<li><p><code translate="no">!=</code> (不等于)</p></li>
-<li><p><code translate="no">&gt;</code> (大于)</p></li>
-<li><p><code translate="no">&lt;</code> (小于)</p></li>
-<li><p><code translate="no">&gt;=</code> (大于或等于)</p></li>
-<li><p><code translate="no">&lt;=</code> (小于或等于)</p></li>
+<li><p><code translate="no">==</code> (Equal to)</p></li>
+<li><p><code translate="no">!=</code> (Not equal to)</p></li>
+<li><p><code translate="no">&gt;</code> (Greater than)</p></li>
+<li><p><code translate="no">&lt;</code> (Less than)</p></li>
+<li><p><code translate="no">&gt;=</code> (Greater than or equal to)</p></li>
+<li><p><code translate="no">&lt;=</code> (Less than or equal to)</p></li>
 </ul>
-<h3 id="Example-1-Filtering-with-Equal-To-" class="common-anchor-header">示例 1：使用“等于”进行筛选（<code translate="no">==</code> ）<button data-href="#Example-1-Filtering-with-Equal-To-" class="anchor-icon" translate="no">
+<h3 id="Example-1-Filtering-with-Equal-To-" class="common-anchor-header">Example 1: Filtering with Equal To (<code translate="no">==</code>)<button data-href="#Example-1-Filtering-with-Equal-To-" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -75,10 +78,10 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>假设您有一个名为“<code translate="no">status</code> ”的字段，并希望查找所有<code translate="no">status</code> 为“active”的实体。您可以使用等号运算符<code translate="no">==</code> ：</p>
+    </button></h3><p>Assume you have a field named <code translate="no">status</code> and you want to find all entities where <code translate="no">status</code> is "active". You can use the equality operator <code translate="no">==</code>:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;status == &quot;active&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-2-Filtering-with-Not-Equal-To-" class="common-anchor-header">示例 2：使用“不等于”进行筛选（<code translate="no">!=</code> ）<button data-href="#Example-2-Filtering-with-Not-Equal-To-" class="anchor-icon" translate="no">
+<h3 id="Example-2-Filtering-with-Not-Equal-To-" class="common-anchor-header">Example 2: Filtering with Not Equal To (<code translate="no">!=</code>)<button data-href="#Example-2-Filtering-with-Not-Equal-To-" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -93,10 +96,10 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>要查找<code translate="no">status</code> 不是“inactive”的实体：</p>
+    </button></h3><p>To find entities where <code translate="no">status</code> is not "inactive":</p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;status != &quot;inactive&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-3-Filtering-with-Greater-Than-" class="common-anchor-header">示例 3：使用“大于”条件进行筛选（<code translate="no">&gt;</code> ）<button data-href="#Example-3-Filtering-with-Greater-Than-" class="anchor-icon" translate="no">
+<h3 id="Example-3-Filtering-with-Greater-Than-" class="common-anchor-header">Example 3: Filtering with Greater Than (<code translate="no">&gt;</code>)<button data-href="#Example-3-Filtering-with-Greater-Than-" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -111,10 +114,10 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>若要查找所有<code translate="no">age</code> 大于 30 的实体：</p>
+    </button></h3><p>If you want to find all entities with an <code translate="no">age</code> greater than 30:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;age &gt; 30&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-4-Filtering-with-Less-Than" class="common-anchor-header">示例 4：使用“小于”进行筛选<button data-href="#Example-4-Filtering-with-Less-Than" class="anchor-icon" translate="no">
+<h3 id="Example-4-Filtering-with-Less-Than" class="common-anchor-header">Example 4: Filtering with Less Than<button data-href="#Example-4-Filtering-with-Less-Than" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -129,10 +132,10 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>要查找<code translate="no">price</code> 小于 100 的实体：</p>
+    </button></h3><p>To find entities where <code translate="no">price</code> is less than 100:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;price &lt; 100&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-5-Filtering-with-Greater-Than-or-Equal-To-" class="common-anchor-header">示例 5：使用“大于或等于”进行筛选（<code translate="no">&gt;=</code> ）<button data-href="#Example-5-Filtering-with-Greater-Than-or-Equal-To-" class="anchor-icon" translate="no">
+<h3 id="Example-5-Filtering-with-Greater-Than-or-Equal-To-" class="common-anchor-header">Example 5: Filtering with Greater Than or Equal To (<code translate="no">&gt;=</code>)<button data-href="#Example-5-Filtering-with-Greater-Than-or-Equal-To-" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -147,10 +150,10 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>若要查找所有<code translate="no">rating</code> 大于或等于4的实体：</p>
+    </button></h3><p>If you want to find all entities with <code translate="no">rating</code> greater than or equal to 4:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;rating &gt;= 4&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-6-Filtering-with-Less-Than-or-Equal-To" class="common-anchor-header">示例 6：使用“小于或等于”进行筛选<button data-href="#Example-6-Filtering-with-Less-Than-or-Equal-To" class="anchor-icon" translate="no">
+<h3 id="Example-6-Filtering-with-Less-Than-or-Equal-To" class="common-anchor-header">Example 6: Filtering with Less Than or Equal To<button data-href="#Example-6-Filtering-with-Less-Than-or-Equal-To" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -165,10 +168,10 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>要查找<code translate="no">discount</code> 小于或等于10%的实体：</p>
+    </button></h3><p>To find entities with <code translate="no">discount</code> less than or equal to 10%:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;discount &lt;= 10&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Range-operators" class="common-anchor-header">范围操作符<button data-href="#Range-operators" class="anchor-icon" translate="no">
+<h2 id="Range-operators" class="common-anchor-header">Range operators<button data-href="#Range-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -183,8 +186,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>范围操作符可帮助根据特定的值集或值范围过滤数据。</p>
-<h3 id="Supported-Range-Operators" class="common-anchor-header">支持的范围操作符：<button data-href="#Supported-Range-Operators" class="anchor-icon" translate="no">
+    </button></h2><p>Range operators help filter data based on specific sets or ranges of values.</p>
+<h3 id="Supported-Range-Operators" class="common-anchor-header">Supported Range Operators:<button data-href="#Supported-Range-Operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -200,10 +203,10 @@ summary: >-
         ></path>
       </svg>
     </button></h3><ul>
-<li><p><code translate="no">IN</code>：用于匹配特定集合或范围内的值。</p></li>
-<li><p><code translate="no">LIKE</code> <code translate="no">NGRAM</code>: 用于匹配模式（主要用于文本字段）。Milvus 允许您在 VARCHAR 或 JSON 字段上构建 N-gram 索引，以加速文本查询。详情请参阅<a href="/docs/zh/v2.6.x/ngram.md">NGRAM</a>。</p></li>
+<li><p><code translate="no">IN</code>: Used to match values within a specific set or range.</p></li>
+<li><p><code translate="no">LIKE</code>: Used to match a pattern (mostly for text fields).  Milvus allows you to build an <code translate="no">NGRAM</code> index on VARCHAR or JSON fields to accelerate text queries. For details, refer to <a href="/docs/zh/v2.6.x/ngram.md">NGRAM</a>.</p></li>
 </ul>
-<h3 id="Example-1-Using-IN-to-Match-Multiple-Values" class="common-anchor-header">示例 1：使用<code translate="no">IN</code> 匹配多个值<button data-href="#Example-1-Using-IN-to-Match-Multiple-Values" class="anchor-icon" translate="no">
+<h3 id="Example-1-Using-IN-to-Match-Multiple-Values" class="common-anchor-header">Example 1: Using <code translate="no">IN</code> to Match Multiple Values<button data-href="#Example-1-Using-IN-to-Match-Multiple-Values" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -218,11 +221,11 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>若要查找所有<code translate="no">color</code> 为“red”、“green”或“blue”的实体：</p>
+    </button></h3><p>If you want to find all entities where the <code translate="no">color</code> is either "red", "green", or "blue":</p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;color in [&quot;red&quot;, &quot;green&quot;, &quot;blue&quot;]&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>当需要检查是否属于一组值时，此方法非常有用。</p>
-<h3 id="Example-2-Using-LIKE-for-Pattern-Matching" class="common-anchor-header">示例 2：使用<code translate="no">LIKE</code> 进行模式匹配<button data-href="#Example-2-Using-LIKE-for-Pattern-Matching" class="anchor-icon" translate="no">
+<p>This is useful when you want to check for membership in a list of values.</p>
+<h3 id="Example-2-Using-LIKE-for-Pattern-Matching" class="common-anchor-header">Example 2: Using <code translate="no">LIKE</code> for Pattern Matching<button data-href="#Example-2-Using-LIKE-for-Pattern-Matching" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -237,11 +240,11 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">LIKE</code> 操作符用于字符串字段中的模式匹配。它可匹配文本中不同位置的子字符串：作为<strong>前缀</strong>、<strong>中缀或</strong> <strong>后缀</strong>。<code translate="no">LIKE</code> 操作符使用<code translate="no">%</code> 符号作为通配符，可匹配任意数量的字符（包括零个）。</p>
+    </button></h3><p>The <code translate="no">LIKE</code> operator is used for pattern matching in string fields. It can match substrings in different positions within the text: as a <strong>prefix</strong>, <strong>infix</strong>, or <strong>suffix</strong>. The <code translate="no">LIKE</code> operator uses the <code translate="no">%</code> symbol as a wildcard, which can match any number of characters (including zero).</p>
 <div class="alert note">
-<p>在大多数情况下，<strong>中缀或</strong> <strong>后缀</strong>匹配的速度远低于前缀匹配。如果性能至关重要，请谨慎使用这些匹配方式。</p>
+<p>In most cases, <strong>infix</strong> or <strong>suffix</strong> matching is significantly slower than prefix matching. Use them with caution if performance is critical.</p>
 </div>
-<h3 id="Prefix-Match-Starts-With" class="common-anchor-header">前缀匹配（以…开头）<button data-href="#Prefix-Match-Starts-With" class="anchor-icon" translate="no">
+<h3 id="Prefix-Match-Starts-With" class="common-anchor-header">Prefix Match (Starts With)<button data-href="#Prefix-Match-Starts-With" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -256,11 +259,11 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>要执行<strong>前缀</strong>匹配（即字符串以给定模式开头），可将该模式置于开头，并使用<code translate="no">%</code> 匹配其后面的任意字符。例如，要查找所有<code translate="no">name</code> 以“Prod”开头的产品：</p>
+    </button></h3><p>To perform a <strong>prefix</strong> match, where the string starts with a given pattern, you can place the pattern at the beginning and use <code translate="no">%</code> to match any characters following it. For example, to find all products whose <code translate="no">name</code> starts with "Prod":</p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;name LIKE &quot;Prod%&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>这将匹配名称以“Prod”开头的任何产品，例如“Product A”、“Product B”等。</p>
-<h3 id="Suffix-Match-Ends-With" class="common-anchor-header">后缀匹配（以…结尾）<button data-href="#Suffix-Match-Ends-With" class="anchor-icon" translate="no">
+<p>This will match any product whose name starts with "Prod", such as "Product A", "Product B", etc.</p>
+<h3 id="Suffix-Match-Ends-With" class="common-anchor-header">Suffix Match (Ends With)<button data-href="#Suffix-Match-Ends-With" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -275,11 +278,11 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>对于<strong>后缀</strong>匹配（即字符串以给定模式结尾），请将<code translate="no">%</code> 符号置于模式开头。例如，要查找所有<code translate="no">name</code> 以“XYZ”结尾的产品：</p>
+    </button></h3><p>For a <strong>suffix</strong> match, where the string ends with a given pattern, place the <code translate="no">%</code> symbol at the beginning of the pattern. For example, to find all products whose <code translate="no">name</code> ends with "XYZ":</p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;name LIKE &quot;%XYZ&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>这将匹配名称以“XYZ”结尾的任何产品，例如“ProductXYZ”、“SampleXYZ”等。</p>
-<h3 id="Infix-Match-Contains" class="common-anchor-header">中缀匹配（包含）<button data-href="#Infix-Match-Contains" class="anchor-icon" translate="no">
+<p>This will match any product whose name ends with "XYZ", such as "ProductXYZ", "SampleXYZ", etc.</p>
+<h3 id="Infix-Match-Contains" class="common-anchor-header">Infix Match (Contains)<button data-href="#Infix-Match-Contains" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -294,11 +297,11 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>要执行<strong>中缀</strong>匹配（即模式可出现在字符串的任意位置），可在模式的开头和结尾均放置<code translate="no">%</code> 符号。例如，要查找所有<code translate="no">name</code> 中包含“Pro”一词的产品：</p>
+    </button></h3><p>To perform an <strong>infix</strong> match, where the pattern can appear anywhere in the string, you can place the <code translate="no">%</code> symbol at both the beginning and the end of the pattern. For example, to find all products whose <code translate="no">name</code> contains the word "Pro":</p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;name LIKE &quot;%Pro%&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>这将匹配名称中包含子字符串“Pro”的任何产品，例如“Product”、“ProLine”或“SuperPro”。</p>
-<h2 id="Arithmetic-Operators" class="common-anchor-header">算术操作符<button data-href="#Arithmetic-Operators" class="anchor-icon" translate="no">
+<p>This will match any product whose name contains the substring "Pro", such as "Product", "ProLine", or "SuperPro".</p>
+<h2 id="Arithmetic-Operators" class="common-anchor-header">Arithmetic Operators<button data-href="#Arithmetic-Operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -313,8 +316,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>算术操作符允许您基于涉及数值字段的计算来创建条件。</p>
-<h3 id="Supported-Arithmetic-Operators" class="common-anchor-header">支持的算术操作符：<button data-href="#Supported-Arithmetic-Operators" class="anchor-icon" translate="no">
+    </button></h2><p>Arithmetic operators allow you to create conditions based on calculations involving numeric fields.</p>
+<h3 id="Supported-Arithmetic-Operators" class="common-anchor-header">Supported Arithmetic Operators:<button data-href="#Supported-Arithmetic-Operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -330,14 +333,14 @@ summary: >-
         ></path>
       </svg>
     </button></h3><ul>
-<li><p><code translate="no">+</code> (加法)</p></li>
-<li><p><code translate="no">-</code> (减法)</p></li>
-<li><p><code translate="no">*</code> (乘法)</p></li>
-<li><p><code translate="no">/</code> (除法)</p></li>
-<li><p><code translate="no">%</code> (取模)</p></li>
-<li><p><code translate="no">**</code> (幂运算)</p></li>
+<li><p><code translate="no">+</code> (Addition)</p></li>
+<li><p><code translate="no">-</code> (Subtraction)</p></li>
+<li><p><code translate="no">*</code> (Multiplication)</p></li>
+<li><p><code translate="no">/</code> (Division)</p></li>
+<li><p><code translate="no">%</code> (Modulus)</p></li>
+<li><p><code translate="no">**</code> (Exponentiation)</p></li>
 </ul>
-<h3 id="Example-1-Using-Modulus-" class="common-anchor-header">例 1：使用模运算 (<code translate="no">%</code>)<button data-href="#Example-1-Using-Modulus-" class="anchor-icon" translate="no">
+<h3 id="Example-1-Using-Modulus-" class="common-anchor-header">Example 1: Using Modulus (<code translate="no">%</code>)<button data-href="#Example-1-Using-Modulus-" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -352,10 +355,10 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>求满足<code translate="no">id</code> 为偶数（即能被2整除）的元素：</p>
+    </button></h3><p>To find entities where the <code translate="no">id</code> is an even number (i.e., divisible by 2):</p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;id % 2 == 0&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-2-Using-Exponentiation-" class="common-anchor-header">示例 2：使用幂运算（<code translate="no">**</code> ）<button data-href="#Example-2-Using-Exponentiation-" class="anchor-icon" translate="no">
+<h3 id="Example-2-Using-Exponentiation-" class="common-anchor-header">Example 2: Using Exponentiation (<code translate="no">**</code>)<button data-href="#Example-2-Using-Exponentiation-" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -370,13 +373,13 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>查找满足<code translate="no">price</code> 的2次幂大于1000的实体：</p>
+    </button></h3><p>To find entities where <code translate="no">price</code> raised to the power of 2 is greater than 1000:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;price ** 2 &gt; 1000&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>算术操作符仅支持涉及<strong>单个字段和常量的</strong>表达式。将两个字段进行算术运算的表达式（例如<code translate="no">price * quantity &gt; 100</code> ）目前不被支持，并将返回错误。如果您需要根据由多个字段计算得出的派生值进行筛选，请考虑在插入时将预先计算好的值存储为一个单独的标量字段。</p>
+<p>Arithmetic operators only support expressions involving a <strong>single field and a constant</strong>. Expressions that combine two fields arithmetically — such as <code translate="no">price * quantity &gt; 100</code> — are not currently supported and will return an error. If you need to filter on a derived value computed from multiple fields, consider storing the pre-computed value as a separate scalar field at insert time.</p>
 </div>
-<h2 id="Logical-Operators" class="common-anchor-header">逻辑操作符<button data-href="#Logical-Operators" class="anchor-icon" translate="no">
+<h2 id="Logical-Operators" class="common-anchor-header">Logical Operators<button data-href="#Logical-Operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -391,8 +394,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>逻辑运算符用于将多个条件组合成更复杂的筛选表达式。这些操作符包括<code translate="no">AND</code> 、<code translate="no">OR</code> 和<code translate="no">NOT</code> 。</p>
-<h3 id="Supported-Logical-Operators" class="common-anchor-header">支持的逻辑操作符：<button data-href="#Supported-Logical-Operators" class="anchor-icon" translate="no">
+    </button></h2><p>Logical operators are used to combine multiple conditions into a more complex filter expression. These include <code translate="no">AND</code>, <code translate="no">OR</code>, and <code translate="no">NOT</code>.</p>
+<h3 id="Supported-Logical-Operators" class="common-anchor-header">Supported Logical Operators:<button data-href="#Supported-Logical-Operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -408,11 +411,11 @@ summary: >-
         ></path>
       </svg>
     </button></h3><ul>
-<li><p><code translate="no">AND</code>: 将多个条件组合在一起，这些条件必须全部为真。</p></li>
-<li><p><code translate="no">OR</code>: 将多个条件组合，其中至少有一个必须为真。</p></li>
-<li><p><code translate="no">NOT</code>: 否定一个条件。</p></li>
+<li><p><code translate="no">AND</code>: Combines multiple conditions that must all be true.</p></li>
+<li><p><code translate="no">OR</code>: Combines conditions where at least one must be true.</p></li>
+<li><p><code translate="no">NOT</code>: Negates a condition.</p></li>
 </ul>
-<h3 id="Example-1-Using-AND-to-Combine-Conditions" class="common-anchor-header">示例 1：使用<code translate="no">AND</code> 组合条件<button data-href="#Example-1-Using-AND-to-Combine-Conditions" class="anchor-icon" translate="no">
+<h3 id="Example-1-Using-AND-to-Combine-Conditions" class="common-anchor-header">Example 1: Using <code translate="no">AND</code> to Combine Conditions<button data-href="#Example-1-Using-AND-to-Combine-Conditions" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -427,10 +430,10 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>要查找所有“<code translate="no">price</code> ”大于 100 且“<code translate="no">stock</code> ”大于 50 的产品：</p>
+    </button></h3><p>To find all products where <code translate="no">price</code> is greater than 100 and <code translate="no">stock</code> is greater than 50:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;price &gt; 100 AND stock &gt; 50&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-2-Using-OR-to-Combine-Conditions" class="common-anchor-header">示例 2：使用“<code translate="no">OR</code> ”组合条件<button data-href="#Example-2-Using-OR-to-Combine-Conditions" class="anchor-icon" translate="no">
+<h3 id="Example-2-Using-OR-to-Combine-Conditions" class="common-anchor-header">Example 2: Using <code translate="no">OR</code> to Combine Conditions<button data-href="#Example-2-Using-OR-to-Combine-Conditions" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -445,10 +448,10 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>要查找所有<code translate="no">color</code> 为“red”或“blue”的产品：</p>
+    </button></h3><p>To find all products where <code translate="no">color</code> is either “red” or "blue":</p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;color == &quot;red&quot; OR color == &quot;blue&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-3-Using-NOT-to-Exclude-a-Condition" class="common-anchor-header">示例 3：使用<code translate="no">NOT</code> 排除条件<button data-href="#Example-3-Using-NOT-to-Exclude-a-Condition" class="anchor-icon" translate="no">
+<h3 id="Example-3-Using-NOT-to-Exclude-a-Condition" class="common-anchor-header">Example 3: Using <code translate="no">NOT</code> to Exclude a Condition<button data-href="#Example-3-Using-NOT-to-Exclude-a-Condition" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -463,10 +466,10 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>查找所有<code translate="no">color</code> 不是“green”的产品：</p>
+    </button></h3><p>To find all products where <code translate="no">color</code> is not "green":</p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;NOT color == &quot;green&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="IS-NULL-and-IS-NOT-NULL-Operators" class="common-anchor-header">IS NULL 和 IS NOT NULL 操作符<button data-href="#IS-NULL-and-IS-NOT-NULL-Operators" class="anchor-icon" translate="no">
+<h2 id="IS-NULL-and-IS-NOT-NULL-Operators" class="common-anchor-header">IS NULL and IS NOT NULL Operators<button data-href="#IS-NULL-and-IS-NOT-NULL-Operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -481,15 +484,15 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">IS NULL</code> 和<code translate="no">IS NOT NULL</code> 操作符用于根据字段是否包含空值（无数据）来筛选字段。</p>
+    </button></h2><p>The <code translate="no">IS NULL</code> and <code translate="no">IS NOT NULL</code> operators are used to filter fields based on whether they contain a null value (absence of data).</p>
 <ul>
-<li><p><code translate="no">IS NULL</code>: 识别特定字段包含空值的实体，即该字段无值或未定义。</p></li>
-<li><p><code translate="no">IS NOT NULL</code>: 识别特定字段包含其他非空值的实体，即该字段具有有效且已定义的值。</p></li>
+<li><p><code translate="no">IS NULL</code>: Identifies entities where a specific field contains a null value, i.e., the value is absent or undefined.</p></li>
+<li><p><code translate="no">IS NOT NULL</code>: Identifies entities where a specific field contains any value other than null, meaning the field has a valid, defined value.</p></li>
 </ul>
 <div class="alert note">
-<p>这些操作符不区分大小写，因此您可以使用<code translate="no">IS NULL</code> 或<code translate="no">is null</code> ，以及<code translate="no">IS NOT NULL</code> 或<code translate="no">is not null</code> 。</p>
+<p>The operators are case-insensitive, so you can use <code translate="no">IS NULL</code> or <code translate="no">is null</code>, and <code translate="no">IS NOT NULL</code> or <code translate="no">is not null</code>.</p>
 </div>
-<h3 id="Regular-Scalar-Fields-with-Null-Values" class="common-anchor-header">包含空值的常规标量字段<button data-href="#Regular-Scalar-Fields-with-Null-Values" class="anchor-icon" translate="no">
+<h3 id="Regular-Scalar-Fields-with-Null-Values" class="common-anchor-header">Regular Scalar Fields with Null Values<button data-href="#Regular-Scalar-Fields-with-Null-Values" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -504,20 +507,20 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Milvus 允许对包含空值的常规标量字段（如字符串或数字）进行过滤。</p>
+    </button></h3><p>Milvus allows filtering on regular scalar fields, such as strings or numbers, with null values.</p>
 <div class="alert note">
-<p>对于<code translate="no">VARCHAR</code> 字段，空字符串<code translate="no">&quot;&quot;</code> 不会被视为空值。</p>
+<p>An empty string <code translate="no">&quot;&quot;</code> is not treated as a null value for a <code translate="no">VARCHAR</code> field.</p>
 </div>
-<p>要检索<code translate="no">description</code> 字段为空的实体：</p>
+<p>To retrieve entities where the <code translate="no">description</code> field is null:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;description IS NULL&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>要检索<code translate="no">description</code> 字段不为空的实体：</p>
+<p>To retrieve entities where the <code translate="no">description</code> field is not null:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;description IS NOT NULL&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>要检索<code translate="no">description</code> 字段不为空且<code translate="no">price</code> 字段大于10的实体：</p>
+<p>To retrieve entities where the <code translate="no">description</code> field is not null and the <code translate="no">price</code> field is higher than 10:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;description IS NOT NULL AND price &gt; 10&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="JSON-Fields-with-Null-Values" class="common-anchor-header">包含空值的 JSON 字段<button data-href="#JSON-Fields-with-Null-Values" class="anchor-icon" translate="no">
+<h3 id="JSON-Fields-with-Null-Values" class="common-anchor-header">JSON Fields with Null Values<button data-href="#JSON-Fields-with-Null-Values" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -532,15 +535,15 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Milvus 允许对包含空值的 JSON 字段进行过滤。JSON 字段在以下情况下被视为空值：</p>
+    </button></h3><p>Milvus allows filtering on JSON fields that contain null values. A JSON field is treated as null in the following ways:</p>
 <ul>
-<li><p>整个 JSON 对象被显式设置为 None（空），例如<code translate="no">{&quot;metadata&quot;: None}</code> 。</p></li>
-<li><p>该 JSON 字段在实体中完全缺失。</p></li>
+<li><p>The entire JSON object is explicitly set to None (null), for example, <code translate="no">{&quot;metadata&quot;: None}</code>.</p></li>
+<li><p>The JSON field itself is completely missing from the entity.</p></li>
 </ul>
 <div class="alert note">
-<p>如果 JSON 对象中的某些元素为 null（例如单个键），则该字段仍被视为非 null。例如，<code translate="no">\{&quot;metadata&quot;: \{&quot;category&quot;: None, &quot;price&quot;: 99.99}}</code> 不会被视为 null，即使<code translate="no">category</code> 键为 null。</p>
+<p>If some elements within a JSON object are null (e.g. individual keys), the field is still considered non-null. For example, <code translate="no">\{&quot;metadata&quot;: \{&quot;category&quot;: None, &quot;price&quot;: 99.99}}</code> is not treated as null, even though the <code translate="no">category</code> key is null.</p>
 </div>
-<p>为进一步说明 Milvus 如何处理包含 null 值的 JSON 字段，请参考以下包含 JSON 字段<code translate="no">metadata</code> 的示例数据：</p>
+<p>To further illustrate how Milvus handles JSON fields with null values, consider the following sample data with a JSON field <code translate="no">metadata</code>:</p>
 <pre><code translate="no" class="language-python">data = [
   {
       <span class="hljs-string">&quot;metadata&quot;</span>: {<span class="hljs-string">&quot;category&quot;</span>: <span class="hljs-string">&quot;electronics&quot;</span>, <span class="hljs-string">&quot;price&quot;</span>: <span class="hljs-number">99.99</span>, <span class="hljs-string">&quot;brand&quot;</span>: <span class="hljs-string">&quot;BrandA&quot;</span>},
@@ -563,8 +566,8 @@ summary: >-
   }
 ]
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>示例 1：检索元数据为 null 的实体</strong></p>
-<p>要查找<code translate="no">metadata</code> 字段缺失或被显式设置为 None 的实体：</p>
+<p><strong>Example 1: Retrieve entities where metadata is null</strong></p>
+<p>To find entities where the <code translate="no">metadata</code> field is either missing or explicitly set to None:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;metadata IS NULL&#x27;</span>
 
 <span class="hljs-comment"># Example output:</span>
@@ -573,8 +576,8 @@ summary: >-
 <span class="hljs-comment">#     &quot;{&#x27;metadata&#x27;: None, &#x27;pk&#x27;: 3}&quot;</span>
 <span class="hljs-comment"># ]</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>示例 2：检索元数据不为 null 的实体</strong></p>
-<p>要查找 `<code translate="no">metadata</code> ` 字段不为 `null` 的实体：</p>
+<p><strong>Example 2: Retrieve entities where metadata is not null</strong></p>
+<p>To find entities where the <code translate="no">metadata</code> field is not null:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;metadata IS NOT NULL&#x27;</span>
 
 <span class="hljs-comment"># Example output:</span>
@@ -583,7 +586,7 @@ summary: >-
 <span class="hljs-comment">#     &quot;{&#x27;metadata&#x27;: {&#x27;category&#x27;: None, &#x27;price&#x27;: 99.99, &#x27;brand&#x27;: &#x27;BrandA&#x27;}, &#x27;pk&#x27;: 4}&quot;</span>
 <span class="hljs-comment"># ]</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="ARRAY-Fields-with-Null-Values" class="common-anchor-header">包含空值的 ARRAY 字段<button data-href="#ARRAY-Fields-with-Null-Values" class="anchor-icon" translate="no">
+<h3 id="ARRAY-Fields-with-Null-Values" class="common-anchor-header">ARRAY Fields with Null Values<button data-href="#ARRAY-Fields-with-Null-Values" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -598,15 +601,15 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Milvus 允许对包含空值的 ARRAY 字段进行过滤。ARRAY 字段在以下情况下会被视为空值：</p>
+    </button></h3><p>Milvus allows filtering on ARRAY fields that contain null values. An ARRAY field is treated as null in the following ways:</p>
 <ul>
-<li><p>整个 ARRAY 字段被显式设置为 None（空），例如<code translate="no">&quot;tags&quot;: None</code> 。</p></li>
-<li><p>实体中完全缺少该 ARRAY 字段。</p></li>
+<li><p>The entire ARRAY field is explicitly set to None (null), for example, <code translate="no">&quot;tags&quot;: None</code>.</p></li>
+<li><p>The ARRAY field is completely missing from the entity.</p></li>
 </ul>
 <div class="alert note">
-<p>数组字段不能包含部分空值，因为数组字段中的所有元素必须具有相同的数据类型。有关详细信息，请参阅<a href="/docs/zh/v2.6.x/array_data_type.md">“数组字段”</a>。</p>
+<p>An ARRAY field cannot contain partial null values as all elements in an ARRAY field must have the same data type. For details, refer to <a href="/docs/zh/v2.6.x/array_data_type.md">Array Field</a>.</p>
 </div>
-<p>为进一步说明 Milvus 如何处理包含空值的 ARRAY 字段，请考虑以下包含 ARRAY 字段<code translate="no">tags</code> 的示例数据：</p>
+<p>To further illustrate how Milvus handles ARRAY fields with null values, consider the following sample data with an ARRAY field <code translate="no">tags</code>:</p>
 <pre><code translate="no" class="language-python">data = [
   {
       <span class="hljs-string">&quot;tags&quot;</span>: [<span class="hljs-string">&quot;pop&quot;</span>, <span class="hljs-string">&quot;rock&quot;</span>, <span class="hljs-string">&quot;classic&quot;</span>],
@@ -627,8 +630,8 @@ summary: >-
   }
 ]
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>示例 1：检索 `tags` 为空的实体</strong></p>
-<p>要检索<code translate="no">tags</code> 字段缺失或显式设置为<code translate="no">None</code> 的实体：</p>
+<p><strong>Example 1: Retrieve entities where tags is null</strong></p>
+<p>To retrieve entities where the <code translate="no">tags</code> field is either missing or explicitly set to <code translate="no">None</code>:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;tags IS NULL&#x27;</span>
 
 <span class="hljs-comment"># Example output:</span>
@@ -637,8 +640,8 @@ summary: >-
 <span class="hljs-comment">#     &quot;{&#x27;tags&#x27;: None, &#x27;ratings&#x27;: [9, 5], &#x27;embedding&#x27;: [0.18, 0.11, 0.23], &#x27;pk&#x27;: 3}&quot;</span>
 <span class="hljs-comment"># ]</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>示例 2：检索 `tags` 字段不为空的实体</strong></p>
-<p>要检索 `<code translate="no">tags</code> ` 字段不为空的实体：</p>
+<p><strong>Example 2: Retrieve entities where tags is not null</strong></p>
+<p>To retrieve entities where the <code translate="no">tags</code> field is not null:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;tags IS NOT NULL&#x27;</span>
 
 <span class="hljs-comment"># Example output:</span>
@@ -647,7 +650,7 @@ summary: >-
 <span class="hljs-comment">#     &quot;{&#x27;metadata&#x27;: {&#x27;category&#x27;: None, &#x27;price&#x27;: 99.99, &#x27;brand&#x27;: &#x27;BrandA&#x27;}, &#x27;pk&#x27;: 4}&quot;</span>
 <span class="hljs-comment"># ]</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Tips-on-Using-Basic-Operators-with-JSON-and-ARRAY-Fields" class="common-anchor-header">关于在 JSON 和 ARRAY 字段中使用基本操作符的提示<button data-href="#Tips-on-Using-Basic-Operators-with-JSON-and-ARRAY-Fields" class="anchor-icon" translate="no">
+<h2 id="Tips-on-Using-Basic-Operators-with-JSON-and-ARRAY-Fields" class="common-anchor-header">Tips on Using Basic Operators with JSON and ARRAY Fields<button data-href="#Tips-on-Using-Basic-Operators-with-JSON-and-ARRAY-Fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -662,14 +665,14 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>虽然 Milvus 中的基本操作符用途广泛，可应用于标量字段，但它们也能有效地与 JSON 和 ARRAY 字段中的键和索引结合使用。</p>
-<p>例如，如果有一个<code translate="no">product</code> 字段包含多个键，如<code translate="no">price</code> 、<code translate="no">model</code> 和<code translate="no">tags</code> ，请始终直接引用该键：</p>
+    </button></h2><p>While the basic operators in Milvus are versatile and can be applied to scalar fields, they can also be effectively used with the keys and indexes in the JSON and ARRAY fields.</p>
+<p>For example, if you have a <code translate="no">product</code> field that contains multiple keys like <code translate="no">price</code>, <code translate="no">model</code>, and <code translate="no">tags</code>, always reference the key directly:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;product[&quot;price&quot;] &gt; 1000&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>若要查找记录温度数组中第一个温度超过特定值的记录，请使用：</p>
+<p>To find records where the first temperature in an array of recorded temperatures exceeds a certain value, use:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;history_temperatures[0] &gt; 30&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Conclusion" class="common-anchor-header">结论<button data-href="#Conclusion" class="anchor-icon" translate="no">
+<h2 id="Conclusion" class="common-anchor-header">Conclusion<button data-href="#Conclusion" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -684,8 +687,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus 提供了一系列基本操作符，让您能够灵活地过滤和查询数据。通过组合比较、范围、算术和逻辑操作符，您可以创建强大的过滤表达式，从而缩小搜索范围并高效地检索所需数据。</p>
-<h2 id="FAQ" class="common-anchor-header">常见问题<button data-href="#FAQ" class="anchor-icon" translate="no">
+    </button></h2><p>Milvus offers a range of basic operators that give you flexibility in filtering and querying your data. By combining comparison, range, arithmetic, and logical operators, you can create powerful filter expressions to narrow down your search results and retrieve the data you need efficiently.</p>
+<h2 id="FAQ" class="common-anchor-header">FAQ<button data-href="#FAQ" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -700,6 +703,6 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><strong>过滤条件中的匹配值列表长度是否有上限（例如：filter=’color in ["red", "green", “blue”]’）？如果列表过长该怎么办？</strong></p>
-<p>Zilliz Cloud 并未对过滤条件中的匹配值列表长度设置限制。但是，过长的列表会显著影响查询性能。
-如果您的过滤条件包含冗长的匹配值列表或包含多个元素的复杂表达式，建议使用<a href="/docs/zh/v2.6.x/filtering-templating.md">“过滤模板”功能</a>来提升查询性能。</p>
+    </button></h2><p><strong>Is there a limit to the length of the match value list in filter conditions (e.g., filter=’color in ["red", "green", “blue”]')? What should I do if the list is too long?</strong></p>
+<p>Zilliz Cloud does not impose a length limit on the match value list in filter conditions. However, an excessively long list can significantly impact query performance.
+If your filter condition includes a long list of match values or a complex expression with many elements, we recommend using <a href="/docs/zh/v2.6.x/filtering-templating.md">Filter Templating</a> to improve query performance.</p>

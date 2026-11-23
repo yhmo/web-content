@@ -1,12 +1,11 @@
 ---
 id: array_data_type.md
-title: Champ « Array »
+title: Array Field
 summary: >-
-  Un champ ARRAY stocke un ensemble ordonné d'éléments de même type de données.
-  Voici un exemple illustrant la manière dont les champs ARRAY stockent les
-  données :
+  An ARRAY field stores an ordered set of elements of the same data type. Here's
+  an example of how ARRAY fields store data:
 ---
-<h1 id="Array-Field" class="common-anchor-header">Champ « Array »<button data-href="#Array-Field" class="anchor-icon" translate="no">
+<h1 id="Array-Field" class="common-anchor-header">Array Field<button data-href="#Array-Field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -21,14 +20,14 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Un champ ARRAY stocke une liste ordonnée d'éléments de même type de données.</p>
-<p>Voici un exemple illustrant comment les champs ARRAY stockent les données :</p>
+    </button></h1><p>An ARRAY field stores an ordered list of elements of the same data type.</p>
+<p>Here’s an example of how ARRAY fields store data:</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
   <span class="hljs-attr">&quot;tags&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;pop&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;rock&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;classic&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
   <span class="hljs-attr">&quot;ratings&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-number">5</span><span class="hljs-punctuation">,</span> <span class="hljs-number">4</span><span class="hljs-punctuation">,</span> <span class="hljs-number">3</span><span class="hljs-punctuation">]</span>
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Limits" class="common-anchor-header">Limites<button data-href="#Limits" class="anchor-icon" translate="no">
+<h2 id="Limits" class="common-anchor-header">Limits<button data-href="#Limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -44,16 +43,17 @@ summary: >-
         ></path>
       </svg>
     </button></h2><ul>
-<li><strong>Valeurs par défaut</strong>: les champs ARRAY ne prennent pas en charge les valeurs par défaut. Cependant, vous pouvez définir l’attribut « <code translate="no">nullable</code> » sur « <code translate="no">True</code> » pour autoriser les valeurs nulles. Pour plus de détails, reportez-vous à la section « <a href="/docs/fr/nullable-and-default.md">Nullable &amp; Default</a> ».</li>
+<li><strong>Default Values</strong>: ARRAY fields do not support default values. However, you can set the <code translate="no">nullable</code> attribute to <code translate="no">True</code> to allow null values. For details, refer to <a href="/docs/fr/nullable-and-default.md">Nullable & Default</a>.</li>
 </ul>
 <ul>
-<li><strong>Type de données :</strong> tous les éléments d’un champ ARRAY doivent partager le même type de données, qui est défini par le paramètre ` <code translate="no">element_type</code> `. Lorsque ` <code translate="no">element_type</code> ` est défini sur ` <code translate="no">VARCHAR</code>`, vous devez également spécifier ` <code translate="no">max_length</code>`, qui définit le nombre maximal d’octets autorisés pour chaque élément du tableau. Le champ « <code translate="no">element_type</code> » accepte tout type de données scalaire pris en charge par Milvus, à l’exception de « <code translate="no">JSON</code> ». Pour « <code translate="no">element_type=STRUCT</code> », utilisez un champ StructArray et fournissez un « <code translate="no">struct_schema</code> » ; pour plus de détails, reportez-vous à <a href="/docs/fr/create-structarray-field.md">la section StructArray</a>. Un champ ARRAY de niveau supérieur ne peut pas contenir de vecteurs ni de tableaux imbriqués, et ses éléments ne peuvent pas être nuls individuellement ; ces formes ne sont disponibles que pour les sous-champs à l’intérieur d’un champ StructArray dans Milvus 3.0.6 et versions ultérieures.</li>
+<li><strong>Data Type:</strong> All elements in an ARRAY field must share the same data type, which is defined by the <code translate="no">element_type</code> parameter. When <code translate="no">element_type</code> is set to <code translate="no">VARCHAR</code>, you must also specify <code translate="no">max_length</code>, which defines the maximum number of bytes allowed for each array element. The <code translate="no">element_type</code> accepts any scalar data type supported by Milvus, with the exception of <code translate="no">JSON</code>. For <code translate="no">element_type=STRUCT</code>, use a StructArray field and provide a <code translate="no">struct_schema</code>; for details, refer to <a href="/docs/fr/create-structarray-field.md">StructArray</a>. A top-level ARRAY field cannot hold vectors or nested arrays, and its elements cannot be null individually; these forms are available only for subfields inside a StructArray field in Milvus 3.0.6 and later.</li>
 </ul>
 <ul>
-<li><p><strong>Capacité du tableau</strong>: le nombre d’éléments d’un champ ARRAY doit être inférieur ou égal à la capacité maximale définie lors de la création du tableau, comme spécifié par <code translate="no">max_capacity</code>. La valeur doit être un entier compris entre <strong>1</strong> et <strong>4 096</strong>.</p></li>
-<li><p><strong>Gestion des chaînes de caractères</strong>: les valeurs de type chaîne de caractères dans les champs « Array » sont stockées telles quelles, sans échappement sémantique ni conversion. Par exemple, <code translate="no">'a&quot;b'</code>, <code translate="no">&quot;a'b&quot;</code>, <code translate="no">'a\'b'</code> et <code translate="no">&quot;a\&quot;b&quot;</code> sont stockées telles qu’elles ont été saisies, tandis que <code translate="no">'a'b'</code> et <code translate="no">&quot;a&quot;b&quot;</code> sont considérées comme des valeurs non valides.</p></li>
+<li><p><strong>Array Capacity</strong>: The number of elements in an ARRAY field must be less than or equal to the maximum capacity defined when the Array was created, as specified by <code translate="no">max_capacity</code>. The value must be greater than 0 and must not exceed <code translate="no">proxy.maxArrayCapacity</code>, which defaults to <strong>4096</strong>.</p></li>
+<li><p><strong>Text Match</strong>: <code translate="no">TEXT_MATCH</code>, <code translate="no">TEXT_MATCH_FUZZY</code>, and <code translate="no">PHRASE_MATCH</code> support only <code translate="no">VARCHAR</code> and <code translate="no">TEXT</code> fields; applying them to an ARRAY field returns an error. <code translate="no">enable_analyzer</code> and <code translate="no">enable_match</code> have no effect on ARRAY fields. For details on text match, refer to <a href="/docs/fr/keyword-match.md">Text Match</a>.</p></li>
+<li><p><strong>String Handling</strong>: String values in Array fields are stored as-is, without semantic escaping or conversion. For example, <code translate="no">'a&quot;b'</code>, <code translate="no">&quot;a'b&quot;</code>, <code translate="no">'a\'b'</code>, and <code translate="no">&quot;a\&quot;b&quot;</code> are stored as entered, while <code translate="no">'a'b'</code> and <code translate="no">&quot;a&quot;b&quot;</code> are considered invalid values.</p></li>
 </ul>
-<h2 id="Add-ARRAY-field" class="common-anchor-header">Ajouter un champ ARRAY<button data-href="#Add-ARRAY-field" class="anchor-icon" translate="no">
+<h2 id="Add-ARRAY-field" class="common-anchor-header">Add ARRAY field<button data-href="#Add-ARRAY-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -68,25 +68,25 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Pour utiliser des champs de type ARRAY dans les clusters Milvus, définissez le type de champ approprié lors de la création du schéma de collection. Cette procédure comprend :</p>
+    </button></h2><p>To add an ARRAY field to the collection schema, set the following parameters:</p>
 <ol>
-<li><p>Définir le paramètre « <code translate="no">datatype</code> » sur le type de données «Array» pris en charge, <code translate="no">ARRAY</code>.</p></li>
-<li><p>Utiliser le paramètre ` <code translate="no">element_type</code> ` pour spécifier le type de données des éléments du tableau. Tous les éléments d’un même tableau doivent être du même type de données.</p></li>
-<li><p>Utiliser le paramètre ` <code translate="no">max_capacity</code> ` pour définir la capacité maximale du tableau, c'est-à-dire le nombre maximal d'éléments qu'il peut contenir.</p></li>
+<li><p>Set the field data type to <code translate="no">ARRAY</code>.</p></li>
+<li><p>Set <code translate="no">element_type</code> to the shared data type of the elements.</p></li>
+<li><p>Set <code translate="no">max_capacity</code> to the maximum number of elements.</p></li>
 </ol>
-<p>Voici comment définir un schéma de collection incluant des champs ARRAY :</p>
+<p>Here’s how to define a collection schema that includes ARRAY fields:</p>
 <div class="alert note">
-<p>Si vous définissez ` <code translate="no">enable_dynamic_field=True</code> ` lors de la définition du schéma, Milvus vous permet d’insérer des champs scalaires qui n’ont pas été définis au préalable. Cependant, cela peut accroître la complexité des requêtes et de la gestion, ce qui peut avoir un impact sur les performances. Pour plus d’informations, consultez la section <a href="/docs/fr/enable-dynamic-field.md">Champ dynamique</a>.</p>
+<p>To insert fields not defined in the schema, enable the <a href="/docs/fr/enable-dynamic-field.md">dynamic field</a>.</p>
 </div>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Import necessary libraries</span>
 <span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
@@ -361,7 +361,7 @@ CollectionSchema schema = <span class="hljs-keyword">new</span>()
     ]
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Set-index-params" class="common-anchor-header">Définir les paramètres d’indexation<button data-href="#Set-index-params" class="anchor-icon" translate="no">
+<h2 id="Set-index-params" class="common-anchor-header">Set index params<button data-href="#Set-index-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -376,17 +376,21 @@ CollectionSchema schema = <span class="hljs-keyword">new</span>()
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>L’indexation contribue à améliorer les performances de recherche et de requête. Dans les clusters Milvus, l’indexation est obligatoire pour les champs vectoriels, mais facultative pour les champs scalaires.</p>
-<p>L'exemple suivant crée des index sur le champ vectoriel <code translate="no">embedding</code> et le champ ARRAY <code translate="no">tags</code>, en utilisant dans les deux cas le type d'index « <code translate="no">AUTOINDEX</code> ». Avec ce type, Milvus sélectionne automatiquement l'index le plus adapté en fonction du type de données. Vous pouvez également personnaliser le type d'index et les paramètres pour chaque champ. Pour plus de détails, consultez la section « <a href="/docs/fr/index-explained.md">Explication de l'index</a> ».</p>
+    </button></h2><p>Vector fields require indexes; scalar indexes are optional. This example requests <code translate="no">AUTOINDEX</code> on <code translate="no">embedding</code> and <code translate="no">tags</code>. For explicit ARRAY index choices and filter support, see <a href="#Array-index-support">Array index support</a>.</p>
+<div class="alert note">
+<blockquote>
+<p>Scalar indexes, including <code translate="no">AUTOINDEX</code>, do not support recursive ARRAY fields or arrays with nullable elements. See <a href="/docs/fr/array_data_type.md#Array-index-support">Array index support</a> for ordinary-array filters and <a href="/docs/fr/index-structarray-fields.md#Create-scalar-indexes">Index StructArray Fields</a> for subfield rules.</p>
+</blockquote>
+</div>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Set index params</span>
 index_params = client.prepare_index_params()
@@ -487,7 +491,34 @@ IndexParam[] indexes =
         }
     ]&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Create-collection" class="common-anchor-header">Créer une collection<button data-href="#Create-collection" class="anchor-icon" translate="no">
+<p><details id="Array-index-support">
+<summary><strong>Array index support: index types and accelerated filters</strong></summary></p>
+<p>Scalar indexes on an ordinary ARRAY field index its elements. Choose from the following explicit index types:</p>
+<table>
+<thead>
+<tr><th>Element type</th><th>Explicit index types</th></tr>
+</thead>
+<tbody>
+<tr><td><code translate="no">BOOL</code>, <code translate="no">INT8</code>, <code translate="no">INT16</code>, <code translate="no">INT32</code>, <code translate="no">INT64</code>, <code translate="no">VARCHAR</code></td><td><code translate="no">INVERTED</code>, <code translate="no">BITMAP</code></td></tr>
+<tr><td><code translate="no">FLOAT</code>, <code translate="no">DOUBLE</code></td><td><code translate="no">INVERTED</code></td></tr>
+</tbody>
+</table>
+<p>You can also request <code translate="no">AUTOINDEX</code>; see <a href="/docs/fr/scalar_index.md#AUTOINDEX-behavior">Scalar Index</a> for the default ARRAY selections.</p>
+<p>The following filters can use eligible array indexes:</p>
+<table>
+<thead>
+<tr><th>Filter</th><th>Index behavior</th></tr>
+</thead>
+<tbody>
+<tr><td><code translate="no">ARRAY_CONTAINS</code>, <code translate="no">ARRAY_CONTAINS_ANY</code>, <code translate="no">ARRAY_CONTAINS_ALL</code></td><td><code translate="no">INVERTED</code>, <code translate="no">BITMAP</code>, or an eligible automatic selection can look up elements regardless of position.</td></tr>
+<tr><td>Whole-array <code translate="no">==</code> or <code translate="no">!=</code> on Boolean, integer, or VARCHAR arrays</td><td><code translate="no">INVERTED</code> can find candidates, then check original arrays for order and length. <code translate="no">BITMAP</code> does not serve this candidate path.</td></tr>
+<tr><td>Whole-array comparisons on floating-point arrays</td><td>Fall back to scanning.</td></tr>
+<tr><td>Element access, such as <code translate="no">tags[0]</code>, or array length</td><td>Element-membership indexing does not provide index lookup for these operations.</td></tr>
+</tbody>
+</table>
+<p>For expression syntax, see <a href="/docs/fr/array-operators.md">ARRAY Operators</a>.</p>
+<p></details></p>
+<h2 id="Create-collection" class="common-anchor-header">Create collection<button data-href="#Create-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -502,16 +533,16 @@ IndexParam[] indexes =
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Une fois le schéma et l’index définis, créez une collection comprenant des champs de type ARRAY.</p>
+    </button></h2><p>Once the schema and index are defined, create a collection that includes ARRAY fields.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.create_collection(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,
@@ -638,7 +669,7 @@ curl --request POST \
     &quot;collectionName&quot;: &quot;my_collection&quot;
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Insert-data" class="common-anchor-header">Insérer des données<button data-href="#Insert-data" class="anchor-icon" translate="no">
+<h2 id="Insert-data" class="common-anchor-header">Insert data<button data-href="#Insert-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -653,16 +684,16 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Une fois la collection créée, vous pouvez insérer des données comprenant des champs de type ARRAY.</p>
+    </button></h2><p>After creating the collection, you can insert data that includes ARRAY fields.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Sample data</span>
 data = [
@@ -843,9 +874,9 @@ status = client-&gt;<span class="hljs-built_in">Insert</span>(milvus::<span clas
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>Au-delà de l’insertion de tableaux complets, les champs de type « <code translate="no">ARRAY</code> » prennent également en charge les opérateurs de mise à jour partielle « <code translate="no">ARRAY_APPEND</code> » et « <code translate="no">ARRAY_REMOVE</code> » de l’API « <code translate="no">upsert</code> » dans Milvus v2.6.17 et versions ultérieures. Ceux-ci vous permettent d’ajouter des éléments à un tableau existant ou d’en supprimer certains sans avoir à récupérer au préalable sa valeur actuelle, ce qui évite le modèle « lecture-modification-écriture » côté client. Pour plus de détails, consultez la section « <a href="/docs/fr/upsert-entities.md#Upsert-ARRAY-fields-in-merge-mode">Upsert des champs ARRAY en mode fusion</a> ».</p>
+<p>Beyond inserting full arrays, <code translate="no">ARRAY</code> fields also support the <code translate="no">ARRAY_APPEND</code> and <code translate="no">ARRAY_REMOVE</code> partial-update operators on the <code translate="no">upsert</code> API in Milvus v2.6.17 and later. These let you append elements to or remove matching elements from an existing array without first retrieving its current value, which avoids the client-side read-modify-write pattern. For details, see <a href="/docs/fr/upsert-entities.md#Upsert-ARRAY-fields-in-merge-mode">Upsert ARRAY fields in merge mode</a>.</p>
 </div>
-<h2 id="Query-with-filter-expressions" class="common-anchor-header">Requête avec des expressions de filtrage<button data-href="#Query-with-filter-expressions" class="anchor-icon" translate="no">
+<h2 id="Query-with-filter-expressions" class="common-anchor-header">Query with filter expressions<button data-href="#Query-with-filter-expressions" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -860,17 +891,17 @@ status = client-&gt;<span class="hljs-built_in">Insert</span>(milvus::<span clas
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Après avoir inséré des entités, utilisez la méthode ` <code translate="no">query</code> ` pour récupérer les entités qui correspondent aux expressions de filtrage spécifiées.</p>
-<p>Pour récupérer les entités pour lesquelles la valeur « <code translate="no">tags</code> » n’est pas nulle :</p>
+    </button></h2><p>After inserting entities, use the <code translate="no">query</code> method to retrieve entities that match the specified filter expressions.</p>
+<p>To retrieve entities where the <code translate="no">tags</code> is not null:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Query entities where `tags` is not null</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;tags IS NOT NULL&#x27;</span>
@@ -977,16 +1008,16 @@ Console.WriteLine(res);
     &quot;outputFields&quot;: [&quot;tags&quot;, &quot;ratings&quot;, &quot;pk&quot;]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Pour récupérer les entités dont la valeur du premier élément de ` <code translate="no">ratings</code> ` est supérieure à 4 :</p>
+<p>To retrieve entities where the value of the first element of <code translate="no">ratings</code> is greater than 4:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;ratings[0] &gt; 4&#x27;</span>
 
@@ -1093,7 +1124,7 @@ curl --request POST \
   &quot;outputFields&quot;: [&quot;tags&quot;, &quot;ratings&quot;, &quot;embedding&quot;]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Vector-search-with-filter-expressions" class="common-anchor-header">Recherche vectorielle avec des expressions de filtrage<button data-href="#Vector-search-with-filter-expressions" class="anchor-icon" translate="no">
+<h2 id="Vector-search-with-filter-expressions" class="common-anchor-header">Vector search with filter expressions<button data-href="#Vector-search-with-filter-expressions" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1108,16 +1139,16 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Outre le filtrage de base par champ scalaire, vous pouvez combiner des recherches de similarité vectorielle avec des filtres de champ scalaire. Par exemple, le code suivant montre comment ajouter un filtre de champ scalaire à une recherche vectorielle :</p>
+    </button></h2><p>Use ARRAY filters in vector search to restrict the eligible entities:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;tags[0] == &quot;pop&quot;&#x27;</span>
 
@@ -1271,4 +1302,4 @@ SearchResp searchResp = <span class="hljs-keyword">await</span> client.SearchAsy
     &quot;outputFields&quot;: [&quot;tags&quot;, &quot;ratings&quot;, &quot;embedding&quot;]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>De plus, Milvus prend en charge des opérateurs de filtrage de tableaux avancés tels que <code translate="no">ARRAY_CONTAINS</code>, <code translate="no">ARRAY_CONTAINS_ALL</code>, <code translate="no">ARRAY_CONTAINS_ANY</code> et <code translate="no">ARRAY_LENGTH</code> afin d’améliorer encore les capacités de requête. Pour plus de détails, consultez la section <a href="/docs/fr/array-operators.md">Opérateurs ARRAY</a>.</p>
+<p>For containment and length filters, see <a href="/docs/fr/array-operators.md">ARRAY Operators</a>.</p>

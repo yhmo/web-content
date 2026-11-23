@@ -1,15 +1,14 @@
 ---
 id: best-practices-for-tiered-storage.md
-title: Migliori pratiche per l'archiviazione a livelliCompatible with Milvus 2.6.4+
+title: Best Practices for Tiered StorageCompatible with Milvus 2.6.4+
 summary: >-
-  Milvus offre il sistema di archiviazione a livelli per aiutarvi a gestire in
-  modo efficiente i dati su larga scala, bilanciando la latenza delle query, la
-  capacità e l'utilizzo delle risorse. Questa guida riassume le configurazioni
-  consigliate per i carichi di lavoro tipici e spiega le ragioni di ciascuna
-  strategia di ottimizzazione.
+  Milvus provides Tiered Storage to help you efficiently handle large-scale data
+  while balancing query latency, capacity, and resource usage. This guide
+  summarizes recommended configurations for typical workloads and explains the
+  reasoning behind each tuning strategy.
 beta: Milvus 2.6.4+
 ---
-<h1 id="Best-Practices-for-Tiered-Storage" class="common-anchor-header">Migliori pratiche per l'archiviazione a livelli<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.4+</span><button data-href="#Best-Practices-for-Tiered-Storage" class="anchor-icon" translate="no">
+<h1 id="Best-Practices-for-Tiered-Storage" class="common-anchor-header">Best Practices for Tiered Storage<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.4+</span><button data-href="#Best-Practices-for-Tiered-Storage" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -24,8 +23,8 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Milvus offre il sistema di archiviazione a livelli per aiutarvi a gestire in modo efficiente i dati su larga scala, bilanciando la latenza delle query, la capacità e l'utilizzo delle risorse. Questa guida riassume le configurazioni consigliate per i carichi di lavoro tipici e spiega le ragioni di ciascuna strategia di ottimizzazione.</p>
-<h2 id="Before-you-start" class="common-anchor-header">Prima di iniziare<button data-href="#Before-you-start" class="anchor-icon" translate="no">
+    </button></h1><p>Milvus provides Tiered Storage to help you efficiently handle large-scale data while balancing query latency, capacity, and resource usage. This guide summarizes recommended configurations for typical workloads and explains the reasoning behind each tuning strategy.</p>
+<h2 id="Before-you-start" class="common-anchor-header">Before you start<button data-href="#Before-you-start" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -41,10 +40,10 @@ beta: Milvus 2.6.4+
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>Milvus v2.6.4 o successivo</p></li>
-<li><p>I QueryNode devono avere risorse locali dedicate (memoria e disco). Gli ambienti condivisi possono distorcere la stima della cache e causare errori di valutazione.</p></li>
+<li><p>Milvus v2.6.4 or later</p></li>
+<li><p>QueryNodes must have dedicated local resources (memory and disk). Shared environments may distort cache estimation and lead to eviction misjudgment.</p></li>
 </ul>
-<h2 id="Choose-the-right-strategy" class="common-anchor-header">Scegliere la strategia giusta<button data-href="#Choose-the-right-strategy" class="anchor-icon" translate="no">
+<h2 id="Choose-the-right-strategy" class="common-anchor-header">Choose the right strategy<button data-href="#Choose-the-right-strategy" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -59,35 +58,35 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Tiered Storage offre strategie flessibili di caricamento e caching che possono essere combinate per adattarsi al carico di lavoro.</p>
+    </button></h2><p>Tiered Storage offers flexible loading and caching strategies that can be combined to fit your workload.</p>
 <table>
    <tr>
-     <th><p>Obiettivo</p></th>
-     <th><p>Obiettivo consigliato</p></th>
-     <th><p>Meccanismo chiave</p></th>
+     <th><p>Goal</p></th>
+     <th><p>Recommended focus</p></th>
+     <th><p>Key mechanism</p></th>
    </tr>
    <tr>
-     <td><p>Ridurre al minimo la latenza della prima richiesta</p></td>
-     <td><p>Precaricare i campi critici</p></td>
-     <td><p>Riscaldare</p></td>
+     <td><p>Minimize first-query latency</p></td>
+     <td><p>Preload critical fields</p></td>
+     <td><p>Warm Up</p></td>
    </tr>
    <tr>
-     <td><p>Gestire in modo efficiente i dati su larga scala</p></td>
-     <td><p>Caricare su richiesta</p></td>
-     <td><p>Carico pigro + carico parziale</p></td>
+     <td><p>Handle large-scale data efficiently</p></td>
+     <td><p>Load on demand</p></td>
+     <td><p>Lazy Load + Partial Load</p></td>
    </tr>
    <tr>
-     <td><p>Mantenere la stabilità a lungo termine</p></td>
-     <td><p>Prevenire l'overflow della cache</p></td>
-     <td><p>Evacuazione</p></td>
+     <td><p>Maintain long-term stability</p></td>
+     <td><p>Prevent cache overflow</p></td>
+     <td><p>Eviction</p></td>
    </tr>
    <tr>
-     <td><p>Bilanciare prestazioni e capacità</p></td>
-     <td><p>Combinare il precarico e la cache dinamica</p></td>
-     <td><p>Configurazione ibrida</p></td>
+     <td><p>Balance performance and capacity</p></td>
+     <td><p>Combine preload and dynamic caching</p></td>
+     <td><p>Hybrid configuration</p></td>
    </tr>
 </table>
-<h2 id="Scenario-1-real-time-low-latency-retrieval" class="common-anchor-header">Scenario 1: recupero in tempo reale e a bassa latenza<button data-href="#Scenario-1-real-time-low-latency-retrieval" class="anchor-icon" translate="no">
+<h2 id="Scenario-1-real-time-low-latency-retrieval" class="common-anchor-header">Scenario 1: real-time, low latency retrieval<button data-href="#Scenario-1-real-time-low-latency-retrieval" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -102,13 +101,13 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><strong>Quando utilizzare</strong></p>
+    </button></h2><p><strong>When to use</strong></p>
 <ul>
-<li><p>La latenza delle query è critica (ad esempio, raccomandazioni in tempo reale o ranking di ricerca)</p></li>
-<li><p>Gli indici vettoriali e i filtri scalari del core vengono acceduti frequentemente</p></li>
-<li><p>Le prestazioni costanti sono più importanti della velocità di avviamento</p></li>
+<li><p>Query latency is critical (e.g., real-time recommendation or search ranking)</p></li>
+<li><p>Core vector indexes and scalar filters are accessed frequently</p></li>
+<li><p>Consistent performance matters more than startup speed</p></li>
 </ul>
-<p><strong>Configurazione consigliata</strong></p>
+<p><strong>Recommended configuration</strong></p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-comment"># milvus.yaml</span>
 <span class="hljs-attr">queryNode:</span>
   <span class="hljs-attr">segcore:</span>
@@ -132,13 +131,13 @@ beta: Milvus 2.6.4+
       <span class="hljs-comment"># no expiration time, which avoids frequent reloading</span>
       <span class="hljs-attr">cacheTtl:</span> <span class="hljs-number">0</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>Motivazione</strong></p>
+<p><strong>Rationale</strong></p>
 <ul>
-<li><p>Il warmup elimina la latenza di primo impatto per gli indici scalari e vettoriali ad alta frequenza.</p></li>
-<li><p>Lo sfratto in background mantiene stabile la pressione della cache senza bloccare le query.</p></li>
-<li><p>La disabilitazione del TTL della cache evita ricariche inutili per i dati caldi.</p></li>
+<li><p>Warmup eliminates first-hit latency for high-frequency scalar and vector indexes.</p></li>
+<li><p>Background eviction maintains stable cache pressure without blocking queries.</p></li>
+<li><p>Disabling cache TTL avoids unnecessary reloads for hot data.</p></li>
 </ul>
-<h2 id="Scenario-2-offline-batch-analysis" class="common-anchor-header">Scenario 2: analisi offline, in batch<button data-href="#Scenario-2-offline-batch-analysis" class="anchor-icon" translate="no">
+<h2 id="Scenario-2-offline-batch-analysis" class="common-anchor-header">Scenario 2: offline, batch analysis<button data-href="#Scenario-2-offline-batch-analysis" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -153,13 +152,13 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><strong>Quando si usa</strong></p>
+    </button></h2><p><strong>When to use</strong></p>
 <ul>
-<li><p>La tolleranza alla latenza delle query è elevata</p></li>
-<li><p>I carichi di lavoro coinvolgono insiemi di dati massicci o molti segmenti.</p></li>
-<li><p>La capacità e il throughput sono prioritari rispetto alla reattività.</p></li>
+<li><p>Query latency tolerance is high</p></li>
+<li><p>Workloads involve massive datasets or many segments</p></li>
+<li><p>Capacity and throughput are prioritized over responsiveness</p></li>
 </ul>
-<p><strong>Configurazione consigliata</strong></p>
+<p><strong>Recommended configuration</strong></p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-comment"># milvus.yaml</span>
 <span class="hljs-attr">queryNode:</span>
   <span class="hljs-attr">segcore:</span>
@@ -183,13 +182,13 @@ beta: Milvus 2.6.4+
       <span class="hljs-comment"># use 1 day expiration to clean unused cache</span>
       <span class="hljs-attr">cacheTtl:</span> <span class="hljs-number">86400</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>Motivazione</strong></p>
+<p><strong>Rationale</strong></p>
 <ul>
-<li><p>La disabilitazione del warm-up accelera l'avvio quando si inizializzano molti segmenti.</p></li>
-<li><p>Filigrane più alte consentono un uso più denso della cache, migliorando la capacità di carico totale.</p></li>
-<li><p>Il TTL della cache pulisce automaticamente i dati inutilizzati per liberare spazio locale.</p></li>
+<li><p>Disabling warm-up accelerates startup when initializing many segments.</p></li>
+<li><p>Higher watermarks allow denser cache usage, improving total load capacity.</p></li>
+<li><p>Cache TTL automatically cleans unused data to free local space.</p></li>
 </ul>
-<h2 id="Scenario-3-hybrid-deployment-mixed-online-+-offline" class="common-anchor-header">Scenario 3: distribuzione ibrida (mista online + offline)<button data-href="#Scenario-3-hybrid-deployment-mixed-online-+-offline" class="anchor-icon" translate="no">
+<h2 id="Scenario-3-hybrid-deployment-mixed-online-+-offline" class="common-anchor-header">Scenario 3: hybrid deployment (mixed online + offline)<button data-href="#Scenario-3-hybrid-deployment-mixed-online-+-offline" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -204,21 +203,21 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><strong>Quando si usa</strong></p>
+    </button></h2><p><strong>When to use</strong></p>
 <ul>
-<li><p>Un singolo cluster serve sia carichi di lavoro online che analitici.</p></li>
-<li><p>Alcune collezioni richiedono una bassa latenza, mentre altre danno priorità alla capacità.</p></li>
+<li><p>A single cluster serves both online and analytical workloads</p></li>
+<li><p>Some collections require low latency, others prioritize capacity</p></li>
 </ul>
-<p><strong>Strategia consigliata</strong></p>
+<p><strong>Recommended strategy</strong></p>
 <ul>
-<li><p>Applicare la <strong>configurazione in tempo reale</strong> alle raccolte sensibili alla latenza.</p></li>
-<li><p>Applicare la <strong>configurazione offline</strong> alle raccolte analitiche o di archivio.</p></li>
-<li><p>Regolare evictableMemoryCacheRatio, cacheTtl e rapporti di filigrana in modo indipendente per ogni tipo di carico di lavoro.</p></li>
+<li><p>Apply <strong>real-time configuration</strong> to latency-sensitive collections</p></li>
+<li><p>Apply <strong>offline configuration</strong> to analytical or archival collections</p></li>
+<li><p>Adjust evictableMemoryCacheRatio, cacheTtl, and watermark ratios independently for each workload type</p></li>
 </ul>
-<p><strong>Motivazione</strong></p>
-<p>La combinazione delle configurazioni consente un controllo a grana fine dell'allocazione delle risorse.</p>
-<p>Le raccolte critiche mantengono garanzie di bassa latenza, mentre le raccolte secondarie possono gestire più segmenti e volumi di dati.</p>
-<h2 id="Additional-tuning-tips" class="common-anchor-header">Ulteriori suggerimenti per la messa a punto<button data-href="#Additional-tuning-tips" class="anchor-icon" translate="no">
+<p><strong>Rationale</strong></p>
+<p>Combining configurations allows fine-grained control of resource allocation.</p>
+<p>Critical collections maintain low-latency guarantees, while secondary collections can handle more segments and data volume.</p>
+<h2 id="Additional-tuning-tips" class="common-anchor-header">Additional tuning tips<button data-href="#Additional-tuning-tips" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -235,33 +234,33 @@ beta: Milvus 2.6.4+
       </svg>
     </button></h2><table>
    <tr>
-     <th><p>Aspetto</p></th>
-     <th><p>Raccomandazione</p></th>
-     <th><p>Spiegazione</p></th>
+     <th><p>Aspect</p></th>
+     <th><p>Recommendation</p></th>
+     <th><p>Explanation</p></th>
    </tr>
    <tr>
-     <td><p><strong>Ambito di riscaldamento</strong></p></td>
-     <td><p>Precaricare solo i campi o gli indici con un'alta frequenza di query.</p></td>
-     <td><p>Il precaricamento non necessario aumenta il tempo di caricamento e l'uso delle risorse.</p></td>
+     <td><p><strong>Warm Up scope</strong></p></td>
+     <td><p>Only preload fields or indexes with high query frequency.</p></td>
+     <td><p>Unnecessary preloading increases load time and resource use.</p></td>
    </tr>
    <tr>
-     <td><p><strong>Regolazione dello svuotamento</strong></p></td>
-     <td><p>Iniziare con le filigrane predefinite (75-80%) e regolare gradualmente.</p></td>
-     <td><p>Uno scarto ridotto provoca uno svuotamento frequente; uno scarto elevato ritarda il rilascio delle risorse.</p></td>
+     <td><p><strong>Eviction tuning</strong></p></td>
+     <td><p>Start with default watermarks (75–80%) and adjust gradually.</p></td>
+     <td><p>A small gap causes frequent eviction; a large gap delays resource release.</p></td>
    </tr>
    <tr>
-     <td><p><strong>TTL della cache</strong></p></td>
-     <td><p>Disattivare per i dataset stabili e caldi; attivare (ad esempio, 1-3 giorni) per i dati dinamici.</p></td>
-     <td><p>Impedisce l'accumulo di cache stantie e bilancia i costi di pulizia.</p></td>
+     <td><p><strong>Cache TTL</strong></p></td>
+     <td><p>Disable for stable hot datasets; enable (e.g., 1–3 days) for dynamic data.</p></td>
+     <td><p>Prevents stale cache buildup while balancing cleanup overhead.</p></td>
    </tr>
    <tr>
-     <td><p><strong>Rapporto di overcommit</strong></p></td>
-     <td><p>Evitare valori &gt; 0,7 a meno che le risorse non siano ampie.</p></td>
-     <td><p>Un overcommit eccessivo può causare il thrashing della cache e una latenza instabile.</p></td>
+     <td><p><strong>Overcommit ratio</strong></p></td>
+     <td><p>Avoid values &gt; 0.7 unless resource headroom is large.</p></td>
+     <td><p>Excessive overcommit may cause cache thrashing and unstable latency.</p></td>
    </tr>
    <tr>
-     <td><p><strong>Monitoraggio</strong></p></td>
-     <td><p>Tenete traccia del rapporto di hit della cache, dell'utilizzo delle risorse e della frequenza di evasione.</p></td>
-     <td><p>I frequenti carichi a freddo possono indicare che il riscaldamento o i watermark devono essere regolati.</p></td>
+     <td><p><strong>Monitoring</strong></p></td>
+     <td><p>Track cache hit ratio, resource utilization, and eviction frequency.</p></td>
+     <td><p>Frequent cold loads may indicate that warm-up or watermarks need adjustment.</p></td>
    </tr>
 </table>

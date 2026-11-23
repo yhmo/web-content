@@ -1,10 +1,10 @@
 ---
 id: eks.md
-title: Einrichten eines Milvus-Clusters auf EKS
+title: Deploy a Milvus Cluster on EKS
 related_key: cluster
-summary: 'Erfahren Sie, wie Sie einen Milvus-Cluster auf EKS bereitstellen'
+summary: Learn how to deploy a Milvus cluster on EKS
 ---
-<h1 id="Deploy-a-Milvus-Cluster-on-EKS" class="common-anchor-header">Einrichten eines Milvus-Clusters auf EKS<button data-href="#Deploy-a-Milvus-Cluster-on-EKS" class="anchor-icon" translate="no">
+<h1 id="Deploy-a-Milvus-Cluster-on-EKS" class="common-anchor-header">Deploy a Milvus Cluster on EKS<button data-href="#Deploy-a-Milvus-Cluster-on-EKS" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -19,8 +19,8 @@ summary: 'Erfahren Sie, wie Sie einen Milvus-Cluster auf EKS bereitstellen'
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>In diesem Abschnitt wird beschrieben, wie Sie einen Milvus-Cluster auf <a href="https://docs.aws.amazon.com/eks/latest/userguide/what-is-eks.html">Amazon EKS</a> bereitstellen.</p>
-<h2 id="Prerequisites" class="common-anchor-header">Voraussetzungen<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+    </button></h1><p>This topic describes how to deploy a Milvus cluster on <a href="https://docs.aws.amazon.com/eks/latest/userguide/what-is-eks.html">Amazon EKS</a>.</p>
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -36,20 +36,20 @@ summary: 'Erfahren Sie, wie Sie einen Milvus-Cluster auf EKS bereitstellen'
         ></path>
       </svg>
     </button></h2><ul>
-<li>Sie haben die AWS CLI auf Ihrem lokalen PC oder einem Amazon EC2-Server installiert, der als Endpunkt für die in diesem Dokument beschriebenen Vorgänge dient. Unter Amazon Linux 2 oder Amazon Linux 2023 sind die AWS CLI-Tools bereits vorinstalliert. Informationen zur Installation der AWS CLI auf Ihrem lokalen PC finden Sie unter <a href="https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html">„So installieren Sie die AWS CLI</a>“.</li>
-<li>Sie haben Kubernetes und die EKS-Tools auf dem gewünschten Endgerät installiert, darunter:
+<li>You have AWS CLI installed on your local PC or an Amazon EC2, which will serve as your endpoint to do the operations covered in this document. For an Amazon Linux 2 or Amazon Linux 2023, the AWS CLI tools are already installed. To install AWS CLi on your local PC. Refer to <a href="https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html">How to install AWS CLI</a>.</li>
+<li>You have installed Kubernetes and EKS tools installed on the preferred endpoint device, including:
 <ul>
 <li><a href="https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html"><code translate="no">kubectl</code></a></li>
 <li><a href="https://helm.sh/docs/intro/install/"><code translate="no">helm</code></a></li>
 <li><a href="https://docs.aws.amazon.com/eks/latest/userguide/eksctl.html"><code translate="no">eksctl</code></a></li>
 </ul></li>
-<li>Die AWS-IAM-Berechtigungen wurden ordnungsgemäß erteilt. Der von Ihnen verwendete IAM-Sicherheitsprinzipal muss über die Berechtigung verfügen, Amazon EKS-IAM-Rollen, dienstbezogene Rollen, AWS CloudFormation, VPCs und andere zugehörige Ressourcen zu nutzen. Sie können eine der folgenden Methoden anwenden, um Ihrem Prinzipal die entsprechenden Berechtigungen zu erteilen.
+<li>AWS IAM permissions have been granted properly. The IAM security principal you are using must have permission to use Amazon EKS IAM roles, service-related roles, AWS CloudFormation, VPCs, and other related resources. You can follow either of the following ways to grant your principal proper permissions.
 <ul>
-<li>(Nicht empfohlen) Legen Sie einfach die Zuordnungsrichtlinie des von Ihnen verwendeten Benutzers/der Rolle auf die von AWS verwaltete Richtlinie „ <code translate="no">AdministratorAccess</code> “ fest.</li>
-<li>(Dringend empfohlen) Um das Prinzip der geringsten Berechtigungen umzusetzen, gehen Sie wie folgt vor:
+<li>(Not recommended) Simply set the association policy of the user/role that you used to AWS managed policy <code translate="no">AdministratorAccess</code>.</li>
+<li>(Strongly recommended) To implement the principle of least privilege, do as follows:
 <ul>
-<li><p>Informationen zum Einrichten von Berechtigungen für „ <code translate="no">eksctl</code> “ finden Sie unter <a href="https://eksctl.io/usage/minimum-iam-policies/">„Mindestberechtigungen für <code translate="no">eksctl</code></a> “.</p></li>
-<li><p>Informationen zum Einrichten von Berechtigungen zum Erstellen/Löschen von AWS S3-Buckets finden Sie in den folgenden Berechtigungseinstellungen:</p>
+<li><p>To set up permission for <code translate="no">eksctl</code>, refer to <a href="https://eksctl.io/usage/minimum-iam-policies/">Minimum permission for <code translate="no">eksctl</code></a>.</p></li>
+<li><p>To set up permission for creating/deleting AWS S3 buckets, refer to the following permission settings:</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
   <span class="hljs-attr">&quot;Version&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;2012-10-17&quot;</span><span class="hljs-punctuation">,</span>
   <span class="hljs-attr">&quot;Statement&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
@@ -69,7 +69,7 @@ summary: 'Erfahren Sie, wie Sie einen Milvus-Cluster auf EKS bereitstellen'
   <span class="hljs-punctuation">]</span>
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>Informationen zum Einrichten von Berechtigungen zum Erstellen/Löschen von IAM-Richtlinien finden Sie in den folgenden Berechtigungseinstellungen. Ersetzen Sie dabei „ <code translate="no">YOUR_ACCOUNT_ID</code> “ durch Ihren eigenen Namen.</p>
+<li><p>To set up permissions for creating/deleting IAM policies, refer to the following permission settings. Do replace <code translate="no">YOUR_ACCOUNT_ID</code> with your own.</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
   <span class="hljs-attr">&quot;Version&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;2012-10-17&quot;</span><span class="hljs-punctuation">,</span>
   <span class="hljs-attr">&quot;Statement&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
@@ -88,7 +88,7 @@ summary: 'Erfahren Sie, wie Sie einen Milvus-Cluster auf EKS bereitstellen'
 </ul></li>
 </ul></li>
 </ul>
-<h2 id="Set-up-AWS-Resources" class="common-anchor-header">AWS-Ressourcen einrichten<button data-href="#Set-up-AWS-Resources" class="anchor-icon" translate="no">
+<h2 id="Set-up-AWS-Resources" class="common-anchor-header">Set up AWS Resources<button data-href="#Set-up-AWS-Resources" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -103,8 +103,8 @@ summary: 'Erfahren Sie, wie Sie einen Milvus-Cluster auf EKS bereitstellen'
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Sie können die erforderlichen AWS-Ressourcen, darunter einen AWS S3-Bucket und einen EKS-Cluster, entweder über die AWS Management Console, die AWS CLI oder IaC-Tools wie Terraform einrichten. In diesem Dokument wird die AWS CLI bevorzugt verwendet, um die Einrichtung der AWS-Ressourcen zu veranschaulichen.</p>
-<h3 id="Create-an-Amazon-S3-Bucket" class="common-anchor-header">Erstellen eines Amazon S3-Buckets<button data-href="#Create-an-Amazon-S3-Bucket" class="anchor-icon" translate="no">
+    </button></h2><p>You can set up the required AWS resources, including an AWS S3 bucket and an EKS cluster, using either AWS Management Console, AWS CLI, or IaC tools, such as Terraform. In this document, the AWS CLI is preferred to demonstrate how to set up the AWS resources.</p>
+<h3 id="Create-an-Amazon-S3-Bucket" class="common-anchor-header">Create an Amazon S3 Bucket<button data-href="#Create-an-Amazon-S3-Bucket" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -120,8 +120,8 @@ summary: 'Erfahren Sie, wie Sie einen Milvus-Cluster auf EKS bereitstellen'
         ></path>
       </svg>
     </button></h3><ul>
-<li><p>Erstellen Sie einen AWS-S3-Bucket.</p>
-<p>Lesen Sie <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html">die Regeln zur Bucket-Benennung</a> und beachten Sie diese bei der Benennung Ihres AWS S3-Buckets.</p>
+<li><p>Create an AWS S3 bucket.</p>
+<p>Read <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html">Bucket Naming Rules</a> and observe the naming rules when naming your AWS S3 bucket.</p>
 <pre><code translate="no" class="language-shell">milvus_bucket_name=&quot;milvus-bucket-$(openssl rand -hex 12)&quot;
 
 aws s3api create-bucket --bucket &quot;$milvus_bucket_name&quot; --region &#x27;us-east-2&#x27; --acl private  --object-ownership ObjectWriter --create-bucket-configuration LocationConstraint=&#x27;us-east-2&#x27;
@@ -131,7 +131,7 @@ aws s3api create-bucket --bucket &quot;$milvus_bucket_name&quot; --region &#x27;
 <span class="hljs-meta prompt_">#</span><span class="language-bash">
 <span class="hljs-comment"># &quot;Location&quot;: &quot;http://milvus-bucket-039dd013c0712f085d60e21f.s3.amazonaws.com/&quot;</span></span>
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>Erstellen Sie eine IAM-Richtlinie zum Lesen und Schreiben von Objekten in dem oben erstellten Bucket. <strong>Ersetzen Sie dabei den Bucket-Namen durch Ihren eigenen.</strong></p>
+<li><p>Create an IAM policy for reading and writing objects within the bucket created above. <strong>Do replace the bucket name with your own.</strong></p>
 <pre><code translate="no" class="language-shell">echo &#x27;{
   &quot;Version&quot;: &quot;2012-10-17&quot;,
   &quot;Statement&quot;: [
@@ -170,11 +170,11 @@ aws iam create-policy --policy-name MilvusS3ReadWrite --policy-document file://m
 <span class="hljs-meta prompt_"># </span><span class="language-bash">    }</span>
 <span class="hljs-meta prompt_"># </span><span class="language-bash">}</span>    
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>Weisen Sie die Richtlinie Ihrem AWS-Benutzer zu.</p>
+<li><p>Attach the policy to your AWS User.</p>
 <pre><code translate="no" class="language-shell">aws iam attach-user-policy --user-name &lt;your-user-name&gt; --policy-arn &quot;arn:aws:iam::&lt;your-iam-account-id&gt;:policy/MilvusS3ReadWrite&quot;
 <button class="copy-code-btn"></button></code></pre></li>
 </ul>
-<h3 id="Create-an-Amazon-EKS-Cluster" class="common-anchor-header">Erstellen Sie einen Amazon EKS-Cluster<button data-href="#Create-an-Amazon-EKS-Cluster" class="anchor-icon" translate="no">
+<h3 id="Create-an-Amazon-EKS-Cluster" class="common-anchor-header">Create an Amazon EKS Cluster<button data-href="#Create-an-Amazon-EKS-Cluster" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -190,7 +190,7 @@ aws iam create-policy --policy-name MilvusS3ReadWrite --policy-document file://m
         ></path>
       </svg>
     </button></h3><ul>
-<li><p>Bereiten Sie eine Cluster-Konfigurationsdatei wie folgt vor und benennen Sie sie „ <code translate="no">eks_cluster.yaml</code> “.</p>
+<li><p>Prepare a cluster configuration file as follows and name it <code translate="no">eks_cluster.yaml</code>.</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">eksctl.io/v1alpha5</span>
 <span class="hljs-attr">kind:</span> <span class="hljs-string">ClusterConfig</span>
 
@@ -230,19 +230,19 @@ aws iam create-policy --policy-name MilvusS3ReadWrite --policy-document file://m
   <span class="hljs-attr">wellKnownPolicies:</span>
     <span class="hljs-attr">ebsCSIController:</span> <span class="hljs-literal">true</span>
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>Führen Sie den folgenden Befehl aus, um einen EKS-Cluster zu erstellen.</p>
+<li><p>Run the following command to create an EKS cluster.</p>
 <pre><code translate="no" class="language-bash">eksctl create cluster -f eks_cluster.yaml
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>Rufen Sie die kubeconfig-Datei ab.</p>
+<li><p>Get the kubeconfig file.</p>
 <pre><code translate="no" class="language-bash">aws eks update-kubeconfig --region <span class="hljs-string">&#x27;us-east-2&#x27;</span> --name <span class="hljs-string">&#x27;milvus-eks-cluster&#x27;</span>
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>Überprüfen Sie den EKS-Cluster.</p>
+<li><p>Verify the EKS cluster.</p>
 <pre><code translate="no" class="language-bash">kubectl cluster-info
 
 kubectl get nodes -A -o wide
 <button class="copy-code-btn"></button></code></pre></li>
 </ul>
-<h2 id="Create-a-StorageClass" class="common-anchor-header">Erstellen Sie eine StorageClass<button data-href="#Create-a-StorageClass" class="anchor-icon" translate="no">
+<h2 id="Create-a-StorageClass" class="common-anchor-header">Create a StorageClass<button data-href="#Create-a-StorageClass" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -257,7 +257,7 @@ kubectl get nodes -A -o wide
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus verwendet „ <code translate="no">etcd</code> “ als Metaspeicher und ist auf die StorageClass „ <code translate="no">gp3</code> “ angewiesen, um PVCs zu erstellen und zu verwalten.</p>
+    </button></h2><p>Milvus uses <code translate="no">etcd</code> as meta storage and needs to rely on the <code translate="no">gp3</code> StorageClass to create and manage PVC.</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-string">cat</span> <span class="hljs-string">&lt;&lt;EOF</span> <span class="hljs-string">|</span> <span class="hljs-string">kubectl</span> <span class="hljs-string">apply</span> <span class="hljs-string">-f</span> <span class="hljs-bullet">-</span>
 <span class="hljs-attr">apiVersion:</span> <span class="hljs-string">storage.k8s.io/v1</span>
 <span class="hljs-attr">kind:</span> <span class="hljs-string">StorageClass</span>
@@ -271,10 +271,10 @@ kubectl get nodes -A -o wide
   <span class="hljs-attr">type:</span> <span class="hljs-string">gp3</span>
 <span class="hljs-string">EOF</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Legen Sie die ursprüngliche „gp2“-StorageClass als „non-default“ fest.</p>
+<p>Set the original gp2 StorageClass to non-default.</p>
 <pre><code translate="no" class="language-shell">kubectl patch storageclass gp2 -p &#x27;{&quot;metadata&quot;: {&quot;annotations&quot;:{&quot;storageclass.kubernetes.io/is-default-class&quot;:&quot;false&quot;}}}&#x27;
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Install-AWS-LoadBalancer-Controller" class="common-anchor-header">Installieren Sie den AWS LoadBalancer Controller<button data-href="#Install-AWS-LoadBalancer-Controller" class="anchor-icon" translate="no">
+<h3 id="Install-AWS-LoadBalancer-Controller" class="common-anchor-header">Install AWS LoadBalancer Controller<button data-href="#Install-AWS-LoadBalancer-Controller" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -290,22 +290,22 @@ kubectl get nodes -A -o wide
         ></path>
       </svg>
     </button></h3><ul>
-<li><p>Fügen Sie das Helm-Chars-Repo hinzu.</p>
+<li><p>Add Helm chars repo.</p>
 <pre><code translate="no" class="language-shell">helm repo add eks https://aws.github.io/eks-charts
 helm repo update
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>Installieren Sie den AWS Load Balancer Controller.</p>
+<li><p>Install the AWS Load Balancer Controller.</p>
 <pre><code translate="no" class="language-shell">helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
   -n kube-system \
   --set clusterName=&#x27;milvus-eks-cluster&#x27; \
   --set serviceAccount.create=false \
   --set serviceAccount.name=aws-load-balancer-controller 
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>Überprüfen Sie die Installation</p>
+<li><p>Verify the installation</p>
 <pre><code translate="no" class="language-shell">kubectl get deployment -n kube-system aws-load-balancer-controller
 <button class="copy-code-btn"></button></code></pre></li>
 </ul>
-<h2 id="Deploy-Milvus" class="common-anchor-header">Milvus bereitstellen<button data-href="#Deploy-Milvus" class="anchor-icon" translate="no">
+<h2 id="Deploy-Milvus" class="common-anchor-header">Deploy Milvus<button data-href="#Deploy-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -320,17 +320,17 @@ helm repo update
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>In dieser Anleitung verwenden wir Milvus-Helm-Charts, um einen Milvus-Cluster bereitzustellen. Die Charts finden Sie <a href="https://github.com/zilliztech/milvus-helm/tree/master/charts/milvus">hier</a>.</p>
+    </button></h2><p>In this guide, we will use Milvus Helm Charts to deploy a Milvus cluster. You can find the charts <a href="https://github.com/zilliztech/milvus-helm/tree/master/charts/milvus">here</a>.</p>
 <ul>
-<li><p>Fügen Sie das Milvus-Helm-Charts-Repo hinzu.</p>
+<li><p>Add Milvus Helm Chart repo.</p>
 <pre><code translate="no" class="language-bash">helm repo add milvus https://zilliztech.github.io/milvus-helm/
 helm repo update
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>Bereiten Sie die Milvus-Konfigurationsdatei „ <code translate="no">milvus.yaml</code> “ vor und ersetzen Sie „ <code translate="no">&lt;bucket-name&gt; &lt;s3-access-key&gt; &lt;s3-secret-key&gt;</code> “ durch Ihre eigenen Angaben.</p>
+<li><p>Prepare the Milvus configuration file <code translate="no">milvus.yaml</code>, and replace <code translate="no">&lt;bucket-name&gt; &lt;s3-access-key&gt; &lt;s3-secret-key&gt;</code> with your own.</p>
 <p><div class="alert note"></p>
 <ul>
-<li>Um HA für Ihr Milvus zu konfigurieren, finden Sie weitere Informationen in <a href="https://milvus.io/tools/sizing/">diesem Rechner</a>. Sie können die entsprechenden Konfigurationen direkt aus dem Rechner herunterladen und sollten dabei die MinIO-bezogenen Konfigurationen entfernen.</li>
-<li>Um Multi-Replica-Bereitstellungen von Koordinatoren zu implementieren, setzen Sie „ <code translate="no">xxCoordinator.activeStandby.enabled</code> “ auf „ <code translate="no">true</code> “.</li>
+<li>To configure HA for your Milvus, refer to <a href="https://milvus.io/tools/sizing/">this calculator</a> for more information. You can download the related configurations directly from the calculator, and you should remove MinIO-related configurations.</li>
+<li>To implement multi-replica deployments of coordinators, set <code translate="no">xxCoordinator.activeStandby.enabled</code> to <code translate="no">true</code>.</li>
 </ul>
 <p></div></p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">cluster:</span>
@@ -405,20 +405,20 @@ helm repo update
       <span class="hljs-attr">cpu:</span> <span class="hljs-number">1</span>
       <span class="hljs-attr">memory:</span> <span class="hljs-string">2Gi</span>  
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>Installieren Sie Milvus.</p>
+<li><p>Install Milvus.</p>
 <pre><code translate="no" class="language-shell">helm install milvus-demo milvus/milvus -n milvus -f milvus.yaml
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>Warten Sie, bis alle Pods den Status „ <code translate="no">Running</code> “ haben.</p>
+<li><p>Wait until all pods are <code translate="no">Running</code>.</p>
 <pre><code translate="no" class="language-shell">kubectl get pods -n milvus
 <button class="copy-code-btn"></button></code></pre>
 <p><div class="alert note"></p>
-<p>Helm unterstützt keine Steuerung der Reihenfolge bei der Erstellung von Diensten. Es ist normal, dass sich Business-Pods in der Anfangsphase ein- oder zweimal neu starten, bevor „ <code translate="no">etcd</code> “ und „ <code translate="no">pulsar</code> “ verfügbar sind.</p>
+<p>Helm does not support scheduling the order of service creation. It is normal that business pods to restart for one or two times before <code translate="no">etcd</code> and <code translate="no">pulsar</code> are up in the early stage.</p>
 <p></div></p></li>
-<li><p>Rufen Sie die Milvus-Serviceadresse ab.</p>
+<li><p>Get Milvus service address.</p>
 <pre><code translate="no" class="language-shell">kubectl get svc -n milvus
 <button class="copy-code-btn"></button></code></pre></li>
 </ul>
-<h2 id="Verify-the-installation" class="common-anchor-header">Überprüfen Sie die Installation<button data-href="#Verify-the-installation" class="anchor-icon" translate="no">
+<h2 id="Verify-the-installation" class="common-anchor-header">Verify the installation<button data-href="#Verify-the-installation" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -433,22 +433,22 @@ helm repo update
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Sie können der folgenden einfachen Anleitung folgen, um die Installation zu überprüfen. Weitere Details finden Sie in den <a href="https://github.com/milvus-io/pymilvus/tree/master/examples">Beispielskripten</a> im pymilvus-Repository.</p>
+    </button></h2><p>You can follow the simple guide below to verify the installation. For more details, refer to the <a href="https://github.com/milvus-io/pymilvus/tree/master/examples">example scripts</a> in the pymilvus repository.</p>
 <ul>
-<li><p>Laden Sie den Beispielcode herunter.</p>
+<li><p>Download the example code.</p>
 <pre><code translate="no" class="language-shell">wget https://raw.githubusercontent.com/milvus-io/pymilvus/master/examples/simple.py
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>Ändern Sie die Verbindungs-URI im Beispielcode auf die oben angegebene Milvus-Serviceadresse.</p>
+<li><p>Change the connection URI in the example code to the Milvus service address above.</p>
 <pre><code translate="no" class="language-python">...
 milvus_client = MilvusClient(<span class="hljs-string">&quot;http://milvus-service-06b515b1ce9ad10.elb.us-east-2.amazonaws.com:19530&quot;</span>)
 ...
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>Führen Sie den Beispielcode aus.</p>
+<li><p>Run the example code.</p>
 <pre><code translate="no" class="language-shell">python3 simple.py
 <button class="copy-code-btn"></button></code></pre>
-<p>Das Skript erstellt eine Sammlung mit dem Namen „ <code translate="no">hello_milvus</code> “, fügt einige Zeilen ein, führt mehrere Abfragen und eine Vektorsuche durch und löscht die Sammlung am Ende. Wenn der Vorgang ohne Fehler abgeschlossen wird, funktioniert Ihr Milvus-Cluster wie erwartet.</p></li>
+<p>The script creates a collection named <code translate="no">hello_milvus</code>, inserts a few rows, runs several queries and a vector search, and drops the collection at the end. If it completes without errors, your Milvus cluster is working as expected.</p></li>
 </ul>
-<h2 id="Clean-up-works" class="common-anchor-header">Aufräumarbeiten<button data-href="#Clean-up-works" class="anchor-icon" translate="no">
+<h2 id="Clean-up-works" class="common-anchor-header">Clean-up works<button data-href="#Clean-up-works" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -463,16 +463,16 @@ milvus_client = MilvusClient(<span class="hljs-string">&quot;http://milvus-servi
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Falls Sie die Umgebung wiederherstellen müssen, deinstallieren Sie Milvus, löschen Sie den EKS-Cluster und entfernen Sie die AWS-S3-Buckets sowie die zugehörigen IAM-Richtlinien.</p>
+    </button></h2><p>In case you need to restore the environment by uninstalling Milvus, destroying the EKS cluster, and deleting the AWS S3 buckets and related IAM policies.</p>
 <ul>
-<li><p>Deinstallieren Sie Milvus.</p>
+<li><p>Uninstall Milvus.</p>
 <pre><code translate="no" class="language-shell">helm uninstall milvus-demo -n milvus
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>Löschen Sie den EKS-Cluster.</p>
+<li><p>Destroy the EKS cluster.</p>
 <pre><code translate="no" class="language-shell">eksctl delete cluster --name milvus-eks-cluster --region us-east-2
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>Löschen Sie den AWS-S3-Bucket und die zugehörigen IAM-Richtlinien.</p>
-<p><strong>Ersetzen Sie den Bucket-Namen und die ARN der Richtlinie durch Ihre eigenen Angaben.</strong></p>
+<li><p>Delete the AWS S3 bucket and related IAM policies.</p>
+<p><strong>You should replace the bucket name and policy ARN with your own.</strong></p>
 <pre><code translate="no" class="language-shell">aws s3 rm s3://milvus-bucket-039dd013c0712f085d60e21f --recursive
 
 aws s3api delete-bucket --bucket milvus-bucket-039dd013c0712f085d60e21f --region us-east-2
@@ -482,7 +482,7 @@ aws iam detach-user-policy --user-name &lt;your-user-name&gt; --policy-arn &quot
 aws iam delete-policy --policy-arn &#x27;arn:aws:iam::12345678901:policy/MilvusS3ReadWrite&#x27;
 <button class="copy-code-btn"></button></code></pre></li>
 </ul>
-<h2 id="Whats-next" class="common-anchor-header">Was kommt als Nächstes?<button data-href="#Whats-next" class="anchor-icon" translate="no">
+<h2 id="Whats-next" class="common-anchor-header">What’s next<button data-href="#Whats-next" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -497,8 +497,8 @@ aws iam delete-policy --policy-arn &#x27;arn:aws:iam::12345678901:policy/MilvusS
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Wenn Sie erfahren möchten, wie Sie Milvus in anderen Clouds bereitstellen können:</p>
+    </button></h2><p>If you want to learn how to deploy Milvus on other clouds:</p>
 <ul>
-<li><a href="/docs/de/gcp.md">Milvus-Cluster auf GCP mit Kubernetes bereitstellen</a></li>
-<li><a href="/docs/de/azure.md">Milvus-Cluster auf Azure mit Kubernetes bereitstellen</a></li>
+<li><a href="/docs/de/gcp.md">Deploy Milvus Cluster on GCP with Kubernetes</a></li>
+<li><a href="/docs/de/azure.md">Deploy Milvus Cluster on Azure With Kubernetes</a></li>
 </ul>

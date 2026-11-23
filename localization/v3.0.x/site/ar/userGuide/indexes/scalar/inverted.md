@@ -1,13 +1,11 @@
 ---
 id: inverted.md
-title: المعكوسة
+title: INVERTED
 summary: >-
-  عندما تحتاج إلى إجراء استعلامات تصفية متكررة على بياناتك، يمكن للفهارس
-  المقلوبة أن تحسّن أداء الاستعلامات بشكل كبير. فبدلاً من مسح جميع المستندات،
-  يقوم الفهرس المقلوب بتحديد موقع السجلات التي تتطابق تمامًا مع شروط التصفية
-  الخاصة بك بسرعة.
+  Use INVERTED indexes for value filtering on scalar fields, arrays, and typed
+  JSON paths.
 ---
-<h1 id="INVERTED" class="common-anchor-header">المعكوسة<button data-href="#INVERTED" class="anchor-icon" translate="no">
+<h1 id="INVERTED" class="common-anchor-header">INVERTED<button data-href="#INVERTED" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -22,8 +20,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>عندما تحتاج إلى إجراء استعلامات تصفية متكررة على بياناتك، يمكن أن تحسّن الفهارس المقلوبة ( <code translate="no">INVERTED</code> ) أداء الاستعلامات بشكل كبير. بدلاً من مسح جميع المستندات، يستخدم Milvus الفهارس المقلوبة لتحديد موقع السجلات الدقيقة التي تتطابق مع شروط التصفية بسرعة.</p>
-<h2 id="When-to-use-INVERTED-indexes" class="common-anchor-header">متى تستخدم الفهارس المقلوبة<button data-href="#When-to-use-INVERTED-indexes" class="anchor-icon" translate="no">
+    </button></h1><p><code translate="no">INVERTED</code> maps field values to the entities containing them to accelerate scalar filtering.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -38,14 +36,13 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>استخدم الفهارس المقلوبة عندما تحتاج إلى:</p>
-<ul>
-<li><p><strong>التصفية حسب قيم محددة</strong>: العثور على جميع السجلات التي يساوي فيها حقل ما قيمة محددة (على سبيل المثال، <code translate="no">category == &quot;electronics&quot;</code>)</p></li>
-<li><p><strong>تصفية محتوى نصي</strong>: إجراء عمليات بحث فعالة في حقول <code translate="no">VARCHAR</code> </p></li>
-<li><p><strong>الاستعلام عن قيم حقول JSON</strong>: التصفية بناءً على مفاتيح محددة داخل هياكل JSON</p></li>
-</ul>
-<p><strong>ميزة الأداء</strong>: يمكن للفهارس المقلوبة تقليل وقت الاستعلام من ثوانٍ إلى أجزاء من الثانية في مجموعات البيانات الكبيرة من خلال التخلص من الحاجة إلى عمليات مسح كاملة للمجموعات.</p>
-<h2 id="How-INVERTED-indexes-work" class="common-anchor-header">كيف تعمل الفهارس المقلوبة<button data-href="#How-INVERTED-indexes-work" class="anchor-icon" translate="no">
+    </button></h2><p><a id="When-to-use-INVERTED-indexes"></a></p>
+<p>Use <code translate="no">INVERTED</code> for equality, membership, and range filters on compatible fields or JSON paths, such as <code translate="no">category == &quot;electronics&quot;</code>.</p>
+<p><a id="Supported-data-types"></a>
+<a id="Queries-accelerated-by-INVERTED"></a>
+<a id="Supported-filters"></a>
+<a id="Filter-acceleration"></a></p>
+<h3 id="Index-targets-and-filters" class="common-anchor-header">Index targets and filters<button data-href="#Index-targets-and-filters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -60,39 +57,98 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يقوم <strong>الفهرس المقلوب</strong> في Milvus بتعيين كل قيمة حقل فريدة (مصطلح) إلى مجموعة معرّفات المستندات التي تظهر فيها تلك القيمة. تتيح هذه البنية عمليات بحث سريعة للحقول ذات القيم المتكررة أو التصنيفية.</p>
-<p>كما هو موضح في الرسم التخطيطي، تتم العملية على خطوتين:</p>
+    </button></h3><p>The following table pairs supported <code translate="no">INVERTED</code> index targets with the filters the index can help evaluate:</p>
+<table>
+<thead>
+<tr><th>Index target</th><th>Filters that can use the index</th></tr>
+</thead>
+<tbody>
+<tr><td><code translate="no">BOOL</code> field</td><td>Equality (<code translate="no">==</code>, <code translate="no">!=</code>) and membership (<code translate="no">in</code>, <code translate="no">not in</code>).</td></tr>
+<tr><td>Numeric field (<code translate="no">INT8</code>, <code translate="no">INT16</code>, <code translate="no">INT32</code>, <code translate="no">INT64</code>, <code translate="no">FLOAT</code>, <code translate="no">DOUBLE</code>)</td><td>Equality, membership, and ranges (<code translate="no">&lt;</code>, <code translate="no">&lt;=</code>, <code translate="no">&gt;</code>, <code translate="no">&gt;=</code>).</td></tr>
+<tr><td><code translate="no">VARCHAR</code> field</td><td>Equality, membership, ranges, prefix matching such as <code translate="no">name LIKE &quot;abc%&quot;</code>, and general LIKE such as <code translate="no">name LIKE &quot;a%b_c&quot;</code>.</td></tr>
+<tr><td>Ordinary <code translate="no">ARRAY</code> field with <code translate="no">BOOL</code>, <code translate="no">INT8</code>, <code translate="no">INT16</code>, <code translate="no">INT32</code>, <code translate="no">INT64</code>, <code translate="no">FLOAT</code>, <code translate="no">DOUBLE</code>, or <code translate="no">VARCHAR</code> elements</td><td>Element containment and eligible whole-array comparisons. See <a href="/docs/ar/array_data_type.md#Array-index-support">Array index support</a>.</td></tr>
+<tr><td>Typed JSON path</td><td>Filters appropriate to the indexed cast. Specify path and cast parameters; see <a href="/docs/ar/json-indexing.md#Understand-cast-types">JSON Indexing</a> for cast compatibility and <a href="/docs/ar/json-indexing.md#Supported-filters">JSON filter details</a> for query behavior.</td></tr>
+</tbody>
+</table>
+<div class="alert note">
+<blockquote>
+<p>Scalar indexes, including <code translate="no">AUTOINDEX</code>, do not support recursive ARRAY fields or arrays with nullable elements. See <a href="/docs/ar/array_data_type.md#Array-index-support">Array index support</a> for ordinary-array filters and <a href="/docs/ar/index-structarray-fields.md#Create-scalar-indexes">Index StructArray Fields</a> for subfield rules.</p>
+</blockquote>
+</div>
+<p>Simple suffix (<code translate="no">LIKE &quot;%abc&quot;</code>) and substring (<code translate="no">LIKE &quot;%abc%&quot;</code>) filters use a scan path, even though more complex LIKE patterns can use this index. Regex filters do not use direct INVERTED pattern lookup. These rules apply after <a href="/docs/ar/pattern-matching.md#Accelerate-pattern-matching-with-indexes">query-planning simplifications</a>.</p>
+<p>A scalar <code translate="no">INVERTED</code> index does not enable token-based <code translate="no">TEXT_MATCH</code> or <code translate="no">PHRASE_MATCH</code>; see <a href="/docs/ar/keyword-match.md">Text Match</a>.</p>
+<div class="alert note">
+<blockquote>
+<p>These are index capabilities, not limits on valid filter expressions. See <a href="/docs/ar/scalar_index.md#Filter-execution">Scalar Index</a> for shared lookup constraints. For <code translate="no">AND</code>, <code translate="no">OR</code>, <code translate="no">NOT</code>, and NULL tests (<code translate="no">IS NULL</code>, <code translate="no">IS NOT NULL</code>), see <a href="/docs/ar/basic-operators.md">Basic Operators</a>.</p>
+</blockquote>
+</div>
+<h3 id="Memory-considerations" class="common-anchor-header">Memory considerations<button data-href="#Memory-considerations" class="anchor-icon" translate="no">
+      <svg translate="no"
+        aria-hidden="true"
+        focusable="false"
+        height="20"
+        version="1.1"
+        viewBox="0 0 16 16"
+        width="16"
+      >
+        <path
+          fill="#0092E4"
+          fill-rule="evenodd"
+          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+        ></path>
+      </svg>
+    </button></h3><p>For a rough loaded-memory estimate, use <code translate="no">S</code> bytes, where <code translate="no">S</code> is the size of the built index before storage compression. Build an index on representative data to obtain <code translate="no">S</code>; raw field data size is not a substitute.</p>
+<p>These rough estimates cover loaded index memory with memory mapping disabled. Calculate them per segment, then sum across loaded segments and replicas.</p>
+<div class="alert note">
+<blockquote>
+<p>Allow extra memory for loaded field data, vector indexes, collection and index overhead, and temporary allocations. Validate with representative data and queries; arrays, JSON, older index formats, and memory mapping require separate measurement.</p>
+</blockquote>
+</div>
+<p><a id="How-INVERTED-indexes-work"></a></p>
+<h3 id="How-INVERTED-works" class="common-anchor-header">How INVERTED works<button data-href="#How-INVERTED-works" class="anchor-icon" translate="no">
+      <svg translate="no"
+        aria-hidden="true"
+        focusable="false"
+        height="20"
+        version="1.1"
+        viewBox="0 0 16 16"
+        width="16"
+      >
+        <path
+          fill="#0092E4"
+          fill-rule="evenodd"
+          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+        ></path>
+      </svg>
+    </button></h3><p><details>
+<summary><strong>View a value lookup example</strong></summary></p>
+<p>An inverted index reverses the mapping from entity IDs to field values. In the diagram, <strong>“electronics”</strong> maps to IDs <strong>1</strong> and <strong>3</strong>, while <strong>“books”</strong> maps to IDs <strong>2</strong> and <strong>5</strong>.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/how-inverted-index-works.png" alt="How Inverted Index Works" class="doc-image" id="how-inverted-index-works" />
+    <span>How Inverted Index Works</span>
+  </span>
+</p>
+<p>For <code translate="no">category == &quot;electronics&quot;</code>, Milvus retrieves IDs <strong>1</strong> and <strong>3</strong> from the index rather than checking every entity’s category.</p>
+<p></details></p>
+<h2 id="Create-indexes-on-non-JSON-fields" class="common-anchor-header">Create indexes on non-JSON fields<button data-href="#Create-indexes-on-non-JSON-fields" class="anchor-icon" translate="no">
+      <svg translate="no"
+        aria-hidden="true"
+        focusable="false"
+        height="20"
+        version="1.1"
+        viewBox="0 0 16 16"
+        width="16"
+      >
+        <path
+          fill="#0092E4"
+          fill-rule="evenodd"
+          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+        ></path>
+      </svg>
+    </button></h2><p>To create an index on a non-JSON field, follow these steps:</p>
 <ol>
-<li><p><strong>التعيين الأمامي (المعرف → المصطلح):</strong> يشير كل معرف مستند إلى قيمة الحقل التي يحتوي عليها.</p></li>
-<li><p><strong>التعيين المعكوس (المصطلح → معرّفات المستندات):</strong> يجمع Milvus المصطلحات الفريدة ويبني تعيينًا عكسيًا من كل مصطلح إلى جميع معرّفات المستندات التي تحتوي عليه.</p></li>
-</ol>
-<p>على سبيل المثال، تُربط القيمة <strong>«إلكترونيات»</strong> بمعرّفي <strong>1</strong> <strong>و3</strong>، بينما تُربط <strong>«كتب»</strong> بمعرّفي <strong>2</strong> <strong>و5</strong>.</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/how-inverted-index-works.png" alt="How Inverted Index Works" class="doc-image" id="how-inverted-index-works" /> 
-   <span>كيفية عمل الفهرس المعكوس</span>
-  
- </span></p>
-<p>عند تصفية قيمة معينة (على سبيل المثال، <code translate="no">category == &quot;electronics&quot;</code>)، يقوم Milvus ببساطة بالبحث عن المصطلح في الفهرس واسترداد معرّفات المستندات المطابقة مباشرةً. وهذا يتجنب مسح مجموعة البيانات بالكامل ويتيح التصفية السريعة، خاصةً للقيم التصنيفية أو المتكررة.</p>
-<p>تدعم الفهارس المقلوبة جميع أنواع الحقول القياسية، مثل <strong>BOOL</strong> <strong>وINT8</strong> <strong>وINT16</strong> <strong>وINT32</strong> <strong>وINT64</strong> <strong>وFLOAT</strong> <strong>وDOUBLE</strong> <strong>وVARCHAR</strong> <strong>وJSON</strong> <strong>وARRAY</strong>. ومع ذلك، تختلف معلمات الفهرس الخاصة بفهرسة حقل JSON قليلاً عن الحقول القياسية العادية.</p>
-<h2 id="Create-indexes-on-non-JSON-fields" class="common-anchor-header">إنشاء فهارس على الحقول غير JSON<button data-href="#Create-indexes-on-non-JSON-fields" class="anchor-icon" translate="no">
-      <svg translate="no"
-        aria-hidden="true"
-        focusable="false"
-        height="20"
-        version="1.1"
-        viewBox="0 0 16 16"
-        width="16"
-      >
-        <path
-          fill="#0092E4"
-          fill-rule="evenodd"
-          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
-        ></path>
-      </svg>
-    </button></h2><p>لإنشاء فهرس لحقل غير JSON، اتبع الخطوات التالية:</p>
-<ol>
-<li><p>قم بإعداد معلمات الفهرس:</p>
+<li><p>Prepare your index parameters:</p>
 <p><div class="multipleCode">
 <a href="#python">Python</a>
 <a href="#java">Java</a>
@@ -161,7 +217,7 @@ client, err := milvusclient.New(ctx, &amp;milvusclient.ClientConfig{
 <pre><code translate="no" class="language-bash"><span class="hljs-built_in">export</span> CLUSTER_ENDPOINT=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>
 <span class="hljs-built_in">export</span> TOKEN=<span class="hljs-string">&quot;root:Milvus&quot;</span>
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>أضف فهرس « <code translate="no">INVERTED</code> »:</p>
+<li><p>Add the <code translate="no">INVERTED</code> index:</p>
 <p><div class="multipleCode">
 <a href="#python">Python</a>
 <a href="#java">Java</a>
@@ -220,10 +276,10 @@ idx := index.NewInvertedIndex() <span class="hljs-comment">// Specify INVERTED i
     }
 ]&#x27;</span>
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>إنشاء الفهرس:</p>
+<li><p>Create the index:</p>
 <p><div class="multipleCode">
-<a href="#python">بايثون</a>
-<a href="#java">جافا</a>
+<a href="#python">Python</a>
+<a href="#java">Java</a>
 <a href="#go">Go</a>
 <a href="#rust">Rust</a>
 <a href="#cpp">C++</a>
@@ -296,7 +352,7 @@ curl --request POST \
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre></li>
 </ol>
-<h2 id="Create-indexes-on-JSON-fields" class="common-anchor-header">إنشاء فهارس على حقول JSON<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.5.11+</span><button data-href="#Create-indexes-on-JSON-fields" class="anchor-icon" translate="no">
+<h2 id="Create-indexes-on-JSON-fields" class="common-anchor-header">Create indexes on JSON fields<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.5.11+</span><button data-href="#Create-indexes-on-JSON-fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -311,15 +367,15 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يمكنك أيضًا إنشاء فهارس معكوسة (INVERTED) على مسارات محددة داخل حقول JSON. يتطلب ذلك معلمات إضافية لتحديد مسار JSON ونوع البيانات:</p>
+    </button></h2><p>You can also create INVERTED indexes on specific paths within JSON fields. This requires additional parameters to specify the JSON path and data type:</p>
 <div class="multipleCode">
-   <a href="#python">بايثون</a>
- <a href="#java">   جافا</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Build index params</span>
 index_params.add_index(
@@ -452,8 +508,8 @@ curl --request POST \
     ]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>للحصول على معلومات تفصيلية حول فهرسة حقول JSON، بما في ذلك المسارات المدعومة وأنواع البيانات والقيود، راجع <a href="/docs/ar/json-indexing.md">فهرسة JSON</a>.</p>
-<h2 id="Drop-an-index" class="common-anchor-header">إزالة فهرس<button data-href="#Drop-an-index" class="anchor-icon" translate="no">
+<p>For detailed information about JSON field indexing, including supported paths, data types, and limitations, refer to <a href="/docs/ar/json-indexing.md">JSON Indexing</a>.</p>
+<h2 id="Drop-an-index" class="common-anchor-header">Drop an index<button data-href="#Drop-an-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -468,21 +524,20 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>استخدم الطريقة ` <code translate="no">drop_index()</code> ` لإزالة فهرس موجود من مجموعة.</p>
+    </button></h2><p>Use the <code translate="no">drop_index()</code> method to remove an existing index from a collection.</p>
 <div class="alert note">
-<ul>
-<li><p>في <strong>الإصدار 2.6.3</strong> أو ما قبله، يجب تحرير المجموعة قبل حذف فهرس قياسي.</p></li>
-<li><p>ابتداءً من <strong>الإصدار v2.6.4</strong> أو الأحدث، يمكنك حذف فهرس سكالي مباشرةً بمجرد انتفاء الحاجة إليه — دون الحاجة إلى تحرير المجموعة أولاً.</p></li>
-</ul>
+<blockquote>
+<p>For release requirements when dropping a scalar index, see <a href="/docs/ar/scalar_index.md#Drop-index-compatibility">Scalar Index</a>.</p>
+</blockquote>
 </div>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.drop_index(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,   <span class="hljs-comment"># Name of the collection</span>
@@ -570,7 +625,8 @@ curl --request POST \
     &quot;indexName&quot;: &quot;category_index&quot;
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Best-practices" class="common-anchor-header">أفضل الممارسات<button data-href="#Best-practices" class="anchor-icon" translate="no">
+<p><a id="Best-practices"></a></p>
+<h2 id="Next-steps" class="common-anchor-header">Next steps<button data-href="#Next-steps" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -586,27 +642,6 @@ curl --request POST \
         ></path>
       </svg>
     </button></h2><ul>
-<li><p><strong>إنشاء الفهارس بعد تحميل البيانات</strong>: قم بإنشاء الفهارس على المجموعات التي تحتوي بالفعل على بيانات لتحقيق أداء أفضل</p></li>
-<li><p><strong>استخدم أسماء فهرسة وصفية</strong>: اختر أسماء تشير بوضوح إلى الحقل والغرض</p></li>
-<li><p><strong>مراقبة أداء الفهرس</strong>: تحقق من أداء الاستعلام قبل إنشاء الفهارس وبعده</p></li>
-<li><p><strong>ضع أنماط الاستعلامات في الاعتبار</strong>: أنشئ الفهارس على الحقول التي تقوم بالتصفية وفقًا لها بشكل متكرر</p></li>
-</ul>
-<h2 id="Next-steps" class="common-anchor-header">الخطوات التالية<button data-href="#Next-steps" class="anchor-icon" translate="no">
-      <svg translate="no"
-        aria-hidden="true"
-        focusable="false"
-        height="20"
-        version="1.1"
-        viewBox="0 0 16 16"
-        width="16"
-      >
-        <path
-          fill="#0092E4"
-          fill-rule="evenodd"
-          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
-        ></path>
-      </svg>
-    </button></h2><ul>
-<li><p>تعرف على <a href="/docs/ar/index-explained.md">أنواع الفهارس الأخرى</a></p></li>
-<li><p>راجع " <a href="/docs/ar/json-indexing.md">فهرسة JSON</a> " للاطلاع على سيناريوهات متقدمة لفهرسة JSON</p></li>
+<li><p>Compare scalar indexes and plan resources in <a href="/docs/ar/scalar_index.md#Whats-next">Scalar Index</a>.</p></li>
+<li><p>See <a href="/docs/ar/json-indexing.md">JSON Indexing</a> for advanced JSON indexing scenarios</p></li>
 </ul>

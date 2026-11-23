@@ -1,9 +1,11 @@
 ---
 id: full-text-search.md
-title: 全文搜尋
-summary: 全文檢索是透過 BM25 演算法，根據原始文字輸入中包含的詞彙對文件進行排序，無需使用嵌入模型。
+title: Full Text Search
+summary: >-
+  Full text search ranks documents by the terms they contain using the BM25
+  algorithm on raw text input, no embedding models needed.
 ---
-<h1 id="Full-Text-Search" class="common-anchor-header">全文搜尋<button data-href="#Full-Text-Search" class="anchor-icon" translate="no">
+<h1 id="Full-Text-Search" class="common-anchor-header">Full Text Search<button data-href="#Full-Text-Search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,12 +20,12 @@ summary: 全文檢索是透過 BM25 演算法，根據原始文字輸入中包�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>全文搜尋會檢索出包含您查詢中的詞彙或短語的文件，並根據相關性對結果進行排序。它能補充語義搜尋的不足——後者可能忽略精確的詞彙——並在「檢索增強生成」（RAG）情境中特別有用，因為在這種情境下，與特定搜尋詞彙高度吻合的文件至關重要。</p>
-<p>透過全文搜尋，您亦可省略嵌入模型：您只需提供原始文字，Milvus 便會自動將其轉換為稀疏嵌入向量。</p>
+    </button></h1><p>Full text search retrieves documents that contain the terms or phrases in your query and ranks the results by relevance. It complements semantic search, which can overlook precise terms, and is especially useful in retrieval-augmented generation (RAG) scenarios, where documents that closely match specific search terms matter most.</p>
+<p>With full text search, you can also skip embedding models: you provide raw text, and Milvus converts it into sparse embeddings automatically.</p>
 <div class="alert note">
-<p>透過將全文搜尋與基於語義的密集向量搜尋整合，您可以提升搜尋結果的準確性與相關性。如需更多資訊，請參閱「<a href="/docs/zh-hant/multi-vector-search.md">混合搜尋</a>」。</p>
+<p>By integrating full text search with semantic-based dense vector search, you can enhance the accuracy and relevance of search results. For more information, refer to <a href="/docs/zh-hant/multi-vector-search.md">Hybrid Search</a>.</p>
 </div>
-<h2 id="BM25-implementation" class="common-anchor-header">BM25 實作<button data-href="#BM25-implementation" class="anchor-icon" translate="no">
+<h2 id="BM25-implementation" class="common-anchor-header">BM25 implementation<button data-href="#BM25-implementation" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -38,28 +40,28 @@ summary: 全文檢索是透過 BM25 演算法，根據原始文字輸入中包�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus 採用 BM25 相關性演算法來實現全文搜尋，此為資訊檢索系統中廣泛採用的評分函數，並將其整合至搜尋工作流程中，以提供精準且依相關性排序的文字結果。</p>
-<p>Milvus 中的全文搜尋遵循以下工作流程：</p>
+    </button></h2><p>Milvus implements full text search with the BM25 relevance algorithm, a widely adopted scoring function in information retrieval systems, and integrates it into the search workflow to deliver accurate, relevance-ranked text results.</p>
+<p>Full text search in Milvus follows the workflow below:</p>
 <ol>
-<li><p><strong>原始文字輸入</strong>：您可插入文字文件或以純文字形式提交查詢，無需任何嵌入模型。</p></li>
-<li><p><strong>文字分析</strong>：Milvus 會使用<a href="/docs/zh-hant/analyzer-overview.md">分析器</a>將您的文字處理成具有意義的術語，以便進行索引與搜尋。</p></li>
-<li><p><strong>BM25 函數處理</strong>：內建函數會將這些術語轉換為針對 BM25 評分進行優化的稀疏向量表示。</p></li>
-<li><p><strong>集合儲存</strong>：Milvus 將生成的稀疏嵌入向量儲存於集合中，以便快速檢索與排序。</p></li>
-<li><p><strong>BM25 相關性評分</strong>：在搜尋時，Milvus 會套用 BM25 評分函數來計算文件相關性，並回傳與查詢詞最匹配的排序結果。</p></li>
+<li><p><strong>Raw text input</strong>: You insert text documents or provide a query using plain text, no embedding models required.</p></li>
+<li><p><strong>Text analysis</strong>: Milvus uses an <a href="/docs/zh-hant/analyzer-overview.md">analyzer</a> to process your text into meaningful terms that can be indexed and searched.</p></li>
+<li><p><strong>BM25 function processing</strong>: A built-in function transforms these terms into sparse vector representations optimized for BM25 scoring.</p></li>
+<li><p><strong>Collection store</strong>: Milvus stores the resulting sparse embeddings in a collection for fast retrieval and ranking.</p></li>
+<li><p><strong>BM25 relevance scoring</strong>: At search time, Milvus applies the BM25 scoring function to compute document relevance and return ranked results that best match the query terms.</p></li>
 </ol>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/full-text-search.png" alt="Full Text Search" class="doc-image" id="full-text-search" /> 
-   <span>全文搜尋</span>
-  
- </span></p>
-<p>若要使用全文搜尋，請依照以下主要步驟操作：</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/full-text-search.png" alt="Full Text Search" class="doc-image" id="full-text-search" />
+    <span>Full Text Search</span>
+  </span>
+</p>
+<p>To use full text search, follow these main steps:</p>
 <ol>
-<li><p><a href="/docs/zh-hant/full-text-search.md#Create-a-collection-for-BM25-full-text-search">建立集合</a>：設定所需欄位，並定義一個可將原始文字轉換為稀疏嵌入向量的 BM25 函式。</p></li>
-<li><p><a href="/docs/zh-hant/full-text-search.md#Insert-text-data">插入資料</a>：將原始文字文件導入集合中。</p></li>
-<li><p><a href="/docs/zh-hant/full-text-search.md#Perform-full-text-search">執行搜尋</a>：使用自然語言查詢文字，根據 BM25 相關性檢索排序後的結果。</p></li>
+<li><p><a href="/docs/zh-hant/full-text-search.md#Create-a-collection-for-BM25-full-text-search">Create a collection</a>: Set up the required fields and define a BM25 function that converts raw text into sparse embeddings.</p></li>
+<li><p><a href="/docs/zh-hant/full-text-search.md#Insert-text-data">Insert data</a>: Ingest your raw text documents to the collection.</p></li>
+<li><p><a href="/docs/zh-hant/full-text-search.md#Perform-full-text-search">Perform searches</a>: Use natural-language query text to retrieve ranked results based on BM25 relevance.</p></li>
 </ol>
-<h2 id="Create-a-collection-for-BM25-full-text-search" class="common-anchor-header">建立用於 BM25 全文搜尋的集合<button data-href="#Create-a-collection-for-BM25-full-text-search" class="anchor-icon" translate="no">
+<h2 id="Create-a-collection-for-BM25-full-text-search" class="common-anchor-header">Create a collection for BM25 full text search<button data-href="#Create-a-collection-for-BM25-full-text-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -74,8 +76,8 @@ summary: 全文檢索是透過 BM25 演算法，根據原始文字輸入中包�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>若要啟用由 BM25 驅動的全文檢索功能，您必須準備一個包含所需欄位的集合、定義一個用於產生稀疏向量的 BM25 函式、設定索引，然後建立該集合。</p>
-<h3 id="Define-schema-fields" class="common-anchor-header">定義模式欄位<button data-href="#Define-schema-fields" class="anchor-icon" translate="no">
+    </button></h2><p>To enable BM25-powered full text search, you must prepare a collection with the required fields, define a BM25 function to generate sparse vectors, configure an index, and then create the collection.</p>
+<h3 id="Define-schema-fields" class="common-anchor-header">Define schema fields<button data-href="#Define-schema-fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -90,19 +92,19 @@ summary: 全文檢索是透過 BM25 演算法，根據原始文字輸入中包�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>您的資料庫模式必須包含至少三個必填欄位：</p>
+    </button></h3><p>Your collection schema must include at least three required fields:</p>
 <ul>
-<li><p><strong>主要欄位</strong>：用於唯一識別集合中的每個實體。</p></li>
-<li><p><strong>字串欄位</strong>（<code translate="no">VARCHAR</code> 或<code translate="no">TEXT</code> ）：用於儲存原始文字文件。您必須將<code translate="no">enable_analyzer=True</code> 設為啟用，以便 Milvus 能處理文字以進行 BM25 相關性排序。預設情況下，Milvus 使用<a href="/docs/zh-hant/standard-analyzer.md"><code translate="no">standard</code> 分析器</a>；若要配置其他分析器，請參閱<a href="/docs/zh-hant/analyzer-overview.md">《分析器概覽》</a>。 本頁的範例使用<code translate="no">VARCHAR</code> ；若為長篇文本，請將欄位定義為<code translate="no">TEXT</code> 並省略<code translate="no">max_length</code> 。完整範例請參閱「<a href="/docs/zh-hant/text.md">文本欄位</a>」。</p></li>
-<li><p><strong>稀疏向量欄位</strong>（<code translate="no">SPARSE_FLOAT_VECTOR</code> ）：儲存由 BM25 函式自動產生的稀疏嵌入向量。</p></li>
+<li><p><strong>Primary field</strong>: Uniquely identifies each entity in the collection.</p></li>
+<li><p><strong>String field</strong> (<code translate="no">VARCHAR</code> or <code translate="no">TEXT</code>): Stores raw text documents. You must set <code translate="no">enable_analyzer=True</code> so that Milvus can process the text for BM25 relevance ranking. By default, Milvus uses the <a href="/docs/zh-hant/standard-analyzer.md"><code translate="no">standard</code> analyzer</a>; to configure a different analyzer, refer to <a href="/docs/zh-hant/analyzer-overview.md">Analyzer Overview</a>. The examples on this page use <code translate="no">VARCHAR</code>; for long text, define the field as <code translate="no">TEXT</code> and omit <code translate="no">max_length</code>. For a complete example, refer to <a href="/docs/zh-hant/text.md">Text Field</a>.</p></li>
+<li><p><strong>Sparse vector field</strong> (<code translate="no">SPARSE_FLOAT_VECTOR</code>): Stores sparse embeddings automatically generated by the BM25 function.</p></li>
 </ul>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#cpp">   C++</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#cpp">C++</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType, Function, FunctionType
 
@@ -244,13 +246,13 @@ schema-&gt;<span class="hljs-built_in">AddField</span>(milvus::<span class="hljs
         ]
     }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>在上述設定中，</p>
+<p>In the preceding config,</p>
 <ul>
-<li><p><code translate="no">id</code>：用作主鍵，並透過<code translate="no">auto_id=True</code> 自動產生。</p></li>
-<li><p><code translate="no">text</code>：用於儲存用於全文檢索操作的原始文字資料。該欄位可使用 `<code translate="no">VARCHAR</code> ` 儲存有限長度的文字，或使用 `<code translate="no">TEXT</code> ` 儲存長篇來源內容。</p></li>
-<li><p><code translate="no">sparse</code>：一個向量欄位，專門用於儲存全文字搜尋操作中內部生成的稀疏嵌入向量。資料類型必須為<code translate="no">SPARSE_FLOAT_VECTOR</code> 。</p></li>
+<li><p><code translate="no">id</code>: serves as the primary key and is automatically generated with <code translate="no">auto_id=True</code>.</p></li>
+<li><p><code translate="no">text</code>: stores your raw text data for full text search operations. The field can use <code translate="no">VARCHAR</code> for bounded text or <code translate="no">TEXT</code> for long source content.</p></li>
+<li><p><code translate="no">sparse</code>: a vector field reserved to store internally generated sparse embeddings for full text search operations. The data type must be <code translate="no">SPARSE_FLOAT_VECTOR</code>.</p></li>
 </ul>
-<h3 id="Define-the-BM25-function" class="common-anchor-header">定義 BM25 函式<button data-href="#Define-the-BM25-function" class="anchor-icon" translate="no">
+<h3 id="Define-the-BM25-function" class="common-anchor-header">Define the BM25 function<button data-href="#Define-the-BM25-function" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -265,15 +267,15 @@ schema-&gt;<span class="hljs-built_in">AddField</span>(milvus::<span class="hljs
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>BM25 函式會將分詞後的文字轉換為支援 BM25 評分演算的稀疏向量。</p>
-<p>定義該函式並將其新增至您的資料結構：</p>
+    </button></h3><p>The BM25 function converts tokenized text into sparse vectors that support BM25 scoring.</p>
+<p>Define the function and add it to your schema:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#cpp">   C++</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#cpp">C++</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">bm25_function = Function(
     name=<span class="hljs-string">&quot;text_bm25_emb&quot;</span>, <span class="hljs-comment"># Function name</span>
@@ -354,30 +356,30 @@ schema-&gt;<span class="hljs-built_in">AddFunction</span>(function);
 <button class="copy-code-btn"></button></code></pre>
 <table>
    <tr>
-     <th><p>參數</p></th>
-     <th><p>說明</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Description</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">name</code></p></td>
-     <td><p>函式名稱。此函式會將您在「<code translate="no">text</code> 」欄位中的原始文字，轉換為相容於 BM25 的稀疏向量，並儲存於「<code translate="no">sparse</code> 」欄位中。</p></td>
+     <td><p>The name of the function. This function converts your raw text from the <code translate="no">text</code> field into BM25-compatible sparse vectors that will be stored in the <code translate="no">sparse</code> field.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">input_field_names</code></p></td>
-     <td><p>需要進行「文字轉稀疏向量」轉換的<code translate="no">VARCHAR</code> 或<code translate="no">TEXT</code> 欄位名稱。若為<code translate="no">FunctionType.BM25</code> ，此參數僅接受一個欄位名稱。</p></td>
+     <td><p>The name of the <code translate="no">VARCHAR</code> or <code translate="no">TEXT</code> field requiring text-to-sparse-vector conversion. For <code translate="no">FunctionType.BM25</code>, this parameter accepts only one field name.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">output_field_names</code></p></td>
-     <td><p>將用於儲存內部生成的稀疏向量的欄位名稱。對於 `<code translate="no">FunctionType.BM25</code>`，此參數僅接受一個欄位名稱。</p></td>
+     <td><p>The name of the field where the internally generated sparse vectors will be stored. For <code translate="no">FunctionType.BM25</code>, this parameter accepts only one field name.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">function_type</code></p></td>
-     <td><p>要使用的函式類型。必須為<code translate="no">FunctionType.BM25</code> 。</p></td>
+     <td><p>The type of the function to use. Must be <code translate="no">FunctionType.BM25</code>.</p></td>
    </tr>
 </table>
 <div class="alert note">
-<p>若多個文字欄位需要進行 BM25 處理，請<strong>針對每個欄位定義一個 BM25 函式，</strong>且每個<strong>函式</strong>皆須具備唯一的名稱與輸出欄位。</p>
+<p>If multiple text fields require BM25 processing, define <strong>one BM25 function per field</strong>, each with a unique name and output field.</p>
 </div>
-<h3 id="Configure-the-index" class="common-anchor-header">設定索引<button data-href="#Configure-the-index" class="anchor-icon" translate="no">
+<h3 id="Configure-the-index" class="common-anchor-header">Configure the index<button data-href="#Configure-the-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -392,14 +394,14 @@ schema-&gt;<span class="hljs-built_in">AddFunction</span>(function);
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>在定義包含必要欄位及內建函式的資料結構後，請為您的集合設定索引。</p>
+    </button></h3><p>After defining the schema with necessary fields and the built-in function, set up the index for your collection.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#cpp">   C++</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#cpp">C++</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">index_params = client.prepare_index_params()
 
@@ -470,39 +472,39 @@ index_params.<span class="hljs-built_in">AddExtraParam</span>(<span class="hljs-
 <button class="copy-code-btn"></button></code></pre>
 <table>
    <tr>
-     <th><p>參數</p></th>
-     <th><p>說明</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Description</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">field_name</code></p></td>
-     <td><p>要建立索引的向量欄位名稱。對於全文檢索，此欄位應為儲存所產生稀疏向量的欄位。在此範例中，請將值設定為<code translate="no">sparse</code> 。</p></td>
+     <td><p>The name of the vector field to index. For full text search, this should be the field that stores the generated sparse vectors. In this example, set the value to <code translate="no">sparse</code>.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">index_type</code></p></td>
-     <td><p>要建立的索引類型。若要在 Milvus 中進行 BM25 全文檢索，請將此值設定為<code translate="no">SPARSE_INVERTED_INDEX</code> 。如需更多資訊，請參閱<a href="/docs/zh-hant/sparse-inverted-index.md">SPARSE_INVERTED_INDEX</a>。</p></td>
+     <td><p>The type of the index to create. For BM25 full text search in Milvus, set this value to <code translate="no">SPARSE_INVERTED_INDEX</code>. For more information, refer to <a href="/docs/zh-hant/sparse-inverted-index.md">SPARSE_INVERTED_INDEX</a>.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">metric_type</code></p></td>
-     <td><p>此參數的值必須明確設定為<code translate="no">BM25</code> ，方能啟用全文檢索功能。</p></td>
+     <td><p>The value for this parameter must be set to <code translate="no">BM25</code> specifically for full text search functionality.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params</code></p></td>
-     <td><p>專屬於該索引的附加參數字典。</p></td>
+     <td><p>A dictionary of additional parameters specific to the index.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.inverted_index_algo</code></p></td>
-     <td><p>用於建立和查詢 BM25 稀疏反向索引的演算法。有效值：</p><ul><li><p><code translate="no">"DAAT_MAXSCORE"</code> (預設)：逐份文件 (Document-at-a-Time) MaxScore 查詢處理。此選項適用於<em>k</em>值較高或包含大量術語的全文檢索工作負載。相關背景請參閱《<a href="https://dl.acm.org/doi/10.1016/0306-4573%2895%2900020-H">查詢評估：策略與優化</a>》。</p></li><li><p><code translate="no">"DAAT_WAND"</code>：逐份文件 WAND 查詢處理。此選項適用於<em>k</em>值較小或查詢詞彙較短的全文檢索工作負載。相關背景請參閱《<a href="https://dl.acm.org/doi/10.1145/956863.956944">使用兩級檢索流程進行高效查詢評估</a>》。</p></li><li><p><code translate="no">"TAAT_NAIVE"</code>：基本「逐詞」查詢處理。請將此選項用作基準，或當您需要讓評分動態適應全集統計資料（例如平均文件長度）時使用。</p></li><li><p><code translate="no">"BLOCK_MAX_MAXSCORE"</code>: 採用區塊層級最高分元資料的 MaxScore 查詢處理。有關背景資訊，請參閱《<a href="https://dl.acm.org/doi/10.1145/2009916.2010048">使用區塊最大分數索引加速 Top-k 文件檢索</a>》。</p></li><li><p><code translate="no">"BLOCK_MAX_WAND"</code>: 採用區塊級最高分數元資料的 WAND 查詢處理。有關背景資訊，請參閱《<a href="https://dl.acm.org/doi/10.1145/2009916.2010048">使用區塊最高分數索引加速 Top-k 文件檢索</a>》。</p></li></ul></td>
+     <td><p>The algorithm used for building and querying the BM25 sparse inverted index. Valid values:</p><ul><li><p><code translate="no">"DAAT_MAXSCORE"</code> (default): Document-at-a-Time MaxScore query processing. This option is suitable for full text search workloads with high <em>k</em> values or queries with many terms. For background, refer to <a href="https://dl.acm.org/doi/10.1016/0306-4573%2895%2900020-H">Query Evaluation: Strategies and Optimizations</a>.</p></li><li><p><code translate="no">"DAAT_WAND"</code>: Document-at-a-Time WAND query processing. This option is suitable for full text search workloads with small <em>k</em> values or short queries. For background, refer to <a href="https://dl.acm.org/doi/10.1145/956863.956944">Efficient Query Evaluation using a Two-Level Retrieval Process</a>.</p></li><li><p><code translate="no">"TAAT_NAIVE"</code>: Basic Term-at-a-Time query processing. Use this option as a baseline, or when you need scoring to adapt dynamically to global collection statistics such as average document length.</p></li><li><p><code translate="no">"BLOCK_MAX_MAXSCORE"</code>: MaxScore query processing with block-level max-score metadata. For background, refer to <a href="https://dl.acm.org/doi/10.1145/2009916.2010048">Faster Top-k Document Retrieval Using Block-Max Indexes</a>.</p></li><li><p><code translate="no">"BLOCK_MAX_WAND"</code>: WAND query processing with block-level max-score metadata. For background, refer to <a href="https://dl.acm.org/doi/10.1145/2009916.2010048">Faster Top-k Document Retrieval Using Block-Max Indexes</a>.</p></li></ul></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.bm25_k1</code></p></td>
-     <td><p>控制詞頻飽和度。較高的數值會提高詞頻在文件排序中的權重。建議範圍：[1.2, 2.0]。預設值：1.2。</p></td>
+     <td><p>Controls the term frequency saturation. Higher values increase the importance of term frequencies in document ranking. Recommended range: [1.2, 2.0]. Default value: 1.2.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.bm25_b</code></p></td>
-     <td><p>控制文件長度正規化的程度。通常使用 0 到 1 之間的數值，預設值為 0.75。數值 0 表示不進行長度正規化，而數值 1 則表示完全長度正規化。</p></td>
+     <td><p>Controls the extent to which document length is normalized. Values between 0 and 1 are typically used, with a default value of 0.75. A value of 0 means no length normalization, while a value of 1 means full length normalization.</p></td>
    </tr>
 </table>
-<h3 id="Create-the-collection" class="common-anchor-header">建立文集<button data-href="#Create-the-collection" class="anchor-icon" translate="no">
+<h3 id="Create-the-collection" class="common-anchor-header">Create the collection<button data-href="#Create-the-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -517,14 +519,14 @@ index_params.<span class="hljs-built_in">AddExtraParam</span>(<span class="hljs-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>現在使用已定義的架構和索引參數建立集合。</p>
+    </button></h3><p>Now create the collection using the schema and index parameters defined.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#cpp">   C++</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#cpp">C++</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.create_collection(
     collection_name=<span class="hljs-string">&#x27;my_collection&#x27;</span>, 
@@ -600,7 +602,7 @@ curl --request POST \
     &quot;collectionName&quot;: &quot;my_collection&quot;
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Insert-text-data" class="common-anchor-header">插入文字資料<button data-href="#Insert-text-data" class="anchor-icon" translate="no">
+<h2 id="Insert-text-data" class="common-anchor-header">Insert text data<button data-href="#Insert-text-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -615,14 +617,14 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>設定好資料集和索引後，即可插入文字資料。您只需提供原始文字——先前定義的 BM25 函式會自動為每筆文字條目產生對應的稀疏向量。</p>
+    </button></h2><p>After setting up your collection and index, you can insert text data. You only need to provide the raw text — the BM25 function defined earlier automatically generates the corresponding sparse vector for each text entry.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#cpp">   C++</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#cpp">C++</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.insert(<span class="hljs-string">&#x27;my_collection&#x27;</span>, [
     {<span class="hljs-string">&#x27;text&#x27;</span>: <span class="hljs-string">&#x27;information retrieval is a field of study.&#x27;</span>},
@@ -698,7 +700,7 @@ milvus::InsertResponse response;
 }&#x27;</span>
 
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Perform-full-text-search" class="common-anchor-header">執行全文檢索<button data-href="#Perform-full-text-search" class="anchor-icon" translate="no">
+<h2 id="Perform-full-text-search" class="common-anchor-header">Perform full text search<button data-href="#Perform-full-text-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -713,17 +715,17 @@ milvus::InsertResponse response;
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>將資料插入集合後，即可使用原始文字查詢進行搜尋。Milvus 會自動將您的查詢轉換為稀疏向量，並使用 BM25 演算法對匹配結果進行排序，最後返回前<code translate="no">limit</code> 項結果。</p>
+    </button></h2><p>Once you’ve inserted data into your collection, you can search it with raw text queries. Milvus automatically converts your query into a sparse vector, ranks the matched results using the BM25 algorithm, and returns the top <code translate="no">limit</code> results.</p>
 <div class="alert note">
-<p>您可以透過配置文字高亮工具，在搜尋結果中標示出匹配的詞彙。詳情請參閱「<a href="/docs/zh-hant/text-highlighter.md">文字高亮工具</a>」。</p>
+<p>You can highlight the matched terms in search results by configuring a text highlighter. See <a href="/docs/zh-hant/text-highlighter.md">Text Highlighter</a> for details.</p>
 </div>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#cpp">   C++</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#cpp">C++</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">res = client.search(
     collection_name=<span class="hljs-string">&#x27;my_collection&#x27;</span>, 
@@ -819,35 +821,35 @@ milvus::SearchResponse response;
 <button class="copy-code-btn"></button></code></pre>
 <table>
    <tr>
-     <th><p>參數</p></th>
-     <th><p>說明</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Description</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">search_params</code></p></td>
-     <td><p>包含搜尋參數的字典。</p></td>
+     <td><p>A dictionary containing search parameters.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.drop_ratio_search</code></p></td>
-     <td><p>搜尋過程中應忽略的低重要性詞彙比例。數值必須介於 [0.0, 1.0) 之間。詳情請參閱「<a href="/docs/zh-hant/sparse_vector.md">稀疏向量</a>」。</p></td>
+     <td><p>Proportion of low-importance terms to ignore during search. The value must be in the range [0.0, 1.0). For details, refer to <a href="/docs/zh-hant/sparse_vector.md">Sparse Vector</a>.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">data</code></p></td>
-     <td><p>以自然語言撰寫的原始查詢文字。Milvus 會使用 BM25 函式自動將您的文字查詢轉換為稀疏向量——請勿提供預先計算好的向量。</p></td>
+     <td><p>Raw query text in natural language. Milvus automatically converts your text query into sparse vectors using the BM25 function - do not provide pre-computed vectors.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">anns_field</code></p></td>
-     <td><p>包含內部生成稀疏向量的欄位名稱。</p></td>
+     <td><p>The name of the field that contains internally generated sparse vectors.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">output_fields</code></p></td>
-     <td><p>搜尋結果中要回傳的欄位名稱清單。支援所有欄位<strong>，但</strong>包含由 BM25 產生嵌入<strong>向量的稀疏向量欄位除外</strong>。常見的輸出欄位包括主鍵欄位（例如：<code translate="no">id</code> ）和原始文字欄位（例如：<code translate="no">text</code> ）。如需更多資訊，請參閱<a href="/docs/zh-hant/full-text-search.md#Can-I-output-or-access-the-sparse-vectors-generated-by-the-BM25-function-in-full-text-search">常見問題</a>。</p></td>
+     <td><p>List of field names to return in search results. Supports all fields <strong>except the sparse vector field</strong> containing BM25-generated embeddings. Common output fields include the primary key field (e.g., <code translate="no">id</code>) and the original text field (e.g., <code translate="no">text</code>). For more information, refer to <a href="/docs/zh-hant/full-text-search.md#Can-I-output-or-access-the-sparse-vectors-generated-by-the-BM25-function-in-full-text-search">FAQ</a>.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">limit</code></p></td>
-     <td><p>要回傳的前幾項最符合結果的最大數量。</p></td>
+     <td><p>Maximum number of top matches to return.</p></td>
    </tr>
 </table>
-<h2 id="FAQ" class="common-anchor-header">常見問題<button data-href="#FAQ" class="anchor-icon" translate="no">
+<h2 id="FAQ" class="common-anchor-header">FAQ<button data-href="#FAQ" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -862,7 +864,7 @@ milvus::SearchResponse response;
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Can-I-output-or-access-the-sparse-vectors-generated-by-the-BM25-function-in-full-text-search" class="common-anchor-header">我可以在全文搜尋中輸出或存取由 BM25 函式產生的稀疏向量嗎？<button data-href="#Can-I-output-or-access-the-sparse-vectors-generated-by-the-BM25-function-in-full-text-search" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Can-I-output-or-access-the-sparse-vectors-generated-by-the-BM25-function-in-full-text-search" class="common-anchor-header">Can I output or access the sparse vectors generated by the BM25 function in full text search?<button data-href="#Can-I-output-or-access-the-sparse-vectors-generated-by-the-BM25-function-in-full-text-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -877,20 +879,20 @@ milvus::SearchResponse response;
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>不可以，在全文搜尋中無法直接存取或擷取由 BM25 函式所產生的稀疏向量。詳細說明如下：</p>
+    </button></h3><p>No, the sparse vectors generated by the BM25 function are not directly accessible or returnable in full text search. Here are the details:</p>
 <ul>
-<li><p>BM25 函式會在內部產生稀疏向量，用於排序與檢索。</p></li>
-<li><p>這些向量儲存於稀疏欄位中，但無法包含在 `<code translate="no">output_fields</code>` 中。</p></li>
-<li><p>您只能輸出原始的文字欄位和元資料（例如<code translate="no">id</code> 、<code translate="no">text</code> ）。</p></li>
+<li><p>The BM25 function generates sparse vectors internally for ranking and retrieval.</p></li>
+<li><p>These vectors are stored in the sparse field but cannot be included in <code translate="no">output_fields</code>.</p></li>
+<li><p>You can only output the original text fields and metadata (like <code translate="no">id</code>, <code translate="no">text</code>).</p></li>
 </ul>
-<p>範例：</p>
+<p>Example:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#cpp">   C++</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#cpp">C++</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">search_params = {<span class="hljs-string">&quot;metric_type&quot;</span>: <span class="hljs-string">&quot;BM25&quot;</span>}
 
@@ -967,7 +969,7 @@ milvus::SearchRequest request = milvus::<span class="hljs-built_in">SearchReques
     &quot;outputFields&quot;: [&quot;text&quot;]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Why-do-I-need-to-define-a-sparse-vector-field-if-I-cant-access-it" class="common-anchor-header">既然無法存取稀疏向量欄位，為何還需要定義它？<button data-href="#Why-do-I-need-to-define-a-sparse-vector-field-if-I-cant-access-it" class="anchor-icon" translate="no">
+<h3 id="Why-do-I-need-to-define-a-sparse-vector-field-if-I-cant-access-it" class="common-anchor-header">Why do I need to define a sparse vector field if I can’t access it?<button data-href="#Why-do-I-need-to-define-a-sparse-vector-field-if-I-cant-access-it" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -982,16 +984,16 @@ milvus::SearchRequest request = milvus::<span class="hljs-built_in">SearchReques
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>稀疏向量場用作內部搜尋索引，類似於使用者不會直接互動的資料庫索引。</p>
-<p><strong>設計理念</strong>：</p>
+    </button></h3><p>The sparse vector field serves as an internal search index, similar to database indexes that users don’t directly interact with.</p>
+<p><strong>Design rationale</strong>:</p>
 <ul>
-<li><p><strong>關注點分離</strong>：您只需處理輸入與輸出的文字，而 Milvus 會在內部處理向量。</p></li>
-<li><p><strong>效能</strong>：預先計算的稀疏向量可讓查詢過程中的 BM25 排序更為快速。</p></li>
-<li><p><strong>使用者體驗</strong>：複雜的向量運算已被封裝在簡單的文字介面背後。</p></li>
+<li><p><strong>Separation of concerns</strong>: You work with text for input and output, and Milvus handles the vectors internally.</p></li>
+<li><p><strong>Performance</strong>: Pre-computed sparse vectors enable fast BM25 ranking during queries.</p></li>
+<li><p><strong>User experience</strong>: Complex vector operations are abstracted away behind a simple text interface.</p></li>
 </ul>
-<p><strong>若需存取向量</strong>：</p>
+<p><strong>If you need vector access</strong>:</p>
 <ul>
-<li><p>請使用手動稀疏向量運算，而非全文檢索。</p></li>
-<li><p>為自訂稀疏向量工作流程建立獨立的集合。</p></li>
+<li><p>Use manual sparse vector operations instead of full text search.</p></li>
+<li><p>Create separate collections for custom sparse vector workflows.</p></li>
 </ul>
-<p>詳情請參閱《<a href="/docs/zh-hant/sparse_vector.md">稀疏向量</a>》。</p>
+<p>For details, refer to <a href="/docs/zh-hant/sparse_vector.md">Sparse Vector</a>.</p>

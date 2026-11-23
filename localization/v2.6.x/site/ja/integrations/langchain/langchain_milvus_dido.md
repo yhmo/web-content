@@ -1,11 +1,13 @@
 ---
 id: langchain_milvus_dido.md
 summary: >-
-  このガイドでは、Milvus 2.6のテキスト埋め込み機能(Data In Data
-  Out)とLangChainの使い方を説明します。この機能により、Milvusサーバは生のテキストを自動的にベクトル埋め込みに変換し、クライアント側のコードを簡素化し、APIキー管理を一元化することができます。
-title: Milvusテキスト埋め込み機能とLangChainの連携
+  This guide demonstrates how to use Milvus 2.6's Text Embedding Function (also
+  known as Data In Data Out) with LangChain. This feature allows the Milvus
+  server to automatically convert raw text into vector embeddings, simplifying
+  client-side code and centralizing API key management.
+title: Integrating Milvus Text Embedding Function with LangChain
 ---
-<h1 id="Integrating-Milvus-Text-Embedding-Function-with-LangChain" class="common-anchor-header">Milvusテキスト埋め込み機能とLangChainの連携<button data-href="#Integrating-Milvus-Text-Embedding-Function-with-LangChain" class="anchor-icon" translate="no">
+<h1 id="Integrating-Milvus-Text-Embedding-Function-with-LangChain" class="common-anchor-header">Integrating Milvus Text Embedding Function with LangChain<button data-href="#Integrating-Milvus-Text-Embedding-Function-with-LangChain" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -26,9 +28,9 @@ title: Milvusテキスト埋め込み機能とLangChainの連携
 <a href="https://github.com/milvus-io/bootcamp/blob/master/integration/langchain/langchain_milvus_dido.ipynb" target="_blank">
 <img translate="no" src="https://img.shields.io/badge/View%20on%20GitHub-555555?style=flat&logo=github&logoColor=white" alt="GitHub Repository"/>
 </a></p>
-<p>このガイドでは、Milvus 2.6の<strong>テキスト埋め込み機能</strong>(Data In Data Out)をLangChainと連携させる方法を説明します。この機能により、Milvusサーバは生のテキストを自動的にベクトル埋め込みに変換し、クライアント側のコードを簡素化し、APIキー管理を一元化することができます。</p>
-<p><a href="https://milvus.io/">Milvusは</a>世界で最も先進的なオープンソースのベクトルデータベースで、埋め込み類似検索やAIアプリケーションをサポートするために特別に構築されています。<a href="https://www.langchain.com/">LangChainは</a>、大規模言語モデル（LLM）を利用したアプリケーション開発のためのフレームワークです。Milvusのテキスト埋め込み機能を統合することで、LangChainアプリケーションにおいて、よりシンプルで効率的なベクトル検索ソリューションを実現することができます。</p>
-<h2 id="Prerequisites" class="common-anchor-header">前提条件<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+<p>This guide demonstrates how to use Milvus 2.6’s <strong>Text Embedding Function</strong> (also known as Data In Data Out) with LangChain. This feature allows the Milvus server to automatically convert raw text into vector embeddings, simplifying client-side code and centralizing API key management.</p>
+<p><a href="https://milvus.io/">Milvus</a> is the world’s most advanced open-source vector database, built specifically to support embedding similarity search and AI applications. <a href="https://www.langchain.com/">LangChain</a> is a framework for developing applications powered by large language models (LLMs). By integrating Milvus’s Text Embedding Function, you can achieve a simpler and more efficient vector search solution in your LangChain applications.</p>
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -43,13 +45,13 @@ title: Milvusテキスト埋め込み機能とLangChainの連携
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>このチュートリアルを実行する前に、以下の依存関係がインストールされていることを確認してください：</p>
+    </button></h2><p>Before running this tutorial, ensure you have installed the following dependencies:</p>
 <pre><code translate="no" class="language-shell">! pip install --upgrade langchain-milvus langchain-core langchain-openai
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>Google Colabをお使いの場合、インストールした依存関係を有効にするために、<strong>ランタイムを再起動</strong>する必要があります（画面上部の "Runtime "メニューをクリックし、ドロップダウンメニューから "Restart session "を選択してください）。</p>
+<p>If you are using Google Colab, to enable dependencies just installed, you may need to <strong>restart the runtime</strong> (click on the “Runtime” menu at the top of the screen, and select “Restart session” from the dropdown menu).</p>
 </div>
-<h3 id="Configuring-the-Milvus-Server" class="common-anchor-header">Milvusサーバーの設定<button data-href="#Configuring-the-Milvus-Server" class="anchor-icon" translate="no">
+<h3 id="Configuring-the-Milvus-Server" class="common-anchor-header">Configuring the Milvus Server<button data-href="#Configuring-the-Milvus-Server" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -64,18 +66,18 @@ title: Milvusテキスト埋め込み機能とLangChainの連携
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><strong>重要</strong>：テキスト埋め込み機能(Data In Data Out)は<strong>Milvus Serverでのみ</strong>使用可能です。<strong>Milvus Liteはこの機能をサポートしていません</strong>。Docker/KubernetesでデプロイされたMilvusサーバを使用する必要があります。</p>
-<p>テキスト埋め込み機能を利用する前に、Milvusサーバに埋め込みサービスプロバイダ用のクレデンシャルを設定する必要があります。</p>
-<p><strong>credentialの下にキーを宣言します：</strong></p>
-<p>APIキーは1つでも複数でも構いません。</p>
+    </button></h3><p><strong>Important</strong>: The Text Embedding Function (Data In Data Out) feature is only available in <strong>Milvus Server</strong>. <strong>Milvus Lite does not support this feature</strong>. You need to use a Milvus server deployed with Docker/Kubernetes.</p>
+<p>Before using the Text Embedding Function, you need to configure credentials for embedding service providers on the Milvus server.</p>
+<p><strong>Declare your keys under credential:</strong></p>
+<p>You may list one or many API keys—give each a label you invent and will reference later.</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-comment"># milvus.yaml</span>
 
 <span class="hljs-attr">credential:</span>
   <span class="hljs-attr">apikey_dev:</span>
     <span class="hljs-attr">apikey:</span> <span class="hljs-string">&lt;YOUR_OPENAI_API_KEY&gt;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>どのキーをOpenAIの呼び出しに使うかをMilvusに伝える。</strong></p>
-<p>同じファイルで、OpenAIプロバイダが使用したいラベルを指定します。</p>
+<p><strong>Tell Milvus which key to use for OpenAI calls</strong></p>
+<p>In the same file, point the OpenAI provider at the label you want it to use.</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">function:</span>
   <span class="hljs-attr">textEmbedding:</span>
     <span class="hljs-attr">providers:</span>
@@ -83,8 +85,8 @@ title: Milvusテキスト埋め込み機能とLangChainの連携
         <span class="hljs-attr">credential:</span> <span class="hljs-string">apikey_dev</span>
         <span class="hljs-comment"># url: https://api.openai.com/v1/embeddings   # (optional) custom url</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>その他の設定方法については、<a href="https://milvus.io/docs/embedding-function-overview.md">Milvus Embedding Functionのドキュメントを</a>参照してください。</p>
-<h3 id="Starting-the-Milvus-Service" class="common-anchor-header">Milvusサービスの起動<button data-href="#Starting-the-Milvus-Service" class="anchor-icon" translate="no">
+<p>For more configuration methods, please refer to the <a href="https://milvus.io/docs/embedding-function-overview.md">Milvus Embedding Function documentation</a>.</p>
+<h3 id="Starting-the-Milvus-Service" class="common-anchor-header">Starting the Milvus Service<button data-href="#Starting-the-Milvus-Service" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -99,8 +101,8 @@ title: Milvusテキスト埋め込み機能とLangChainの連携
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Milvusサーバが起動しており、エンベッディング機能が有効になっていることを確認します。<a href="https://milvus.io/docs/install_standalone-docker.md">Docker</a>または<a href="https://milvus.io/docs/install_cluster-helm.md">Kubernetesを</a>使用してMilvusサーバをデプロイすることができます。<strong>Milvus Liteはテキストエンベッド機能をサポートしていません</strong>。</p>
-<h2 id="Understanding-Embedding-Client-side-vs-Server-side" class="common-anchor-header">エンベッディングについてクライアントサイドとサーバサイド<button data-href="#Understanding-Embedding-Client-side-vs-Server-side" class="anchor-icon" translate="no">
+    </button></h3><p>Ensure that Milvus Server is running and the embedding feature is enabled. You can deploy Milvus server using <a href="https://milvus.io/docs/install_standalone-docker.md">Docker</a> or <a href="https://milvus.io/docs/install_cluster-helm.md">Kubernetes</a>. Note: <strong>Milvus Lite does not support Text Embedding Function</strong>.</p>
+<h2 id="Understanding-Embedding-Client-side-vs-Server-side" class="common-anchor-header">Understanding Embedding: Client-side vs Server-side<button data-href="#Understanding-Embedding-Client-side-vs-Server-side" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -115,8 +117,8 @@ title: Milvusテキスト埋め込み機能とLangChainの連携
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>使い方の前に、まず2つのエンベッディングアプローチの違いを理解しましょう。</p>
-<h3 id="Embedding-using-LangChains-Embeddings-class-Client-side" class="common-anchor-header">LangChainの<code translate="no">Embeddings</code> クラスを使った埋め込み（クライアントサイド）<button data-href="#Embedding-using-LangChains-Embeddings-class-Client-side" class="anchor-icon" translate="no">
+    </button></h2><p>Before diving into usage, let’s first understand the differences between the two embedding approaches.</p>
+<h3 id="Embedding-using-LangChains-Embeddings-class-Client-side" class="common-anchor-header">Embedding using LangChain’s <code translate="no">Embeddings</code> class (Client-side)<button data-href="#Embedding-using-LangChains-Embeddings-class-Client-side" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -131,7 +133,7 @@ title: Milvusテキスト埋め込み機能とLangChainの連携
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>従来のLangChainアプローチでは、<a href="https://python.langchain.com/docs/api_reference/embeddings/langchain_core.embeddings.Embeddings"><code translate="no">Embeddings</code> クラスを使って</a>クライアントサイドでエンベッディングを生成します。アプリケーションはこのクラスの<code translate="no">embed_query</code> メソッドを使ってエンベッディングAPIを呼び出し、生成されたベクトルをmilvusに格納します。</p>
+    </button></h3><p>In the traditional LangChain approach, embedding generation happens on the client side by using the <a href="https://python.langchain.com/docs/api_reference/embeddings/langchain_core.embeddings.Embeddings"><code translate="no">Embeddings</code> class</a>. Your application needs to use the <code translate="no">embed_query</code> method of the class to call the embedding API, then store the generated vectors in Milvus.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> langchain_openai <span class="hljs-keyword">import</span> OpenAIEmbeddings
 <span class="hljs-keyword">from</span> langchain_milvus <span class="hljs-keyword">import</span> Milvus
 
@@ -146,20 +148,20 @@ vector_store = Milvus(
     collection_name=<span class="hljs-string">&quot;traditional_approach_collection&quot;</span>,
 )
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>シーケンス図</strong></p>
+<p><strong>Sequence Diagram:</strong></p>
 <p>
   <span class="img-wrapper">
     <img translate="no" src="/docs/v2.6.x/assets/langchain_milvus_dito_langchain_embedding.png" alt="" class="doc-image" id="" />
     <span></span>
   </span>
 </p>
-<p><strong>特徴</strong></p>
+<p><strong>Characteristics:</strong></p>
 <ul>
-<li>クライアントが直接エンベッディングAPIを呼び出す</li>
-<li>クライアント側でAPIキーの管理が必要</li>
-<li>データの流れテキスト → クライアント → 埋め込みAPI → ベクトル → milvus</li>
+<li>Client directly calls embedding API</li>
+<li>Need to manage API keys on the client side</li>
+<li>Data flow: Text → Client → Embedding API → Vector → Milvus</li>
 </ul>
-<h3 id="Milvus-Text-Embedding-Function-Server-side-Data-In-Data-Out" class="common-anchor-header">Milvusテキスト埋め込み機能（サーバ側データインデータアウト）<button data-href="#Milvus-Text-Embedding-Function-Server-side-Data-In-Data-Out" class="anchor-icon" translate="no">
+<h3 id="Milvus-Text-Embedding-Function-Server-side-Data-In-Data-Out" class="common-anchor-header">Milvus Text Embedding Function (Server-side Data In Data Out)<button data-href="#Milvus-Text-Embedding-Function-Server-side-Data-In-Data-Out" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -174,21 +176,21 @@ vector_store = Milvus(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Milvus2.6のテキスト埋め込み機能(Data In Data Out)は、Milvusサーバーが生のテキストを自動的にベクトル埋め込みに変換する機能です。クライアントはテキストを入力するだけで、Milvusが自動的に埋め込みを生成します。</p>
-<p><strong>シーケンス図</strong></p>
+    </button></h3><p>Milvus 2.6’s Text Embedding Function (Data In Data Out) allows the Milvus server to automatically convert raw text into vector embeddings. The client only needs to provide text, and Milvus will automatically handle embedding generation.</p>
+<p><strong>Sequence Diagram:</strong></p>
 <p>
   <span class="img-wrapper">
     <img translate="no" src="/docs/v2.6.x/assets/langchain_milvus_dito_milvus_embedding.png" alt="" class="doc-image" id="" />
     <span></span>
   </span>
 </p>
-<p><strong>特徴</strong></p>
+<p><strong>Characteristics:</strong></p>
 <ul>
-<li>Milvusサーバが埋め込みAPIを呼び出す</li>
-<li>APIキーはサーバ側で一元管理</li>
-<li>データの流れテキスト → Milvus → エンベッディングAPI → ベクター（Milvusに格納）</li>
+<li>Milvus server calls embedding API</li>
+<li>API keys are centrally managed on the server side</li>
+<li>Data flow: Text → Milvus → Embedding API → Vector (stored in Milvus)</li>
 </ul>
-<h3 id="Comparison-of-the-Two-Methods" class="common-anchor-header">2つの方式の比較<button data-href="#Comparison-of-the-Two-Methods" class="anchor-icon" translate="no">
+<h3 id="Comparison-of-the-Two-Methods" class="common-anchor-header">Comparison of the Two Methods<button data-href="#Comparison-of-the-Two-Methods" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -205,19 +207,19 @@ vector_store = Milvus(
       </svg>
     </button></h3><table>
 <thead>
-<tr><th>特徴</th><th>LangChain埋め込み（クライアント側）</th><th>Milvusテキスト埋め込み機能（サーバサイド）</th></tr>
+<tr><th>Feature</th><th>LangChain Embedding (Client-side)</th><th>Milvus Text Embedding Function (Server-side)</th></tr>
 </thead>
 <tbody>
-<tr><td><strong>処理場所</strong></td><td>クライアントアプリケーション</td><td>Milvusサーバー</td></tr>
-<tr><td><strong>APIコール</strong></td><td>クライアントが直接埋め込みAPIを呼び出す</td><td>MilvusサーバーがエンベッディングAPIを呼び出す</td></tr>
-<tr><td><strong>APIキーの管理</strong></td><td>クライアント側での管理が必要</td><td>サーバ側で一元管理、より安全</td></tr>
-<tr><td><strong>コードの複雑さ</strong></td><td>クライアント側でAPIキーとコールを管理する必要がある</td><td>Milvusのコンフィギュレーションで一度だけ設定する必要がある。</td></tr>
-<tr><td><strong>使用例</strong></td><td>- 埋め込み処理をクライアント側で制御したい<br>- 埋め込み結果をクライアント側でキャッシュしたい<br>- 複数のエンベッディングモデルの切り替えに対応したい</td><td>- クライアント側コードの簡素化<br>- サーバー側でAPIキーを一元管理したい<br>- 大量のドキュメントを一括処理したい<br>- クライアント側での外部APIとのやり取りを減らしたい<br>- BM25のようなMilvusのビルトイン機能と組み合わせたい</td></tr>
-<tr><td><strong>Milvusのバージョン要件</strong></td><td>全てのバージョン(Milvus Liteを含む)</td><td>Milvus Liteには対応しておりません。</td></tr>
+<tr><td><strong>Processing Location</strong></td><td>Client application</td><td>Milvus server</td></tr>
+<tr><td><strong>API Calls</strong></td><td>Client directly calls embedding API</td><td>Milvus server calls embedding API</td></tr>
+<tr><td><strong>API Key Management</strong></td><td>Need to manage on client side</td><td>Centrally managed on server side, more secure</td></tr>
+<tr><td><strong>Code Complexity</strong></td><td>Need to manage API keys and calls on client side</td><td>Only need to configure once in Milvus configuration</td></tr>
+<tr><td><strong>Use Cases</strong></td><td>• Need client-side control over embedding process<br>• Need to cache embedding results on client side<br>• Need to support multiple embedding model switching</td><td>• Simplify client-side code<br>• Centrally manage API keys on server side<br>• Need to batch process large volumes of documents<br>• Want to reduce client-side interactions with external APIs<br>• Need to combine with Milvus built-in features like BM25</td></tr>
+<tr><td><strong>Milvus Version Requirements</strong></td><td>All versions (including Milvus Lite)</td><td>Milvus Lite not supported</td></tr>
 </tbody>
 </table>
-<p><strong>このチュートリアルでは、Milvus</strong> 2.6から導入された新機能であり、クライアントサイドのコードを大幅に簡素化し、セキュリティを向上させることができる<strong>Milvusサーバーサイドのテキスト埋め込み関数（Data In Data Out）メソッドを主に紹介</strong>します。</p>
-<h2 id="Using-Text-Embedding-Function" class="common-anchor-header">テキスト埋め込み関数の使用<button data-href="#Using-Text-Embedding-Function" class="anchor-icon" translate="no">
+<p><strong>This tutorial primarily introduces the Milvus server-side Text Embedding Function (Data In Data Out) method</strong>, which is a new feature introduced in Milvus 2.6 that can significantly simplify client-side code and improve security.</p>
+<h2 id="Using-Text-Embedding-Function" class="common-anchor-header">Using Text Embedding Function<button data-href="#Using-Text-Embedding-Function" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -232,7 +234,7 @@ vector_store = Milvus(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Example-1-Server-side-Embedding-Only" class="common-anchor-header">例1: サーバ側の埋め込みのみ<button data-href="#Example-1-Server-side-Embedding-Only" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Example-1-Server-side-Embedding-Only" class="common-anchor-header">Example 1: Server-side Embedding Only<button data-href="#Example-1-Server-side-Embedding-Only" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -247,7 +249,7 @@ vector_store = Milvus(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>これは最も単純な使用例で、埋め込みの生成を完全にMilvusサーバに依存します。クライアントは埋め込み関数を必要としません。</p>
+    </button></h3><p>This is the simplest use case, completely relying on the Milvus server to generate embeddings. The client does not need any embedding function.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> langchain_milvus <span class="hljs-keyword">import</span> Milvus
 <span class="hljs-keyword">from</span> langchain_milvus.function <span class="hljs-keyword">import</span> TextEmbeddingBuiltInFunction
 <span class="hljs-keyword">from</span> langchain_core.documents <span class="hljs-keyword">import</span> Document
@@ -277,13 +279,13 @@ vector_store = Milvus(
 )
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p><code translate="no">connection_args</code> の場合：</p>
+<p>For <code translate="no">connection_args</code>:</p>
 <ul>
-<li><strong>Milvus Serverを使用する必要があります</strong>：テキスト埋め込み機能はMilvus Serverのみで、Milvus Liteには対応していません。</li>
-<li><code translate="no">http://localhost:19530</code> (ローカルDockerデプロイ) または<code translate="no">http://your-server:19530</code> (リモートサーバ) などのサーバURIを使用してください。</li>
-<li><a href="https://zilliz.com/cloud">Zilliz Cloudを</a>利用する場合は、Public Endpointを<code translate="no">uri</code> とし、<code translate="no">token</code> パラメータを設定してください。</li>
+<li><strong>Must use Milvus Server</strong>: The Text Embedding Function feature is only available in Milvus Server, Milvus Lite is not supported.</li>
+<li>Use server uri, such as <code translate="no">http://localhost:19530</code> (local Docker deployment) or <code translate="no">http://your-server:19530</code> (remote server).</li>
+<li>If using <a href="https://zilliz.com/cloud">Zilliz Cloud</a>, use the Public Endpoint as <code translate="no">uri</code> and set the <code translate="no">token</code> parameter.</li>
 </ul>
-<p>ドキュメントを追加する場合、テキストを提供するだけでよく、事前にベクトルを計算する必要はありません。Milvusは自動的にOpenAI APIを呼び出して埋め込みを生成します。</p>
+<p>When adding documents, you only need to provide text, no need to pre-compute vectors. Milvus will automatically call the OpenAI API to generate embeddings.</p>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Add documents (only need to provide text, no need to pre-compute vectors)</span>
 documents = [
@@ -300,7 +302,7 @@ vector_store.add_documents(documents)
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no">[462726375729313252, 462726375729313253, 462726375729313254]
 </code></pre>
-<p>検索時には、テキストクエリを直接使用することで、Milvusが自動的にクエリテキストを検索用のベクトルに変換します。</p>
+<p>During search, directly use text queries, and Milvus will automatically convert the query text to vectors for search.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Search (directly use text query)</span>
 results = vector_store.similarity_search(
     query=<span class="hljs-string">&quot;How does Milvus handle semantic search?&quot;</span>, k=<span class="hljs-number">2</span>
@@ -320,7 +322,7 @@ Metadata: {'pk': 462726375729313252}
 Content: Semantic search helps users find relevant information quickly.
 Metadata: {'pk': 462726375729313254}
 </code></pre>
-<h3 id="Example-2-Combining-Text-Embedding-and-BM25-Hybrid-Search" class="common-anchor-header">例2：テキスト埋め込みとBM25の組み合わせ（ハイブリッド検索）<button data-href="#Example-2-Combining-Text-Embedding-and-BM25-Hybrid-Search" class="anchor-icon" translate="no">
+<h3 id="Example-2-Combining-Text-Embedding-and-BM25-Hybrid-Search" class="common-anchor-header">Example 2: Combining Text Embedding and BM25 (Hybrid Search)<button data-href="#Example-2-Combining-Text-Embedding-and-BM25-Hybrid-Search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -335,7 +337,7 @@ Metadata: {'pk': 462726375729313254}
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>セマンティック検索（テキスト埋め込み）とキーワード検索（BM25）を組み合わせることで、より強力なハイブリッド検索が可能になります。セマンティック検索はクエリの意図を理解することに優れ、キーワード検索は完全一致に優れています。</p>
+    </button></h3><p>Combining semantic search (Text Embedding) and keyword search (BM25) enables more powerful hybrid search capabilities. Semantic search excels at understanding query intent, while keyword search excels at exact matching.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> langchain_milvus <span class="hljs-keyword">import</span> Milvus
 <span class="hljs-keyword">from</span> langchain_milvus.function <span class="hljs-keyword">import</span> TextEmbeddingBuiltInFunction, BM25BuiltInFunction
 
@@ -378,7 +380,7 @@ vector_store.add_documents(documents)
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no">[462726375729313255, 462726375729313256]
 </code></pre>
-<p><code translate="no">WeightedRanker</code> 、セマンティック検索とキーワード検索のウェイトをコントロールする。密なウェイトを高くすると、結果はより意味的類似性に偏り、疎なウェイトを高くすると、結果はよりキーワードマッチングに偏る。</p>
+<p>Use <code translate="no">WeightedRanker</code> to control the weights of semantic search and keyword search. When dense weight is higher, results are more biased towards semantic similarity; when sparse weight is higher, results are more biased towards keyword matching.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Hybrid search, use WeightedRanker to control weights</span>
 <span class="hljs-comment"># 70% semantic search, 30% keyword search</span>
 results = vector_store.similarity_search(
@@ -407,7 +409,7 @@ results_keyword_focused = vector_store.similarity_search(
 <pre><code translate="no">[Document(metadata={'pk': 462726375729313256}, page_content='The cat sat on the mat'),
  Document(metadata={'pk': 462726375729313255}, page_content='Machine learning and artificial intelligence')]
 </code></pre>
-<h2 id="Summary" class="common-anchor-header">まとめ<button data-href="#Summary" class="anchor-icon" translate="no">
+<h2 id="Summary" class="common-anchor-header">Summary<button data-href="#Summary" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -422,4 +424,4 @@ results_keyword_focused = vector_store.similarity_search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>おめでとうございます！Milvusのテキスト埋め込み機能(Data In Data Out)をLangChainで利用する方法を学びました。埋め込み生成をサーバサイドに移すことで、クライアントサイドのコードを簡素化し、APIキーを一元管理し、ハイブリッド検索を簡単に実装することができます。テキスト埋め込み機能とBM25を組み合わせることで、milvusは強力なベクトル検索機能を提供します。</p>
+    </button></h2><p>Congratulations! You have learned how to use Milvus’s Text Embedding Function (Data In Data Out) feature with LangChain. By moving embedding generation to the server side, you can simplify client-side code, centrally manage API keys, and easily implement hybrid search. Combined with Text Embedding Function and BM25, Milvus provides you with powerful vector search capabilities.</p>

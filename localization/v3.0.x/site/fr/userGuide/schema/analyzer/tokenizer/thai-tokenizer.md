@@ -1,12 +1,12 @@
 ---
 id: thai-tokenizer.md
-title: ThaïCompatible with Milvus 3.0.0+
+title: ThaiCompatible with Milvus 3.0.0+
 summary: >-
-  Le tokeniseur thaï segmenté le texte thaï en tokens de mots et élimine les
-  espaces et les segments composés uniquement de signes de ponctuation.
+  The thai tokenizer segments Thai text into word tokens and filters out
+  whitespace and punctuation-only segments.
 beta: Milvus 3.0.0+
 ---
-<h1 id="Thai" class="common-anchor-header">Thaï<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.0+</span><button data-href="#Thai" class="anchor-icon" translate="no">
+<h1 id="Thai" class="common-anchor-header">Thai<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.0+</span><button data-href="#Thai" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -21,7 +21,7 @@ beta: Milvus 3.0.0+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Le tokeniseur « <code translate="no">thai</code> » segmente le texte thaï en tokens de mots sans s'appuyer sur les espaces. Utilisez ce tokeniseur lorsque vous devez créer un pipeline d'analyse personnalisé pour du texte en thaï ou mixte (thaï/anglais).</p>
+    </button></h1><p>The <code translate="no">thai</code> tokenizer segments Thai text into word tokens without relying on spaces. Use this tokenizer when you need to build a custom analyzer pipeline for Thai or mixed Thai/English text.</p>
 <h2 id="Configuration" class="common-anchor-header">Configuration<button data-href="#Configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -38,15 +38,15 @@ beta: Milvus 3.0.0+
         ></path>
       </svg>
     </button></h2><div class="alert note">
-<p>Pour le texte en thaï, utilisez dans la plupart des cas l’analyseur intégré <a href="/docs/fr/thai-analyzer.md"><code translate="no">thai</code></a> dans la plupart des cas. L'analyseur intégré inclut ce tokeniseur ainsi que la conversion en minuscules, la normalisation des chiffres décimaux et la suppression des mots vides en thaï. N'utilisez directement le tokeniseur « <code translate="no">thai</code> » que lorsque vous devez créer un pipeline d'analyse personnalisé.</p>
+<p>For Thai text, use the built-in <a href="/docs/fr/thai-analyzer.md"><code translate="no">thai</code></a> analyzer in most cases. The built-in analyzer includes this tokenizer together with lowercasing, decimal digit normalization, and Thai stop-word removal. Use the <code translate="no">thai</code> tokenizer directly only when you need to build a custom analyzer pipeline.</p>
 </div>
-<p>Pour configurer un analyseur à l’aide du tokenizer « <code translate="no">thai</code> », définissez ` <code translate="no">tokenizer</code> ` sur ` <code translate="no">thai</code> ` dans ` <code translate="no">analyzer_params</code>`.</p>
+<p>To configure an analyzer using the <code translate="no">thai</code> tokenizer, set <code translate="no">tokenizer</code> to <code translate="no">thai</code> in <code translate="no">analyzer_params</code>.</p>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;thai&quot;</span>,
 }
 <button class="copy-code-btn"></button></code></pre>
-<p>Le tokenizer <code translate="no">thai</code> ne dispose d’aucun paramètre configurable.</p>
-<p>Le tokenizer peut fonctionner avec un ou plusieurs filtres. Par exemple, la configuration suivante utilise le tokenizer <code translate="no">thai</code> avec le <a href="/docs/fr/lowercase-filter.md"><code translate="no">lowercase</code></a> et <a href="/docs/fr/decimaldigit-filter.md"><code translate="no">decimaldigit</code></a> :</p>
+<p>The <code translate="no">thai</code> tokenizer has no configurable parameters.</p>
+<p>The tokenizer can work with one or more filters. For example, the following configuration uses the <code translate="no">thai</code> tokenizer with the <a href="/docs/fr/lowercase-filter.md"><code translate="no">lowercase</code></a> and <a href="/docs/fr/decimaldigit-filter.md"><code translate="no">decimaldigit</code></a> filters:</p>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;thai&quot;</span>,
     <span class="hljs-string">&quot;filter&quot;</span>: [
@@ -55,17 +55,17 @@ beta: Milvus 3.0.0+
     ],
 }
 <button class="copy-code-btn"></button></code></pre>
-<p>Ce pipeline personnalisé n’est pas équivalent à l’analyseur intégré « <code translate="no">thai</code> », car il n’inclut pas le dictionnaire de mots vides intégré « <code translate="no">_thai_</code> ». Pour le pipeline prédéfini complet, utilisez <code translate="no">{&quot;type&quot;: &quot;thai&quot;}</code>.</p>
-<p>Le tokeniseur applique le comportement suivant :</p>
+<p>This custom pipeline is not equivalent to the built-in <code translate="no">thai</code> analyzer because it does not include the built-in <code translate="no">_thai_</code> stop-word dictionary. For the complete predefined pipeline, use <code translate="no">{&quot;type&quot;: &quot;thai&quot;}</code>.</p>
+<p>The tokenizer applies the following behavior:</p>
 <ul>
-<li><strong>Segmentation du thaï</strong>: segmente le texte thaï en tokens de mots sans s’appuyer sur les espaces.</li>
-<li><strong>Filtrage des espaces et de la ponctuation</strong>: filtre les segments composés uniquement d’espaces et de signes de ponctuation. Cela diffère du <a href="/docs/fr/icu-tokenizer.md"><code translate="no">icu</code></a> tokenizer, qui peut conserver la ponctuation et les espaces en tant que tokens.</li>
-<li><strong>Texte à scripts mixtes</strong>: génère des tokens de mots en alphabet latin dans un texte mixte thaï/anglais.</li>
-<li><strong>Tokeniseur uniquement</strong>: ne met pas les tokens en minuscules, ne normalise pas les chiffres Unicode et ne supprime pas les mots vides. Ajoutez des filtres ou utilisez l’ <a href="/docs/fr/thai-analyzer.md"><code translate="no">thai</code></a> pour ces étapes.</li>
-<li><strong>Sémantique de position</strong>: utilise les positions des tokens basées sur les caractères, y compris les espaces et la ponctuation ignorés, ce qui garantit une cohérence du comportement de correspondance de phrases et de proximité avec d’autres tokeniseurs non latins.</li>
+<li><strong>Thai segmentation</strong>: Segments Thai text into word tokens without relying on whitespace.</li>
+<li><strong>Whitespace and punctuation filtering</strong>: Filters out whitespace and punctuation-only segments. This differs from the <a href="/docs/fr/icu-tokenizer.md"><code translate="no">icu</code></a> tokenizer, which can preserve punctuation and spaces as tokens.</li>
+<li><strong>Mixed-script text</strong>: Emits Latin word tokens in mixed Thai/English text.</li>
+<li><strong>Tokenizer only</strong>: Does not lowercase tokens, normalize Unicode digits, or remove stop words. Add filters or use the built-in <a href="/docs/fr/thai-analyzer.md"><code translate="no">thai</code></a> analyzer for those steps.</li>
+<li><strong>Position semantics</strong>: Uses character-based token positions that include skipped whitespace and punctuation, which keeps phrase and proximity matching behavior consistent with other non-Latin tokenizers.</li>
 </ul>
-<p>Après avoir défini l’ <code translate="no">analyzer_params</code>, vous pouvez appliquer l’analyseur à un champ de type « <code translate="no">VARCHAR</code> » lors de la définition d’un schéma de collection. Pour plus de détails, reportez-vous à la section « <a href="/docs/fr/analyzer-overview.md#Example-use">Exemple d’utilisation</a> ».</p>
-<h2 id="Examples" class="common-anchor-header">Exemples<button data-href="#Examples" class="anchor-icon" translate="no">
+<p>After defining <code translate="no">analyzer_params</code>, you can apply the analyzer to a <code translate="no">VARCHAR</code> field when defining a collection schema. For details, refer to <a href="/docs/fr/analyzer-overview.md#Example-use">Example use</a>.</p>
+<h2 id="Examples" class="common-anchor-header">Examples<button data-href="#Examples" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -80,8 +80,8 @@ beta: Milvus 3.0.0+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Avant d’appliquer la configuration de l’analyseur à votre schéma de collection, vérifiez son comportement à l’aide de la méthode ` <code translate="no">run_analyzer</code> `.</p>
-<h3 id="Analyzer-configuration" class="common-anchor-header">Configuration de l’analyseur<button data-href="#Analyzer-configuration" class="anchor-icon" translate="no">
+    </button></h2><p>Before applying the analyzer configuration to your collection schema, verify its behavior using the <code translate="no">run_analyzer</code> method.</p>
+<h3 id="Analyzer-configuration" class="common-anchor-header">Analyzer configuration<button data-href="#Analyzer-configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -100,7 +100,7 @@ beta: Milvus 3.0.0+
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;thai&quot;</span>,
 }
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Verification-using-runanalyzer" class="common-anchor-header">Vérification à l’aide de <code translate="no">run_analyzer</code><button data-href="#Verification-using-runanalyzer" class="anchor-icon" translate="no">
+<h3 id="Verification-using-runanalyzer" class="common-anchor-header">Verification using <code translate="no">run_analyzer</code><button data-href="#Verification-using-runanalyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -124,7 +124,7 @@ sample_text = <span class="hljs-string">&quot;สวัสดี! ทดสอ�
 result = client.run_analyzer(sample_text, analyzer_params)
 <span class="hljs-built_in">print</span>(result)
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Expected-output" class="common-anchor-header">Résultat attendu<button data-href="#Expected-output" class="anchor-icon" translate="no">
+<h3 id="Expected-output" class="common-anchor-header">Expected output<button data-href="#Expected-output" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"

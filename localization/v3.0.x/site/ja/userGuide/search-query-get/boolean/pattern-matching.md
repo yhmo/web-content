@@ -1,12 +1,11 @@
 ---
 id: pattern-matching.md
-title: パターンマッチング
+title: Pattern Matching
 summary: >-
-  Milvus は、LIKE ワイルドカードパターンおよび RE2
-  正規表現による文字列パターンマッチングをサポートしています。パターンフィルターを使用することで、VARCHAR フィールド、JSON 文字列パス、または
-  ARRAY 要素内の接頭辞、接尾辞、部分文字列、構造化コード、メールアドレスのドメイン、URL パス、その他の文字列パターンに一致させることができます。
+  Match string values with LIKE wildcard patterns or RE2 regular expressions in
+  scalar filters.
 ---
-<h1 id="Pattern-Matching" class="common-anchor-header">パターンマッチング<button data-href="#Pattern-Matching" class="anchor-icon" translate="no">
+<h1 id="Pattern-Matching" class="common-anchor-header">Pattern Matching<button data-href="#Pattern-Matching" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -21,21 +20,20 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>エージェント型検索アプリケーションでは、ベクトル検索とgrep形式のパターンマッチングが互いに補完し合うことがよくあります。ベクトル検索は意味的に関連性の高いエンティティを検索し、パターンマッチングはエラーコード、ログのプレフィックス、メールドメイン、URLパス、識別子などの正確な文字列構造に基づいて、それらの検索結果を絞り込みます。</p>
-<p>Milvusでは、これらのパターン制約をスカラーフィルターで表現できます。単純なワイルドカードマッチングには<code translate="no">LIKE</code> を、<a href="https://github.com/google/re2/wiki/syntax">RE2</a>正規表現には<code translate="no">=~</code> または<code translate="no">!~</code> を使用します。これらのフィルターは、<code translate="no">query</code> 、<code translate="no">search</code> 、またはハイブリッド検索と組み合わせることができます。</p>
+    </button></h1><p>Use <code translate="no">LIKE</code> for wildcard matching and <code translate="no">=~</code> or <code translate="no">!~</code> for <a href="https://github.com/google/re2/wiki/syntax">RE2</a> regular expressions. These scalar filters match string structures such as error codes, prefixes, email domains, or URL paths in <code translate="no">query</code>, <code translate="no">search</code>, and hybrid search.</p>
 <div class="alert note">
-<p>このページでは、<code translate="no">query</code> 、<code translate="no">search</code> 、およびハイブリッド検索で使用されるスカラーフィルタ式におけるパターンマッチングについて説明します。これらの式はフィールド値を評価するものであり、アナライザによって生成されたトークンを変更することはありません。テキスト解析中にトークンをフィルタリングするには、「<a href="/docs/ja/regex-filter.md">Regex Analyzer Filter</a>」を参照してください。</p>
+<p>These filters match string values. They do not change analyzer tokens or enable token-based <code translate="no">TEXT_MATCH</code> and <code translate="no">PHRASE_MATCH</code>. See <a href="/docs/ja/regex-filter.md">Regex Analyzer Filter</a> and <a href="/docs/ja/keyword-match.md">Text Match</a> for those mechanisms.</p>
 </div>
-<p>パターンマッチング式は、<code translate="no">filter</code> パラメータ内で記述します。たとえば、次のクエリは、<code translate="no">E1001</code> などのエラーコードを含むログメッセージに一致します。</p>
+<p>Pattern matching expressions are written in the <code translate="no">filter</code> parameter. For example, the following query matches log messages that contain an error code such as <code translate="no">E1001</code>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -180,12 +178,11 @@ curl --request POST \
     &quot;outputFields&quot;: [&quot;message&quot;, &quot;severity&quot;]
   }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>このページの例では、<code translate="no">filter</code> に割り当てられた式に焦点を当てています。<code translate="no">query</code> 、<code translate="no">search</code> 、ハイブリッド検索など、スカラーフィルターを受け入れる Milvus 操作では、同じフィルター式構文を使用できます。</p>
+<p>The remaining examples show the expression assigned to <code translate="no">filter</code>.</p>
 <div class="alert note">
-<p>フィルタリング式の左辺にあるリテラルは、以下の例で使用されている<code translate="no">message</code> や<code translate="no">email</code> などのコレクションフィールド名、あるいは<code translate="no">filter = 'struct[0][subfield] =~ &quot;E[0-9]{4}&quot;'</code> のように特定の要素インデックスにあるStructArrayサブフィールド名のいずれかです。</p>
-<p>StructArray フィールドにおけるスカラーフィルタリングの詳細については、「<a href="/docs/ja/struct-array-operators.md">StructArray 演算子</a>」を参照してください。</p>
+<p>The left operand can be a collection field, such as <code translate="no">message</code>, or a StructArray subfield at a specific element index, such as <code translate="no">struct[0][subfield] =~ &quot;E[0-9]{4}&quot;</code>. See <a href="/docs/ja/struct-array-operators.md">StructArray Operators</a>.</p>
 </div>
-<h2 id="Supported-field-types" class="common-anchor-header">サポートされているフィールド型<button data-href="#Supported-field-types" class="anchor-icon" translate="no">
+<h2 id="Supported-field-types" class="common-anchor-header">Supported field types<button data-href="#Supported-field-types" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -200,19 +197,19 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>パターンマッチングは、文字列値に対して使用できます。</p>
+    </button></h2><p>Pattern matching is available for string values.</p>
 <table>
 <thead>
-<tr><th>ターゲット</th><th><code translate="no">LIKE</code></th><th>正規表現<code translate="no">=~</code> /<code translate="no">!~</code></th><th>備考</th></tr>
+<tr><th>Target</th><th><code translate="no">LIKE</code></th><th>Regex <code translate="no">=~</code> / <code translate="no">!~</code></th><th>Notes</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">VARCHAR</code> フィールド</td><td>はい</td><td>はい</td><td>文字列フィールドでのパターンマッチングの典型的な対象。</td></tr>
-<tr><td><code translate="no">JSON</code> <code translate="no">VARCHAR</code> 型にキャストされたパス</td><td>はい</td><td>はい</td><td>JSON パスの値は、正の一致を得るためには文字列でなければなりません。高速化のために JSON パスにインデックスを作成する場合は、<code translate="no">json_cast_type=&quot;varchar&quot;</code> を設定してください。</td></tr>
-<tr><td><code translate="no">ARRAY&lt;VARCHAR&gt;</code> element</td><td>はい</td><td>はい</td><td><code translate="no">tags[0]</code> など、インデックスによって特定の要素に一致させます。パターンマッチングはすべての要素をスキャン<strong>するわけではなく</strong>、指定されたインデックスの要素にのみ適用されます。</td></tr>
-<tr><td>数値、ブール値、ベクトル、<code translate="no">TEXT</code> 、またはその他の非<code translate="no">VARCHAR</code> ターゲット</td><td>いいえ</td><td>いいえ</td><td>パターンマッチングは、<code translate="no">VARCHAR</code> 値、文字列に解決される JSON パス、またはインデックス付き<code translate="no">ARRAY&lt;VARCHAR&gt;</code> 要素でのみ使用できます。</td></tr>
+<tr><td><code translate="no">VARCHAR</code> field</td><td>Yes</td><td>Yes</td><td>Typical target for pattern matching on string fields.</td></tr>
+<tr><td><code translate="no">JSON</code> path with a string value</td><td>Yes</td><td>Yes</td><td>Positive matches require string values. For index path/cast settings, see <a href="/docs/ja/json-indexing.md#Understand-cast-types">JSON Indexing</a>.</td></tr>
+<tr><td><code translate="no">ARRAY&lt;VARCHAR&gt;</code> element</td><td>Yes</td><td>Yes</td><td>Match a specific element by index, such as <code translate="no">tags[0]</code>. Pattern matching does <strong>not</strong> scan all elements; it only applies to the element at the specified index.</td></tr>
+<tr><td>Numeric, Boolean, vector, <code translate="no">TEXT</code>, or other non-string targets</td><td>No</td><td>No</td><td>Patterns require string values.</td></tr>
 </tbody>
 </table>
-<h2 id="Choose-LIKE-or-regex" class="common-anchor-header">LIKE または正規表現を選択してください<button data-href="#Choose-LIKE-or-regex" class="anchor-icon" translate="no">
+<h2 id="Choose-LIKE-or-regex" class="common-anchor-header">Choose LIKE or regex<button data-href="#Choose-LIKE-or-regex" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -227,24 +224,22 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>必要なパターンを表現できる最も単純な演算子を選択してください。</p>
-<p>文字列の完全一致が必要な場合は、パターンマッチングの代わりに `<code translate="no">==</code> ` を使用することをお勧めします。`<code translate="no">LIKE</code> ` または正規表現は、フィルタがパターンに一致する必要がある場合にのみ使用してください。</p>
+    </button></h2><p>Use <code translate="no">==</code> for exact string equality; otherwise, choose an operator from the following table:</p>
 <table>
 <thead>
-<tr><th>要件</th><th>推奨される演算子</th><th>例</th><th>説明</th></tr>
+<tr><th>Requirement</th><th>Recommended operator</th><th>Example</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr><td>文字列の完全一致</td><td><code translate="no">==</code></td><td><code translate="no">status == &quot;active&quot;</code></td><td>文字列「<code translate="no">active</code> 」との完全一致。</td></tr>
-<tr><td>単純な接頭辞一致</td><td><code translate="no">LIKE</code></td><td><code translate="no">name LIKE &quot;Prod%&quot;</code></td><td><code translate="no">Prod</code> で始まる文字列に一致します。</td></tr>
-<tr><td>単純なサフィックス一致</td><td><code translate="no">LIKE</code></td><td><code translate="no">filename LIKE &quot;%.json&quot;</code></td><td><code translate="no">.json</code> で終わる文字列に一致します。</td></tr>
-<tr><td>単純な部分一致</td><td><code translate="no">LIKE</code></td><td><code translate="no">description LIKE &quot;%vector database%&quot;</code></td><td>文字列内のどこかに<code translate="no">vector database</code> が含まれる値に一致します。</td></tr>
-<tr><td>構造化されたコードまたは固定長パターンの一致</td><td><code translate="no">=~</code></td><td><code translate="no">code =~ &quot;E[0-9]{4}&quot;</code></td><td>大文字と小文字を区別して、<code translate="no">E</code> の後に 4 桁の数字が続く文字列（例:<code translate="no">E1001</code> ）に一致します。</td></tr>
-<tr><td>大文字小文字を区別しないパターン一致</td><td><code translate="no">=~</code> で<code translate="no">(?i)</code></td><td><code translate="no">message =~ &quot;(?i)error&quot;</code></td><td><code translate="no">error</code> 、<code translate="no">ERROR</code> 、またはその他の大文字小文字のバリエーションに一致します。</td></tr>
-<tr><td>正規表現パターンに一致する値を除外する</td><td><code translate="no">!~</code></td><td><code translate="no">message !~ &quot;^DEBUG&quot;</code></td><td><code translate="no">DEBUG</code> で始まる文字列を除外します。</td></tr>
+<tr><td>Exact string equality</td><td><code translate="no">==</code></td><td><code translate="no">status == &quot;active&quot;</code></td><td>Exact match of the string <code translate="no">active</code>.</td></tr>
+<tr><td>Simple prefix match</td><td><code translate="no">LIKE</code></td><td><code translate="no">name LIKE &quot;Prod%&quot;</code></td><td>Matches strings that start with <code translate="no">Prod</code>.</td></tr>
+<tr><td>Simple suffix match</td><td><code translate="no">LIKE</code></td><td><code translate="no">filename LIKE &quot;%.json&quot;</code></td><td>Matches strings that end with <code translate="no">.json</code>.</td></tr>
+<tr><td>Simple contains match</td><td><code translate="no">LIKE</code></td><td><code translate="no">description LIKE &quot;%vector database%&quot;</code></td><td>Matches values that contain <code translate="no">vector database</code> anywhere in the string.</td></tr>
+<tr><td>Match a structured code or fixed-length pattern</td><td><code translate="no">=~</code></td><td><code translate="no">code =~ &quot;E[0-9]{4}&quot;</code></td><td>Matches strings that case-sensitively contain <code translate="no">E</code> followed by four digits, such as <code translate="no">E1001</code>.</td></tr>
+<tr><td>Case-insensitive pattern matching</td><td><code translate="no">=~</code> with <code translate="no">(?i)</code></td><td><code translate="no">message =~ &quot;(?i)error&quot;</code></td><td>Matches <code translate="no">error</code>, <code translate="no">ERROR</code>, or other case variants.</td></tr>
+<tr><td>Exclude values that match a regex pattern</td><td><code translate="no">!~</code></td><td><code translate="no">message !~ &quot;^DEBUG&quot;</code></td><td>Excludes strings that start with <code translate="no">DEBUG</code>.</td></tr>
 </tbody>
 </table>
-<p>単純なワイルドカード一致には「<code translate="no">LIKE</code> 」を使用します。パターンに文字クラス、繰り返し、<code translate="no">error|failed</code> のような選択、アンカー、または大文字小文字を区別しない一致が必要な場合は、正規表現を使用します。</p>
-<h2 id="Use-LIKE" class="common-anchor-header">LIKEの使用<button data-href="#Use-LIKE" class="anchor-icon" translate="no">
+<h2 id="Use-LIKE" class="common-anchor-header">Use LIKE<button data-href="#Use-LIKE" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -259,17 +254,17 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">LIKE</code> 演算子は、文字列値に対する単純なワイルドカード一致に使用します。以下のワイルドカードのみをサポートしています：</p>
+    </button></h2><p>The <code translate="no">LIKE</code> operator is for simple wildcard matching on string values. It supports only the following wildcards:</p>
 <table>
 <thead>
-<tr><th>ワイルドカード</th><th>説明</th></tr>
+<tr><th>Wildcard</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">%</code></td><td>0個以上の文字に一致します。</td></tr>
-<tr><td><code translate="no">_</code></td><td>1文字に正確に一致します。</td></tr>
+<tr><td><code translate="no">%</code></td><td>Matches zero or more characters.</td></tr>
+<tr><td><code translate="no">_</code></td><td>Matches exactly one character.</td></tr>
 </tbody>
 </table>
-<h3 id="Common-LIKE-patterns" class="common-anchor-header">一般的な LIKE パターン<button data-href="#Common-LIKE-patterns" class="anchor-icon" translate="no">
+<h3 id="Common-LIKE-patterns" class="common-anchor-header">Common LIKE patterns<button data-href="#Common-LIKE-patterns" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -284,19 +279,19 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">%</code> および<code translate="no">_</code> の位置を使用して、一致した文字列内のどこに固定テキストが表示されるかを制御します。</p>
+    </button></h3><p>Use the position of <code translate="no">%</code> and <code translate="no">_</code> to control where the fixed text appears in the matched string.</p>
 <table>
 <thead>
-<tr><th>要件</th><th>パターン</th><th>フィルタの例</th></tr>
+<tr><th>Requirement</th><th>Pattern</th><th>Filter example</th></tr>
 </thead>
 <tbody>
-<tr><td>プレフィックスで始まる</td><td><code translate="no">Prod%</code></td><td><code translate="no">filter = 'name LIKE &quot;Prod%&quot;'</code></td></tr>
-<tr><td>接尾辞で終わる</td><td><code translate="no">%.json</code></td><td><code translate="no">filter = 'filename LIKE &quot;%.json&quot;'</code></td></tr>
-<tr><td>部分文字列を含む</td><td><code translate="no">%vector%</code></td><td><code translate="no">filter = 'description LIKE &quot;%vector%&quot;'</code></td></tr>
-<tr><td>固定位置の1文字に一致</td><td><code translate="no">AB_%</code></td><td><code translate="no">filter = 'code LIKE &quot;AB_%&quot;'</code></td></tr>
+<tr><td>Starts with a prefix</td><td><code translate="no">Prod%</code></td><td><code translate="no">filter = 'name LIKE &quot;Prod%&quot;'</code></td></tr>
+<tr><td>Ends with a suffix</td><td><code translate="no">%.json</code></td><td><code translate="no">filter = 'filename LIKE &quot;%.json&quot;'</code></td></tr>
+<tr><td>Contains a substring</td><td><code translate="no">%vector%</code></td><td><code translate="no">filter = 'description LIKE &quot;%vector%&quot;'</code></td></tr>
+<tr><td>Matches one character at a fixed position</td><td><code translate="no">AB_%</code></td><td><code translate="no">filter = 'code LIKE &quot;AB_%&quot;'</code></td></tr>
 </tbody>
 </table>
-<h3 id="LIKE-matching-behavior" class="common-anchor-header">LIKE の一致動作<button data-href="#LIKE-matching-behavior" class="anchor-icon" translate="no">
+<h3 id="LIKE-matching-behavior" class="common-anchor-header">LIKE matching behavior<button data-href="#LIKE-matching-behavior" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -311,9 +306,8 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>接頭辞、接尾辞、部分文字列の包含、および固定位置の単一文字の一致には、<code translate="no">LIKE</code> を使用してください。<code translate="no">LIKE</code> は、<code translate="no">[0-9]</code> のような文字クラス、<code translate="no">error|failed</code> のような選択、<code translate="no">{4}</code> のような繰り返し回数、<code translate="no">^</code> や<code translate="no">$</code> のようなアンカー、<code translate="no">(?i)</code> のような大文字小文字を区別しないフラグをサポートしていません。これらのパターンには正規表現（regex）を使用してください。</p>
-<p>文字列全体が完全に一致する場合は、<code translate="no">==</code> を使用してください。<code translate="no">LIKE</code> は、フィルタでワイルドカードマッチングが必要な場合にのみ使用してください。</p>
-<h3 id="Escaping-wildcards-in-a-LIKE-pattern" class="common-anchor-header">LIKE パターンにおけるワイルドカードのエスケープ<button data-href="#Escaping-wildcards-in-a-LIKE-pattern" class="anchor-icon" translate="no">
+    </button></h3><p>Use <code translate="no">LIKE</code> for prefix, suffix, contains, and fixed-position single-character matches. <code translate="no">LIKE</code> does not support character classes such as <code translate="no">[0-9]</code>, alternation such as <code translate="no">error|failed</code>, repeat counts such as <code translate="no">{4}</code>, anchors such as <code translate="no">^</code> or <code translate="no">$</code>, or case-insensitive flags such as <code translate="no">(?i)</code>. Use regex for those patterns.</p>
+<h3 id="Escaping-wildcards-in-a-LIKE-pattern" class="common-anchor-header">Escaping wildcards in a LIKE pattern<button data-href="#Escaping-wildcards-in-a-LIKE-pattern" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -328,14 +322,14 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">LIKE</code> パターンでは、<code translate="no">%</code> は 0 個以上の文字に一致し、<code translate="no">_</code> は正確に 1 文字に一致します。<code translate="no">%</code> 、<code translate="no">_</code> 、または<code translate="no">\</code> をリテラルとして一致させるには、バックスラッシュ (<code translate="no">\</code>) で文字をエスケープします：</p>
+    </button></h3><p>To match <code translate="no">%</code>, <code translate="no">_</code>, or <code translate="no">\</code> literally, escape the character with a backslash (<code translate="no">\</code>):</p>
 <ul>
-<li><code translate="no">name LIKE r&quot;\%&quot;</code> リテラル値「<code translate="no">%</code> 」に一致します。</li>
-<li><code translate="no">name LIKE r&quot;\_%&quot;</code> リテラル「<code translate="no">_</code> 」で始まる値に一致します。</li>
-<li><code translate="no">name LIKE r&quot;\\%&quot;</code> リテラルなバックスラッシュで始まる値に一致します。</li>
+<li><code translate="no">name LIKE r&quot;\%&quot;</code> matches the literal value <code translate="no">%</code>.</li>
+<li><code translate="no">name LIKE r&quot;\_%&quot;</code> matches values that start with a literal <code translate="no">_</code>.</li>
+<li><code translate="no">name LIKE r&quot;\\%&quot;</code> matches values that start with a literal backslash.</li>
 </ul>
-<p><code translate="no">r&quot;...&quot;</code> または<code translate="no">r'...'</code> と記述される生文字列リテラルは、Milvus のフィルター式においてバックスラッシュをそのまま保持します。これらは、<code translate="no">LIKE</code> や、バックスラッシュを含む正規表現パターンに推奨されます。生文字列を使用しない場合、通常の文字列リテラルはパターンが評価される前にエスケープシーケンスを処理するため、より多くのバックスラッシュが必要になる可能性があります。</p>
-<h2 id="Use-regex" class="common-anchor-header">正規表現の使用<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Use-regex" class="anchor-icon" translate="no">
+<p>Raw string literals, written as <code translate="no">r&quot;...&quot;</code> or <code translate="no">r'...'</code>, keep backslashes verbatim in Milvus filter expressions. They are recommended for <code translate="no">LIKE</code> and regex patterns that contain backslashes. Without a raw string, ordinary string literals still process escape sequences before the pattern is evaluated, so more backslashes may be required.</p>
+<h2 id="Use-regex" class="common-anchor-header">Use regex<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Use-regex" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -350,18 +344,17 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>パターンに文字クラス、反復、選択、アンカー、大文字小文字を区別しない一致などの正規表現機能が必要な場合は、正規表現フィルターを使用してください。Milvusは、文字列値に対して<a href="https://github.com/google/re2/wiki/syntax">RE2</a>正規表現を適用します。</p>
-<p><code translate="no">=~</code> または<code translate="no">!~</code> の右辺は、文字列リテラルでなければなりません。</p>
+    </button></h2><p>Regex supports character classes, repetition, alternation, anchors, and case-insensitive matching. The right operand of <code translate="no">=~</code> or <code translate="no">!~</code> must be a string literal:</p>
 <table>
 <thead>
-<tr><th>演算子</th><th>意味</th><th>例</th></tr>
+<tr><th>Operator</th><th>Meaning</th><th>Example</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">=~</code></td><td>正規表現パターンに一致する値にマッチします。</td><td><code translate="no">filter = 'message =~ &quot;E[0-9]{4}&quot;'</code></td></tr>
-<tr><td><code translate="no">!~</code></td><td>正規表現パターンに一致する値を除外します。</td><td><code translate="no">filter = 'message !~ &quot;^DEBUG&quot;'</code></td></tr>
+<tr><td><code translate="no">=~</code></td><td>Matches values that satisfy the regex pattern.</td><td><code translate="no">filter = 'message =~ &quot;E[0-9]{4}&quot;'</code></td></tr>
+<tr><td><code translate="no">!~</code></td><td>Excludes values that satisfy the regex pattern.</td><td><code translate="no">filter = 'message !~ &quot;^DEBUG&quot;'</code></td></tr>
 </tbody>
 </table>
-<h3 id="Using-raw-string-literals" class="common-anchor-header">生の文字列リテラルを使用する<button data-href="#Using-raw-string-literals" class="anchor-icon" translate="no">
+<h3 id="Using-raw-string-literals" class="common-anchor-header">Using raw string literals<button data-href="#Using-raw-string-literals" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -376,17 +369,16 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>バックスラッシュを含む正規表現パターンには、生文字列リテラルを使用することを推奨します。<code translate="no">r&quot;...&quot;</code> や<code translate="no">r'...'</code> のように記述された生文字列では、バックスラッシュがそのまま正規表現エンジンに渡されます。これにより、通常の文字列リテラルで必要となる余分なエスケープ処理が不要になります。</p>
-<p>例：</p>
+    </button></h3><p>Use raw string literals (<code translate="no">r&quot;...&quot;</code> or <code translate="no">r'...'</code>) to pass backslashes verbatim to RE2, avoiding the extra escaping in ordinary filter strings:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">r&#x27;filename =~ r&quot;\.json$&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -404,9 +396,9 @@ curl --request POST \
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;filename =~ r&quot;\.json$&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>これは、`<code translate="no">.json</code>` で終わる文字列（例: `<code translate="no">report.json</code>`）に一致します。</p>
-<p>Milvusのフィルター式でraw文字列を使用しない場合、通常の文字列リテラルでは、正規表現パターンが評価される前にエスケープシーケンスが処理されます。そのため、エスケープされたリテラル文字には、ホスト言語の文字列内で追加のバックスラッシュが必要になる場合があります。</p>
-<h3 id="Common-regex-patterns" class="common-anchor-header">一般的な正規表現パターン<button data-href="#Common-regex-patterns" class="anchor-icon" translate="no">
+<p>This matches strings that end with <code translate="no">.json</code>, such as <code translate="no">report.json</code>.</p>
+<p>Without a raw string in the Milvus filter expression, ordinary string literals process escape sequences before the regex pattern is evaluated. Escaped literal characters may therefore require additional backslashes in the host-language string.</p>
+<h3 id="Common-regex-patterns" class="common-anchor-header">Common regex patterns<button data-href="#Common-regex-patterns" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -421,32 +413,32 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>以下の例では、Milvus フィルター式で一般的な RE2 構文を使用しています。正規表現の完全な構文については、<a href="https://github.com/google/re2/wiki/syntax">RE2 構文</a>リファレンスを参照してください。</p>
+    </button></h3><p>The following examples use common RE2 syntax in Milvus filter expressions. For complete regex syntax, refer to the <a href="https://github.com/google/re2/wiki/syntax">RE2 syntax</a> reference.</p>
 <table>
 <thead>
-<tr><th>要件</th><th>パターン</th><th>フィルタの例</th></tr>
+<tr><th>Requirement</th><th>Pattern</th><th>Filter example</th></tr>
 </thead>
 <tbody>
-<tr><td>リテラルテキストを含む</td><td><code translate="no">error</code></td><td><code translate="no">filter = 'message =~ &quot;error&quot;'</code></td></tr>
-<tr><td>プレフィックスで始まる</td><td><code translate="no">^ERR</code></td><td><code translate="no">filter = 'code =~ &quot;^ERR&quot;'</code></td></tr>
-<tr><td>接尾辞で終わる</td><td><code translate="no">\.json$</code></td><td><code translate="no">filter = 'filename =~ &quot;\\.json$&quot;'</code></td></tr>
-<tr><td>数字の連続に一致</td><td><code translate="no">[0-9]+</code></td><td><code translate="no">filter = 'message =~ &quot;[0-9]+&quot;'</code></td></tr>
-<tr><td>固定された桁数の数字に一致</td><td><code translate="no">[0-9]{4}</code></td><td><code translate="no">filter = 'code =~ &quot;[0-9]{4}&quot;'</code></td></tr>
-<tr><td>メールアドレスのドメインに一致する</td><td><code translate="no">@example\.com$</code></td><td><code translate="no">filter = 'email =~ &quot;@example\\.com$&quot;'</code></td></tr>
-<tr><td>大文字小文字を区別せずに一致させる</td><td><code translate="no">(?i)error</code></td><td><code translate="no">filter = 'message =~ &quot;(?i)error&quot;'</code></td></tr>
-<tr><td>文字列全体に一致する</td><td><code translate="no">^prod-[0-9]+$</code></td><td><code translate="no">filter = 'name =~ &quot;^prod-[0-9]+$&quot;'</code></td></tr>
+<tr><td>Contains literal text</td><td><code translate="no">error</code></td><td><code translate="no">filter = 'message =~ &quot;error&quot;'</code></td></tr>
+<tr><td>Starts with a prefix</td><td><code translate="no">^ERR</code></td><td><code translate="no">filter = 'code =~ &quot;^ERR&quot;'</code></td></tr>
+<tr><td>Ends with a suffix</td><td><code translate="no">\.json$</code></td><td><code translate="no">filter = 'filename =~ &quot;\\.json$&quot;'</code></td></tr>
+<tr><td>Matches a digit sequence</td><td><code translate="no">[0-9]+</code></td><td><code translate="no">filter = 'message =~ &quot;[0-9]+&quot;'</code></td></tr>
+<tr><td>Matches a fixed number of digits</td><td><code translate="no">[0-9]{4}</code></td><td><code translate="no">filter = 'code =~ &quot;[0-9]{4}&quot;'</code></td></tr>
+<tr><td>Matches an email domain</td><td><code translate="no">@example\.com$</code></td><td><code translate="no">filter = 'email =~ &quot;@example\\.com$&quot;'</code></td></tr>
+<tr><td>Matches case-insensitively</td><td><code translate="no">(?i)error</code></td><td><code translate="no">filter = 'message =~ &quot;(?i)error&quot;'</code></td></tr>
+<tr><td>Matches the full string</td><td><code translate="no">^prod-[0-9]+$</code></td><td><code translate="no">filter = 'name =~ &quot;^prod-[0-9]+$&quot;'</code></td></tr>
 </tbody>
 </table>
-<p>複数の単語のうちいずれかと一致させるには、<code translate="no">|</code> を使用した選択（alternation）を利用します：</p>
+<p>To match one of several words, use alternation with <code translate="no">|</code>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;message =~ &quot;error|failed|timeout&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -464,16 +456,16 @@ curl --request POST \
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;message =~ &quot;error|failed|timeout&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>正規表現のメタ文字をリテラルとして一致させる場合は、正規表現パターン内でエスケープしてください。たとえば、リテラルとしてのドット（正規表現では `<code translate="no">\.</code> `）に一致させるには、Python、Java、Go、または Node.js のソース文字列で `<code translate="no">\\.</code> ` と記述します:</p>
+<p>When matching regex metacharacters literally, escape them in the regex pattern. For example, to match a literal dot (<code translate="no">\.</code> in regex), write <code translate="no">\\.</code> in a Python, Java, Go, or Node.js source string:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;email =~ &quot;@gmail\\.com$&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -491,8 +483,10 @@ curl --request POST \
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;email =~ &quot;@gmail\\.com$&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>注：Milvus の正規表現フィルターは RE2 構文に従います。正規表現パターンが RE2 でサポートされていない構文を使用している場合、またはその他の理由で無効な場合、Milvus はそのフィルター式を拒否します。正規表現のメタ文字、フラグ、およびマッチング動作の詳細については、<a href="https://github.com/google/re2/wiki/syntax">RE2 構文リ</a>ファレンスを参照してください。</p>
-<h3 id="Matching-behavior" class="common-anchor-header">マッチングの挙動<button data-href="#Matching-behavior" class="anchor-icon" translate="no">
+<div class="alert note">
+<p>Milvus rejects invalid regex patterns and syntax that <a href="https://github.com/google/re2/wiki/syntax">RE2</a> does not support.</p>
+</div>
+<h3 id="Matching-behavior" class="common-anchor-header">Matching behavior<button data-href="#Matching-behavior" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -507,17 +501,17 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><strong>部分文字列の一致</strong></p>
-<p>Milvus の正規表現マッチングは部分文字列のセマンティクスを使用します。パターンはフィールド値全体と一致する必要はありません。たとえば、次のフィルターは「<code translate="no">E1001</code> 」と「<code translate="no">failed with E1001 after retry</code> 」の両方に一致します:</p>
+    </button></h3><p><strong>Substring matching</strong></p>
+<p>Milvus regex matching uses substring semantics. The pattern does not need to match the entire field value. For example, the following filter matches both <code translate="no">E1001</code> and <code translate="no">failed with E1001 after retry</code>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;message =~ &quot;E[0-9]{4}&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -535,16 +529,16 @@ curl --request POST \
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;message =~ &quot;E[0-9]{4}&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>フィールド値全体に一致させるには、<code translate="no">^</code> および<code translate="no">$</code> アンカーを使用します：</p>
+<p>To match the entire field value, use the <code translate="no">^</code> and <code translate="no">$</code> anchors:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Match only values that are exactly E followed by four digits</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;code =~ &quot;^E[0-9]{4}$&quot;&#x27;</span>
@@ -569,17 +563,17 @@ filter := <span class="hljs-string">`code =~ &quot;^E[0-9]{4}$&quot;`</span>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># Match only values that are exactly E followed by four digits</span>
 filter=<span class="hljs-string">&#x27;code =~ &quot;^E[0-9]{4}$&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>Null 許容の VARCHAR フィールド</strong></p>
-<p>正規表現フィルターはNULL値に一致しません。これは<code translate="no">=~</code> と<code translate="no">!~</code> の両方に適用されます。正規表現パターンを除外しつつNULL値は保持したい場合は、明示的に<code translate="no">OR field IS NULL</code> を追加してください:</p>
+<p><strong>Nullable VARCHAR fields</strong></p>
+<p>Regex filters do not match null values. This applies to both <code translate="no">=~</code> and <code translate="no">!~</code>. If you want to exclude a regex pattern but keep null values, explicitly add <code translate="no">OR field IS NULL</code>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;message !~ &quot;^DEBUG&quot; OR message IS NULL&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -597,18 +591,18 @@ filter=<span class="hljs-string">&#x27;code =~ &quot;^E[0-9]{4}$&quot;&#x27;</sp
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;message !~ &quot;^DEBUG&quot; OR message IS NULL&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>JSONパス</strong></p>
-<p>JSONパスの場合、パスが欠落している、nullである、または文字列以外の値に解決される場合、正規表現フィルターの動作は異なります:</p>
+<p><strong>JSON paths</strong></p>
+<p>For JSON paths, regex filters behave differently when the path is missing, null, or resolves to a non-string value:</p>
 <table>
 <thead>
-<tr><th>フィルタ</th><th>欠落値/null値/文字列以外の値を含みますか？</th><th>備考</th></tr>
+<tr><th>Filter</th><th>Includes missing/null/non-string values?</th><th>Notes</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">json_field[&quot;path&quot;] =~ &quot;pattern&quot;</code></td><td>いいえ</td><td>正規表現パターンに一致する文字列値のみをマッチさせます。</td></tr>
-<tr><td><code translate="no">json_field[&quot;path&quot;] !~ &quot;pattern&quot;</code></td><td>はい</td><td>パスが欠落している、null、文字列以外、または正規表現パターンに一致しない文字列であるエンティティを返します。</td></tr>
+<tr><td><code translate="no">json_field[&quot;path&quot;] =~ &quot;pattern&quot;</code></td><td>No</td><td>Matches only string values that satisfy the regex pattern.</td></tr>
+<tr><td><code translate="no">json_field[&quot;path&quot;] !~ &quot;pattern&quot;</code></td><td>Yes</td><td>Returns entities where the path is missing, null, non-string, or a string that does not match the regex pattern.</td></tr>
 </tbody>
 </table>
-<h2 id="Accelerate-pattern-matching-with-indexes" class="common-anchor-header">インデックスを使用したパターンマッチングの高速化<button data-href="#Accelerate-pattern-matching-with-indexes" class="anchor-icon" translate="no">
+<h2 id="Accelerate-pattern-matching-with-indexes" class="common-anchor-header">Accelerate pattern matching with indexes<button data-href="#Accelerate-pattern-matching-with-indexes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -623,16 +617,7 @@ filter=<span class="hljs-string">&#x27;code =~ &quot;^E[0-9]{4}$&quot;&#x27;</sp
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus は、文字列フィールドに対して、<code translate="no">LIKE</code> や、<code translate="no">VARCHAR</code> フィールドまたは JSON 文字列パスに対する正規表現フィルターと併用できる、いくつかのインデックスタイプをサポートしています。例としては、<code translate="no">NGRAM</code> 、<code translate="no">STL_SORT</code> 、<code translate="no">INVERTED</code> 、<code translate="no">BITMAP</code> などがあります。パターンマッチングはインデックスなしでも機能しますが、インデックスを使用することで、大規模なデータセットでのパフォーマンスを向上させることができます。</p>
-<p>インデックスの有効性は、パターン式、Milvusが固定のリテラル部分文字列を抽出できるかどうか、および対象フィールドのカーディナリティと分布によって異なります。<code translate="no">name LIKE &quot;Prod%&quot;</code> のようなプレフィックス形式のパターンは、<code translate="no">description LIKE &quot;%vector%&quot;</code> や<code translate="no">filename LIKE &quot;%.json&quot;</code> のようなインフィックスやサフィックス形式のパターンとは異なるインデックス戦略を採用することで、パフォーマンス向上が期待できる場合があります。</p>
-<p>以下の表を参考として、実際のワークロードでベンチマークテストを行ってください：</p>
-<table>
-<thead>
-<tr><th>パターンまたはデータの特性</th><th>検討すべきインデックス</th><th>備考</th></tr>
-</thead>
-<tbody>
-<tr><td><code translate="no">message =~ &quot;error.*timeout&quot;</code> のような固定のリテラル部分文字列を含む場合、または<code translate="no">message LIKE &quot;%database%&quot;</code></td><td><code translate="no">NGRAM</code></td><td>Milvusがパターンから意味のあるリテラル部分文字列を抽出できる場合に有効です。詳細については、<a href="/docs/ja/ngram.md">NGRAM</a>を参照してください。</td></tr>
-<tr><td>プレフィックス、完全一致、または等価のような文字列フィルター。特に、カーディナリティが低～中程度のフィールドで有効です</td><td><code translate="no">STL_SORT</code>、<code translate="no">INVERTED</code> 、または<code translate="no">BITMAP</code></td><td>フィールドに重複する値がある場合や、フィルタが完全一致に近い場合に、より効果的である可能性があります。詳細については、<a href="/docs/ja/stl-sort.md">STL_SORT</a>、<a href="/docs/ja/inverted.md">INVERTED</a>、<a href="/docs/ja/bitmap.md">およびBITMAP</a>を参照してください。</td></tr>
-<tr><td>固定リテラルを含まない正規表現パターン、または文字クラス、短いトークン、ワイルドカードが主体となるパターン</td><td>インデックスによる高速化を頼りにする前にベンチマークを実施してください</td><td>これらのパターンは、インデックスによる選択性が限定的となり、より広範囲なスキャンに切り替わってしまう可能性があります。</td></tr>
-</tbody>
-</table>
+    </button></h2><p>Pattern matching works without a scalar index. For acceleration options and their eligibility conditions, see <a href="/docs/ja/scalar_index.md#String-pattern-indexes">String-pattern index selection</a>. For JSON path indexes, check the <a href="/docs/ja/json-indexing.md#Index-requirements">JSON-specific prerequisites</a>.</p>
+<div class="alert note">
+<p>Query planning can simplify a LIKE expression without wildcards to equality, or a simple anchored regex to equality, prefix, or suffix matching. For example, <code translate="no">name =~ &quot;^abc$&quot;</code> becomes an equality test and follows equality lookup support. Check index support for the operation after this simplification, not only for the operator written in the original expression.</p>
+</div>

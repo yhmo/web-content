@@ -1,11 +1,13 @@
 ---
 id: grouping-search-with-structarray.md
-title: 使用 StructArray 進行分組搜尋
+title: Grouping Search with StructArray
 summary: >-
-  請使用此頁面，將 StructArray 的元素層級搜尋結果依父實體進行分組。當多個 Struct
-  元素符合查詢條件時，元素層級搜尋可能會從同一實體中返回多個搜尋結果。透過分組功能，這些元素搜尋結果將被彙總，使每個父實體至多只出現一次。
+  Use this page to group StructArray element-level search results by the parent
+  entity. Element-level search can return multiple hits from the same entity
+  when several Struct elements match the query. Grouping collapses those element
+  hits so each parent entity appears at most once.
 ---
-<h1 id="Grouping-Search-with-StructArray" class="common-anchor-header">使用 StructArray 進行分組搜尋<button data-href="#Grouping-Search-with-StructArray" class="anchor-icon" translate="no">
+<h1 id="Grouping-Search-with-StructArray" class="common-anchor-header">Grouping Search with StructArray<button data-href="#Grouping-Search-with-StructArray" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,11 +22,11 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>請使用此頁面，根據父實體對 StructArray 的元素層級搜尋結果進行分組。當多個 Struct 元素符合查詢條件時，元素層級搜尋可能會從同一實體中返回多個搜尋結果。分組功能會將這些元素搜尋結果合併，使每個父實體最多只出現一次。</p>
-<p>本頁面使用《<a href="/docs/zh-hant/create-structarray-field.md">建立 StructArray 欄位</a>》中的<code translate="no">tech_articles</code> 集合。該集合包含一個名為<code translate="no">chunks</code> 的 StructArray 欄位。其中<code translate="no">chunks[emb]</code> 向量子欄位已針對元素層級搜尋進行索引，並採用標準向量度量標準。</p>
-<p>範例中使用預設的群組大小「1」。</p>
-<p>在執行這些範例之前，請先建立集合、插入範例資料、建立所需的向量索引，並載入該集合。請針對此處顯示的欄位使用 4 維向量。除非重新定義，否則每個程式碼區塊均假設已使用與前一個範例相同語言的連線及變數。</p>
-<h2 id="How-grouping-applies-to-StructArray" class="common-anchor-header">分組如何套用至 StructArray<button data-href="#How-grouping-applies-to-StructArray" class="anchor-icon" translate="no">
+    </button></h1><p>Use this page to group StructArray element-level search results by the parent entity. Element-level search can return multiple hits from the same entity when several Struct elements match the query. Grouping collapses those element hits so each parent entity appears at most once.</p>
+<p>This page uses the <code translate="no">tech_articles</code> collection from <a href="/docs/zh-hant/create-structarray-field.md">Create a StructArray Field</a>. The collection has a StructArray field named <code translate="no">chunks</code>. The <code translate="no">chunks[emb]</code> vector subfield is indexed for element-level search with a regular vector metric.</p>
+<p>The examples use the default group size of one.</p>
+<p>Before running these examples, create the collection, insert the example data, create the required vector indexes, and load the collection. Use 4-dimensional vectors for the fields shown here. Each code block assumes the connection and variables from the preceding examples in the same language unless it defines them again.</p>
+<h2 id="How-grouping-applies-to-StructArray" class="common-anchor-header">How grouping applies to StructArray<button data-href="#How-grouping-applies-to-StructArray" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -41,18 +43,18 @@ summary: >-
       </svg>
     </button></h2><table>
 <thead>
-<tr><th>搜尋模式</th><th>分組行為</th><th>結果行為</th></tr>
+<tr><th>Search mode</th><th>Grouping behavior</th><th>Result behavior</th></tr>
 </thead>
 <tbody>
-<tr><td>EmbeddingList 搜尋</td><td>不支援。</td><td>不適用。</td></tr>
-<tr><td>元素層級搜尋</td><td>透過主鍵分組可支援此功能。</td><td>每個父實體最多返回一個結果。元素層級的元資料會被保留，因此當 API 或 SDK 公開時，可返回所選元素的索引或偏移量。</td></tr>
-<tr><td>混合搜尋</td><td>僅在所有子搜尋皆針對同一 StructArray 欄位下的元素層級向量欄位時才受支援。</td><td>元素層級的子搜尋會在最終結果處理前，依據主鍵進行分組。</td></tr>
+<tr><td>EmbeddingList search</td><td>Not supported.</td><td>Not applicable.</td></tr>
+<tr><td>Element-level search</td><td>Supported by grouping on the primary key.</td><td>Returns at most one result per parent entity. Element-level metadata is preserved, so the selected element index or offset can be returned when exposed by the API or SDK.</td></tr>
+<tr><td>Hybrid search</td><td>Supported only when all sub-searches target element-level vector fields under the same StructArray field.</td><td>Element-level sub-searches are grouped by primary key before final result handling.</td></tr>
 </tbody>
 </table>
 <div class="alert note">
-<p>當未分組的元素層級搜尋會返回過多重複的父實體時，請使用分組功能。若您希望每個匹配的 Struct 元素皆作為獨立的搜尋結果，請使用不帶 `<code translate="no">group_by_field</code>`<a href="/docs/zh-hant/basic-vector-search-with-structarray.md">的 StructArray 基本向量搜尋</a>。</p>
+<p>Use grouping when ungrouped element-level search returns too many duplicate parent entities. If you want every matching Struct element as an individual hit, use <a href="/docs/zh-hant/basic-vector-search-with-structarray.md">Basic Vector Search with StructArray</a> without <code translate="no">group_by_field</code>.</p>
 </div>
-<h2 id="Before-you-begin" class="common-anchor-header">開始之前<button data-href="#Before-you-begin" class="anchor-icon" translate="no">
+<h2 id="Before-you-begin" class="common-anchor-header">Before you begin<button data-href="#Before-you-begin" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -67,20 +69,20 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>在執行分組搜尋之前，請先準備好集合、資料和索引。</p>
+    </button></h2><p>Prepare the collection, data, and indexes before running grouping search.</p>
 <table>
 <thead>
-<tr><th>需求</th><th>詳細資訊</th></tr>
+<tr><th>Requirement</th><th>Details</th></tr>
 </thead>
 <tbody>
-<tr><td>元素層級向量子欄位</td><td>請使用 StructArray 向量子欄位（例如<code translate="no">chunks[emb]</code> ），並以常規向量度量作為索引。</td></tr>
-<tr><td>常規向量查詢</td><td>請使用常規查詢向量，而非<code translate="no">EmbeddingList</code> 。</td></tr>
-<tr><td>主鍵分組</td><td>請將集合主鍵設定為 `<code translate="no">group_by_field</code>`，例如 `<code translate="no">doc_id</code>`。</td></tr>
-<tr><td>不使用範圍參數</td><td>請勿將分組搜尋與範圍搜尋參數（例如<code translate="no">radius</code> 或<code translate="no">range_filter</code> ）結合使用。</td></tr>
+<tr><td>Element-level vector subfield</td><td>Use a StructArray vector subfield such as <code translate="no">chunks[emb]</code>, indexed with a regular vector metric.</td></tr>
+<tr><td>Regular vector query</td><td>Use a regular query vector, not an <code translate="no">EmbeddingList</code>.</td></tr>
+<tr><td>Primary key grouping</td><td>Use the collection primary key as <code translate="no">group_by_field</code>, such as <code translate="no">doc_id</code>.</td></tr>
+<tr><td>No range parameters</td><td>Do not combine grouping search with range-search parameters such as <code translate="no">radius</code> or <code translate="no">range_filter</code>.</td></tr>
 </tbody>
 </table>
-<p>有關索引設定，請參閱「<a href="/docs/zh-hant/index-structarray-fields.md">Index StructArray 欄位</a>」。</p>
-<h2 id="Run-grouped-element-level-search" class="common-anchor-header">執行分組元素層級搜尋<button data-href="#Run-grouped-element-level-search" class="anchor-icon" translate="no">
+<p>For index setup, see <a href="/docs/zh-hant/index-structarray-fields.md">Index StructArray Fields</a>.</p>
+<h2 id="Run-grouped-element-level-search" class="common-anchor-header">Run grouped element-level search<button data-href="#Run-grouped-element-level-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -95,16 +97,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>以下範例會先搜尋個別區塊，然後根據父實體的主鍵將元素搜尋結果進行分組。</p>
+    </button></h2><p>The following example searches individual chunks first, then groups the element hits by the parent entity’s primary key.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -354,8 +356,8 @@ curl --request POST \
     &quot;outputFields&quot;: [&quot;doc_id&quot;, &quot;title&quot;, &quot;chunks[text]&quot;, &quot;chunks[section]&quot;, &quot;chunks[page]&quot;, &quot;chunks[quality_score]&quot;]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>若未進行分組，當多個區塊符合查詢條件時，相同的 `<code translate="no">doc_id</code> ` 可能會出現多次。透過 `<code translate="no">group_by_field=&quot;doc_id&quot;</code>`，每個父實體至多只會出現一次。分組會保留元素層級的元資料，因此當 API 或 SDK 公開相關資訊時，分組後的結果仍可包含所選的 Struct 元素索引或偏移量。</p>
-<h2 id="Add-scalar-filters" class="common-anchor-header">新增標量篩選條件<button data-href="#Add-scalar-filters" class="anchor-icon" translate="no">
+<p>Without grouping, the same <code translate="no">doc_id</code> can appear multiple times if several chunks match the query. With <code translate="no">group_by_field=&quot;doc_id&quot;</code>, each parent entity appears at most once. Grouping preserves element-level metadata, so the grouped result can still include the selected Struct element index or offset when the API or SDK exposes it.</p>
+<h2 id="Add-scalar-filters" class="common-anchor-header">Add scalar filters<button data-href="#Add-scalar-filters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -370,16 +372,16 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>您可以將分組搜尋與 StructArray 標量篩選結合使用。當標量條件需限制哪些 Struct 元素參與元素層級向量搜尋時，請使用<code translate="no">element_filter</code> 。</p>
+    </button></h2><p>You can combine grouping search with StructArray scalar filtering. Use <code translate="no">element_filter</code> when the scalar condition should constrain which Struct elements participate in element-level vector search.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">query_vector = [<span class="hljs-number">0.19</span>, <span class="hljs-number">0.24</span>, <span class="hljs-number">0.30</span>, <span class="hljs-number">0.37</span>]
 
@@ -579,8 +581,8 @@ SearchResp results = <span class="hljs-keyword">await</span> client.SearchAsync(
     &quot;outputFields&quot;: [&quot;doc_id&quot;, &quot;title&quot;, &quot;category&quot;, &quot;chunks[text]&quot;, &quot;chunks[section]&quot;, &quot;chunks[quality_score]&quot;]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>頂層謂詞用於篩選候選實體。<code translate="no">element_filter</code> 謂詞則將元素層級向量搜尋限制在符合條件的 Struct 元素上。隨後，分組功能會根據主鍵將符合條件的元素搜尋結果進行彙總。</p>
-<h2 id="Use-grouping-in-hybrid-search" class="common-anchor-header">在混合搜尋中使用分組<button data-href="#Use-grouping-in-hybrid-search" class="anchor-icon" translate="no">
+<p>The top-level predicate selects candidate entities. The <code translate="no">element_filter</code> predicate restricts element-level vector search to matching Struct elements. Grouping then collapses matching element hits by the primary key.</p>
+<h2 id="Use-grouping-in-hybrid-search" class="common-anchor-header">Use grouping in hybrid search<button data-href="#Use-grouping-in-hybrid-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -595,15 +597,15 @@ SearchResp results = <span class="hljs-keyword">await</span> client.SearchAsync(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>與 StructArray 結合的混合分組是一項元素級功能。僅當所有子搜尋皆針對同一 StructArray 欄位下的元素級向量欄位時，才支援此功能。請勿在分組的 StructArray 混合搜尋中使用 EmbeddingList 級別的請求。</p>
-<p>以下範例假設<code translate="no">chunks</code> 的 StructArray 欄位具有兩個元素層級向量子欄位：<code translate="no">chunks[emb]</code> 和<code translate="no">chunks[code_emb]</code> ，且兩者皆使用<code translate="no">COSINE</code> 進行索引。在建立集合時，請定義並填入額外的 4 維<code translate="no">code_emb</code> 子欄位；此子欄位未包含在上述連結的基礎架構中。</p>
+    </button></h2><p>Hybrid grouping with StructArray is an element-level feature. It is supported only when all sub-searches target element-level vector fields under the same StructArray field. Do not use EmbeddingList-level requests in a grouped StructArray hybrid search.</p>
+<p>The following example assumes the <code translate="no">chunks</code> StructArray field has two element-level vector subfields, <code translate="no">chunks[emb]</code> and <code translate="no">chunks[code_emb]</code>, and both are indexed with <code translate="no">COSINE</code>. Define and populate the additional 4-dimensional <code translate="no">code_emb</code> subfield when creating the collection; it is not included in the base schema linked above.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> AnnSearchRequest, RRFRanker
 
@@ -820,9 +822,9 @@ SearchResp results = <span class="hljs-keyword">await</span> client.HybridSearch
     &quot;outputFields&quot;: [&quot;doc_id&quot;, &quot;title&quot;, &quot;chunks[text]&quot;, &quot;chunks[section]&quot;]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Milvus 3.0.2 隨附的 Go 客戶端原始碼並未透過<code translate="no">NewHybridSearchOption</code> 提供最終混合分組功能。在每個子請求中設定<code translate="no">WithGroupByField</code> 並不會配置最終混合分組。NodeJS 3.0.6 亦未將頂層的<code translate="no">group_by_field</code> 納入混合排名參數中。請針對此範例使用上述任一 API。</p>
-<p>在此範例中，兩個子請求皆針對同一 StructArray 欄位<code translate="no">chunks</code> 下的元素級向量場。若混合了常規向量場、不同的 StructArray 欄位或 EmbeddingList 級請求，混合搜尋將不支援元素級的分組。</p>
-<h2 id="Interpret-grouped-results" class="common-anchor-header">解析分組結果<button data-href="#Interpret-grouped-results" class="anchor-icon" translate="no">
+<p>The Go client source shipped with Milvus 3.0.2 does not expose final hybrid grouping through <code translate="no">NewHybridSearchOption</code>. Setting <code translate="no">WithGroupByField</code> on each sub-request does not configure final hybrid grouping. NodeJS 3.0.6 also omits the top-level <code translate="no">group_by_field</code> from hybrid rank parameters. Use one of the APIs shown above for this example.</p>
+<p>In this example, both sub-requests target element-level vector fields under the same StructArray field, <code translate="no">chunks</code>. A hybrid search does not support element-level group-by if it mixes normal vector fields, different StructArray fields, or EmbeddingList-level requests.</p>
+<h2 id="Interpret-grouped-results" class="common-anchor-header">Interpret grouped results<button data-href="#Interpret-grouped-results" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -839,17 +841,17 @@ SearchResp results = <span class="hljs-keyword">await</span> client.HybridSearch
       </svg>
     </button></h2><table>
 <thead>
-<tr><th>結果項目</th><th>含義</th></tr>
+<tr><th>Result item</th><th>Meaning</th></tr>
 </thead>
 <tbody>
-<tr><td>主鍵（本範例中為<code translate="no">doc_id</code> ）</td><td>分組父實體的主鍵。</td></tr>
-<tr><td><code translate="no">distance</code> 或分數</td><td>該父實體所選 Struct 元素的分數或距離。</td></tr>
-<tr><td><code translate="no">offset</code></td><td>選取之 Struct 元素在回傳時的零起始位置。</td></tr>
-<tr><td>重複的主鍵</td><td>按主鍵分組時不應出現此情況。</td></tr>
-<tr><td><code translate="no">limit</code></td><td>適用於已分組的父實體結果。</td></tr>
+<tr><td>Primary key (<code translate="no">doc_id</code> in these examples)</td><td>Primary key of the grouped parent entity.</td></tr>
+<tr><td><code translate="no">distance</code> or score</td><td>Score or distance of the selected Struct element for that parent entity.</td></tr>
+<tr><td><code translate="no">offset</code></td><td>Zero-based position of the selected Struct element when returned.</td></tr>
+<tr><td>Repeated primary keys</td><td>Not expected when grouping by the primary key.</td></tr>
+<tr><td><code translate="no">limit</code></td><td>Applies to grouped parent-entity results.</td></tr>
 </tbody>
 </table>
-<h2 id="Limitations" class="common-anchor-header">限制<button data-href="#Limitations" class="anchor-icon" translate="no">
+<h2 id="Limitations" class="common-anchor-header">Limitations<button data-href="#Limitations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -865,14 +867,14 @@ SearchResp results = <span class="hljs-keyword">await</span> client.HybridSearch
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>分組搜尋僅適用於元素層級的 StructArray 向量搜尋。EmbeddingList 搜尋和 EmbeddingList 層級的混合搜尋不支援按主鍵分組。</p></li>
-<li><p>請將主鍵用作 `<code translate="no">group_by_field</code>`。StructArray 元素層級的分組並非針對任意標量欄位的通用分組功能。</p></li>
-<li><p>請勿將分組搜尋與範圍搜尋結合使用。</p></li>
-<li><p>請勿在分組搜尋中使用 `<code translate="no">EmbeddingList</code> ` 查詢或 `<code translate="no">MAX_SIM*</code> ` 指標。</p></li>
-<li><p>僅當所有子搜尋皆針對同一 StructArray 欄位下的元素層級向量欄位時，才支援混合分組。</p></li>
-<li><p>當混合搜尋同時包含一般向量場、不同的 StructArray 場或 EmbeddingList 層級的請求時，則不支援混合分組。</p></li>
+<li><p>Grouping search applies only to element-level StructArray vector search. EmbeddingList search and EmbeddingList-level hybrid search do not support group-by.</p></li>
+<li><p>Use the primary key as <code translate="no">group_by_field</code>. StructArray element-level grouping is not a general-purpose group-by over arbitrary scalar fields.</p></li>
+<li><p>Do not combine grouping search with range search.</p></li>
+<li><p>Do not use an <code translate="no">EmbeddingList</code> query or a <code translate="no">MAX_SIM*</code> metric for grouping search.</p></li>
+<li><p>Hybrid grouping is supported only when all sub-searches target element-level vector fields under the same StructArray field.</p></li>
+<li><p>Hybrid grouping is not supported when the hybrid search mixes a normal vector field, a different StructArray field, or an EmbeddingList-level request.</p></li>
 </ul>
-<h2 id="Common-mistakes" class="common-anchor-header">常見錯誤<button data-href="#Common-mistakes" class="anchor-icon" translate="no">
+<h2 id="Common-mistakes" class="common-anchor-header">Common mistakes<button data-href="#Common-mistakes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -888,14 +890,14 @@ SearchResp results = <span class="hljs-keyword">await</span> client.HybridSearch
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>將分組功能用於 `<code translate="no">chunks[emb_list_vector]</code>`，該功能原本是針對 `EmbeddingList` 搜尋設計的。</p></li>
-<li><p>根據非主鍵的標量欄位進行分組。</p></li>
-<li><p>根據多個欄位進行分組。元素層級的 StructArray 分組僅支援主鍵分組。</p></li>
-<li><p>預期分組結果會代表每個匹配的 Struct 元素。分組每項父實體最多只會返回一個結果。</p></li>
-<li><p>假設分組後的元素層級搜尋會重新計算 EmbeddingList 風格的<code translate="no">MAX_SIM*</code> 分數。分組會彙總元素層級的搜尋結果；它並不會改變評分模型。</p></li>
-<li><p>將<code translate="no">group_by_field</code> 與<code translate="no">radius</code> 或<code translate="no">range_filter</code> 結合使用。</p></li>
+<li><p>Using grouping with <code translate="no">chunks[emb_list_vector]</code>, which is intended for EmbeddingList search.</p></li>
+<li><p>Grouping by a non-primary-key scalar field.</p></li>
+<li><p>Grouping by multiple fields. Element-level StructArray grouping supports only primary-key grouping.</p></li>
+<li><p>Expecting grouped results to represent every matched Struct element. Grouping returns at most one result per parent entity.</p></li>
+<li><p>Assuming grouped element-level search recomputes an EmbeddingList-style <code translate="no">MAX_SIM*</code> score. Grouping collapses element-level hits; it does not change the scoring model.</p></li>
+<li><p>Combining <code translate="no">group_by_field</code> with <code translate="no">radius</code> or <code translate="no">range_filter</code>.</p></li>
 </ul>
-<h2 id="Next-steps" class="common-anchor-header">下一步<button data-href="#Next-steps" class="anchor-icon" translate="no">
+<h2 id="Next-steps" class="common-anchor-header">Next steps<button data-href="#Next-steps" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -911,8 +913,8 @@ SearchResp results = <span class="hljs-keyword">await</span> client.HybridSearch
         ></path>
       </svg>
     </button></h2><ol>
-<li><p>若要先了解未分組的元素層級搜尋，請閱讀《<a href="/docs/zh-hant/basic-vector-search-with-structarray.md">使用 StructArray 進行基本向量搜尋</a>》。</p></li>
-<li><p>若要為分組搜尋新增標量篩選條件，請參閱《<a href="/docs/zh-hant/filtered-search-with-structarray.md">使用 StructArray 進行篩選搜尋</a>》。</p></li>
-<li><p>若要使用分數或距離範圍取代分組，請參閱《<a href="/docs/zh-hant/range-search-with-structarray.md">使用 StructArray 進行範圍搜尋</a>》。</p></li>
-<li><p>若要查看 StructArray 的搜尋限制，請閱讀《<a href="/docs/zh-hant/structarray-limits.md">StructArray 限制》</a>。</p></li>
+<li><p>To learn ungrouped element-level search first, read <a href="/docs/zh-hant/basic-vector-search-with-structarray.md">Basic Vector Search with StructArray</a>.</p></li>
+<li><p>To add scalar filters to grouped search, read <a href="/docs/zh-hant/filtered-search-with-structarray.md">Filtered Search with StructArray</a>.</p></li>
+<li><p>To use score or distance boundaries instead of grouping, read <a href="/docs/zh-hant/range-search-with-structarray.md">Range Search with StructArray</a>.</p></li>
+<li><p>To check StructArray search limits, read <a href="/docs/zh-hant/structarray-limits.md">StructArray Limits</a>.</p></li>
 </ol>

@@ -1,8 +1,8 @@
 ---
 id: limit_collection_counts.md
-title: Definir limites para o número de recolhas
+title: Set Limits on Collection Number
 ---
-<h1 id="Limit-Collection-Counts" class="common-anchor-header">Limitar o número de colecções<button data-href="#Limit-Collection-Counts" class="anchor-icon" translate="no">
+<h1 id="Limit-Collection-Counts" class="common-anchor-header">Limit Collection Counts<button data-href="#Limit-Collection-Counts" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -17,18 +17,18 @@ title: Definir limites para o número de recolhas
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Uma instância Milvus permite até 65.536 colecções. No entanto, um número excessivo de colecções pode resultar em problemas de desempenho. Por isso, recomenda-se limitar o número de colecções criadas numa instância do Milvus.</p>
-<p>Este guia fornece instruções sobre como definir limites para o número de colecções numa instância do Milvus.</p>
-<p>A configuração varia consoante a forma como instala a instância do Milvus.</p>
+    </button></h1><p>A Milvus instance allows up to 65,536 collections. However, too many collections may result in performance issues. Therefore, it is recommended to limit the number of collections created in a Milvus instance.</p>
+<p>This guide provides instructions on how to set limits on the number of collections in a Milvus instance.</p>
+<p>Configuration varies with the way you install the Milvus instance.</p>
 <ul>
-<li><p>Para instâncias do Milvus instaladas usando Helm Charts</p>
-<p>Adicione a configuração ao ficheiro <code translate="no">values.yaml</code> na secção <code translate="no">config</code>. Para obter detalhes, consulte <a href="/docs/pt/configure-helm.md">Configurar o Milvus com Helm Charts</a>.</p></li>
-<li><p>Para instâncias do Milvus instaladas com o Docker Compose</p>
-<p>Adicione a configuração ao ficheiro <code translate="no">milvus.yaml</code> que utilizou para iniciar a instância do Milvus. Para obter detalhes, consulte <a href="/docs/pt/configure-docker.md">Configurar o Milvus com o Docker Compose</a>.</p></li>
-<li><p>Para instâncias do Milvus instaladas com o Operator</p>
-<p>Adicione a configuração à secção <code translate="no">spec.components</code> do recurso personalizado <code translate="no">Milvus</code>. Para obter detalhes, consulte <a href="/docs/pt/configure_operator.md">Configurar o Milvus com o Operator</a>.</p></li>
+<li><p>For Milvus instances installed using Helm Charts</p>
+<p>Add the configuration to the <code translate="no">values.yaml</code> file under the <code translate="no">config</code> section. For details, refer to <a href="/docs/pt/configure-helm.md">Configure Milvus with Helm Charts</a>.</p></li>
+<li><p>For Milvus instances installed using Docker Compose</p>
+<p>Add the configuration to the <code translate="no">milvus.yaml</code> file you have used to start the Milvus instance. For details, refer to <a href="/docs/pt/configure-docker.md">Configure Milvus with Docker Compose</a>.</p></li>
+<li><p>For Milvus instances installed using Operator</p>
+<p>Add the configuration to the <code translate="no">spec.components</code> section of the <code translate="no">Milvus</code> custom resource. For details, refer to <a href="/docs/pt/configure_operator.md">Configure Milvus with Operator</a>.</p></li>
 </ul>
-<h2 id="Configuration-options" class="common-anchor-header">Opções de configuração<button data-href="#Configuration-options" class="anchor-icon" translate="no">
+<h2 id="Configuration-options" class="common-anchor-header">Configuration options<button data-href="#Configuration-options" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -51,18 +51,18 @@ title: Definir limites para o número de recolhas
         <span class="hljs-attr">maxCollectionNum:</span> <span class="hljs-number">65536</span>
         <span class="hljs-attr">maxCollectionNumPerDB:</span> <span class="hljs-number">65536</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Para alterar o limite de recolha, é necessário modificar os três parâmetros em conjunto:</p>
+<p>To change the collection limit, you need to modify all three parameters together:</p>
 <table>
 <thead>
-<tr><th>Parâmetro</th><th>Descrição</th><th>Valor por defeito</th></tr>
+<tr><th>Parameter</th><th>Description</th><th>Default Value</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">rootCoord.maxGeneralCapacity</code></td><td>Número máximo de unidades de coleção (shards × partições) que a instância atual pode conter.</td><td><code translate="no">65536</code></td></tr>
-<tr><td><code translate="no">quotaAndLimits.limits.maxCollectionNum</code></td><td>Número máximo de colecções permitidas em todas as bases de dados da instância atual.</td><td><code translate="no">65536</code></td></tr>
-<tr><td><code translate="no">quotaAndLimits.limits.maxCollectionNumPerDB</code></td><td>Número máximo de colecções permitidas numa única base de dados.</td><td><code translate="no">65536</code></td></tr>
+<tr><td><code translate="no">rootCoord.maxGeneralCapacity</code></td><td>Maximum number of collection units (shards × partitions) that the current instance can hold.</td><td><code translate="no">65536</code></td></tr>
+<tr><td><code translate="no">quotaAndLimits.limits.maxCollectionNum</code></td><td>Maximum number of collections allowed across all databases in the current instance.</td><td><code translate="no">65536</code></td></tr>
+<tr><td><code translate="no">quotaAndLimits.limits.maxCollectionNumPerDB</code></td><td>Maximum number of collections allowed in a single database.</td><td><code translate="no">65536</code></td></tr>
 </tbody>
 </table>
-<p>Por exemplo, para aumentar o limite para 200.000 colecções:</p>
+<p>For example, to increase the limit to 200,000 collections:</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">rootCoord:</span>
     <span class="hljs-attr">maxGeneralCapacity:</span> <span class="hljs-number">200000</span>
 
@@ -72,9 +72,9 @@ title: Definir limites para o número de recolhas
         <span class="hljs-attr">maxCollectionNumPerDB:</span> <span class="hljs-number">200000</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>Definir apenas <code translate="no">maxGeneralCapacity</code> sem ajustar também <code translate="no">maxCollectionNum</code> e <code translate="no">maxCollectionNumPerDB</code> não terá efeito. Todos os três parâmetros devem ser definidos para o mesmo valor ou superior para aumentar o limite de colecções.</p>
+<p>Setting only <code translate="no">maxGeneralCapacity</code> without also adjusting <code translate="no">maxCollectionNum</code> and <code translate="no">maxCollectionNumPerDB</code> will not take effect. All three parameters must be set to the same value or higher to increase the collection limit.</p>
 </div>
-<h2 id="Calculating-the-number-of-collections" class="common-anchor-header">Cálculo do número de colecções<button data-href="#Calculating-the-number-of-collections" class="anchor-icon" translate="no">
+<h2 id="Calculating-the-number-of-collections" class="common-anchor-header">Calculating the number of collections<button data-href="#Calculating-the-number-of-collections" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -89,11 +89,11 @@ title: Definir limites para o número de recolhas
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Numa coleção, pode configurar vários shards e partições. Os fragmentos são unidades lógicas utilizadas para distribuir operações de escrita de dados entre vários nós de dados. As partições são unidades lógicas utilizadas para melhorar a eficiência da recuperação de dados, carregando apenas um subconjunto dos dados da coleção. Ao calcular o número de colecções na instância atual do Milvus, também é necessário contar os shards e as partições.</p>
-<p>Por exemplo, vamos supor que já criou <strong>100</strong> colecções, com <strong>2</strong> fragmentos e <strong>4</strong> partições em <strong>60</strong> delas e com <strong>1</strong> fragmento e <strong>12</strong> partições nas restantes <strong>40</strong> colecções. O número total de unidades de coleção (calculado como <code translate="no">shards × partitions</code>) pode ser determinado da seguinte forma:</p>
+    </button></h2><p>In a collection, you can set up multiple shards and partitions. Shards are logical units used to distribute data write operations among multiple data nodes. Partitions are logical units used to improve data retrieval efficiency by loading only a subset of collection data. When calculating the number of collections in the current Milvus instance, you also need to count the shards and partitions.</p>
+<p>For example, let’s assume you have already created <strong>100</strong> collections, with <strong>2</strong> shards and <strong>4</strong> partitions in <strong>60</strong> of them and with <strong>1</strong> shard and <strong>12</strong> partitions in the rest <strong>40</strong> collections. The total number of collection units (calculated as <code translate="no">shards × partitions</code>) can be determined as follows:</p>
 <pre><code translate="no">60 (collections) x 2 (shards) x 4 (partitions) + 40 (collections) x 1 (shard) x 12 (partitions) = 960
 <button class="copy-code-btn"></button></code></pre>
-<p>Neste exemplo, o total calculado de 960 unidades de recolha representa a utilização atual. O endereço <code translate="no">maxGeneralCapacity</code> define o número máximo de unidades de coleta que uma instância pode suportar, que é definido como <code translate="no">65536</code> por padrão. Isso significa que a instância pode acomodar até 65.536 unidades de coleta. Se o número total exceder esse limite, o sistema exibirá a seguinte mensagem de erro:</p>
+<p>In this example, the calculated total of 960 collection units represents the current usage. The <code translate="no">maxGeneralCapacity</code> defines the maximum number of collection units an instance can support, which is set to <code translate="no">65536</code> by default. This means the instance can accommodate up to 65,536 collection units. If the total number exceeds this limit, the system will display the following error message:</p>
 <pre><code translate="no" class="language-shell">failed checking constraint: sum_collections(parition*shard) exceeding the max general capacity:
 <button class="copy-code-btn"></button></code></pre>
-<p>Para evitar esse erro, é possível reduzir o número de fragmentos ou partições em coleções novas ou existentes, excluir algumas coleções ou aumentar o limite de coleções modificando <code translate="no">maxGeneralCapacity</code>, <code translate="no">maxCollectionNum</code> e <code translate="no">maxCollectionNumPerDB</code> juntos.</p>
+<p>To avoid this error, you can either reduce the number of shards or partitions in existing or new collections, delete some collections, or increase the collection limit by modifying <code translate="no">maxGeneralCapacity</code>, <code translate="no">maxCollectionNum</code>, and <code translate="no">maxCollectionNumPerDB</code> together.</p>

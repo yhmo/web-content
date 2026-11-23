@@ -1,10 +1,12 @@
 ---
 id: snapshot-backup-and-restore.md
-summary: 備份一個收藏集，並在同一個 Milvus 實例中以新名稱還原該收藏集。
-title: 在單一實例中執行快照備份與還原Compatible with Milvus Backup 0.6.x
+summary: >-
+  Back up a collection and restore it with a new name in the same Milvus
+  instance.
+title: Snapshot Backup and Restore in One InstanceCompatible with Milvus Backup 0.6.x
 beta: Milvus Backup 0.6.x
 ---
-<h1 id="Snapshot-Backup-and-Restore-in-One-Instance" class="common-anchor-header">在單一實例中執行快照備份與還原<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus Backup 0.6.x</span><button data-href="#Snapshot-Backup-and-Restore-in-One-Instance" class="anchor-icon" translate="no">
+<h1 id="Snapshot-Backup-and-Restore-in-One-Instance" class="common-anchor-header">Snapshot Backup and Restore in One Instance<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus Backup 0.6.x</span><button data-href="#Snapshot-Backup-and-Restore-in-One-Instance" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -19,8 +21,8 @@ beta: Milvus Backup 0.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>在同一個 Milvus 執行個體中備份一個集合，並以新名稱還原該集合。此範例將為<code translate="no">coll</code> 建立快照，並在<strong>Milvus 3.0.1 或更新版本中</strong>將其還原為<code translate="no">coll_bak</code> 。若使用 Backup 0.5.x，請參閱「<a href="/docs/zh-hant/single-instance-backup-and-restore.md">在單一執行個體中進行備份與還原</a>」。</p>
-<h2 id="Overview" class="common-anchor-header">概述<button data-href="#Overview" class="anchor-icon" translate="no">
+    </button></h1><p>Back up a collection and restore it with a new name in the same Milvus instance. This example creates a snapshot of <code translate="no">coll</code> and restores it as <code translate="no">coll_bak</code> on <strong>Milvus 3.0.1 or later</strong>. For Backup 0.5.x, use <a href="/docs/zh-hant/single-instance-backup-and-restore.md">Backup and Restore in One Instance</a>.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,15 +39,15 @@ beta: Milvus Backup 0.6.x
       </svg>
     </button></h2><table>
 <thead>
-<tr><th>位置</th><th>Milvus 執行個體</th><th>物件儲存庫</th><th>儲存桶</th><th>根路徑</th></tr>
+<tr><th>Location</th><th>Milvus instance</th><th>Object store</th><th>Bucket</th><th>Root path</th></tr>
 </thead>
 <tbody>
-<tr><td>來源資料</td><td><code translate="no">milvus-a</code></td><td><code translate="no">minio-a</code></td><td><code translate="no">bucket-a</code></td><td><code translate="no">files</code></td></tr>
-<tr><td>由來源建立的備份</td><td>—</td><td><code translate="no">minio-a</code></td><td><code translate="no">bucket-a</code></td><td><code translate="no">backup/my_backup</code></td></tr>
-<tr><td>還原資料</td><td><code translate="no">milvus-a</code></td><td><code translate="no">minio-a</code></td><td><code translate="no">bucket-a</code></td><td><code translate="no">files</code></td></tr>
+<tr><td>Source data</td><td><code translate="no">milvus-a</code></td><td><code translate="no">minio-a</code></td><td><code translate="no">bucket-a</code></td><td><code translate="no">files</code></td></tr>
+<tr><td>Backup created by the source</td><td>—</td><td><code translate="no">minio-a</code></td><td><code translate="no">bucket-a</code></td><td><code translate="no">backup/my_backup</code></td></tr>
+<tr><td>Restored data</td><td><code translate="no">milvus-a</code></td><td><code translate="no">minio-a</code></td><td><code translate="no">bucket-a</code></td><td><code translate="no">files</code></td></tr>
 </tbody>
 </table>
-<h2 id="Prerequisites" class="common-anchor-header">先決條件<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -61,14 +63,14 @@ beta: Milvus Backup 0.6.x
         ></path>
       </svg>
     </button></h2><ul>
-<li>請使用 Milvus 3.0.1 或更新版本。此範例已透過 Milvus Backup 0.6.0 及 Milvus 3.0.1 進行驗證。請依照<a href="/docs/zh-hant/milvus_backup_0_6_cli.md">《使用指令備份與還原資料</a>》中的說明安裝此工具。</li>
-<li>請使用名為「<code translate="no">coll</code> 」的現有集合，或建立以下可選的範例集合。在比較來源與還原結果時，請保持其資料不變。</li>
-<li>請確保 Milvus Backup 能存取 Milvus 的 gRPC 埠 (19530)、管理埠 (9091) 以及物件儲存空間。此外，Milvus 伺服器也必須能夠存取備份儲存空間，以便進行快照的匯出與匯入。</li>
-<li>請將範例中的主機名稱、儲存桶名稱、根路徑及憑證替換為您的部署設定。Milvus 儲存設定必須與正在運行的實例相符；變更備份設定並不會重新配置 Milvus。</li>
-<li>請確保目標實例中不存在 `<code translate="no">coll_bak</code> `。</li>
+<li>Use Milvus 3.0.1 or later. This example was validated with Milvus Backup 0.6.0 and Milvus 3.0.1. Install the tool as described in <a href="/docs/zh-hant/milvus_backup_0_6_cli.md">Back up and Restore Data Using Commands</a>.</li>
+<li>Use an existing collection named <code translate="no">coll</code>, or create the optional sample collection below. Keep its data unchanged while comparing source and restored results.</li>
+<li>Make the Milvus gRPC port (19530), management port (9091), and object storage accessible to Milvus Backup. The Milvus server must also be able to access the backup storage for snapshot export and import.</li>
+<li>Replace the example hostnames, bucket names, root paths, and credentials with your deployment settings. Milvus storage settings must match the running instance; changing the backup configuration does not reconfigure Milvus.</li>
+<li>Ensure that <code translate="no">coll_bak</code> does not exist in the target instance.</li>
 </ul>
-<p>有關 Milvus 儲存設定，請參閱「<a href="/docs/zh-hant/deploy_s3.md">物件儲存</a>」。關於現有的 v1 備份設定，請參閱「<a href="/docs/zh-hant/milvus_backup_upgrade.md#Migrate-the-configuration">升級 Milvus Backup</a>」。</p>
-<h2 id="Prepare-sample-data" class="common-anchor-header">準備範例資料<button data-href="#Prepare-sample-data" class="anchor-icon" translate="no">
+<p>For Milvus storage settings, see <a href="/docs/zh-hant/deploy_s3.md">Object Storage</a>. For existing v1 backup configurations, see <a href="/docs/zh-hant/milvus_backup_upgrade.md#Migrate-the-configuration">Upgrade Milvus Backup</a>.</p>
+<h2 id="Prepare-sample-data" class="common-anchor-header">Prepare sample data<button data-href="#Prepare-sample-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -83,8 +85,8 @@ beta: Milvus Backup 0.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>以下指令使用名為<code translate="no">coll</code> 的現有集合。您可透過一致地變更名稱，使用您自己的集合。</p>
-<p>若要建立小型測試集合，請安裝 PyMilvus，並針對空的集合名稱執行以下指令。若 Milvus 並非本機運作，請替換 URI：</p>
+    </button></h2><p>The commands below use an existing collection named <code translate="no">coll</code>. You can use your own collection by changing the names consistently.</p>
+<p>For a small test collection, install PyMilvus and run the following against an empty collection name. Replace the URI if Milvus is not local:</p>
 <pre><code translate="no" class="language-shell">pip install pymilvus==3.0.0
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> random
@@ -109,8 +111,8 @@ rows = [
 client.insert(<span class="hljs-string">&quot;coll&quot;</span>, rows)
 client.flush(<span class="hljs-string">&quot;coll&quot;</span>)
 <button class="copy-code-btn"></button></code></pre>
-<p>這將建立 256 個實體。在執行後續步驟時，請保持此測試資料不變。</p>
-<h2 id="Back-up-the-collection" class="common-anchor-header">備份集合<button data-href="#Back-up-the-collection" class="anchor-icon" translate="no">
+<p>This creates 256 entities. Keep this test data unchanged while following the remaining steps.</p>
+<h2 id="Back-up-the-collection" class="common-anchor-header">Back up the collection<button data-href="#Back-up-the-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -125,7 +127,7 @@ client.flush(<span class="hljs-string">&quot;coll&quot;</span>)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Step-1-Prepare-configuration" class="common-anchor-header">步驟 1：準備設定<button data-href="#Step-1-Prepare-configuration" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Step-1-Prepare-configuration" class="common-anchor-header">Step 1: Prepare configuration<button data-href="#Step-1-Prepare-configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -140,10 +142,10 @@ client.flush(<span class="hljs-string">&quot;coll&quot;</span>)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>在包含<code translate="no">milvus-backup</code> 二進位檔的目錄中執行以下指令。後續指令請維持此工作目錄：</p>
+    </button></h3><p>Run the following from the directory containing the <code translate="no">milvus-backup</code> binary. Keep this working directory for the remaining commands:</p>
 <pre><code translate="no" class="language-shell">mkdir -p configs
 <button class="copy-code-btn"></button></code></pre>
-<p>將以下內容儲存為<code translate="no">configs/backup-source.yaml</code> 。此範例使用 MinIO 的預設測試憑證；請將其替換為您所使用的物件儲存庫的憑證。</p>
+<p>Save the following as <code translate="no">configs/backup-source.yaml</code>. The example uses MinIO’s default test credentials; replace them with credentials for your object store.</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">configVersion:</span> <span class="hljs-string">v2</span>
 <span class="hljs-attr">milvus:</span>
   <span class="hljs-attr">grpc:</span>
@@ -169,9 +171,9 @@ client.flush(<span class="hljs-string">&quot;coll&quot;</span>)
 <span class="hljs-attr">transfer:</span>
   <span class="hljs-attr">mode:</span> <span class="hljs-string">auto</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">milvus.storage</code> 描述來源實例的資料。<code translate="no">backup.storage</code> 描述備份目標。未設定的備份儲存場域將繼承自<code translate="no">milvus.storage</code> ，惟<code translate="no">rootPath</code> 除外，其預設值為<code translate="no">backup</code> 。</p>
-<p>若 Milvus 與 Milvus Backup 使用不同的位址存取同一物件儲存庫，請將 `<code translate="no">backup.storage.milvusAddress</code> ` 和 `<code translate="no">milvusPort</code> ` 設定為 Milvus 伺服器可存取的位址。請參閱<a href="https://github.com/zilliztech/milvus-backup/blob/v0.6.0/configs/backup.yaml">0.6.0 版本的設定範例</a>。</p>
-<h3 id="Step-2-Check-connectivity-and-create-a-backup" class="common-anchor-header">步驟 2：檢查連線狀態並建立備份<button data-href="#Step-2-Check-connectivity-and-create-a-backup" class="anchor-icon" translate="no">
+<p><code translate="no">milvus.storage</code> describes the source instance’s data. <code translate="no">backup.storage</code> describes the backup destination. Unset backup storage fields inherit from <code translate="no">milvus.storage</code>, except <code translate="no">rootPath</code>, which defaults to <code translate="no">backup</code>.</p>
+<p>If Milvus and Milvus Backup use different addresses to reach the same object store, configure <code translate="no">backup.storage.milvusAddress</code> and <code translate="no">milvusPort</code> with the address reachable by the Milvus server. See the <a href="https://github.com/zilliztech/milvus-backup/blob/v0.6.0/configs/backup.yaml">0.6.0 configuration example</a>.</p>
+<h3 id="Step-2-Check-connectivity-and-create-a-backup" class="common-anchor-header">Step 2: Check connectivity and create a backup<button data-href="#Step-2-Check-connectivity-and-create-a-backup" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -190,9 +192,9 @@ client.flush(<span class="hljs-string">&quot;coll&quot;</span>)
 ./milvus-backup create --format snapshot --filter coll -n my_backup --config configs/backup-source.yaml
 ./milvus-backup get -n my_backup --config configs/backup-source.yaml
 <button class="copy-code-btn"></button></code></pre>
-<p>連線檢查應顯示<code translate="no">Success!</code> 。建立指令應顯示<code translate="no">create backup success</code> ，而備份資訊應列出<code translate="no">coll</code> 。</p>
-<p>明示的<code translate="no">--format snapshot</code> 會選擇快照工作流程。在 Milvus 3.0 中，預設的<code translate="no">auto</code> 同樣會選擇快照功能。備份內容包含元資料，以及位於<code translate="no">bucket-a/backup/my_backup</code> 下的已匯出快照封裝檔。請完整保留該目錄。</p>
-<h2 id="Restore-within-the-same-instance" class="common-anchor-header">在同一實例內還原<button data-href="#Restore-within-the-same-instance" class="anchor-icon" translate="no">
+<p>The connectivity check should report <code translate="no">Success!</code>. The create command should report <code translate="no">create backup success</code>, and the backup information should list <code translate="no">coll</code>.</p>
+<p>The explicit <code translate="no">--format snapshot</code> selects the snapshot workflow. The default <code translate="no">auto</code> also selects snapshot on Milvus 3.0. The backup includes metadata and an exported snapshot bundle under <code translate="no">bucket-a/backup/my_backup</code>. Preserve the whole directory.</p>
+<h2 id="Restore-within-the-same-instance" class="common-anchor-header">Restore within the same instance<button data-href="#Restore-within-the-same-instance" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -207,12 +209,12 @@ client.flush(<span class="hljs-string">&quot;coll&quot;</span>)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>使用相同的設定，並加上後綴來還原備份：</p>
+    </button></h2><p>Use the same configuration to restore the backup with a suffix:</p>
 <pre><code translate="no" class="language-shell">./milvus-backup restore --filter coll_bak -n my_backup -s _bak --config configs/backup-source.yaml
 <button class="copy-code-btn"></button></code></pre>
-<p>CLI 指令<code translate="no">--filter</code> 會將目標名稱與<code translate="no">-s</code> 或<code translate="no">--rename</code><strong>後綴進行比對</strong>。在此還原指令中，請使用<code translate="no">coll_bak</code> ，而非<code translate="no">coll</code> 。若篩選條件未匹配任何項目，系統將成功退出而不建立集合。</p>
-<p>還原後的集合會使用目標實例所設定的儲存空間。Milvus 負責管理快照匯入及隨之產生的資料佈局。</p>
-<h2 id="Verify-the-result" class="common-anchor-header">驗證結果<button data-href="#Verify-the-result" class="anchor-icon" translate="no">
+<p>The CLI <code translate="no">--filter</code> matches the target name <strong>after</strong> applying <code translate="no">-s</code> or <code translate="no">--rename</code>. Use <code translate="no">coll_bak</code>, not <code translate="no">coll</code>, in this restore command. A filter that matches nothing can exit successfully without creating a collection.</p>
+<p>The restored collection uses the target instance’s configured storage. Milvus manages the snapshot import and the resulting data layout.</p>
+<h2 id="Verify-the-result" class="common-anchor-header">Verify the result<button data-href="#Verify-the-result" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -227,7 +229,7 @@ client.flush(<span class="hljs-string">&quot;coll&quot;</span>)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>針對上述可選的 256 個實體樣本資料，請在還原目標上執行此指令。將<code translate="no">localhost:19530</code> 替換為用於準備資料的相同 Milvus 端點。此指令會驗證實體數量、每個標量與向量值，以及向量搜尋結果，且不會刪除資料：</p>
+    </button></h2><p>For the optional 256-entity sample data above, run this against the restore target. Replace <code translate="no">localhost:19530</code> with the same Milvus endpoint used to prepare the data. It verifies the count, every scalar and vector value, and a vector search result without deleting data:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> random
 <span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -257,4 +259,4 @@ hits = client.search(<span class="hljs-string">&quot;coll_bak&quot;</span>, data
 <span class="hljs-keyword">assert</span> hits[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>][<span class="hljs-string">&quot;id&quot;</span>] == <span class="hljs-number">7</span>
 <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Backup and restore verified&quot;</span>)
 <button class="copy-code-btn"></button></code></pre>
-<p>對於其他資料，請與您自身的備份時點基準進行比對。若還原後的集合尚未建立向量索引，請在載入前建立適當的向量索引。僅憑指令執行成功，並不能證明預期資料已成功還原。</p>
+<p>For other data, compare against your own backup-time baseline. Create an appropriate vector index before loading if the restored collection has none. A successful command alone does not prove that the expected data was restored.</p>

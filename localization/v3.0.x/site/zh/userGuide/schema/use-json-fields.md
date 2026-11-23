@@ -1,11 +1,12 @@
 ---
 id: use-json-fields.md
-title: JSON 字段
+title: JSON Field
 summary: >-
-  Milvus 允许您使用 JSON 数据类型在单个字段中存储和索引结构化数据。这既支持包含嵌套属性的灵活 Schema，又能通过 JSON
-  索引实现高效的过滤。
+  Milvus allows you to store and index structured data within a single field
+  using the JSON data type. This enables flexible schemas with nested attributes
+  while still allowing efficient filtering via JSON indexing.
 ---
-<h1 id="JSON-Field" class="common-anchor-header">JSON 字段<button data-href="#JSON-Field" class="anchor-icon" translate="no">
+<h1 id="JSON-Field" class="common-anchor-header">JSON Field<button data-href="#JSON-Field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,8 +21,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Milvus 允许您使用 `<code translate="no">JSON</code> ` 数据类型在单个字段中存储和索引结构化数据。这既支持包含嵌套属性的灵活 Schema，又能通过 JSON 索引实现高效的过滤。</p>
-<h2 id="What-is-a-JSON-field" class="common-anchor-header">什么是 JSON 字段？<button data-href="#What-is-a-JSON-field" class="anchor-icon" translate="no">
+    </button></h1><p>Milvus allows you to store and index structured data within a single field using the <code translate="no">JSON</code> data type. This enables flexible schemas with nested attributes while still allowing efficient filtering via JSON indexing.</p>
+<h2 id="What-is-a-JSON-field" class="common-anchor-header">What is a JSON field?<button data-href="#What-is-a-JSON-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -36,8 +37,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>JSON 字段是 Milvus 中一种由 Schema 定义的字段，用于存储结构化的键值对数据。其值可以是字符串、数字、布尔值、数组或深度嵌套的对象。</p>
-<p>以下是一个文档中 JSON 字段可能呈现的示例：</p>
+    </button></h2><p>A JSON field is a schema-defined field in Milvus that stores structured key-value data. The values can include strings, numbers, booleans, arrays, or deeply nested objects.</p>
+<p>Here’s an example of what a JSON field might look like in a document:</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
   <span class="hljs-attr">&quot;metadata&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
     <span class="hljs-attr">&quot;category&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;electronics&quot;</span><span class="hljs-punctuation">,</span>
@@ -57,12 +58,12 @@ summary: >-
   <span class="hljs-punctuation">}</span>
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>在此示例中：</p>
+<p>In this example:</p>
 <ul>
-<li><p><code translate="no">metadata</code> 是 Schema 中定义的 JSON 字段。</p></li>
-<li><p>您可以存储扁平值（例如<code translate="no">category</code> 、<code translate="no">in_stock</code> ）、数组（<code translate="no">tags</code> ）以及嵌套对象（<code translate="no">supplier</code> ）。</p></li>
+<li><p><code translate="no">metadata</code> is the JSON field defined in the schema.</p></li>
+<li><p>You can store flat values (e.g. <code translate="no">category</code>, <code translate="no">in_stock</code>), arrays (<code translate="no">tags</code>), and nested objects (<code translate="no">supplier</code>).</p></li>
 </ul>
-<h2 id="Define-a-JSON-field-in-the-schema" class="common-anchor-header">在 Schema 中定义 JSON 字段<button data-href="#Define-a-JSON-field-in-the-schema" class="anchor-icon" translate="no">
+<h2 id="Define-a-JSON-field-in-the-schema" class="common-anchor-header">Define a JSON field in the schema<button data-href="#Define-a-JSON-field-in-the-schema" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -77,19 +78,19 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>要使用 JSON 字段，请在 Collection Schema 中显式定义它，将 `<code translate="no">DataType</code> ` 指定为 `<code translate="no">JSON</code>`。</p>
-<p>下面的示例创建了一个Collection，其Schema包含以下字段：</p>
+    </button></h2><p>To use a JSON field, explicitly define it in the collection schema by specifying the <code translate="no">DataType</code> as <code translate="no">JSON</code>.</p>
+<p>The example below creates a collection with its schema containing these fields:</p>
 <ul>
-<li><p>主键（<code translate="no">product_id</code> ）</p></li>
-<li><p>一个<code translate="no">vector</code> 字段（每个 Collection 都必须包含）</p></li>
-<li><p>类型为 `<code translate="no">JSON</code>` 的 `<code translate="no">metadata</code> ` 字段，可存储扁平值、数组或嵌套对象等结构化数据</p></li>
+<li><p>The primary key (<code translate="no">product_id</code>)</p></li>
+<li><p>A <code translate="no">vector</code> field (mandatory for each collection)</p></li>
+<li><p>A <code translate="no">metadata</code> field of type <code translate="no">JSON</code>, which can store structured data like flat values, arrays, or nested objects</p></li>
 </ul>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
 
@@ -260,9 +261,9 @@ curl --request POST \
 
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>您还可以启用 Dynamic Field 功能，以灵活地存储未声明的字段，但这并非 JSON 字段正常运行的必要条件。有关更多信息，请参阅<a href="/docs/zh/enable-dynamic-field.md">“Dynamic Field”</a>。</p>
+<p>You can also enable the dynamic field feature to store undeclared fields flexibly, but it’s not required for JSON fields to function. For more information, refer to <a href="/docs/zh/enable-dynamic-field.md">Dynamic Field</a>.</p>
 </div>
-<h2 id="Insert-entities-with-JSON-data" class="common-anchor-header">插入包含 JSON 数据的实体<button data-href="#Insert-entities-with-JSON-data" class="anchor-icon" translate="no">
+<h2 id="Insert-entities-with-JSON-data" class="common-anchor-header">Insert entities with JSON data<button data-href="#Insert-entities-with-JSON-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -277,13 +278,13 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>创建Collection后，可在<code translate="no">metadata</code> 的JSON字段中插入包含结构化JSON对象的实体。</p>
+    </button></h2><p>Once the collection is created, insert entities that contain structured JSON objects in the <code translate="no">metadata</code> JSON field.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">entities = [
     {
@@ -438,7 +439,7 @@ curl --request POST \
 }&quot;</span>
 
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Index-values-inside-the-JSON-field" class="common-anchor-header">对 JSON 字段中的值进行索引<button data-href="#Index-values-inside-the-JSON-field" class="anchor-icon" translate="no">
+<h2 id="Index-values-inside-the-JSON-field" class="common-anchor-header">Index values inside the JSON field<button data-href="#Index-values-inside-the-JSON-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -453,11 +454,11 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>为了加快对 JSON 字段的标量过滤速度，Milvus 支持<strong>JSON 路径索引，</strong>该功能会针对具有声明标量类型的特定 JSON 路径建立索引。</p>
+    </button></h2><p>To accelerate scalar filtering on JSON fields, Milvus supports <strong>JSON path indexing</strong>, which indexes specific JSON paths with a declared scalar type.</p>
 <div class="alert note">
-<p>对 JSON 字段进行索引是<strong>可选的</strong>。即使没有索引，您仍然可以按 JSON 路径进行查询或过滤，但这可能会因需要进行穷举搜索而导致性能下降。</p>
+<p>Indexing JSON fields is <strong>optional</strong>. You can still query or filter by JSON paths without an index, but it may result in slower performance due to brute-force search.</p>
 </div>
-<h3 id="JSON-path-indexing" class="common-anchor-header">JSON 路径索引<button data-href="#JSON-path-indexing" class="anchor-icon" translate="no">
+<h3 id="JSON-path-indexing" class="common-anchor-header">JSON path indexing<button data-href="#JSON-path-indexing" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -472,71 +473,71 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>要创建 JSON 路径索引，请指定：</p>
+    </button></h3><p>To create a JSON path index, specify:</p>
 <ul>
-<li><p><strong>JSON 路径</strong>（<code translate="no">json_path</code> ）：要建立索引的 JSON 对象中键或嵌套字段的路径。</p>
+<li><p><strong>JSON path</strong> (<code translate="no">json_path</code>): The path to the key or nested field within your JSON object that you want to index.</p>
 <ul>
-<li><p>示例：</p>
+<li><p>Example:</p>
 <ul>
-<li><p>对于键，<code translate="no">metadata[&quot;category&quot;]</code></p></li>
-<li><p>对于嵌套字段，<code translate="no">metadata[&quot;contact&quot;][&quot;email&quot;]</code></p></li>
+<li><p>For a key, <code translate="no">metadata[&quot;category&quot;]</code></p></li>
+<li><p>For a nested field, <code translate="no">metadata[&quot;contact&quot;][&quot;email&quot;]</code></p></li>
 </ul>
-<p>这定义了索引引擎应在 JSON 结构中的何处查找。</p></li>
+<p>This defines where the indexing engine should look inside the JSON structure.</p></li>
 </ul></li>
-<li><p><strong>JSON 转换类型</strong>（<code translate="no">json_cast_type</code> ）：Milvus 在解析和索引指定路径下的值时应使用的数据类型。</p>
+<li><p><strong>JSON cast type</strong> (<code translate="no">json_cast_type</code>): The data type that Milvus should use when interpreting and indexing the value at the specified path.</p>
 <ul>
-<li><p>该类型必须与被索引字段的实际数据类型相匹配。若要在索引过程中将数据类型转换为其他类型，请考虑<a href="/docs/zh/use-json-fields.md#Use-JSON-cast-functions-for-type-conversion--Milvus-2514">使用类型转换函数</a>。</p></li>
-<li><p>完整列表请参见<a href="/docs/zh/use-json-fields.md#Supported-JSON-cast-types">下文</a>。</p></li>
+<li><p>This type must match the actual data type of the field being indexed. If you want to convert the data type to another during indexing, consider <a href="/docs/zh/use-json-fields.md#Use-JSON-cast-functions-for-type-conversion--Milvus-2514">using a cast function</a>.</p></li>
+<li><p>For a complete list, see <a href="/docs/zh/use-json-fields.md#Supported-JSON-cast-types">below</a>.</p></li>
 </ul></li>
 </ul>
-<h4 id="Supported-JSON-cast-types" class="common-anchor-header">支持的 JSON 类型转换</h4><p>类型转换不区分大小写。支持以下类型：</p>
+<h4 id="Supported-JSON-cast-types" class="common-anchor-header">Supported JSON cast types</h4><p>Cast types are case-insensitive. The following types are supported:</p>
 <table>
    <tr>
-     <th><p>转换类型</p></th>
-     <th><p>描述</p></th>
-     <th><p>JSON 值示例</p></th>
+     <th><p>Cast Type</p></th>
+     <th><p>Description</p></th>
+     <th><p>Example JSON Value</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">bool</code></p></td>
-     <td><p>布尔值</p></td>
-     <td><p><code translate="no">true</code>,<code translate="no">false</code></p></td>
+     <td><p>Boolean value</p></td>
+     <td><p><code translate="no">true</code>, <code translate="no">false</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">double</code></p></td>
-     <td><p>数值（整数或浮点数）</p></td>
-     <td><p><code translate="no">42</code>,<code translate="no">99.99</code>,<code translate="no">-15.5</code></p></td>
+     <td><p>Numeric value (integer or float)</p></td>
+     <td><p><code translate="no">42</code>, <code translate="no">99.99</code>, <code translate="no">-15.5</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">varchar</code></p></td>
-     <td><p>字符串值</p></td>
-     <td><p><code translate="no">"electronics"</code>,<code translate="no">"BrandA"</code></p></td>
+     <td><p>String value</p></td>
+     <td><p><code translate="no">"electronics"</code>, <code translate="no">"BrandA"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">array_bool</code></p></td>
-     <td><p>布尔值数组</p></td>
+     <td><p>Array of booleans</p></td>
      <td><p><code translate="no">[true, false, true]</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">array_double</code></p></td>
-     <td><p>数字数组</p></td>
+     <td><p>Array of numbers</p></td>
      <td><p><code translate="no">[1.2, 3.14, 42]</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">array_varchar</code></p></td>
-     <td><p>字符串数组</p></td>
+     <td><p>Array of strings</p></td>
      <td><p><code translate="no">["tag1", "tag2", "tag3"]</code></p></td>
    </tr>
 </table>
 <div class="alert note">
-<p>为实现最佳索引效果，数组中的元素应为同一类型。有关详细信息，请参阅<a href="/docs/zh/array_data_type.md">“数组字段”</a>。</p>
+<p>Arrays should contain elements of the same type for optimal indexing. For more information, refer to <a href="/docs/zh/array_data_type.md">Array Field</a>.</p>
 </div>
-<h4 id="Example-Create-JSON-path-indexes" class="common-anchor-header">示例：创建 JSON 路径索引</h4><p>以下示例基于介绍部分中的<code translate="no">metadata</code> JSON结构，演示了如何在不同的JSON路径上创建索引：</p>
+<h4 id="Example-Create-JSON-path-indexes" class="common-anchor-header">Example: Create JSON path indexes</h4><p>Using the <code translate="no">metadata</code> JSON structure from our introduction, here are examples of how to create indexes on different JSON paths:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Index the category field as a string</span>
 index_params = client.prepare_index_params()
@@ -641,26 +642,26 @@ indexOpt2 := milvusclient.NewCreateIndexOption(<span class="hljs-string">&quot;p
   }
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h4 id="Use-JSON-cast-functions-for-type-conversion" class="common-anchor-header">使用 JSON 类型转换函数进行类型转换<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.5.14+</span></h4><p>如果您的 JSON 字段键包含格式不正确的值（例如，以字符串形式存储的数字），可以在建立索引时使用转换函数来转换这些值。</p>
-<h5 id="Supported-cast-functions" class="common-anchor-header">支持的转换函数</h5><p>类型转换函数不区分大小写。支持以下类型：</p>
+<h4 id="Use-JSON-cast-functions-for-type-conversion" class="common-anchor-header">Use JSON cast functions for type conversion<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.5.14+</span></h4><p>If your JSON field key contains values in an incorrect format (e.g., numbers stored as strings), you can use cast functions to convert values during indexing.</p>
+<h5 id="Supported-cast-functions" class="common-anchor-header">Supported cast functions</h5><p>Cast functions are case-insensitive. The following types are supported:</p>
 <table>
    <tr>
-     <th><p>转换函数</p></th>
-     <th><p>转换源 → 转换目标</p></th>
-     <th><p>使用场景</p></th>
+     <th><p>Cast Function</p></th>
+     <th><p>Converts From → To</p></th>
+     <th><p>Use Case</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">"STRING_TO_DOUBLE"</code></p></td>
-     <td><p>字符串 → 数值（双精度）</p></td>
-     <td><p>将<code translate="no">"99.99"</code> 转换为<code translate="no">99.99</code></p></td>
+     <td><p>String → Numeric (double)</p></td>
+     <td><p>Convert <code translate="no">"99.99"</code> to <code translate="no">99.99</code></p></td>
    </tr>
 </table>
-<h5 id="Example-Cast-string-numbers-to-double" class="common-anchor-header">示例：将字符串形式的数字转换为 double 类型</h5><div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+<h5 id="Example-Cast-string-numbers-to-double" class="common-anchor-header">Example: Cast string numbers to double</h5><div class="multipleCode">
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Convert string numbers to double for indexing</span>
 index_params.add_index(
@@ -718,11 +719,11 @@ indexOpt3 := milvusclient.NewCreateIndexOption(<span class="hljs-string">&quot;p
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
 <ul>
-<li><p><code translate="no">json_cast_type</code> 参数为必填项，且必须与转换函数的输出类型一致。</p></li>
-<li><p>如果转换失败（例如，非数字字符串），则该值将被跳过且不会被索引。</p></li>
+<li><p>The <code translate="no">json_cast_type</code> parameter is mandatory and must be the same as the cast function’s output type.</p></li>
+<li><p>If conversion fails (e.g., non-numeric string), the value is skipped and not indexed.</p></li>
 </ul>
 </div>
-<h3 id="Apply-indexes-to-the-collection" class="common-anchor-header">将索引应用于Collection<button data-href="#Apply-indexes-to-the-collection" class="anchor-icon" translate="no">
+<h3 id="Apply-indexes-to-the-collection" class="common-anchor-header">Apply indexes to the collection<button data-href="#Apply-indexes-to-the-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -737,13 +738,13 @@ indexOpt3 := milvusclient.NewCreateIndexOption(<span class="hljs-string">&quot;p
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>定义索引参数后，您可以使用 `<code translate="no">create_index()</code>` 将其应用到 Collection：</p>
+    </button></h3><p>After defining the index parameters, you can apply them to the collection using <code translate="no">create_index()</code>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.create_index(
     collection_name=<span class="hljs-string">&quot;product_catalog&quot;</span>,
@@ -796,7 +797,7 @@ curl --request POST \
   \&quot;indexParams\&quot;: <span class="hljs-variable">$indexParams</span>
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Filter-by-JSON-field-values" class="common-anchor-header">按 JSON 字段值过滤<button data-href="#Filter-by-JSON-field-values" class="anchor-icon" translate="no">
+<h2 id="Filter-by-JSON-field-values" class="common-anchor-header">Filter by JSON field values<button data-href="#Filter-by-JSON-field-values" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -811,14 +812,14 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>在插入并为 JSON 字段建立索引后，您可以使用符合 JSON 路径语法的标准过滤表达式对其进行过滤。</p>
-<p>例如：</p>
+    </button></h2><p>After inserting and indexing JSON fields, you can filter on them using standard filter expressions with JSON path syntax.</p>
+<p>For example:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;metadata[&quot;category&quot;] == &quot;electronics&quot;&#x27;</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;metadata[&quot;price&quot;] &gt; 50&#x27;</span>
@@ -841,13 +842,13 @@ filterTags := <span class="hljs-string">`json_contains(metadata[&quot;tags&quot;
 <span class="hljs-built_in">export</span> filterPrice=<span class="hljs-string">&#x27;metadata[&quot;price&quot;] &gt; 50&#x27;</span>
 <span class="hljs-built_in">export</span> filterTags=<span class="hljs-string">&#x27;json_contains(metadata[&quot;tags&quot;], &quot;featured&quot;)&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>要在搜索或查询中使用这些表达式，请确保：</p>
+<p>To use these expressions in a search or query, make sure:</p>
 <ul>
-<li><p>您已为每个向量字段创建了索引。</p></li>
-<li><p>Collection已加载到内存中。</p></li>
+<li><p>You have created an index on each vector field.</p></li>
+<li><p>The collection is loaded into memory.</p></li>
 </ul>
-<p>有关支持的操作符和表达式的完整列表，请参阅<a href="/docs/zh/json-operators.md">JSON 操作符</a>。</p>
-<h2 id="Pull-it-all-together" class="common-anchor-header">综合应用<button data-href="#Pull-it-all-together" class="anchor-icon" translate="no">
+<p>For a full list of supported operators and expressions, refer to <a href="/docs/zh/json-operators.md">JSON Operators</a>.</p>
+<h2 id="Pull-it-all-together" class="common-anchor-header">Pull it all together<button data-href="#Pull-it-all-together" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -862,17 +863,17 @@ filterTags := <span class="hljs-string">`json_contains(metadata[&quot;tags&quot;
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>至此，您已经学会了如何在 JSON 字段中定义、插入结构化值，并可选地为其建立索引。</p>
-<p>要在实际应用中完成该工作流，您还需要：</p>
+    </button></h2><p>By now, you’ve learned how to define, insert, and optionally index structured values inside a JSON field.</p>
+<p>To complete the workflow in a real-world application, you’ll also need to:</p>
 <ul>
-<li><p><strong>在向量字段上创建索引</strong>（Collection中的每个向量字段都必须创建<strong>索引</strong>）</p>
-<p>请参阅《<a href="/docs/zh/create-collection.md#Optional-Set-Index-Parameters">设置索引参数</a>》</p></li>
-<li><p><strong>加载Collection</strong></p>
-<p>请参阅<a href="/docs/zh/load-and-release.md">“加载与释放”</a></p></li>
-<li><p><strong>使用 JSON 路径过滤器进行搜索或查询</strong></p>
-<p>请参阅<a href="/docs/zh/filtered-search.md">“过滤搜索</a>和<a href="/docs/zh/json-operators.md">JSON 操作符</a>”</p></li>
+<li><p><strong>Create an index on your vector fields</strong> (mandatory for each vector field in a collection)</p>
+<p>Refer to <a href="/docs/zh/create-collection.md#Optional-Set-Index-Parameters">Set Index Parameters</a></p></li>
+<li><p><strong>Load the collection</strong></p>
+<p>Refer to <a href="/docs/zh/load-and-release.md">Load & Release</a></p></li>
+<li><p><strong>Search or query using JSON path filters</strong></p>
+<p>Refer to <a href="/docs/zh/filtered-search.md">Filtered Search</a> and <a href="/docs/zh/json-operators.md">JSON Operators</a></p></li>
 </ul>
-<h2 id="FAQ" class="common-anchor-header">常见问题<button data-href="#FAQ" class="anchor-icon" translate="no">
+<h2 id="FAQ" class="common-anchor-header">FAQ<button data-href="#FAQ" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -887,7 +888,7 @@ filterTags := <span class="hljs-string">`json_contains(metadata[&quot;tags&quot;
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="What-are-the-differences-between-a-JSON-field-and-the-dynamic-field" class="common-anchor-header">JSON 字段与 Dynamic Field 有什么区别？<button data-href="#What-are-the-differences-between-a-JSON-field-and-the-dynamic-field" class="anchor-icon" translate="no">
+    </button></h2><h3 id="What-are-the-differences-between-a-JSON-field-and-the-dynamic-field" class="common-anchor-header">What are the differences between a JSON field and the dynamic field?<button data-href="#What-are-the-differences-between-a-JSON-field-and-the-dynamic-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -903,12 +904,12 @@ filterTags := <span class="hljs-string">`json_contains(metadata[&quot;tags&quot;
         ></path>
       </svg>
     </button></h3><ul>
-<li><p><strong>JSON 字段</strong>由 Schema 定义。您必须在 Schema 中显式声明该字段。</p></li>
-<li><p><strong>Dynamic Field是一个</strong>隐藏的 JSON 对象（<code translate="no">$meta</code> ），会自动存储 Schema 中未定义的任何字段。</p></li>
+<li><p><strong>JSON field</strong> is schema-defined. You must explicitly declare the field in the schema.</p></li>
+<li><p><strong>Dynamic field</strong> is a hidden JSON object (<code translate="no">$meta</code>) that automatically stores any field not defined in the schema.</p></li>
 </ul>
-<p>两者都支持嵌套结构和 JSON 路径索引，但 Dynamic Field 更适合可选或不断演变的数据结构。</p>
-<p>详情请参阅<a href="/docs/zh/enable-dynamic-field.md">“Dynamic Field</a>”。</p>
-<h3 id="Are-there-any-limitations-on-the-size-of-a-JSON-field" class="common-anchor-header">JSON 字段的大小是否有任何限制？<button data-href="#Are-there-any-limitations-on-the-size-of-a-JSON-field" class="anchor-icon" translate="no">
+<p>Both support nested structures and JSON path indexing, but dynamic fields are more suitable for optional or evolving data structures.</p>
+<p>Refer to <a href="/docs/zh/enable-dynamic-field.md">Dynamic Field</a> for details.</p>
+<h3 id="Are-there-any-limitations-on-the-size-of-a-JSON-field" class="common-anchor-header">Are there any limitations on the size of a JSON field?<button data-href="#Are-there-any-limitations-on-the-size-of-a-JSON-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -923,8 +924,8 @@ filterTags := <span class="hljs-string">`json_contains(metadata[&quot;tags&quot;
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>有。每个 JSON 字段的大小限制为 65,536 字节。</p>
-<h3 id="Does-a-JSON-field-support-setting-a-default-value" class="common-anchor-header">JSON 字段支持设置默认值吗？<button data-href="#Does-a-JSON-field-support-setting-a-default-value" class="anchor-icon" translate="no">
+    </button></h3><p>Yes. Each JSON field is limited to 65,536 bytes.</p>
+<h3 id="Does-a-JSON-field-support-setting-a-default-value" class="common-anchor-header">Does a JSON field support setting a default value?<button data-href="#Does-a-JSON-field-support-setting-a-default-value" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -939,9 +940,9 @@ filterTags := <span class="hljs-string">`json_contains(metadata[&quot;tags&quot;
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>不，JSON 字段不支持默认值。不过，您可以在定义字段时设置 `<code translate="no">nullable=True</code> `，以允许空条目。</p>
-<p>详情请参阅<a href="/docs/zh/nullable-and-default.md">“可为空与默认值</a>”。</p>
-<h3 id="Are-there-any-naming-conventions-for-JSON-field-keys" class="common-anchor-header">JSON 字段键名是否有命名规范？<button data-href="#Are-there-any-naming-conventions-for-JSON-field-keys" class="anchor-icon" translate="no">
+    </button></h3><p>No, JSON fields do not support default values. However, you can set <code translate="no">nullable=True</code> when defining the field to allow empty entries.</p>
+<p>Refer to <a href="/docs/zh/nullable-and-default.md">Nullable & Default</a> for details.</p>
+<h3 id="Are-there-any-naming-conventions-for-JSON-field-keys" class="common-anchor-header">Are there any naming conventions for JSON field keys?<button data-href="#Are-there-any-naming-conventions-for-JSON-field-keys" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -956,13 +957,13 @@ filterTags := <span class="hljs-string">`json_contains(metadata[&quot;tags&quot;
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>是的，为了确保与查询和索引的兼容性：</p>
+    </button></h3><p>Yes, to ensure compatibility with queries and indexing:</p>
 <ul>
-<li><p>JSON 键中仅可使用字母、数字和下划线。</p></li>
-<li><p>请避免使用特殊字符、空格或句点（例如<code translate="no">.</code> 、<code translate="no">/</code> 等）。</p></li>
-<li><p>不兼容的键可能会导致过滤表达式中的解析问题。</p></li>
+<li><p>Use only letters, numbers, and underscores in JSON keys.</p></li>
+<li><p>Avoid using special characters, spaces, or dots (<code translate="no">.</code>, <code translate="no">/</code>, etc.).</p></li>
+<li><p>Incompatible keys may cause parsing issues in filter expressions.</p></li>
 </ul>
-<h3 id="How-does-Milvus-handle-string-values-in-JSON-fields" class="common-anchor-header">Milvus 如何处理 JSON 字段中的字符串值？<button data-href="#How-does-Milvus-handle-string-values-in-JSON-fields" class="anchor-icon" translate="no">
+<h3 id="How-does-Milvus-handle-string-values-in-JSON-fields" class="common-anchor-header">How does Milvus handle string values in JSON fields?<button data-href="#How-does-Milvus-handle-string-values-in-JSON-fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -977,14 +978,14 @@ filterTags := <span class="hljs-string">`json_contains(metadata[&quot;tags&quot;
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Milvus 会将字符串值原样存储为 JSON 输入中的形式，不会进行语义转换。引号使用不当的字符串可能会导致解析错误。</p>
-<p><strong>有效字符串示例</strong>：</p>
+    </button></h3><p>Milvus stores string values exactly as they appear in the JSON input—without semantic transformation. Improperly quoted strings may result in errors during parsing.</p>
+<p><strong>Examples of valid strings</strong>:</p>
 <pre><code translate="no" class="language-plaintext">&quot;a\&quot;b&quot;, &quot;a&#x27;b&quot;, &quot;a\\b&quot;
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>无效字符串示例</strong>：</p>
+<p><strong>Examples of invalid strings</strong>:</p>
 <pre><code translate="no" class="language-plaintext">&#x27;a&quot;b&#x27;, &#x27;a\&#x27;b&#x27;
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="What-filtering-logic-does-Milvus-use-for-indexed-JSON-paths" class="common-anchor-header">Milvus 对索引的 JSON 路径使用何种过滤逻辑？<button data-href="#What-filtering-logic-does-Milvus-use-for-indexed-JSON-paths" class="anchor-icon" translate="no">
+<h3 id="What-filtering-logic-does-Milvus-use-for-indexed-JSON-paths" class="common-anchor-header">What filtering logic does Milvus use for indexed JSON paths?<button data-href="#What-filtering-logic-does-Milvus-use-for-indexed-JSON-paths" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1000,14 +1001,14 @@ filterTags := <span class="hljs-string">`json_contains(metadata[&quot;tags&quot;
         ></path>
       </svg>
     </button></h3><ul>
-<li><p><strong>数值索引</strong>：</p>
-<p>如果使用 `<code translate="no">json_cast_type=&quot;double&quot;</code>` 创建索引，则只有数值过滤条件（例如 `<code translate="no">&gt;</code>`、`<code translate="no">&lt;</code>`、`<code translate="no">== 42</code>`）才会利用该索引。非数值条件可能会回退到暴力扫描。</p></li>
-<li><p><strong>字符串索引</strong>：</p>
-<p>如果索引使用<code translate="no">json_cast_type=&quot;varchar&quot;</code> ，则只有字符串过滤条件才能从该索引中受益；其他类型可能会退而采用全量扫描。</p></li>
-<li><p><strong>布尔索引</strong>：</p>
-<p>布尔索引的行为与字符串索引类似，仅当条件严格匹配 true 或 false 时才会使用索引。</p></li>
+<li><p><strong>Numeric Indexing</strong>:</p>
+<p>If an index is created with <code translate="no">json_cast_type=&quot;double&quot;</code>, only numeric filter conditions (e.g., <code translate="no">&gt;</code>, <code translate="no">&lt;</code>, <code translate="no">== 42</code>) will leverage the index. Non-numeric conditions may fall back to a brute-force scan.</p></li>
+<li><p><strong>String Indexing</strong>:</p>
+<p>If an index uses <code translate="no">json_cast_type=&quot;varchar&quot;</code>, only string filter conditions will benefit from the index; other types may fall back to a brute-force scan.</p></li>
+<li><p><strong>Boolean Indexing</strong>:</p>
+<p>Boolean indexing behaves similarly to string indexing, with index usage only when the condition strictly matches true or false.</p></li>
 </ul>
-<h3 id="What-about-numeric-precision-when-indexing-JSON-fields" class="common-anchor-header">索引 JSON 字段时，数值精度如何处理？<button data-href="#What-about-numeric-precision-when-indexing-JSON-fields" class="anchor-icon" translate="no">
+<h3 id="What-about-numeric-precision-when-indexing-JSON-fields" class="common-anchor-header">What about numeric precision when indexing JSON fields?<button data-href="#What-about-numeric-precision-when-indexing-JSON-fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1022,9 +1023,9 @@ filterTags := <span class="hljs-string">`json_contains(metadata[&quot;tags&quot;
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Milvus 将所有被索引的数值都存储为双精度浮点数。</p>
-<p>如果数值超过<strong>2^53，</strong>可能会丢失精度。这种精度损失可能导致过滤查询无法精确匹配超出范围的值。</p>
-<h3 id="Can-I-create-multiple-indexes-on-the-same-JSON-path-with-different-cast-types" class="common-anchor-header">我可以在同一 JSON 路径上创建多个具有不同转换类型的索引吗？<button data-href="#Can-I-create-multiple-indexes-on-the-same-JSON-path-with-different-cast-types" class="anchor-icon" translate="no">
+    </button></h3><p>Milvus stores all indexed numeric values as doubles.</p>
+<p>If a numeric value exceeds <strong>2^53</strong>, it may lose precision. This loss of precision can result in filter queries not matching out-of-range values exactly.</p>
+<h3 id="Can-I-create-multiple-indexes-on-the-same-JSON-path-with-different-cast-types" class="common-anchor-header">Can I create multiple indexes on the same JSON path with different cast types?<button data-href="#Can-I-create-multiple-indexes-on-the-same-JSON-path-with-different-cast-types" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1039,8 +1040,8 @@ filterTags := <span class="hljs-string">`json_contains(metadata[&quot;tags&quot;
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>不可以，每个 JSON 路径<strong>仅</strong>支持<strong>一个索引</strong>。您必须选择一个与您的数据相匹配的<code translate="no">json_cast_type</code> 。不支持在同一路径上创建具有不同转换类型的多个索引。</p>
-<h3 id="What-if-values-on-a-JSON-path-have-inconsistent-types" class="common-anchor-header">如果 JSON 路径上的值类型不一致会怎样？<button data-href="#What-if-values-on-a-JSON-path-have-inconsistent-types" class="anchor-icon" translate="no">
+    </button></h3><p>No, each JSON path supports <strong>only one index</strong>. You must choose a single <code translate="no">json_cast_type</code> that matches your data. Creating multiple indexes on the same path with different cast types is not supported.</p>
+<h3 id="What-if-values-on-a-JSON-path-have-inconsistent-types" class="common-anchor-header">What if values on a JSON path have inconsistent types?<button data-href="#What-if-values-on-a-JSON-path-have-inconsistent-types" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1055,8 +1056,8 @@ filterTags := <span class="hljs-string">`json_contains(metadata[&quot;tags&quot;
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>实体间类型不一致可能会导致<strong>部分索引</strong>。例如，如果<code translate="no">metadata[&quot;price&quot;]</code> 同时以数字（<code translate="no">99.99</code> ）和字符串（<code translate="no">&quot;99.99&quot;</code> ）形式存储，且索引定义为<code translate="no">json_cast_type=&quot;double&quot;</code> ，则仅数字值会被索引。字符串形式的条目将被跳过，不会出现在过滤结果中。</p>
-<h3 id="Can-I-use-filters-with-a-different-type-than-the-indexed-cast-type" class="common-anchor-header">我可以使用与索引转换类型不同的过滤器类型吗？<button data-href="#Can-I-use-filters-with-a-different-type-than-the-indexed-cast-type" class="anchor-icon" translate="no">
+    </button></h3><p>Inconsistent types across entities can lead to <strong>partial indexing</strong>. For example, if <code translate="no">metadata[&quot;price&quot;]</code> is stored as both a number (<code translate="no">99.99</code>) and a string (<code translate="no">&quot;99.99&quot;</code>), and the index is defined with <code translate="no">json_cast_type=&quot;double&quot;</code>, only the numeric values will be indexed. The string-form entries will be skipped and not appear in filter results.</p>
+<h3 id="Can-I-use-filters-with-a-different-type-than-the-indexed-cast-type" class="common-anchor-header">Can I use filters with a different type than the indexed cast type?<button data-href="#Can-I-use-filters-with-a-different-type-than-the-indexed-cast-type" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1071,4 +1072,4 @@ filterTags := <span class="hljs-string">`json_contains(metadata[&quot;tags&quot;
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>如果您的过滤表达式使用的类型与索引的<code translate="no">json_cast_type</code> 不同，系统将<strong>不会使用该索引</strong>，并可能回退到较慢的暴力扫描——前提是数据允许。为了获得最佳性能，请始终确保您的过滤表达式与索引的转换类型保持一致。</p>
+    </button></h3><p>If your filter expression uses a different type than the index’s <code translate="no">json_cast_type</code>, the system will <strong>not use the index</strong>, and may fall back to a slower brute-force scan—if the data allows. For best performance, always align your filter expression with the cast type of the index.</p>

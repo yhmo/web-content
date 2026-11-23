@@ -2,7 +2,9 @@
 id: gpu-cagra.md
 title: GPU_CAGRA
 summary: >-
-  GPU_CAGRAインデックスは、GPU向けに最適化されたグラフベースのインデックスです。推論用GPUを使用してMilvusのGPU版を実行することは、高価な学習用GPUを使用する場合に比べて、コスト効率に優れています。
+  The GPU_CAGRA index is a graph-based index optimized for GPUs. Using
+  inference-grade GPUs to run the Milvus GPU version can be more cost-effective
+  compared to using expensive training-grade GPUs.
 ---
 <h1 id="GPUCAGRA" class="common-anchor-header">GPU_CAGRA<button data-href="#GPUCAGRA" class="anchor-icon" translate="no">
       <svg translate="no"
@@ -19,8 +21,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p><strong>GPU_CAGRAインデックス</strong>は、GPU向けに最適化されたグラフベースのインデックスです。推論用GPUを使用してMilvusのGPU版を実行することは、高価な学習用GPUを使用する場合に比べて、コスト効率に優れています。</p>
-<h2 id="Build-index" class="common-anchor-header">インデックスの構築<button data-href="#Build-index" class="anchor-icon" translate="no">
+    </button></h1><p>The <strong>GPU_CAGRA</strong> index is a graph-based index optimized for GPUs. Using inference-grade GPUs to run the Milvus GPU version can be more cost-effective compared to using expensive training-grade GPUs.</p>
+<h2 id="Build-index" class="common-anchor-header">Build index<button data-href="#Build-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -35,7 +37,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvusでベクトルフィールド上に<code translate="no">GPU_CAGRA</code> インデックスを構築するには、<code translate="no">add_index()</code> メソッドを使用し、<code translate="no">index_type</code> 、<code translate="no">metric_type</code> 、およびインデックスの追加パラメータを指定します。</p>
+    </button></h2><p>To build a <code translate="no">GPU_CAGRA</code> index on a vector field in Milvus, use the <code translate="no">add_index()</code> method, specifying the <code translate="no">index_type</code>, <code translate="no">metric_type</code>, and additional parameters for the index.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 <span class="hljs-comment"># Prepare index building params</span>
@@ -55,14 +57,14 @@ index_params.add_index(
     } <span class="hljs-comment"># Index building params</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>この設定では：</p>
+<p>In this configuration:</p>
 <ul>
-<li><p><code translate="no">index_type</code>: 構築するインデックスのタイプ。この例では、値を<code translate="no">GPU_CAGRA</code> に設定します。</p></li>
-<li><p><code translate="no">metric_type</code>: ベクトル間の距離を計算するために使用されるメソッド。詳細については、「<a href="/docs/ja/v2.6.x/metric.md">メトリックタイプ</a>」を参照してください。</p></li>
-<li><p><code translate="no">params</code>: インデックスの構築に関する追加の設定オプション。<code translate="no">GPU_CAGRA</code> インデックスで使用可能な構築パラメータの詳細については、<a href="/docs/ja/v2.6.x/gpu-cagra.md#Index-building-params">「インデックス構築パラメータ</a>」を参照してください。</p></li>
+<li><p><code translate="no">index_type</code>: The type of index to be built. In this example, set the value to <code translate="no">GPU_CAGRA</code>.</p></li>
+<li><p><code translate="no">metric_type</code>: The method used to calculate the distance between vectors. For details, refer to <a href="/docs/ja/v2.6.x/metric.md">Metric Types</a>.</p></li>
+<li><p><code translate="no">params</code>: Additional configuration options for building the index. To learn more building parameters available for the <code translate="no">GPU_CAGRA</code> index, refer to <a href="/docs/ja/v2.6.x/gpu-cagra.md#Index-building-params">Index building params</a>.</p></li>
 </ul>
-<p>インデックスパラメータの設定が完了したら、<code translate="no">create_index()</code> メソッドを直接使用するか、<code translate="no">create_collection</code> メソッドにインデックスパラメータを渡すことで、インデックスを作成できます。詳細については、「<a href="/docs/ja/v2.6.x/create-collection.md">コレクションの作成</a>」を参照してください。</p>
-<h2 id="Search-on-index" class="common-anchor-header">インデックスでの検索<button data-href="#Search-on-index" class="anchor-icon" translate="no">
+<p>Once the index parameters are configured, you can create the index by using the <code translate="no">create_index()</code> method directly or passing the index params in the <code translate="no">create_collection</code> method. For details, refer to <a href="/docs/ja/v2.6.x/create-collection.md">Create Collection</a>.</p>
+<h2 id="Search-on-index" class="common-anchor-header">Search on index<button data-href="#Search-on-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -77,7 +79,7 @@ index_params.add_index(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>インデックスの構築とエンティティの挿入が完了すると、そのインデックスに対して類似度検索を実行できます。</p>
+    </button></h2><p>Once the index is built and entities are inserted, you can perform similarity searches on the index.</p>
 <pre><code translate="no" class="language-python">search_params = {
     <span class="hljs-string">&quot;params&quot;</span>: {
         <span class="hljs-string">&quot;itopk_size&quot;</span>: <span class="hljs-number">16</span>, <span class="hljs-comment"># Determines the size of intermediate results kept during the search</span>
@@ -93,11 +95,11 @@ res = MilvusClient.search(
     search_params=search_params
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>この構成では：</p>
+<p>In this configuration:</p>
 <ul>
-<li><code translate="no">params</code>: インデックスでの検索に関する追加の設定オプション。<code translate="no">GPU_CAGRA</code> インデックスで使用可能な検索パラメータの詳細については、「<a href="/docs/ja/v2.6.x/gpu-cagra.md#Index-specific-search-params">インデックス固有の検索パラメータ</a>」を参照してください。</li>
+<li><code translate="no">params</code>: Additional configuration options for searching on the index. To learn more search parameters available for the <code translate="no">GPU_CAGRA</code> index, refer to <a href="/docs/ja/v2.6.x/gpu-cagra.md#Index-specific-search-params">Index-specific search params</a>.</li>
 </ul>
-<h2 id="Enable-CPU-search-at-load-time--Milvus-264+" class="common-anchor-header">ロード時に CPU 検索を有効にする<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.4+</span><button data-href="#Enable-CPU-search-at-load-time--Milvus-264+" class="anchor-icon" translate="no">
+<h2 id="Enable-CPU-search-at-load-time" class="common-anchor-header">Enable CPU search at load time<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.4+</span><button data-href="#Enable-CPU-search-at-load-time" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -112,23 +114,23 @@ res = MilvusClient.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>ロード時に CPU 検索を動的に有効にするには、<code translate="no">milvus.yaml</code> 内の以下の設定を編集してください：</p>
+    </button></h2><p>To enable CPU search dynamically at load time, edit the following config in <code translate="no">milvus.yaml</code>:</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-comment"># milvus.yaml</span>
 <span class="hljs-attr">knowhere:</span>
   <span class="hljs-attr">GPU_CAGRA:</span>
     <span class="hljs-attr">load:</span> 
       <span class="hljs-attr">adapt_for_cpu:</span> <span class="hljs-literal">true</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>動作</strong></p>
+<p><strong>Behavior</strong></p>
 <ul>
-<li><p><code translate="no">load.adapt_for_cpu</code> が<code translate="no">true</code> に設定されている場合、Milvusはロード時に<strong>GPU_CAGRA</strong>インデックスをCPUで実行可能な形式（HNSW風）に変換します。</p></li>
-<li><p>これにより、インデックスがもともとGPU用に構築されていた場合でも、その後の検索操作はCPU上で実行されます。</p></li>
-<li><p>省略された場合、またはfalseに設定された場合、インデックスはGPU上に残り、検索もGPU上で実行されます。</p></li>
+<li><p>When <code translate="no">load.adapt_for_cpu</code> is set to <code translate="no">true</code>, Milvus converts the <strong>GPU_CAGRA</strong> index into a CPU-executable format (HNSW-like) during load.</p></li>
+<li><p>Subsequent search operations are executed on CPU, even if the index was originally built for GPU.</p></li>
+<li><p>If omitted or false, the index stays on GPU and searches run on GPU.</p></li>
 </ul>
 <div class="alert note">
-<p>インデックスの構築には GPU リソースが割り当てられているが、検索は CPU 上で実行されるハイブリッド環境やコスト重視の環境では、ロード時の CPU 適応を使用してください。</p>
+<p>Use load-time CPU adaptation in hybrid or cost-sensitive environments where GPU resources are reserved for index building but searches run on CPU.</p>
 </div>
-<h2 id="Index-params" class="common-anchor-header">インデックスパラメータ<button data-href="#Index-params" class="anchor-icon" translate="no">
+<h2 id="Index-params" class="common-anchor-header">Index params<button data-href="#Index-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -143,8 +145,8 @@ res = MilvusClient.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>このセクションでは、インデックスの構築およびインデックスでの検索に使用されるパラメータの概要を説明します。</p>
-<h3 id="Index-building-params" class="common-anchor-header">インデックス構築パラメータ<button data-href="#Index-building-params" class="anchor-icon" translate="no">
+    </button></h2><p>This section provides an overview of the parameters used for building an index and performing searches on the index.</p>
+<h3 id="Index-building-params" class="common-anchor-header">Index building params<button data-href="#Index-building-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -159,40 +161,40 @@ res = MilvusClient.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>次の表は、<code translate="no">params</code> で<a href="/docs/ja/v2.6.x/gpu-cagra.md#Build-index">インデックスを構築する</a>際に設定できるパラメータの一覧です。</p>
+    </button></h3><p>The following table lists the parameters that can be configured in <code translate="no">params</code> when <a href="/docs/ja/v2.6.x/gpu-cagra.md#Build-index">building an index</a>.</p>
 <table>
    <tr>
-     <th><p>パラメータ</p></th>
-     <th><p>説明</p></th>
-     <th><p>デフォルト値</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Description</p></th>
+     <th><p>Default Value</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">intermediate_graph_degree</code></p></td>
-     <td><p>プルーニング前のグラフの次数（degree）を決定することで、リコール率と構築時間に影響を与えます。推奨値は `<code translate="no">32</code> ` または `<code translate="no">64</code>` です。</p></td>
+     <td><p>Affects recall and build time by determining the graph’s degree before pruning. Recommended values are <code translate="no">32</code> or <code translate="no">64</code>.</p></td>
      <td><p><code translate="no">128</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">graph_degree</code></p></td>
-     <td><p>プルーニング後のグラフの次数設定により、検索パフォーマンスとリコール率に影響を与えます。これら2つの次数の差が大きいほど、構築時間は長くなります。この値は、<code translate="no">intermediate_graph_degree</code> の値よりも小さくなければなりません。</p></td>
+     <td><p>Affects search performance and recall by setting the graph’s degree after pruning. A larger difference between these two degrees results in a longer build time. Its value must be smaller than the value of <code translate="no">intermediate_graph_degree</code>.</p></td>
      <td><p><code translate="no">64</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">build_algo</code></p></td>
-     <td><p>剪定前のグラフ生成アルゴリズムを選択します。指定可能な値：</p><ul><li><p><code translate="no">IVF_PQ</code>: 品質は高くなりますが、構築時間は長くなります。</p></li><li><p><code translate="no">NN_DESCENT</code>: 構築時間は短縮されますが、リコール率が低下する可能性があります。</p></li></ul></td>
+     <td><p>Selects the graph generation algorithm before pruning. Possible values:</p><ul><li><p><code translate="no">IVF_PQ</code>: Offers higher quality but slower build time.</p></li><li><p><code translate="no">NN_DESCENT</code>: Provides a quicker build with potentially lower recall.</p></li></ul></td>
      <td><p><code translate="no">IVF_PQ</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">cache_dataset_on_device</code></p></td>
-     <td><p>元のデータセットをGPUメモリにキャッシュするかどうかを決定します。可能な値：</p><ul><li><p><code translate="no">"true"</code>: 元のデータセットをキャッシュし、検索結果を精緻化することでリコール率を向上させます。</p></li><li><p><code translate="no">"false"</code>: GPUメモリを節約するため、元のデータセットをキャッシュしません。</p></li></ul></td>
+     <td><p>Decides whether to cache the original dataset in GPU memory. Possible values:</p><ul><li><p><code translate="no">"true"</code>: Caches the original dataset to enhance recall by refining search results.</p></li><li><p><code translate="no">"false"</code>: Does not cache the original dataset to save gpu memory.</p></li></ul></td>
      <td><p><code translate="no">"false"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">adapt_for_cpu</code></p></td>
-     <td><p>インデックス構築にGPUを使用し、検索にCPUを使用するかどうかを決定します。</p><p>このパラメータを<code translate="no">"true"</code> に設定する場合、検索リクエストに<code translate="no">ef</code> パラメータが含まれている必要があります。</p></td>
+     <td><p>Decides whether to use GPU for index-building and CPU for search.</p><p>Setting this parameter to <code translate="no">"true"</code> requires the presence of the <code translate="no">ef</code> parameter in the search requests.</p></td>
      <td><p><code translate="no">"false"</code></p></td>
    </tr>
 </table>
-<h3 id="Index-specific-search-params" class="common-anchor-header">インデックス固有の検索パラメータ<button data-href="#Index-specific-search-params" class="anchor-icon" translate="no">
+<h3 id="Index-specific-search-params" class="common-anchor-header">Index-specific search params<button data-href="#Index-specific-search-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -207,41 +209,41 @@ res = MilvusClient.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>次の表は、<a href="/docs/ja/v2.6.x/gpu-cagra.md#Search-on-index">インデックスを検索する</a>際に `<code translate="no">search_params.params</code> ` で設定できるパラメータの一覧です。</p>
+    </button></h3><p>The following table lists the parameters that can be configured in <code translate="no">search_params.params</code> when <a href="/docs/ja/v2.6.x/gpu-cagra.md#Search-on-index">searching on the index</a>.</p>
 <table>
    <tr>
-     <th><p>パラメータ</p></th>
-     <th><p>説明</p></th>
-     <th><p>デフォルト値</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Description</p></th>
+     <th><p>Default Value</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">itopk_size</code></p></td>
-     <td><p>検索中に保持される中間結果のサイズを決定します。 値を大きくすると、検索パフォーマンスは低下しますが、リコール率は向上する可能性があります。この値は、最終的な top-k (limit) 値以上である必要があり、通常は 2 のべき乗 (例: 16、32、64、128) になります。</p></td>
-     <td><p>空</p></td>
+     <td><p>Determines the size of intermediate results kept during the search. A larger value may improve recall at the expense of search performance. It should be at least equal to the final top-k (limit) value and is typically a power of 2 (e.g., 16, 32, 64, 128).</p></td>
+     <td><p>Empty</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">search_width</code></p></td>
-     <td><p>検索中に CAGRA グラフへのエントリポイントの数を指定します。この値を大きくするとリコール率は向上しますが、検索パフォーマンスに影響を与える可能性があります（例：1、2、4、8、16、32）。</p></td>
-     <td><p>空</p></td>
+     <td><p>Specifies the number of entry points into the CAGRA graph during the search. Increasing this value can enhance recall but may impact search performance（e.g. 1, 2, 4, 8, 16, 32).</p></td>
+     <td><p>Empty</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">num_random_samplings</code></p></td>
-     <td><p>グラフ検索の初期エントリポイントを選択する際、CAGRAがランダムサンプリングを行う度合いを制御します。値を大きくすると、CAGRAがより良いポイントから開始できる可能性が高まり、検索レイテンシの増加を代償としてリコールが向上します。値は少なくとも<code translate="no">1</code> 以上である必要があります。Milvus 2.6.20以降で利用可能です。</p></td>
+     <td><p>Controls how much random sampling CAGRA performs when choosing initial entry points for graph search. A larger value gives CAGRA more chances to start from better points, improving recall at the cost of increased search latency. The value must be at least <code translate="no">1</code>. Available in Milvus 2.6.20+.</p></td>
      <td><p><code translate="no">1</code></p></td>
    </tr>
    <tr>
-     <td><p><code translate="no">min_iterations</code> /<code translate="no">max_iterations</code></p></td>
-     <td><p>検索の反復処理を制御します。デフォルトでは<code translate="no">0</code> に設定されており、CAGRAは<code translate="no">itopk_size</code> および<code translate="no">search_width</code> に基づいて反復回数を自動的に決定します。これらの値を手動で調整することで、パフォーマンスと精度のバランスを調整できます。</p></td>
+     <td><p><code translate="no">min_iterations</code> / <code translate="no">max_iterations</code></p></td>
+     <td><p>Controls the search iteration process. By default, they are set to <code translate="no">0</code>, and CAGRA automatically determines the number of iterations based on <code translate="no">itopk_size</code> and <code translate="no">search_width</code>. Adjusting these values manually can help balance performance and accuracy.</p></td>
      <td><p><code translate="no">0</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">team_size</code></p></td>
-     <td><p>GPU上でメトリック距離を計算するために使用するCUDAスレッド数を指定します。一般的な値は、32までの2の冪（例：2、4、8、16、32）です。検索パフォーマンスへの影響は軽微です。 デフォルト値は `<code translate="no">0</code>` であり、Milvusはベクトルの次元に基づいて<code translate="no">team_size</code> を自動的に選択します。</p></td>
+     <td><p>Specifies the number of CUDA threads used for calculating metric distance on the GPU. Common values are a power of 2 up to 32 (e.g. 2, 4, 8, 16, 32). It has a minor impact on search performance. The default value is <code translate="no">0</code>, where Milvus automatically selects the <code translate="no">team_size</code> based on the vector dimension.</p></td>
      <td><p><code translate="no">0</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">ef</code></p></td>
-     <td><p>クエリの処理時間と精度のトレードオフを指定します。<code translate="no">ef</code> の値が大きいほど、検索精度は高くなりますが、処理時間は長くなります。</p><p>インデックスの構築時に<code translate="no">adapt_for_cpu</code> を<code translate="no">true</code> に設定する場合、このパラメータは必須となります。</p></td>
+     <td><p>Specifies the query time/accuracy trade-off. A higher <code translate="no">ef</code> value leads to more accurate but slower search.</p><p>This parameter is mandatory if you set <code translate="no">adapt_for_cpu</code> to <code translate="no">true</code> when you build the index.</p></td>
      <td><p><code translate="no">[top_k, int_max]</code></p></td>
    </tr>
 </table>

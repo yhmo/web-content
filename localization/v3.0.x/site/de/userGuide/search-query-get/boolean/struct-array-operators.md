@@ -1,13 +1,13 @@
 ---
 id: struct-array-operators.md
-title: StructArray-Operatoren
+title: StructArray Operators
 summary: >-
-  StructArray-Operatoren filtern Entitäten, indem sie Prädikate auf skalare
-  Teilfelder innerhalb eines StructArray-Feldes auswerten. Verwenden Sie diese
-  Seite als Syntaxreferenz für „element_filter“, die MATCH_*-Operatorfamilie und
-  Prädikate auf Zeilenebene für StructArray-Pfade.
+  StructArray operators filter entities by evaluating predicates on scalar
+  subfields inside a StructArray field. Use this page as a syntax reference for
+  element_filter, the MATCH_* operator family, and row-level predicates on
+  StructArray paths.
 ---
-<h1 id="StructArray-Operators" class="common-anchor-header">StructArray-Operatoren<button data-href="#StructArray-Operators" class="anchor-icon" translate="no">
+<h1 id="StructArray-Operators" class="common-anchor-header">StructArray Operators<button data-href="#StructArray-Operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -22,20 +22,20 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>StructArray-Operatoren filtern Entitäten, indem sie Prädikate auf skalare Unterfelder innerhalb eines StructArray-Feldes auswerten. Verwenden Sie diese Seite als Syntaxreferenz für „ <code translate="no">element_filter</code> “, die Operatorfamilie „ <code translate="no">MATCH_*</code> “ sowie Prädikate auf Zeilenebene für StructArray-Pfade.</p>
-<p>Die StructArray-Filterung umfasst zwei Operatorfamilien und eine Reihe von Pfadprädikaten auf Zeilenebene:</p>
+    </button></h1><p>StructArray operators filter entities by evaluating predicates on scalar subfields inside a StructArray field. Use this page as a syntax reference for <code translate="no">element_filter</code>, the <code translate="no">MATCH_*</code> operator family, and row-level predicates on StructArray paths.</p>
+<p>StructArray filtering has two operator families and a set of row-level path predicates:</p>
 <table>
 <thead>
-<tr><th>Filterform</th><th>Hauptzweck</th><th>Verhalten des Ergebnisses</th></tr>
+<tr><th>Filter form</th><th>Main purpose</th><th>Result behavior</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">element_filter</code></td><td>Sucht nach Struct-Elementen, die ein skalares Prädikat erfüllen.</td><td>Bei der Suche auf Elementebene können die Treffer Element-Offsets enthalten. Bei Abfragen auf Zeilenebene oder bei der gefilterten Suche hängt die Form des Ergebnisses von der API und den Ausgabefeldern ab.</td></tr>
-<tr><td><code translate="no">MATCH_*</code></td><td>Wählen Sie Entitäten danach aus, wie viele Struct-Elemente ein skalares Prädikat erfüllen.</td><td>Filterung auf Zeilenebene. Diese Operatoren geben selbst keine Element-Offsets zurück.</td></tr>
-<tr><td>Pfadprädikate auf Zeilenebene</td><td>Prüfen Sie die Position eines Elements, zählen Sie Struct-Elemente oder prüfen Sie Unterfeldwerte über Elemente hinweg ohne ein „ <code translate="no">$[...]</code> “-Prädikat.</td><td>Filterung auf Zeilenebene. Diese Prädikate geben keine Element-Offsets zurück.</td></tr>
+<tr><td><code translate="no">element_filter</code></td><td>Match Struct elements that satisfy a scalar predicate.</td><td>In element-level search, matched hits can include element offsets. In row-level query or filtered search, result shape depends on the API and output fields.</td></tr>
+<tr><td><code translate="no">MATCH_*</code></td><td>Select entities by how many Struct elements satisfy a scalar predicate.</td><td>Row-level filtering. These operators do not return element offsets by themselves.</td></tr>
+<tr><td>Row-level path predicates</td><td>Test one element position, count Struct elements, or test subfield values across elements without a <code translate="no">$[...]</code> predicate.</td><td>Row-level filtering. These predicates do not return element offsets.</td></tr>
 </tbody>
 </table>
-<p>Verwenden Sie in Milvus 3.0.6 und höher skalare Unterfelder sowie Array-Unterfelder in StructArray-Operatoren. Vektor-Unterfelder werden von Vektor-Suchpfaden verwendet und sind keine Eingaben für skalare Prädikate.</p>
-<h2 id="When-to-use-which-operator" class="common-anchor-header">Wann welcher Operator zu verwenden ist<button data-href="#When-to-use-which-operator" class="anchor-icon" translate="no">
+<p>Use scalar subfields, and array subfields in Milvus 3.0.6 and later, in StructArray operators. Vector subfields are used by vector search paths and are not scalar predicate inputs.</p>
+<h2 id="When-to-use-which-operator" class="common-anchor-header">When to use which operator<button data-href="#When-to-use-which-operator" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -50,23 +50,23 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Wählen Sie einen Operator entsprechend Ihrem Filterziel aus:</p>
+    </button></h2><p>Choose an operator according to your filtering goal:</p>
 <table>
 <thead>
-<tr><th>Ziel</th><th>Verwendung</th></tr>
+<tr><th>Goal</th><th>Use</th></tr>
 </thead>
 <tbody>
-<tr><td>Beschränken Sie die Vektorsuche auf Elementebene auf Elemente, die skalare Bedingungen erfüllen.</td><td><code translate="no">element_filter</code></td></tr>
-<tr><td>Erfüllen Sie mehrere skalare Bedingungen innerhalb desselben Struct-Elements.</td><td><code translate="no">element_filter</code></td></tr>
-<tr><td>Geben Sie nur Entitäten zurück, bei denen mindestens ein Struct-Element ein Prädikat erfüllt.</td><td><code translate="no">MATCH_ANY</code></td></tr>
-<tr><td>Gibt nur Entitäten zurück, bei denen alle Struct-Elemente ein Prädikat erfüllen.</td><td><code translate="no">MATCH_ALL</code></td></tr>
-<tr><td>Gibt nur Entitäten zurück, bei denen mindestens, höchstens oder genau <code translate="no">N</code> Struct-Elemente ein Prädikat erfüllen.</td><td><code translate="no">MATCH_LEAST</code>, <code translate="no">MATCH_MOST</code> oder <code translate="no">MATCH_EXACT</code></td></tr>
-<tr><td>Überprüfen Sie das Struct-Element an einer bestimmten Position, z. B. im ersten Chunk.</td><td>Ein Positionspfad wie <code translate="no">chunks[0][section]</code></td></tr>
-<tr><td>Filtern Sie nach der Anzahl der Struct-Elemente in einer Entität.</td><td><code translate="no">array_length(chunks)</code></td></tr>
-<tr><td>Prüfen Sie, ob ein beliebiges Struktur-Element einen Unterfeldwert enthält, ohne Bedingungen für dasselbe Element zu kombinieren.</td><td><code translate="no">array_contains</code>, <code translate="no">array_contains_any</code> oder <code translate="no">array_contains_all</code> auf einem Unterfeldpfad wie <code translate="no">chunks[section]</code></td></tr>
+<tr><td>Constrain element-level vector search to elements that match scalar conditions.</td><td><code translate="no">element_filter</code></td></tr>
+<tr><td>Match multiple scalar conditions within the same Struct element.</td><td><code translate="no">element_filter</code></td></tr>
+<tr><td>Return only entities where at least one Struct element satisfies a predicate.</td><td><code translate="no">MATCH_ANY</code></td></tr>
+<tr><td>Return only entities where all Struct elements satisfy a predicate.</td><td><code translate="no">MATCH_ALL</code></td></tr>
+<tr><td>Return only entities where at least, at most, or exactly <code translate="no">N</code> Struct elements satisfy a predicate.</td><td><code translate="no">MATCH_LEAST</code>, <code translate="no">MATCH_MOST</code>, or <code translate="no">MATCH_EXACT</code></td></tr>
+<tr><td>Check the Struct element at a specific position, such as the first chunk.</td><td>A positional path such as <code translate="no">chunks[0][section]</code></td></tr>
+<tr><td>Filter by the number of Struct elements in an entity.</td><td><code translate="no">array_length(chunks)</code></td></tr>
+<tr><td>Check whether any Struct element holds a subfield value, without combining conditions on the same element.</td><td><code translate="no">array_contains</code>, <code translate="no">array_contains_any</code>, or <code translate="no">array_contains_all</code> on a subfield path such as <code translate="no">chunks[section]</code></td></tr>
 </tbody>
 </table>
-<h2 id="Example-data" class="common-anchor-header">Beispieldaten<button data-href="#Example-data" class="anchor-icon" translate="no">
+<h2 id="Example-data" class="common-anchor-header">Example data<button data-href="#Example-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -81,8 +81,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Die folgenden Beispiele für Teilentitäten zeigen nur die „ <code translate="no">chunks</code> “-Felder von <strong>Entität A</strong> und <strong>Entität B</strong>. Es handelt sich nicht um vollständige Einfüge-Nutzdaten.</p>
-<p><strong>Entität A</strong>:</p>
+    </button></h2><p>The following partial entity examples show only the <code translate="no">chunks</code> fields of <strong>Entity A</strong> and <strong>Entity B</strong>. They are not complete insert payloads.</p>
+<p><strong>Entity A</strong>:</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
     <span class="hljs-attr">&quot;chunks&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
         <span class="hljs-punctuation">{</span>
@@ -108,7 +108,7 @@ summary: >-
     <span class="hljs-punctuation">]</span>
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>Entität B</strong>:</p>
+<p><strong>Entity B</strong>:</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
     <span class="hljs-attr">&quot;chunks&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
         <span class="hljs-punctuation">{</span>
@@ -129,7 +129,7 @@ summary: >-
     <span class="hljs-punctuation">]</span>
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Element-Filter" class="common-anchor-header">Elementfilter<button data-href="#Element-Filter" class="anchor-icon" translate="no">
+<h2 id="Element-Filter" class="common-anchor-header">Element Filter<button data-href="#Element-Filter" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -144,25 +144,25 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Verwenden Sie „ <code translate="no">element_filter(structArrayField, predicate)</code> “, um Struct-Elemente in einem StructArray-Feld abzugleichen.</p>
-<p>Verwenden Sie innerhalb des Prädikats „ <code translate="no">$[subfield]</code> “, um auf ein skalares Unterfeld des aktuellen Struct-Elements zu verweisen.</p>
+    </button></h2><p>Use <code translate="no">element_filter(structArrayField, predicate)</code> to match Struct elements in a StructArray field.</p>
+<p>Inside the predicate, use <code translate="no">$[subfield]</code> to refer to a scalar subfield of the current Struct element.</p>
 <pre><code translate="no" class="language-text">element_filter(chunks, $[section] == &quot;index&quot;)
 <button class="copy-code-btn"></button></code></pre>
-<p>Sowohl Entität A als auch Entität B erfüllen die Bedingung: Bei allen sieben angezeigten Elementen ist „ <code translate="no">section</code> “ auf „ <code translate="no">&quot;index&quot;</code> “ gesetzt.</p>
-<p>Wenn innerhalb des Prädikats mehrere Bedingungen verwendet werden, beziehen sich alle „ <code translate="no">$[subfield]</code> “-Verweise auf dasselbe Struct-Element:</p>
+<p>Both Entity A and Entity B match: all seven shown elements have <code translate="no">section</code> set to <code translate="no">&quot;index&quot;</code>.</p>
+<p>When multiple conditions are used inside the predicate, all <code translate="no">$[subfield]</code> references apply to the same Struct element:</p>
 <pre><code translate="no" class="language-text">element_filter(chunks, $[section] == &quot;index&quot; &amp;&amp; $[quality_score] &gt; 0.9)
 <button class="copy-code-btn"></button></code></pre>
-<p>Nur Entität B entspricht den Kriterien: Alle drei ihrer Elemente erfüllen beide Bedingungen.</p>
-<p>Wenn Sie ein Prädikat auf Entitätsebene mit „ <code translate="no">element_filter</code> “ kombinieren, setzen Sie „ <code translate="no">element_filter</code> “ an das Ende des Ausdrucks:</p>
+<p>Only Entity B matches: all three of its elements satisfy both conditions.</p>
+<p>When you combine an entity-level predicate with <code translate="no">element_filter</code>, place <code translate="no">element_filter</code> at the end of the expression:</p>
 <pre><code translate="no" class="language-text"># Correct
 category == &quot;index&quot; &amp;&amp; element_filter(chunks, $[quality_score] &gt; 0.9)
 
 # Incorrect
 element_filter(chunks, $[quality_score] &gt; 0.9) &amp;&amp; category == &quot;index&quot;
 <button class="copy-code-btn"></button></code></pre>
-<p>Das Beispiel „ <code translate="no">category</code> “ veranschaulicht die Reihenfolge der Ausdrücke unabhängig von den Beispieldaten, in denen „ <code translate="no">category</code> “ nicht definiert ist.</p>
-<p><code translate="no">element_filter</code> kann in einem Filterausdruck nur einmal vorkommen. Verschachteln Sie „ <code translate="no">element_filter</code> “ oder „ <code translate="no">MATCH_*</code> “ nicht innerhalb eines anderen „ <code translate="no">element_filter</code> “.</p>
-<h2 id="Match-Family-Operators" class="common-anchor-header">Operatoren der Match-Familie<button data-href="#Match-Family-Operators" class="anchor-icon" translate="no">
+<p>The <code translate="no">category</code> example illustrates expression ordering independently of the example data, which does not define <code translate="no">category</code>.</p>
+<p><code translate="no">element_filter</code> can appear only once in a filter expression. Do not nest <code translate="no">element_filter</code> or <code translate="no">MATCH_*</code> inside another <code translate="no">element_filter</code>.</p>
+<h2 id="Match-Family-Operators" class="common-anchor-header">Match Family Operators<button data-href="#Match-Family-Operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -177,20 +177,20 @@ element_filter(chunks, $[quality_score] &gt; 0.9) &amp;&amp; category == &quot;i
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Verwenden Sie „ <code translate="no">MATCH_*</code> “-Operatoren, wenn eine Entität danach ausgewählt werden soll, wie viele „Struct“-Elemente ein Prädikat erfüllen. Die Operatoren haben folgende Bedeutungen:</p>
+    </button></h2><p>Use <code translate="no">MATCH_*</code> operators when an entity should be selected based on how many Struct elements satisfy a predicate. The operators have the following meanings:</p>
 <table>
 <thead>
-<tr><th>Operator</th><th>Bedeutung</th></tr>
+<tr><th>Operator</th><th>Meaning</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">MATCH_ANY(field, predicate)</code></td><td>Mindestens ein Struct-Element erfüllt das Prädikat.</td></tr>
-<tr><td><code translate="no">MATCH_ALL(field, predicate)</code></td><td>Alle „Struct“-Elemente erfüllen das Prädikat.</td></tr>
-<tr><td><code translate="no">MATCH_LEAST(field, predicate, threshold=N)</code></td><td>Mindestens <code translate="no">N</code> Struct-Elemente erfüllen das Prädikat.</td></tr>
-<tr><td><code translate="no">MATCH_MOST(field, predicate, threshold=N)</code></td><td>Höchstens <code translate="no">N</code> -Struct-Elemente erfüllen das Prädikat.</td></tr>
-<tr><td><code translate="no">MATCH_EXACT(field, predicate, threshold=N)</code></td><td>Genau <code translate="no">N</code> Struct-Elemente erfüllen das Prädikat.</td></tr>
+<tr><td><code translate="no">MATCH_ANY(field, predicate)</code></td><td>At least one Struct element satisfies the predicate.</td></tr>
+<tr><td><code translate="no">MATCH_ALL(field, predicate)</code></td><td>All Struct elements satisfy the predicate.</td></tr>
+<tr><td><code translate="no">MATCH_LEAST(field, predicate, threshold=N)</code></td><td>At least <code translate="no">N</code> Struct elements satisfy the predicate.</td></tr>
+<tr><td><code translate="no">MATCH_MOST(field, predicate, threshold=N)</code></td><td>At most <code translate="no">N</code> Struct elements satisfy the predicate.</td></tr>
+<tr><td><code translate="no">MATCH_EXACT(field, predicate, threshold=N)</code></td><td>Exactly <code translate="no">N</code> Struct elements satisfy the predicate.</td></tr>
 </tbody>
 </table>
-<p><code translate="no">MATCH_ANY</code> Sowohl „ <code translate="no">element_filter</code> “ als auch „ “ können ausdrücken, dass mindestens ein Struct-Element ein Prädikat erfüllt. Verwenden Sie „ <code translate="no">MATCH_ANY</code> “, wenn Sie nur eine Filterung auf Zeilenebene benötigen. Verwenden Sie „ <code translate="no">element_filter</code> “, wenn Sie Einschränkungen auf Elementebene benötigen, z. B. um zu filtern, welche Struct-Elemente an der Vektorsuche auf Elementebene teilnehmen.</p>
+<p><code translate="no">MATCH_ANY</code> and <code translate="no">element_filter</code> can both express that at least one Struct element satisfies a predicate. Use <code translate="no">MATCH_ANY</code> when you only need row-level filtering. Use <code translate="no">element_filter</code> when you need element-level constraints, such as filtering which Struct elements participate in element-level vector search.</p>
 <h3 id="MATCHANY" class="common-anchor-header">MATCH_ANY<button data-href="#MATCHANY" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -206,11 +206,11 @@ element_filter(chunks, $[quality_score] &gt; 0.9) &amp;&amp; category == &quot;i
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">MATCH_ANY</code> ergibt „ <code translate="no">true</code> “, wenn mindestens ein Element im „StructArray“ das Prädikat erfüllt.</p>
+    </button></h3><p><code translate="no">MATCH_ANY</code> evaluates to <code translate="no">true</code> if at least one element in the StructArray satisfies the predicate.</p>
 <pre><code translate="no" class="language-text">MATCH_ANY(chunks, $[section] == &quot;index&quot;)
 <button class="copy-code-btn"></button></code></pre>
-<p>Sowohl Entität A als auch Entität B stimmen überein, da jede mindestens ein Element enthält, bei dem „ <code translate="no">section</code> “ auf „ <code translate="no">&quot;index&quot;</code> “ gesetzt ist.</p>
-<p>Bei einem leeren StructArray gibt „ <code translate="no">MATCH_ANY</code> “ den Wert „ <code translate="no">false</code> “ zurück.</p>
+<p>Both Entity A and Entity B match because each has at least one element with <code translate="no">section</code> set to <code translate="no">&quot;index&quot;</code>.</p>
+<p>For an empty StructArray, <code translate="no">MATCH_ANY</code> returns <code translate="no">false</code>.</p>
 <h3 id="MATCHALL" class="common-anchor-header">MATCH_ALL<button data-href="#MATCHALL" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -226,11 +226,11 @@ element_filter(chunks, $[quality_score] &gt; 0.9) &amp;&amp; category == &quot;i
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">MATCH_ALL</code> ergibt „ <code translate="no">true</code> “, wenn jedes Element im StructArray das Prädikat erfüllt.</p>
+    </button></h3><p><code translate="no">MATCH_ALL</code> evaluates to <code translate="no">true</code> if every element in the StructArray satisfies the predicate.</p>
 <pre><code translate="no" class="language-text">MATCH_ALL(chunks, $[has_code] == true)
 <button class="copy-code-btn"></button></code></pre>
-<p>Sowohl Entität A als auch Entität B stimmen überein, da bei jedem angezeigten Element <code translate="no">has_code</code> auf <code translate="no">true</code> gesetzt ist.</p>
-<p>Bei einem leeren StructArray gibt „ <code translate="no">MATCH_ALL</code> “ den Wert „ <code translate="no">true</code> “ zurück.</p>
+<p>Both Entity A and Entity B match because every shown element has <code translate="no">has_code</code> set to <code translate="no">true</code>.</p>
+<p>For an empty StructArray, <code translate="no">MATCH_ALL</code> returns <code translate="no">true</code>.</p>
 <h3 id="MATCHLEAST" class="common-anchor-header">MATCH_LEAST<button data-href="#MATCHLEAST" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -246,11 +246,11 @@ element_filter(chunks, $[quality_score] &gt; 0.9) &amp;&amp; category == &quot;i
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">MATCH_LEAST</code> ergibt „ <code translate="no">true</code> “, wenn die Anzahl der Elemente, die das Prädikat erfüllen, größer oder gleich „ <code translate="no">threshold</code> “ ist.</p>
+    </button></h3><p><code translate="no">MATCH_LEAST</code> evaluates to <code translate="no">true</code> if the number of elements satisfying the predicate is greater than or equal to <code translate="no">threshold</code>.</p>
 <pre><code translate="no" class="language-text">MATCH_LEAST(chunks, $[quality_score] &gt; 0.9, threshold=2)
 <button class="copy-code-btn"></button></code></pre>
-<p>Nur Entität B entspricht der Bedingung: Entität A hat keine qualifizierten Elemente, Entität B hingegen drei.</p>
-<p>Für „ <code translate="no">MATCH_LEAST</code> “ muss „ <code translate="no">threshold</code> “ eine positive ganze Zahl sein.</p>
+<p>Only Entity B matches: Entity A has zero qualifying elements, and Entity B has three.</p>
+<p>For <code translate="no">MATCH_LEAST</code>, <code translate="no">threshold</code> must be a positive integer.</p>
 <h3 id="MATCHMOST" class="common-anchor-header">MATCH_MOST<button data-href="#MATCHMOST" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -266,11 +266,11 @@ element_filter(chunks, $[quality_score] &gt; 0.9) &amp;&amp; category == &quot;i
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">MATCH_MOST</code> ergibt den Wert „ <code translate="no">true</code> “, wenn die Anzahl der Elemente, die das Prädikat erfüllen, kleiner oder gleich „ <code translate="no">threshold</code> “ ist.</p>
+    </button></h3><p><code translate="no">MATCH_MOST</code> evaluates to <code translate="no">true</code> if the number of elements satisfying the predicate is less than or equal to <code translate="no">threshold</code>.</p>
 <pre><code translate="no" class="language-text">MATCH_MOST(chunks, $[has_code] == true, threshold=1)
 <button class="copy-code-btn"></button></code></pre>
-<p>Keine der Entitäten erfüllt die Bedingung: Entität A hat vier qualifizierte Elemente, Entität B hat drei.</p>
-<p>Bei „ <code translate="no">MATCH_MOST</code> “ kann „ <code translate="no">threshold</code> “ Null oder eine positive ganze Zahl sein.</p>
+<p>Neither entity matches: Entity A has four qualifying elements, and Entity B has three.</p>
+<p>For <code translate="no">MATCH_MOST</code>, <code translate="no">threshold</code> can be zero or a positive integer.</p>
 <h3 id="MATCHEXACT" class="common-anchor-header">MATCH_EXACT<button data-href="#MATCHEXACT" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -286,12 +286,12 @@ element_filter(chunks, $[quality_score] &gt; 0.9) &amp;&amp; category == &quot;i
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">MATCH_EXACT</code> ergibt den Wert „ <code translate="no">true</code> “, wenn die Anzahl der Elemente, die das Prädikat erfüllen, genau gleich „ <code translate="no">threshold</code> “ ist.</p>
+    </button></h3><p><code translate="no">MATCH_EXACT</code> evaluates to <code translate="no">true</code> if the number of elements satisfying the predicate is exactly equal to <code translate="no">threshold</code>.</p>
 <pre><code translate="no" class="language-text">MATCH_EXACT(chunks, $[section] == &quot;filter&quot;, threshold=1)
 <button class="copy-code-btn"></button></code></pre>
-<p>Keine der beiden Entitäten passt, da keine ein Element enthält, bei dem <code translate="no">section</code> auf <code translate="no">&quot;filter&quot;</code> gesetzt ist.</p>
-<p>Für ` <code translate="no">MATCH_EXACT</code>` kann ` <code translate="no">threshold</code> ` Null oder eine positive ganze Zahl sein.</p>
-<h2 id="Row-level-predicates-on-StructArray-paths" class="common-anchor-header">Prädikate auf Zeilenebene für StructArray-Pfade<button data-href="#Row-level-predicates-on-StructArray-paths" class="anchor-icon" translate="no">
+<p>Neither entity matches because neither has an element with <code translate="no">section</code> set to <code translate="no">&quot;filter&quot;</code>.</p>
+<p>For <code translate="no">MATCH_EXACT</code>, <code translate="no">threshold</code> can be zero or a positive integer.</p>
+<h2 id="Row-level-predicates-on-StructArray-paths" class="common-anchor-header">Row-level predicates on StructArray paths<button data-href="#Row-level-predicates-on-StructArray-paths" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -306,8 +306,8 @@ element_filter(chunks, $[quality_score] &gt; 0.9) &amp;&amp; category == &quot;i
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Neben „ <code translate="no">element_filter</code> “ und „ <code translate="no">MATCH_*</code> “ kann ein regulärer Filterausdruck direkt auf ein StructArray-Feld oder eines seiner skalaren Unterfelder verweisen. Diese Prädikate werden auf Entitätsebene ausgewertet und geben keine Element-Offsets zurück.</p>
-<h3 id="Subfield-access" class="common-anchor-header">Zugriff auf Unterfelder<button data-href="#Subfield-access" class="anchor-icon" translate="no">
+    </button></h2><p>Besides <code translate="no">element_filter</code> and <code translate="no">MATCH_*</code>, a regular filter expression can reference a StructArray field or one of its scalar subfields directly. These predicates evaluate at the entity level and do not return element offsets.</p>
+<h3 id="Subfield-access" class="common-anchor-header">Subfield access<button data-href="#Subfield-access" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -322,11 +322,11 @@ element_filter(chunks, $[quality_score] &gt; 0.9) &amp;&amp; category == &quot;i
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><h4 id="Access-a-Struct-element-by-position" class="common-anchor-header">Zugriff auf ein Struct-Element über die Position</h4><p>Verwenden Sie „ <code translate="no">structArrayField[index][subfield]</code> “, um auf ein skalares Unterfeld des Struct-Elements an einer nullbasierten Position zu verweisen. Geben Sie zuerst die Position und dann den Namen des Unterfelds an. Der umgekehrte Pfad „ <code translate="no">chunks[quality_score][0] &gt; 0.8</code> “ ist ungültig.</p>
-<p>Testen Sie beispielsweise den Qualitätswert des ersten Elements:</p>
+    </button></h3><h4 id="Access-a-Struct-element-by-position" class="common-anchor-header">Access a Struct element by position</h4><p>Use <code translate="no">structArrayField[index][subfield]</code> to reference one scalar subfield of the Struct element at a zero-based position. Write the position first, then the subfield name. The reversed path <code translate="no">chunks[quality_score][0] &gt; 0.8</code> is invalid.</p>
+<p>For example, test the first element’s quality score:</p>
 <pre><code translate="no" class="language-text">chunks[0][quality_score] &gt; 0.8
 <button class="copy-code-btn"></button></code></pre>
-<p>Nur Entität B entspricht diesem Ausdruck.</p>
+<p>Only Entity B matches this expression.</p>
 <pre><code translate="no" class="language-text"># The first chunk belongs to the &quot;index&quot; section.
 chunks[0][section] == &quot;index&quot;
 
@@ -339,9 +339,9 @@ chunks[0][page] in [1, 2, 3]
 # Chained range on a positional path.
 0.8 &lt; chunks[0][quality_score] &lt; 0.95
 <button class="copy-code-btn"></button></code></pre>
-<p>Bei Entität A und Entität B trifft das Prädikat im ersten Abschnitt auf beide Entitäten zu, das zweite Score-Prädikat trifft nur auf Entität B zu und der strenge Score-Bereich trifft auf keine der beiden zu. Das Prädikat „ <code translate="no">page</code> “ ist ein allgemeines Beispiel; die Beispieldaten definieren „ <code translate="no">page</code> “ nicht.</p>
-<p>Positionspfade unterstützen Vergleichsprädikate, „ <code translate="no">in</code> “, „ <code translate="no">not in</code> “ sowie verkettete Bereichsprädikate für skalare Unterfelder. Eine Entität passt nicht, wenn ihr „StructArray“-Feld an dieser Position kein Element enthält.</p>
-<h3 id="ARRAY-operators" class="common-anchor-header">ARRAY-Operatoren<button data-href="#ARRAY-operators" class="anchor-icon" translate="no">
+<p>For Entity A and Entity B, the first section predicate matches both entities, the second score predicate matches only Entity B, and the strict score range matches neither. The <code translate="no">page</code> predicate is a generic example; the example data does not define <code translate="no">page</code>.</p>
+<p>Positional paths support comparison, <code translate="no">in</code>, <code translate="no">not in</code>, and chained range predicates on scalar subfields. An entity does not match when its StructArray field has no element at that position.</p>
+<h3 id="ARRAY-operators" class="common-anchor-header">ARRAY operators<button data-href="#ARRAY-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -356,7 +356,7 @@ chunks[0][page] in [1, 2, 3]
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><h4 id="Access-array-subfields-by-position" class="common-anchor-header">Zugriff auf Array-Teilfelder anhand der Position<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.6</span></h4><p>Ab Milvus 3.0.6 kann ein positionsbezogener Pfad auch auf ein skalares „ <code translate="no">ARRAY</code> “-Unterfeld verweisen. „ <code translate="no">chunks[0][tags]</code> “ ist das innere Array des ersten Struct-Elements. Es unterstützt „ <code translate="no">==</code> “ und „ <code translate="no">!=</code> “ mit einem Array-Literal, „ <code translate="no">array_contains</code> “, „ <code translate="no">array_contains_any</code> “, „ <code translate="no">array_contains_all</code> “ und „ <code translate="no">array_length</code> “. Vergleichsoperatoren wie „ <code translate="no">in</code> “, „ <code translate="no">like</code> “ sowie arithmetische Operationen darauf werden abgelehnt.</p>
+    </button></h3><h4 id="Access-array-subfields-by-position" class="common-anchor-header">Access array subfields by position<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.6</span></h4><p>Starting in Milvus 3.0.6, a positional path can also reference a scalar <code translate="no">ARRAY</code> subfield. <code translate="no">chunks[0][tags]</code> is the inner array of the first Struct element. It supports <code translate="no">==</code> and <code translate="no">!=</code> with an array literal, <code translate="no">array_contains</code>, <code translate="no">array_contains_any</code>, <code translate="no">array_contains_all</code>, and <code translate="no">array_length</code>. Comparison operators, <code translate="no">in</code>, <code translate="no">like</code>, and arithmetic on it are rejected.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># The first chunk is tagged &quot;tuning&quot;.</span>
 array_contains(chunks[<span class="hljs-number">0</span>][tags], <span class="hljs-string">&quot;tuning&quot;</span>)
 
@@ -366,23 +366,23 @@ chunks[<span class="hljs-number">0</span>][tags] == [<span class="hljs-string">&
 <span class="hljs-comment"># The first chunk has at least two tags.</span>
 array_length(chunks[<span class="hljs-number">0</span>][tags]) &gt;= <span class="hljs-number">2</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">array_contains*</code>, <code translate="no">==</code> sowie <code translate="no">!=</code> auf dem gesamten Array-Teilfeldpfad, wie z. B. <code translate="no">array_contains(chunks[tags], &quot;tuning&quot;)</code>, werden abgelehnt, da dieser Pfad pro Struct-Element ein inneres Array enthält. Verwenden Sie stattdessen <code translate="no">MATCH_ANY(chunks, array_contains($[tags], &quot;tuning&quot;))</code>.</p>
-<h4 id="Count-Struct-elements" class="common-anchor-header">Anzahl der Struct-Elemente</h4><p>Verwenden Sie „ <code translate="no">array_length(structArrayField)</code> “, um nach der Anzahl der Struct-Elemente in einer Entität zu filtern. „ <code translate="no">array_length</code> “ in einem Unterfeldpfad, wie z. B. „ <code translate="no">array_length(chunks[section])</code> “, liefert dieselbe Anzahl, da jedes Unterfeld einen Wert pro Struct-Element enthält.</p>
+<p><code translate="no">array_contains*</code>, <code translate="no">==</code>, and <code translate="no">!=</code> on the whole array subfield path, such as <code translate="no">array_contains(chunks[tags], &quot;tuning&quot;)</code>, are rejected because that path holds one inner array per Struct element. Use <code translate="no">MATCH_ANY(chunks, array_contains($[tags], &quot;tuning&quot;))</code> instead.</p>
+<h4 id="Count-Struct-elements" class="common-anchor-header">Count Struct elements</h4><p>Use <code translate="no">array_length(structArrayField)</code> to filter by the number of Struct elements in an entity. <code translate="no">array_length</code> on a subfield path, such as <code translate="no">array_length(chunks[section])</code>, returns the same count, because every subfield holds one value per Struct element.</p>
 <pre><code translate="no" class="language-text"># Articles with at least three chunks.
 array_length(chunks) &gt;= 3
 
 # Articles with exactly one chunk.
 array_length(chunks) == 1
 <button class="copy-code-btn"></button></code></pre>
-<p>Die Prädikate zur Anzahl der übergeordneten Felder treffen bei „ <code translate="no">&gt;= 3</code> “ auf beide Entitäten zu, bei „ <code translate="no">== 1</code> “ hingegen auf keine. Sie können Werte auch auf einem Unterfeldpfad zählen:</p>
+<p>The parent-field count predicates match both entities for <code translate="no">&gt;= 3</code> and neither for <code translate="no">== 1</code>. You can also count values on a subfield path:</p>
 <pre><code translate="no" class="language-text">ARRAY_LENGTH(chunks[quality_score]) == 3
 <button class="copy-code-btn"></button></code></pre>
-<p>Nur Entität B entspricht den Kriterien, da ihr Unterfeld „ <code translate="no">quality_score</code> “ drei Werte enthält.</p>
-<h4 id="Test-subfield-values-across-elements" class="common-anchor-header">Unterfeldwerte über Elemente hinweg prüfen</h4><p>Prüfen Sie beispielsweise, ob ein Qualitätswert mit „ <code translate="no">0.74</code> “ übereinstimmt:</p>
+<p>Only Entity B matches because its <code translate="no">quality_score</code> subfield has three values.</p>
+<h4 id="Test-subfield-values-across-elements" class="common-anchor-header">Test subfield values across elements</h4><p>For example, test whether any quality score equals <code translate="no">0.74</code>:</p>
 <pre><code translate="no" class="language-text">ARRAY_CONTAINS(chunks[quality_score], 0.74)
 <button class="copy-code-btn"></button></code></pre>
-<p>Nur Entität A passt.</p>
-<p>Verwenden Sie „ <code translate="no">array_contains</code> “, „ <code translate="no">array_contains_any</code> “ oder „ <code translate="no">array_contains_all</code> “ in einem skalaren Unterfeldpfad, um die Werte dieses Unterfelds über alle „Struct“-Elemente der Entität hinweg zu prüfen. Jeder Unterfeldpfad wird separat ausgewertet, sodass Bedingungen für verschiedene Unterfelder von unterschiedlichen „Struct“-Elementen erfüllt werden können.</p>
+<p>Only Entity A matches.</p>
+<p>Use <code translate="no">array_contains</code>, <code translate="no">array_contains_any</code>, or <code translate="no">array_contains_all</code> on a scalar subfield path to test the values of that subfield across all Struct elements in the entity. Each subfield path is evaluated on its own, so conditions on different subfields can be satisfied by different Struct elements.</p>
 <pre><code translate="no" class="language-text"># At least one chunk belongs to the &quot;index&quot; section.
 array_contains(chunks[section], &quot;index&quot;)
 
@@ -393,9 +393,9 @@ array_contains_any(chunks[section], [&quot;index&quot;, &quot;search&quot;])
 # not necessarily in the same chunk.
 array_contains_all(chunks[section], [&quot;index&quot;, &quot;search&quot;])
 <button class="copy-code-btn"></button></code></pre>
-<p>Bei den Beispieldaten stimmen die Ausdrücke „ <code translate="no">array_contains</code> “ und „ <code translate="no">array_contains_any</code> “ mit beiden Entitäten überein. Der Ausdruck „ <code translate="no">array_contains_all</code> “ stimmt mit keiner überein, da keine der Entitäten einen Abschnitt „ <code translate="no">&quot;search&quot;</code> “ enthält. Diese Beispiele veranschaulichen keine Bedingungen, die von verschiedenen Elementen in verschiedenen Unterfeldern erfüllt werden.</p>
-<p><code translate="no">array_contains(chunks[section], &quot;index&quot;)</code> wählt dieselben Entitäten aus wie <code translate="no">MATCH_ANY(chunks, $[section] == &quot;index&quot;)</code>. Verwenden Sie <code translate="no">MATCH_*</code> oder <code translate="no">element_filter</code>, wenn mehrere Bedingungen für dasselbe Struct-Element erfüllt sein müssen, da <code translate="no">$[...]</code> -Prädikate pro Element ausgewertet werden.</p>
-<h3 id="Test-whether-a-nullable-StructArray-field-is-null" class="common-anchor-header">Prüfen, ob ein nullfähiges StructArray-Feld den Wert „null“ hat<button data-href="#Test-whether-a-nullable-StructArray-field-is-null" class="anchor-icon" translate="no">
+<p>For the example data, the <code translate="no">array_contains</code> and <code translate="no">array_contains_any</code> expressions match both entities. The <code translate="no">array_contains_all</code> expression matches neither because neither entity has a <code translate="no">&quot;search&quot;</code> section. These examples do not demonstrate conditions satisfied by different elements on different subfields.</p>
+<p><code translate="no">array_contains(chunks[section], &quot;index&quot;)</code> selects the same entities as <code translate="no">MATCH_ANY(chunks, $[section] == &quot;index&quot;)</code>. Use <code translate="no">MATCH_*</code> or <code translate="no">element_filter</code> when several conditions must hold for the same Struct element, because <code translate="no">$[...]</code> predicates are evaluated per element.</p>
+<h3 id="Test-whether-a-nullable-StructArray-field-is-null" class="common-anchor-header">Test whether a nullable StructArray field is null<button data-href="#Test-whether-a-nullable-StructArray-field-is-null" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -410,15 +410,15 @@ array_contains_all(chunks[section], [&quot;index&quot;, &quot;search&quot;])
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Verwenden Sie „ <code translate="no">IS NULL</code> “ oder „ <code translate="no">IS NOT NULL</code> “ für ein nullfähiges „StructArray“-Feld, um den gesamten Feldwert zu prüfen. Da sich „NULL“ auf das gesamte „StructArray“-Feld bezieht, akzeptieren diese Prädikate nur den Feldnamen, nicht jedoch einen Unterfeldpfad.</p>
+    </button></h3><p>Use <code translate="no">IS NULL</code> or <code translate="no">IS NOT NULL</code> on a nullable StructArray field to test the whole field value. NULL applies to the entire StructArray field, so these predicates accept only the field name, not a subfield path.</p>
 <pre><code translate="no" class="language-text"># Entities that have no chunks value.
 chunks is null
 
 # Entities that have a chunks value.
 chunks is not null
 <button class="copy-code-btn"></button></code></pre>
-<p>Informationen zur Anwendbarkeit finden Sie unter <a href="/docs/de/structarray-limits.md#Nullable-and-dynamic-schema-limits">„Einschränkungen für nullfähige und dynamische Schemata</a>“. Entität A und Entität B weisen beide nicht-NULL-Werte für „StructArray“ auf.</p>
-<h2 id="Supported-predicates" class="common-anchor-header">Unterstützte Prädikate<button data-href="#Supported-predicates" class="anchor-icon" translate="no">
+<p>For applicability, see <a href="/docs/de/structarray-limits.md#Nullable-and-dynamic-schema-limits">Nullable and dynamic schema limits</a>. Entity A and Entity B both have non-NULL StructArray values.</p>
+<h2 id="Supported-predicates" class="common-anchor-header">Supported predicates<button data-href="#Supported-predicates" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -433,23 +433,23 @@ chunks is not null
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Die Syntax „ <code translate="no">$[...]</code> “ stellt den Skalarwert des aktuellen Struct-Elements dar. Die Unterstützung von Prädikaten hängt vom Typ des skalaren Unterfelds ab:</p>
+    </button></h2><p>The <code translate="no">$[...]</code> syntax represents the scalar value of the current Struct element. Predicate support depends on the scalar subfield type:</p>
 <table>
 <thead>
-<tr><th>Unterfeldtyp</th><th>Unterstützung von Prädikaten auf Elementebene</th></tr>
+<tr><th>Subfield type</th><th>Element-level predicate support</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">BOOL</code></td><td>Skalare Prädikate wie „ <code translate="no">$[has_code] == true</code> “ oder „ <code translate="no">!($[has_code] == true)</code> “. Vermeiden Sie einfache boolesche Ausdrücke wie „ <code translate="no">$[has_code]</code> “.</td></tr>
-<tr><td><code translate="no">INT8</code>, <code translate="no">INT16</code>, <code translate="no">INT32</code>, <code translate="no">INT64</code></td><td>Vergleiche, verkettete Bereichsausdrücke, <code translate="no">in</code>, <code translate="no">not in</code>, arithmetische Ausdrücke mit <code translate="no">+</code>, <code translate="no">-</code>, <code translate="no">*</code>, <code translate="no">/</code> oder <code translate="no">%</code>, gefolgt von einem Vergleich, sowie logische Kombinationen.</td></tr>
-<tr><td><code translate="no">FLOAT</code>, <code translate="no">DOUBLE</code></td><td>Vergleich, verketteter Bereich, <code translate="no">in</code>, <code translate="no">not in</code>, arithmetische Ausdrücke mit <code translate="no">+</code>, <code translate="no">-</code>, <code translate="no">*</code> oder <code translate="no">/</code>, gefolgt von einem Vergleich, sowie logische Kombinationen. Der Operator <code translate="no">%</code> wird für Gleitkomma-Unterfelder nicht unterstützt.</td></tr>
-<tr><td><code translate="no">VARCHAR</code></td><td>Zeichenfolgenvergleich, verkettete Bereiche, „ <code translate="no">in</code> “, „ <code translate="no">not in</code> “, „ <code translate="no">like</code> “, „ <code translate="no">=~</code> “, „ <code translate="no">!~</code> “ sowie logische Verknüpfungen.</td></tr>
-<tr><td>Skalare „ <code translate="no">ARRAY</code> “-Unterfelder (Milvus 3.0.6 und höher)</td><td><code translate="no">array_contains</code>, <code translate="no">array_contains_any</code>, <code translate="no">array_contains_all</code> und <code translate="no">array_length</code> auf <code translate="no">$[tags]</code> sowie <code translate="no">$[tags] is null</code> und <code translate="no">$[tags] is not null</code>. Vergleichsoperatoren wie <code translate="no">in</code> und <code translate="no">like</code> auf <code translate="no">$[tags]</code> werden abgelehnt.</td></tr>
-<tr><td>Jedes auf null setzbare Unterfeld (Milvus 3.0.6 und höher)</td><td><code translate="no">$[subfield] is null</code> sowie <code translate="no">$[subfield] is not null</code> prüfen, ob der Wert im aktuellen Struct-Element null ist. Bei einem Unterfeld, das keine null-Werte enthalten darf, ist <code translate="no">is null</code> immer false.</td></tr>
-<tr><td>Vektor-Unterfelder</td><td>Werden nicht als skalare Prädikate für „ <code translate="no">$[...]</code> “ unterstützt, mit Ausnahme von „ <code translate="no">$[emb] is null</code> “ und „ <code translate="no">$[emb] is not null</code> “ bei einem Vektor-Unterfeld, das Nullwerte zulässt, in Milvus 3.0.6 und höher. Verwenden Sie stattdessen Vektor-Unterfelder über die „EmbeddingList“-Suche oder die Vektorsuche auf Elementebene.</td></tr>
+<tr><td><code translate="no">BOOL</code></td><td>Scalar predicates such as <code translate="no">$[has_code] == true</code> or <code translate="no">!($[has_code] == true)</code>. Avoid bare boolean expressions such as <code translate="no">$[has_code]</code>.</td></tr>
+<tr><td><code translate="no">INT8</code>, <code translate="no">INT16</code>, <code translate="no">INT32</code>, <code translate="no">INT64</code></td><td>Comparison, chained range, <code translate="no">in</code>, <code translate="no">not in</code>, arithmetic expressions with <code translate="no">+</code>, <code translate="no">-</code>, <code translate="no">*</code>, <code translate="no">/</code>, or <code translate="no">%</code> followed by comparison, and logical combinations.</td></tr>
+<tr><td><code translate="no">FLOAT</code>, <code translate="no">DOUBLE</code></td><td>Comparison, chained range, <code translate="no">in</code>, <code translate="no">not in</code>, arithmetic expressions with <code translate="no">+</code>, <code translate="no">-</code>, <code translate="no">*</code>, or <code translate="no">/</code> followed by comparison, and logical combinations. The <code translate="no">%</code> operator is not supported for floating-point subfields.</td></tr>
+<tr><td><code translate="no">VARCHAR</code></td><td>String comparison, chained range, <code translate="no">in</code>, <code translate="no">not in</code>, <code translate="no">like</code>, <code translate="no">=~</code>, <code translate="no">!~</code>, and logical combinations.</td></tr>
+<tr><td>Scalar <code translate="no">ARRAY</code> subfields (Milvus 3.0.6 and later)</td><td><code translate="no">array_contains</code>, <code translate="no">array_contains_any</code>, <code translate="no">array_contains_all</code>, and <code translate="no">array_length</code> on <code translate="no">$[tags]</code>, plus <code translate="no">$[tags] is null</code> and <code translate="no">$[tags] is not null</code>. Comparison operators, <code translate="no">in</code>, and <code translate="no">like</code> on <code translate="no">$[tags]</code> are rejected.</td></tr>
+<tr><td>Any element-nullable subfield (Milvus 3.0.6 and later)</td><td><code translate="no">$[subfield] is null</code> and <code translate="no">$[subfield] is not null</code> test whether the value in the current Struct element is null. On a subfield that cannot hold null values, <code translate="no">is null</code> is always false.</td></tr>
+<tr><td>Vector subfields</td><td>Not supported as <code translate="no">$[...]</code> scalar predicate inputs, except <code translate="no">$[emb] is null</code> and <code translate="no">$[emb] is not null</code> on an element-nullable vector subfield in Milvus 3.0.6 and later. Use vector subfields through EmbeddingList search or element-level vector search instead.</td></tr>
 </tbody>
 </table>
-<p>Logische Operatoren wie „ <code translate="no">&amp;&amp;</code> “, „ <code translate="no">||</code> “ und „ <code translate="no">!</code> “ gelten für Prädikatsausdrücke. Schreiben Sie beispielsweise „ <code translate="no">!($[has_code] == true)</code> “ anstelle von „ <code translate="no">!$[has_code]</code> “.</p>
-<h2 id="Null-values-in-element-level-predicates" class="common-anchor-header">Null-Werte in Prädikaten auf Elementebene<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.6</span><button data-href="#Null-values-in-element-level-predicates" class="anchor-icon" translate="no">
+<p>Logical operators such as <code translate="no">&amp;&amp;</code>, <code translate="no">||</code>, and <code translate="no">!</code> apply to predicate expressions. For example, write <code translate="no">!($[has_code] == true)</code> instead of <code translate="no">!$[has_code]</code>.</p>
+<h2 id="Null-values-in-element-level-predicates" class="common-anchor-header">Null values in element-level predicates<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.6</span><button data-href="#Null-values-in-element-level-predicates" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -464,13 +464,13 @@ chunks is not null
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Ab Milvus 3.0.6 kann ein element-nullfähiges Unterfeld in einem Struct-Element einen Nullwert enthalten. Nullwerte folgen in StructArray-Prädikaten der dreiwertigen Logik:</p>
+    </button></h2><p>Starting in Milvus 3.0.6, an element-nullable subfield can hold a null value in a Struct element. Null values follow three-valued logic in StructArray predicates:</p>
 <ul>
-<li><p>Ein Vergleich, „ <code translate="no">in</code> “, „ <code translate="no">like</code> “ oder ein arithmetisches Prädikat auf einen Nullwert eines Unterfelds ergibt „unkannt“ statt „falsch“. „ <code translate="no">&amp;&amp;</code> “, „ <code translate="no">\|\|</code> “ und „ <code translate="no">!</code> “ geben unbekannte Ergebnisse weiter, sodass „ <code translate="no">!($[lang] == &quot;en&quot;)</code> “ weiterhin unbekannt ist, wenn „ <code translate="no">$[lang]</code> “ null ist.</p></li>
-<li><p><code translate="no">element_filter</code> Behält nur Struct-Elemente bei, deren Prädikat wahr ist. Unbekannte Elemente werden nicht abgeglichen.</p></li>
-<li><p><code translate="no">MATCH_*</code> Zählt ein unbekanntes Element als Fehltreffer. „ <code translate="no">MATCH_ALL</code> “ ist falsch, wenn ein beliebiges Element unbekannt ist, während ein leeres „StructArray“ weiterhin die Bedingung „ <code translate="no">MATCH_ALL</code> “ erfüllt.</p></li>
-<li><p><code translate="no">$[subfield] is null</code> und „ <code translate="no">$[subfield] is not null</code> “ sind immer wahr oder falsch. Sie lesen die Gültigkeit des aktuellen Elements aus, sodass „ <code translate="no">$[lang] is null</code> “ genau die Elemente abgleicht, deren Wert „ <code translate="no">lang</code> “ null ist.</p></li>
-<li><p>Bei einem Array-Unterfeld überspringt „ <code translate="no">array_contains*</code> “ bei „ <code translate="no">$[tags]</code> “ innere Nullwerte und stimmt niemals mit einem inneren Null-Array überein, „ <code translate="no">array_length($[tags])</code> “ zählt innere Nullwerte, und „ <code translate="no">$[tags] is null</code> “ ist nur für ein inneres Null-Array wahr.</p></li>
+<li><p>A comparison, <code translate="no">in</code>, <code translate="no">like</code>, or arithmetic predicate on a null subfield value is unknown rather than false. <code translate="no">&amp;&amp;</code>, <code translate="no">\|\|</code>, and <code translate="no">!</code> propagate unknown results, so <code translate="no">!($[lang] == &quot;en&quot;)</code> is still unknown when <code translate="no">$[lang]</code> is null.</p></li>
+<li><p><code translate="no">element_filter</code> keeps only Struct elements whose predicate is true. Unknown elements are not matched.</p></li>
+<li><p><code translate="no">MATCH_*</code> counts an unknown element as a miss. <code translate="no">MATCH_ALL</code> is false when any element is unknown, while an empty StructArray still satisfies <code translate="no">MATCH_ALL</code>.</p></li>
+<li><p><code translate="no">$[subfield] is null</code> and <code translate="no">$[subfield] is not null</code> are always true or false. They read the validity of the current element, so <code translate="no">$[lang] is null</code> matches exactly the elements whose <code translate="no">lang</code> value is null.</p></li>
+<li><p>On an array subfield, <code translate="no">array_contains*</code> on <code translate="no">$[tags]</code> skips null inner values and never matches a null inner array, <code translate="no">array_length($[tags])</code> counts null inner values, and <code translate="no">$[tags] is null</code> is true only for a null inner array.</p></li>
 </ul>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Chunks whose language is unknown.</span>
 element_filter(chunks, $[lang] <span class="hljs-keyword">is</span> null)
@@ -481,8 +481,8 @@ MATCH_ALL(chunks, $[lang] <span class="hljs-keyword">is</span> <span class="hljs
 <span class="hljs-comment"># Entities with at least one chunk tagged &quot;tuning&quot;.</span>
 MATCH_ANY(chunks, array_contains($[tags], <span class="hljs-string">&quot;tuning&quot;</span>))
 <button class="copy-code-btn"></button></code></pre>
-<p>Positionspfade auf Zeilenebene folgen derselben Regel: <code translate="no">chunks[0][lang] == &quot;en&quot;</code> ist unbekannt, wenn der Wert von „ <code translate="no">lang</code> “ des ersten Elements null ist, wenn die Entität an dieser Position kein Element enthält oder wenn das StructArray-Feld null ist; daher passt die Entität nicht.</p>
-<h2 id="Unsupported-predicates" class="common-anchor-header">Nicht unterstützte Prädikate<button data-href="#Unsupported-predicates" class="anchor-icon" translate="no">
+<p>Row-level positional paths follow the same rule: <code translate="no">chunks[0][lang] == &quot;en&quot;</code> is unknown when the <code translate="no">lang</code> value of the first element is null, when the entity has no element at that position, or when the StructArray field is null, so the entity does not match.</p>
+<h2 id="Unsupported-predicates" class="common-anchor-header">Unsupported predicates<button data-href="#Unsupported-predicates" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -497,22 +497,22 @@ MATCH_ANY(chunks, array_contains($[tags], <span class="hljs-string">&quot;tuning
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Prädikate auf Elementebene vom Typ „ <code translate="no">$[...]</code> “ unterstützen Folgendes nicht:</p>
+    </button></h2><p>Element-level <code translate="no">$[...]</code> predicates do not support:</p>
 <ul>
-<li><p>Textabgleichsfunktionen wie „ <code translate="no">text_match(field, &quot;...&quot;)</code> “ oder „ <code translate="no">phrase_match(field, &quot;...&quot;)</code> “.</p></li>
-<li><p>JSON-Path-Syntax, „ <code translate="no">exists</code> “ auf JSON-Paths oder JSON-Funktionen wie „ <code translate="no">json_contains</code> “, „ <code translate="no">json_contains_all</code> “ oder „ <code translate="no">json_contains_any</code> “.</p></li>
-<li><p>Array-Container-Funktionen wie <code translate="no">array_contains</code>, <code translate="no">array_contains_all</code>, <code translate="no">array_contains_any</code> oder <code translate="no">array_length</code> auf <code translate="no">$[subfield]</code> eines skalaren Unterfelds. Verwenden Sie diese Funktionen stattdessen auf einem Unterfeldpfad wie <code translate="no">chunks[section]</code> in einem Prädikat auf Zeilenebene. Ab Milvus 3.0.6 werden sie auf <code translate="no">$[tags]</code> für skalare <code translate="no">ARRAY</code> -Unterfelder unterstützt.</p></li>
-<li><p><code translate="no">$[subfield] is null</code> oder <code translate="no">$[subfield] is not null</code> vor Milvus 3.0.6.</p></li>
+<li><p>Text match functions, such as <code translate="no">text_match(field, &quot;...&quot;)</code> or <code translate="no">phrase_match(field, &quot;...&quot;)</code>.</p></li>
+<li><p>JSON path syntax, <code translate="no">exists</code> on JSON paths, or JSON functions such as <code translate="no">json_contains</code>, <code translate="no">json_contains_all</code>, or <code translate="no">json_contains_any</code>.</p></li>
+<li><p>Array container functions such as <code translate="no">array_contains</code>, <code translate="no">array_contains_all</code>, <code translate="no">array_contains_any</code>, or <code translate="no">array_length</code> on <code translate="no">$[subfield]</code> of a scalar subfield. Use these functions on a subfield path such as <code translate="no">chunks[section]</code> in a row-level predicate instead. Starting in Milvus 3.0.6, they are supported on <code translate="no">$[tags]</code> for scalar <code translate="no">ARRAY</code> subfields.</p></li>
+<li><p><code translate="no">$[subfield] is null</code> or <code translate="no">$[subfield] is not null</code> before Milvus 3.0.6.</p></li>
 </ul>
 <ul>
-<li><p>Ein Index in ein Array-Unterfeld, wie z. B. <code translate="no">$[tags][0]</code> und <code translate="no">like</code> auf <code translate="no">$[tags]</code>.</p></li>
-<li><p>Geometrie-/GIS-Funktionen.</p></li>
-<li><p>„Timestamptz“-Ausdrücke.</p></li>
+<li><p>A subscript into an array subfield, such as <code translate="no">$[tags][0]</code>, and <code translate="no">like</code> on <code translate="no">$[tags]</code>.</p></li>
+<li><p>Geometry / GIS functions.</p></li>
+<li><p>Timestamptz expressions.</p></li>
 <li><p><code translate="no">random_sample(...)</code>.</p></li>
-<li><p>Vektorprädikate auf Feldebene.</p></li>
-<li><p>Aufrufe generischer Filterfunktionen, es sei denn, die spezifische Funktionssignatur und der Ausführungspfad unterstützen explizit Prädikate auf StructArray-Ebene.</p></li>
+<li><p>Field-level vector predicates.</p></li>
+<li><p>Generic filter function calls unless the specific function signature and execution path explicitly support StructArray element-level predicates.</p></li>
 </ul>
-<h2 id="Syntax-rules" class="common-anchor-header">Syntaxregeln<button data-href="#Syntax-rules" class="anchor-icon" translate="no">
+<h2 id="Syntax-rules" class="common-anchor-header">Syntax rules<button data-href="#Syntax-rules" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -527,24 +527,24 @@ MATCH_ANY(chunks, array_contains($[tags], <span class="hljs-string">&quot;tuning
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Beachten Sie folgende Syntaxregeln:</p>
+    </button></h2><p>Follow these syntax rules:</p>
 <ul>
-<li><p><code translate="no">MATCH_*</code> Bei Operatornamen wird die Groß-/Kleinschreibung nicht berücksichtigt.</p></li>
-<li><p>Verwenden Sie „ <code translate="no">$[subfield]</code> “ nur innerhalb von „ <code translate="no">element_filter</code> “- oder „ <code translate="no">MATCH_*</code> “-Prädikaten. Beispielsweise wird „ <code translate="no">array_length($[section])</code> “ abgelehnt.</p></li>
-<li><p>Verwenden Sie „ <code translate="no">$[subfield]</code> “ nicht als JSON-Pfad, Array-Container oder Vektorfeldreferenz.</p></li>
-<li><p>Verschachteln Sie „ <code translate="no">element_filter</code> “ oder „ <code translate="no">MATCH_*</code> “ nicht innerhalb eines anderen StructArray-Operators.</p></li>
-<li><p>Verwenden Sie benannte „ <code translate="no">threshold=N</code> “ für „ <code translate="no">MATCH_LEAST</code> “, „ <code translate="no">MATCH_MOST</code> “ und „ <code translate="no">MATCH_EXACT</code> “.</p></li>
-<li><p>Schreiben Sie bei positionsbezogenen Pfaden die Elementposition vor den Namen des Unterfelds: „ <code translate="no">chunks[0][section]</code> “, nicht „ <code translate="no">chunks[section][0]</code> “.</p></li>
+<li><p><code translate="no">MATCH_*</code> operator names are case-insensitive.</p></li>
+<li><p>Use <code translate="no">$[subfield]</code> only inside <code translate="no">element_filter</code> or <code translate="no">MATCH_*</code> predicates. For example, <code translate="no">array_length($[section])</code> is rejected.</p></li>
+<li><p>Do not use <code translate="no">$[subfield]</code> as a JSON path, array container, or vector field reference.</p></li>
+<li><p>Do not nest <code translate="no">element_filter</code> or <code translate="no">MATCH_*</code> inside another StructArray operator.</p></li>
+<li><p>Use named <code translate="no">threshold=N</code> for <code translate="no">MATCH_LEAST</code>, <code translate="no">MATCH_MOST</code>, and <code translate="no">MATCH_EXACT</code>.</p></li>
+<li><p>In positional paths, write the element position before the subfield name: <code translate="no">chunks[0][section]</code>, not <code translate="no">chunks[section][0]</code>.</p></li>
 </ul>
 <ul>
-<li>Verwenden Sie <code translate="no">IS NULL</code> und <code translate="no">IS NOT NULL</code> nur für das gesamte StructArray-Feld, z. B. <code translate="no">chunks is null</code>, oder ab Milvus 3.0.6 für <code translate="no">$[subfield]</code> innerhalb von <code translate="no">element_filter</code> oder <code translate="no">MATCH_*</code>. Verwenden Sie sie nicht in einem Unterfeldpfad wie <code translate="no">chunks[section]</code>.</li>
+<li>Use <code translate="no">IS NULL</code> and <code translate="no">IS NOT NULL</code> only on the whole StructArray field, such as <code translate="no">chunks is null</code>, or, starting in Milvus 3.0.6, on <code translate="no">$[subfield]</code> inside <code translate="no">element_filter</code> or <code translate="no">MATCH_*</code>. Do not use them on a subfield path such as <code translate="no">chunks[section]</code>.</li>
 </ul>
 <ul>
-<li><p>Verwenden Sie keine Indizes für Unterfelder eines Arrays. „ <code translate="no">$[tags][0]</code> “ und „ <code translate="no">chunks[0][tags][0]</code> “ werden nicht unterstützt.</p></li>
-<li><p><code translate="no">MATCH_ANY</code> Bei einem leeren StructArray wird <code translate="no">false</code> zurückgegeben.</p></li>
-<li><p><code translate="no">MATCH_ALL</code> Bei einem leeren StructArray wird <code translate="no">true</code> zurückgegeben.</p></li>
+<li><p>Do not subscript into an array subfield. <code translate="no">$[tags][0]</code> and <code translate="no">chunks[0][tags][0]</code> are not supported.</p></li>
+<li><p><code translate="no">MATCH_ANY</code> on an empty StructArray returns <code translate="no">false</code>.</p></li>
+<li><p><code translate="no">MATCH_ALL</code> on an empty StructArray returns <code translate="no">true</code>.</p></li>
 </ul>
-<h2 id="See-also" class="common-anchor-header">Siehe auch<button data-href="#See-also" class="anchor-icon" translate="no">
+<h2 id="See-also" class="common-anchor-header">See also<button data-href="#See-also" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -559,10 +559,10 @@ MATCH_ANY(chunks, array_contains($[tags], <span class="hljs-string">&quot;tuning
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Weitere Informationen finden Sie unter:</p>
+    </button></h2><p>For related guidance, see:</p>
 <ul>
-<li><p><a href="/docs/de/filtered-search-with-structarray.md">Gefilterte Suche mit StructArray</a></p></li>
-<li><p><a href="/docs/de/basic-vector-search-with-structarray.md">Einfache Vektorsuche mit StructArray</a></p></li>
-<li><p><a href="/docs/de/index-structarray-fields.md">StructArray-Felder indizieren</a></p></li>
-<li><p><a href="/docs/de/structarray-limits.md">Einschränkungen bei StructArray</a></p></li>
+<li><p><a href="/docs/de/filtered-search-with-structarray.md">Filtered Search with StructArray</a></p></li>
+<li><p><a href="/docs/de/basic-vector-search-with-structarray.md">Basic Vector Search with StructArray</a></p></li>
+<li><p><a href="/docs/de/index-structarray-fields.md">Index StructArray Fields</a></p></li>
+<li><p><a href="/docs/de/structarray-limits.md">StructArray Limits</a></p></li>
 </ul>

@@ -1,9 +1,11 @@
 ---
 id: cdc_failover.md
-summary: 기본 Milvus 클러스터를 사용할 수 없게 되었을 때 장애 조치를 수행하는 방법을 알아보세요.
-title: 페일오버
+summary: >-
+  Learn how to perform a failover when the primary Milvus cluster becomes
+  unavailable.
+title: Failover
 ---
-<h1 id="Failover" class="common-anchor-header">페일오버<button data-href="#Failover" class="anchor-icon" translate="no">
+<h1 id="Failover" class="common-anchor-header">Failover<button data-href="#Failover" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,14 +20,14 @@ title: 페일오버
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>장애 조치는 원래 주 클러스터를 완전히 사용할 수 없을 때 대기 클러스터를 독립형 주 클러스터로 승격시킵니다. 이 작업은 가용성을 우선시하는 작업이며 장애 전에 복제되지 않은 데이터가 손실될 수 있습니다.</p>
-<p>이 가이드에서는 원래 토폴로지가 그대로 유지된다고 가정합니다:</p>
+    </button></h1><p>Failover promotes a standby cluster to a standalone primary when the original primary is completely unavailable. It is an availability-first operation and may lose data that was not replicated before the failure.</p>
+<p>This guide assumes the original topology is:</p>
 <pre><code translate="no" class="language-text">cluster-a (primary)  -&gt;  cluster-b (standby)
 <button class="copy-code-btn"></button></code></pre>
-<p>장애 조치 후에는 <code translate="no">cluster-b</code> 이 독립 실행형 기본값이 됩니다:</p>
+<p>After failover, <code translate="no">cluster-b</code> becomes a standalone primary:</p>
 <pre><code translate="no" class="language-text">cluster-b (primary)
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="When-to-Use-Failover" class="common-anchor-header">장애 조치 사용 시기<button data-href="#When-to-Use-Failover" class="anchor-icon" translate="no">
+<h2 id="When-to-Use-Failover" class="common-anchor-header">When to Use Failover<button data-href="#When-to-Use-Failover" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -40,14 +42,14 @@ title: 페일오버
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>장애 조치는 다음과 같은 경우에만 사용하세요:</p>
+    </button></h2><p>Use failover only when:</p>
 <ul>
-<li>원래 기본값이 요청에 응답할 수 없는 경우.</li>
-<li>허용 가능한 시간 내에 기본 계정을 복구할 수 없는 경우.</li>
-<li>쓰기 가용성을 복원하는 것이 이전 기본값을 기다리는 것보다 더 중요합니다.</li>
+<li>The original primary cannot respond to requests.</li>
+<li>The primary cannot be recovered within an acceptable time.</li>
+<li>Restoring write availability is more important than waiting for the old primary.</li>
 </ul>
-<p>기본값에 여전히 연결할 수 있는 경우에는 대신 <a href="/docs/ko/v2.6.x/cdc_switchover.md">전환을</a> 사용하세요. 전환을 사용하면 데이터 손실을 방지할 수 있습니다.</p>
-<h2 id="Data-Loss-Risk" class="common-anchor-header">데이터 손실 위험<button data-href="#Data-Loss-Risk" class="anchor-icon" translate="no">
+<p>If the primary is still reachable, use <a href="/docs/ko/v2.6.x/cdc_switchover.md">Switchover</a> instead. Switchover avoids data loss.</p>
+<h2 id="Data-Loss-Risk" class="common-anchor-header">Data Loss Risk<button data-href="#Data-Loss-Risk" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -62,20 +64,20 @@ title: 페일오버
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>장애 조치는 원래 기본값을 기다리지 않습니다. 이전 기본 계정에 기록되었지만 아직 대기 계정에 복제되지 않은 모든 데이터가 손실될 수 있습니다.</p>
-<p>데이터 손실 가능성은 기본 데이터를 사용할 수 없게 된 시점의 CDC 지연에 따라 결정됩니다.</p>
-<p>장애 조치를 실행하기 전에 장단점을 이해하세요:</p>
+    </button></h2><p>Failover does not wait for the original primary. Any data written to the old primary but not yet replicated to the standby may be lost.</p>
+<p>The possible data loss is determined by CDC lag at the time the primary became unavailable.</p>
+<p>Before running failover, understand the tradeoff:</p>
 <table>
 <thead>
-<tr><th>목표</th><th>전환</th><th>장애 조치</th></tr>
+<tr><th>Goal</th><th>Switchover</th><th>Failover</th></tr>
 </thead>
 <tbody>
-<tr><td>프라이머리에 연결할 수 없는 동안 쓰기 복원</td><td>아니요</td><td>예</td></tr>
-<tr><td>데이터 손실 방지</td><td>예</td><td>보장되지 않음</td></tr>
-<tr><td>이전 기본값이 응답해야 함</td><td>예</td><td>아니요</td></tr>
+<tr><td>Restore writes while primary is unreachable</td><td>No</td><td>Yes</td></tr>
+<tr><td>Avoid data loss</td><td>Yes</td><td>Not guaranteed</td></tr>
+<tr><td>Requires old primary to respond</td><td>Yes</td><td>No</td></tr>
 </tbody>
 </table>
-<h2 id="Before-You-Begin" class="common-anchor-header">시작하기 전에<button data-href="#Before-You-Begin" class="anchor-icon" translate="no">
+<h2 id="Before-You-Begin" class="common-anchor-header">Before You Begin<button data-href="#Before-You-Begin" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -90,16 +92,16 @@ title: 페일오버
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>다음 사항을 확인합니다:</p>
+    </button></h2><p>Confirm the following:</p>
 <ul>
-<li>원래 기본 계정을 사용할 수 없습니다.</li>
-<li>기본 복구를 기다리지 않기로 결정했습니다.</li>
-<li>애플리케이션 트래픽을 대기 상태로 리디렉션할 수 있습니다.</li>
-<li>트래픽 자동화는 복구되는 경우 이전 기본값으로 쓰기를 다시 보내지 않습니다.</li>
-<li>대기 클러스터 ID, 주소, 토큰 및 p채널이 있습니다.</li>
+<li>The original primary is unavailable.</li>
+<li>You have decided not to wait for primary recovery.</li>
+<li>Application traffic can be redirected to the standby.</li>
+<li>Traffic automation will not send writes back to the old primary if it recovers.</li>
+<li>You have the standby cluster ID, address, token, and pchannels.</li>
 </ul>
-<p>가장 중요한 안전 요구 사항은 두뇌 분할을 방지하는 것입니다. 장애 조치 후에는 승격된 대기만 애플리케이션 쓰기를 수락해야 합니다.</p>
-<h2 id="Build-the-Failover-Configuration" class="common-anchor-header">장애 조치 구성 빌드<button data-href="#Build-the-Failover-Configuration" class="anchor-icon" translate="no">
+<p>The most important safety requirement is to prevent split brain. After failover, only the promoted standby should accept application writes.</p>
+<h2 id="Build-the-Failover-Configuration" class="common-anchor-header">Build the Failover Configuration<button data-href="#Build-the-Failover-Configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -114,7 +116,7 @@ title: 페일오버
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>대기 클러스터만 포함하고 복제 토폴로지를 포함하지 않는 구성을 빌드합니다. <code translate="no">force_promote=True</code> 을 설정합니다.</p>
+    </button></h2><p>Build a configuration that contains only the standby cluster and no replication topology. Set <code translate="no">force_promote=True</code>.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># If you followed Set Up CDC Replication, cluster B is the original target cluster.</span>
 cluster_b_id = target_cluster_id
 cluster_b_addr = target_cluster_addr
@@ -137,7 +139,7 @@ failover_config = {
     <span class="hljs-string">&quot;force_promote&quot;</span>: <span class="hljs-literal">True</span>,
 }
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Promote-the-Standby" class="common-anchor-header">스탠바이 승격<button data-href="#Promote-the-Standby" class="anchor-icon" translate="no">
+<h2 id="Promote-the-Standby" class="common-anchor-header">Promote the Standby<button data-href="#Promote-the-Standby" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -152,7 +154,7 @@ failover_config = {
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>대기 클러스터로 요청을 보냅니다.</p>
+    </button></h2><p>Send the request to the standby cluster.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
@@ -162,8 +164,8 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
 <span class="hljs-keyword">finally</span>:
     client_b.close()
 <button class="copy-code-btn"></button></code></pre>
-<p>요청이 성공하면 <code translate="no">cluster-b</code> 이 독립 실행형 프라이머리가 되어 쓰기를 수락할 수 있습니다.</p>
-<h2 id="Redirect-Application-Traffic" class="common-anchor-header">애플리케이션 트래픽 리디렉션<button data-href="#Redirect-Application-Traffic" class="anchor-icon" translate="no">
+<p>If the request succeeds, <code translate="no">cluster-b</code> becomes a standalone primary and can accept writes.</p>
+<h2 id="Redirect-Application-Traffic" class="common-anchor-header">Redirect Application Traffic<button data-href="#Redirect-Application-Traffic" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -178,14 +180,14 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>승격 후:</p>
+    </button></h2><p>After promotion:</p>
 <ol>
-<li>쓰기 트래픽을 <code translate="no">cluster-b</code> 로 리디렉션합니다.</li>
-<li>쓰기 엔드포인트, 로드 밸런서, DNS 레코드 및 자동화에서 <code translate="no">cluster-a</code> 을 제거합니다.</li>
-<li><code translate="no">cluster-b</code> 이 쓰기를 허용하는지 확인합니다.</li>
-<li><code translate="no">cluster-a</code> 을 폐기하거나 명시적으로 재구축할 때까지 격리된 상태로 유지하세요.</li>
+<li>Redirect write traffic to <code translate="no">cluster-b</code>.</li>
+<li>Remove <code translate="no">cluster-a</code> from write endpoints, load balancers, DNS records, and automation.</li>
+<li>Verify that <code translate="no">cluster-b</code> accepts writes.</li>
+<li>Keep <code translate="no">cluster-a</code> isolated until it is decommissioned or explicitly rebuilt.</li>
 </ol>
-<p>쓰기 확인 예시:</p>
+<p>Example write verification:</p>
 <pre><code translate="no" class="language-python">client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
 
 <span class="hljs-keyword">try</span>:
@@ -196,8 +198,8 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
 <span class="hljs-keyword">finally</span>:
     client_b.close()
 <button class="copy-code-btn"></button></code></pre>
-<p>배포에 맞게 컬렉션 이름 및 스키마 필드를 조정합니다.</p>
-<h2 id="Verify-the-Result" class="common-anchor-header">결과 확인<button data-href="#Verify-the-Result" class="anchor-icon" translate="no">
+<p>Adjust the collection name and schema fields to match your deployment.</p>
+<h2 id="Verify-the-Result" class="common-anchor-header">Verify the Result<button data-href="#Verify-the-Result" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -212,13 +214,13 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>승격된 클러스터를 직접 확인합니다:</p>
+    </button></h2><p>Verify the promoted cluster directly:</p>
 <ul>
-<li><code translate="no">cluster-b</code> 에 쓰기가 성공했습니다.</li>
-<li>읽기는 예상 데이터를 반환합니다.</li>
-<li>애플리케이션 구성 요소가 <code translate="no">cluster-a</code> 에 쓰지 않습니다.</li>
+<li>Writes succeed on <code translate="no">cluster-b</code>.</li>
+<li>Reads return expected data.</li>
+<li>No application component writes to <code translate="no">cluster-a</code>.</li>
 </ul>
-<h2 id="Handling-the-Old-Primary" class="common-anchor-header">이전 프라이머리 처리<button data-href="#Handling-the-Old-Primary" class="anchor-icon" translate="no">
+<h2 id="Handling-the-Old-Primary" class="common-anchor-header">Handling the Old Primary<button data-href="#Handling-the-Old-Primary" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -233,9 +235,9 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>장애 조치 후 <code translate="no">cluster-a</code> 을 오래된 것으로 처리합니다. 다시 연결할 수 있게 되면 애플리케이션 쓰기를 보내지 마세요. <code translate="no">cluster-b</code> 에 복제되지 않은 데이터가 포함될 수 있으며, 장애 조치 후 <code translate="no">cluster-b</code> 에 이미 새 쓰기가 포함되어 있을 수 있습니다.</p>
-<p><code translate="no">cluster-a</code> 을 이전 토폴로지에 자동으로 다시 연결하지 마세요. 이전 기본 토폴로지를 다시 도입하는 것은 별도의 복구 작업으로 신중하게 계획해야 합니다.</p>
-<h2 id="Minimizing-Data-Loss" class="common-anchor-header">데이터 손실 최소화하기<button data-href="#Minimizing-Data-Loss" class="anchor-icon" translate="no">
+    </button></h2><p>After failover, treat <code translate="no">cluster-a</code> as stale. Do not send application writes to it if it becomes reachable again. It may contain data that was never replicated to <code translate="no">cluster-b</code>, and <code translate="no">cluster-b</code> may already contain new writes after failover.</p>
+<p>Do not reconnect <code translate="no">cluster-a</code> to the old topology automatically. Reintroducing the old primary is a separate recovery task that must be planned carefully.</p>
+<h2 id="Minimizing-Data-Loss" class="common-anchor-header">Minimizing Data Loss<button data-href="#Minimizing-Data-Loss" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -250,14 +252,14 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>장애 조치로 인한 데이터 손실 위험을 모두 제거할 수는 없지만 줄일 수는 있습니다:</p>
+    </button></h2><p>You cannot remove all data-loss risk from failover, but you can reduce it:</p>
 <ul>
-<li>CDC 지연을 지속적으로 모니터링하세요.</li>
-<li>기본 쓰기 속도를 처리할 수 있도록 대기 클러스터를 프로비저닝된 상태로 유지하세요.</li>
-<li>클러스터 간 네트워크 지연과 패킷 손실을 낮게 유지하세요.</li>
-<li>애플리케이션 쓰기를 무력화하세요.</li>
-<li>장애 조치 후 성공 여부가 불확실한 쓰기를 다시 시도합니다.</li>
-<li>프라이머리가 여전히 응답할 수 있을 때마다 전환을 선호합니다.</li>
+<li>Monitor CDC lag continuously.</li>
+<li>Keep standby clusters provisioned to handle the primary write rate.</li>
+<li>Keep cross-cluster network latency and packet loss low.</li>
+<li>Make application writes idempotent.</li>
+<li>Retry writes whose success is uncertain after failover.</li>
+<li>Prefer switchover whenever the primary can still respond.</li>
 </ul>
 <h2 id="FAQ" class="common-anchor-header">FAQ<button data-href="#FAQ" class="anchor-icon" translate="no">
       <svg translate="no"
@@ -274,7 +276,7 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Does-failover-always-lose-data" class="common-anchor-header">장애 조치 시 항상 데이터가 손실되나요?<button data-href="#Does-failover-always-lose-data" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Does-failover-always-lose-data" class="common-anchor-header">Does failover always lose data?<button data-href="#Does-failover-always-lose-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -289,8 +291,8 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>아니요, 손실될 수 있습니다. 프라이머리가 실패하기 전에 모든 쓰기가 이미 복제되었다면 데이터는 손실되지 않습니다. CDC 지연이 존재했다면 지연된 데이터는 손실될 수 있습니다.</p>
-<h3 id="How-long-does-failover-take" class="common-anchor-header">장애 복구는 얼마나 걸리나요?<button data-href="#How-long-does-failover-take" class="anchor-icon" translate="no">
+    </button></h3><p>No, but it can. If all writes were already replicated before the primary failed, no data is lost. If CDC lag existed, the lagging data may be lost.</p>
+<h3 id="How-long-does-failover-take" class="common-anchor-header">How long does failover take?<button data-href="#How-long-does-failover-take" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -305,8 +307,8 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>일반적으로 대기 상태의 클러스터 상태와 컨트롤 플레인 가용성에 따라 몇 초 내에 완료됩니다.</p>
-<h3 id="Can-I-run-failover-on-the-primary" class="common-anchor-header">프라이머리에서 페일오버를 실행할 수 있나요?<button data-href="#Can-I-run-failover-on-the-primary" class="anchor-icon" translate="no">
+    </button></h3><p>It typically completes within seconds, depending on cluster state and control-plane availability on the standby.</p>
+<h3 id="Can-I-run-failover-on-the-primary" class="common-anchor-header">Can I run failover on the primary?<button data-href="#Can-I-run-failover-on-the-primary" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -321,8 +323,8 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>아니요. 장애 조치는 대기 클러스터를 위한 것입니다. 현재 기본 클러스터를 사용할 수 있는 경우 전환을 사용하세요.</p>
-<h3 id="Can-the-old-primary-rejoin-automatically" class="common-anchor-header">이전 프라이머리가 자동으로 다시 참여할 수 있나요?<button data-href="#Can-the-old-primary-rejoin-automatically" class="anchor-icon" translate="no">
+    </button></h3><p>No. Failover is intended for a standby cluster. If the current primary is available, use switchover.</p>
+<h3 id="Can-the-old-primary-rejoin-automatically" class="common-anchor-header">Can the old primary rejoin automatically?<button data-href="#Can-the-old-primary-rejoin-automatically" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -337,8 +339,8 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>아니요. 장애 조치 후 이전 주체는 오래된 것으로 처리되어 폐기되거나 재구축되어야 복제에 다시 참여할 수 있습니다.</p>
-<h3 id="How-do-I-avoid-split-brain" class="common-anchor-header">두뇌 분할을 방지하려면 어떻게 해야 하나요?<button data-href="#How-do-I-avoid-split-brain" class="anchor-icon" translate="no">
+    </button></h3><p>No. After failover, the old primary must be treated as stale and decommissioned or rebuilt before it can participate in replication again.</p>
+<h3 id="How-do-I-avoid-split-brain" class="common-anchor-header">How do I avoid split brain?<button data-href="#How-do-I-avoid-split-brain" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -353,4 +355,4 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>승격된 클러스터만 쓰기를 받도록 합니다. 모든 쓰기 경로에서 이전 프라이머리를 제거해야 트래픽을 복구하고 수락할 수 있습니다.</p>
+    </button></h3><p>Ensure that only the promoted cluster receives writes. Remove the old primary from all write paths before it can recover and accept traffic.</p>

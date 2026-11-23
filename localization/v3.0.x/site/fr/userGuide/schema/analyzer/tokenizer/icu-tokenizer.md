@@ -2,11 +2,10 @@
 id: icu-tokenizer.md
 title: ICUCompatible with Milvus 2.5.11+
 summary: >-
-  Le tokeniseur ICU s'appuie sur le projet open source « Internationalization
-  Components of Unicode » (ICU), qui fournit des outils essentiels à
-  l'internationalisation des logiciels. Grâce à l'algorithme de césure de mots
-  d'ICU, le tokeniseur est capable de diviser avec précision un texte en mots
-  dans la plupart des langues du monde.
+  The icu tokenizer is built on the Internationalization Components of Unicode
+  (ICU) open‑source project, which provides key tools for software
+  internationalization. By using ICU's word‑break algorithm, the tokenizer can
+  accurately split text into words across the majority of the world’s languages.
 beta: Milvus 2.5.11+
 ---
 <h1 id="ICU" class="common-anchor-header">ICU<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.5.11+</span><button data-href="#ICU" class="anchor-icon" translate="no">
@@ -24,9 +23,9 @@ beta: Milvus 2.5.11+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Le tokeniseur d’ <code translate="no">icu</code> s s’appuie sur le projet open source <a href="http://site.icu-project.org/">Internationalization Components of Unicode</a> (ICU), qui fournit des outils essentiels à l’internationalisation des logiciels. Grâce à l’algorithme de césure d’ICU, le tokeniseur est capable de diviser avec précision le texte en mots dans la plupart des langues du monde.</p>
+    </button></h1><p>The <code translate="no">icu</code> tokenizer is built on the <a href="http://site.icu-project.org/">Internationalization Components of Unicode</a> (ICU) open‑source project, which provides key tools for software internationalization. By using ICU’s word‑break algorithm, the tokenizer can accurately split text into words across the majority of the world’s languages.</p>
 <div class="alert note">
-<p>Le tokeniseur d’ <code translate="no">icu</code> conserve les signes de ponctuation et les espaces sous forme de tokens distincts dans la sortie. Par exemple, « <code translate="no">&quot;Привет! Как дела?&quot;</code> » devient « <code translate="no">[&quot;Привет&quot;, &quot;!&quot;, &quot; &quot;, &quot;Как&quot;, &quot; &quot;, &quot;дела&quot;, &quot;?&quot;]</code> ». Pour supprimer ces tokens de ponctuation isolés, utilisez le <a href="/docs/fr/removepunct-filter.md"><code translate="no">removepunct</code></a> filtre.</p>
+<p>The <code translate="no">icu</code> tokenizer preserves punctuation marks and spaces as separate tokens in the output. For example, <code translate="no">&quot;Привет! Как дела?&quot;</code> becomes <code translate="no">[&quot;Привет&quot;, &quot;!&quot;, &quot; &quot;, &quot;Как&quot;, &quot; &quot;, &quot;дела&quot;, &quot;?&quot;]</code>. To remove these standalone punctuation tokens, use the <a href="/docs/fr/removepunct-filter.md"><code translate="no">removepunct</code></a> filter.</p>
 </div>
 <h2 id="Configuration" class="common-anchor-header">Configuration<button data-href="#Configuration" class="anchor-icon" translate="no">
       <svg translate="no"
@@ -43,15 +42,15 @@ beta: Milvus 2.5.11+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Pour configurer un analyseur à l’aide du tokenizer « <code translate="no">icu</code> », définissez <code translate="no">tokenizer</code> sur <code translate="no">icu</code> dans <code translate="no">analyzer_params</code>.</p>
+    </button></h2><p>To configure an analyzer using the <code translate="no">icu</code> tokenizer, set <code translate="no">tokenizer</code> to <code translate="no">icu</code> in <code translate="no">analyzer_params</code>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;icu&quot;</span>,
@@ -80,15 +79,15 @@ analyzerParams=<span class="hljs-string">&#x27;{
   &quot;tokenizer&quot;: &quot;icu&quot;
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Le tokenizer « <code translate="no">icu</code> » peut fonctionner en association avec un ou plusieurs filtres. Par exemple, le code suivant définit un analyseur qui utilise le tokenizer « <code translate="no">icu</code> » et <a href="/docs/fr/removepunct-filter.md">le filtre « remove punct</a> » :</p>
+<p>The <code translate="no">icu</code> tokenizer can work in conjunction with one or more filters. For example, the following code defines an analyzer that uses the <code translate="no">icu</code> tokenizer and <a href="/docs/fr/removepunct-filter.md">remove punct filter</a>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;icu&quot;</span>,
@@ -125,8 +124,8 @@ analyzerParams=<span class="hljs-string">&#x27;{
   &quot;filter&quot;: [&quot;removepunct&quot;]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Une fois les analyseurs définis ( <code translate="no">analyzer_params</code>), vous pouvez les appliquer à un champ « <code translate="no">VARCHAR</code> » lors de la définition d’un schéma de collection. Cela permet à Milvus de traiter le texte de ce champ à l’aide de l’analyseur spécifié, pour une tokenisation et un filtrage efficaces. Pour plus de détails, consultez la section « <a href="/docs/fr/analyzer-overview.md#Example-use">Exemple d’utilisation</a> ».</p>
-<h2 id="Examples" class="common-anchor-header">Exemples<button data-href="#Examples" class="anchor-icon" translate="no">
+<p>After defining <code translate="no">analyzer_params</code>, you can apply them to a <code translate="no">VARCHAR</code> field when defining a collection schema. This allows Milvus to process the text in that field using the specified analyzer for efficient tokenization and filtering. For details, refer to <a href="/docs/fr/analyzer-overview.md#Example-use">Example use</a>.</p>
+<h2 id="Examples" class="common-anchor-header">Examples<button data-href="#Examples" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -141,8 +140,8 @@ analyzerParams=<span class="hljs-string">&#x27;{
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Avant d’appliquer la configuration de l’analyseur à votre schéma de collection, vérifiez son comportement à l’aide de la méthode ` <code translate="no">run_analyzer</code> `.</p>
-<h3 id="Analyzer-configuration" class="common-anchor-header">Configuration de l’analyseur<button data-href="#Analyzer-configuration" class="anchor-icon" translate="no">
+    </button></h2><p>Before applying the analyzer configuration to your collection schema, verify its behavior using the <code translate="no">run_analyzer</code> method.</p>
+<h3 id="Analyzer-configuration" class="common-anchor-header">Analyzer configuration<button data-href="#Analyzer-configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -158,13 +157,13 @@ analyzerParams=<span class="hljs-string">&#x27;{
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;icu&quot;</span>,
@@ -193,7 +192,7 @@ analyzerParams=<span class="hljs-string">&#x27;{
   &quot;tokenizer&quot;: &quot;icu&quot;
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Verification-using-runanalyzer" class="common-anchor-header">Vérification à l’aide de <code translate="no">run_analyzer</code><button data-href="#Verification-using-runanalyzer" class="anchor-icon" translate="no">
+<h3 id="Verification-using-runanalyzer" class="common-anchor-header">Verification using <code translate="no">run_analyzer</code><button data-href="#Verification-using-runanalyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -209,13 +208,13 @@ analyzerParams=<span class="hljs-string">&#x27;{
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> (
     MilvusClient,
@@ -347,7 +346,7 @@ curl --request POST \
         &quot;analyzerParams&quot;: &quot;{\&quot;tokenizer\&quot;: \&quot;icu\&quot;}&quot;
      }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Expected-output" class="common-anchor-header">Résultat attendu<button data-href="#Expected-output" class="anchor-icon" translate="no">
+<h3 id="Expected-output" class="common-anchor-header">Expected output<button data-href="#Expected-output" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"

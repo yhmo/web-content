@@ -1,12 +1,15 @@
 ---
 id: filtered-search.md
-title: 필터링 검색
+title: Filtered Search
 summary: >-
-  ANN 검색은 지정된 벡터 임베딩과 가장 유사한 벡터 임베딩을 찾아냅니다. 하지만 검색 결과가 항상 정확한 것은 아닙니다. 검색 요청에
-  필터링 조건을 포함하면 Milvus가 ANN 검색을 수행하기 전에 메타데이터 필터링을 수행하여, 검색 범위를 전체 컬렉션에서 지정된 필터링
-  조건에 부합하는 엔티티로만 좁힐 수 있습니다.
+  An ANN search finds vector embeddings most similar to specified vector
+  embeddings. However, the search results may not always be correct. You can
+  include filtering conditions in a search request so that Milvus conducts
+  metadata filtering before conducting ANN searches, reducing the search scope
+  from the whole collection to only the entities matching the specified
+  filtering conditions.
 ---
-<h1 id="Filtered-Search" class="common-anchor-header">필터링 검색<button data-href="#Filtered-Search" class="anchor-icon" translate="no">
+<h1 id="Filtered-Search" class="common-anchor-header">Filtered Search<button data-href="#Filtered-Search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -21,8 +24,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>ANN 검색은 지정된 벡터 임베딩과 가장 유사한 벡터 임베딩을 찾아냅니다. 그러나 검색 결과가 항상 정확한 것은 아닙니다. 검색 요청에 필터링 조건을 포함하면 Milvus가 ANN 검색을 수행하기 전에 메타데이터 필터링을 수행하여, 전체 컬렉션에서 지정된 필터링 조건에 부합하는 엔티티로만 검색 범위를 좁힐 수 있습니다.</p>
-<h2 id="Overview" class="common-anchor-header">개요<button data-href="#Overview" class="anchor-icon" translate="no">
+    </button></h1><p>An ANN search finds vector embeddings most similar to specified vector embeddings. However, the search results may not always be correct. You can include filtering conditions in a search request so that Milvus conducts metadata filtering before conducting ANN searches, reducing the search scope from the whole collection to only the entities matching the specified filtering conditions.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,8 +40,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus에서 필터링 검색은 필터링이 적용되는 단계에 따라 <strong>표준 필터링</strong> 과 <strong>반복 필터링의</strong> 두 가지 유형으로 분류됩니다.</p>
-<h3 id="Standard-filtering" class="common-anchor-header">표준 필터링<button data-href="#Standard-filtering" class="anchor-icon" translate="no">
+    </button></h2><p>In Milvus, filtered searches are categorized into two types — <strong>standard filtering</strong> and <strong>iterative filtering</strong> — depending on the stage at which the filtering is applied.</p>
+<h3 id="Standard-filtering" class="common-anchor-header">Standard filtering<button data-href="#Standard-filtering" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -53,20 +56,25 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>컬렉션에 벡터 임베딩과 해당 메타데이터가 모두 포함된 경우, ANN 검색 전에 메타데이터를 필터링하여 검색 결과의 관련성을 높일 수 있습니다. Milvus는 필터링 조건이 포함된 검색 요청을 수신하면, 지정된 필터링 조건에 부합하는 엔티티 내에서만 검색 범위를 제한합니다.</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/filtered-search.png" alt="Filtered Search" class="doc-image" id="filtered-search" /> 
-   <span>필터링된 검색</span>
-  
- </span></p>
-<p>위 다이어그램에서 볼 수 있듯이, 검색 요청에는 ‘ <code translate="no">chunk like &quot;%red%&quot;</code> ’가 필터링 조건으로 포함되어 있으며, 이는 Milvus가 ‘ <code translate="no">chunk</code> ’ 필드에 ‘ <code translate="no">red</code> ’라는 단어가 포함된 모든 엔티티 내에서 ANN 검색을 수행해야 함을 나타냅니다. 구체적으로 Milvus는 다음과 같은 작업을 수행합니다:</p>
+    </button></h3><p>If a collection contains both vector embeddings and their metadata, you can filter metadata before ANN search to improve the relevancy of the search result. Once Milvus receives a search request carrying a filtering condition, it restricts the search scope within the entities matching the specified filtering condition.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/filtered-search.png" alt="Filtered Search" class="doc-image" id="filtered-search" />
+    <span>Filtered Search</span>
+  </span>
+</p>
+<p>As shown in the above diagram, the search request carries <code translate="no">chunk like &quot;%red%&quot;</code> as the filtering condition, indicating that Milvus should conduct the ANN search within all the entities that have the word <code translate="no">red</code> in the <code translate="no">chunk</code> field. Specifically, Milvus does the following:</p>
 <ul>
-<li><p>검색 요청에 포함된 필터링 조건과 일치하는 엔티티를 필터링합니다.</p></li>
-<li><p>필터링된 엔티티 내에서 ANN 검색을 수행합니다.</p></li>
-<li><p>상위 K개 엔티티를 반환합니다.</p></li>
+<li><p>Filter entities that match the filtering conditions carried in the search request.</p></li>
+<li><p>Conduct the ANN search within the filtered entities.</p></li>
+<li><p>Returns top-K entities.</p></li>
 </ul>
-<h3 id="Iterative-filtering" class="common-anchor-header">반복 필터링<button data-href="#Iterative-filtering" class="anchor-icon" translate="no">
+<div class="alert note">
+<p>Starting in Milvus 3.0.3, you can use <code translate="no">IS NULL</code> and <code translate="no">IS NOT NULL</code> in query and search filters on ordinary vector fields to select entities whose vector field is NULL or non-NULL, respectively.</p>
+<p>To find entities whose <code translate="no">embedding</code> field is NULL, use <code translate="no">query()</code> with the filter <code translate="no">embedding IS NULL</code>. This filter is also valid in <code translate="no">search()</code>. However, searching on <code translate="no">embedding</code> with this filter returns no hits: entities without an <code translate="no">embedding</code> value have no vector to compare with the query vector.</p>
+<p>For supported types, syntax, and examples, see <a href="/docs/ko/basic-operators.md#IS-NULL-and-IS-NOT-NULL-operators">IS NULL and IS NOT NULL operators</a>.</p>
+</div>
+<h3 id="Iterative-filtering" class="common-anchor-header">Iterative filtering<button data-href="#Iterative-filtering" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -81,17 +89,17 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>표준 필터링 프로세스는 검색 범위를 효과적으로 좁혀줍니다. 그러나 지나치게 복잡한 필터링 표현식은 검색 지연 시간을 매우 길게 만들 수 있습니다. 이러한 경우, 반복적 필터링을 대안으로 활용하면 스칼라 필터링의 처리 부하를 줄이는 데 도움이 됩니다.</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/iterative-filtering.png" alt="Iterative Filtering" class="doc-image" id="iterative-filtering" /> 
-   <span>반복 필터링</span>
-  
- </span></p>
-<p>위 다이어그램에서 볼 수 있듯이, 반복적 필터링을 사용하는 검색은 벡터 검색을 반복적으로 수행합니다. 반복자가 반환하는 각 엔티티는 스칼라 필터링을 거치며, 이 과정은 지정된 상위 K개 결과가 나올 때까지 계속됩니다.</p>
-<p>이 방법은 스칼라 필터링을 적용받는 엔티티의 수를 대폭 줄여주므로, 특히 매우 복잡한 필터링 표현식을 처리할 때 유용합니다.</p>
-<p>그러나 이터레이터가 엔티티를 한 번에 하나씩 처리한다는 점에 유의해야 합니다. 이러한 순차적 접근 방식은 특히 많은 수의 엔티티가 스칼라 필터링을 거칠 때 처리 시간이 길어지거나 잠재적인 성능 문제가 발생할 수 있습니다.</p>
-<h2 id="Examples" class="common-anchor-header">예제<button data-href="#Examples" class="anchor-icon" translate="no">
+    </button></h3><p>The standard filtering process effectively narrows the search scope to a small range. However, overly complex filtering expressions may result in very high search latency. In such cases, iterative filtering can serve as an alternative, helping to reduce the workload of scalar filtering.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/iterative-filtering.png" alt="Iterative Filtering" class="doc-image" id="iterative-filtering" />
+    <span>Iterative Filtering</span>
+  </span>
+</p>
+<p>As illustrated in the diagram above, a search with iterative filtering performs the vector search in iterations. Each entity returned by the iterator undergoes scalar filtering, and this process continues until the specified topK results are achieved.</p>
+<p>This method significantly reduces the number of entities subjected to scalar filtering, making it especially beneficial for handling highly complex filtering expressions.</p>
+<p>However, it’s important to note that the iterator processes entities one at a time. This sequential approach can lead to longer processing times or potential performance issues, especially when a large number of entities are subjected to scalar filtering.</p>
+<h2 id="Examples" class="common-anchor-header">Examples<button data-href="#Examples" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -106,7 +114,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>이 섹션에서는 필터링된 검색을 수행하는 방법을 보여줍니다. 이 섹션의 코드 예제는 컬렉션에 이미 다음 엔티티들이 존재한다고 가정합니다. 각 엔티티는 <strong>id</strong>, <strong>vector</strong>, <strong>color</strong>, <strong>likes라는</strong> 네 개의 필드를 가지고 있습니다. 예제에서는 <code translate="no">COSINE</code> 메트릭으로 인덱싱된 5차원 <code translate="no">vector</code> 필드를 가진 ' <code translate="no">my_collection</code> '라는 로드된 컬렉션을 사용합니다.</p>
+    </button></h2><p>This section demonstrates how to conduct a filtered search. Code snippets in this section assume you already have the following entities in your collection. Each entity has four fields, namely <strong>id</strong>, <strong>vector</strong>, <strong>color</strong>, and <strong>likes</strong>. The examples use a loaded collection named <code translate="no">my_collection</code> with a five-dimensional <code translate="no">vector</code> field indexed with the <code translate="no">COSINE</code> metric.</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">[</span>
     <span class="hljs-punctuation">{</span><span class="hljs-attr">&quot;id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;vector&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-number">0.3580376395471989</span><span class="hljs-punctuation">,</span> <span class="hljs-number">-0.6023495712049978</span><span class="hljs-punctuation">,</span> <span class="hljs-number">0.18414012509913835</span><span class="hljs-punctuation">,</span> <span class="hljs-number">-0.26286205330961354</span><span class="hljs-punctuation">,</span> <span class="hljs-number">0.9029438446296592</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;color&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;pink_8682&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;likes&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">165</span><span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
     <span class="hljs-punctuation">{</span><span class="hljs-attr">&quot;id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;vector&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-number">0.19886812562848388</span><span class="hljs-punctuation">,</span> <span class="hljs-number">0.06023560599112088</span><span class="hljs-punctuation">,</span> <span class="hljs-number">0.6976963061752597</span><span class="hljs-punctuation">,</span> <span class="hljs-number">0.2614474506242501</span><span class="hljs-punctuation">,</span> <span class="hljs-number">0.838729485096104</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;color&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;red_7025&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;likes&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">25</span><span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
@@ -121,10 +129,10 @@ summary: >-
 <span class="hljs-punctuation">]</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>쿼리 벡터가 대상 컬렉션에 이미 존재하는 경우, 검색 전에 벡터를 다시 불러오는 대신 <code translate="no">ids</code> 를 사용하는 것을 고려해 보십시오. 자세한 내용은 ‘기본 키 <a href="/docs/ko/primary-key-search.md">검색(Primary-Key Search</a>)’을 참조하십시오.</p>
+<p>If the query vectors already exist in the target collection, consider using <code translate="no">ids</code> instead of retrieving them before searches. For details, refer to <a href="/docs/ko/primary-key-search.md">Primary-Key Search</a>.</p>
 </div>
-<p>이 예제에서는 PyMilvus 3.0.2, Java SDK 3.0.10, Go SDK 3.0.0 (<code translate="no">client/v3</code>), Rust SDK 3.0.2, C++ SDK 3.0.4, NodeJS SDK 3.0.6 및 C# SDK 3.0.0을 사용합니다.</p>
-<h3 id="Search-with-standard-filtering" class="common-anchor-header">표준 필터링을 사용한 검색<button data-href="#Search-with-standard-filtering" class="anchor-icon" translate="no">
+<p>The examples use PyMilvus 3.0.2, Java SDK 3.0.10, Go SDK 3.0.0 (<code translate="no">client/v3</code>), Rust SDK 3.0.2, C++ SDK 3.0.4, NodeJS SDK 3.0.6, and C# SDK 3.0.0.</p>
+<h3 id="Search-with-standard-filtering" class="common-anchor-header">Search with standard filtering<button data-href="#Search-with-standard-filtering" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -139,16 +147,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>다음 코드 예제는 표준 필터링을 사용한 검색을 보여줍니다. 다음 코드 예제의 요청에는 필터링 조건과 여러 출력 필드가 포함되어 있습니다.</p>
+    </button></h3><p>The following code snippets demonstrate a search with standard filtering, and the request in the following code snippet carries a filtering condition and several output fields.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -392,8 +400,8 @@ curl --request POST \
 <span class="hljs-comment"># Illustrative response; scores and cost can vary.</span>
 <span class="hljs-comment"># {&quot;code&quot;:0,&quot;cost&quot;:0,&quot;data&quot;:[{&quot;color&quot;:&quot;red_4794&quot;,&quot;distance&quot;:0.5975796,&quot;id&quot;:4,&quot;likes&quot;:122},{&quot;color&quot;:&quot;red_9392&quot;,&quot;distance&quot;:-0.2499619,&quot;id&quot;:6,&quot;likes&quot;:58}],&quot;topks&quot;:[2]}</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>검색 요청에 포함된 필터링 조건은 <code translate="no">color like &quot;red%&quot; and likes &gt; 50</code> 입니다. 이 조건은 'and' 연산자를 사용하여 두 가지 조건을 포함합니다. 첫 번째 조건은 <code translate="no">color</code> 필드의 값이 <code translate="no">red</code> 로 시작하는 엔티티를, 두 번째 조건은 <code translate="no">likes</code> 필드의 값이 <code translate="no">50</code> 보다 큰 엔티티를 찾습니다. 이 조건을 충족하는 엔티티는 단 두 개뿐입니다. top-K를 <code translate="no">5</code> 로 설정하면, Milvus는 이 두 엔티티와 쿼리 벡터 간의 거리를 계산하여 검색 결과로 반환합니다.</p>
-<p>다음 예제는 코사인 점수를 예시로 든 Python 결과의 형식을 보여줍니다. 점수는 부동 소수점 정밀도에 따라 달라질 수 있습니다. <code translate="no">entity</code> 에는 요청된 출력 필드만 표시되며, REST 예제에서는 각 검색 결과의 최상위 수준에서 해당 필드를 반환합니다.</p>
+<p>The filtering condition carried in the search request reads <code translate="no">color like &quot;red%&quot; and likes &gt; 50</code>. It uses the and operator to include two conditions: the first one asks for entities that have a value starting with <code translate="no">red</code> in the <code translate="no">color</code> field, and the other asks for entities with a value greater than <code translate="no">50</code> in the <code translate="no">likes</code> field. There are only two entities meeting these requirements. With the top-K set to <code translate="no">5</code>, Milvus will calculate the distance between these two entities to the query vector and return them as the search results.</p>
+<p>The following example shows the shape of the Python results with illustrative cosine scores. Scores can vary with floating-point precision. Only the requested output fields appear in <code translate="no">entity</code>; the REST examples return those fields at the top level of each hit.</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">[</span>
     <span class="hljs-punctuation">{</span>
         <span class="hljs-attr">&quot;id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">4</span><span class="hljs-punctuation">,</span>
@@ -413,8 +421,8 @@ curl --request POST \
     <span class="hljs-punctuation">}</span>
 <span class="hljs-punctuation">]</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>메타데이터 필터링에 사용할 수 있는 연산자에 대한 자세한 내용은 <a href="/docs/ko/boolean.md">‘필터링</a> 설명’을 참조하십시오.</p>
-<h3 id="Search-with-iterative-filtering" class="common-anchor-header">반복 필터링을 사용한 검색<button data-href="#Search-with-iterative-filtering" class="anchor-icon" translate="no">
+<p>For more information on the operators you can use in metadata filtering, refer to <a href="/docs/ko/boolean.md">Filtering Explained</a>.</p>
+<h3 id="Search-with-iterative-filtering" class="common-anchor-header">Search with iterative filtering<button data-href="#Search-with-iterative-filtering" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -429,16 +437,16 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>반복 필터링을 사용하여 필터링된 검색을 수행하려면 다음과 같이 할 수 있습니다.</p>
+    </button></h3><p>To conduct a filtered search with iterative filtering, you can do as follows:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 

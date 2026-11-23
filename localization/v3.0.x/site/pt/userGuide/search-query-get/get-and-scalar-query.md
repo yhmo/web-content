@@ -2,9 +2,8 @@
 id: get-and-scalar-query.md
 title: Query
 summary: >-
-  Utilize as funções Query, Get e QueryIterator para recuperar entidades,
-  filtrar metadados, ordenar resultados de consultas e agregar valores escalares
-  no Milvus.
+  Use Query, Get, and QueryIterator to retrieve entities, filter metadata, sort
+  query results, and aggregate scalar values in Milvus.
 ---
 <h1 id="Query" class="common-anchor-header">Query<button data-href="#Query" class="anchor-icon" translate="no">
       <svg translate="no"

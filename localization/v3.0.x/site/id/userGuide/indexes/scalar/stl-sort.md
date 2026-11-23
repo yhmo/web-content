@@ -2,9 +2,8 @@
 id: stl-sort.md
 title: STL_SORT
 summary: >-
-  Indeks STL_SORT adalah jenis indeks yang dirancang khusus untuk meningkatkan
-  kinerja kueri pada kolom numerik (INT8, INT16, dll.), kolom VARCHAR, atau
-  kolom TIMESTAMPTZ dengan mengatur data dalam urutan yang terurut.
+  Use STL_SORT for value lookups, range filtering, and string prefix matching on
+  compatible fields.
 ---
 <h1 id="STLSORT" class="common-anchor-header">STL_SORT<button data-href="#STLSORT" class="anchor-icon" translate="no">
       <svg translate="no"
@@ -21,13 +20,47 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Indeks " <code translate="no">STL_SORT</code> " adalah jenis indeks yang dirancang khusus untuk meningkatkan kinerja kueri pada kolom numerik (INT8, INT16, dll.), kolom " <code translate="no">VARCHAR</code> ", atau kolom " <code translate="no">TIMESTAMPTZ</code> " di Milvus dengan mengorganisir data dalam urutan yang terurut.</p>
-<p>Gunakan indeks " <code translate="no">STL_SORT</code> " jika Anda sering menjalankan kueri dengan:</p>
-<ul>
-<li><p>Penyaringan perbandingan dengan operator <code translate="no">==</code>, <code translate="no">!=</code>, <code translate="no">&gt;</code>, <code translate="no">&lt;</code>, <code translate="no">&gt;=</code>, dan <code translate="no">&lt;=</code> </p></li>
-<li><p>Penyaringan rentang dengan operator <code translate="no">IN</code> dan <code translate="no">LIKE</code> </p></li>
+    </button></h1><p><code translate="no">STL_SORT</code> stores values in sorted order to accelerate value lookups, range filters, and string prefix matching.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
+      <svg translate="no"
+        aria-hidden="true"
+        focusable="false"
+        height="20"
+        version="1.1"
+        viewBox="0 0 16 16"
+        width="16"
+      >
+        <path
+          fill="#0092E4"
+          fill-rule="evenodd"
+          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+        ></path>
+      </svg>
+    </button></h2><h3 id="Supported-data-types" class="common-anchor-header">Supported data types<button data-href="#Supported-data-types" class="anchor-icon" translate="no">
+      <svg translate="no"
+        aria-hidden="true"
+        focusable="false"
+        height="20"
+        version="1.1"
+        viewBox="0 0 16 16"
+        width="16"
+      >
+        <path
+          fill="#0092E4"
+          fill-rule="evenodd"
+          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+        ></path>
+      </svg>
+    </button></h3><ul>
+<li><p>Numeric fields (e.g., <code translate="no">INT8</code>, <code translate="no">INT16</code>, <code translate="no">INT32</code>, <code translate="no">INT64</code>, <code translate="no">FLOAT</code>, <code translate="no">DOUBLE</code>). For details, refer to <a href="/docs/id/number.md">Boolean & Number</a>.</p></li>
+<li><p><code translate="no">VARCHAR</code> fields. For details, refer to <a href="/docs/id/string.md">String Field</a>.</p></li>
+<li><p><code translate="no">TIMESTAMPTZ</code> fields. For details, refer to <a href="/docs/id/timestamptz-field.md">TIMESTAMPTZ Field</a>.</p></li>
 </ul>
-<h2 id="Supported-data-types" class="common-anchor-header">Tipe data yang didukung<button data-href="#Supported-data-types" class="anchor-icon" translate="no">
+<p>For numeric, VARCHAR, or TIMESTAMPTZ subfields in a StructArray, see <a href="/docs/id/index-structarray-fields.md#Create-scalar-indexes">Index StructArray Fields</a>. Ordinary ARRAY fields do not support <code translate="no">STL_SORT</code>; see <a href="/docs/id/array_data_type.md#Array-index-support">Array index support</a> for their index choices.</p>
+<p>JSON paths cast to <code translate="no">DOUBLE</code> or <code translate="no">VARCHAR</code> support <code translate="no">STL_SORT</code> after the <a href="/docs/id/json-indexing.md#Index-requirements">3.0 JSON index opt-in setup</a>.</p>
+<p><a id="Queries-accelerated-by-STLSORT"></a></p>
+<p><a id="Supported-filters"></a></p>
+<h3 id="Filter-acceleration" class="common-anchor-header">Filter acceleration<button data-href="#Filter-acceleration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -42,12 +75,21 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><ul>
-<li><p>Bidang numerik (misalnya, <code translate="no">INT8</code>, <code translate="no">INT16</code>, <code translate="no">INT32</code>, <code translate="no">INT64</code>, <code translate="no">FLOAT</code>, <code translate="no">DOUBLE</code>). Untuk detailnya, lihat <a href="/docs/id/number.md">Boolean &amp; Number</a>.</p></li>
-<li><p><code translate="no">VARCHAR</code> bidang. Untuk detailnya, lihat <a href="/docs/id/string.md">Bidang String</a>.</p></li>
-<li><p><code translate="no">TIMESTAMPTZ</code> bidang. Untuk detailnya, lihat <a href="/docs/id/timestamptz-field.md">Bidang TIMESTAMPTZ</a>.</p></li>
+    </button></h3><p>An <code translate="no">STL_SORT</code> index can help evaluate the following conditions, subject to field and cast compatibility:</p>
+<ul>
+<li>Equality (<code translate="no">==</code>, <code translate="no">!=</code>) and membership (<code translate="no">in</code>, <code translate="no">not in</code>).</li>
+<li>Ranges: <code translate="no">&lt;</code>, <code translate="no">&lt;=</code>, <code translate="no">&gt;</code>, <code translate="no">&gt;=</code>, including intervals such as <code translate="no">10 &lt;= price &lt; 50</code>.</li>
+<li>VARCHAR prefix matching, such as <code translate="no">name LIKE &quot;abc%&quot;</code>.</li>
+<li>Comparisons on eligible JSON scalar paths. See <a href="/docs/id/json-indexing.md#Supported-filters">JSON filters</a>.</li>
 </ul>
-<h2 id="How-it-works" class="common-anchor-header">Cara kerjanya<button data-href="#How-it-works" class="anchor-icon" translate="no">
+<p>For suffix, substring, general LIKE, and regex filters, Milvus can evaluate the pattern against strings stored in the index. This can require visiting many distinct strings. See <a href="/docs/id/pattern-matching.md">Pattern Matching</a> for syntax and planning simplifications.</p>
+<div class="alert note">
+<blockquote>
+<p>These are index capabilities, not limits on valid filter expressions. See <a href="/docs/id/scalar_index.md#Filter-execution">Scalar Index</a> for shared lookup constraints. For <code translate="no">AND</code>, <code translate="no">OR</code>, <code translate="no">NOT</code>, and NULL tests (<code translate="no">IS NULL</code>, <code translate="no">IS NOT NULL</code>), see <a href="/docs/id/basic-operators.md">Basic Operators</a>.</p>
+</blockquote>
+</div>
+<p><a id="Usage-notes"></a></p>
+<h3 id="Memory-considerations" class="common-anchor-header">Memory considerations<button data-href="#Memory-considerations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -62,24 +104,27 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus mengimplementasikan <code translate="no">STL_SORT</code> dalam dua fase:</p>
-<ol>
-<li><p><strong>Pembuatan indeks</strong></p>
-<ul>
-<li><p>Selama proses pengambilan data, Milvus mengumpulkan semua nilai untuk bidang yang diindeks.</p></li>
-<li><p>Nilai-nilai tersebut diurutkan secara ascending menggunakan <a href="https://en.cppreference.com/w/cpp/algorithm/sort.html">std::sort</a> dari C++ STL.</p></li>
-<li><p>Setiap nilai dipasangkan dengan ID entitasnya, dan array yang telah diurutkan disimpan sebagai indeks.</p></li>
-</ul></li>
-<li><p><strong>Mempercepat kueri</strong></p>
-<ul>
-<li><p>Saat melakukan kueri, Milvus menggunakan <strong>pencarian biner</strong> (<a href="https://en.cppreference.com/w/cpp/algorithm/lower_bound.html">std::lower_bound</a> dan <a href="https://en.cppreference.com/w/cpp/algorithm/upper_bound.html">std::upper_bound</a>) pada array yang telah diurutkan.</p></li>
-<li><p>Untuk perbandingan kesamaan, Milvus dengan cepat menemukan semua nilai yang cocok.</p></li>
-<li><p>Untuk rentang, Milvus menentukan posisi awal dan akhir, lalu mengembalikan semua nilai di antaranya.</p></li>
-<li><p>ID entitas yang cocok diteruskan ke eksekutor kueri untuk perakitan hasil akhir.</p></li>
-</ul></li>
-</ol>
-<p>Hal ini mengurangi kompleksitas kueri dari <strong>O(n)</strong> (pemindaian penuh) menjadi <strong>O(log n + m)</strong>, di mana <em>m</em> adalah jumlah kecocokan.</p>
-<h2 id="Create-an-STLSORT-index" class="common-anchor-header">Buat indeks STL_SORT<button data-href="#Create-an-STLSORT-index" class="anchor-icon" translate="no">
+    </button></h3><p>Explicit <code translate="no">STL_SORT</code> indexes do not support memory-mapped mode.</p>
+<p>For numeric and timestamp fields with no NULL values, use these rough estimates in bytes. <code translate="no">N</code> is the number of entities:</p>
+<table>
+<thead>
+<tr><th>Field type</th><th>Estimate</th></tr>
+</thead>
+<tbody>
+<tr><td><code translate="no">INT8</code>, <code translate="no">INT16</code>, <code translate="no">INT32</code>, <code translate="no">FLOAT</code></td><td><code translate="no">12 * N</code></td></tr>
+<tr><td><code translate="no">INT64</code>, <code translate="no">DOUBLE</code>, <code translate="no">TIMESTAMPTZ</code></td><td><code translate="no">20 * N</code></td></tr>
+<tr><td><code translate="no">VARCHAR</code></td><td>Measure with representative data; loaded memory depends on string storage, distinct values, and posting-list capacity.</td></tr>
+</tbody>
+</table>
+<p>Divide by <code translate="no">1024 * 1024</code> to convert bytes to MiB. One million non-NULL INT64 values require roughly 19 MiB for the main index structures. Measure VARCHAR indexes after loading: serialized index size does not include all in-memory string and posting-list allocations.</p>
+<p>These rough estimates cover loaded index memory with memory mapping disabled. Calculate them per segment, then sum across loaded segments and replicas.</p>
+<div class="alert note">
+<blockquote>
+<p>Allow extra memory for loaded field data, vector indexes, collection and index overhead, and temporary allocations. Validate with representative data and queries; arrays, JSON, older index formats, and memory mapping require separate measurement.</p>
+</blockquote>
+</div>
+<p><a id="How-it-works"></a></p>
+<h3 id="How-STLSORT-works" class="common-anchor-header">How STL_SORT works<button data-href="#How-STLSORT-works" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -94,16 +139,36 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Anda dapat membuat indeks <code translate="no">STL_SORT</code> pada bidang numerik, <code translate="no">VARCHAR</code>, atau <code translate="no">TIMESTAMPTZ</code>. Tidak diperlukan parameter tambahan.</p>
-<p>Contoh di bawah ini menunjukkan cara membuat indeks ` <code translate="no">STL_SORT</code> ` pada bidang ` <code translate="no">TIMESTAMPTZ</code> `:</p>
+    </button></h3><p><details>
+<summary><strong>View the sorting and lookup process</strong></summary></p>
+<p>During index building, Milvus pairs field values with entity IDs, sorts them in ascending order using <a href="https://en.cppreference.com/w/cpp/algorithm/sort.html">std::sort</a>, and persists the sorted array.</p>
+<p>For equality and range queries, binary search (<a href="https://en.cppreference.com/w/cpp/algorithm/lower_bound.html">std::lower_bound</a> and <a href="https://en.cppreference.com/w/cpp/algorithm/upper_bound.html">std::upper_bound</a>) locates the matching interval. The query executor receives the entity IDs in that interval.</p>
+<p>This reduces query complexity from <strong>O(n)</strong> (full scan) to <strong>O(log n + m)</strong>, where <em>m</em> is the number of matches.</p>
+<p></details></p>
+<h2 id="Create-an-STLSORT-index" class="common-anchor-header">Create an STL_SORT index<button data-href="#Create-an-STLSORT-index" class="anchor-icon" translate="no">
+      <svg translate="no"
+        aria-hidden="true"
+        focusable="false"
+        height="20"
+        version="1.1"
+        viewBox="0 0 16 16"
+        width="16"
+      >
+        <path
+          fill="#0092E4"
+          fill-rule="evenodd"
+          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+        ></path>
+      </svg>
+    </button></h2><p>Set <code translate="no">index_type</code> to <code translate="no">STL_SORT</code>; no extra index parameters are required. This example indexes a <code translate="no">TIMESTAMPTZ</code> field:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -244,7 +309,7 @@ curl --request POST \
 <span class="hljs-comment">#     &quot;data&quot;: {}</span>
 <span class="hljs-comment"># }</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Drop-an-index" class="common-anchor-header">Menghapus indeks<button data-href="#Drop-an-index" class="anchor-icon" translate="no">
+<h2 id="Drop-an-index" class="common-anchor-header">Drop an index<button data-href="#Drop-an-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -259,21 +324,20 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Gunakan metode ` <code translate="no">drop_index()</code> ` untuk menghapus indeks yang sudah ada dari sebuah koleksi.</p>
+    </button></h2><p>Use the <code translate="no">drop_index()</code> method to remove an existing index from a collection.</p>
 <div class="alert note">
-<ul>
-<li><p>Pada <strong>v2.6.3</strong> atau sebelumnya, Anda harus melepaskan koleksi terlebih dahulu sebelum menghapus indeks skalar.</p></li>
-<li><p>Mulai <strong>v2.6.4</strong> atau yang lebih baru, Anda dapat menghapus indeks skalar secara langsung begitu indeks tersebut tidak lagi diperlukan—tidak perlu melepaskan koleksi terlebih dahulu.</p></li>
-</ul>
+<blockquote>
+<p>For release requirements when dropping a scalar index, see <a href="/docs/id/scalar_index.md#Drop-index-compatibility">Scalar Index</a>.</p>
+</blockquote>
 </div>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.drop_index(
     collection_name=<span class="hljs-string">&quot;tsz_demo&quot;</span>,   <span class="hljs-comment"># Name of the collection</span>
@@ -377,23 +441,3 @@ curl --request POST \
 <span class="hljs-comment">#     &quot;data&quot;: {}</span>
 <span class="hljs-comment"># }</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Usage-notes" class="common-anchor-header">Catatan penggunaan<button data-href="#Usage-notes" class="anchor-icon" translate="no">
-      <svg translate="no"
-        aria-hidden="true"
-        focusable="false"
-        height="20"
-        version="1.1"
-        viewBox="0 0 16 16"
-        width="16"
-      >
-        <path
-          fill="#0092E4"
-          fill-rule="evenodd"
-          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
-        ></path>
-      </svg>
-    </button></h2><ul>
-<li><p><strong>Tipe bidang:</strong> Berfungsi dengan bidang numerik, <code translate="no">VARCHAR</code>, dan <code translate="no">TIMESTAMPTZ</code>. Untuk informasi lebih lanjut mengenai tipe data, lihat <a href="/docs/id/number.md">Boolean &amp; Number</a> dan <a href="/docs/id/timestamptz-field.md">Bidang TIMESTAMPTZ</a>.</p></li>
-<li><p><strong>Parameter:</strong> Tidak diperlukan parameter indeks.</p></li>
-<li><p><strong>Mmap tidak didukung:</strong> Mode pemetaan memori tidak tersedia untuk <code translate="no">STL_SORT</code>.</p></li>
-</ul>

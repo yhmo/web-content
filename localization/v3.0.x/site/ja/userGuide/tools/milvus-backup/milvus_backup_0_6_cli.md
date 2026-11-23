@@ -1,10 +1,12 @@
 ---
 id: milvus_backup_0_6_cli.md
-summary: CLI を使用して、Milvus Backup を設定し、バックアップを作成し、復元されたデータを検証します。
-title: コマンドを使用したデータのバックアップと復元Compatible with Milvus Backup 0.6.x
+summary: >-
+  Configure Milvus Backup, create a backup, and verify restored data using the
+  CLI.
+title: Back up and Restore Data Using CommandsCompatible with Milvus Backup 0.6.x
 beta: Milvus Backup 0.6.x
 ---
-<h1 id="Back-up-and-Restore-Data-Using-Commands" class="common-anchor-header">コマンドを使用したデータのバックアップと復元<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus Backup 0.6.x</span><button data-href="#Back-up-and-Restore-Data-Using-Commands" class="anchor-icon" translate="no">
+<h1 id="Back-up-and-Restore-Data-Using-Commands" class="common-anchor-header">Back up and Restore Data Using Commands<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus Backup 0.6.x</span><button data-href="#Back-up-and-Restore-Data-Using-Commands" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -19,9 +21,9 @@ beta: Milvus Backup 0.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Milvus Backup を使用してコレクションをバックアップし、同じ Milvus インスタンスまたは別の Milvus インスタンスに復元します。Milvus 3.0 でのバックアップおよび復元は、<strong>Milvus 3.0.1</strong> 以降で正式にサポートされています。Milvus Backup は、サポート対象の Milvus 2.x バージョンにおける binlog ワークフローもサポートしています。<a href="/docs/ja/milvus_backup_overview.md#Compatibility-matrix">Milvus Backup の互換性については</a>、こちらをご確認ください。</p>
-<p>Backup 0.5.x を引き続き使用している場合は、<a href="/docs/ja/milvus_backup_cli.md">0.5.x CLI ガイド</a>を参照してください。アップグレードを行う場合は、まず「<a href="/docs/ja/milvus_backup_upgrade.md">Milvus Backup のアップグレード</a>」の手順に従ってください。</p>
-<h2 id="Obtain-Milvus-Backup" class="common-anchor-header">Milvus Backup の入手<button data-href="#Obtain-Milvus-Backup" class="anchor-icon" translate="no">
+    </button></h1><p>Use Milvus Backup to back up collections and restore them in the same or another Milvus instance. Backup and restore on Milvus 3.0 is officially supported starting with <strong>Milvus 3.0.1</strong>. Milvus Backup also supports binlog workflows on supported Milvus 2.x versions; check <a href="/docs/ja/milvus_backup_overview.md#Compatibility-matrix">Milvus Backup compatibility</a>.</p>
+<p>If you are keeping Backup 0.5.x, use the <a href="/docs/ja/milvus_backup_cli.md">0.5.x CLI guide</a>. If you are upgrading, follow <a href="/docs/ja/milvus_backup_upgrade.md">Upgrade Milvus Backup</a> first.</p>
+<h2 id="Obtain-Milvus-Backup" class="common-anchor-header">Obtain Milvus Backup<button data-href="#Obtain-Milvus-Backup" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -36,14 +38,14 @@ beta: Milvus Backup 0.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>以下の例は、<strong>Milvus Backup 0.6.0</strong> で検証済みです。<a href="https://github.com/zilliztech/milvus-backup/releases/tag/v0.6.0">v0.6.0 リリースから</a>、お使いのオペレーティングシステムおよびアーキテクチャに対応したバイナリをダウンロードし、解凍してください。バイナリと設定例は、同じリリースバージョンに統一してください。</p>
-<p>代わりにソースからビルドする場合は、<strong>Go 1.26 以降を</strong>インストールしてから、次のコマンドを実行してください:</p>
+    </button></h2><p>The examples below were validated with <strong>Milvus Backup 0.6.0</strong>. Download the binary for your operating system and architecture from the <a href="https://github.com/zilliztech/milvus-backup/releases/tag/v0.6.0">v0.6.0 release</a>, then extract it. Keep the binary and configuration examples on the same release.</p>
+<p>To build from source instead, install <strong>Go 1.26 or later</strong>, then run:</p>
 <pre><code translate="no" class="language-shell">git clone --branch v0.6.0 --depth 1 https://github.com/zilliztech/milvus-backup.git
 cd milvus-backup
 go build
 <button class="copy-code-btn"></button></code></pre>
-<p>あらかじめビルドされたバイナリには Go は必要ありません。以降のすべてのシェルコマンドは、<code translate="no">milvus-backup</code> を含むディレクトリから実行してください。</p>
-<h2 id="Prepare-configuration-file" class="common-anchor-header">設定ファイルの準備<button data-href="#Prepare-configuration-file" class="anchor-icon" translate="no">
+<p>The prebuilt binary does not require Go. Run all subsequent shell commands from the directory containing <code translate="no">milvus-backup</code>.</p>
+<h2 id="Prepare-configuration-file" class="common-anchor-header">Prepare configuration file<button data-href="#Prepare-configuration-file" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -58,11 +60,11 @@ go build
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus Backup は、Milvus の gRPC エンドポイント、その管理エンドポイント、インスタンスのストレージ、およびバックアップ先へのアクセスを必要とします。スナップショットバックアップの場合、Milvus サーバーはバックアップストレージへのアクセスも必要とします。</p>
-<p>設定ディレクトリを作成します:</p>
+    </button></h2><p>Milvus Backup needs access to the Milvus gRPC endpoint, its management endpoint, the instance’s storage, and the backup destination. For snapshot backups, the Milvus server also needs access to the backup storage.</p>
+<p>Create a configuration directory:</p>
 <pre><code translate="no" class="language-shell">mkdir -p configs
 <button class="copy-code-btn"></button></code></pre>
-<p>この MinIO の例を `<code translate="no">configs/backup.yaml</code>` として保存してください。アドレス、認証情報、バケット、ルートパスは、ご自身のデプロイメントの設定に置き換えてください。<code translate="no">minioadmin</code> の認証情報は、MinIO のテスト用デフォルト値です。</p>
+<p>Save this MinIO example as <code translate="no">configs/backup.yaml</code>. Replace the addresses, credentials, bucket, and root path with the settings of your deployment. The <code translate="no">minioadmin</code> credentials are MinIO test defaults.</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">configVersion:</span> <span class="hljs-string">v2</span>
 <span class="hljs-attr">milvus:</span>
   <span class="hljs-attr">grpc:</span>
@@ -89,30 +91,30 @@ go build
   <span class="hljs-attr">mode:</span> <span class="hljs-string">auto</span>
 <button class="copy-code-btn"></button></code></pre>
 <ul>
-<li><code translate="no">milvus.grpc</code> バックアップまたは復元対象のインスタンスに接続します。認証が有効になっている場合は、<code translate="no">milvus.user</code> および<code translate="no">milvus.password</code> も設定してください。</li>
-<li><code translate="no">milvus.management.endpoint</code> は、バックアップ中のガベージコレクションの一時停止/再開に使用されます。</li>
-<li><code translate="no">milvus.storage</code> インスタンスの実際のオブジェクトストレージと一致している必要があります。ここでバケットを設定しても、Milvusの設定は変更されません。</li>
-<li><code translate="no">backup.storage</code> バックアップ先を指定します。設定されていないフィールドは<code translate="no">milvus.storage</code> から継承されますが、<code translate="no">rootPath</code> は例外で、デフォルトは<code translate="no">backup</code> です。</li>
-<li><code translate="no">transfer.mode: auto</code> バックエンドが一致する場合はストレージ側でのコピーを、それ以外の場合はMilvus Backup経由のストリーミングを選択します。この設定はオブジェクト転送を制御するものであり、バックアップ形式を制御するものではありません。</li>
+<li><code translate="no">milvus.grpc</code> connects to the instance being backed up or restored. If authentication is enabled, also set <code translate="no">milvus.user</code> and <code translate="no">milvus.password</code>.</li>
+<li><code translate="no">milvus.management.endpoint</code> is used for garbage collection pause/resume during backup.</li>
+<li><code translate="no">milvus.storage</code> must match the instance’s actual object storage. Setting a bucket here does not change Milvus configuration.</li>
+<li><code translate="no">backup.storage</code> identifies the backup location. Unset fields inherit from <code translate="no">milvus.storage</code>, except <code translate="no">rootPath</code>, which defaults to <code translate="no">backup</code>.</li>
+<li><code translate="no">transfer.mode: auto</code> selects storage-side copying when the backends match and streaming through Milvus Backup otherwise. This setting controls object transfer, not the backup format.</li>
 </ul>
-<p>一般的なストレージのデフォルト設定を以下に示します。使用する前に、稼働中のデプロイメントでの値を確認してください。</p>
+<p>Typical storage defaults are shown below. Confirm the values in your running deployment before using them.</p>
 <table>
 <thead>
-<tr><th>設定</th><th>Docker Compose</th><th>Helm / Milvus Operator</th></tr>
+<tr><th>Setting</th><th>Docker Compose</th><th>Helm / Milvus Operator</th></tr>
 </thead>
 <tbody>
-<tr><td>バケット</td><td><code translate="no">a-bucket</code></td><td><code translate="no">milvus-bucket</code></td></tr>
-<tr><td>ルートパス</td><td><code translate="no">files</code></td><td><code translate="no">file</code></td></tr>
+<tr><td>Bucket</td><td><code translate="no">a-bucket</code></td><td><code translate="no">milvus-bucket</code></td></tr>
+<tr><td>Root path</td><td><code translate="no">files</code></td><td><code translate="no">file</code></td></tr>
 </tbody>
 </table>
-<p>Milvus サーバーがバックアップストアへのアクセスに別のアドレスを使用する場合は、<code translate="no">backup.storage.milvusAddress</code> および<code translate="no">milvusPort</code> を、サーバーからアクセス可能なアドレスに設定してください。認証、TLS、その他のストレージプロバイダー、および追加の設定については、<a href="https://github.com/zilliztech/milvus-backup/blob/v0.6.0/configs/backup.yaml">0.6.0 の設定例を</a>参照してください。</p>
-<p>有効な値を確認し、接続性をチェックしてください:</p>
+<p>If the Milvus server uses a different address to reach the backup store, set <code translate="no">backup.storage.milvusAddress</code> and <code translate="no">milvusPort</code> to the server-reachable address. For authentication, TLS, other storage providers, and additional settings, see the <a href="https://github.com/zilliztech/milvus-backup/blob/v0.6.0/configs/backup.yaml">0.6.0 configuration example</a>.</p>
+<p>Inspect the effective values and check connectivity:</p>
 <pre><code translate="no" class="language-shell">./milvus-backup config show --config configs/backup.yaml
 ./milvus-backup check --config configs/backup.yaml
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">config show</code> 各値の出典元を報告します。接続性チェックでは、<code translate="no">Success!</code> が表示されるはずです。バックアップを作成する前に、接続エラーやストレージエラーを解決してください。</p>
-<p>既存の v1 設定については、「<a href="/docs/ja/milvus_backup_upgrade.md#Migrate-the-configuration">Milvus バックアップのアップグレード</a>」を参照してください。自動設定変換では、削除された CLI フラグは置き換えられません。</p>
-<h2 id="Prepare-data" class="common-anchor-header">データの準備<button data-href="#Prepare-data" class="anchor-icon" translate="no">
+<p><code translate="no">config show</code> masks secret values and reports where each value came from. The connectivity check should report <code translate="no">Success!</code>. Resolve connection or storage errors before creating a backup.</p>
+<p>For existing v1 configurations, see <a href="/docs/ja/milvus_backup_upgrade.md#Migrate-the-configuration">Upgrade Milvus Backup</a>. Automatic configuration translation does not replace removed CLI flags.</p>
+<h2 id="Prepare-data" class="common-anchor-header">Prepare data<button data-href="#Prepare-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -127,8 +129,8 @@ go build
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">coll</code> という名前の既存のコレクションを使用し、<code translate="no">coll_bak</code> が存在しないことを確認してください。バックアップ前に、スキーマ、エンティティ数、代表的なスカラー値およびベクトル値、および既知の検索結果を記録してください。復元されたコピーと比較する際は、サンプルデータを変更しないでください。代わりに、小さな使い捨てデータセットを作成するには、<a href="/docs/ja/snapshot-backup-and-restore.md#Prepare-sample-data">「サンプルデータの準備</a>」を参照してください。</p>
-<h2 id="Back-up-data" class="common-anchor-header">データのバックアップ<button data-href="#Back-up-data" class="anchor-icon" translate="no">
+    </button></h2><p>Use an existing collection named <code translate="no">coll</code> and ensure that <code translate="no">coll_bak</code> does not exist. Record the schema, entity count, representative scalar and vector values, and a known search result before backup. Keep the example data unchanged while comparing the restored copy. To create a small disposable dataset instead, use <a href="/docs/ja/snapshot-backup-and-restore.md#Prepare-sample-data">Prepare sample data</a>.</p>
+<h2 id="Back-up-data" class="common-anchor-header">Back up data<button data-href="#Back-up-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -143,14 +145,14 @@ go build
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">coll</code> の名前付きバックアップを作成します：</p>
+    </button></h2><p>Create a named backup of <code translate="no">coll</code>:</p>
 <pre><code translate="no" class="language-shell">./milvus-backup create --filter coll -n my_backup --config configs/backup.yaml
 ./milvus-backup list --config configs/backup.yaml
 ./milvus-backup get -n my_backup --config configs/backup.yaml
 <button class="copy-code-btn"></button></code></pre>
-<p>create コマンドの実行結果に `<code translate="no">create backup success</code>` と表示されるはずです。`<code translate="no">get</code> ` を実行するとバックアップのメタデータが返されます。期待されるコレクションが存在することを確認してください。`<code translate="no">--filter</code> ` を省略すると、対象となるすべてのコレクションがバックアップされます。外部コレクションはスキップされます。</p>
-<p><code translate="no">--filter</code> カンマ区切りの名前を受け付けます：デフォルトデータベース内の `<code translate="no">coll</code> `、`<code translate="no">db1.coll</code>`、またはデータベース内のすべてのコレクションを指定する `<code translate="no">'db1.*'</code> `。シェル展開を防ぐには、`<code translate="no">*</code> ` を含むパターンを引用符で囲んでください。</p>
-<h3 id="Choose-a-backup-format-or-purpose" class="common-anchor-header">バックアップ形式または目的を選択してください<button data-href="#Choose-a-backup-format-or-purpose" class="anchor-icon" translate="no">
+<p>The create command should report <code translate="no">create backup success</code>. <code translate="no">get</code> returns backup metadata; check that the expected collection is present. Omitting <code translate="no">--filter</code> backs up all eligible collections. External collections are skipped.</p>
+<p><code translate="no">--filter</code> accepts comma-separated names: <code translate="no">coll</code> in the default database, <code translate="no">db1.coll</code>, or <code translate="no">'db1.*'</code> for all collections in a database. Quote patterns containing <code translate="no">*</code> to prevent shell expansion.</p>
+<h3 id="Choose-a-backup-format-or-purpose" class="common-anchor-header">Choose a backup format or purpose<button data-href="#Choose-a-backup-format-or-purpose" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -165,24 +167,24 @@ go build
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>デフォルトの<code translate="no">--format auto</code> では、Milvus 3.0 はスナップショットバックアップを使用します。サポートされている Milvus 2.x サーバーは binlog を使用します。binlog の動作を明示的に維持するには、<code translate="no">--format binlog</code> を指定してください。<a href="/docs/ja/snapshot-backup-and-restore.md">スナップショットの例では</a>、<code translate="no">--format snapshot</code> を明示的に選択しています。</p>
-<p>ワークフローに合致する目的がある場合は、<code translate="no">--for</code> を使用してください：</p>
+    </button></h3><p>With the default <code translate="no">--format auto</code>, Milvus 3.0 uses snapshot backups; supported Milvus 2.x servers use binlog. To retain binlog behavior explicitly, pass <code translate="no">--format binlog</code>. The <a href="/docs/ja/snapshot-backup-and-restore.md">snapshot example</a> selects <code translate="no">--format snapshot</code> explicitly.</p>
+<p>Use <code translate="no">--for</code> when a purpose matches your workflow:</p>
 <table>
 <thead>
-<tr><th>目的</th><th>プリセットによって適用される値</th><th>想定される用途</th></tr>
+<tr><th>Purpose</th><th>Values applied by the preset</th><th>Intended use</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">clone</code></td><td>RBACバックアップを有効化します。フォーマットと戦略の選択は維持されます</td><td>データを別のインスタンスにコピーします。<code translate="no">auto</code> はMilvus 3.0のスナップショット機能を使用します</td></tr>
-<tr><td><code translate="no">archive</code></td><td><code translate="no">binlog</code> を強制適用し、RBACバックアップを有効にします</td><td>後日の復元用にbinlog形式のバックアップを保持します</td></tr>
-<tr><td><code translate="no">secondary</code></td><td><code translate="no">binlog</code> 、<code translate="no">bulk_flush</code> 、RBACバックアップ、およびインデックスの追加メタデータを強制適用します</td><td>構成済みのレプリケーショントポロジーでセカンダリを初期化する</td></tr>
+<tr><td><code translate="no">clone</code></td><td>Enables RBAC backup; keeps your format and strategy choices</td><td>Copy data to another instance; <code translate="no">auto</code> uses snapshot on Milvus 3.0</td></tr>
+<tr><td><code translate="no">archive</code></td><td>Forces <code translate="no">binlog</code> and enables RBAC backup</td><td>Keep a binlog-format backup for later restoration</td></tr>
+<tr><td><code translate="no">secondary</code></td><td>Forces <code translate="no">binlog</code>, <code translate="no">bulk_flush</code>, RBAC backup, and index extra metadata</td><td>Initialize a secondary in a configured replication topology</td></tr>
 </tbody>
 </table>
-<p>例：</p>
+<p>For example:</p>
 <pre><code translate="no" class="language-shell">./milvus-backup create --for clone --filter coll -n clone_backup --config configs/backup.yaml
 <button class="copy-code-btn"></button></code></pre>
-<p>プリセットは、それが設定するオプションについて、競合する値を上書きします。例えば、`<code translate="no">--for archive --format snapshot</code> ` はバイナリログ形式のバックアップを生成します。RBAC メタデータをバックアップしても、自動的に復元されるわけではありません。必要な場合は、`restore` コマンドの `<code translate="no">--rbac</code> ` オプションを使用してください。</p>
-<p><code translate="no">secondary</code> は、通常のインスタンス間復元のための近道ではありません。また、インデックス・メタデータ用のソース etcd へのアクセス、正しいレプリケーション・クラスタ ID およびチャネル、そして新しいセカンダリ・ターゲットも必要です。バックアップには、<code translate="no">meta/full_meta.json</code> を含む完全なメタデータが保持されている必要があります。レプリケーションの設定およびフェイルオーバーの実行については、本ガイドの範囲外です。 バージョン固有の実装および要件については、<a href="https://github.com/zilliztech/milvus-backup/tree/v0.6.0">0.6.0のソースコードおよびリファレンスを</a>参照してください。</p>
-<h3 id="Preserve-the-complete-backup" class="common-anchor-header">バックアップを完全に保持する<button data-href="#Preserve-the-complete-backup" class="anchor-icon" translate="no">
+<p>A preset overrides conflicting values for the options it fixes. For example, <code translate="no">--for archive --format snapshot</code> produces a binlog backup. Backing up RBAC metadata does not automatically restore it; use the restore command’s <code translate="no">--rbac</code> option when required.</p>
+<p><code translate="no">secondary</code> is not a shortcut for ordinary cross-instance restoration. It also requires access to the source etcd for index metadata, correct replication cluster IDs and channels, and a fresh secondary target. The backup must retain its complete metadata, including <code translate="no">meta/full_meta.json</code>. Configuring replication and performing failover are outside this guide. See the <a href="https://github.com/zilliztech/milvus-backup/tree/v0.6.0">0.6.0 source and reference</a> for the version-specific implementation and requirements.</p>
+<h3 id="Preserve-the-complete-backup" class="common-anchor-header">Preserve the complete backup<button data-href="#Preserve-the-complete-backup" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -197,9 +199,9 @@ go build
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>バックアップは<code translate="no">&lt;backup.storage.bucketName&gt;/&lt;backup.storage.rootPath&gt;/&lt;backup_name&gt;</code> 配下に保存されます。このディレクトリ内のすべてのオブジェクトを保持してください。スナップショットバックアップには、エクスポートされたバンドルとメタデータが含まれます。</p>
-<p>メタデータファイルのみをコピーしたり、スナップショットバックアップのレイアウトがbinlogバックアップと同じであると想定したりしないでください。</p>
-<h2 id="Restore-data" class="common-anchor-header">データの復元<button data-href="#Restore-data" class="anchor-icon" translate="no">
+    </button></h3><p>A backup is stored under <code translate="no">&lt;backup.storage.bucketName&gt;/&lt;backup.storage.rootPath&gt;/&lt;backup_name&gt;</code>. Preserve every object in this directory. Snapshot backups include an exported bundle as well as metadata.</p>
+<p>Do not copy only the metadata files or assume a snapshot backup has the same layout as a binlog backup.</p>
+<h2 id="Restore-data" class="common-anchor-header">Restore data<button data-href="#Restore-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -214,15 +216,15 @@ go build
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">coll</code> を、設定済みのインスタンス内の<code translate="no">coll_bak</code> として復元します。</p>
+    </button></h2><p>Restore <code translate="no">coll</code> as <code translate="no">coll_bak</code> in the configured instance:</p>
 <pre><code translate="no" class="language-shell">./milvus-backup restore --filter coll_bak -n my_backup -s _bak --config configs/backup.yaml
 <button class="copy-code-btn"></button></code></pre>
-<p>CLI では、<code translate="no">--filter</code> は、<code translate="no">-s</code> または<code translate="no">--rename</code> が適用<strong>された後の名前と</strong>一致します。<code translate="no">--filter coll -s _bak</code> を含むコマンドは何も一致せず、コレクションを復元せずに正常に終了します。</p>
-<p>元の名前を使用して復元するには、そのコレクション名が存在しないターゲットを選択し、構成でそのターゲットとバックアップの保存先を指定し、サフィックスを省略します:</p>
+<p>On the CLI, <code translate="no">--filter</code> matches names <strong>after</strong> <code translate="no">-s</code> or <code translate="no">--rename</code> is applied. A command with <code translate="no">--filter coll -s _bak</code> matches nothing and can exit successfully without restoring a collection.</p>
+<p>To restore using the original name, choose a target where that collection name does not exist, point the configuration to that target and the backup location, and omit the suffix:</p>
 <pre><code translate="no" class="language-shell">./milvus-backup restore --filter coll -n my_backup --config configs/backup-target.yaml
 <button class="copy-code-btn"></button></code></pre>
-<p>同一インスタンスでの完全な例については、「<a href="/docs/ja/snapshot-backup-and-restore.md">1つのインスタンス内でのスナップショットのバックアップと復元</a>」を参照してください。 既存のインスタンス間共通ケースのページでは、Backup 0.5.16 および v1 の設定が使用されています。これらのコマンドをそのまま 0.6.0 に適用しないでください。0.6.0 の転送設定については、<a href="https://github.com/zilliztech/milvus-backup/blob/v0.6.0/docs/user_guide/transfer.md">バージョン別の転送ガイド</a>を参照してください。</p>
-<h2 id="Verify-restored-data" class="common-anchor-header">復元されたデータの確認<button data-href="#Verify-restored-data" class="anchor-icon" translate="no">
+<p>For a complete same-instance example, see <a href="/docs/ja/snapshot-backup-and-restore.md">Snapshot Backup and Restore in One Instance</a>. The existing cross-instance common-case pages use Backup 0.5.16 and v1 configuration; do not apply their commands unchanged to 0.6.0. For 0.6.0 transfer configuration, see the <a href="https://github.com/zilliztech/milvus-backup/blob/v0.6.0/docs/user_guide/transfer.md">versioned transfer guide</a>.</p>
+<h2 id="Verify-restored-data" class="common-anchor-header">Verify restored data<button data-href="#Verify-restored-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -237,5 +239,5 @@ go build
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">coll_bak</code> が存在することを確認してください。復元時にベクトルインデックスが再作成されなかった場合は、コレクションを読み込む前に、スキーマに適したインデックスを作成してください。そのスキーマ、エンティティ数、スカラー値およびベクトル値、ならびに既知の検索結果を、バックアップ前にキャプチャされたベースラインと比較してください。</p>
-<p>使い捨ての 256 エンティティのデータセットについては、「<a href="/docs/ja/snapshot-backup-and-restore.md#Verify-the-result">結果の確認</a>」に記載されている完全なチェック手順を実行してください。コマンドが正常に実行されただけでは、期待通りのデータが復元されたことを証明するものではありません。</p>
+    </button></h2><p>Confirm that <code translate="no">coll_bak</code> exists. If the restore did not recreate its vector index, create the index appropriate to your schema before loading the collection. Compare its schema, entity count, scalar and vector values, and known search results against the baseline captured before backup.</p>
+<p>For the disposable 256-entity dataset, use the complete checks in <a href="/docs/ja/snapshot-backup-and-restore.md#Verify-the-result">Verify the result</a>. A successful command alone does not prove that the expected data was restored.</p>

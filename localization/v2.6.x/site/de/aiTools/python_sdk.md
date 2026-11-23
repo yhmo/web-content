@@ -1,11 +1,11 @@
 ---
 id: python_sdk.md
-title: 'Eingabeaufforderung: Milvus Python SDK'
+title: 'Prompt: Milvus Python SDK'
 summary: >-
-  Regeln für KI-Codierassistenten zum Schreiben von korrektem Milvus-Python-Code
-  mit dem MilvusClient.
+  Rules for AI coding assistants to write correct Milvus Python code using
+  MilvusClient.
 ---
-<h1 id="Python-SDK" class="common-anchor-header">Python-SDK<button data-href="#Python-SDK" class="anchor-icon" translate="no">
+<h1 id="Python-SDK" class="common-anchor-header">Python SDK<button data-href="#Python-SDK" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,8 +20,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Regeln für das Schreiben von korrektem Milvus-Python-Code unter Verwendung der MilvusClient-Schnittstelle, einschließlich ORM-Migration, Verbindungsmuster und allgemeine Operationen. Kopieren Sie die vollständige Aufforderung unten in Ihr AI-Tool, um diese Regeln automatisch anzuwenden. Einen Überblick über alle Prompts finden Sie unter <a href="/docs/de/milvus_for_agents.md">AI Prompts</a>.</p>
-<h2 id="How-to-use-this-prompt" class="common-anchor-header">So verwenden Sie diese Eingabeaufforderung<button data-href="#How-to-use-this-prompt" class="anchor-icon" translate="no">
+    </button></h1><p>Rules for writing correct Milvus Python code using the MilvusClient interface, including ORM migration, connection patterns, and common operations. Copy the full prompt below into your AI tool to apply these rules automatically. For an overview of all prompts, see <a href="/docs/de/v2.6.x/milvus_for_agents.md">AI Prompts</a>.</p>
+<h2 id="How-to-use-this-prompt" class="common-anchor-header">How to use this prompt<button data-href="#How-to-use-this-prompt" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,12 +37,12 @@ summary: >-
         ></path>
       </svg>
     </button></h2><ol>
-<li><strong>Kopieren Sie</strong> die vollständige Eingabeaufforderung aus dem Abschnitt <a href="#full-prompt">Vollständige Eingabeaufforderung</a> unten.</li>
-<li><strong>Speichern Sie</strong> sie an dem Ort, den Ihr KI-Tool erwartet - Details zur Platzierung finden Sie in der <a href="/docs/de/milvus_for_agents.md">Umgebungstabelle</a>.</li>
-<li>Ihr KI-Assistent wird diese Regeln automatisch anwenden, wenn er Milvus-Code erzeugt oder überprüft.</li>
+<li><strong>Copy</strong> the full prompt from the <a href="#full-prompt">Full prompt</a> section below.</li>
+<li><strong>Save</strong> it to the location your AI tool expects — see the <a href="/docs/de/v2.6.x/milvus_for_agents.md">environment table</a> for placement details.</li>
+<li>Your AI assistant will automatically apply these rules when generating or reviewing Milvus code.</li>
 </ol>
-<p>Für <strong>Cursor-Benutzer</strong>: Kopieren Sie den Prompt aus dem Abschnitt <a href="#full-prompt">Vollständiger Prompt</a> und speichern Sie ihn unter <code translate="no">.cursor/rules/</code> in Ihrem Projekt.</p>
-<h2 id="Full-prompt" class="common-anchor-header">Vollständige Eingabeaufforderung<button data-href="#Full-prompt" class="anchor-icon" translate="no">
+<p>For <strong>Cursor</strong> users: copy the prompt from the <a href="#full-prompt">Full prompt</a> section and save it under <code translate="no">.cursor/rules/</code> in your project.</p>
+<h2 id="Full-prompt" class="common-anchor-header">Full prompt<button data-href="#Full-prompt" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"

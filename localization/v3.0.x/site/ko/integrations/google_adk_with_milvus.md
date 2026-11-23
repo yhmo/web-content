@@ -1,12 +1,14 @@
 ---
 id: google_adk_with_milvus.md
 summary: >-
-  이 튜토리얼에서는 adk-milvus를 사용하여 ADK와 Milvus를 두 가지 일반적인 용도, 즉 지식 기반에 대한 검색 툴셋과 사용자별
-  에이전트 메모리를 위한 세션 간 메모리 서비스에 연결해 보겠습니다. 이 노트북은 기본적으로 Milvus Lite를 사용하므로, 별도의
-  Milvus 서버 없이도 로컬이나 Google Colab에서 실행할 수 있습니다.
-title: Milvus를 활용한 Google ADK
+  In this tutorial, we will use adk-milvus to connect ADK with Milvus in two
+  common places a retrieval toolset over a knowledge base, and a cross-session
+  memory service for user-specific agent memory. The notebook uses Milvus Lite
+  by default, so it can run locally or in Google Colab without a separate Milvus
+  server.
+title: Google ADK with Milvus
 ---
-<h1 id="Google-ADK-with-Milvus" class="common-anchor-header">Milvus를 활용한 Google ADK<button data-href="#Google-ADK-with-Milvus" class="anchor-icon" translate="no">
+<h1 id="Google-ADK-with-Milvus" class="common-anchor-header">Google ADK with Milvus<button data-href="#Google-ADK-with-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -27,9 +29,9 @@ title: Milvus를 활용한 Google ADK
 <a href="https://github.com/milvus-io/bootcamp/blob/master/integration/google_adk_with_milvus.ipynb" target="_blank">
 <img translate="no" src="https://img.shields.io/badge/View%20on%20GitHub-555555?style=flat&logo=github&logoColor=white" alt="GitHub Repository"/>
 </a></p>
-<p><a href="https://adk.dev/">Google Agent Development Kit(ADK)는</a> 개발자가 도구, 세션, 실행기 및 메모리 서비스를 활용해 에이전트를 구축할 수 있도록 지원합니다. <a href="https://milvus.io/">Milvus는</a> 유사도 검색 및 AI 메모리 워크로드를 임베딩하기 위해 구축된 오픈소스 벡터 데이터베이스입니다.</p>
-<p>이 튜토리얼에서는 <a href="https://github.com/zilliztech/adk-milvus"><code translate="no">adk-milvus</code></a> ADK와 Milvus를 두 가지 일반적인 시나리오, 즉 지식 기반에 대한 검색 툴셋과 사용자별 에이전트 메모리를 위한 세션 간 메모리 서비스에 연결해 보겠습니다. 이 노트북은 기본적으로 Milvus Lite를 사용하므로 별도의 Milvus 서버 없이도 로컬 또는 Google Colab에서 실행할 수 있습니다.</p>
-<h2 id="Prerequisites" class="common-anchor-header">필수 조건<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+<p><a href="https://adk.dev/">Google Agent Development Kit (ADK)</a> helps developers build agents with tools, sessions, runners, and memory services. <a href="https://milvus.io/">Milvus</a> is an open-source vector database built for embedding similarity search and AI memory workloads.</p>
+<p>In this tutorial, we will use <a href="https://github.com/zilliztech/adk-milvus"><code translate="no">adk-milvus</code></a> to connect ADK with Milvus in two common places: a retrieval toolset over a knowledge base, and a cross-session memory service for user-specific agent memory. The notebook uses Milvus Lite by default, so it can run locally or in Google Colab without a separate Milvus server.</p>
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -44,15 +46,15 @@ title: Milvus를 활용한 Google ADK
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>ADK Milvus 통합 및 Milvus 종속성을 설치하십시오.</p>
+    </button></h2><p>Install the ADK Milvus integration and Milvus dependencies.</p>
 <pre><code translate="no" class="language-python">%%capture
 ! pip install --upgrade adk-milvus google-genai pymilvus milvus-lite
 <button class="copy-code-btn"></button></code></pre>
 <blockquote>
-<p>Google Colab을 사용하는 경우, 방금 설치한 종속성을 활성화하려면 <strong>런타임을 다시 시작해야</strong> 할 수 있습니다(화면 상단의 “Runtime” 메뉴를 클릭하고 드롭다운 메뉴에서 “Restart session”을 선택하세요).</p>
+<p>If you are using Google Colab, to enable dependencies just installed, you may need to <strong>restart the runtime</strong> (click on the “Runtime” menu at the top of the screen, and select “Restart session” from the dropdown menu).</p>
 </blockquote>
-<p>이 노트북은 임베딩과 최종 에이전트 턴 모두에 Gemini를 사용합니다. 실행하기 전에 <code translate="no">GEMINI_API_KEY</code> 또는 <code translate="no">GOOGLE_API_KEY</code> 환경 변수를 설정하십시오. 아래 예제에서는 <code translate="no">gemini-embedding-001</code> 를 사용하여 실제 임베딩을 생성하고, <code translate="no">gemini-2.5-flash</code> 를 ADK 에이전트에 사용합니다.</p>
-<h2 id="Set-up-a-local-Milvus-workspace" class="common-anchor-header">로컬 Milvus 작업 공간 설정<button data-href="#Set-up-a-local-Milvus-workspace" class="anchor-icon" translate="no">
+<p>This notebook uses Gemini for both embeddings and the final agent turn. Prepare a <code translate="no">GEMINI_API_KEY</code> or <code translate="no">GOOGLE_API_KEY</code> environment variable before running it. The examples below use <code translate="no">gemini-embedding-001</code> to generate real embeddings and <code translate="no">gemini-2.5-flash</code> for the ADK agent.</p>
+<h2 id="Set-up-a-local-Milvus-workspace" class="common-anchor-header">Set up a local Milvus workspace<button data-href="#Set-up-a-local-Milvus-workspace" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -67,7 +69,7 @@ title: Milvus를 활용한 Google ADK
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>임시 워크스페이스를 생성하고, Milvus Lite 데이터베이스 파일을 정의하며, 데모용 Gemini 임베딩 함수를 준비합니다.</p>
+    </button></h2><p>Create a temporary workspace, define the Milvus Lite database files, and prepare a Gemini embedding function for the demo.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> os
 <span class="hljs-keyword">import</span> tempfile
 <span class="hljs-keyword">import</span> warnings
@@ -122,14 +124,14 @@ Embedding model: gemini-embedding-001
 Embedding dimension: 3072
 </code></pre>
 <blockquote>
-<p>통합에 사용되는 <code translate="no">MilvusClient</code> 의 인자에 대해서는 다음과 같습니다.</p>
+<p>As for the argument of <code translate="no">MilvusClient</code> used by the integration:</p>
 <ul>
-<li><code translate="no">uri</code> 를 로컬 파일(예:<code translate="no">./milvus.db</code>)로 설정하는 것이 가장 편리한 방법이며, 이 경우 <a href="https://milvus.io/docs/milvus_lite.md">Milvus Lite가</a> 자동으로 작동하여 이 파일에 모든 데이터를 저장합니다.</li>
-<li>대규모 데이터를 다루는 경우, <a href="https://milvus.io/docs/quickstart.md">Docker나 Kubernetes에</a> 더 높은 성능을 발휘하는 Milvus 서버를 구축할 수 있습니다. 이 설정에서는 <code translate="no">uri</code> 대신 서버 URI(예:<code translate="no">http://localhost:19530</code>)를 사용해야 합니다.</li>
-<li>Milvus 전용 완전 관리형 클라우드 서비스인 <a href="https://zilliz.com/cloud">Zilliz Cloud를</a> 사용하려면, Zilliz Cloud의 <a href="https://docs.zilliz.com/docs/on-zilliz-cloud-console#free-cluster-details">‘Public Endpoint</a> ’ <a href="https://docs.zilliz.com/docs/on-zilliz-cloud-console#free-cluster-details">및 ‘API 키</a> ’에 해당하는 <code translate="no">uri</code> 와 <code translate="no">token</code> 를 조정하십시오.</li>
+<li>Setting the <code translate="no">uri</code> as a local file, e.g.<code translate="no">./milvus.db</code>, is the most convenient method, as it automatically utilizes <a href="https://milvus.io/docs/milvus_lite.md">Milvus Lite</a> to store all data in this file.</li>
+<li>If you have large scale of data, you can set up a more performant Milvus server on <a href="https://milvus.io/docs/quickstart.md">docker or kubernetes</a>. In this setup, please use the server uri, e.g.<code translate="no">http://localhost:19530</code>, as your <code translate="no">uri</code>.</li>
+<li>If you want to use <a href="https://zilliz.com/cloud">Zilliz Cloud</a>, the fully managed cloud service for Milvus, adjust the <code translate="no">uri</code> and <code translate="no">token</code>, which correspond to the <a href="https://docs.zilliz.com/docs/on-zilliz-cloud-console#free-cluster-details">Public Endpoint and Api key</a> in Zilliz Cloud.</li>
 </ul>
 </blockquote>
-<h2 id="Build-an-ADK-retrieval-toolset-with-Milvus" class="common-anchor-header">Milvus를 사용하여 ADK 검색 도구 세트 구축하기<button data-href="#Build-an-ADK-retrieval-toolset-with-Milvus" class="anchor-icon" translate="no">
+<h2 id="Build-an-ADK-retrieval-toolset-with-Milvus" class="common-anchor-header">Build an ADK retrieval toolset with Milvus<button data-href="#Build-an-ADK-retrieval-toolset-with-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -144,7 +146,7 @@ Embedding dimension: 3072
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">MilvusVectorStore</code> 는 Milvus에 임베디드 텍스트를 저장하며, <code translate="no">MilvusToolset</code> 는 해당 저장소를 <code translate="no">milvus_similarity_search</code> 라는 이름의 ADK 검색 도구로 노출합니다. 관련 문서와 무관한 방해 요소가 모두 포함된 소규모 지식 기반을 색인화할 것입니다.</p>
+    </button></h2><p><code translate="no">MilvusVectorStore</code> stores embedded text in Milvus, while <code translate="no">MilvusToolset</code> exposes that store as an ADK retrieval tool named <code translate="no">milvus_similarity_search</code>. We will index a small knowledge base with both relevant documents and unrelated distractors.</p>
 <pre><code translate="no" class="language-python">RAG_COLLECTION = <span class="hljs-string">&quot;google_adk_milvus_rag&quot;</span>
 
 knowledge_docs = [
@@ -238,7 +240,7 @@ insert_result = <span class="hljs-keyword">await</span> vector_store.add_texts_a
 <pre><code translate="no">{'status': 'SUCCESS', 'inserted_count': 8}
 Indexed sources: adk-toolset, adk-memory, zilliz-cloud, milvus-lite, operations-runbook, team-recipe, travel-plan, payroll-note
 </code></pre>
-<p>이제 ADK 툴셋에 도구를 요청하고 Milvus 검색 도구를 직접 실행해 보겠습니다. 도구를 직접 실행하면 LLM을 활용하기 전에 Milvus 기반 검색 경로를 검증할 수 있습니다. 완전한 ADK 앱에서는 에이전트가 모델 실행 단계에서 동일한 도구를 호출할 수 있습니다.</p>
+<p>Now ask the ADK toolset for tools and run the Milvus retrieval tool directly. Running the tool directly verifies the Milvus-backed retrieval path before we involve the LLM; in a full ADK app, the agent can call the same tool during a model turn.</p>
 <pre><code translate="no" class="language-python">toolset = MilvusToolset(vector_store=vector_store)
 tools = <span class="hljs-keyword">await</span> toolset.get_tools_with_prefix()
 <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;ADK tools:&quot;</span>, [tool.name <span class="hljs-keyword">for</span> tool <span class="hljs-keyword">in</span> tools])
@@ -272,7 +274,7 @@ MilvusMemoryService implements ADK BaseMemoryService and stores cross-session us
 #4 | source=operations-runbook | topic=operations
 The production runbook tracks vector search latency, index readiness, and restore steps for Milvus-backed applications.
 </code></pre>
-<p>이 저장소는 Milvus를 기반으로 하므로, 메타데이터 필터를 사용하여 검색 범위를 좁힐 수도 있습니다. 다음 쿼리는 Milvus의 실제 운영 사례를 검색하며, 결과를 Zilliz Cloud 소스로만 제한합니다.</p>
+<p>Because the store is backed by Milvus, you can also use metadata filters for narrower retrieval. The next query searches for production Milvus operations and restricts results to the Zilliz Cloud source.</p>
 <pre><code translate="no" class="language-python">filtered_result = <span class="hljs-keyword">await</span> vector_store.similarity_search_async(
     <span class="hljs-string">&quot;managed cloud production Milvus operations&quot;</span>,
     top_k=<span class="hljs-number">3</span>,
@@ -289,7 +291,7 @@ The production runbook tracks vector search latency, index readiness, and restor
 <pre><code translate="no">#1 | source=zilliz-cloud
 Zilliz Cloud provides managed Milvus for production vector search, with cloud operations, backup planning, and deployment controls.
 </code></pre>
-<p><code translate="no">MilvusClient</code> 를 사용하여 동일한 Milvus Lite 데이터베이스를 확인할 수 있습니다. 이를 통해 ADK 통합이 ID, 콘텐츠, 소스 메타데이터 및 임베딩을 포함하는 일반적인 Milvus 행을 기록했음을 확인할 수 있습니다.</p>
+<p>We can inspect the same Milvus Lite database with <code translate="no">MilvusClient</code>. This confirms that the ADK integration wrote ordinary Milvus rows containing ids, content, source metadata, and embeddings.</p>
 <pre><code translate="no" class="language-python">inspection_client = MilvusClient(uri=<span class="hljs-built_in">str</span>(rag_db_path))
 stats = inspection_client.get_collection_stats(RAG_COLLECTION)
 sample_rows = inspection_client.query(
@@ -312,7 +314,7 @@ Sample rows:
 - adk-toolset-doc | adk-toolset | MilvusToolset exposes milvus_similarity_search as an ADK retrieval tool so agents can sear
 - recipe-doc | team-recipe | A pasta recipe uses tomato sauce, fresh basil, and slow cooking notes.
 </code></pre>
-<h2 id="Store-ADK-memory-in-Milvus" class="common-anchor-header">Milvus에 ADK 메모리 저장<button data-href="#Store-ADK-memory-in-Milvus" class="anchor-icon" translate="no">
+<h2 id="Store-ADK-memory-in-Milvus" class="common-anchor-header">Store ADK memory in Milvus<button data-href="#Store-ADK-memory-in-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -327,7 +329,7 @@ Sample rows:
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>검색 도구는 공유 지식 기반에 유용합니다. 에이전트 메모리는 이와 다릅니다. 특정 앱과 사용자로 범위가 한정되어야 하며, 세션 간에도 유지되어야 합니다. <code translate="no">MilvusMemoryService</code> 는 Milvus를 기본 벡터 스토어로 사용하면서 ADK의 메모리 서비스 인터페이스를 구현합니다.</p>
+    </button></h2><p>Retrieval tools are useful for shared knowledge bases. Agent memory is different: it should be scoped to a specific app and user, and it should survive across sessions. <code translate="no">MilvusMemoryService</code> implements ADK’s memory service interface while using Milvus as the vector store underneath.</p>
 <pre><code translate="no" class="language-python">MEMORY_COLLECTION = <span class="hljs-string">&quot;google_adk_milvus_memory&quot;</span>
 APP_NAME = <span class="hljs-string">&quot;google-adk-milvus-demo&quot;</span>
 
@@ -422,7 +424,7 @@ user_2_events = [
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no">Stored memory events: 4
 </code></pre>
-<p>특정 사용자의 메모리를 검색합니다. 이 서비스는 자동으로 <code translate="no">app_name</code> 및 <code translate="no">user_id</code> 을 기준으로 필터링하므로, 다른 사용자의 이벤트가 결과 집합에 포함되지 않습니다.</p>
+<p>Search memory for one user. The service automatically filters by <code translate="no">app_name</code> and <code translate="no">user_id</code>, so another user’s events do not leak into the result set.</p>
 <pre><code translate="no" class="language-python">memory_result = <span class="hljs-keyword">await</span> memory_service.search_memory(
     app_name=APP_NAME,
     user_id=<span class="hljs-string">&quot;user-1&quot;</span>,
@@ -480,7 +482,7 @@ User two keeps travel planning notes and hotel preferences in a separate ADK mem
 User 3 result count: 0
 Different app result count: 0
 </code></pre>
-<h2 id="Attach-Milvus-tools-to-an-ADK-agent" class="common-anchor-header">ADK 에이전트에 Milvus 도구 연결<button data-href="#Attach-Milvus-tools-to-an-ADK-agent" class="anchor-icon" translate="no">
+<h2 id="Attach-Milvus-tools-to-an-ADK-agent" class="common-anchor-header">Attach Milvus tools to an ADK agent<button data-href="#Attach-Milvus-tools-to-an-ADK-agent" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -495,7 +497,7 @@ Different app result count: 0
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>이전 셀에서는 검색 도구를 직접 실행하여, 모델을 활용하기 전에 Milvus 기반 도구를 검증했습니다. 동일한 도구 목록을 ADK <code translate="no">Agent</code> 에 연결할 수도 있습니다. 다음 셀은 ADK Runner를 통해 실시간 Gemini 턴을 실행하며, 모델이 응답하기 전에 <code translate="no">milvus_similarity_search</code> 를 호출하는 것을 보여줍니다.</p>
+    </button></h2><p>The previous cells executed the retrieval tool directly, which verifies the Milvus-backed tool before involving the model. The same tool list can also be attached to an ADK <code translate="no">Agent</code>. The next cell runs a live Gemini turn through ADK Runner and shows that the model calls <code translate="no">milvus_similarity_search</code> before answering.</p>
 <pre><code translate="no" class="language-python">agent = Agent(
     name=<span class="hljs-string">&quot;milvus_research_agent&quot;</span>,
     model=<span class="hljs-string">&quot;gemini-2.5-flash&quot;</span>,
@@ -579,7 +581,7 @@ The ADK Milvus integration provides agents with the ability to search product do
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no">Milvus clients closed.
 </code></pre>
-<h2 id="Conclusion" class="common-anchor-header">결론<button data-href="#Conclusion" class="anchor-icon" translate="no">
+<h2 id="Conclusion" class="common-anchor-header">Conclusion<button data-href="#Conclusion" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -594,5 +596,5 @@ The ADK Milvus integration provides agents with the ability to search product do
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>이 노트북은 Milvus가 공유 지식을 위한 검색 도구와 사용자 범위 내의 세션 간 컨텍스트를 위한 메모리 서비스라는 두 가지 중요한 ADK 인터페이스 뒤에서 어떻게 작동할 수 있는지 보여주었습니다. 또한 Gemini가 응답하기 전에 Milvus 검색 도구를 호출하는 실시간 ADK Runner 턴을 실행했습니다. Milvus Lite를 사용하면 노트북에서 동일한 통합을 쉽게 프로토타입으로 구현할 수 있으며, Milvus 서버나 Zilliz Cloud를 사용하면 동일한 구성 구조를 통해 더 큰 규모의 팀과 프로덕션 에이전트 워크로드를 지원할 수 있습니다.</p>
-<p>핵심 개념은 ADK가 에이전트 인터페이스를 간결하게 유지하는 동안, Milvus가 내부적으로 내구성 있는 벡터 검색, 메타데이터 필터링 및 확장 가능한 메모리 저장을 처리한다는 점입니다.</p>
+    </button></h2><p>This notebook showed how Milvus can sit behind two important ADK surfaces: retrieval tools for shared knowledge and memory services for user-scoped, cross-session context. It also ran a live ADK Runner turn where Gemini called the Milvus retrieval tool before answering. With Milvus Lite, the same integration is easy to prototype in a notebook; with Milvus server or Zilliz Cloud, the same configuration shape can support larger teams and production agent workloads.</p>
+<p>The key idea is that ADK keeps the agent interface clean while Milvus handles durable vector search, metadata filtering, and scalable memory storage underneath.</p>

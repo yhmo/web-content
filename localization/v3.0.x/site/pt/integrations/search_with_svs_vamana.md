@@ -1,12 +1,12 @@
 ---
 id: search_with_svs_vamana.md
 summary: >-
-  Crie e pesquise índices de grafos SVS Vamana na memória no Milvus através do
-  passthrough de índices FAISS, com compressão opcional LeanVec ou LVQ em CPUs
-  Intel.
-title: Pesquisa com SVS Vamana e Milvus
+  Build and search in-memory SVS Vamana graph indexes in Milvus through the
+  FAISS index passthrough, with optional LeanVec or LVQ compression on Intel
+  CPUs.
+title: Search with SVS Vamana and Milvus
 ---
-<h1 id="Search-with-SVS-Vamana-and-Milvus" class="common-anchor-header">Pesquisa com SVS Vamana e Milvus<button data-href="#Search-with-SVS-Vamana-and-Milvus" class="anchor-icon" translate="no">
+<h1 id="Search-with-SVS-Vamana-and-Milvus" class="common-anchor-header">Search with SVS Vamana and Milvus<button data-href="#Search-with-SVS-Vamana-and-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -21,9 +21,9 @@ title: Pesquisa com SVS Vamana e Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p><a href="https://github.com/intel/ScalableVectorSearch">O SVS</a> (Scalable Vector Search) é a biblioteca de pesquisa vetorial de alto desempenho da Intel que implementa o algoritmo de grafos Vamana. No Milvus, acede-se ao SVS Vamana através do <a href="https://milvus.io/docs/faiss.md">encaminhamento do índice FAISS</a>: defina ` <code translate="no">index_type</code> ` como ` <code translate="no">FAISS</code> ` e forneça uma cadeia de caracteres da fábrica de índices ` <code translate="no">SVSVamana</code> `, e o Milvus cria e pesquisa o índice através da integração SVS do FAISS.</p>
-<p>O Vamana é a estrutura de grafo que <a href="https://milvus.io/docs/diskann.md">o DISKANN</a> também utiliza, mas o SVS Vamana mantém todo o grafo na memória. Também consegue comprimir vetores com <strong>o LeanVec</strong> ou <strong>o LVQ</strong>, o que reduz o consumo de memória e acelera a pesquisa, mantendo ao mesmo tempo uma taxa de recuperação muito elevada.</p>
-<h2 id="Prerequisites" class="common-anchor-header">Pré-requisitos<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+    </button></h1><p><a href="https://github.com/intel/ScalableVectorSearch">SVS</a> (Scalable Vector Search) is Intel’s high-performance vector-search library implementing the Vamana graph algorithm. In Milvus, you reach SVS Vamana through the <a href="https://milvus.io/docs/faiss.md">FAISS index passthrough</a>: set <code translate="no">index_type</code> to <code translate="no">FAISS</code> and supply an <code translate="no">SVSVamana</code> index-factory string, and Milvus builds and searches the index through Faiss’s SVS integration.</p>
+<p>Vamana is the graph structure that <a href="https://milvus.io/docs/diskann.md">DISKANN</a> also uses, but SVS Vamana keeps the whole graph in memory. It can also compress vectors with <strong>LeanVec</strong> or <strong>LVQ</strong>, which reduces memory usage and speeds up search while still reaching very high recall.</p>
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -39,16 +39,16 @@ title: Pesquisa com SVS Vamana e Milvus
         ></path>
       </svg>
     </button></h2><ul>
-<li>Milvus 3.0.0 ou posterior, compilado a partir do código-fonte com o SVS ativado</li>
-<li>PyMilvus 3.0.0 ou posterior</li>
-<li>Um processador Intel, caso utilize armazenamen <code translate="no">LVQ*</code> ou <code translate="no">LeanVec*</code>; os tipos de armazenamen <code translate="no">FP32</code>, <code translate="no">FP16</code> e <code translate="no">SQ8</code> funcionam em qualquer plataforma</li>
-<li>Familiaridade com <a href="https://milvus.io/docs/faiss.md">as cadeias de caracteres da fábrica de índices do FAISS</a></li>
+<li>Milvus 3.0.0 or later, built from source with SVS enabled</li>
+<li>PyMilvus 3.0.0 or later</li>
+<li>An Intel CPU if you use <code translate="no">LVQ*</code> or <code translate="no">LeanVec*</code> storage; <code translate="no">FP32</code>, <code translate="no">FP16</code>, and <code translate="no">SQ8</code> storage run on any platform</li>
+<li>Familiarity with <a href="https://milvus.io/docs/faiss.md">FAISS index-factory strings</a></li>
 </ul>
 <div class="alert note">
-<p>O SVS não está incluído na compilação padrão do Milvus. Para utilizar as fábricas « <code translate="no">SVSVamana</code> », compile o Milvus a partir do código-fonte com « <code translate="no">make USE_SVS=ON</code> ». Numa compilação sem o SVS, a criação do índice falha porque o Faiss não reconhece a cadeia de caracteres da fábrica.</p>
+<p>SVS is not included in the default Milvus build. To use the <code translate="no">SVSVamana</code> factories, build Milvus from source with <code translate="no">make USE_SVS=ON</code>. In a build without SVS, index building fails because Faiss does not recognize the factory string.</p>
 </div>
-<p>A compressão LVQ e LeanVec funciona apenas em CPUs Intel e é mais rápida em CPUs com AVX-512. Noutras CPUs, a criação do índice falha para as cadeias de fábrica <code translate="no">LVQ*</code> e <code translate="no">LeanVec*</code>.</p>
-<h2 id="How-SVS-Vamana-works" class="common-anchor-header">Como funciona o SVS Vamana<button data-href="#How-SVS-Vamana-works" class="anchor-icon" translate="no">
+<p>LVQ and LeanVec compression run only on Intel CPUs, and run faster on CPUs with AVX-512. On other CPUs, index building fails for <code translate="no">LVQ*</code> and <code translate="no">LeanVec*</code> factory strings.</p>
+<h2 id="How-SVS-Vamana-works" class="common-anchor-header">How SVS Vamana works<button data-href="#How-SVS-Vamana-works" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -63,7 +63,7 @@ title: Pesquisa com SVS Vamana e Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Vamana-graph" class="common-anchor-header">Grafo do Vamana<button data-href="#Vamana-graph" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Vamana-graph" class="common-anchor-header">Vamana graph<button data-href="#Vamana-graph" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -78,15 +78,15 @@ title: Pesquisa com SVS Vamana e Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>O SVS Vamana constrói um gráfico de proximidade de camada única. Cada vetor é um nó, e as arestas ligam vetores que são provavelmente vizinhos próximos. Para construir o gráfico, o SVS faz o seguinte para cada nó <strong>x</strong>:</p>
+    </button></h3><p>SVS Vamana builds a single-layer proximity graph. Each vector is a node, and edges connect vectors that are likely to be close neighbors. To build the graph, SVS does the following for each node <strong>x</strong>:</p>
 <ol>
-<li><p><strong>Pesquisa gananciosa</strong>: o SVS pesquisa o grafo construído até ao momento, mantendo uma lista de candidatos com o tamanho <code translate="no">construction_window_size</code>.</p></li>
-<li><p><strong>Poda de vizinhos</strong>: Os nós visitados tornam-se vizinhos candidatos para <strong>x</strong>. O SVS considera-os por ordem crescente de distância em relação a <strong>x</strong>. Um candidato <code translate="no">c</code> é ignorado se um vizinho mais próximo <code translate="no">n</code>, que já tenha sido mantido, satisfizer <code translate="no">alpha * distance(n, c) &lt;= distance(x, c)</code>. Isto mantém as arestas de longo alcance e elimina as arestas redundantes de curto alcance, permitindo que a pesquisa salte pelo grafo em vez de avançar através dele, um vizinho mais próximo de cada vez. A poda termina assim que o grau do grafo for atingido.</p></li>
-<li><p><strong>Arestas inversas</strong>: Para cada novo vizinho de <strong>x</strong>, o SVS adiciona uma aresta inversa de volta a <strong>x</strong> e poda a lista de arestas desse vizinho se esta exceder o grau do grafo.</p></li>
+<li><p><strong>Greedy search</strong>: SVS searches the graph built so far, keeping a candidate list of size <code translate="no">construction_window_size</code>.</p></li>
+<li><p><strong>Neighbor pruning</strong>: The visited nodes become candidate neighbors for <strong>x</strong>. SVS considers them in order of increasing distance from <strong>x</strong>. A candidate <code translate="no">c</code> is skipped if a closer neighbor <code translate="no">n</code> that has already been kept satisfies <code translate="no">alpha * distance(n, c) &lt;= distance(x, c)</code>. This keeps long-range edges and drops redundant short-range ones, so a search can jump across the graph instead of moving through it one nearest neighbor at a time. Pruning stops once the graph degree is reached.</p></li>
+<li><p><strong>Backward edges</strong>: For each new neighbor of <strong>x</strong>, SVS adds a reverse edge back to <strong>x</strong> and prunes that neighbor’s edge list if it exceeds the graph degree.</p></li>
 </ol>
-<p>A poda é executada em duas passagens: primeiro com <code translate="no">alpha = 1</code>, depois com o valor configurado de <code translate="no">alpha</code>. Um grau de grafo maior e <code translate="no">construction_window_size</code> produzem um grafo mais denso e de maior qualidade, mas consomem mais memória e demoram mais tempo a construir.</p>
-<p>Na altura da pesquisa, o SVS percorre o grafo de forma gananciosa, mantendo os candidatos mais próximos ( <code translate="no">search_window_size</code> ) observados até ao momento. Em seguida, explora sempre o candidato mais próximo que ainda não tenha sido visitado. A pesquisa termina assim que todos os vizinhos do nó atual estiverem mais distantes da consulta do que o pior candidato na janela. Um valor maior de « <code translate="no">search_window_size</code> » explora mais o grafo, o que aumenta a recuperação (recall), mas também a latência.</p>
-<h3 id="LeanVec-compression" class="common-anchor-header">Compressão LeanVec<button data-href="#LeanVec-compression" class="anchor-icon" translate="no">
+<p>Pruning runs in two passes: first with <code translate="no">alpha = 1</code>, then with the configured <code translate="no">alpha</code>. A larger graph degree and <code translate="no">construction_window_size</code> produce a denser, higher-quality graph but use more memory and take longer to build.</p>
+<p>At search time, SVS walks the graph greedily, keeping the <code translate="no">search_window_size</code> closest candidates seen so far. It always explores the closest unvisited candidate next. The search ends once every neighbor of the current node is farther from the query than the worst candidate in the window. A larger <code translate="no">search_window_size</code> explores more of the graph, which raises recall but also latency.</p>
+<h3 id="LeanVec-compression" class="common-anchor-header">LeanVec compression<button data-href="#LeanVec-compression" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -101,14 +101,14 @@ title: Pesquisa com SVS Vamana e Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><a href="https://openreview.net/forum?id=wczqrpOrIc">O LeanVec</a> reduz tanto o número de dimensões por vetor como o número de bits por dimensão. Um índice LeanVec mantém duas representações de cada vetor:</p>
+    </button></h3><p><a href="https://openreview.net/forum?id=wczqrpOrIc">LeanVec</a> reduces both the number of dimensions per vector and the number of bits per dimension. A LeanVec index keeps two representations of each vector:</p>
 <ul>
-<li><p><strong>Primária (dimensionalidade reduzida)</strong>: uma projeção linear do vetor para um número menor de dimensões. A pesquisa no grafo é executada sobre este conjunto de dados primário, pelo que a maioria dos cálculos de distância ocorre no espaço de dimensão inferior. Isto reduz tanto os requisitos de computação como de largura de banda de memória. Por predefinição, a dimensionalidade reduzida é metade da dimensionalidade original (<code translate="no">dim / 2</code>).</p></li>
-<li><p><strong>Secundária (dimensionalidade total)</strong>: O vetor na sua dimensionalidade original. O SVS reclassifica os candidatos devolvidos pela pesquisa primária no grafo em relação a este conjunto de dados secundário, para recuperar a precisão perdida com a redução da dimensionalidade.</p></li>
+<li><p><strong>Primary (reduced dimensionality)</strong>: A linear projection of the vector down to a smaller number of dimensions. The graph search runs over this primary dataset, so most distance computations happen in the lower-dimensional space. This reduces both compute and memory-bandwidth requirements. By default, the reduced dimensionality is half the original dimensionality (<code translate="no">dim / 2</code>).</p></li>
+<li><p><strong>Secondary (full dimensionality)</strong>: The vector at its original dimensionality. SVS re-ranks the candidates returned by the primary graph search against this secondary dataset to recover the accuracy lost to dimensionality reduction.</p></li>
 </ul>
-<p>Ambas as representações são quantizadas com <a href="https://vldb.org/pvldb/volumes/16/paper/Similarity%20search%20in%20the%20blink%20of%20an%20eye%20with%20compressed%20indices">LVQ</a> (Quantização de Vetores Localmente Adaptativa). O componente de armazenamento da cadeia de fábrica seleciona a codificação. Por exemplo, <code translate="no">LeanVec4x8</code> utiliza 4 bits por dimensão para o conjunto de dados primário e 8 bits por dimensão para o conjunto de dados secundário. Mesmo a etapa de reclassificação nunca lê um vetor de precisão total.</p>
-<p>Por predefinição, o LeanVec aprende projeções separadas para os vetores indexados e para as consultas, de modo a suportar consultas provenientes de uma distribuição diferente da dos vetores indexados (fora da distribuição, ou OOD). Isto funciona especialmente bem para cargas de trabalho multimodais, como a recuperação de texto para imagem, e também funciona bem quando as consultas provêm da mesma distribuição que os vetores indexados. O Milvus ainda não suporta uma forma de passar consultas para o cálculo de projeções, pelo que, atualmente, apenas são utilizados os vetores de base. O treino OOD aumenta o tempo de compilação. Para acelerar a compilação, sacrificando ligeiramente o desempenho das consultas, defina ` <code translate="no">ood_training</code> ` como ` <code translate="no">False</code>`.</p>
-<h3 id="LVQ-compression" class="common-anchor-header">Compressão LVQ<button data-href="#LVQ-compression" class="anchor-icon" translate="no">
+<p>Both representations are quantized with <a href="https://vldb.org/pvldb/volumes/16/paper/Similarity%20search%20in%20the%20blink%20of%20an%20eye%20with%20compressed%20indices">LVQ</a> (Locally-adaptive Vector Quantization). The storage component of the factory string selects the encoding. For example, <code translate="no">LeanVec4x8</code> uses 4 bits per dimension for the primary dataset and 8 bits per dimension for the secondary dataset. Even the re-ranking step never reads a full-precision vector.</p>
+<p>By default, LeanVec learns separate projections for the indexed vectors and for the queries, to support queries that come from a different distribution than the indexed vectors (out-of-distribution, or OOD). This works especially well for cross-modal workloads such as text-to-image retrieval, and it also works well when queries come from the same distribution as the indexed vectors. Milvus does not yet support a way to pass queries for computing projections, so only the base vectors are currently used. OOD training adds build time. To build faster at some cost in query performance, set <code translate="no">ood_training</code> to <code translate="no">False</code>.</p>
+<h3 id="LVQ-compression" class="common-anchor-header">LVQ compression<button data-href="#LVQ-compression" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -123,8 +123,8 @@ title: Pesquisa com SVS Vamana e Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Para conjuntos de dados com menos de cerca de 512 dimensões, pode ser mais eficaz ignorar a redução de dimensionalidade e comprimir apenas com quantização LVQ. Tal como o LeanVec, um índice LVQ mantém uma representação primária para uma pesquisa rápida e uma representação residual para a reclassificação. Por exemplo, <code translate="no">LVQ4x4</code> utiliza 4 bits para a representação primária e 4 bits para a residual. <code translate="no">LVQ4x0</code> e <code translate="no">LVQ8x0</code> ignoram a reclassificação, o que acelera as consultas se a sua taxa de recuperação for suficientemente boa para a sua carga de trabalho.</p>
-<h2 id="Choose-a-factory-string" class="common-anchor-header">Escolha uma cadeia de fábrica<button data-href="#Choose-a-factory-string" class="anchor-icon" translate="no">
+    </button></h3><p>For datasets with fewer than about 512 dimensions, skipping dimensionality reduction and compressing only with LVQ quantization can work better. Like LeanVec, an LVQ index keeps a primary representation for fast search and a residual representation for re-ranking. For example, <code translate="no">LVQ4x4</code> uses 4 bits for the primary representation and 4 bits for the residual. <code translate="no">LVQ4x0</code> and <code translate="no">LVQ8x0</code> skip re-ranking, which speeds up queries if their recall is good enough for your workload.</p>
+<h2 id="Choose-a-factory-string" class="common-anchor-header">Choose a factory string<button data-href="#Choose-a-factory-string" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -139,28 +139,28 @@ title: Pesquisa com SVS Vamana e Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>As cadeias de fábrica do SVS Vamana têm o formato <code translate="no">SVSVamana&lt;degree&gt;[,&lt;storage&gt;]</code>, em que <code translate="no">&lt;degree&gt;</code> é o número máximo de arestas por nó no grafo.</p>
+    </button></h2><p>SVS Vamana factory strings have the form <code translate="no">SVSVamana&lt;degree&gt;[,&lt;storage&gt;]</code>, where <code translate="no">&lt;degree&gt;</code> is the maximum number of edges per node in the graph.</p>
 <table>
 <thead>
-<tr><th>Cadeia de fábrica</th><th>Armazenamento</th><th>Notas</th></tr>
+<tr><th>Factory string</th><th>Storage</th><th>Notes</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">SVSVamana64</code></td><td><code translate="no">FP32</code></td><td>Vetores não comprimidos.</td></tr>
-<tr><td><code translate="no">SVSVamana64,FP16</code></td><td>Números flutuantes de 16 bits</td><td>Metade da memória de vetores de um <code translate="no">FP32</code>, com perda mínima de precisão.</td></tr>
-<tr><td><code translate="no">SVSVamana64,SQ8</code></td><td>Quantização escalar de 8 bits</td><td>Um quarto da memória vetorial de <code translate="no">FP32</code>.</td></tr>
-<tr><td><code translate="no">SVSVamana64,LVQ4x0</code>, <code translate="no">LVQ8x0</code></td><td>LVQ primário, sem residual</td><td>Apenas CPUs Intel. Sem reclassificação.</td></tr>
-<tr><td><code translate="no">SVSVamana64,LVQ4x4</code>, <code translate="no">LVQ4x8</code></td><td>LVQ primário e residual</td><td>Apenas CPUs Intel.</td></tr>
-<tr><td><code translate="no">SVSVamana64,LeanVec4x4</code>, <code translate="no">LeanVec4x8</code>, <code translate="no">LeanVec8x8</code></td><td>LeanVec primário e secundário</td><td>Apenas CPUs Intel. Adicione o sufixo « <code translate="no">_&lt;dim&gt;</code> » para definir a dimensionalidade reduzida. Por exemplo, « <code translate="no">LeanVec4x8_128</code> » reduz o conjunto de dados primário para 128 dimensões. Sem o sufixo, a dimensionalidade reduzida é « <code translate="no">dim / 2</code> ».</td></tr>
+<tr><td><code translate="no">SVSVamana64</code></td><td><code translate="no">FP32</code></td><td>Uncompressed vectors.</td></tr>
+<tr><td><code translate="no">SVSVamana64,FP16</code></td><td>16-bit floats</td><td>Half the vector memory of <code translate="no">FP32</code>, with minimal accuracy loss.</td></tr>
+<tr><td><code translate="no">SVSVamana64,SQ8</code></td><td>8-bit scalar quantization</td><td>A quarter of the vector memory of <code translate="no">FP32</code>.</td></tr>
+<tr><td><code translate="no">SVSVamana64,LVQ4x0</code>, <code translate="no">LVQ8x0</code></td><td>LVQ primary, no residual</td><td>Intel CPUs only. No re-ranking.</td></tr>
+<tr><td><code translate="no">SVSVamana64,LVQ4x4</code>, <code translate="no">LVQ4x8</code></td><td>LVQ primary and residual</td><td>Intel CPUs only.</td></tr>
+<tr><td><code translate="no">SVSVamana64,LeanVec4x4</code>, <code translate="no">LeanVec4x8</code>, <code translate="no">LeanVec8x8</code></td><td>LeanVec primary and secondary</td><td>Intel CPUs only. Add the <code translate="no">_&lt;dim&gt;</code> suffix to set the reduced dimensionality. For example, <code translate="no">LeanVec4x8_128</code> reduces the primary dataset to 128 dimensions. Without the suffix, the reduced dimensionality is <code translate="no">dim / 2</code>.</td></tr>
 </tbody>
 </table>
-<p><code translate="no">SVSVamana64,LeanVec4x8</code> é um bom ponto de partida. A partir daí:</p>
+<p><code translate="no">SVSVamana64,LeanVec4x8</code> is a good starting point. From there:</p>
 <ul>
-<li><p>Para obter <strong>uma maior taxa de recuperação</strong>, com algum custo em termos de memória, aumente a dimensionalidade do LeanVec com o sufixo <code translate="no">_&lt;dim&gt;</code>.</p></li>
-<li><p>Para uma <strong>pegada de memória menor</strong>, com algum custo em termos de recall, reduza a dimensionalidade do LeanVec.</p></li>
-<li><p>Para vetores de baixa dimensionalidade, experimente <code translate="no">LVQ8</code>.</p></li>
-<li><p><strong>Em CPUs que não sejam da Intel</strong>, utilize <code translate="no">FP16</code> ou <code translate="no">SQ8</code>.</p></li>
+<li><p>For <strong>higher recall</strong> at some memory cost, increase the LeanVec dimensionality with the <code translate="no">_&lt;dim&gt;</code> suffix.</p></li>
+<li><p>For a <strong>smaller footprint</strong> at some recall cost, lower the LeanVec dimensionality.</p></li>
+<li><p>For low-dimensionality vectors, try <code translate="no">LVQ8</code>.</p></li>
+<li><p><strong>On non-Intel CPUs</strong>, use <code translate="no">FP16</code> or <code translate="no">SQ8</code>.</p></li>
 </ul>
-<h2 id="Build-the-index" class="common-anchor-header">Crie o índice<button data-href="#Build-the-index" class="anchor-icon" translate="no">
+<h2 id="Build-the-index" class="common-anchor-header">Build the index<button data-href="#Build-the-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -175,9 +175,9 @@ title: Pesquisa com SVS Vamana e Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>O exemplo seguinte cria um índice SVS Vamana com grau de grafo 64 e compressão LeanVec. Expanda o bloco de configuração e execute-o antes de criar o índice.</p>
+    </button></h2><p>The following example builds an SVS Vamana index with graph degree 64 and LeanVec compression. Expand the setup block and run it before building the index.</p>
 <p><details></p>
-<p><summary>Prepare a coleção</summary></p>
+<p><summary>Prepare the collection</summary></p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> random
 
 <span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> DataType, MilvusClient
@@ -204,7 +204,7 @@ client.insert(
 client.flush(collection_name=collection_name)
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<p>Defina <code translate="no">index_type</code> como <code translate="no">FAISS</code> e utilize <code translate="no">faiss_index_name</code> para selecionar a receita do SVS Vamana.</p>
+<p>Set <code translate="no">index_type</code> to <code translate="no">FAISS</code>, and use <code translate="no">faiss_index_name</code> to select the SVS Vamana recipe.</p>
 <pre><code translate="no" class="language-python">index_params = client.prepare_index_params()
 index_params.add_index(
     field_name=<span class="hljs-string">&quot;vector&quot;</span>,
@@ -224,7 +224,7 @@ index_params.add_index(
 client.create_index(collection_name=collection_name, index_params=index_params)
 client.load_collection(collection_name=collection_name)
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Search-the-index" class="common-anchor-header">Pesquise no índice<button data-href="#Search-the-index" class="anchor-icon" translate="no">
+<h2 id="Search-the-index" class="common-anchor-header">Search the index<button data-href="#Search-the-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -239,7 +239,7 @@ client.load_collection(collection_name=collection_name)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">search_window_size</code> controla o equilíbrio entre recall e latência, tal como « <code translate="no">ef</code> » faz para <a href="https://milvus.io/docs/hnsw.md">o HNSW</a>. Defina « <code translate="no">search_buffer_capacity</code> » para, pelo menos, o mesmo valor. O valor predefinido do índice para ambos é 10, e o SVS rejeita uma pesquisa cujo « <code translate="no">search_window_size</code> » seja maior do que o seu « <code translate="no">search_buffer_capacity</code> ».</p>
+    </button></h2><p><code translate="no">search_window_size</code> controls the trade-off between recall and latency, as <code translate="no">ef</code> does for <a href="https://milvus.io/docs/hnsw.md">HNSW</a>. Set <code translate="no">search_buffer_capacity</code> to at least the same value. The index defaults for both are 10, and SVS rejects a search whose <code translate="no">search_window_size</code> is larger than its <code translate="no">search_buffer_capacity</code>.</p>
 <pre><code translate="no" class="language-python"><span class="highlighted-comment-line">search_params = {</span>
 <span class="highlighted-comment-line">    <span class="hljs-string">&quot;params&quot;</span>: {</span>
 <span class="highlighted-comment-line">        <span class="hljs-string">&quot;search_window_size&quot;</span>: <span class="hljs-number">100</span>,      <span class="hljs-comment"># wider = higher recall, lower QPS</span></span>
@@ -255,8 +255,8 @@ res = client.search(
 <span class="highlighted-wrapper-line">    search_params=search_params,</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>Se <code translate="no">limit</code> for maior do que <code translate="no">search_window_size</code>, o SVS aumenta a janela para <code translate="no">limit</code> para essa pesquisa.</p>
-<h2 id="SVS-Vamana-parameters" class="common-anchor-header">Parâmetros do SVS Vamana<button data-href="#SVS-Vamana-parameters" class="anchor-icon" translate="no">
+<p>If <code translate="no">limit</code> is larger than <code translate="no">search_window_size</code>, SVS raises the window to <code translate="no">limit</code> for that search.</p>
+<h2 id="SVS-Vamana-parameters" class="common-anchor-header">SVS Vamana parameters<button data-href="#SVS-Vamana-parameters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -271,33 +271,33 @@ res = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Os seguintes parâmetros de compilação devem ser inseridos em <code translate="no">params</code> em <code translate="no">add_index()</code>, junto a <code translate="no">faiss_index_name</code>. Não é possível alterá-los após a compilação do índice.</p>
+    </button></h2><p>The following build parameters go in <code translate="no">params</code> in <code translate="no">add_index()</code>, next to <code translate="no">faiss_index_name</code>. You cannot change them after the index is built.</p>
 <table>
 <thead>
-<tr><th>Parâmetro</th><th>Padrão</th><th>Descrição</th></tr>
+<tr><th>Parameter</th><th>Default</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">construction_window_size</code></td><td><code translate="no">40</code></td><td>Tamanho da lista de candidatos utilizada para encontrar os vizinhos de cada nó durante a construção do grafo. Valores mais elevados melhoram a qualidade do grafo e a taxa de recuperação, mas demoram mais tempo a construir. Defina-o para, pelo menos, o grau do grafo. 200 é uma escolha comum.</td></tr>
-<tr><td><code translate="no">alpha</code></td><td><code translate="no">1.2</code> para <code translate="no">L2</code>, <code translate="no">0.95</code> para <code translate="no">IP</code> e <code translate="no">COSINE</code></td><td>Intensidade de poda. Valores mais distantes de 1 realizam uma poda mais agressiva, privilegiando arestas de longo alcance em detrimento das redundantes de curto alcance. Utilize valores superiores a 1 para <code translate="no">L2</code> e inferiores a 1 para <code translate="no">IP</code> e <code translate="no">COSINE</code>. Mantenha o valor predefinido, a menos que tenha medido um valor melhor nos seus dados.</td></tr>
-<tr><td><code translate="no">graph_max_degree</code></td><td>Grau na cadeia de caracteres predefinida ou <code translate="no">32</code></td><td>Número máximo de arestas por nó. Substitui o grau definido na cadeia de caracteres de fábrica. Valores no intervalo [32, 128] são adequados para a maioria das cargas de trabalho. Valores mais elevados podem aumentar a recuperação, mas consomem mais memória e demoram mais tempo a construir.</td></tr>
-<tr><td><code translate="no">prune_to</code></td><td>Grau do grafo menos 4</td><td>Número de arestas que um nó mantém após a poda, assim que exceder o grau do grafo.</td></tr>
-<tr><td><code translate="no">max_candidate_pool_size</code></td><td><code translate="no">200</code></td><td>Número máximo de candidatos considerados ao podar os vizinhos de um nó. Deve ser superior a <code translate="no">construction_window_size</code>.</td></tr>
-<tr><td><code translate="no">use_full_search_history</code></td><td><code translate="no">True</code></td><td>Indica se a poda considera todos os nós visitados durante a pesquisa de construção, e não apenas os candidatos finais.</td></tr>
-<tr><td><code translate="no">leanvec_d</code></td><td><code translate="no">_&lt;dim&gt;</code> sufixo de cadeia de caracteres de fábrica ou <code translate="no">dim / 2</code></td><td>Apenas LeanVec. Dimensionalidade reduzida do conjunto de dados primário. Substitui o sufixo da cadeia de caracteres predefinida. Valores mais baixos reduzem o consumo de memória e aceleram a pesquisa no grafo, mas diminuem a recuperação.</td></tr>
-<tr><td><code translate="no">ood_training</code></td><td><code translate="no">True</code> para o LeanVec</td><td>Apenas para o LeanVec. Se se devem aprender projeções separadas para os vetores indexados e as consultas. Defina « <code translate="no">False</code> » para compilações mais rápidas. Definir « <code translate="no">True</code> » para qualquer fábrica que não seja o LeanVec resulta em falha.</td></tr>
+<tr><td><code translate="no">construction_window_size</code></td><td><code translate="no">40</code></td><td>Size of the candidate list used to find each node’s neighbors during graph construction. Larger values improve graph quality and recall but take longer to build. Set it to at least the graph degree. 200 is a common choice.</td></tr>
+<tr><td><code translate="no">alpha</code></td><td><code translate="no">1.2</code> for <code translate="no">L2</code>, <code translate="no">0.95</code> for <code translate="no">IP</code> and <code translate="no">COSINE</code></td><td>Pruning strength. Values farther from 1 prune more aggressively, favoring long-range edges over redundant short-range ones. Use values above 1 for <code translate="no">L2</code> and below 1 for <code translate="no">IP</code> and <code translate="no">COSINE</code>. Keep the default unless you have measured a better value on your data.</td></tr>
+<tr><td><code translate="no">graph_max_degree</code></td><td>Degree in the factory string or <code translate="no">32</code></td><td>Maximum number of edges per node. Overrides the degree in the factory string. Values in the range [32, 128] suit most workloads. Higher values can raise recall but use more memory and take longer to build.</td></tr>
+<tr><td><code translate="no">prune_to</code></td><td>Graph degree minus 4</td><td>Number of edges a node keeps after pruning once it exceeds the graph degree.</td></tr>
+<tr><td><code translate="no">max_candidate_pool_size</code></td><td><code translate="no">200</code></td><td>Maximum number of candidates considered when pruning a node’s neighbors. Should be larger than <code translate="no">construction_window_size</code>.</td></tr>
+<tr><td><code translate="no">use_full_search_history</code></td><td><code translate="no">True</code></td><td>Whether pruning considers every node visited during the construction search, not just the final candidates.</td></tr>
+<tr><td><code translate="no">leanvec_d</code></td><td><code translate="no">_&lt;dim&gt;</code> factory string suffix or <code translate="no">dim / 2</code></td><td>LeanVec only. Reduced dimensionality of the primary dataset. Overrides the factory-string suffix. Smaller values reduce memory usage and speed up graph search, but lower recall.</td></tr>
+<tr><td><code translate="no">ood_training</code></td><td><code translate="no">True</code> for LeanVec</td><td>LeanVec only. Whether to learn separate projections for the indexed vectors and queries. Set <code translate="no">False</code> for faster builds. Setting <code translate="no">True</code> for any factory other than LeanVec fails.</td></tr>
 </tbody>
 </table>
-<p>Os seguintes parâmetros de pesquisa devem ser definidos em ` <code translate="no">search_params.params</code>`. Também é possível defini-los como parâmetros de compilação, o que altera os valores predefinidos que o índice utiliza para pesquisas que não os definam.</p>
+<p>The following search parameters go in <code translate="no">search_params.params</code>. You can also set them as build parameters, which changes the defaults the index uses for searches that do not set them.</p>
 <table>
 <thead>
-<tr><th>Parâmetro</th><th>Padrão</th><th>Descrição</th></tr>
+<tr><th>Parameter</th><th>Default</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">search_window_size</code></td><td><code translate="no">10</code></td><td>Número de candidatos mais próximos mantidos durante a percussão do grafo. Valores mais elevados aumentam a recuperação e a latência.</td></tr>
-<tr><td><code translate="no">search_buffer_capacity</code></td><td><code translate="no">10</code></td><td>Capacidade do buffer de pesquisa. Deve ser maior ou igual a <code translate="no">search_window_size</code>. Na maioria dos casos, defina-o igual a <code translate="no">search_window_size</code>. Para o LeanVec, experimente 1,5 vezes <code translate="no">search_window_size</code>.</td></tr>
+<tr><td><code translate="no">search_window_size</code></td><td><code translate="no">10</code></td><td>Number of closest candidates kept while traversing the graph. Larger values raise recall and latency.</td></tr>
+<tr><td><code translate="no">search_buffer_capacity</code></td><td><code translate="no">10</code></td><td>Capacity of the search buffer. Must be greater than or equal to <code translate="no">search_window_size</code>. In most cases, set it equal to <code translate="no">search_window_size</code>. For LeanVec, try 1.5 times <code translate="no">search_window_size</code>.</td></tr>
 </tbody>
 </table>
-<h2 id="Learn-more" class="common-anchor-header">Saiba mais<button data-href="#Learn-more" class="anchor-icon" translate="no">
+<h2 id="Learn-more" class="common-anchor-header">Learn more<button data-href="#Learn-more" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -313,7 +313,7 @@ res = client.search(
         ></path>
       </svg>
     </button></h2><ul>
-<li>Leia a referência sobre <a href="https://milvus.io/docs/faiss.md">o passthrough do índice FAISS</a> para conhecer o contrato geral de strings de fábrica, os limites e o tratamento de erros.</li>
-<li>Compare com a implementação do Vamana no disco no <a href="https://milvus.io/docs/diskann.md">DISKANN</a>.</li>
-<li>Consulte o <a href="https://github.com/intel/ScalableVectorSearch">repositório SVS</a> para obter detalhes sobre a compilação, o ajuste de desempenho e a API C++ subjacente.</li>
+<li>Read the <a href="https://milvus.io/docs/faiss.md">FAISS index passthrough</a> reference for the general factory-string contract, limits, and error handling.</li>
+<li>Compare with the on-disk Vamana implementation in <a href="https://milvus.io/docs/diskann.md">DISKANN</a>.</li>
+<li>See the <a href="https://github.com/intel/ScalableVectorSearch">SVS repository</a> for build details, performance tuning, and the underlying C++ API.</li>
 </ul>

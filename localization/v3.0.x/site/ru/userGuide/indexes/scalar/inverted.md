@@ -1,13 +1,11 @@
 ---
 id: inverted.md
-title: ОБРАТНЫЕ
+title: INVERTED
 summary: >-
-  Если вам часто приходится выполнять фильтрующие запросы по данным,
-  инвертированные индексы могут значительно повысить производительность
-  запросов. Вместо сканирования всех документов инвертированный индекс быстро
-  находит именно те записи, которые соответствуют вашим условиям фильтрации.
+  Use INVERTED indexes for value filtering on scalar fields, arrays, and typed
+  JSON paths.
 ---
-<h1 id="INVERTED" class="common-anchor-header">ОБРАТНЫЕ<button data-href="#INVERTED" class="anchor-icon" translate="no">
+<h1 id="INVERTED" class="common-anchor-header">INVERTED<button data-href="#INVERTED" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -22,8 +20,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Если вам часто приходится выполнять запросы с фильтрами по данным, инвертированные индексы ( <code translate="no">INVERTED</code> ) могут значительно повысить производительность запросов. Вместо сканирования всех документов Milvus использует инвертированные индексы для быстрого поиска записей, точно соответствующих условиям фильтра.</p>
-<h2 id="When-to-use-INVERTED-indexes" class="common-anchor-header">Когда использовать инвертированные индексы<button data-href="#When-to-use-INVERTED-indexes" class="anchor-icon" translate="no">
+    </button></h1><p><code translate="no">INVERTED</code> maps field values to the entities containing them to accelerate scalar filtering.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -38,14 +36,13 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Используйте инвертированные индексы, если вам необходимо:</p>
-<ul>
-<li><p><strong>Фильтрация по конкретным значениям</strong>: поиск всех записей, в которых значение поля равно конкретному значению (например, <code translate="no">category == &quot;electronics&quot;</code>)</p></li>
-<li><p><strong>Фильтрация текстового содержимого</strong>: выполнять эффективный поиск по полям <code translate="no">VARCHAR</code> </p></li>
-<li><p><strong>Запрашивать значения полей JSON</strong>: фильтровать по конкретным ключам в структурах JSON</p></li>
-</ul>
-<p><strong>Преимущество в производительности</strong>: инвертированные индексы могут сократить время выполнения запросов с секунд до миллисекунд при работе с большими наборами данных, устраняя необходимость полного сканирования коллекций.</p>
-<h2 id="How-INVERTED-indexes-work" class="common-anchor-header">Как работают инвертированные индексы<button data-href="#How-INVERTED-indexes-work" class="anchor-icon" translate="no">
+    </button></h2><p><a id="When-to-use-INVERTED-indexes"></a></p>
+<p>Use <code translate="no">INVERTED</code> for equality, membership, and range filters on compatible fields or JSON paths, such as <code translate="no">category == &quot;electronics&quot;</code>.</p>
+<p><a id="Supported-data-types"></a>
+<a id="Queries-accelerated-by-INVERTED"></a>
+<a id="Supported-filters"></a>
+<a id="Filter-acceleration"></a></p>
+<h3 id="Index-targets-and-filters" class="common-anchor-header">Index targets and filters<button data-href="#Index-targets-and-filters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -60,39 +57,98 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><strong>INVERTED-индекс</strong> в Milvus сопоставляет каждое уникальное значение поля (термин) с набором идентификаторов документов, в которых встречается это значение. Такая структура обеспечивает быстрый поиск по полям с повторяющимися или категориальными значениями.</p>
-<p>Как показано на схеме, процесс состоит из двух этапов:</p>
+    </button></h3><p>The following table pairs supported <code translate="no">INVERTED</code> index targets with the filters the index can help evaluate:</p>
+<table>
+<thead>
+<tr><th>Index target</th><th>Filters that can use the index</th></tr>
+</thead>
+<tbody>
+<tr><td><code translate="no">BOOL</code> field</td><td>Equality (<code translate="no">==</code>, <code translate="no">!=</code>) and membership (<code translate="no">in</code>, <code translate="no">not in</code>).</td></tr>
+<tr><td>Numeric field (<code translate="no">INT8</code>, <code translate="no">INT16</code>, <code translate="no">INT32</code>, <code translate="no">INT64</code>, <code translate="no">FLOAT</code>, <code translate="no">DOUBLE</code>)</td><td>Equality, membership, and ranges (<code translate="no">&lt;</code>, <code translate="no">&lt;=</code>, <code translate="no">&gt;</code>, <code translate="no">&gt;=</code>).</td></tr>
+<tr><td><code translate="no">VARCHAR</code> field</td><td>Equality, membership, ranges, prefix matching such as <code translate="no">name LIKE &quot;abc%&quot;</code>, and general LIKE such as <code translate="no">name LIKE &quot;a%b_c&quot;</code>.</td></tr>
+<tr><td>Ordinary <code translate="no">ARRAY</code> field with <code translate="no">BOOL</code>, <code translate="no">INT8</code>, <code translate="no">INT16</code>, <code translate="no">INT32</code>, <code translate="no">INT64</code>, <code translate="no">FLOAT</code>, <code translate="no">DOUBLE</code>, or <code translate="no">VARCHAR</code> elements</td><td>Element containment and eligible whole-array comparisons. See <a href="/docs/ru/array_data_type.md#Array-index-support">Array index support</a>.</td></tr>
+<tr><td>Typed JSON path</td><td>Filters appropriate to the indexed cast. Specify path and cast parameters; see <a href="/docs/ru/json-indexing.md#Understand-cast-types">JSON Indexing</a> for cast compatibility and <a href="/docs/ru/json-indexing.md#Supported-filters">JSON filter details</a> for query behavior.</td></tr>
+</tbody>
+</table>
+<div class="alert note">
+<blockquote>
+<p>Scalar indexes, including <code translate="no">AUTOINDEX</code>, do not support recursive ARRAY fields or arrays with nullable elements. See <a href="/docs/ru/array_data_type.md#Array-index-support">Array index support</a> for ordinary-array filters and <a href="/docs/ru/index-structarray-fields.md#Create-scalar-indexes">Index StructArray Fields</a> for subfield rules.</p>
+</blockquote>
+</div>
+<p>Simple suffix (<code translate="no">LIKE &quot;%abc&quot;</code>) and substring (<code translate="no">LIKE &quot;%abc%&quot;</code>) filters use a scan path, even though more complex LIKE patterns can use this index. Regex filters do not use direct INVERTED pattern lookup. These rules apply after <a href="/docs/ru/pattern-matching.md#Accelerate-pattern-matching-with-indexes">query-planning simplifications</a>.</p>
+<p>A scalar <code translate="no">INVERTED</code> index does not enable token-based <code translate="no">TEXT_MATCH</code> or <code translate="no">PHRASE_MATCH</code>; see <a href="/docs/ru/keyword-match.md">Text Match</a>.</p>
+<div class="alert note">
+<blockquote>
+<p>These are index capabilities, not limits on valid filter expressions. See <a href="/docs/ru/scalar_index.md#Filter-execution">Scalar Index</a> for shared lookup constraints. For <code translate="no">AND</code>, <code translate="no">OR</code>, <code translate="no">NOT</code>, and NULL tests (<code translate="no">IS NULL</code>, <code translate="no">IS NOT NULL</code>), see <a href="/docs/ru/basic-operators.md">Basic Operators</a>.</p>
+</blockquote>
+</div>
+<h3 id="Memory-considerations" class="common-anchor-header">Memory considerations<button data-href="#Memory-considerations" class="anchor-icon" translate="no">
+      <svg translate="no"
+        aria-hidden="true"
+        focusable="false"
+        height="20"
+        version="1.1"
+        viewBox="0 0 16 16"
+        width="16"
+      >
+        <path
+          fill="#0092E4"
+          fill-rule="evenodd"
+          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+        ></path>
+      </svg>
+    </button></h3><p>For a rough loaded-memory estimate, use <code translate="no">S</code> bytes, where <code translate="no">S</code> is the size of the built index before storage compression. Build an index on representative data to obtain <code translate="no">S</code>; raw field data size is not a substitute.</p>
+<p>These rough estimates cover loaded index memory with memory mapping disabled. Calculate them per segment, then sum across loaded segments and replicas.</p>
+<div class="alert note">
+<blockquote>
+<p>Allow extra memory for loaded field data, vector indexes, collection and index overhead, and temporary allocations. Validate with representative data and queries; arrays, JSON, older index formats, and memory mapping require separate measurement.</p>
+</blockquote>
+</div>
+<p><a id="How-INVERTED-indexes-work"></a></p>
+<h3 id="How-INVERTED-works" class="common-anchor-header">How INVERTED works<button data-href="#How-INVERTED-works" class="anchor-icon" translate="no">
+      <svg translate="no"
+        aria-hidden="true"
+        focusable="false"
+        height="20"
+        version="1.1"
+        viewBox="0 0 16 16"
+        width="16"
+      >
+        <path
+          fill="#0092E4"
+          fill-rule="evenodd"
+          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+        ></path>
+      </svg>
+    </button></h3><p><details>
+<summary><strong>View a value lookup example</strong></summary></p>
+<p>An inverted index reverses the mapping from entity IDs to field values. In the diagram, <strong>“electronics”</strong> maps to IDs <strong>1</strong> and <strong>3</strong>, while <strong>“books”</strong> maps to IDs <strong>2</strong> and <strong>5</strong>.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/how-inverted-index-works.png" alt="How Inverted Index Works" class="doc-image" id="how-inverted-index-works" />
+    <span>How Inverted Index Works</span>
+  </span>
+</p>
+<p>For <code translate="no">category == &quot;electronics&quot;</code>, Milvus retrieves IDs <strong>1</strong> and <strong>3</strong> from the index rather than checking every entity’s category.</p>
+<p></details></p>
+<h2 id="Create-indexes-on-non-JSON-fields" class="common-anchor-header">Create indexes on non-JSON fields<button data-href="#Create-indexes-on-non-JSON-fields" class="anchor-icon" translate="no">
+      <svg translate="no"
+        aria-hidden="true"
+        focusable="false"
+        height="20"
+        version="1.1"
+        viewBox="0 0 16 16"
+        width="16"
+      >
+        <path
+          fill="#0092E4"
+          fill-rule="evenodd"
+          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+        ></path>
+      </svg>
+    </button></h2><p>To create an index on a non-JSON field, follow these steps:</p>
 <ol>
-<li><p><strong>Прямое сопоставление (ID → термин):</strong> каждый идентификатор документа указывает на значение поля, которое он содержит.</p></li>
-<li><p><strong>Обратное сопоставление (термин → идентификаторы):</strong> Milvus собирает уникальные термины и строит обратное сопоставление от каждого термина ко всем идентификаторам, в которых он встречается.</p></li>
-</ol>
-<p>Например, значение <strong>«электроника»</strong> сопоставляется с идентификаторами <strong>1</strong> и <strong>3</strong>, а <strong>«книги»</strong> — с идентификаторами <strong>2</strong> и <strong>5</strong>.</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/how-inverted-index-works.png" alt="How Inverted Index Works" class="doc-image" id="how-inverted-index-works" /> 
-   <span>Как работает инвертированный индекс</span>
-  
- </span></p>
-<p>Когда вы фильтруете по конкретному значению (например, <code translate="no">category == &quot;electronics&quot;</code>), Milvus просто ищет термин в индексе и напрямую извлекает соответствующие идентификаторы. Это позволяет избежать сканирования всего набора данных и обеспечивает быструю фильтрацию, особенно для категориальных или повторяющихся значений.</p>
-<p>ИНВЕРТИРОВАННЫЕ индексы поддерживают все скалярные типы полей, такие как <strong>BOOL</strong>, <strong>INT8</strong>, <strong>INT16</strong>, <strong>INT32</strong>, <strong>INT64</strong>, <strong>FLOAT</strong>, <strong>DOUBLE</strong>, <strong>VARCHAR</strong>, <strong>JSON</strong> и <strong>ARRAY</strong>. Однако параметры индекса для индексирования поля JSON немного отличаются от параметров для обычных скалярных полей.</p>
-<h2 id="Create-indexes-on-non-JSON-fields" class="common-anchor-header">Создание индексов на полях, отличных от JSON<button data-href="#Create-indexes-on-non-JSON-fields" class="anchor-icon" translate="no">
-      <svg translate="no"
-        aria-hidden="true"
-        focusable="false"
-        height="20"
-        version="1.1"
-        viewBox="0 0 16 16"
-        width="16"
-      >
-        <path
-          fill="#0092E4"
-          fill-rule="evenodd"
-          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
-        ></path>
-      </svg>
-    </button></h2><p>Чтобы создать индекс для поля, не являющегося JSON, выполните следующие действия:</p>
-<ol>
-<li><p>Подготовьте параметры индекса:</p>
+<li><p>Prepare your index parameters:</p>
 <p><div class="multipleCode">
 <a href="#python">Python</a>
 <a href="#java">Java</a>
@@ -161,7 +217,7 @@ client, err := milvusclient.New(ctx, &amp;milvusclient.ClientConfig{
 <pre><code translate="no" class="language-bash"><span class="hljs-built_in">export</span> CLUSTER_ENDPOINT=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>
 <span class="hljs-built_in">export</span> TOKEN=<span class="hljs-string">&quot;root:Milvus&quot;</span>
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>Добавьте индекс « <code translate="no">INVERTED</code> »:</p>
+<li><p>Add the <code translate="no">INVERTED</code> index:</p>
 <p><div class="multipleCode">
 <a href="#python">Python</a>
 <a href="#java">Java</a>
@@ -220,7 +276,7 @@ idx := index.NewInvertedIndex() <span class="hljs-comment">// Specify INVERTED i
     }
 ]&#x27;</span>
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>Создайте индекс:</p>
+<li><p>Create the index:</p>
 <p><div class="multipleCode">
 <a href="#python">Python</a>
 <a href="#java">Java</a>
@@ -296,7 +352,7 @@ curl --request POST \
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre></li>
 </ol>
-<h2 id="Create-indexes-on-JSON-fields" class="common-anchor-header">Создание индексов по полям JSON<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.5.11+</span><button data-href="#Create-indexes-on-JSON-fields" class="anchor-icon" translate="no">
+<h2 id="Create-indexes-on-JSON-fields" class="common-anchor-header">Create indexes on JSON fields<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.5.11+</span><button data-href="#Create-indexes-on-JSON-fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -311,15 +367,15 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Вы также можете создавать инвертированные индексы по конкретным путям внутри полей JSON. Для этого требуются дополнительные параметры, чтобы указать путь JSON и тип данных:</p>
+    </button></h2><p>You can also create INVERTED indexes on specific paths within JSON fields. This requires additional parameters to specify the JSON path and data type:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Build index params</span>
 index_params.add_index(
@@ -452,8 +508,8 @@ curl --request POST \
     ]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Подробную информацию об индексировании полей JSON, включая поддерживаемые пути, типы данных и ограничения, см. в разделе <a href="/docs/ru/json-indexing.md">«Индексирование JSON</a>».</p>
-<h2 id="Drop-an-index" class="common-anchor-header">Удаление индекса<button data-href="#Drop-an-index" class="anchor-icon" translate="no">
+<p>For detailed information about JSON field indexing, including supported paths, data types, and limitations, refer to <a href="/docs/ru/json-indexing.md">JSON Indexing</a>.</p>
+<h2 id="Drop-an-index" class="common-anchor-header">Drop an index<button data-href="#Drop-an-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -468,21 +524,20 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Используйте метод ` <code translate="no">drop_index()</code> ` для удаления существующего индекса из коллекции.</p>
+    </button></h2><p>Use the <code translate="no">drop_index()</code> method to remove an existing index from a collection.</p>
 <div class="alert note">
-<ul>
-<li><p>В <strong>версии 2.6.3</strong> и более ранних версиях перед удалением скалярного индекса необходимо освободить коллекцию.</p></li>
-<li><p>Начиная с <strong>версии 2.6.4</strong> и более поздних версий, скалярный индекс можно удалить напрямую, как только он больше не нужен — нет необходимости сначала освобождать коллекцию.</p></li>
-</ul>
+<blockquote>
+<p>For release requirements when dropping a scalar index, see <a href="/docs/ru/scalar_index.md#Drop-index-compatibility">Scalar Index</a>.</p>
+</blockquote>
 </div>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.drop_index(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,   <span class="hljs-comment"># Name of the collection</span>
@@ -570,7 +625,8 @@ curl --request POST \
     &quot;indexName&quot;: &quot;category_index&quot;
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Best-practices" class="common-anchor-header">Рекомендации<button data-href="#Best-practices" class="anchor-icon" translate="no">
+<p><a id="Best-practices"></a></p>
+<h2 id="Next-steps" class="common-anchor-header">Next steps<button data-href="#Next-steps" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -586,27 +642,6 @@ curl --request POST \
         ></path>
       </svg>
     </button></h2><ul>
-<li><p><strong>Создавайте индексы после загрузки данных</strong>: создавайте индексы на коллекциях, которые уже содержат данные, для повышения производительности</p></li>
-<li><p><strong>Используйте описательные имена индексов</strong>: выбирайте имена, которые чётко указывают на поле и назначение</p></li>
-<li><p><strong>Мониторинг производительности индексов</strong>: проверяйте производительность запросов до и после создания индексов</p></li>
-<li><p><strong>Учитывайте особенности ваших запросов</strong>: создавайте индексы по полям, по которым вы часто выполняете фильтрацию</p></li>
-</ul>
-<h2 id="Next-steps" class="common-anchor-header">Следующие шаги<button data-href="#Next-steps" class="anchor-icon" translate="no">
-      <svg translate="no"
-        aria-hidden="true"
-        focusable="false"
-        height="20"
-        version="1.1"
-        viewBox="0 0 16 16"
-        width="16"
-      >
-        <path
-          fill="#0092E4"
-          fill-rule="evenodd"
-          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
-        ></path>
-      </svg>
-    </button></h2><ul>
-<li><p>Узнайте о <a href="/docs/ru/index-explained.md">других типах индексов</a></p></li>
-<li><p>См. раздел <a href="/docs/ru/json-indexing.md">«Индексирование JSON</a> » для ознакомления с расширенными сценариями индексирования JSON</p></li>
+<li><p>Compare scalar indexes and plan resources in <a href="/docs/ru/scalar_index.md#Whats-next">Scalar Index</a>.</p></li>
+<li><p>See <a href="/docs/ru/json-indexing.md">JSON Indexing</a> for advanced JSON indexing scenarios</p></li>
 </ul>

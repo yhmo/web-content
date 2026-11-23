@@ -1,7 +1,9 @@
 ---
 id: embed-with-bgm-m3.md
 order: 4
-summary: 'BGE-M3는 다국어 지원, 다기능성, 다단계 세분화 기능을 갖추고 있다는 점에서 그 이름이 유래되었습니다.'
+summary: >-
+  BGE-M3 is named for its capabilities in Multi-Linguality, Multi-Functionality,
+  and Multi-Granularity.
 title: BGE M3
 ---
 <h1 id="BGE-M3" class="common-anchor-header">BGE M3<button data-href="#BGE-M3" class="anchor-icon" translate="no">
@@ -19,14 +21,14 @@ title: BGE M3
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p><a href="https://arxiv.org/abs/2402.03216">BGE-M3는</a> 다국어 지원(Multi-Linguality), 다기능성(Multi-Functionality), 다단계 세분화(Multi-Granularity) 기능을 바탕으로 명명되었습니다. 100개 이상의 언어를 지원하는 BGE-M3는 다국어 및 교차 언어 검색 작업 분야에서 새로운 기준을 제시합니다. 단일 프레임워크 내에서 밀집 검색, 다중 벡터 검색, 스파스 검색을 수행할 수 있는 독보적인 능력 덕분에 BGE-M3는 광범위한 정보 검색(IR) 애플리케이션에 이상적인 선택입니다.</p>
-<p>Milvus는 <strong>BGEM3EmbeddingFunction</strong> 클래스를 사용하여 BGE-M3 모델과 통합됩니다. 이 클래스는 임베딩 계산을 처리하고, 인덱싱 및 검색을 위해 Milvus와 호환되는 형식으로 임베딩을 반환합니다.</p>
-<p>이 예제는 Python 프로세스 내에서 임베딩을 생성하며, Milvus 서버에는 연결하지 않습니다. 모델 가중치는 첫 사용 시 다운로드되므로, 모델 호스트에 대한 네트워크 접속 권한이나 데이터가 채워진 로컬 모델 캐시가 필요합니다. CPU 추론은 <code translate="no">use_fp16=False</code> 을 통해 지원됩니다.</p>
-<p>이 기능을 사용하려면 필요한 종속성을 설치하십시오:</p>
+    </button></h1><p><a href="https://arxiv.org/abs/2402.03216">BGE-M3</a> is named for its capabilities in Multi-Linguality, Multi-Functionality, and Multi-Granularity. Capable of supporting over 100 languages, BGE-M3 sets new benchmarks in multi-lingual and cross-lingual retrieval tasks. Its unique ability to perform dense retrieval, multi-vector retrieval, and sparse retrieval within a single framework makes it an ideal choice for a wide range of information retrieval (IR) applications.</p>
+<p>Milvus integrates with the BGE M3 model using the <strong>BGEM3EmbeddingFunction</strong> class. This class handles the computation of embeddings and returns them in a format compatible with Milvus for indexing and searching.</p>
+<p>This example generates embeddings in your Python process; it does not connect to a Milvus server. The model weights are downloaded on first use, so you need network access to the model host or a populated local model cache. CPU inference is supported with <code translate="no">use_fp16=False</code>.</p>
+<p>To use this feature, install the necessary dependencies:</p>
 <pre><code translate="no" class="language-bash">pip install --upgrade pymilvus
 pip install <span class="hljs-string">&quot;pymilvus[model]&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>그런 다음 <strong>BGEM3EmbeddingFunction</strong>을 인스턴스화하십시오:</p>
+<p>Then, instantiate the <strong>BGEM3EmbeddingFunction</strong>:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus.model.hybrid <span class="hljs-keyword">import</span> BGEM3EmbeddingFunction
 
 bge_m3_ef = BGEM3EmbeddingFunction(
@@ -35,16 +37,16 @@ bge_m3_ef = BGEM3EmbeddingFunction(
     use_fp16=<span class="hljs-literal">False</span> <span class="hljs-comment"># Specify whether to use fp16. Set to `False` if `device` is `cpu`.</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>매개변수</strong>:</p>
+<p><strong>Parameters</strong>:</p>
 <ul>
-<li><p><strong>model_name</strong> (<em>문자열</em>)</p>
-<p>인코딩에 사용할 모델의 이름입니다. 기본값은 <strong>BAAI/bge-m3입니다</strong>.</p></li>
-<li><p><strong>device</strong> (<em>문자열</em>)</p>
-<p>사용할 디바이스입니다. CPU의 경우 <strong>cpu</strong>, n번째 GPU 디바이스의 경우 <strong>cuda:n을</strong> 사용합니다.</p></li>
-<li><p><strong>use_fp16</strong> (<em>부울</em>)</p>
-<p>16비트 부동소수점 정밀도(fp16)를 사용할지 여부입니다. <strong>device가</strong> <strong>cpu</strong>인 경우 <strong>False를</strong> 지정하십시오.</p></li>
+<li><p><strong>model_name</strong> (<em>string</em>)</p>
+<p>The name of the model to use for encoding. The value defaults to <strong>BAAI/bge-m3</strong>.</p></li>
+<li><p><strong>device</strong> (<em>string</em>)</p>
+<p>The device to use, with <strong>cpu</strong> for the CPU and <strong>cuda:n</strong> for the nth GPU device.</p></li>
+<li><p><strong>use_fp16</strong> (<em>bool</em>)</p>
+<p>Whether to utilize 16-bit floating-point precision (fp16). Specify <strong>False</strong> when <strong>device</strong> is <strong>cpu</strong>.</p></li>
 </ul>
-<p>문서에 대한 임베딩을 생성하려면 <strong>encode_documents()</strong> 메서드를 사용하십시오:</p>
+<p>To create embeddings for documents, use the <strong>encode_documents()</strong> method:</p>
 <pre><code translate="no" class="language-python">docs = [
     <span class="hljs-string">&quot;Artificial intelligence was founded as an academic discipline in 1956.&quot;</span>,
     <span class="hljs-string">&quot;Alan Turing was the first person to conduct substantial research in AI.&quot;</span>,
@@ -60,7 +62,7 @@ docs_embeddings = bge_m3_ef.encode_documents(docs)
 <span class="hljs-comment"># Since the sparse embeddings are in a 2D csr_array format, we convert them to a list for easier manipulation.</span>
 <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Sparse document dim:&quot;</span>, bge_m3_ef.dim[<span class="hljs-string">&quot;sparse&quot;</span>], <span class="hljs-built_in">list</span>(docs_embeddings[<span class="hljs-string">&quot;sparse&quot;</span>])[<span class="hljs-number">0</span>].shape)
 <button class="copy-code-btn"></button></code></pre>
-<p>예상되는 출력은 다음과 유사합니다:</p>
+<p>The expected output is similar to the following:</p>
 <pre><code translate="no" class="language-python">Embeddings: {<span class="hljs-string">&#x27;dense&#x27;</span>: [array([-<span class="hljs-number">0.02505937</span>, -<span class="hljs-number">0.00142193</span>,  <span class="hljs-number">0.04015467</span>, ..., -<span class="hljs-number">0.02094924</span>,
         <span class="hljs-number">0.02623661</span>,  <span class="hljs-number">0.00324098</span>], dtype=float32), array([ <span class="hljs-number">0.00118463</span>,  <span class="hljs-number">0.00649292</span>, -<span class="hljs-number">0.00735763</span>, ..., -<span class="hljs-number">0.01446293</span>,
         <span class="hljs-number">0.04243685</span>, -<span class="hljs-number">0.01794822</span>], dtype=float32), array([ <span class="hljs-number">0.00415287</span>, -<span class="hljs-number">0.0101492</span> ,  <span class="hljs-number">0.0009811</span> , ..., -<span class="hljs-number">0.02559666</span>,
@@ -69,7 +71,7 @@ docs_embeddings = bge_m3_ef.encode_documents(docs)
 Dense document dim: <span class="hljs-number">1024</span> (<span class="hljs-number">1024</span>,)
 Sparse document dim: <span class="hljs-number">250002</span> (<span class="hljs-number">1</span>, <span class="hljs-number">250002</span>)
 <button class="copy-code-btn"></button></code></pre>
-<p>쿼리에 대한 임베딩을 생성하려면 <strong>encode_queries()</strong> 메서드를 사용하십시오:</p>
+<p>To create embeddings for queries, use the <strong>encode_queries()</strong> method:</p>
 <pre><code translate="no" class="language-python">queries = [<span class="hljs-string">&quot;When was artificial intelligence founded&quot;</span>, 
            <span class="hljs-string">&quot;Where was Alan Turing born?&quot;</span>]
 
@@ -82,7 +84,7 @@ query_embeddings = bge_m3_ef.encode_queries(queries)
 <span class="hljs-comment"># Since the sparse embeddings are in a 2D csr_array format, we convert them to a list for easier manipulation.</span>
 <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Sparse query dim:&quot;</span>, bge_m3_ef.dim[<span class="hljs-string">&quot;sparse&quot;</span>], <span class="hljs-built_in">list</span>(query_embeddings[<span class="hljs-string">&quot;sparse&quot;</span>])[<span class="hljs-number">0</span>].shape)
 <button class="copy-code-btn"></button></code></pre>
-<p>예상되는 출력은 다음과 같습니다:</p>
+<p>The expected output is similar to the following:</p>
 <pre><code translate="no" class="language-python">Embeddings: {<span class="hljs-string">&#x27;dense&#x27;</span>: [array([-<span class="hljs-number">0.02024024</span>, -<span class="hljs-number">0.01514386</span>,  <span class="hljs-number">0.02380808</span>, ...,  <span class="hljs-number">0.00234648</span>,
        -<span class="hljs-number">0.00264978</span>, -<span class="hljs-number">0.04317448</span>], dtype=float32), array([ <span class="hljs-number">0.00648045</span>, -<span class="hljs-number">0.0081542</span> , -<span class="hljs-number">0.02717067</span>, ..., -<span class="hljs-number">0.00380103</span>,
         <span class="hljs-number">0.04200587</span>, -<span class="hljs-number">0.01274772</span>], dtype=float32)], <span class="hljs-string">&#x27;sparse&#x27;</span>: &lt;2x250002 sparse array of <span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;&lt;class &#x27;</span>numpy.float32<span class="hljs-string">&#x27;&gt;&#x27;</span>
@@ -90,7 +92,7 @@ query_embeddings = bge_m3_ef.encode_queries(queries)
 Dense query dim: <span class="hljs-number">1024</span> (<span class="hljs-number">1024</span>,)
 Sparse query dim: <span class="hljs-number">250002</span> (<span class="hljs-number">1</span>, <span class="hljs-number">250002</span>)
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Store-and-search-the-embeddings" class="common-anchor-header">임베딩 저장 및 검색<button data-href="#Store-and-search-the-embeddings" class="anchor-icon" translate="no">
+<h2 id="Store-and-search-the-embeddings" class="common-anchor-header">Store and search the embeddings<button data-href="#Store-and-search-the-embeddings" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -105,11 +107,11 @@ Sparse query dim: <span class="hljs-number">250002</span> (<span class="hljs-num
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>임베딩 생성은 첫 번째 단계입니다. 이 출력 결과를 검색에 사용하려면 컬렉션을 정의하고 각 벡터 필드에 인덱스를 생성하십시오:</p>
+    </button></h2><p>Generating embeddings is the first step. To use these outputs for retrieval, define a collection and index each vector field:</p>
 <ul>
-<li><code translate="no">docs_embeddings[&quot;dense&quot;]</code> 를 차원 <code translate="no">bge_m3_ef.dim[&quot;dense&quot;]</code> 을 갖는 <code translate="no">FLOAT_VECTOR</code> 필드에 매핑합니다.</li>
-<li><code translate="no">docs_embeddings[&quot;sparse&quot;]</code> 를 <code translate="no">SPARSE_FLOAT_VECTOR</code> 필드로 매핑합니다. 이 필드는 Milvus 스키마에서 고정된 차원을 요구하지 않습니다. 학습된 스파스 벡터에는 <code translate="no">IP</code> 메트릭을 사용하십시오. <a href="/docs/ko/sparse_vector.md">‘스파스 벡터’를</a> 참조하십시오.</li>
-<li>각 문서의 ID와 원본 텍스트 또는 메타데이터를 해당 벡터와 함께 저장하여, 검색 결과를 원본으로 거슬러 올라갈 수 있도록 하십시오.</li>
-<li>쿼리를 문서와 동일한 모델 및 설정으로 인코딩하십시오. 밀집 필드용 <code translate="no">AnnSearchRequest</code> 하나와 스파스 필드용 하나를 포함한 단일 <code translate="no">hybrid_search()</code> 요청을 발행하고, RRF와 같은 서버 측 랭커나 가중치 랭커가 결과를 융합하도록 하십시오.</li>
+<li>Map <code translate="no">docs_embeddings[&quot;dense&quot;]</code> to a <code translate="no">FLOAT_VECTOR</code> field with dimension <code translate="no">bge_m3_ef.dim[&quot;dense&quot;]</code>.</li>
+<li>Map <code translate="no">docs_embeddings[&quot;sparse&quot;]</code> to a <code translate="no">SPARSE_FLOAT_VECTOR</code> field, which does not require a fixed dimension in the Milvus schema. Use an <code translate="no">IP</code> metric for these learned sparse vectors. See <a href="/docs/ko/sparse_vector.md">Sparse Vector</a>.</li>
+<li>Store each document’s ID and source text or metadata alongside its vectors so search results can be traced back to the source.</li>
+<li>Encode queries with the same model and settings as the documents. Issue a single <code translate="no">hybrid_search()</code> request with one <code translate="no">AnnSearchRequest</code> for the dense field and one for the sparse field, and let a server-side ranker such as RRF or a weighted ranker fuse the results.</li>
 </ul>
-<p>컬렉션 스키마, 인덱스, 삽입 및 하이브리드 검색 요청에 대해서는 <a href="/docs/ko/hybrid_search_with_milvus.md">Milvus를 사용한 하이브리드 검색</a> 가이드를 따르십시오. 이 페이지의 예제는 래퍼의 밀집형 및 희소형 출력을 사용하며, BGE-M3의 선택적 ColBERT 다중 벡터 출력은 시연하지 않습니다.</p>
+<p>Follow <a href="/docs/ko/hybrid_search_with_milvus.md">Hybrid Search with Milvus</a> for the collection schema, indexes, insertion, and hybrid-search requests. The examples on this page use the wrapper’s dense and sparse outputs; they do not demonstrate BGE-M3’s optional ColBERT multi-vector output.</p>

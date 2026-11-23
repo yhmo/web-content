@@ -1,12 +1,12 @@
 ---
 id: basic-operators.md
-title: Operator Dasar
+title: Basic Operators
 summary: >-
-  Gunakan operator perbandingan, rentang, aritmatika, logika, dan NULL untuk
-  menyaring entitas. Mulai dari Milvus 3.0.3, operator IS NULL dan IS NOT NULL
-  juga mendukung bidang vektor biasa.
+  Use comparison, range, arithmetic, logical, and NULL operators to filter
+  entities. Starting in Milvus 3.0.3, IS NULL and IS NOT NULL also support
+  ordinary vector fields.
 ---
-<h1 id="Basic-Operators" class="common-anchor-header">Operator Dasar<button data-href="#Basic-Operators" class="anchor-icon" translate="no">
+<h1 id="Basic-Operators" class="common-anchor-header">Basic Operators<button data-href="#Basic-Operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -21,12 +21,11 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Milvus menyediakan operator perbandingan, rentang, aritmatika, logika, dan NULL untuk menyaring entitas. Setiap operator mendukung tipe bidang tertentu.</p>
+    </button></h1><p>Milvus provides comparison, range, arithmetic, logical, and NULL operators for filtering entities. Each operator supports specific field types.</p>
 <div class="alert note">
-<p>Literal di sisi kiri ekspresi penyaringan dapat berupa nama bidang koleksi, seperti <code translate="no">status</code>, <code translate="no">color</code>, dan sebagainya, yang digunakan dalam contoh di bawah ini, atau nama subbidang StructArray pada indeks elemen tertentu, seperti <code translate="no">filter = 'struct[0][subfield] &gt; 10'</code>.</p>
-<p>Untuk detail mengenai penyaringan skalar dalam bidang StructArray, lihat <a href="/docs/id/struct-array-operators.md">Operator StructArray</a>.</p>
+<p>The left operand can be a collection field, such as <code translate="no">status</code>, or a StructArray subfield at a specific element index, such as <code translate="no">struct[0][subfield] &gt; 10</code>. See <a href="/docs/id/struct-array-operators.md">StructArray Operators</a>.</p>
 </div>
-<h2 id="Comparison-operators" class="common-anchor-header">Operator perbandingan<button data-href="#Comparison-operators" class="anchor-icon" translate="no">
+<h2 id="Comparison-operators" class="common-anchor-header">Comparison operators<button data-href="#Comparison-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -41,8 +40,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Operator perbandingan digunakan untuk menyaring data berdasarkan kesamaan, ketidaksamaan, atau ukuran. Operator ini berlaku untuk bidang numerik dan teks.</p>
-<h3 id="Supported-comparison-operators" class="common-anchor-header">Operator perbandingan yang didukung<button data-href="#Supported-comparison-operators" class="anchor-icon" translate="no">
+    </button></h2><p>Comparison operators are used to filter data based on equality, inequality, or size. They are applicable to numeric and text fields.</p>
+<h3 id="Supported-comparison-operators" class="common-anchor-header">Supported comparison operators<button data-href="#Supported-comparison-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -58,14 +57,14 @@ summary: >-
         ></path>
       </svg>
     </button></h3><ul>
-<li><p><code translate="no">==</code> (Sama dengan)</p></li>
-<li><p><code translate="no">!=</code> (Tidak sama dengan)</p></li>
-<li><p><code translate="no">&gt;</code> (Lebih besar dari)</p></li>
-<li><p><code translate="no">&lt;</code> (Lebih kecil dari)</p></li>
-<li><p><code translate="no">&gt;=</code> (Lebih besar dari atau sama dengan)</p></li>
-<li><p><code translate="no">&lt;=</code> (Kurang dari atau sama dengan)</p></li>
+<li><p><code translate="no">==</code> (Equal to)</p></li>
+<li><p><code translate="no">!=</code> (Not equal to)</p></li>
+<li><p><code translate="no">&gt;</code> (Greater than)</p></li>
+<li><p><code translate="no">&lt;</code> (Less than)</p></li>
+<li><p><code translate="no">&gt;=</code> (Greater than or equal to)</p></li>
+<li><p><code translate="no">&lt;=</code> (Less than or equal to)</p></li>
 </ul>
-<h3 id="Example-1-Filtering-with-equal-to-" class="common-anchor-header">Contoh 1: Penyaringan dengan operator sama dengan (<code translate="no">==</code>)<button data-href="#Example-1-Filtering-with-equal-to-" class="anchor-icon" translate="no">
+<h3 id="Example-1-Filtering-with-equal-to-" class="common-anchor-header">Example 1: Filtering with equal to (<code translate="no">==</code>)<button data-href="#Example-1-Filtering-with-equal-to-" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -80,16 +79,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Misalkan Anda memiliki bidang bernama ` <code translate="no">status</code> ` dan ingin mencari semua entitas di mana ` <code translate="no">status</code> ` bernilai "active". Anda dapat menggunakan operator kesamaan ` <code translate="no">==</code>`:</p>
+    </button></h3><p>Assume you have a field named <code translate="no">status</code> and you want to find all entities where <code translate="no">status</code> is "active". You can use the equality operator <code translate="no">==</code>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;status == &quot;active&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -107,7 +106,7 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;status == &quot;active&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-2-Filtering-with-not-equal-to-" class="common-anchor-header">Contoh 2: Penyaringan dengan tidak sama dengan (<code translate="no">!=</code>)<button data-href="#Example-2-Filtering-with-not-equal-to-" class="anchor-icon" translate="no">
+<h3 id="Example-2-Filtering-with-not-equal-to-" class="common-anchor-header">Example 2: Filtering with not equal to (<code translate="no">!=</code>)<button data-href="#Example-2-Filtering-with-not-equal-to-" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -122,16 +121,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Untuk menemukan entitas di mana <code translate="no">status</code> tidak "inactive":</p>
+    </button></h3><p>To find entities where <code translate="no">status</code> is not "inactive":</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;status != &quot;inactive&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -149,7 +148,7 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;status != &quot;inactive&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-3-Filtering-with-greater-than-" class="common-anchor-header">Contoh 3: Penyaringan dengan "lebih besar dari" (<code translate="no">&gt;</code>)<button data-href="#Example-3-Filtering-with-greater-than-" class="anchor-icon" translate="no">
+<h3 id="Example-3-Filtering-with-greater-than-" class="common-anchor-header">Example 3: Filtering with greater than (<code translate="no">&gt;</code>)<button data-href="#Example-3-Filtering-with-greater-than-" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -164,16 +163,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Jika Anda ingin mencari semua entitas dengan <code translate="no">age</code> lebih besar dari 30:</p>
+    </button></h3><p>If you want to find all entities with an <code translate="no">age</code> greater than 30:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;age &gt; 30&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -191,7 +190,7 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;age &gt; 30&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-4-Filtering-with-less-than" class="common-anchor-header">Contoh 4: Penyaringan dengan kurang dari<button data-href="#Example-4-Filtering-with-less-than" class="anchor-icon" translate="no">
+<h3 id="Example-4-Filtering-with-less-than" class="common-anchor-header">Example 4: Filtering with less than<button data-href="#Example-4-Filtering-with-less-than" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -206,16 +205,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Untuk menemukan entitas yang <code translate="no">price</code> -nya kurang dari 100:</p>
+    </button></h3><p>To find entities where <code translate="no">price</code> is less than 100:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;price &lt; 100&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -233,7 +232,7 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;price &lt; 100&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-5-Filtering-with-greater-than-or-equal-to-" class="common-anchor-header">Contoh 5: Penyaringan dengan nilai lebih besar dari atau sama dengan (<code translate="no">&gt;=</code>)<button data-href="#Example-5-Filtering-with-greater-than-or-equal-to-" class="anchor-icon" translate="no">
+<h3 id="Example-5-Filtering-with-greater-than-or-equal-to-" class="common-anchor-header">Example 5: Filtering with greater than or equal to (<code translate="no">&gt;=</code>)<button data-href="#Example-5-Filtering-with-greater-than-or-equal-to-" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -248,16 +247,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Jika Anda ingin mencari semua entitas dengan nilai <code translate="no">rating</code> lebih besar dari atau sama dengan 4:</p>
+    </button></h3><p>If you want to find all entities with <code translate="no">rating</code> greater than or equal to 4:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;rating &gt;= 4&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -275,7 +274,7 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;rating &gt;= 4&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-6-Filtering-with-less-than-or-equal-to" class="common-anchor-header">Contoh 6: Penyaringan dengan kurang dari atau sama dengan<button data-href="#Example-6-Filtering-with-less-than-or-equal-to" class="anchor-icon" translate="no">
+<h3 id="Example-6-Filtering-with-less-than-or-equal-to" class="common-anchor-header">Example 6: Filtering with less than or equal to<button data-href="#Example-6-Filtering-with-less-than-or-equal-to" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -290,16 +289,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Untuk menemukan entitas dengan <code translate="no">discount</code> kurang dari atau sama dengan 10%:</p>
+    </button></h3><p>To find entities with <code translate="no">discount</code> less than or equal to 10%:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;discount &lt;= 10&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -317,7 +316,7 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;discount &lt;= 10&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Range-operators" class="common-anchor-header">Operator rentang<button data-href="#Range-operators" class="anchor-icon" translate="no">
+<h2 id="Range-operators" class="common-anchor-header">Range operators<button data-href="#Range-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -332,17 +331,17 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Operator rentang membantu menyaring data berdasarkan sekumpulan nilai tertentu. Milvus mendukung <code translate="no">IN</code> untuk pemeriksaan keanggotaan himpunan.</p>
-<p>Jika Anda ingin menemukan semua entitas yang nilai " <code translate="no">color</code> "-nya adalah "red", "green", atau "blue":</p>
+    </button></h2><p>Range operators help filter data based on a specific set of values. Milvus supports <code translate="no">IN</code> for set membership checks.</p>
+<p>If you want to find all entities where the <code translate="no">color</code> is either "red", "green", or "blue":</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;color in [&quot;red&quot;, &quot;green&quot;, &quot;blue&quot;]&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -360,8 +359,7 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;color in [&quot;red&quot;, &quot;green&quot;, &quot;blue&quot;]&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Ini berguna saat Anda ingin memeriksa keanggotaan dalam daftar nilai.</p>
-<h2 id="Pattern-matching-operators" class="common-anchor-header">Operator pencocokan pola<button data-href="#Pattern-matching-operators" class="anchor-icon" translate="no">
+<h2 id="Pattern-matching-operators" class="common-anchor-header">Pattern matching operators<button data-href="#Pattern-matching-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -376,22 +374,22 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Operator pencocokan pola membantu menyaring nilai string berdasarkan pola wildcard atau ekspresi reguler.</p>
+    </button></h2><p>Pattern matching operators help filter string values based on wildcard patterns or regular expressions.</p>
 <ul>
-<li><p><code translate="no">LIKE</code>: Digunakan untuk mencocokkan pola karakter pengganti sederhana pada nilai string. Misalnya, <code translate="no">name LIKE &quot;Prod%&quot;</code> mencocokkan nilai yang dimulai dengan <code translate="no">Prod</code>.</p></li>
-<li><p><code translate="no">=~</code>: Digunakan untuk mencocokkan nilai string dengan ekspresi reguler RE2. Misalnya, <code translate="no">code =~ &quot;E[0-9]{4}&quot;</code> mencocokkan nilai yang mengandung kode kesalahan seperti <code translate="no">E1001</code>.</p></li>
-<li><p><code translate="no">!~</code>: Digunakan untuk mengecualikan nilai string yang cocok dengan ekspresi reguler RE2. Ini setara dengan <code translate="no">NOT (field =~ &quot;pattern&quot;)</code>.</p></li>
+<li><p><code translate="no">LIKE</code>: Used to match simple wildcard patterns on string values. For example, <code translate="no">name LIKE &quot;Prod%&quot;</code> matches values that start with <code translate="no">Prod</code>.</p></li>
+<li><p><code translate="no">=~</code>: Used to match a string value with an RE2 regular expression. For example, <code translate="no">code =~ &quot;E[0-9]{4}&quot;</code> matches values that contain an error code such as <code translate="no">E1001</code>.</p></li>
+<li><p><code translate="no">!~</code>: Used to exclude string values that match an RE2 regular expression. This is equivalent to <code translate="no">NOT (field =~ &quot;pattern&quot;)</code>.</p></li>
 </ul>
-<p>Untuk menemukan entitas di mana <code translate="no">name</code> dimulai dengan <code translate="no">Prod</code>:</p>
+<p>To find entities where <code translate="no">name</code> starts with <code translate="no">Prod</code>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;name LIKE &quot;Prod%&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -409,16 +407,16 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;name LIKE &quot;Prod%&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Untuk menemukan entitas yang <code translate="no">code</code> -nya berisi kode kesalahan seperti <code translate="no">E1001</code>:</p>
+<p>To find entities whose <code translate="no">code</code> contains an error code such as <code translate="no">E1001</code>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;code =~ &quot;E[0-9]{4}&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -436,16 +434,16 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;code =~ &quot;E[0-9]{4}&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Untuk mengecualikan entitas yang <code translate="no">message</code> -nya dimulai dengan <code translate="no">DEBUG</code>:</p>
+<p>To exclude entities whose <code translate="no">message</code> starts with <code translate="no">DEBUG</code>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;message !~ &quot;^DEBUG&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -463,8 +461,8 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;message !~ &quot;^DEBUG&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Untuk detail lebih lanjut tentang memilih antara <code translate="no">LIKE</code> dan regex, jenis bidang yang didukung, sintaks regex, aturan escaping, dan kinerja, lihat <a href="/docs/id/pattern-matching.md">Pattern Matching</a>. Milvus juga memungkinkan Anda membuat indeks <code translate="no">NGRAM</code> pada bidang <code translate="no">VARCHAR</code> atau jalur string JSON untuk mempercepat filter pencocokan pola yang memenuhi syarat. Untuk detailnya, lihat <a href="/docs/id/ngram.md">NGRAM</a>.</p>
-<h2 id="Arithmetic-operators" class="common-anchor-header">Operator aritmatika<button data-href="#Arithmetic-operators" class="anchor-icon" translate="no">
+<p>For syntax, escaping, field support, and acceleration options such as <code translate="no">NGRAM</code>, see <a href="/docs/id/pattern-matching.md">Pattern Matching</a>.</p>
+<h2 id="Arithmetic-operators" class="common-anchor-header">Arithmetic operators<button data-href="#Arithmetic-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -479,8 +477,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Operator aritmatika memungkinkan Anda membuat kondisi berdasarkan perhitungan yang melibatkan bidang numerik.</p>
-<h3 id="Supported-arithmetic-operators" class="common-anchor-header">Operator aritmatika yang didukung<button data-href="#Supported-arithmetic-operators" class="anchor-icon" translate="no">
+    </button></h2><p>Arithmetic operators allow you to create conditions based on calculations involving numeric fields.</p>
+<h3 id="Supported-arithmetic-operators" class="common-anchor-header">Supported arithmetic operators<button data-href="#Supported-arithmetic-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -496,14 +494,14 @@ summary: >-
         ></path>
       </svg>
     </button></h3><ul>
-<li><p><code translate="no">+</code> (Penjumlahan)</p></li>
-<li><p><code translate="no">-</code> (Pengurangan)</p></li>
-<li><p><code translate="no">*</code> (Perkalian)</p></li>
-<li><p><code translate="no">/</code> (Pembagian)</p></li>
+<li><p><code translate="no">+</code> (Addition)</p></li>
+<li><p><code translate="no">-</code> (Subtraction)</p></li>
+<li><p><code translate="no">*</code> (Multiplication)</p></li>
+<li><p><code translate="no">/</code> (Division)</p></li>
 <li><p><code translate="no">%</code> (Modulus)</p></li>
-<li><p><code translate="no">**</code> (Pangkat)</p></li>
+<li><p><code translate="no">**</code> (Exponentiation)</p></li>
 </ul>
-<h3 id="Example-1-Using-modulus-" class="common-anchor-header">Contoh 1: Menggunakan modulus (<code translate="no">%</code>)<button data-href="#Example-1-Using-modulus-" class="anchor-icon" translate="no">
+<h3 id="Example-1-Using-modulus-" class="common-anchor-header">Example 1: Using modulus (<code translate="no">%</code>)<button data-href="#Example-1-Using-modulus-" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -518,16 +516,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Untuk mencari entitas di mana <code translate="no">id</code> adalah bilangan genap (yaitu, dapat dibagi 2):</p>
+    </button></h3><p>To find entities where the <code translate="no">id</code> is an even number (i.e., divisible by 2):</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;id % 2 == 0&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -545,7 +543,7 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;id % 2 == 0&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-2-Using-exponentiation-" class="common-anchor-header">Contoh 2: Menggunakan pangkat (<code translate="no">**</code>)<button data-href="#Example-2-Using-exponentiation-" class="anchor-icon" translate="no">
+<h3 id="Example-2-Using-exponentiation-" class="common-anchor-header">Example 2: Using exponentiation (<code translate="no">**</code>)<button data-href="#Example-2-Using-exponentiation-" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -560,16 +558,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Untuk menemukan entitas di mana <code translate="no">price</code> dipangkatkan dengan 2 hasilnya lebih besar dari 1000:</p>
+    </button></h3><p>To find entities where <code translate="no">price</code> raised to the power of 2 is greater than 1000:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;price ** 2 &gt; 1000&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -588,9 +586,9 @@ summary: >-
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;price ** 2 &gt; 1000&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>Operator aritmatika hanya mendukung ekspresi yang melibatkan <strong>satu bidang dan satu konstanta</strong>. Ekspresi yang menggabungkan dua bidang secara aritmatika — seperti <code translate="no">price * quantity &gt; 100</code> — saat ini tidak didukung dan akan menghasilkan kesalahan. Jika Anda perlu menyaring berdasarkan nilai turunan yang dihitung dari beberapa bidang, pertimbangkan untuk menyimpan nilai yang telah dihitung sebelumnya sebagai bidang skalar terpisah pada saat penyisipan.</p>
+<p>Arithmetic operators only support expressions involving a <strong>single field and a constant</strong>. Expressions that combine two fields arithmetically — such as <code translate="no">price * quantity &gt; 100</code> — are not currently supported and will return an error. If you need to filter on a derived value computed from multiple fields, consider storing the pre-computed value as a separate scalar field at insert time.</p>
 </div>
-<h2 id="Bitwise-operators" class="common-anchor-header">Operator bitwise<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.0+</span><button data-href="#Bitwise-operators" class="anchor-icon" translate="no">
+<h2 id="Bitwise-operators" class="common-anchor-header">Bitwise operators<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.0+</span><button data-href="#Bitwise-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -605,9 +603,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Operator bitwise berguna ketika bidang bilangan bulat mengkodekan beberapa flag, seperti izin, flag fitur, atau bit status. Anda dapat menggunakan operator ini dalam ekspresi filter untuk memeriksa, menggabungkan, atau membandingkan bit individual dalam nilai bilangan bulat.</p>
-<p>Untuk bidang skalar, operator bitwise berlaku untuk tipe bidang bilangan bulat, seperti <code translate="no">INT8</code>, <code translate="no">INT16</code>, <code translate="no">INT32</code>, dan <code translate="no">INT64</code>.</p>
-<h3 id="Supported-bitwise-operators" class="common-anchor-header">Operator bitwise yang didukung<button data-href="#Supported-bitwise-operators" class="anchor-icon" translate="no">
+    </button></h2><p>Bitwise operators are useful when an integer field encodes multiple flags, such as permissions, feature flags, or status bits. You can use these operators in filter expressions to check, combine, or compare individual bits in an integer value.</p>
+<p>For scalar fields, bitwise operators apply to integer field types, such as <code translate="no">INT8</code>, <code translate="no">INT16</code>, <code translate="no">INT32</code>, and <code translate="no">INT64</code>.</p>
+<h3 id="Supported-bitwise-operators" class="common-anchor-header">Supported bitwise operators<button data-href="#Supported-bitwise-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -624,15 +622,15 @@ summary: >-
       </svg>
     </button></h3><table>
 <thead>
-<tr><th>Operator</th><th>Nama</th><th>Penggunaan umum</th></tr>
+<tr><th>Operator</th><th>Name</th><th>Typical use</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">&amp;</code></td><td>AND bitwise</td><td>Memeriksa apakah bit tertentu disetel.</td></tr>
-<tr><td><code translate="no">|</code></td><td>OR bitwise</td><td>Menggabungkan bit sebelum perbandingan.</td></tr>
-<tr><td><code translate="no">^</code></td><td>XOR bitwise</td><td>Bandingkan perbedaan bit antara dua nilai.</td></tr>
+<tr><td><code translate="no">&amp;</code></td><td>Bitwise AND</td><td>Check whether specific bits are set.</td></tr>
+<tr><td><code translate="no">|</code></td><td>Bitwise OR</td><td>Combine bits before comparison.</td></tr>
+<tr><td><code translate="no">^</code></td><td>Bitwise XOR</td><td>Compare bit differences between two values.</td></tr>
 </tbody>
 </table>
-<h3 id="Example-Filtering-by-permission-bits" class="common-anchor-header">Contoh: Penyaringan berdasarkan bit izin<button data-href="#Example-Filtering-by-permission-bits" class="anchor-icon" translate="no">
+<h3 id="Example-Filtering-by-permission-bits" class="common-anchor-header">Example: Filtering by permission bits<button data-href="#Example-Filtering-by-permission-bits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -647,10 +645,10 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Asumsikan Anda memiliki bidang bilangan bulat bernama ` <code translate="no">permissions</code>`, dan setiap bit dalam bilangan bulat tersebut mewakili bendera izin:</p>
+    </button></h3><p>Assume you have an integer field named <code translate="no">permissions</code>, and each bit in the integer represents a permission flag:</p>
 <table>
 <thead>
-<tr><th>Bendera izin</th><th>Nilai bit</th></tr>
+<tr><th>Permission flag</th><th>Bit value</th></tr>
 </thead>
 <tbody>
 <tr><td><code translate="no">READ</code></td><td><code translate="no">1</code></td></tr>
@@ -659,17 +657,17 @@ summary: >-
 <tr><td><code translate="no">ADMIN</code></td><td><code translate="no">8</code></td></tr>
 </tbody>
 </table>
-<p>Misalnya, <code translate="no">permissions = 5</code> berarti bit <code translate="no">READ</code> dan <code translate="no">SHARE</code> disetel, karena <code translate="no">5 = 1 + 4</code>.</p>
-<p>Untuk menemukan entitas di mana bit ` <code translate="no">SHARE</code> ` diaktifkan, gunakan operasi bitwise AND (`<code translate="no">&amp;</code>`):</p>
+<p>For example, <code translate="no">permissions = 5</code> means that the <code translate="no">READ</code> and <code translate="no">SHARE</code> bits are set, because <code translate="no">5 = 1 + 4</code>.</p>
+<p>To find entities where the <code translate="no">SHARE</code> bit is set, use bitwise AND (<code translate="no">&amp;</code>):</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&quot;(permissions &amp; 4) == 4&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -687,16 +685,16 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;(permissions &amp; 4) == 4&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Untuk menemukan entitas di mana pengaturan bit " <code translate="no">WRITE</code> " menghasilkan set izin " <code translate="no">READ + WRITE + SHARE</code> ", gunakan operasi bitwise OR (<code translate="no">|</code>):</p>
+<p>To find entities where setting the <code translate="no">WRITE</code> bit produces the <code translate="no">READ + WRITE + SHARE</code> permission set, use bitwise OR (<code translate="no">|</code>):</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&quot;(permissions | 2) == 7&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -714,16 +712,16 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;(permissions | 2) == 7&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Untuk menemukan entitas yang bit izinnya berbeda dari " <code translate="no">READ + WRITE + SHARE</code> " hanya pada bit " <code translate="no">WRITE</code> ", gunakan operasi bitwise XOR (<code translate="no">^</code>):</p>
+<p>To find entities whose permission bits differ from <code translate="no">READ + WRITE + SHARE</code> by only the <code translate="no">WRITE</code> bit, use bitwise XOR (<code translate="no">^</code>):</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&quot;(permissions ^ 7) == 2&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -742,9 +740,9 @@ summary: >-
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;(permissions ^ 7) == 2&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>Selalu letakkan operasi bitwise di dalam tanda kurung sebelum membandingkan hasilnya, seperti <code translate="no">(permissions &amp; 4) == 4</code>. Milvus mendukung <code translate="no">&amp;</code>, <code translate="no">|</code>, dan <code translate="no">^</code> dalam ekspresi filter. Operator bitwise NOT (<code translate="no">~</code>) dan operator pergeseran (<code translate="no">&lt;&lt;</code> dan <code translate="no">&gt;&gt;</code>) tidak didukung.</p>
+<p>Always wrap the bitwise operation in parentheses before comparing the result, such as <code translate="no">(permissions &amp; 4) == 4</code>. Milvus supports <code translate="no">&amp;</code>, <code translate="no">|</code>, and <code translate="no">^</code> in filter expressions. Bitwise NOT (<code translate="no">~</code>) and shift operators (<code translate="no">&lt;&lt;</code> and <code translate="no">&gt;&gt;</code>) are not supported.</p>
 </div>
-<h2 id="Logical-operators" class="common-anchor-header">Operator logika<button data-href="#Logical-operators" class="anchor-icon" translate="no">
+<h2 id="Logical-operators" class="common-anchor-header">Logical operators<button data-href="#Logical-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -759,8 +757,11 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Operator logika digunakan untuk menggabungkan beberapa kondisi menjadi ekspresi filter yang lebih kompleks. Operator ini meliputi <code translate="no">AND</code>, <code translate="no">OR</code>, dan <code translate="no">NOT</code>.</p>
-<h3 id="Supported-logical-operators" class="common-anchor-header">Operator logika yang didukung<button data-href="#Supported-logical-operators" class="anchor-icon" translate="no">
+    </button></h2><p>Logical operators are used to combine multiple conditions into a more complex filter expression. These include <code translate="no">AND</code>, <code translate="no">OR</code>, and <code translate="no">NOT</code>.</p>
+<div class="alert note">
+<p>Each condition can use its own eligible index or scan path; one index type need not serve the entire expression. See <a href="/docs/id/scalar_index.md">Scalar Index</a>.</p>
+</div>
+<h3 id="Supported-logical-operators" class="common-anchor-header">Supported logical operators<button data-href="#Supported-logical-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -776,11 +777,11 @@ summary: >-
         ></path>
       </svg>
     </button></h3><ul>
-<li><p><code translate="no">AND</code>: Menggabungkan beberapa kondisi yang semuanya harus benar.</p></li>
-<li><p><code translate="no">OR</code>: Menggabungkan kondisi di mana setidaknya satu di antaranya harus benar.</p></li>
-<li><p><code translate="no">NOT</code>: Menegasikan suatu kondisi.</p></li>
+<li><p><code translate="no">AND</code>: Combines multiple conditions that must all be true.</p></li>
+<li><p><code translate="no">OR</code>: Combines conditions where at least one must be true.</p></li>
+<li><p><code translate="no">NOT</code>: Negates a condition.</p></li>
 </ul>
-<h3 id="Example-1-Using-AND-to-combine-conditions" class="common-anchor-header">Contoh 1: Menggunakan <code translate="no">AND</code> untuk menggabungkan kondisi<button data-href="#Example-1-Using-AND-to-combine-conditions" class="anchor-icon" translate="no">
+<h3 id="Example-1-Using-AND-to-combine-conditions" class="common-anchor-header">Example 1: Using <code translate="no">AND</code> to combine conditions<button data-href="#Example-1-Using-AND-to-combine-conditions" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -795,16 +796,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Untuk menemukan semua produk di mana <code translate="no">price</code> lebih besar dari 100 dan <code translate="no">stock</code> lebih besar dari 50:</p>
+    </button></h3><p>To find all products where <code translate="no">price</code> is greater than 100 and <code translate="no">stock</code> is greater than 50:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;price &gt; 100 AND stock &gt; 50&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -822,7 +823,7 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;price &gt; 100 AND stock &gt; 50&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-2-Using-OR-to-combine-conditions" class="common-anchor-header">Contoh 2: Menggunakan <code translate="no">OR</code> untuk menggabungkan kondisi<button data-href="#Example-2-Using-OR-to-combine-conditions" class="anchor-icon" translate="no">
+<h3 id="Example-2-Using-OR-to-combine-conditions" class="common-anchor-header">Example 2: Using <code translate="no">OR</code> to combine conditions<button data-href="#Example-2-Using-OR-to-combine-conditions" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -837,16 +838,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Untuk mencari semua produk yang <code translate="no">color</code> -nya adalah “red” atau “blue”:</p>
+    </button></h3><p>To find all products where <code translate="no">color</code> is either “red” or "blue":</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;color == &quot;red&quot; OR color == &quot;blue&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -864,7 +865,7 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;color == &quot;red&quot; OR color == &quot;blue&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-3-Using-NOT-to-exclude-a-condition" class="common-anchor-header">Contoh 3: Menggunakan <code translate="no">NOT</code> untuk mengecualikan suatu kondisi<button data-href="#Example-3-Using-NOT-to-exclude-a-condition" class="anchor-icon" translate="no">
+<h3 id="Example-3-Using-NOT-to-exclude-a-condition" class="common-anchor-header">Example 3: Using <code translate="no">NOT</code> to exclude a condition<button data-href="#Example-3-Using-NOT-to-exclude-a-condition" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -879,16 +880,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Untuk mencari semua produk yang <code translate="no">color</code> -nya bukan "green":</p>
+    </button></h3><p>To find all products where <code translate="no">color</code> is not "green":</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;NOT color == &quot;green&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -906,7 +907,7 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;NOT color == &quot;green&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="IS-NULL-and-IS-NOT-NULL-operators" class="common-anchor-header">Operator IS NULL dan IS NOT NULL<button data-href="#IS-NULL-and-IS-NOT-NULL-operators" class="anchor-icon" translate="no">
+<h2 id="IS-NULL-and-IS-NOT-NULL-operators" class="common-anchor-header">IS NULL and IS NOT NULL operators<button data-href="#IS-NULL-and-IS-NOT-NULL-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -921,20 +922,20 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Gunakan ` <code translate="no">IS NULL</code> ` dan ` <code translate="no">IS NOT NULL</code> ` untuk menemukan entitas dengan nilai bidang yang hilang atau tersedia. Misalnya, Anda dapat menemukan produk tanpa kategori atau entitas yang embedding-nya siap untuk pencarian. Kedua operator ini berfungsi pada bidang skalar dan vektor yang didukung, dengan arti yang sama:</p>
+    </button></h2><p>Use <code translate="no">IS NULL</code> and <code translate="no">IS NOT NULL</code> to find entities with missing or available field values. For example, you can find products without a category or entities whose embeddings are ready for search. Both operators work on supported scalar and vector fields, with the same meaning:</p>
 <table>
 <thead>
-<tr><th>Operator</th><th>Mencocokkan</th></tr>
+<tr><th>Operator</th><th>Matches</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">&lt;field&gt; IS NULL</code></td><td>Entitas yang bidang yang ditentukan memiliki nilai NULL</td></tr>
-<tr><td><code translate="no">&lt;field&gt; IS NOT NULL</code></td><td>Entitas yang memiliki nilai non-NULL pada bidang yang ditentukan</td></tr>
+<tr><td><code translate="no">&lt;field&gt; IS NULL</code></td><td>Entities whose specified field has a NULL value</td></tr>
+<tr><td><code translate="no">&lt;field&gt; IS NOT NULL</code></td><td>Entities whose specified field has a non-NULL value</td></tr>
 </tbody>
 </table>
-<p>Bidang skalar yang didukung meliputi bidang Boolean, numerik, <code translate="no">VARCHAR</code>, <code translate="no">JSON</code>, dan <code translate="no">ARRAY</code>. Operator-operator ini tidak mendukung <a href="/docs/id/text.md">bidang TEXT</a>.</p>
-<p>Mulai dari Milvus 3.0.3, operator-operator ini juga mendukung bidang vektor biasa: <code translate="no">FLOAT_VECTOR</code>, <code translate="no">BINARY_VECTOR</code>, <code translate="no">FLOAT16_VECTOR</code>, <code translate="no">BFLOAT16_VECTOR</code>, <code translate="no">SPARSE_FLOAT_VECTOR</code>, dan <code translate="no">INT8_VECTOR</code>.</p>
-<p>Operator-operator ini tidak membedakan huruf besar-kecil: <code translate="no">IS NULL</code> dan <code translate="no">is null</code> setara, begitu pula <code translate="no">IS NOT NULL</code> dan <code translate="no">is not null</code>.</p>
-<h3 id="Example-Find-entities-with-missing-or-available-values" class="common-anchor-header">Contoh: Mencari entitas dengan nilai yang hilang atau tersedia<button data-href="#Example-Find-entities-with-missing-or-available-values" class="anchor-icon" translate="no">
+<p>Supported scalar fields include Boolean, numeric, <code translate="no">VARCHAR</code>, <code translate="no">JSON</code>, and <code translate="no">ARRAY</code> fields. These operators do not support <a href="/docs/id/text.md">TEXT fields</a>.</p>
+<p>Starting in Milvus 3.0.3, the operators also support ordinary vector fields: <code translate="no">FLOAT_VECTOR</code>, <code translate="no">BINARY_VECTOR</code>, <code translate="no">FLOAT16_VECTOR</code>, <code translate="no">BFLOAT16_VECTOR</code>, <code translate="no">SPARSE_FLOAT_VECTOR</code>, and <code translate="no">INT8_VECTOR</code>.</p>
+<p>The operators are case-insensitive: <code translate="no">IS NULL</code> and <code translate="no">is null</code> are equivalent, as are <code translate="no">IS NOT NULL</code> and <code translate="no">is not null</code>.</p>
+<h3 id="Example-Find-entities-with-missing-or-available-values" class="common-anchor-header">Example: Find entities with missing or available values<button data-href="#Example-Find-entities-with-missing-or-available-values" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -949,7 +950,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Asumsikan sebuah koleksi bernama <code translate="no">products</code> telah diindeks dan dimuat. Koleksi tersebut memiliki kunci utama <code translate="no">INT64</code> bernama <code translate="no">id</code>, bidang <code translate="no">VARCHAR</code> yang dapat bernilai null bernama <code translate="no">category</code>, dan bidang <code translate="no">FLOAT_VECTOR</code> tiga dimensi yang dapat bernilai null bernama <code translate="no">embedding</code>. Koleksi tersebut sudah berisi entitas-entitas berikut:</p>
+    </button></h3><p>Assume a collection named <code translate="no">products</code> is indexed and loaded on Milvus 3.0.3 or later. The collection has an <code translate="no">INT64</code> primary key named <code translate="no">id</code>, a nullable <code translate="no">VARCHAR</code> field named <code translate="no">category</code>, and a nullable, three-dimensional <code translate="no">FLOAT_VECTOR</code> field named <code translate="no">embedding</code>. It already contains the following entities:</p>
 <table>
 <thead>
 <tr><th><code translate="no">id</code></th><th><code translate="no">category</code></th><th><code translate="no">embedding</code></th></tr>
@@ -960,17 +961,17 @@ summary: >-
 <tr><td><code translate="no">3</code></td><td><code translate="no">&quot;book&quot;</code></td><td>NULL</td></tr>
 </tbody>
 </table>
-<p>Proses pembuatan koleksi dan penyisipan data diabaikan. Untuk langkah-langkah tersebut, lihat <a href="/docs/id/nullable-and-default.md">Bidang yang Dapat Bernilai NULL</a>.</p>
-<p>Untuk menemukan entitas yang masih memerlukan embedding, jalankan kueri ` <code translate="no">embedding IS NULL</code>`. Sesuaikan pengaturan koneksi sesuai dengan server Anda.</p>
+<p>Collection creation and data insertion are omitted. For those steps, see <a href="/docs/id/nullable-and-default.md">Nullable Fields</a>.</p>
+<p>To find entities that still need an embedding, query for <code translate="no">embedding IS NULL</code>. Adjust the connection settings for your server.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -1133,23 +1134,23 @@ QueryResp results = <span class="hljs-keyword">await</span> client.QueryAsync(<s
     &quot;limit&quot;: 10
   }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Ganti ` <code translate="no">filter</code> ` dalam kueri yang sama untuk memeriksa salah satu bidang atau menggabungkan kondisi:</p>
+<p>Replace the <code translate="no">filter</code> in the same query to check either field or combine conditions:</p>
 <table>
 <thead>
-<tr><th>Ekspresi filter</th><th>ID yang Cocok</th><th>Tujuan</th></tr>
+<tr><th>Filter expression</th><th>Matching IDs</th><th>Purpose</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">category IS NULL</code></td><td><code translate="no">2</code></td><td>Temukan entitas tanpa kategori</td></tr>
-<tr><td><code translate="no">category IS NOT NULL</code></td><td><code translate="no">1</code>, <code translate="no">3</code></td><td>Temukan entitas yang memiliki kategori</td></tr>
-<tr><td><code translate="no">embedding IS NULL</code></td><td><code translate="no">3</code></td><td>Menemukan entitas tanpa embedding</td></tr>
-<tr><td><code translate="no">embedding IS NOT NULL</code></td><td><code translate="no">1</code>, <code translate="no">2</code></td><td>Temukan entitas yang memiliki embedding</td></tr>
-<tr><td><code translate="no">category IS NOT NULL AND embedding IS NOT NULL</code></td><td><code translate="no">1</code></td><td>Temukan entitas yang memiliki kedua nilai tersebut</td></tr>
+<tr><td><code translate="no">category IS NULL</code></td><td><code translate="no">2</code></td><td>Find entities without a category</td></tr>
+<tr><td><code translate="no">category IS NOT NULL</code></td><td><code translate="no">1</code>, <code translate="no">3</code></td><td>Find entities with a category</td></tr>
+<tr><td><code translate="no">embedding IS NULL</code></td><td><code translate="no">3</code></td><td>Find entities without an embedding</td></tr>
+<tr><td><code translate="no">embedding IS NOT NULL</code></td><td><code translate="no">1</code>, <code translate="no">2</code></td><td>Find entities with an embedding</td></tr>
+<tr><td><code translate="no">category IS NOT NULL AND embedding IS NOT NULL</code></td><td><code translate="no">1</code></td><td>Find entities with both values</td></tr>
 </tbody>
 </table>
 <p><a id="Regular-scalar-fields-with-null-values"></a>
 <a id="JSON-fields-with-null-values"></a>
 <a id="ARRAY-fields-with-null-values"></a></p>
-<h3 id="How-field-values-are-treated" class="common-anchor-header">Bagaimana nilai bidang diolah<button data-href="#How-field-values-are-treated" class="anchor-icon" translate="no">
+<h3 id="How-field-values-are-treated" class="common-anchor-header">How field values are treated<button data-href="#How-field-values-are-treated" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1164,20 +1165,23 @@ QueryResp results = <span class="hljs-keyword">await</span> client.QueryAsync(<s
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Operator memeriksa nilai bidang yang disimpan. Untuk bidang yang dapat bernilai NULL tanpa nilai default, mengabaikan bidang tersebut saat penyisipan atau secara eksplisit menetapkannya ke NULL akan menyimpan nilai NULL. Nilai default yang dikonfigurasi dapat mengubah nilai yang disimpan. Untuk detailnya, lihat <a href="/docs/id/nullable-and-default.md">Bidang yang Dapat Bernilai NULL</a> dan <a href="/docs/id/default-values.md">Nilai Default</a>.</p>
+    </button></h3><p>The operators check the stored field value. For a nullable field without a default value, omitting the field during insertion or explicitly setting it to NULL stores NULL. A configured default value can change what is stored. For details, see <a href="/docs/id/nullable-and-default.md">Nullable Fields</a> and <a href="/docs/id/default-values.md">Default Values</a>.</p>
 <table>
 <thead>
-<tr><th>Tipe bidang</th><th>Perilaku NULL</th></tr>
+<tr><th>Field type</th><th>NULL behavior</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">VARCHAR</code></td><td>String kosong <code translate="no">&quot;&quot;</code> adalah nilai non-NULL.</td></tr>
-<tr><td><code translate="no">JSON</code></td><td>Nilai NULL untuk seluruh bidang sesuai dengan <code translate="no">IS NULL</code>. Objek JSON seperti <code translate="no">{&quot;category&quot;: null}</code> bukanlah NULL, meskipun nilai di dalamnya adalah NULL.</td></tr>
-<tr><td><code translate="no">ARRAY</code></td><td>Nilai NULL untuk seluruh bidang cocok dengan <code translate="no">IS NULL</code>. Elemen individual tidak boleh NULL, dan <code translate="no">IS NULL</code> / <code translate="no">IS NOT NULL</code> tidak mendukung akses elemen array seperti <code translate="no">tags[0]</code>. Lihat <a href="/docs/id/array_data_type.md">Bidang Array</a>.</td></tr>
-<tr><td>Tipe vektor biasa</td><td>NULL berarti nilai vektor tidak ada. Vektor yang komponennya bernilai nol bukanlah NULL.</td></tr>
+<tr><td><code translate="no">VARCHAR</code></td><td>An empty string <code translate="no">&quot;&quot;</code> is a non-NULL value.</td></tr>
+<tr><td><code translate="no">JSON</code></td><td>A NULL value for the entire field matches <code translate="no">IS NULL</code>. A JSON object such as <code translate="no">{&quot;category&quot;: null}</code> is non-NULL, even though a value inside it is NULL.</td></tr>
+<tr><td><code translate="no">ARRAY</code></td><td>A NULL value for the entire field matches <code translate="no">IS NULL</code>. Individual elements cannot be NULL, and <code translate="no">IS NULL</code> / <code translate="no">IS NOT NULL</code> do not support array element access such as <code translate="no">tags[0]</code>. See <a href="/docs/id/array_data_type.md">Array Field</a>.</td></tr>
+<tr><td>Ordinary vector types</td><td>NULL means the vector value is absent. A vector whose components are zero is not NULL.</td></tr>
 </tbody>
 </table>
-<p>Untuk bidang yang didukung yang didefinisikan dengan <code translate="no">nullable=False</code>, <code translate="no">IS NULL</code> tidak akan menemukan entitas apa pun, sedangkan <code translate="no">IS NOT NULL</code> akan menemukan semua entitas yang terlihat. Kondisi lain dalam filter tetap berlaku.</p>
-<h3 id="Use-NULL-filters-in-vector-search" class="common-anchor-header">Gunakan filter NULL dalam pencarian vektor<button data-href="#Use-NULL-filters-in-vector-search" class="anchor-icon" translate="no">
+<p>For a supported field defined with <code translate="no">nullable=False</code>, <code translate="no">IS NULL</code> matches no entities and <code translate="no">IS NOT NULL</code> matches all visible entities. Other conditions in the filter still apply.</p>
+<div class="alert note">
+<p>Scalar NULL filters use validity information from an eligible index or field data; they do not require a particular scalar index type. A non-nullable field can produce a constant result.</p>
+</div>
+<h3 id="Use-NULL-filters-in-vector-search" class="common-anchor-header">Use NULL filters in vector search<button data-href="#Use-NULL-filters-in-vector-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1192,21 +1196,20 @@ QueryResp results = <span class="hljs-keyword">await</span> client.QueryAsync(<s
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Operator yang sama dapat digunakan dalam filter pencarian, tetapi suatu entitas juga memerlukan vektor di bidang yang dicari agar dapat berpartisipasi dalam pencarian kesamaan.</p>
-<p>Menggunakan data contoh di atas, pertimbangkan pencarian dengan <code translate="no">anns_field=&quot;embedding&quot;</code>:</p>
+    </button></h3><p>The same operators can be used in search filters, but an entity also needs a vector in the field being searched to participate in similarity search.</p>
+<p>Using the example data above, consider a search with <code translate="no">anns_field=&quot;embedding&quot;</code>:</p>
 <table>
 <thead>
-<tr><th>Ekspresi filter</th><th>Entitas yang memenuhi syarat untuk pencarian kesamaan</th><th>Alasan</th></tr>
+<tr><th>Filter expression</th><th>Entities eligible for similarity search</th><th>Reason</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">category IS NULL</code></td><td><code translate="no">2</code></td><td>Entitas <code translate="no">2</code> tidak memiliki kategori, tetapi memiliki vektor <code translate="no">embedding</code>.</td></tr>
-<tr><td><code translate="no">embedding IS NULL</code></td><td>Tidak ada</td><td>Entitas <code translate="no">3</code> sesuai dengan filter, tetapi tidak memiliki vektor <code translate="no">embedding</code> untuk dibandingkan dengan vektor kueri.</td></tr>
-<tr><td><code translate="no">embedding IS NOT NULL</code></td><td><code translate="no">1</code>, <code translate="no">2</code></td><td>Kedua entitas memiliki vektor <code translate="no">embedding</code>.</td></tr>
+<tr><td><code translate="no">category IS NULL</code></td><td><code translate="no">2</code></td><td>Entity <code translate="no">2</code> has no category, but has an <code translate="no">embedding</code> vector.</td></tr>
+<tr><td><code translate="no">embedding IS NULL</code></td><td>None</td><td>Entity <code translate="no">3</code> matches the filter, but has no <code translate="no">embedding</code> vector to compare with the query vector.</td></tr>
+<tr><td><code translate="no">embedding IS NOT NULL</code></td><td><code translate="no">1</code>, <code translate="no">2</code></td><td>Both entities have an <code translate="no">embedding</code> vector.</td></tr>
 </tbody>
 </table>
-<p>Ketiga filter tersebut valid. Pencarian pada ` <code translate="no">embedding</code> ` dengan ` <code translate="no">embedding IS NULL</code> ` tidak menghasilkan hasil karena tidak ada entitas yang dapat memenuhi kedua persyaratan tersebut. Untuk mengambil entitas dengan embedding yang hilang, gunakan ` <code translate="no">query()</code> ` seperti yang ditunjukkan di atas.</p>
-<p>Pencarian vektor sudah mengabaikan entitas yang bidang vektornya NULL, sehingga <code translate="no">embedding IS NOT NULL</code> tidak mempersempit kandidat lebih lanjut untuk pencarian pada <code translate="no">embedding</code>. Peringkat, filter lain, dan batas pencarian tetap menentukan kandidat mana yang akan ditampilkan.</p>
-<h2 id="Tips-on-using-basic-operators-with-JSON-and-ARRAY-fields" class="common-anchor-header">Tips menggunakan operator dasar dengan bidang JSON dan ARRAY<button data-href="#Tips-on-using-basic-operators-with-JSON-and-ARRAY-fields" class="anchor-icon" translate="no">
+<p>To retrieve missing embeddings, use <code translate="no">query()</code>; a search on <code translate="no">embedding</code> with <code translate="no">embedding IS NULL</code> is valid but returns no hits. Vector search already skips NULL embeddings, so <code translate="no">embedding IS NOT NULL</code> does not further narrow candidates. Ranking, other filters, and the search limit still determine the returned hits.</p>
+<h2 id="Tips-on-using-basic-operators-with-JSON-and-ARRAY-fields" class="common-anchor-header">Tips on using basic operators with JSON and ARRAY fields<button data-href="#Tips-on-using-basic-operators-with-JSON-and-ARRAY-fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1221,17 +1224,16 @@ QueryResp results = <span class="hljs-keyword">await</span> client.QueryAsync(<s
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Meskipun operator dasar di Milvus serbaguna dan dapat diterapkan pada bidang skalar, operator tersebut juga dapat digunakan secara efektif dengan kunci dan indeks di bidang JSON dan ARRAY.</p>
-<p>Misalnya, jika Anda memiliki bidang <code translate="no">product</code> yang berisi beberapa kunci seperti <code translate="no">price</code>, <code translate="no">model</code>, dan <code translate="no">tags</code>, selalu rujuk kunci tersebut secara langsung:</p>
+    </button></h2><p>Reference a JSON key or ARRAY element directly in the expression. For example, to filter the <code translate="no">price</code> key in a JSON field named <code translate="no">product</code>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;product[&quot;price&quot;] &gt; 1000&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -1249,16 +1251,16 @@ QueryResp results = <span class="hljs-keyword">await</span> client.QueryAsync(<s
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;product[&quot;price&quot;] &gt; 1000&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Untuk mencari catatan di mana suhu pertama dalam array suhu yang tercatat melebihi nilai tertentu, gunakan:</p>
+<p>To find records where the first temperature in an array of recorded temperatures exceeds a certain value, use:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;history_temperatures[0] &gt; 30&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -1276,7 +1278,8 @@ QueryResp results = <span class="hljs-keyword">await</span> client.QueryAsync(<s
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;history_temperatures[0] &gt; 30&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Conclusion" class="common-anchor-header">Kesimpulan<button data-href="#Conclusion" class="anchor-icon" translate="no">
+<p><a id="Conclusion"></a></p>
+<h2 id="FAQ" class="common-anchor-header">FAQ<button data-href="#FAQ" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1291,22 +1294,6 @@ QueryResp results = <span class="hljs-keyword">await</span> client.QueryAsync(<s
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus menawarkan berbagai operator dasar yang memberi Anda fleksibilitas dalam memfilter dan menanyakan data Anda. Dengan menggabungkan operator perbandingan, rentang, aritmatika, dan logika, Anda dapat membuat ekspresi filter yang kuat untuk mempersempit hasil pencarian dan mengambil data yang Anda butuhkan secara efisien.</p>
-<h2 id="FAQ" class="common-anchor-header">Pertanyaan Umum<button data-href="#FAQ" class="anchor-icon" translate="no">
-      <svg translate="no"
-        aria-hidden="true"
-        focusable="false"
-        height="20"
-        version="1.1"
-        viewBox="0 0 16 16"
-        width="16"
-      >
-        <path
-          fill="#0092E4"
-          fill-rule="evenodd"
-          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
-        ></path>
-      </svg>
-    </button></h2><p><strong>Apakah ada batasan panjang daftar nilai pencocokan dalam kondisi filter (misalnya, filter=’color in ["red", "green", “blue”]')? Apa yang harus saya lakukan jika daftar tersebut terlalu panjang?</strong></p>
-<p>Milvus tidak memberlakukan batasan panjang pada daftar nilai pencocokan dalam kondisi filter. Namun, daftar yang terlalu panjang dapat berdampak signifikan terhadap kinerja kueri.
-Jika kondisi filter Anda mencakup daftar nilai pencocokan yang panjang atau ekspresi kompleks dengan banyak elemen, kami menyarankan penggunaan <a href="/docs/id/filtering-templating.md">Filter Templating</a> untuk meningkatkan kinerja kueri.</p>
+    </button></h2><p><strong>Is there a limit to the length of the match value list in filter conditions (e.g., filter=’color in ["red", "green", “blue”]')? What should I do if the list is too long?</strong></p>
+<p>Milvus does not impose a length limit on the match value list in filter conditions. However, an excessively long list can significantly impact query performance.
+If your filter condition includes a long list of match values or a complex expression with many elements, we recommend using <a href="/docs/id/filtering-templating.md">Filter Templating</a> to improve query performance.</p>

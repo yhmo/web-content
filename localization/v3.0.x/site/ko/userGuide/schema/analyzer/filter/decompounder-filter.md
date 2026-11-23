@@ -1,9 +1,11 @@
 ---
 id: decompounder-filter.md
-title: 복합어 분해기
-summary: decompounder 필터를 사용하여 인라인 사전이나 등록된 파일 리소스를 통해 복합어를 분할하세요.
+title: Decompounder
+summary: >-
+  Use the decompounder filter to split compound words with an inline dictionary
+  or registered file resource.
 ---
-<h1 id="Decompounder" class="common-anchor-header">복합어 분해기<button data-href="#Decompounder" class="anchor-icon" translate="no">
+<h1 id="Decompounder" class="common-anchor-header">Decompounder<button data-href="#Decompounder" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,9 +20,9 @@ summary: decompounder 필터를 사용하여 인라인 사전이나 등록된 �
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p><code translate="no">decompounder</code> 필터는 지정된 사전을 기반으로 복합어를 개별 구성 요소로 분할하여, 복합어의 일부를 더 쉽게 검색할 수 있게 해줍니다. 이 필터는 독일어와 같이 복합어를 자주 사용하는 언어에서 특히 유용합니다.</p>
-<p>구성 요소 사전은 ` <code translate="no">word_list</code> ` 매개변수를 통해 인라인으로 지정하거나, ` <code translate="no">word_list_file</code> ` 매개변수를 통해 <a href="/docs/ko/manage-file-resources.md">등록된 파일 리소스에서</a> 불러올 수 있습니다.</p>
-<h2 id="Configuration" class="common-anchor-header">구성<button data-href="#Configuration" class="anchor-icon" translate="no">
+    </button></h1><p>The <code translate="no">decompounder</code> filter splits compound words into individual components based on a specified dictionary, making it easier to search for parts of compound terms. This filter is particularly useful for languages that frequently use compound words, such as German.</p>
+<p>The component dictionary can be supplied inline via the <code translate="no">word_list</code> parameter or loaded from a <a href="/docs/ko/manage-file-resources.md">registered file resource</a> via the <code translate="no">word_list_file</code> parameter.</p>
+<h2 id="Configuration" class="common-anchor-header">Configuration<button data-href="#Configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -35,8 +37,8 @@ summary: decompounder 필터를 사용하여 인라인 사전이나 등록된 �
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">decompounder</code> 필터는 <code translate="no">word_list</code> 매개변수를 통해 인라인으로 구성 요소 사전을 지정하거나, <code translate="no">word_list_file</code> 매개변수를 통해 등록된 파일 리소스에서 구성 요소 사전을 불러올 수 있습니다.</p>
-<h3 id="Inline-word-list" class="common-anchor-header">인라인 단어 목록<button data-href="#Inline-word-list" class="anchor-icon" translate="no">
+    </button></h2><p>The <code translate="no">decompounder</code> filter accepts its component dictionary either inline via the <code translate="no">word_list</code> parameter or from a registered file resource via the <code translate="no">word_list_file</code> parameter.</p>
+<h3 id="Inline-word-list" class="common-anchor-header">Inline word list<button data-href="#Inline-word-list" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -51,16 +53,16 @@ summary: decompounder 필터를 사용하여 인라인 사전이나 등록된 �
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">decompounder</code> 필터는 Milvus의 사용자 정의 필터입니다. 이 필터를 사용하려면 필터 구성에서 <code translate="no">&quot;type&quot;: &quot;decompounder&quot;</code> 을 지정하고, 인식할 단어 구성 요소 사전 정보를 제공하는 <code translate="no">word_list</code> 매개변수를 함께 지정해야 합니다.</p>
+    </button></h3><p>The <code translate="no">decompounder</code> filter is a custom filter in Milvus. To use it, specify <code translate="no">&quot;type&quot;: &quot;decompounder&quot;</code> in the filter configuration, along with a <code translate="no">word_list</code> parameter that provides the dictionary of word components to recognize.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>,
@@ -151,20 +153,20 @@ analyzerParams=<span class="hljs-string">&#x27;{
   ]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">decompounder</code> 필터는 다음과 같은 구성 가능한 매개변수를 지원합니다.</p>
+<p>The <code translate="no">decompounder</code> filter accepts the following configurable parameters.</p>
 <table>
    <tr>
-     <th><p>매개변수</p></th>
-     <th><p>설명</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Description</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">word_list</code></p></td>
-     <td><p>복합어를 분할하는 데 사용되는 단어 구성 요소 목록입니다. 이 사전은 복합어가 개별 용어로 어떻게 분해되는지를 결정합니다.</p></td>
+     <td><p>A list of word components used to split compound terms. This dictionary determines how compound words are decomposed into individual terms.</p></td>
    </tr>
 </table>
-<p><code translate="no">decompounder</code> 필터는 토큰화기가 생성한 용어를 대상으로 작동하므로, 반드시 토큰화기와 함께 사용해야 합니다. Milvus에서 사용할 수 있는 토큰화기 목록은 <a href="/docs/ko/standard-tokenizer.md">표준 토큰화기</a> 및 관련 페이지를 참조하십시오.</p>
-<p><code translate="no">analyzer_params</code> 를 정의한 후에는 컬렉션 스키마를 정의할 때 ‘ <code translate="no">VARCHAR</code> ’ 필드에 이를 적용할 수 있습니다. 이를 통해 Milvus는 해당 필드의 텍스트를 지정된 분석기를 사용하여 처리함으로써 효율적인 토큰화 및 필터링을 수행할 수 있습니다. 자세한 내용은 <a href="/docs/ko/analyzer-overview.md#Example-use">‘사용 예’를</a> 참조하십시오.</p>
-<h3 id="Load-word-components-from-a-file-resource" class="common-anchor-header">파일 리소스에서 단어 구성 요소 불러오기<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Load-word-components-from-a-file-resource" class="anchor-icon" translate="no">
+<p>The <code translate="no">decompounder</code> filter operates on the terms generated by the tokenizer, so it must be used in combination with a tokenizer. For a list of tokenizers available in Milvus, refer to <a href="/docs/ko/standard-tokenizer.md">Standard Tokenizer</a> and its sibling pages.</p>
+<p>After defining <code translate="no">analyzer_params</code>, you can apply them to a <code translate="no">VARCHAR</code> field when defining a collection schema. This allows Milvus to process the text in that field using the specified analyzer for efficient tokenization and filtering. For details, refer to <a href="/docs/ko/analyzer-overview.md#Example-use">Example use</a>.</p>
+<h3 id="Load-word-components-from-a-file-resource" class="common-anchor-header">Load word components from a file resource<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Load-word-components-from-a-file-resource" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -179,8 +181,8 @@ analyzerParams=<span class="hljs-string">&#x27;{
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>대규모 구성 요소 사전(특히 전체 언어 단어 목록)의 경우, 구성 요소를 파일에 저장하고 해당 파일을 원격 파일 리소스로 등록한 다음, 필터에서 ` <code translate="no">word_list_file</code> ` 매개변수를 통해 이를 참조하십시오. ` <code translate="no">word_list_file</code> `을 단독으로 사용하거나 인라인 ` <code translate="no">word_list</code>`과 함께 사용할 수 있습니다. 두 가지가 모두 설정된 경우, 필터는 두 소스를 단일 구성 요소 목록으로 병합합니다.</p>
-<p>파일은 <strong>한 줄에 하나의 구성 요소 단어가</strong> 포함된 일반 UTF‑8 텍스트 형식이어야 합니다. 예:</p>
+    </button></h3><p>For large component dictionaries — especially full-language word lists — store the components in a file and register the file as a remote file resource, then reference it from the filter via the <code translate="no">word_list_file</code> parameter. You can use <code translate="no">word_list_file</code> on its own or alongside inline <code translate="no">word_list</code>; when both are set, the filter merges the two sources into a single component list.</p>
+<p>The file is plain UTF‑8 text with <strong>one component word per line</strong>. For example:</p>
 <pre><code translate="no" class="language-plaintext">dampf
 schiff
 fahrt
@@ -188,7 +190,7 @@ brot
 backen
 automat
 <button class="copy-code-btn"></button></code></pre>
-<p>파일을 Milvus 클러스터가 사용하도록 구성된 오브젝트 스토어에 업로드한 다음, 등록하십시오:</p>
+<p>Upload the file to the object store that your Milvus cluster is configured to use, then register it:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>)
@@ -199,7 +201,7 @@ client.add_file_resource(
     path=<span class="hljs-string">&quot;file/decompounder.txt&quot;</span>,    <span class="hljs-comment"># full S3 object key, including the rootPath prefix</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">word_list_file</code> 를 통해 필터에서 등록된 리소스를 참조하십시오:</p>
+<p>Reference the registered resource in the filter via <code translate="no">word_list_file</code>:</p>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>,
     <span class="hljs-string">&quot;filter&quot;</span>: [{
@@ -212,26 +214,26 @@ client.add_file_resource(
     }],
 }
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">word_list_file</code> 매개변수는 다음 필드를 가진 객체를 허용합니다:</p>
+<p>The <code translate="no">word_list_file</code> parameter accepts an object with the following fields:</p>
 <table>
    <tr>
-     <th><p><strong>필드</strong></p></th>
-     <th><p><strong>설명</strong></p></th>
+     <th><p><strong>Field</strong></p></th>
+     <th><p><strong>Description</strong></p></th>
    </tr>
    <tr>
      <td><p><code translate="no">type</code></p></td>
-     <td><p>리소스 유형입니다. <code translate="no">add_file_resource</code> 를 통해 등록된 파일의 경우 <code translate="no">"remote"</code> 를 사용하십시오. 자체 호스팅 배포에서 사용되는 <code translate="no">"local"</code> 변형의 경우, <a href="/docs/ko/manage-file-resources.md">‘파일 리소스 관리’를</a> 참조하십시오.</p></td>
+     <td><p>The resource type. Use <code translate="no">"remote"</code> for a file registered via <code translate="no">add_file_resource</code>. For the <code translate="no">"local"</code> variant used in self-hosted deployments, refer to <a href="/docs/ko/manage-file-resources.md">Manage File Resources</a>.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">resource_name</code></p></td>
-     <td><p><code translate="no">add_file_resource</code> 에 파일을 등록할 때 사용된 이름입니다.</p></td>
+     <td><p>The name used when the file was registered with <code translate="no">add_file_resource</code>.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">file_name</code></p></td>
-     <td><p>등록된 리소스의 오브젝트 스토어 경로 중 파일 이름 부분(예: 리소스가 <code translate="no">path="file/decompounder.txt"</code> 에 등록된 경우 <code translate="no">"decompounder.txt"</code> ).</p></td>
+     <td><p>The filename portion of the registered resource's object-store path (for example, <code translate="no">"decompounder.txt"</code> if the resource was registered with <code translate="no">path="file/decompounder.txt"</code>).</p></td>
    </tr>
 </table>
-<h2 id="Examples" class="common-anchor-header">예<button data-href="#Examples" class="anchor-icon" translate="no">
+<h2 id="Examples" class="common-anchor-header">Examples<button data-href="#Examples" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -246,8 +248,8 @@ client.add_file_resource(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>분석기 구성을 컬렉션 스키마에 적용하기 전에 <code translate="no">run_analyzer</code> 메서드를 사용하여 동작을 확인하십시오.</p>
-<h3 id="Analyzer-configuration" class="common-anchor-header">분석기 구성<button data-href="#Analyzer-configuration" class="anchor-icon" translate="no">
+    </button></h2><p>Before applying the analyzer configuration to your collection schema, verify its behavior using the <code translate="no">run_analyzer</code> method.</p>
+<h3 id="Analyzer-configuration" class="common-anchor-header">Analyzer configuration<button data-href="#Analyzer-configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -263,14 +265,14 @@ client.add_file_resource(
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>,
@@ -361,7 +363,7 @@ analyzerParams=<span class="hljs-string">&#x27;{
   ]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Verification-using-runanalyzer" class="common-anchor-header">다음 방법을 사용한 검증 <code translate="no">run_analyzer</code><button data-href="#Verification-using-runanalyzer" class="anchor-icon" translate="no">
+<h3 id="Verification-using-runanalyzer" class="common-anchor-header">Verification using <code translate="no">run_analyzer</code><button data-href="#Verification-using-runanalyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -377,14 +379,14 @@ analyzerParams=<span class="hljs-string">&#x27;{
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> (
     MilvusClient,
@@ -554,7 +556,7 @@ curl --request POST \
     &quot;text&quot;: [&quot;dampfschifffahrt brotbackautomat&quot;]
   }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Expected-output" class="common-anchor-header">예상 출력<button data-href="#Expected-output" class="anchor-icon" translate="no">
+<h3 id="Expected-output" class="common-anchor-header">Expected output<button data-href="#Expected-output" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"

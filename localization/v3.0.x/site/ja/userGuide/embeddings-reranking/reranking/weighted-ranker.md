@@ -1,13 +1,16 @@
 ---
 id: weighted-ranker.md
-title: 加重ランカー
+title: Weighted Ranker
 summary: >-
-  Weighted
-  Rankerは、複数の検索パスから得られた結果を、それぞれに異なる重要度ウェイトを割り当てることで、インテリジェントに統合し、優先順位付けを行います。
-  熟練したシェフが複数の食材のバランスを調整して完璧な料理を作り上げるのと同様に、Weighted
-  Rankerはさまざまな検索結果のバランスを調整し、最も関連性の高い統合結果を提供します。このアプローチは、特定のフィールドが他のフィールドよりも最終的なランキングに大きく寄与すべき場合など、複数のベクトルフィールドやモダリティを横断して検索を行う際に最適です。
+  Weighted Ranker intelligently combines and prioritizes results from multiple
+  search paths by assigning different importance weights to each. Similar to how
+  a skilled chef balances multiple ingredients to create the perfect dish,
+  Weighted Ranker balances different search results to deliver the most relevant
+  combined outcomes. This approach is ideal when searching across multiple
+  vector fields or modalities where certain fields should contribute more
+  significantly to the final ranking than others.
 ---
-<h1 id="Weighted-Ranker" class="common-anchor-header">加重ランカー<button data-href="#Weighted-Ranker" class="anchor-icon" translate="no">
+<h1 id="Weighted-Ranker" class="common-anchor-header">Weighted Ranker<button data-href="#Weighted-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -22,8 +25,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>ウェイト付きランカーは、複数の検索パスから得られた結果を、それぞれに異なる重要度ウェイトを割り当てることで、インテリジェントに統合し、優先順位付けを行います。 熟練したシェフが複数の食材のバランスを調整して完璧な料理を作り上げるのと同様に、ウェイト付きランカーは異なる検索結果のバランスを調整し、最も関連性の高い統合結果を提供します。このアプローチは、特定のフィールドが他のフィールドよりも最終的なランキングに大きく寄与すべき場合など、複数のベクトルフィールドやモダリティを横断して検索を行う際に最適です。</p>
-<h2 id="When-to-use-Weighted-Ranker" class="common-anchor-header">ウェイト付きランカーの使用場面<button data-href="#When-to-use-Weighted-Ranker" class="anchor-icon" translate="no">
+    </button></h1><p>Weighted Ranker intelligently combines and prioritizes results from multiple search paths by assigning different importance weights to each. Similar to how a skilled chef balances multiple ingredients to create the perfect dish, Weighted Ranker balances different search results to deliver the most relevant combined outcomes. This approach is ideal when searching across multiple vector fields or modalities where certain fields should contribute more significantly to the final ranking than others.</p>
+<h2 id="When-to-use-Weighted-Ranker" class="common-anchor-header">When to use Weighted Ranker<button data-href="#When-to-use-Weighted-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -38,31 +41,31 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>ウェイト付きランカーは、複数のベクトル検索パスからの結果を組み合わせる必要があるハイブリッド検索シナリオ向けに特別に設計されています。特に以下の用途で効果的です：</p>
+    </button></h2><p>Weighted Ranker is specifically designed for hybrid search scenarios where you need to combine results from multiple vector search paths. It’s particularly effective for:</p>
 <table>
    <tr>
-     <th><p>ユースケース</p></th>
-     <th><p>例</p></th>
-     <th><p>Weighted Rankerが効果的な理由</p></th>
+     <th><p>Use Case</p></th>
+     <th><p>Example</p></th>
+     <th><p>Why Weighted Ranker Works Well</p></th>
    </tr>
    <tr>
-     <td><p>Eコマース検索</p></td>
-     <td><p>画像の類似性とテキスト説明を組み合わせた商品検索</p></td>
-     <td><p>小売業者は、ファッションアイテムでは視覚的な類似性を優先しつつ、技術系製品ではテキストの説明を重視することが可能</p></td>
+     <td><p>E-commerce search</p></td>
+     <td><p>Product search combining image similarity and text description</p></td>
+     <td><p>Allows retailers to prioritize visual similarity for fashion items while emphasizing text descriptions for technical products</p></td>
    </tr>
    <tr>
-     <td><p>メディアコンテンツ検索</p></td>
-     <td><p>視覚的特徴と音声文字起こしの両方を活用した動画検索</p></td>
-     <td><p>クエリの意図に基づいて、視覚的コンテンツと音声対話の重要度のバランスを調整</p></td>
+     <td><p>Media content search</p></td>
+     <td><p>Video retrieval using both visual features and audio transcripts</p></td>
+     <td><p>Balances the importance of visual content versus spoken dialogue based on query intent</p></td>
    </tr>
    <tr>
-     <td><p>ドキュメント検索</p></td>
-     <td><p>セクションごとに異なる埋め込みを用いたエンタープライズ文書検索</p></td>
-     <td><p>全文の埋め込みも考慮しつつ、タイトルと要約の埋め込みに高い重み付けを行う</p></td>
+     <td><p>Document retrieval</p></td>
+     <td><p>Enterprise document search with multiple embeddings for different sections</p></td>
+     <td><p>Gives higher weight to title and abstract embeddings while still considering full-text embeddings</p></td>
    </tr>
 </table>
-<p>ハイブリッド検索アプリケーションで、複数の検索パスを組み合わせつつ、それぞれの相対的な重要度を制御する必要がある場合は、「Weighted Ranker」が最適な選択肢となります。</p>
-<h2 id="Mechanism-of-Weighted-Ranker" class="common-anchor-header">Weighted Rankerの仕組み<button data-href="#Mechanism-of-Weighted-Ranker" class="anchor-icon" translate="no">
+<p>If your hybrid search application requires combining multiple search paths while controlling their relative importance, Weighted Ranker is your ideal choice.</p>
+<h2 id="Mechanism-of-Weighted-Ranker" class="common-anchor-header">Mechanism of Weighted Ranker<button data-href="#Mechanism-of-Weighted-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -77,20 +80,20 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>WeightedRanker 戦略の主なワークフローは以下の通りです：</p>
+    </button></h2><p>The main workflow of the WeightedRanker strategy is as follows:</p>
 <ol>
-<li><p><strong>検索スコアの収集</strong>：ベクトル検索の各パスから結果とスコア（score_1、score_2）を収集します。</p></li>
-<li><p><strong>スコアの正規化</strong>：検索ごとに異なる類似度メトリクスが使用される場合があり、その結果、スコアの分布が異なってくることがあります。 たとえば、類似度指標として内積（IP）を使用すると、スコアは [−∞,+∞] の範囲になるのに対し、ユークリッド距離（L2）を使用すると、スコアは [0,+∞] の範囲になります。 異なる検索のスコア範囲は異なり、直接比較できないため、各検索パスからのスコアを正規化する必要があります。通常、<code translate="no">arctan</code> 関数を適用して、スコアを[0, 1]の範囲に変換します（score_1_normalized, score_2_normalized）。 1に近いスコアほど、類似度が高いことを示します。</p></li>
-<li><p><strong>重みの割り当て</strong>：さまざまなベクトル場に割り当てられた重要度に基づいて、正規化されたスコア（score_1_normalized、score_2_normalized）に重み（<strong>wi</strong>）が割り当てられます。 各パスの重みは [0, 1] の範囲である必要があります。その結果として得られる重み付きスコアは、score_1_weighted および score_2_weighted となります。</p></li>
-<li><p><strong>スコアの統合</strong>：重み付けされたスコア (score_1_weighted、score_2_weighted) を高い順にランク付けし、最終的なスコアセット (score_final) を作成します。</p></li>
+<li><p><strong>Collect Search Scores</strong>: Gather the results and scores from each path of vector search (score_1, score_2).</p></li>
+<li><p><strong>Score Normalization</strong>: Each search may use different similarity metrics, resulting in varied score distributions. For instance, using Inner Product (IP) as a similarity type could result in scores ranging from [−∞,+∞], while using Euclidean distance (L2) results in scores ranging from [0,+∞]. Because the score ranges from different searches vary and cannot be directly compared, it is necessary to normalize the scores from each path of search. Typically, <code translate="no">arctan</code> function is applied to transform the scores into a range between [0, 1] (score_1_normalized, score_2_normalized). Scores closer to 1 indicate higher similarity.</p></li>
+<li><p><strong>Assign Weights</strong>: Based on the importance assigned to different vector fields, weights (<strong>wi</strong>) are allocated to the normalized scores (score_1_normalized, score_2_normalized). The weights of each path should range between [0,1]. The resulting weighted scores are score_1_weighted and score_2_weighted.</p></li>
+<li><p><strong>Merge Scores</strong>: The weighted scores (score_1_weighted, score_2_weighted) are ranked from highest to lowest to produce a final set of scores (score_final).</p></li>
 </ol>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/weighted-ranker.png" alt="Weighted Ranker" class="doc-image" id="weighted-ranker" /> 
-   <span>重み付きランカー</span>
-  
- </span></p>
-<h2 id="Example-of-Weighted-Ranker" class="common-anchor-header">重み付きランカーの例<button data-href="#Example-of-Weighted-Ranker" class="anchor-icon" translate="no">
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/weighted-ranker.png" alt="Weighted Ranker" class="doc-image" id="weighted-ranker" />
+    <span>Weighted Ranker</span>
+  </span>
+</p>
+<h2 id="Example-of-Weighted-Ranker" class="common-anchor-header">Example of Weighted Ranker<button data-href="#Example-of-Weighted-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -105,13 +108,13 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>この例では、画像とテキストを用いたマルチモーダルハイブリッド検索（topK=5）を示し、WeightedRanker 戦略が 2 つの ANN 検索の結果をどのように再ランク付けするかを説明しています。</p>
+    </button></h2><p>This example demonstrates a multimodal Hybrid Search (topK=5) involving images and text and illustrates how the WeightedRanker strategy reranks the results from two ANN searches.</p>
 <ul>
-<li><p>画像に対するANN検索の結果（topK=5）：</p>
+<li><p>Results of ANN search on images （topK=5)：</p>
 <p><table>
 <tr>
 <th><p><strong>ID</strong></p></th>
-<th><p><strong>スコア（画像）</strong></p></th>
+<th><p><strong>Score (image)</strong></p></th>
 </tr>
 <tr>
 <td><p>101</p></td>
@@ -134,11 +137,11 @@ summary: >-
 <td><p>0.8</p></td>
 </tr>
 </table></p></li>
-<li><p>テキストに対するANN検索の結果（topK=5）：</p>
+<li><p>Results of ANN search on texts （topK=5)：</p>
 <p><table>
 <tr>
 <th><p><strong>ID</strong></p></th>
-<th><p><strong>スコア（テキスト）</strong></p></th>
+<th><p><strong>Score (text)</strong></p></th>
 </tr>
 <tr>
 <td><p>198</p></td>
@@ -161,63 +164,63 @@ summary: >-
 <td><p>0.78</p></td>
 </tr>
 </table></p></li>
-<li><p>WeightedRanker を使用して、画像およびテキストの検索結果に重みを割り当てます。画像 ANN 検索の重みを 0.6、テキスト検索の重みを 0.4 と仮定します。</p>
+<li><p>Use WeightedRanker assign weights to image and text search results. Suppose the weight for the image ANN search is 0.6 and the weight for the text search is 0.4.</p>
 <p><table>
 <tr>
 <th><p><strong>ID</strong></p></th>
-<th><p><strong>スコア（画像）</strong></p></th>
-<th><p><strong>スコア（テキスト）</strong></p></th>
-<th><p><strong>加重スコア</strong></p></th>
+<th><p><strong>Score (image)</strong></p></th>
+<th><p><strong>Score (text)</strong></p></th>
+<th><p><strong>Weighted Score</strong></p></th>
 </tr>
 <tr>
 <td><p>101</p></td>
 <td><p>0.92</p></td>
 <td><p>0.87</p></td>
-<td><p>0.6×0.92＋0.4×0.87＝0.90</p></td>
+<td><p>0.6×0.92+0.4×0.87=0.90</p></td>
 </tr>
 <tr>
 <td><p>203</p></td>
 <td><p>0.88</p></td>
-<td><p>該当なし</p></td>
-<td><p>0.6×0.88＋0.4×0＝0.528</p></td>
+<td><p>N/A</p></td>
+<td><p>0.6×0.88+0.4×0=0.528</p></td>
 </tr>
 <tr>
 <td><p>150</p></td>
 <td><p>0.85</p></td>
-<td><p>該当なし</p></td>
-<td><p>0.6×0.85＋0.4×0＝0.51</p></td>
+<td><p>N/A</p></td>
+<td><p>0.6×0.85+0.4×0=0.51</p></td>
 </tr>
 <tr>
 <td><p>198</p></td>
 <td><p>0.83</p></td>
 <td><p>0.91</p></td>
-<td><p>0.6×0.83＋0.4×0.91＝0.86</p></td>
+<td><p>0.6×0.83+0.4×0.91=0.86</p></td>
 </tr>
 <tr>
 <td><p>175</p></td>
 <td><p>0.80</p></td>
 <td><p>0.82</p></td>
-<td><p>0.6×0.80＋0.4×0.82＝0.81</p></td>
+<td><p>0.6×0.80+0.4×0.82=0.81</p></td>
 </tr>
 <tr>
 <td><p>110</p></td>
-<td><p>画像にない</p></td>
+<td><p>Not in Image</p></td>
 <td><p>0.85</p></td>
 <td><p>0.6×0+0.4×0.85=0.34</p></td>
 </tr>
 <tr>
 <td><p>250</p></td>
-<td><p>画像にない</p></td>
+<td><p>Not in Image</p></td>
 <td><p>0.78</p></td>
 <td><p>0.6×0+0.4×0.78=0.312</p></td>
 </tr>
 </table></p></li>
-<li><p>再ランク付け後の最終結果（topK=5）：</p>
+<li><p>The final results after reranking（topK=5)：</p>
 <p><table>
 <tr>
-<th><p><strong>順位</strong></p></th>
+<th><p><strong>Rank</strong></p></th>
 <th><p><strong>ID</strong></p></th>
-<th><p><strong>最終スコア</strong></p></th>
+<th><p><strong>Final Score</strong></p></th>
 </tr>
 <tr>
 <td><p>1</p></td>
@@ -246,7 +249,7 @@ summary: >-
 </tr>
 </table></p></li>
 </ul>
-<h2 id="Usage-of-Weighted-Ranker" class="common-anchor-header">WeightedRankerの使用方法<button data-href="#Usage-of-Weighted-Ranker" class="anchor-icon" translate="no">
+<h2 id="Usage-of-Weighted-Ranker" class="common-anchor-header">Usage of Weighted Ranker<button data-href="#Usage-of-Weighted-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -261,8 +264,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>WeightedRanker戦略を使用する際は、重み値を入力する必要があります。入力する重み値の数は、ハイブリッド検索における基本ANN検索リクエストの数と一致させる必要があります。入力する重み値は[0,1]の範囲内である必要があり、1に近い値ほど重要度が高いことを示します。</p>
-<h3 id="Create-a-Weighted-Ranker" class="common-anchor-header">重み付きランカーの作成<button data-href="#Create-a-Weighted-Ranker" class="anchor-icon" translate="no">
+    </button></h2><p>When using the WeightedRanker strategy, it is necessary to input weight values. The number of weight values to input should correspond to the number of basic ANN search requests in the Hybrid Search. The input weight values should fall in the range of [0,1], with values closer to 1 indicating greater importance.</p>
+<h3 id="Create-a-Weighted-Ranker" class="common-anchor-header">Create a Weighted Ranker<button data-href="#Create-a-Weighted-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -277,19 +280,19 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>たとえば、ハイブリッド検索にテキスト検索と画像検索の2つの基本ANN検索リクエストがあるとします。テキスト検索の方が重要度が高いとみなされる場合は、より大きな重みを割り当てる必要があります。</p>
+    </button></h3><p>For example, suppose there are two basic ANN search requests in a Hybrid Search: text search and image search. If the text search is considered more important, it should be assigned a greater weight.</p>
 <div class="alert note">
-<p>Milvus 2.6.x 以降では、<code translate="no">Function</code> API を通じて再ランク付け戦略を直接設定できます。v2.6.0 以前のリリースを使用している場合は、<a href="https://milvus.io/docs/v2.5.x/reranking.md#Usage-of-WeightedRanker">再ランク付けの</a>ドキュメントを参照して設定手順を確認してください。</p>
+<p>Milvus 2.6.x and later let you configure reranking strategies directly via the <code translate="no">Function</code> API. If you’re using an earlier release (before v2.6.0), refer to the <a href="https://milvus.io/docs/v2.5.x/reranking.md#Usage-of-WeightedRanker">Reranking</a> documentation for setup instructions.</p>
 </div>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> Function, FunctionType
 
@@ -379,49 +382,49 @@ rerank-&gt;<span class="hljs-built_in">AddParam</span>(<span class="hljs-string"
 <button class="copy-code-btn"></button></code></pre>
 <table>
    <tr>
-     <th><p>パラメータ</p></th>
-     <th><p>必須？</p></th>
-     <th><p>説明</p></th>
-     <th><p>値/例</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Required?</p></th>
+     <th><p>Description</p></th>
+     <th><p>Value/Example</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">name</code></p></td>
-     <td><p>はい</p></td>
-     <td><p>この関数の固有の識別子</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Unique identifier for this Function</p></td>
      <td><p><code translate="no">"weight"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">input_field_names</code></p></td>
-     <td><p>はい</p></td>
-     <td><p>関数を適用するベクトルフィールドのリスト（Weighted Rankerの場合は空でなければならない）</p></td>
+     <td><p>Yes</p></td>
+     <td><p>List of vector fields to apply the function to (must be empty for Weighted Ranker)</p></td>
      <td><p>[]</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">function_type</code></p></td>
-     <td><p>はい</p></td>
-     <td><p>呼び出す関数のタイプ。再ランク付け戦略を指定するには、<code translate="no">RERANK</code> を使用してください</p></td>
+     <td><p>Yes</p></td>
+     <td><p>The type of Function to invoke; use <code translate="no">RERANK</code> to specify a reranking strategy</p></td>
      <td><p><code translate="no">FunctionType.RERANK</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.reranker</code></p></td>
-     <td><p>はい</p></td>
-     <td><p>使用する再ランク付け方法を指定します。</p><p>Weighted Ranker を使用するには、<code translate="no">weighted</code> に設定する必要があります。</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Specifies the reranking method to use.</p><p>Must be set to <code translate="no">weighted</code> to use Weighted Ranker.</p></td>
      <td><p><code translate="no">"weighted"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.weights</code></p></td>
-     <td><p>はい</p></td>
-     <td><p>各検索パスに対応する重みの配列。値は [0,1] の範囲です。</p><p>詳細については、「<a href="/docs/ja/weighted-ranker.md#Mechanism-of-Weighted-Ranker">Weighted Ranker の仕組み</a>」を参照してください。</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Array of weights corresponding to each search path; values ∈ [0,1].</p><p>For details, refer to <a href="/docs/ja/weighted-ranker.md#Mechanism-of-Weighted-Ranker">Mechanism of Weighted Ranker</a>.</p></td>
      <td><p><code translate="no">[0.1, 0.9]</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.norm_score</code></p></td>
-     <td><p>いいえ</p></td>
-     <td><p>重み付けの前に、生スコアを（arctan を使用して）正規化するかどうか。</p><p>詳細については、「<a href="/docs/ja/weighted-ranker.md#Mechanism-of-Weighted-Ranker">重み付きランカーの仕組み</a>」を参照してください。いいえ</p></td>
+     <td><p>No</p></td>
+     <td><p>Whether to normalize raw scores (using arctan) before weighting.</p><p>For details, refer to <a href="/docs/ja/weighted-ranker.md#Mechanism-of-Weighted-Ranker">Mechanism of Weighted Ranker</a>.</p></td>
      <td><p><code translate="no">True</code></p></td>
    </tr>
 </table>
-<h3 id="Apply-to-hybrid-search" class="common-anchor-header">ハイブリッド検索への適用<button data-href="#Apply-to-hybrid-search" class="anchor-icon" translate="no">
+<h3 id="Apply-to-hybrid-search" class="common-anchor-header">Apply to hybrid search<button data-href="#Apply-to-hybrid-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -436,16 +439,16 @@ rerank-&gt;<span class="hljs-built_in">AddParam</span>(<span class="hljs-string"
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Weighted Ranker は、複数のベクトルフィールドを組み合わせたハイブリッド検索操作のために特別に設計されています。ハイブリッド検索を実行する際は、各検索パスに対する重みを指定する必要があります：</p>
+    </button></h3><p>Weighted Ranker is designed specifically for hybrid search operations that combine multiple vector fields. When performing hybrid search, you must specify the weights for each search path:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, AnnSearchRequest
 
@@ -704,4 +707,4 @@ curl --request POST \
     \&quot;outputFields\&quot;: [\&quot;product_name\&quot;, \&quot;price\&quot;, \&quot;category\&quot;]
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>ハイブリッド検索の詳細については、「<a href="/docs/ja/multi-vector-search.md">マルチベクトル・ハイブリッド検索</a>」を参照してください。</p>
+<p>For more information on hybrid search, refer to <a href="/docs/ja/multi-vector-search.md">Multi-Vector Hybrid Search</a>.</p>

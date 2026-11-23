@@ -2,7 +2,10 @@
 id: hnsw.md
 title: HNSW
 summary: >-
-  HNSWインデックスは、高次元の浮動小数点ベクトルを検索する際のパフォーマンスを向上させることができる、グラフベースのインデックス作成アルゴリズムです。優れた検索精度と低レイテンシを実現する一方で、階層的なグラフ構造を維持するために多大なメモリオーバーヘッドを必要とします。
+  The HNSW index is a graph-based indexing algorithm that can improve
+  performance when searching for high-dimensional floating vectors. It offers
+  excellent search accuracy and low latency, while it requires high memory
+  overhead to maintain its hierarchical graph structure.
 ---
 <h1 id="HNSW" class="common-anchor-header">HNSW<button data-href="#HNSW" class="anchor-icon" translate="no">
       <svg translate="no"
@@ -19,8 +22,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p><strong>HNSWインデックスは</strong>、高次元の浮動小数点ベクトルを検索する際のパフォーマンスを向上させることができる、<strong>グラフベースの</strong>インデックス作成アルゴリズムです。<strong>優れた</strong>検索精度と<strong>低レイテンシ</strong>を実現しますが、階層的なグラフ構造を維持するために<strong>多大な</strong>メモリオーバーヘッドを必要とします。</p>
-<h2 id="Overview" class="common-anchor-header">概要<button data-href="#Overview" class="anchor-icon" translate="no">
+    </button></h1><p>The <strong>HNSW</strong> index is a <strong>graph-based</strong> indexing algorithm that can improve performance when searching for high-dimensional floating vectors. It offers <strong>excellent</strong> search accuracy and <strong>low</strong> latency, while it requires <strong>high</strong> memory overhead to maintain its hierarchical graph structure.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -35,29 +38,29 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>階層型ナビゲータブル・スモールワールド（HNSW）アルゴリズムは、ズームレベルが異なる地図のような多層グラフを構築します。<strong>最下層</strong>にはすべてのデータポイントが含まれ、<strong>上層は</strong>下層からサンプリングされたデータポイントのサブセットで構成されます。</p>
-<p>この階層構造において、各層にはデータポイントを表すノードが含まれており、それらの近接度を示すエッジによって接続されています。上位層はターゲットに素早く近づくための長距離ジャンプを可能にし、下位層は最も正確な結果を得るためのきめ細かな検索を可能にします。</p>
-<p>その仕組みは以下の通りです：</p>
+    </button></h2><p>The Hierarchical Navigable Small World (HNSW) algorithm builds a multi-layered graph, kind of like a map with different zoom levels. The <strong>bottom layer</strong> contains all the data points, while the <strong>upper layers</strong> consist of a subset of data points sampled from the lower layer.</p>
+<p>In this hierarchy, each layer contains nodes representing data points, connected by edges that indicate their proximity. The higher layers provide long-distance jumps to quickly get close to the target, while the lower layers enable a fine-grained search for the most accurate results.</p>
+<p>Here’s how it works:</p>
 <ol>
-<li><p><strong>開始点</strong>：検索は、最上層にある固定の開始点（グラフ内のあらかじめ決められたノード）から開始されます。</p></li>
-<li><p><strong>貪欲探索</strong>：アルゴリズムは、クエリベクトルにこれ以上近づけなくなるまで、現在の層で最も近い隣接ノードへと貪欲に移動します。上位の層はナビゲーションの役割を果たし、下位の層でのより詳細な探索に向けた潜在的なエントリポイントを見つけるための粗いフィルターとして機能します。</p></li>
-<li><p><strong>層の下降</strong>：現在の層で<strong>局所最小値</strong>に達すると、アルゴリズムはあらかじめ確立された接続を利用して下位の層へ移動し、貪欲探索を繰り返します。</p></li>
-<li><p><strong>最終的な精緻化</strong>：このプロセスは最下層に到達するまで続き、そこで最終的な精緻化ステップによって最近傍が特定される。</p></li>
+<li><p><strong>Entry point</strong>: The search starts at a fixed entry point at the top layer, which is a pre-determined node in the graph.</p></li>
+<li><p><strong>Greedy search</strong>: The algorithm greedily moves to the closest neighbor at the current layer until it cannot get any closer to the query vector. The upper layers serve a navigational purpose, acting as a coarse filter to locate potential entry points for the finer search at the lower levels.</p></li>
+<li><p><strong>Layer descend</strong>: Once a <strong>local minimum</strong> is reached at the current layer, the algorithm jumps down to the lower layer, using a pre-established connection, and repeats the greedy search.</p></li>
+<li><p><strong>Final</strong> <strong>refinement</strong>: This process continues until the bottom layer is reached, where a final refinement step identifies the nearest neighbors.</p></li>
 </ol>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/hnsw.png" alt="HNSW" class="doc-image" id="hnsw" /> 
-   <span>HNSW</span>
-  
- </span></p>
-<p>HNSWの性能は、グラフの構造と探索挙動の両方を制御するいくつかの主要なパラメータに依存します。これらには以下が含まれます：</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/hnsw.png" alt="HNSW" class="doc-image" id="hnsw" />
+    <span>HNSW</span>
+  </span>
+</p>
+<p>The performance of HNSW depends on several key parameters that control both the structure of the graph and the search behavior. These include:</p>
 <ul>
-<li><p><code translate="no">M</code>: 階層の各レベルにおいて、グラフ内の各ノードが持つことができる辺または接続の最大数。<code translate="no">M</code> の値が大きいほど、グラフは高密度になり、探索可能な経路が増えるためリコール率と精度が向上します。ただし、接続が増えることでメモリ消費量が増加し、挿入時間が遅くなります。 上の図に示すように、<strong>M = 5</strong>とは、HNSW グラフ内の各ノードが、最大 5 つの他のノードと直接接続されていることを意味します。これにより、ノードが他のノードに到達するための複数の経路を持つ、適度に密なグラフ構造が形成されます。</p></li>
-<li><p><code translate="no">efConstruction</code>: インデックス構築時に検討される候補の数。<code translate="no">efConstruction</code> の値が大きいほど、一般的にグラフの品質は向上しますが、構築に要する時間は長くなります。</p></li>
-<li><p><code translate="no">ef</code>: 検索中に評価される近傍ノードの数。<code translate="no">ef</code> を増加させると、最寄りの近傍ノードが見つかる確率は高まりますが、検索処理が遅くなります。</p></li>
+<li><p><code translate="no">M</code>: The maximum number of edges or connections each node can have in the graph at each level of the hierarchy. A higher <code translate="no">M</code> results in a denser graph and increases recall and accuracy as the search has more pathways to explore, which also consumes more memory and slows down insertion time due to additional connections. As shown in the image above, <strong>M = 5</strong> indicates that each node in the HNSW graph is directly connected to a maximum of 5 other nodes. This creates a moderately dense graph structure where nodes have multiple pathways to reach other nodes.</p></li>
+<li><p><code translate="no">efConstruction</code>: The number of candidates considered during index construction. A higher <code translate="no">efConstruction</code> generally results in a better quality graph but requires more time to build.</p></li>
+<li><p><code translate="no">ef</code>: The number of neighbors evaluated during a search. Increasing <code translate="no">ef</code> improves the likelihood of finding the nearest neighbors but slows down the search process.</p></li>
 </ul>
-<p>これらの設定をニーズに合わせて調整する方法の詳細については、「<a href="/docs/ja/hnsw.md#Index-params">インデックスパラメータ</a>」を参照してください。</p>
-<h2 id="Build-index" class="common-anchor-header">インデックスの構築<button data-href="#Build-index" class="anchor-icon" translate="no">
+<p>For details on how to adjust these settings to suit your needs, refer to <a href="/docs/ja/hnsw.md#Index-params">Index params</a>.</p>
+<h2 id="Build-index" class="common-anchor-header">Build index<button data-href="#Build-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -72,8 +75,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>この例では、<code translate="no">client</code> という名前の接続済み<code translate="no">MilvusClient</code> と、<code translate="no">your_collection_name</code> という名前の既存のコレクションを使用します。このコレクションには、<code translate="no">your_vector_field_name</code> という名前の5次元<code translate="no">FLOAT_VECTOR</code> フィールドがあります。SDKの互換性については<a href="/docs/ja/install-pymilvus.md">「Milvus Python SDKのインストール」を</a>、スキーマおよび接続設定については<a href="/docs/ja/create-collection.md">「コレクションの作成」を</a>参照してください。この例を自身の埋め込みデータに適用する際は、フィールド名とクエリ次元を合わせて置き換えてください。</p>
-<p><code translate="no">add_index()</code> を使用してインデックスパラメータを定義し、<code translate="no">create_index()</code> でインデックスを構築します。</p>
+    </button></h2><p>This example uses a connected <code translate="no">MilvusClient</code> named <code translate="no">client</code> and an existing collection named <code translate="no">your_collection_name</code>. The collection has a five-dimensional <code translate="no">FLOAT_VECTOR</code> field named <code translate="no">your_vector_field_name</code>. See <a href="/docs/ja/install-pymilvus.md">Install Milvus Python SDK</a> for SDK compatibility and <a href="/docs/ja/create-collection.md">Create Collection</a> for the schema and connection setup. Replace the field name and query dimension together when adapting the example to your embeddings.</p>
+<p>Define the index parameters with <code translate="no">add_index()</code>, then build the index with <code translate="no">create_index()</code>.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 <span class="hljs-comment"># Prepare index building params</span>
@@ -95,19 +98,19 @@ client.create_index(
     index_params=index_params
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>この設定では：</p>
+<p>In this configuration:</p>
 <ul>
-<li><p><code translate="no">index_type</code>: 構築するインデックスのタイプ。この例では、値を<code translate="no">HNSW</code> に設定します。</p></li>
-<li><p><code translate="no">metric_type</code>: ベクトル間の距離を計算するために使用されるメソッド。サポートされている値には、<code translate="no">COSINE</code> 、<code translate="no">L2</code> 、および<code translate="no">IP</code> があります。詳細については、「<a href="/docs/ja/metric.md">メトリックタイプ</a>」を参照してください。</p></li>
-<li><p><code translate="no">params</code>: インデックスの構築に関する追加の設定オプション。</p>
+<li><p><code translate="no">index_type</code>: The type of index to be built. In this example, set the value to <code translate="no">HNSW</code>.</p></li>
+<li><p><code translate="no">metric_type</code>: The method used to calculate the distance between vectors. Supported values include <code translate="no">COSINE</code>, <code translate="no">L2</code>, and <code translate="no">IP</code>. For details, refer to <a href="/docs/ja/metric.md">Metric Types</a>.</p></li>
+<li><p><code translate="no">params</code>: Additional configuration options for building the index.</p>
 <ul>
-<li><p><code translate="no">M</code>: 各ノードが接続できる近傍ノードの最大数。</p></li>
-<li><p><code translate="no">efConstruction</code>: インデックス構築時に接続の対象として検討される候補となる近傍の数。</p></li>
+<li><p><code translate="no">M</code>: Maximum number of neighbors each node can connect to.</p></li>
+<li><p><code translate="no">efConstruction</code>: Number of candidate neighbors considered for connection during index construction.</p></li>
 </ul>
-<p>この例では、<code translate="no">M=64</code> および<code translate="no">efConstruction=100</code> をチューニング用のオーバーライドとして設定しています。デフォルト値および許容範囲については、「<a href="/docs/ja/hnsw.md#Index-building-params">インデックス構築パラメータ</a>」を参照してください。</p></li>
+<p>The example sets <code translate="no">M=64</code> and <code translate="no">efConstruction=100</code> as tuning overrides. For defaults and accepted ranges, see <a href="/docs/ja/hnsw.md#Index-building-params">Index building params</a>.</p></li>
 </ul>
-<p>コレクションとそのインデックスを同時に作成するには、<code translate="no">create_collection()</code> にインデックスパラメータを渡します。詳細については、「<a href="/docs/ja/create-collection.md">コレクションの作成</a>」を参照してください。</p>
-<h2 id="Search-on-index" class="common-anchor-header">インデックスでの検索<button data-href="#Search-on-index" class="anchor-icon" translate="no">
+<p>To create a collection and its index together, pass the index parameters to <code translate="no">create_collection()</code>. For details, see <a href="/docs/ja/create-collection.md">Create Collection</a>.</p>
+<h2 id="Search-on-index" class="common-anchor-header">Search on index<button data-href="#Search-on-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -122,7 +125,7 @@ client.create_index(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>インデックスの構築とエンティティの挿入が完了したら、コレクションを読み込み、そのベクトルフィールドを検索します。通常のkNN検索を行う場合は、<code translate="no">ef</code> を少なくとも<code translate="no">limit</code> に設定してください。</p>
+    </button></h2><p>After building the index and inserting entities, load the collection and search its vector field. For ordinary kNN searches, set <code translate="no">ef</code> to at least <code translate="no">limit</code>.</p>
 <pre><code translate="no" class="language-python">search_params = {
     <span class="hljs-string">&quot;params&quot;</span>: {
         <span class="hljs-string">&quot;ef&quot;</span>: <span class="hljs-number">10</span>, <span class="hljs-comment"># Number of neighbors to consider during the search</span>
@@ -139,15 +142,15 @@ res = client.search(
     search_params=search_params
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>この設定では：</p>
+<p>In this configuration:</p>
 <ul>
-<li><p><code translate="no">params</code>: インデックスでの検索に関する追加の設定オプション。</p>
+<li><p><code translate="no">params</code>: Additional configuration options for searching on the index.</p>
 <ul>
-<li><code translate="no">ef</code>: 検索時に考慮する近傍の数。</li>
+<li><code translate="no">ef</code>: Number of neighbors to consider during a search.</li>
 </ul>
-<p><code translate="no">HNSW</code> インデックスで使用可能な検索パラメータの詳細については、「<a href="/docs/ja/hnsw.md#Index-specific-search-params">インデックス固有の検索パラメータ</a>」を参照してください。</p></li>
+<p>To learn more search parameters available for the <code translate="no">HNSW</code> index, refer to <a href="/docs/ja/hnsw.md#Index-specific-search-params">Index-specific search params</a>.</p></li>
 </ul>
-<h2 id="Index-params" class="common-anchor-header">インデックスパラメータ<button data-href="#Index-params" class="anchor-icon" translate="no">
+<h2 id="Index-params" class="common-anchor-header">Index params<button data-href="#Index-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -162,8 +165,8 @@ res = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>以下の表に、インデックスの構築および検索に関するパラメータを一覧表示します。省略したパラメータについては、サーバー設定によってデフォルト値が上書きされる場合があります。</p>
-<h3 id="Index-building-params" class="common-anchor-header">インデックス構築パラメータ<button data-href="#Index-building-params" class="anchor-icon" translate="no">
+    </button></h2><p>The tables below list the parameters for index building and search. Server settings can override the defaults for parameters you omit.</p>
+<h3 id="Index-building-params" class="common-anchor-header">Index building params<button data-href="#Index-building-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -178,28 +181,28 @@ res = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>次の表は、<code translate="no">params</code> で<a href="/docs/ja/hnsw.md#Build-index">インデックスを構築する</a>際に設定可能なパラメータを一覧表示したものです。</p>
+    </button></h3><p>The following table lists the parameters that can be configured in <code translate="no">params</code> when <a href="/docs/ja/hnsw.md#Build-index">building an index</a>.</p>
 <table>
    <tr>
-     <th><p>パラメータ</p></th>
-     <th><p>説明</p></th>
-     <th><p>値の範囲</p></th>
-     <th><p>チューニングの推奨事項</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Description</p></th>
+     <th><p>Value Range</p></th>
+     <th><p>Tuning Suggestion</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">M</code></p></td>
-     <td><p>グラフ内の各ノードが持つことができる接続（エッジ）の最大数。これには、発信エッジと受信エッジの両方が含まれます。このパラメータは、インデックスの構築と検索の両方に直接影響します。</p></td>
-     <td><p><strong>型</strong>：整数<strong>範囲</strong>：[2, 2048]</p><p><strong>デフォルト値</strong>：<code translate="no">30</code> （ノードあたり最大 30 の発信エッジおよび 30 の受信エッジ）</p></td>
-     <td><p><code translate="no">M</code> を大きくすると、一般的に<strong>精度は向上しますが</strong>、<strong>メモリ負荷が増加し</strong>、<strong>インデックスの構築と検索の両方が遅くなります</strong>。高次元のデータセットや、高いリコール率が不可欠な場合は、<code translate="no">M</code> の値を増やすことを検討してください。</p><p>メモリ使用量や検索速度が最優先事項である場合は、<code translate="no">M</code> の値を小さくすることを検討してください。</p><p>ほとんどの場合、[5, 100] の範囲内の値を設定することをお勧めします。</p></td>
+     <td><p>Maximum number of connections （or edges) each node can have in the graph, including both outgoing and incoming edges. This parameter directly affects both index construction and search.</p></td>
+     <td><p><strong>Type</strong>: Integer <strong>Range</strong>: [2, 2048]</p><p><strong>Default value</strong>: <code translate="no">30</code> (up to 30 outgoing and 30 incoming edges per node)</p></td>
+     <td><p>A larger <code translate="no">M</code> generally leads to <strong>higher accuracy</strong> but <strong>increases memory overhead</strong> and <strong>slows down both index building and search</strong>. Consider increasing <code translate="no">M</code> for datasets with high dimensionality or when high recall is crucial.</p><p>Consider decreasing <code translate="no">M</code> when memory usage and search speed are primary concerns.</p><p>In most cases, we recommend you set a value within this range: [5, 100].</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">efConstruction</code></p></td>
-     <td><p>インデックス構築時に接続の対象として検討される候補の近傍の数。新しい要素ごとに評価される候補のプールは大きくなりますが、実際に確立される接続の最大数は、依然として<code translate="no">M</code> によって制限されます。</p></td>
-     <td><p><strong>型</strong>: 整数<strong>範囲</strong>: [1,<em>int_max</em>]</p><p><strong>デフォルト値</strong>：<code translate="no">360</code></p></td>
-     <td><p><code translate="no">efConstruction</code> の値を大きくすると、探索される潜在的な接続が増えるため、通常は<strong>より正確なインデックス</strong>が得られます。ただし、これにより<strong>インデックス作成時間が長くなり、</strong>作成中の<strong>メモリ使用量も増加します。</strong>特にインデックス作成時間がそれほど重要でないシナリオでは、精度を向上させるために<code translate="no">efConstruction</code> の値を増やすことを検討してください。</p><p>リソースの制約が懸念される場合は、インデックスの構築を高速化するために、<code translate="no">efConstruction</code> の値を小さくすることを検討してください。</p><p>ほとんどの場合、[50, 500] の範囲内の値を設定することをお勧めします。</p></td>
+     <td><p>Number of candidate neighbors considered for connection during index construction. A larger pool of candidates is evaluated for each new element, but the maximum number of connections actually established is still limited by <code translate="no">M</code>.</p></td>
+     <td><p><strong>Type</strong>: Integer <strong>Range</strong>: [1, <em>int_max</em>]</p><p><strong>Default value</strong>: <code translate="no">360</code></p></td>
+     <td><p>A higher <code translate="no">efConstruction</code> typically results in a <strong>more accurate index</strong>, as more potential connections are explored. However, this also leads to <strong>longer indexing time and increased memory usage</strong> during construction. Consider increasing <code translate="no">efConstruction</code> for improved accuracy, especially in scenarios where indexing time is less critical.</p><p>Consider decreasing <code translate="no">efConstruction</code> to speed up index construction when resource constraints are a concern.</p><p>In most cases, we recommend you set a value within this range: [50, 500].</p></td>
    </tr>
 </table>
-<h3 id="Index-specific-search-params" class="common-anchor-header">インデックス固有の検索パラメータ<button data-href="#Index-specific-search-params" class="anchor-icon" translate="no">
+<h3 id="Index-specific-search-params" class="common-anchor-header">Index-specific search params<button data-href="#Index-specific-search-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -214,22 +217,22 @@ res = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>次の表は、<a href="/docs/ja/hnsw.md#Search-on-index">インデックスでの検索時に</a> <code translate="no">search_params.params</code> で設定できるパラメータの一覧です。</p>
+    </button></h3><p>The following table lists the parameters that can be configured in <code translate="no">search_params.params</code> when <a href="/docs/ja/hnsw.md#Search-on-index">searching on the index</a>.</p>
 <table>
    <tr>
-     <th><p>パラメータ</p></th>
-     <th><p>説明</p></th>
-     <th><p>値の範囲</p></th>
-     <th><p>調整のヒント</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Description</p></th>
+     <th><p>Value Range</p></th>
+     <th><p>Tuning Suggestion</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">ef</code></p></td>
-     <td><p>最近傍検索時の検索範囲を制御します。これは、潜在的な最近傍として訪問・評価されるノードの数を決定します。このパラメータは検索プロセスにのみ影響し、グラフの最下層にのみ適用されます。</p></td>
-     <td><p><strong>型</strong>：整数<strong>範囲</strong>：[1,<em>int_max</em>]</p><p><strong>デフォルト値</strong>：通常のkNN検索の場合は<code translate="no">max(limit, 16)</code> 、範囲検索の場合は<code translate="no">512</code> 。</p><p>通常のkNN検索の場合、明示的に指定された<code translate="no">ef</code> は、<code translate="no">limit</code> （返す最近傍の数）以上でなければなりません。</p></td>
-     <td><p><code translate="no">ef</code> を大きくすると、より多くの潜在的な近傍が考慮されるため、一般的に<strong>検索精度が向上</strong>します。ただし、これにより<strong>検索時間も増加します</strong>。高いリコール率の達成が重要で、検索速度がそれほど問題にならない場合は、<code translate="no">ef</code> の増加を検討してください。</p><p>特に、精度のわずかな低下が許容できるシナリオでは、検索速度を優先するために<code translate="no">ef</code> を小さくすることを検討してください。</p><p>ほとんどの場合、[K, 10K] の範囲内の値を設定することをお勧めします。</p></td>
+     <td><p>Controls the breadth of search during nearest neighbor retrieval. It determines how many nodes are visited and evaluated as potential nearest neighbors.  This parameter affects only the search process and applies exclusively to the bottom layer of the graph.</p></td>
+     <td><p><strong>Type</strong>: Integer <strong>Range</strong>: [1, <em>int_max</em>]</p><p><strong>Default value</strong>: <code translate="no">max(limit, 16)</code> for ordinary kNN search; <code translate="no">512</code> for range search.</p><p>For ordinary kNN search, an explicit <code translate="no">ef</code> must be greater than or equal to <code translate="no">limit</code> (the number of nearest neighbors to return).</p></td>
+     <td><p>A larger <code translate="no">ef</code> generally leads to <strong>higher search accuracy</strong> as more potential neighbors are considered. However, this also <strong>increases search time</strong>. Consider increasing <code translate="no">ef</code> when achieving high recall is critical and search speed is less of a concern.</p><p>Consider decreasing <code translate="no">ef</code> to prioritize faster searches, especially in scenarios where a slight reduction in accuracy is acceptable.</p><p>In most cases, we recommend you set a value within this range: [K, 10K].</p></td>
    </tr>
 </table>
-<h2 id="Evaluate-the-trade-offs" class="common-anchor-header">トレードオフの評価<button data-href="#Evaluate-the-trade-offs" class="anchor-icon" translate="no">
+<h2 id="Evaluate-the-trade-offs" class="common-anchor-header">Evaluate the trade-offs<button data-href="#Evaluate-the-trade-offs" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -244,11 +247,11 @@ res = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>例示された値を本番環境のデフォルト値として扱うのではなく、代表的なデータとクエリを使用してパラメータを選択してください：</p>
+    </button></h2><p>Use representative data and queries to choose parameters rather than treating the example values as production defaults:</p>
 <ol>
-<li>埋め込みモデル、メトリック、<code translate="no">limit</code> 、および<a href="/docs/ja/filtered-search.md">フィルタ条件</a>を固定します。たとえば<a href="/docs/ja/flat.md">FLAT</a>インデックスを使用して、同じクエリと対象となるエンティティに対して正確な最近傍検索を実行し、リコール率を測定します。</li>
-<li>目標とする同時実行数で、検索時の<code translate="no">ef</code> をスウィープします。リコール率、スループット、テールレイテンシをまとめて記録します。<code translate="no">ef</code> を増やしても、インデックスの再構築は必要ありません。</li>
-<li>検索時のチューニングで目標を達成できない場合は、<code translate="no">M</code> と<code translate="no">efConstruction</code> を異なる値に設定して再構築したインデックスを比較してください。インデックスの構築時間とメモリ使用量、およびクエリのパフォーマンスを記録してください。</li>
-<li>テストには、データ読み込み戦略とキャッシュの状態を含めてください。<a href="/docs/ja/tiered-storage-overview.md">階層型ストレージ</a>を使用する場合は、キャッシュされていないデータを取得するクエリと、ウォームキャッシュ内のデータを取得するクエリを別々に測定してください。</li>
+<li>Fix the embedding model, metric, <code translate="no">limit</code>, and any <a href="/docs/ja/filtered-search.md">filter conditions</a>. Compute exact nearest neighbors for the same queries and eligible entities, for example with a <a href="/docs/ja/flat.md">FLAT</a> index, to measure recall.</li>
+<li>Sweep the search-time <code translate="no">ef</code> at your target concurrency. Record recall, throughput, and tail latency together. Increasing <code translate="no">ef</code> does not require rebuilding the index.</li>
+<li>If search-time tuning cannot meet the target, compare rebuilt indexes with different <code translate="no">M</code> and <code translate="no">efConstruction</code>. Record index build time and memory use as well as query performance.</li>
+<li>Include the loading strategy and cache state in the test. When using <a href="/docs/ja/tiered-storage-overview.md">Tiered Storage</a>, measure queries that fetch uncached data separately from warm-cache queries.</li>
 </ol>
-<p>メモリの制約がある場合や、リコール率およびレイテンシの目標値が異なる場合は、『<a href="/docs/ja/index-explained.md">Index Explained</a>』に記載されている代替案を比較してください。</p>
+<p>For memory constraints or a different recall and latency target, compare the alternatives in <a href="/docs/ja/index-explained.md">Index Explained</a>.</p>

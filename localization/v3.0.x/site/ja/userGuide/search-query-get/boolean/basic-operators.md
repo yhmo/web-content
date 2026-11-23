@@ -1,11 +1,12 @@
 ---
 id: basic-operators.md
-title: 基本的な演算子
+title: Basic Operators
 summary: >-
-  比較演算子、範囲演算子、算術演算子、論理演算子、およびNULL演算子を使用して、エンティティをフィルタリングします。Milvus 3.0.3以降では、IS
-  NULLおよびIS NOT NULLも通常のベクトルフィールドに対応しています。
+  Use comparison, range, arithmetic, logical, and NULL operators to filter
+  entities. Starting in Milvus 3.0.3, IS NULL and IS NOT NULL also support
+  ordinary vector fields.
 ---
-<h1 id="Basic-Operators" class="common-anchor-header">基本的な演算子<button data-href="#Basic-Operators" class="anchor-icon" translate="no">
+<h1 id="Basic-Operators" class="common-anchor-header">Basic Operators<button data-href="#Basic-Operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,12 +21,11 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Milvus では、エンティティのフィルタリングのために、比較演算子、範囲演算子、算術演算子、論理演算子、および NULL 演算子が提供されています。各演算子は、特定のフィールド型に対応しています。</p>
+    </button></h1><p>Milvus provides comparison, range, arithmetic, logical, and NULL operators for filtering entities. Each operator supports specific field types.</p>
 <div class="alert note">
-<p>フィルタリング式の左辺にあるリテラルは、以下の例で使用されている<code translate="no">status</code> や<code translate="no">color</code> などのコレクションフィールド名、あるいは<code translate="no">filter = 'struct[0][subfield] &gt; 10'</code> のように特定の要素インデックスにあるStructArrayサブフィールド名のいずれかです。</p>
-<p>StructArray フィールドにおけるスカラーフィルタリングの詳細については、「<a href="/docs/ja/struct-array-operators.md">StructArray 演算子</a>」を参照してください。</p>
+<p>The left operand can be a collection field, such as <code translate="no">status</code>, or a StructArray subfield at a specific element index, such as <code translate="no">struct[0][subfield] &gt; 10</code>. See <a href="/docs/ja/struct-array-operators.md">StructArray Operators</a>.</p>
 </div>
-<h2 id="Comparison-operators" class="common-anchor-header">比較演算子<button data-href="#Comparison-operators" class="anchor-icon" translate="no">
+<h2 id="Comparison-operators" class="common-anchor-header">Comparison operators<button data-href="#Comparison-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -40,8 +40,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>比較演算子は、等価、不等価、またはサイズに基づいてデータをフィルタリングするために使用されます。これらは数値フィールドおよびテキストフィールドに適用可能です。</p>
-<h3 id="Supported-comparison-operators" class="common-anchor-header">サポートされている比較演算子<button data-href="#Supported-comparison-operators" class="anchor-icon" translate="no">
+    </button></h2><p>Comparison operators are used to filter data based on equality, inequality, or size. They are applicable to numeric and text fields.</p>
+<h3 id="Supported-comparison-operators" class="common-anchor-header">Supported comparison operators<button data-href="#Supported-comparison-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -57,14 +57,14 @@ summary: >-
         ></path>
       </svg>
     </button></h3><ul>
-<li><p><code translate="no">==</code> (等しい)</p></li>
-<li><p><code translate="no">!=</code> (不等号)</p></li>
-<li><p><code translate="no">&gt;</code> (より大きい)</p></li>
-<li><p><code translate="no">&lt;</code> (より小さい)</p></li>
-<li><p><code translate="no">&gt;=</code> (以上)</p></li>
-<li><p><code translate="no">&lt;=</code> (以下)</p></li>
+<li><p><code translate="no">==</code> (Equal to)</p></li>
+<li><p><code translate="no">!=</code> (Not equal to)</p></li>
+<li><p><code translate="no">&gt;</code> (Greater than)</p></li>
+<li><p><code translate="no">&lt;</code> (Less than)</p></li>
+<li><p><code translate="no">&gt;=</code> (Greater than or equal to)</p></li>
+<li><p><code translate="no">&lt;=</code> (Less than or equal to)</p></li>
 </ul>
-<h3 id="Example-1-Filtering-with-equal-to-" class="common-anchor-header">例 1: 「等しい」によるフィルタリング (<code translate="no">==</code>)<button data-href="#Example-1-Filtering-with-equal-to-" class="anchor-icon" translate="no">
+<h3 id="Example-1-Filtering-with-equal-to-" class="common-anchor-header">Example 1: Filtering with equal to (<code translate="no">==</code>)<button data-href="#Example-1-Filtering-with-equal-to-" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -79,16 +79,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">status</code> という名前のフィールドがあり、<code translate="no">status</code> が「active」であるすべてのエンティティを検索したいとします。等号演算子<code translate="no">==</code> を使用できます：</p>
+    </button></h3><p>Assume you have a field named <code translate="no">status</code> and you want to find all entities where <code translate="no">status</code> is "active". You can use the equality operator <code translate="no">==</code>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;status == &quot;active&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -106,7 +106,7 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;status == &quot;active&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-2-Filtering-with-not-equal-to-" class="common-anchor-header">例 2: 「<code translate="no">!=</code> 」と等しくない条件でのフィルタリング<button data-href="#Example-2-Filtering-with-not-equal-to-" class="anchor-icon" translate="no">
+<h3 id="Example-2-Filtering-with-not-equal-to-" class="common-anchor-header">Example 2: Filtering with not equal to (<code translate="no">!=</code>)<button data-href="#Example-2-Filtering-with-not-equal-to-" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -121,16 +121,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">status</code> が「inactive」でないエンティティを検索するには：</p>
+    </button></h3><p>To find entities where <code translate="no">status</code> is not "inactive":</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;status != &quot;inactive&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -148,7 +148,7 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;status != &quot;inactive&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-3-Filtering-with-greater-than-" class="common-anchor-header">例 3: 「より大きい」条件でのフィルタリング (<code translate="no">&gt;</code>)<button data-href="#Example-3-Filtering-with-greater-than-" class="anchor-icon" translate="no">
+<h3 id="Example-3-Filtering-with-greater-than-" class="common-anchor-header">Example 3: Filtering with greater than (<code translate="no">&gt;</code>)<button data-href="#Example-3-Filtering-with-greater-than-" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -163,16 +163,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">age</code> が 30 より大きいすべてのエンティティを検索するには：</p>
+    </button></h3><p>If you want to find all entities with an <code translate="no">age</code> greater than 30:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;age &gt; 30&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -190,7 +190,7 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;age &gt; 30&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-4-Filtering-with-less-than" class="common-anchor-header">例 4: 「より小さい」条件でのフィルタリング<button data-href="#Example-4-Filtering-with-less-than" class="anchor-icon" translate="no">
+<h3 id="Example-4-Filtering-with-less-than" class="common-anchor-header">Example 4: Filtering with less than<button data-href="#Example-4-Filtering-with-less-than" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -205,16 +205,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">price</code> が100未満のエンティティを検索するには：</p>
+    </button></h3><p>To find entities where <code translate="no">price</code> is less than 100:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;price &lt; 100&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -232,7 +232,7 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;price &lt; 100&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-5-Filtering-with-greater-than-or-equal-to-" class="common-anchor-header">例 5: 「以上」でのフィルタリング (<code translate="no">&gt;=</code>)<button data-href="#Example-5-Filtering-with-greater-than-or-equal-to-" class="anchor-icon" translate="no">
+<h3 id="Example-5-Filtering-with-greater-than-or-equal-to-" class="common-anchor-header">Example 5: Filtering with greater than or equal to (<code translate="no">&gt;=</code>)<button data-href="#Example-5-Filtering-with-greater-than-or-equal-to-" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -247,16 +247,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">rating</code> が 4 以上であるすべてのエンティティを検索するには：</p>
+    </button></h3><p>If you want to find all entities with <code translate="no">rating</code> greater than or equal to 4:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;rating &gt;= 4&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -274,7 +274,7 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;rating &gt;= 4&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-6-Filtering-with-less-than-or-equal-to" class="common-anchor-header">例 6: 「以下」によるフィルタリング<button data-href="#Example-6-Filtering-with-less-than-or-equal-to" class="anchor-icon" translate="no">
+<h3 id="Example-6-Filtering-with-less-than-or-equal-to" class="common-anchor-header">Example 6: Filtering with less than or equal to<button data-href="#Example-6-Filtering-with-less-than-or-equal-to" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -289,16 +289,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">discount</code> が10%以下のエンティティを検索するには：</p>
+    </button></h3><p>To find entities with <code translate="no">discount</code> less than or equal to 10%:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;discount &lt;= 10&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -316,7 +316,7 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;discount &lt;= 10&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Range-operators" class="common-anchor-header">範囲演算子<button data-href="#Range-operators" class="anchor-icon" translate="no">
+<h2 id="Range-operators" class="common-anchor-header">Range operators<button data-href="#Range-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -331,17 +331,17 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>範囲演算子は、特定の値のセットに基づいてデータをフィルタリングするのに役立ちます。Milvusは、集合への所属確認のために<code translate="no">IN</code> をサポートしています。</p>
-<p><code translate="no">color</code> が「red」、「green」、または「blue」のいずれかであるすべてのエンティティを検索するには：</p>
+    </button></h2><p>Range operators help filter data based on a specific set of values. Milvus supports <code translate="no">IN</code> for set membership checks.</p>
+<p>If you want to find all entities where the <code translate="no">color</code> is either "red", "green", or "blue":</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;color in [&quot;red&quot;, &quot;green&quot;, &quot;blue&quot;]&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -359,8 +359,7 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;color in [&quot;red&quot;, &quot;green&quot;, &quot;blue&quot;]&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>これは、値のリストへの所属を確認したい場合に役立ちます。</p>
-<h2 id="Pattern-matching-operators" class="common-anchor-header">パターンマッチング演算子<button data-href="#Pattern-matching-operators" class="anchor-icon" translate="no">
+<h2 id="Pattern-matching-operators" class="common-anchor-header">Pattern matching operators<button data-href="#Pattern-matching-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -375,22 +374,22 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>パターンマッチング演算子は、ワイルドカードパターンや正規表現に基づいて文字列値をフィルタリングするのに役立ちます。</p>
+    </button></h2><p>Pattern matching operators help filter string values based on wildcard patterns or regular expressions.</p>
 <ul>
-<li><p><code translate="no">LIKE</code>: 文字列値に対する単純なワイルドカードパターンに一致させるために使用されます。たとえば、<code translate="no">name LIKE &quot;Prod%&quot;</code> は、<code translate="no">Prod</code> で始まる値に一致します。</p></li>
-<li><p><code translate="no">=~</code>: 文字列値を RE2 正規表現と照合するために使用します。たとえば、<code translate="no">code =~ &quot;E[0-9]{4}&quot;</code> は、<code translate="no">E1001</code> のようなエラーコードを含む値に一致します。</p></li>
-<li><p><code translate="no">!~</code>: RE2正規表現に一致する文字列値を除外するために使用します。これは、<code translate="no">NOT (field =~ &quot;pattern&quot;)</code> と同等です。</p></li>
+<li><p><code translate="no">LIKE</code>: Used to match simple wildcard patterns on string values. For example, <code translate="no">name LIKE &quot;Prod%&quot;</code> matches values that start with <code translate="no">Prod</code>.</p></li>
+<li><p><code translate="no">=~</code>: Used to match a string value with an RE2 regular expression. For example, <code translate="no">code =~ &quot;E[0-9]{4}&quot;</code> matches values that contain an error code such as <code translate="no">E1001</code>.</p></li>
+<li><p><code translate="no">!~</code>: Used to exclude string values that match an RE2 regular expression. This is equivalent to <code translate="no">NOT (field =~ &quot;pattern&quot;)</code>.</p></li>
 </ul>
-<p><code translate="no">name</code> の先頭が<code translate="no">Prod</code> で始まるエンティティを検索するには：</p>
+<p>To find entities where <code translate="no">name</code> starts with <code translate="no">Prod</code>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;name LIKE &quot;Prod%&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -408,16 +407,16 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;name LIKE &quot;Prod%&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">code</code> に<code translate="no">E1001</code> などのエラーコードが含まれるエンティティを検索するには：</p>
+<p>To find entities whose <code translate="no">code</code> contains an error code such as <code translate="no">E1001</code>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;code =~ &quot;E[0-9]{4}&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -435,16 +434,16 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;code =~ &quot;E[0-9]{4}&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">message</code> が<code translate="no">DEBUG</code> で始まるエンティティを除外するには：</p>
+<p>To exclude entities whose <code translate="no">message</code> starts with <code translate="no">DEBUG</code>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;message !~ &quot;^DEBUG&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -462,8 +461,8 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;message !~ &quot;^DEBUG&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">LIKE</code> と正規表現の選択、サポートされているフィールドタイプ、正規表現の構文、エスケープ規則、およびパフォーマンスに関する詳細については、<a href="/docs/ja/pattern-matching.md">「パターンマッチング</a>」を参照してください。Milvusでは、<code translate="no">VARCHAR</code> フィールドまたはJSON文字列パスに対して<code translate="no">NGRAM</code> インデックスを構築し、対象となるパターンマッチングフィルターを高速化することも可能です。詳細については、<a href="/docs/ja/ngram.md">「NGRAM」</a>を参照してください。</p>
-<h2 id="Arithmetic-operators" class="common-anchor-header">算術演算子<button data-href="#Arithmetic-operators" class="anchor-icon" translate="no">
+<p>For syntax, escaping, field support, and acceleration options such as <code translate="no">NGRAM</code>, see <a href="/docs/ja/pattern-matching.md">Pattern Matching</a>.</p>
+<h2 id="Arithmetic-operators" class="common-anchor-header">Arithmetic operators<button data-href="#Arithmetic-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -478,8 +477,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>算術演算子を使用すると、数値フィールドを用いた計算に基づいた条件を作成できます。</p>
-<h3 id="Supported-arithmetic-operators" class="common-anchor-header">サポートされている算術演算子<button data-href="#Supported-arithmetic-operators" class="anchor-icon" translate="no">
+    </button></h2><p>Arithmetic operators allow you to create conditions based on calculations involving numeric fields.</p>
+<h3 id="Supported-arithmetic-operators" class="common-anchor-header">Supported arithmetic operators<button data-href="#Supported-arithmetic-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -495,14 +494,14 @@ summary: >-
         ></path>
       </svg>
     </button></h3><ul>
-<li><p><code translate="no">+</code> (加算)</p></li>
-<li><p><code translate="no">-</code> (減算)</p></li>
-<li><p><code translate="no">*</code> (乗算)</p></li>
-<li><p><code translate="no">/</code> (除算)</p></li>
-<li><p><code translate="no">%</code> (剰余)</p></li>
-<li><p><code translate="no">**</code> (累乗)</p></li>
+<li><p><code translate="no">+</code> (Addition)</p></li>
+<li><p><code translate="no">-</code> (Subtraction)</p></li>
+<li><p><code translate="no">*</code> (Multiplication)</p></li>
+<li><p><code translate="no">/</code> (Division)</p></li>
+<li><p><code translate="no">%</code> (Modulus)</p></li>
+<li><p><code translate="no">**</code> (Exponentiation)</p></li>
 </ul>
-<h3 id="Example-1-Using-modulus-" class="common-anchor-header">例 1: 剰余演算の使用 (<code translate="no">%</code>)<button data-href="#Example-1-Using-modulus-" class="anchor-icon" translate="no">
+<h3 id="Example-1-Using-modulus-" class="common-anchor-header">Example 1: Using modulus (<code translate="no">%</code>)<button data-href="#Example-1-Using-modulus-" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -517,16 +516,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">id</code> が偶数（つまり 2 で割り切れる）となるエンティティを検索するには：</p>
+    </button></h3><p>To find entities where the <code translate="no">id</code> is an even number (i.e., divisible by 2):</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;id % 2 == 0&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -544,7 +543,7 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;id % 2 == 0&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-2-Using-exponentiation-" class="common-anchor-header">例 2: 累乗の使用 (<code translate="no">**</code>)<button data-href="#Example-2-Using-exponentiation-" class="anchor-icon" translate="no">
+<h3 id="Example-2-Using-exponentiation-" class="common-anchor-header">Example 2: Using exponentiation (<code translate="no">**</code>)<button data-href="#Example-2-Using-exponentiation-" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -559,16 +558,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">price</code> の 2 乗が 1000 より大きいエンティティを検索するには：</p>
+    </button></h3><p>To find entities where <code translate="no">price</code> raised to the power of 2 is greater than 1000:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;price ** 2 &gt; 1000&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -587,9 +586,9 @@ summary: >-
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;price ** 2 &gt; 1000&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>算術演算子は、<strong>単一のフィールドと定数を含む</strong>式のみをサポートしています。<code translate="no">price * quantity &gt; 100</code> のように、2つのフィールドを算術的に組み合わせた式は現在サポートされておらず、エラーが返されます。複数のフィールドから計算された派生値でフィルタリングする必要がある場合は、挿入時に事前に計算された値を別のスカラーフィールドとして保存することを検討してください。</p>
+<p>Arithmetic operators only support expressions involving a <strong>single field and a constant</strong>. Expressions that combine two fields arithmetically — such as <code translate="no">price * quantity &gt; 100</code> — are not currently supported and will return an error. If you need to filter on a derived value computed from multiple fields, consider storing the pre-computed value as a separate scalar field at insert time.</p>
 </div>
-<h2 id="Bitwise-operators" class="common-anchor-header">ビット演算子<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.0+</span><button data-href="#Bitwise-operators" class="anchor-icon" translate="no">
+<h2 id="Bitwise-operators" class="common-anchor-header">Bitwise operators<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.0+</span><button data-href="#Bitwise-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -604,9 +603,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>ビット演算子は、権限、機能フラグ、ステータスビットなど、整数フィールドが複数のフラグをエンコードしている場合に役立ちます。フィルタ式でこれらの演算子を使用することで、整数値内の個々のビットを確認、結合、または比較することができます。</p>
-<p>スカラーフィールドの場合、ビット演算子は、<code translate="no">INT8</code> 、<code translate="no">INT16</code> 、<code translate="no">INT32</code> 、<code translate="no">INT64</code> などの整数フィールド型に適用されます。</p>
-<h3 id="Supported-bitwise-operators" class="common-anchor-header">サポートされているビット演算子<button data-href="#Supported-bitwise-operators" class="anchor-icon" translate="no">
+    </button></h2><p>Bitwise operators are useful when an integer field encodes multiple flags, such as permissions, feature flags, or status bits. You can use these operators in filter expressions to check, combine, or compare individual bits in an integer value.</p>
+<p>For scalar fields, bitwise operators apply to integer field types, such as <code translate="no">INT8</code>, <code translate="no">INT16</code>, <code translate="no">INT32</code>, and <code translate="no">INT64</code>.</p>
+<h3 id="Supported-bitwise-operators" class="common-anchor-header">Supported bitwise operators<button data-href="#Supported-bitwise-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -623,15 +622,15 @@ summary: >-
       </svg>
     </button></h3><table>
 <thead>
-<tr><th>演算子</th><th>名前</th><th>代表的な用途</th></tr>
+<tr><th>Operator</th><th>Name</th><th>Typical use</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">&amp;</code></td><td>ビット単位の AND</td><td>特定のビットがセットされているかどうかを確認します。</td></tr>
-<tr><td><code translate="no">|</code></td><td>ビット単位のOR</td><td>比較の前にビットを結合します。</td></tr>
-<tr><td><code translate="no">^</code></td><td>ビット単位のXOR</td><td>2つの値のビットの違いを比較します。</td></tr>
+<tr><td><code translate="no">&amp;</code></td><td>Bitwise AND</td><td>Check whether specific bits are set.</td></tr>
+<tr><td><code translate="no">|</code></td><td>Bitwise OR</td><td>Combine bits before comparison.</td></tr>
+<tr><td><code translate="no">^</code></td><td>Bitwise XOR</td><td>Compare bit differences between two values.</td></tr>
 </tbody>
 </table>
-<h3 id="Example-Filtering-by-permission-bits" class="common-anchor-header">例：権限ビットによるフィルタリング<button data-href="#Example-Filtering-by-permission-bits" class="anchor-icon" translate="no">
+<h3 id="Example-Filtering-by-permission-bits" class="common-anchor-header">Example: Filtering by permission bits<button data-href="#Example-Filtering-by-permission-bits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -646,10 +645,10 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">permissions</code> という名前の整数フィールドがあり、その整数の各ビットが権限フラグを表していると仮定します：</p>
+    </button></h3><p>Assume you have an integer field named <code translate="no">permissions</code>, and each bit in the integer represents a permission flag:</p>
 <table>
 <thead>
-<tr><th>アクセス権フラグ</th><th>ビット値</th></tr>
+<tr><th>Permission flag</th><th>Bit value</th></tr>
 </thead>
 <tbody>
 <tr><td><code translate="no">READ</code></td><td><code translate="no">1</code></td></tr>
@@ -658,17 +657,17 @@ summary: >-
 <tr><td><code translate="no">ADMIN</code></td><td><code translate="no">8</code></td></tr>
 </tbody>
 </table>
-<p>たとえば、<code translate="no">permissions = 5</code> の場合、<code translate="no">5 = 1 + 4</code> であるため、<code translate="no">READ</code> および<code translate="no">SHARE</code> のビットがセットされていることを意味します。</p>
-<p><code translate="no">SHARE</code> ビットが設定されているエンティティを検索するには、ビット単位の AND 演算 (<code translate="no">&amp;</code>) を使用します：</p>
+<p>For example, <code translate="no">permissions = 5</code> means that the <code translate="no">READ</code> and <code translate="no">SHARE</code> bits are set, because <code translate="no">5 = 1 + 4</code>.</p>
+<p>To find entities where the <code translate="no">SHARE</code> bit is set, use bitwise AND (<code translate="no">&amp;</code>):</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&quot;(permissions &amp; 4) == 4&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -686,16 +685,16 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;(permissions &amp; 4) == 4&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">WRITE</code><code translate="no">|</code> ビットを設定することで 権限セットが生成されるエンティティを検索するには、ビット単位のAND演算（ ）を使用します：<code translate="no">READ + WRITE + SHARE</code> </p>
+<p>To find entities where setting the <code translate="no">WRITE</code> bit produces the <code translate="no">READ + WRITE + SHARE</code> permission set, use bitwise OR (<code translate="no">|</code>):</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&quot;(permissions | 2) == 7&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -713,16 +712,16 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;(permissions | 2) == 7&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">READ + WRITE + SHARE</code> との違いが<code translate="no">WRITE</code> ビットのみであるエンティティを検索するには、ビット単位の XOR (<code translate="no">^</code>) を使用します:</p>
+<p>To find entities whose permission bits differ from <code translate="no">READ + WRITE + SHARE</code> by only the <code translate="no">WRITE</code> bit, use bitwise XOR (<code translate="no">^</code>):</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&quot;(permissions ^ 7) == 2&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -741,9 +740,9 @@ summary: >-
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;(permissions ^ 7) == 2&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p><code translate="no">(permissions &amp; 4) == 4</code> のように、結果を比較する前に、ビット演算は常に括弧で囲んでください。Milvusは、フィルタ式において<code translate="no">&amp;</code> 、<code translate="no">|</code> 、および<code translate="no">^</code> をサポートしています。ビット単位のNOT演算子（<code translate="no">~</code> ）およびシフト演算子（<code translate="no">&lt;&lt;</code> および<code translate="no">&gt;&gt;</code> ）はサポートされていません。</p>
+<p>Always wrap the bitwise operation in parentheses before comparing the result, such as <code translate="no">(permissions &amp; 4) == 4</code>. Milvus supports <code translate="no">&amp;</code>, <code translate="no">|</code>, and <code translate="no">^</code> in filter expressions. Bitwise NOT (<code translate="no">~</code>) and shift operators (<code translate="no">&lt;&lt;</code> and <code translate="no">&gt;&gt;</code>) are not supported.</p>
 </div>
-<h2 id="Logical-operators" class="common-anchor-header">論理演算子<button data-href="#Logical-operators" class="anchor-icon" translate="no">
+<h2 id="Logical-operators" class="common-anchor-header">Logical operators<button data-href="#Logical-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -758,8 +757,11 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>論理演算子は、複数の条件をより複雑なフィルタ式に組み合わせるために使用されます。これには、<code translate="no">AND</code> 、<code translate="no">OR</code> 、および<code translate="no">NOT</code> が含まれます。</p>
-<h3 id="Supported-logical-operators" class="common-anchor-header">サポートされている論理演算子<button data-href="#Supported-logical-operators" class="anchor-icon" translate="no">
+    </button></h2><p>Logical operators are used to combine multiple conditions into a more complex filter expression. These include <code translate="no">AND</code>, <code translate="no">OR</code>, and <code translate="no">NOT</code>.</p>
+<div class="alert note">
+<p>Each condition can use its own eligible index or scan path; one index type need not serve the entire expression. See <a href="/docs/ja/scalar_index.md">Scalar Index</a>.</p>
+</div>
+<h3 id="Supported-logical-operators" class="common-anchor-header">Supported logical operators<button data-href="#Supported-logical-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -775,11 +777,11 @@ summary: >-
         ></path>
       </svg>
     </button></h3><ul>
-<li><p><code translate="no">AND</code>: 複数の条件を組み合わせ、それらすべてが真でなければならない。</p></li>
-<li><p><code translate="no">OR</code>: 少なくとも1つが真である必要がある条件を組み合わせます。</p></li>
-<li><p><code translate="no">NOT</code>: 条件を否定します。</p></li>
+<li><p><code translate="no">AND</code>: Combines multiple conditions that must all be true.</p></li>
+<li><p><code translate="no">OR</code>: Combines conditions where at least one must be true.</p></li>
+<li><p><code translate="no">NOT</code>: Negates a condition.</p></li>
 </ul>
-<h3 id="Example-1-Using-AND-to-combine-conditions" class="common-anchor-header">例 1: `<code translate="no">AND</code> ` を使用して条件を組み合わせる<button data-href="#Example-1-Using-AND-to-combine-conditions" class="anchor-icon" translate="no">
+<h3 id="Example-1-Using-AND-to-combine-conditions" class="common-anchor-header">Example 1: Using <code translate="no">AND</code> to combine conditions<button data-href="#Example-1-Using-AND-to-combine-conditions" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -794,16 +796,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">price</code> が100より大きく、かつ<code translate="no">stock</code> が50より大きいすべての商品を検索するには：</p>
+    </button></h3><p>To find all products where <code translate="no">price</code> is greater than 100 and <code translate="no">stock</code> is greater than 50:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;price &gt; 100 AND stock &gt; 50&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -821,7 +823,7 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;price &gt; 100 AND stock &gt; 50&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-2-Using-OR-to-combine-conditions" class="common-anchor-header">例 2: `<code translate="no">OR</code> ` を使用して条件を組み合わせる<button data-href="#Example-2-Using-OR-to-combine-conditions" class="anchor-icon" translate="no">
+<h3 id="Example-2-Using-OR-to-combine-conditions" class="common-anchor-header">Example 2: Using <code translate="no">OR</code> to combine conditions<button data-href="#Example-2-Using-OR-to-combine-conditions" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -836,16 +838,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">color</code> が「red」または「blue」のいずれかであるすべての商品を検索するには：</p>
+    </button></h3><p>To find all products where <code translate="no">color</code> is either “red” or "blue":</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;color == &quot;red&quot; OR color == &quot;blue&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -863,7 +865,7 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;color == &quot;red&quot; OR color == &quot;blue&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-3-Using-NOT-to-exclude-a-condition" class="common-anchor-header">例 3: `<code translate="no">NOT</code> ` を使用して条件を除外する<button data-href="#Example-3-Using-NOT-to-exclude-a-condition" class="anchor-icon" translate="no">
+<h3 id="Example-3-Using-NOT-to-exclude-a-condition" class="common-anchor-header">Example 3: Using <code translate="no">NOT</code> to exclude a condition<button data-href="#Example-3-Using-NOT-to-exclude-a-condition" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -878,16 +880,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">color</code> が「green」でないすべての商品を検索するには：</p>
+    </button></h3><p>To find all products where <code translate="no">color</code> is not "green":</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;NOT color == &quot;green&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -905,7 +907,7 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;NOT color == &quot;green&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="IS-NULL-and-IS-NOT-NULL-operators" class="common-anchor-header">IS NULL および IS NOT NULL 演算子<button data-href="#IS-NULL-and-IS-NOT-NULL-operators" class="anchor-icon" translate="no">
+<h2 id="IS-NULL-and-IS-NOT-NULL-operators" class="common-anchor-header">IS NULL and IS NOT NULL operators<button data-href="#IS-NULL-and-IS-NOT-NULL-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -920,20 +922,20 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">IS NULL</code> および<code translate="no">IS NOT NULL</code> を使用すると、フィールド値が欠落している、または利用可能なエンティティを検索できます。たとえば、カテゴリがない商品や、検索可能な状態の埋め込みデータを持つエンティティを検索できます。どちらの演算子も、サポートされているスカラーおよびベクトルフィールドで動作し、意味は同じです:</p>
+    </button></h2><p>Use <code translate="no">IS NULL</code> and <code translate="no">IS NOT NULL</code> to find entities with missing or available field values. For example, you can find products without a category or entities whose embeddings are ready for search. Both operators work on supported scalar and vector fields, with the same meaning:</p>
 <table>
 <thead>
-<tr><th>演算子</th><th>一致条件</th></tr>
+<tr><th>Operator</th><th>Matches</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">&lt;field&gt; IS NULL</code></td><td>指定されたフィールドの値が NULL であるエンティティ</td></tr>
-<tr><td><code translate="no">&lt;field&gt; IS NOT NULL</code></td><td>指定されたフィールドの値が NULL ではないエンティティ</td></tr>
+<tr><td><code translate="no">&lt;field&gt; IS NULL</code></td><td>Entities whose specified field has a NULL value</td></tr>
+<tr><td><code translate="no">&lt;field&gt; IS NOT NULL</code></td><td>Entities whose specified field has a non-NULL value</td></tr>
 </tbody>
 </table>
-<p>サポートされているスカラーフィールドには、Boolean、numeric、<code translate="no">VARCHAR</code> 、<code translate="no">JSON</code> 、および<code translate="no">ARRAY</code> フィールドが含まれます。<a href="/docs/ja/text.md">これらの演算子はTEXTフィールドをサポート</a>していません。</p>
-<p>Milvus 3.0.3 以降、これらの演算子は通常のベクトルフィールドもサポートするようになりました：<code translate="no">FLOAT_VECTOR</code> 、<code translate="no">BINARY_VECTOR</code> 、<code translate="no">FLOAT16_VECTOR</code> 、<code translate="no">BFLOAT16_VECTOR</code> 、<code translate="no">SPARSE_FLOAT_VECTOR</code> 、および<code translate="no">INT8_VECTOR</code> 。</p>
-<p>演算子は大文字小文字を区別しません。つまり、<code translate="no">IS NULL</code> と<code translate="no">is null</code> は同等であり、<code translate="no">IS NOT NULL</code> と<code translate="no">is not null</code> も同様です。</p>
-<h3 id="Example-Find-entities-with-missing-or-available-values" class="common-anchor-header">例：値が欠落している、または利用可能なエンティティを検索する<button data-href="#Example-Find-entities-with-missing-or-available-values" class="anchor-icon" translate="no">
+<p>Supported scalar fields include Boolean, numeric, <code translate="no">VARCHAR</code>, <code translate="no">JSON</code>, and <code translate="no">ARRAY</code> fields. These operators do not support <a href="/docs/ja/text.md">TEXT fields</a>.</p>
+<p>Starting in Milvus 3.0.3, the operators also support ordinary vector fields: <code translate="no">FLOAT_VECTOR</code>, <code translate="no">BINARY_VECTOR</code>, <code translate="no">FLOAT16_VECTOR</code>, <code translate="no">BFLOAT16_VECTOR</code>, <code translate="no">SPARSE_FLOAT_VECTOR</code>, and <code translate="no">INT8_VECTOR</code>.</p>
+<p>The operators are case-insensitive: <code translate="no">IS NULL</code> and <code translate="no">is null</code> are equivalent, as are <code translate="no">IS NOT NULL</code> and <code translate="no">is not null</code>.</p>
+<h3 id="Example-Find-entities-with-missing-or-available-values" class="common-anchor-header">Example: Find entities with missing or available values<button data-href="#Example-Find-entities-with-missing-or-available-values" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -948,7 +950,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">products</code> という名前のコレクションがインデックス化され、読み込まれていると仮定します。このコレクションには、<code translate="no">INT64</code> 型の主キー<code translate="no">id</code> 、NULL 許容の<code translate="no">VARCHAR</code> フィールド<code translate="no">category</code> 、および NULL 許容の 3 次元<code translate="no">FLOAT_VECTOR</code> フィールド<code translate="no">embedding</code> があります。このコレクションには、すでに以下のエンティティが含まれています：</p>
+    </button></h3><p>Assume a collection named <code translate="no">products</code> is indexed and loaded on Milvus 3.0.3 or later. The collection has an <code translate="no">INT64</code> primary key named <code translate="no">id</code>, a nullable <code translate="no">VARCHAR</code> field named <code translate="no">category</code>, and a nullable, three-dimensional <code translate="no">FLOAT_VECTOR</code> field named <code translate="no">embedding</code>. It already contains the following entities:</p>
 <table>
 <thead>
 <tr><th><code translate="no">id</code></th><th><code translate="no">category</code></th><th><code translate="no">embedding</code></th></tr>
@@ -959,17 +961,17 @@ summary: >-
 <tr><td><code translate="no">3</code></td><td><code translate="no">&quot;book&quot;</code></td><td>NULL</td></tr>
 </tbody>
 </table>
-<p>コレクションの作成とデータの挿入については割愛します。これらの手順については、「<a href="/docs/ja/nullable-and-default.md">Null可能なフィールド</a>」を参照してください。</p>
-<p>まだ埋め込みが必要なエンティティを見つけるには、<code translate="no">embedding IS NULL</code> をクエリします。サーバーに合わせて接続設定を調整してください。</p>
+<p>Collection creation and data insertion are omitted. For those steps, see <a href="/docs/ja/nullable-and-default.md">Nullable Fields</a>.</p>
+<p>To find entities that still need an embedding, query for <code translate="no">embedding IS NULL</code>. Adjust the connection settings for your server.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -1132,23 +1134,23 @@ QueryResp results = <span class="hljs-keyword">await</span> client.QueryAsync(<s
     &quot;limit&quot;: 10
   }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>同じクエリ内の `<code translate="no">filter</code> ` を置き換えて、特定のフィールドを確認したり、条件を組み合わせたりできます:</p>
+<p>Replace the <code translate="no">filter</code> in the same query to check either field or combine conditions:</p>
 <table>
 <thead>
-<tr><th>フィルタ式</th><th>一致するID</th><th>目的</th></tr>
+<tr><th>Filter expression</th><th>Matching IDs</th><th>Purpose</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">category IS NULL</code></td><td><code translate="no">2</code></td><td>カテゴリのないエンティティを検索する</td></tr>
-<tr><td><code translate="no">category IS NOT NULL</code></td><td><code translate="no">1</code>、<code translate="no">3</code></td><td>カテゴリが設定されているエンティティを検索する</td></tr>
-<tr><td><code translate="no">embedding IS NULL</code></td><td><code translate="no">3</code></td><td>埋め込みのないエンティティを検索する</td></tr>
-<tr><td><code translate="no">embedding IS NOT NULL</code></td><td><code translate="no">1</code>,<code translate="no">2</code></td><td>埋め込みがあるエンティティを検索</td></tr>
-<tr><td><code translate="no">category IS NOT NULL AND embedding IS NOT NULL</code></td><td><code translate="no">1</code></td><td>両方の値を持つエンティティを検索</td></tr>
+<tr><td><code translate="no">category IS NULL</code></td><td><code translate="no">2</code></td><td>Find entities without a category</td></tr>
+<tr><td><code translate="no">category IS NOT NULL</code></td><td><code translate="no">1</code>, <code translate="no">3</code></td><td>Find entities with a category</td></tr>
+<tr><td><code translate="no">embedding IS NULL</code></td><td><code translate="no">3</code></td><td>Find entities without an embedding</td></tr>
+<tr><td><code translate="no">embedding IS NOT NULL</code></td><td><code translate="no">1</code>, <code translate="no">2</code></td><td>Find entities with an embedding</td></tr>
+<tr><td><code translate="no">category IS NOT NULL AND embedding IS NOT NULL</code></td><td><code translate="no">1</code></td><td>Find entities with both values</td></tr>
 </tbody>
 </table>
 <p><a id="Regular-scalar-fields-with-null-values"></a>
 <a id="JSON-fields-with-null-values"></a>
 <a id="ARRAY-fields-with-null-values"></a></p>
-<h3 id="How-field-values-are-treated" class="common-anchor-header">フィールド値の扱い<button data-href="#How-field-values-are-treated" class="anchor-icon" translate="no">
+<h3 id="How-field-values-are-treated" class="common-anchor-header">How field values are treated<button data-href="#How-field-values-are-treated" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1163,20 +1165,23 @@ QueryResp results = <span class="hljs-keyword">await</span> client.QueryAsync(<s
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>演算子は、保存されたフィールド値をチェックします。デフォルト値のないNULL許容フィールドの場合、挿入時にそのフィールドを省略するか、明示的にNULLに設定すると、NULLが保存されます。設定されたデフォルト値によって、保存される値が変わる場合があります。詳細については、「<a href="/docs/ja/default-values.md">NULL</a> <a href="/docs/ja/nullable-and-default.md">許容フィールドと</a> <a href="/docs/ja/default-values.md">デフォルト値</a>」を参照してください。</p>
+    </button></h3><p>The operators check the stored field value. For a nullable field without a default value, omitting the field during insertion or explicitly setting it to NULL stores NULL. A configured default value can change what is stored. For details, see <a href="/docs/ja/nullable-and-default.md">Nullable Fields</a> and <a href="/docs/ja/default-values.md">Default Values</a>.</p>
 <table>
 <thead>
-<tr><th>フィールド型</th><th>NULL の挙動</th></tr>
+<tr><th>Field type</th><th>NULL behavior</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">VARCHAR</code></td><td>空の文字列 `<code translate="no">&quot;&quot;</code> ` は NULL 以外の値です。</td></tr>
-<tr><td><code translate="no">JSON</code></td><td>フィールド全体がNULL値の場合、<code translate="no">IS NULL</code> と一致します。<code translate="no">{&quot;category&quot;: null}</code> のようなJSONオブジェクトは、内部の値がNULLであっても非NULLです。</td></tr>
-<tr><td><code translate="no">ARRAY</code></td><td>フィールド全体の値が NULL の場合、<code translate="no">IS NULL</code> と一致します。個々の要素は NULL にできません。また、<code translate="no">IS NULL</code> や<code translate="no">IS NOT NULL</code> では、<code translate="no">tags[0]</code> のような配列要素へのアクセスはサポートされていません。「<a href="/docs/ja/array_data_type.md">配列フィールド</a>」を参照してください。</td></tr>
-<tr><td>通常のベクトル型</td><td>NULLは、ベクトルの値が存在しないことを意味します。成分がすべてゼロのベクトルはNULLではありません。</td></tr>
+<tr><td><code translate="no">VARCHAR</code></td><td>An empty string <code translate="no">&quot;&quot;</code> is a non-NULL value.</td></tr>
+<tr><td><code translate="no">JSON</code></td><td>A NULL value for the entire field matches <code translate="no">IS NULL</code>. A JSON object such as <code translate="no">{&quot;category&quot;: null}</code> is non-NULL, even though a value inside it is NULL.</td></tr>
+<tr><td><code translate="no">ARRAY</code></td><td>A NULL value for the entire field matches <code translate="no">IS NULL</code>. Individual elements cannot be NULL, and <code translate="no">IS NULL</code> / <code translate="no">IS NOT NULL</code> do not support array element access such as <code translate="no">tags[0]</code>. See <a href="/docs/ja/array_data_type.md">Array Field</a>.</td></tr>
+<tr><td>Ordinary vector types</td><td>NULL means the vector value is absent. A vector whose components are zero is not NULL.</td></tr>
 </tbody>
 </table>
-<p><code translate="no">nullable=False</code> で定義されたサポート対象のフィールドの場合、<code translate="no">IS NULL</code> はどのエンティティにも一致せず、<code translate="no">IS NOT NULL</code> はすべての可視エンティティに一致します。フィルタ内のその他の条件は引き続き適用されます。</p>
-<h3 id="Use-NULL-filters-in-vector-search" class="common-anchor-header">ベクトル検索でのNULLフィルターの使用<button data-href="#Use-NULL-filters-in-vector-search" class="anchor-icon" translate="no">
+<p>For a supported field defined with <code translate="no">nullable=False</code>, <code translate="no">IS NULL</code> matches no entities and <code translate="no">IS NOT NULL</code> matches all visible entities. Other conditions in the filter still apply.</p>
+<div class="alert note">
+<p>Scalar NULL filters use validity information from an eligible index or field data; they do not require a particular scalar index type. A non-nullable field can produce a constant result.</p>
+</div>
+<h3 id="Use-NULL-filters-in-vector-search" class="common-anchor-header">Use NULL filters in vector search<button data-href="#Use-NULL-filters-in-vector-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1191,21 +1196,20 @@ QueryResp results = <span class="hljs-keyword">await</span> client.QueryAsync(<s
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>検索フィルターでも同じ演算子を使用できますが、類似性検索の対象となるには、エンティティが検索対象のフィールドにベクトルを持っている必要があります。</p>
-<p>上記のサンプルデータを用いて、<code translate="no">anns_field=&quot;embedding&quot;</code> を使用した検索について考えてみましょう：</p>
+    </button></h3><p>The same operators can be used in search filters, but an entity also needs a vector in the field being searched to participate in similarity search.</p>
+<p>Using the example data above, consider a search with <code translate="no">anns_field=&quot;embedding&quot;</code>:</p>
 <table>
 <thead>
-<tr><th>フィルタ式</th><th>類似度検索の対象となるエンティティ</th><th>理由</th></tr>
+<tr><th>Filter expression</th><th>Entities eligible for similarity search</th><th>Reason</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">category IS NULL</code></td><td><code translate="no">2</code></td><td>エンティティ「<code translate="no">2</code> 」にはカテゴリがありませんが、「<code translate="no">embedding</code> 」というベクトルがあります。</td></tr>
-<tr><td><code translate="no">embedding IS NULL</code></td><td>なし</td><td>エンティティ<code translate="no">3</code> はフィルタに一致しますが、クエリベクトルと比較するための<code translate="no">embedding</code> ベクトルを持っていません。</td></tr>
-<tr><td><code translate="no">embedding IS NOT NULL</code></td><td><code translate="no">1</code>,<code translate="no">2</code></td><td>両方のエンティティに<code translate="no">embedding</code> ベクトルがあります。</td></tr>
+<tr><td><code translate="no">category IS NULL</code></td><td><code translate="no">2</code></td><td>Entity <code translate="no">2</code> has no category, but has an <code translate="no">embedding</code> vector.</td></tr>
+<tr><td><code translate="no">embedding IS NULL</code></td><td>None</td><td>Entity <code translate="no">3</code> matches the filter, but has no <code translate="no">embedding</code> vector to compare with the query vector.</td></tr>
+<tr><td><code translate="no">embedding IS NOT NULL</code></td><td><code translate="no">1</code>, <code translate="no">2</code></td><td>Both entities have an <code translate="no">embedding</code> vector.</td></tr>
 </tbody>
 </table>
-<p>3つのフィルタはすべて有効です。<code translate="no">embedding</code> と<code translate="no">embedding IS NULL</code> による検索では、両方の要件を満たすエンティティが存在しないため、ヒットは返されません。埋め込みデータが欠落しているエンティティを取得するには、前述のように<code translate="no">query()</code> を使用してください。</p>
-<p>ベクトル検索では、検索対象のベクトルフィールドがNULLであるエンティティはすでに除外されるため、<code translate="no">embedding IS NOT NULL</code> を指定しても、<code translate="no">embedding</code> での検索候補がさらに絞り込まれることはありません。どの候補が返されるかは、ランキング、その他のフィルター、および検索制限によって決定されます。</p>
-<h2 id="Tips-on-using-basic-operators-with-JSON-and-ARRAY-fields" class="common-anchor-header">JSONおよびARRAYフィールドでの基本演算子の使用に関するヒント<button data-href="#Tips-on-using-basic-operators-with-JSON-and-ARRAY-fields" class="anchor-icon" translate="no">
+<p>To retrieve missing embeddings, use <code translate="no">query()</code>; a search on <code translate="no">embedding</code> with <code translate="no">embedding IS NULL</code> is valid but returns no hits. Vector search already skips NULL embeddings, so <code translate="no">embedding IS NOT NULL</code> does not further narrow candidates. Ranking, other filters, and the search limit still determine the returned hits.</p>
+<h2 id="Tips-on-using-basic-operators-with-JSON-and-ARRAY-fields" class="common-anchor-header">Tips on using basic operators with JSON and ARRAY fields<button data-href="#Tips-on-using-basic-operators-with-JSON-and-ARRAY-fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1220,17 +1224,16 @@ QueryResp results = <span class="hljs-keyword">await</span> client.QueryAsync(<s
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvusの基本演算子は汎用性が高く、スカラーフィールドに適用できるだけでなく、JSONフィールドやARRAYフィールドのキーやインデックスに対しても効果的に使用できます。</p>
-<p>たとえば、<code translate="no">price</code> 、<code translate="no">model</code> 、<code translate="no">tags</code> といった複数のキーを含む<code translate="no">product</code> フィールドがある場合、常にキーを直接参照してください：</p>
+    </button></h2><p>Reference a JSON key or ARRAY element directly in the expression. For example, to filter the <code translate="no">price</code> key in a JSON field named <code translate="no">product</code>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;product[&quot;price&quot;] &gt; 1000&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -1248,16 +1251,16 @@ QueryResp results = <span class="hljs-keyword">await</span> client.QueryAsync(<s
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;product[&quot;price&quot;] &gt; 1000&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>記録された温度の配列のうち、最初の温度が特定の値を超えるレコードを検索するには、次のようにします:</p>
+<p>To find records where the first temperature in an array of recorded temperatures exceeds a certain value, use:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;history_temperatures[0] &gt; 30&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -1275,7 +1278,8 @@ QueryResp results = <span class="hljs-keyword">await</span> client.QueryAsync(<s
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;history_temperatures[0] &gt; 30&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Conclusion" class="common-anchor-header">まとめ<button data-href="#Conclusion" class="anchor-icon" translate="no">
+<p><a id="Conclusion"></a></p>
+<h2 id="FAQ" class="common-anchor-header">FAQ<button data-href="#FAQ" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1290,22 +1294,6 @@ QueryResp results = <span class="hljs-keyword">await</span> client.QueryAsync(<s
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvusは、データのフィルタリングやクエリ実行において柔軟性を提供する、さまざまな基本演算子を備えています。比較演算子、範囲演算子、算術演算子、論理演算子を組み合わせることで、強力なフィルタ式を作成し、検索結果を絞り込み、必要なデータを効率的に取得することができます。</p>
-<h2 id="FAQ" class="common-anchor-header">よくある質問<button data-href="#FAQ" class="anchor-icon" translate="no">
-      <svg translate="no"
-        aria-hidden="true"
-        focusable="false"
-        height="20"
-        version="1.1"
-        viewBox="0 0 16 16"
-        width="16"
-      >
-        <path
-          fill="#0092E4"
-          fill-rule="evenodd"
-          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
-        ></path>
-      </svg>
-    </button></h2><p><strong>フィルタ条件における一致値リストの長さに制限はありますか（例：filter=’color in ["red", "green", “blue”]’）？リストが長すぎる場合はどうすればよいですか？</strong></p>
-<p>Milvus では、フィルタ条件における一致値リストの長さに制限を設けていません。ただし、リストが過度に長いと、クエリのパフォーマンスに大きな影響を与える可能性があります。
-フィルタ条件に長い一致値リストや、多くの要素を含む複雑な式が含まれている場合は、クエリのパフォーマンスを向上させるために、<a href="/docs/ja/filtering-templating.md">フィルタテンプレートの</a>使用をお勧めします。</p>
+    </button></h2><p><strong>Is there a limit to the length of the match value list in filter conditions (e.g., filter=’color in ["red", "green", “blue”]')? What should I do if the list is too long?</strong></p>
+<p>Milvus does not impose a length limit on the match value list in filter conditions. However, an excessively long list can significantly impact query performance.
+If your filter condition includes a long list of match values or a complex expression with many elements, we recommend using <a href="/docs/ja/filtering-templating.md">Filter Templating</a> to improve query performance.</p>

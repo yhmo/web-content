@@ -1,10 +1,10 @@
 ---
 id: import-data.md
 order: 1
-title: データのインポート
-summary: このページでは、準備したデータをインポートする手順を説明します。
+title: Import Data
+summary: This page demonstrates the procedure to import the prepared data.
 ---
-<h1 id="Import-data" class="common-anchor-header">データのインポート<button data-href="#Import-data" class="anchor-icon" translate="no">
+<h1 id="Import-data" class="common-anchor-header">Import data<button data-href="#Import-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -19,8 +19,8 @@ summary: このページでは、準備したデータをインポートする�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>このページでは、準備したデータをインポートする手順を説明します。</p>
-<h2 id="Before-you-start" class="common-anchor-header">開始する前に<button data-href="#Before-you-start" class="anchor-icon" translate="no">
+    </button></h1><p>This page demonstrates the procedure to import the prepared data.</p>
+<h2 id="Before-you-start" class="common-anchor-header">Before you start<button data-href="#Before-you-start" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -36,17 +36,17 @@ summary: このページでは、準備したデータをインポートする�
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>データはすでに準備済みで、Milvusバケットに格納されているものとします。</p>
-<p>そうでない場合は、まず<strong>RemoteBulkWriter</strong>を使用してデータを準備し、準備したデータが Milvus インスタンスとともに起動された MinIO インスタンス上の Milvus バケットにすでに転送されていることを確認してください。詳細については、「<a href="/docs/ja/prepare-source-data.md">ソースデータの準備</a>」を参照してください。</p></li>
-<li><p>データの前処理に使用するスキーマに基づいて、コレクションをすでに作成しているものとします。まだ作成していない場合は、「<a href="/docs/ja/manage-collections.md">コレクションの管理</a>」を参照してください。</p></li>
+<li><p>You have already prepared your data and placed it into the Milvus bucket.</p>
+<p>If not, you should use <strong>RemoteBulkWriter</strong> to prepare your data first, and ensure that the prepared data has already been transferred to the Milvus bucket on the MinIO instance started along with your Milvus instance. For details, refer to <a href="/docs/ja/prepare-source-data.md">Prepare Source Data</a>.</p></li>
+<li><p>You have already created a collection with the schema you use to prepare your data. If not, refer to <a href="/docs/ja/manage-collections.md">Manage Collections</a>.</p></li>
 </ul>
 <div class="language-python">
-<p>以下のコードスニペットは、指定されたスキーマを使用して単純なコレクションを作成します。パラメータの詳細については、 <a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Collections/create_schema.md"><code translate="no">create_schema()</code></a> および <a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Collections/create_collection.md"><code translate="no">create_collection()</code></a> SDKリファレンスを参照してください。</p>
+<p>The following code snippet creates a simple collection with the given schema. For more information on parameters, refer to <a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Collections/create_schema.md"><code translate="no">create_schema()</code></a> and <a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Collections/create_collection.md"><code translate="no">create_collection()</code></a> in the SDK reference.</p>
 </div>
 <div class="language-java">
-<p>以下のコードスニペットは、指定されたスキーマを持つ単純なコレクションを作成します。パラメータの詳細については、 <a href="https://milvus.io/api-reference/java/v2.4.x/v1/Collection/createCollection.md"><code translate="no">createCollection()</code></a> SDKリファレンスの</p>
+<p>The following code snippet creates a simple collection with the given schema. For more information on parameters, refer to <a href="https://milvus.io/api-reference/java/v2.4.x/v1/Collection/createCollection.md"><code translate="no">createCollection()</code></a> in the SDK reference.</p>
 </div>
-<h2 id="Import-data" class="common-anchor-header">データのインポート<button data-href="#Import-data" class="anchor-icon" translate="no">
+<h2 id="Import-data" class="common-anchor-header">Import data<button data-href="#Import-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -61,18 +61,18 @@ summary: このページでは、準備したデータをインポートする�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>パイプラインで、失敗またはタイムアウトしたインポートリクエストを再試行する可能性がある場合は、ジョブにイデポテンシーキーを付与してください。「<a href="/docs/ja/idempotent-import.md">イデポテンシーのある一括インポート」を</a>参照してください。</p>
-<p>準備したデータをインポートするには、次のようにインポートジョブを作成する必要があります。</p>
+    </button></h2><p>If your pipeline may retry a failed or timed-out import request, tag the job with an idempotency key; see <a href="/docs/ja/idempotent-import.md">Idempotent Bulk Import</a>.</p>
+<p>To import the prepared data, you have to create an import job as follows:</p>
 <div class="multipleCode">
- <a href="#python">Python 
- </a> <a href="#java"> Java</a>
- <a href="#shell"> cURL</a>
+  <a href="#python">Python</a>
+  <a href="#java">Java</a>
+  <a href="#shell">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus.bulk_writer <span class="hljs-keyword">import</span> bulk_import
 
 url = <span class="hljs-string">f&quot;http://127.0.0.1:19530&quot;</span>
 
-<span class="hljs-comment"># Bulk-insert data from a set of JSON files already uploaded to the MinIO server</span>
+<span class="hljs-comment"># Bulk-insert data from a set of Parquet files already uploaded to the MinIO server</span>
 resp = bulk_import(
     url=url,
     collection_name=<span class="hljs-string">&quot;quick_setup&quot;</span>,
@@ -127,21 +127,21 @@ curl --request POST &quot;http://${MILVUS_URI}/v2/vectordb/jobs/import/create&qu
     &quot;collectionName&quot;: &quot;quick_setup&quot;
 }&#x27;
 <button class="copy-code-btn"></button></code></pre>
-<p>リクエスト本文には 2 つのフィールドが含まれます:</p>
+<p>The request body contains two fields:</p>
 <ul>
 <li><p><code translate="no">collectionName</code></p>
-<p>ターゲットコレクションの名前。</p></li>
+<p>The name of the target collection.</p></li>
 <li><p><code translate="no">files</code></p>
-<p>Milvusインスタンスとともに起動されたMioIOインスタンス上のMilvusバケットのルートパスに対する相対ファイルパスのリストのリスト。含まれる可能性のあるサブリストは以下の通りです：</p>
+<p>A list of lists of file paths relative to the root path of the Milvus bucket on the MioIO instance started along with your Milvus instance. Possible sub-lists are as follows:</p>
 <ul>
-<li><p><strong>JSONファイル</strong></p>
-<p>準備されたファイルがJSON形式の場合、<strong>各サブリストには、1つの準備済みJSONファイルへのパスを含める必要があります</strong>。</p>
+<li><p><strong>JSON files</strong></p>
+<p>If the prepared file is in JSON format, <strong>each sub-list should contain the path to a single prepared JSON file</strong>.</p>
 <pre><code translate="no">[
     <span class="hljs-string">&quot;/d1782fa1-6b65-4ff3-b05a-43a436342445/1.json&quot;</span>
 ],
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p><strong>Parquetファイル</strong></p>
-<p>準備されたファイルがParquet形式の場合、<strong>各サブリストには、1つの準備済みParquetファイルへのパスを含める必要があります</strong>。</p>
+<li><p><strong>Parquet files</strong></p>
+<p>If the prepared file is in Parquet format, <strong>each sub-list should contain the path to a single prepared parquet file</strong>.</p>
 <pre><code translate="no">[
     <span class="hljs-string">&quot;/a6fb2d1c-7b1b-427c-a8a3-178944e3b66d/1.parquet&quot;</span>
 ]
@@ -149,7 +149,7 @@ curl --request POST &quot;http://${MILVUS_URI}/v2/vectordb/jobs/import/create&qu
 <button class="copy-code-btn"></button></code></pre></li>
 </ul></li>
 </ul>
-<p>返される可能性のある結果は以下の通りです：</p>
+<p>The possible return is as follows:</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
     <span class="hljs-attr">&quot;code&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">200</span><span class="hljs-punctuation">,</span>
     <span class="hljs-attr">&quot;data&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
@@ -157,7 +157,7 @@ curl --request POST &quot;http://${MILVUS_URI}/v2/vectordb/jobs/import/create&qu
     <span class="hljs-punctuation">}</span>
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Check-import-progress" class="common-anchor-header">インポートの進捗状況を確認する<button data-href="#Check-import-progress" class="anchor-icon" translate="no">
+<h2 id="bulkimport-parameters" class="common-anchor-header"><code translate="no">bulk_import</code> parameters<button data-href="#bulkimport-parameters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -172,11 +172,56 @@ curl --request POST &quot;http://${MILVUS_URI}/v2/vectordb/jobs/import/create&qu
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>インポートジョブ ID を取得したら、次のようにインポートの進捗状況を確認できます:</p>
+    </button></h2><p><code translate="no">bulk_import()</code> is a thin wrapper around <code translate="no">POST /v2/vectordb/jobs/import/create</code>. Beyond the
+example above, it exposes the following parameters (PyMilvus 2.6 and later).</p>
+<table>
+<thead>
+<tr><th>Parameter</th><th>Type</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><code translate="no">url</code></td><td><code translate="no">str</code></td><td>Server address, for example <code translate="no">http://127.0.0.1:19530</code> or <code translate="no">https://api.cloud.zilliz.com</code>.</td></tr>
+<tr><td><code translate="no">collection_name</code></td><td><code translate="no">str</code></td><td>Target collection.</td></tr>
+<tr><td><code translate="no">db_name</code></td><td><code translate="no">str</code></td><td>Target database. Sent as the <code translate="no">DB-Name</code> header for RBAC.</td></tr>
+<tr><td><code translate="no">files</code></td><td><code translate="no">list[list[str]]</code></td><td>Files already available to the Milvus instance, for example on MinIO. These are <strong>server-side paths, not object URLs</strong>. Each sub-list is one JSON or Parquet file, or one set of NumPy files.</td></tr>
+<tr><td><code translate="no">partition_name</code></td><td><code translate="no">str</code></td><td>Target partition. Passed through extra keyword arguments rather than a declared parameter, so it is easy to miss in the signature. Leave it empty for collections that use a partition key.</td></tr>
+<tr><td><code translate="no">object_url</code></td><td><code translate="no">str</code></td><td>Single object URL on cloud object storage. Superseded by <code translate="no">object_urls</code>.</td></tr>
+<tr><td><code translate="no">object_urls</code></td><td><code translate="no">list[list[str]]</code></td><td>Object URLs on cloud object storage, for example <code translate="no">s3://bucket/prefix/1.parquet</code>. Each sub-list is one object or one prefix that ends with <code translate="no">/</code>. Use this <strong>instead of</strong> <code translate="no">files</code>; the two are different transports, not synonyms.</td></tr>
+<tr><td><code translate="no">cluster_id</code></td><td><code translate="no">str</code></td><td>Zilliz Cloud cluster ID.</td></tr>
+<tr><td><code translate="no">project_id</code></td><td><code translate="no">str</code></td><td>Zilliz Cloud project ID, for project databases.</td></tr>
+<tr><td><code translate="no">region_id</code></td><td><code translate="no">str</code></td><td>Region of the project database.</td></tr>
+<tr><td><code translate="no">api_key</code></td><td><code translate="no">str</code></td><td>API key, or <code translate="no">username:password</code> for a self-hosted instance.</td></tr>
+<tr><td><code translate="no">access_key</code> / <code translate="no">secret_key</code></td><td><code translate="no">str</code></td><td>Object storage credentials for <code translate="no">object_urls</code>.</td></tr>
+<tr><td><code translate="no">token</code></td><td><code translate="no">str</code></td><td>Session token for short-term object storage credentials.</td></tr>
+<tr><td><code translate="no">volume_name</code></td><td><code translate="no">str</code></td><td>Zilliz Cloud volume to import from. Requires <code translate="no">data_paths</code>.</td></tr>
+<tr><td><code translate="no">data_paths</code></td><td><code translate="no">list[list[str]]</code></td><td>Paths inside <code translate="no">volume_name</code>. Each sub-list is one file or one prefix that ends with <code translate="no">/</code>.</td></tr>
+<tr><td><code translate="no">verify</code></td><td><code translate="no">bool</code> or <code translate="no">str</code></td><td>Verify the server TLS certificate; <code translate="no">True</code> by default. A string is treated as a CA bundle path.</td></tr>
+<tr><td><code translate="no">cert</code></td><td><code translate="no">str</code> or <code translate="no">tuple</code></td><td>Client certificate for mutual TLS: a file path, or a <code translate="no">('cert', 'key')</code> pair.</td></tr>
+<tr><td><code translate="no">headers</code></td><td><code translate="no">dict[str, str]</code></td><td>Extra HTTP headers merged into the request; caller values win. Use it to send an idempotency key, for example <code translate="no">{IDEMPOTENCY_KEY_HEADER: &quot;nightly-2026-09-07-batch-3&quot;}</code>; see <a href="/docs/ja/idempotent-import.md">Idempotent Bulk Import</a>.</td></tr>
+<tr><td><code translate="no">options</code></td><td><code translate="no">dict</code></td><td>Additional import options forwarded to the server in the request body.</td></tr>
+</tbody>
+</table>
+<p>Any remaining keyword arguments are forwarded to <code translate="no">requests.post</code>, so <code translate="no">timeout</code> and <code translate="no">proxies</code>
+work as they do there. The wrapper sends a 20-second timeout by default.</p>
+<h2 id="Check-import-progress" class="common-anchor-header">Check import progress<button data-href="#Check-import-progress" class="anchor-icon" translate="no">
+      <svg translate="no"
+        aria-hidden="true"
+        focusable="false"
+        height="20"
+        version="1.1"
+        viewBox="0 0 16 16"
+        width="16"
+      >
+        <path
+          fill="#0092E4"
+          fill-rule="evenodd"
+          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+        ></path>
+      </svg>
+    </button></h2><p>Once you get an import job ID, you can check the import progress as follows:</p>
 <div class="multipleCode">
- <a href="#python">Python 
- </a> <a href="#java"> Java</a>
- <a href="#shell"> cURL</a>
+  <a href="#python">Python</a>
+  <a href="#java">Java</a>
+  <a href="#shell">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> json
 <span class="hljs-keyword">from</span> pymilvus.bulk_writer <span class="hljs-keyword">import</span> get_import_progress
@@ -236,7 +281,7 @@ curl --request POST &quot;http://${MILVUS_URI}/v2/vectordb/jobs/import/describe&
     &quot;jobId&quot;: &quot;449839014328146739&quot;
 }&#x27;
 <button class="copy-code-btn"></button></code></pre>
-<p>返される応答は以下の通りです：</p>
+<p>The possible response is as follows:</p>
 <pre><code translate="no">{
     <span class="hljs-string">&quot;code&quot;</span>: <span class="hljs-number">200</span>,
     <span class="hljs-string">&quot;data&quot;</span>: {
@@ -271,7 +316,7 @@ curl --request POST &quot;http://${MILVUS_URI}/v2/vectordb/jobs/import/describe&
     }
 }
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="List-Import-Jobs" class="common-anchor-header">インポートジョブのリスト表示<button data-href="#List-Import-Jobs" class="anchor-icon" translate="no">
+<h2 id="List-Import-Jobs" class="common-anchor-header">List Import Jobs<button data-href="#List-Import-Jobs" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -286,11 +331,11 @@ curl --request POST &quot;http://${MILVUS_URI}/v2/vectordb/jobs/import/describe&
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>特定のコレクションに関連するすべてのインポートジョブを、次のように一覧表示できます：</p>
+    </button></h2><p>You can list all import jobs relative to a specific collection as follows:</p>
 <div class="multipleCode">
- <a href="#python">Python 
- </a> <a href="#java"> Java</a>
- <a href="#shell"> cURL</a>
+  <a href="#python">Python</a>
+  <a href="#java">Java</a>
+  <a href="#shell">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> json
 <span class="hljs-keyword">from</span> pymilvus.bulk_writer <span class="hljs-keyword">import</span> list_import_jobs
@@ -324,7 +369,7 @@ curl --request POST &quot;http://${MILVUS_URI}/v2/vectordb/jobs/import/list&quot
     &quot;collectionName&quot;: &quot;quick_setup&quot;
 }&#x27;
 <button class="copy-code-btn"></button></code></pre>
-<p>指定可能な値は以下の通りです：</p>
+<p>The possible values are as follows:</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
     <span class="hljs-attr">&quot;code&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">200</span><span class="hljs-punctuation">,</span>
     <span class="hljs-attr">&quot;data&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
@@ -339,7 +384,7 @@ curl --request POST &quot;http://${MILVUS_URI}/v2/vectordb/jobs/import/list&quot
     <span class="hljs-punctuation">}</span>
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Limitations" class="common-anchor-header">制限事項<button data-href="#Limitations" class="anchor-icon" translate="no">
+<h2 id="Limitations" class="common-anchor-header">Limitations<button data-href="#Limitations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -355,14 +400,14 @@ curl --request POST &quot;http://${MILVUS_URI}/v2/vectordb/jobs/import/list&quot
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>各インポートファイルのサイズは<strong>16 GB</strong> を超えてはなりません。</p></li>
-<li><p>1回のインポートリクエストあたりの最大<strong>ファイル数は1024</strong>を超えてはなりません。各インポートリクエストでは、1ファイルあたり最大16 GB × 1024ファイル = 16 TBのデータを処理できます。</p></li>
-<li><p>同時に実行できるインポートリクエストの最大数は<strong>1024</strong> に制限されています。</p></li>
+<li><p>Each import file size should not exceed <strong>16 GB</strong>.</p></li>
+<li><p>The maximum number of files per import request should not exceed <strong>1024</strong>. Each import request can have at most 16GB per file * 1024 files = 16TB of data.</p></li>
+<li><p>The maximum number of concurrent import requests is limited to <strong>1024</strong>.</p></li>
 </ul>
 <ul>
-<li>インポートリクエストで指定できるパーティション名は1つだけです。パーティション名が指定されていない場合、データはデフォルトのパーティションに挿入されます。また、ターゲットコレクションでパーティションキーが設定されている場合、インポートリクエストでパーティション名を設定することはできません。</li>
+<li>Only one partition name can be specified in an import request. If no partition name is specified, the data will be inserted into the default partition. Additionally, you cannot set a partition name in the import request if you have set the Partition Key in the target collection.</li>
 </ul>
-<h2 id="Constraints" class="common-anchor-header">制約事項<button data-href="#Constraints" class="anchor-icon" translate="no">
+<h2 id="Constraints" class="common-anchor-header">Constraints<button data-href="#Constraints" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -377,28 +422,28 @@ curl --request POST &quot;http://${MILVUS_URI}/v2/vectordb/jobs/import/list&quot
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>データをインポートする前に、Milvusの以下の動作に関する制約事項を必ず確認してください：</p>
+    </button></h2><p>Before importing data, ensure that you have acknowledged the constaints in terms of the following Milvus behaviors:</p>
 <ul>
-<li><p>ロード動作に関する制約：</p>
+<li><p>Constraints regarding the Load behavior:</p>
 <ul>
-<li>インポート前にコレクションがすでにロードされている場合、<code translate="no">refresh_load</code> 関数を使用して、インポート完了後に新しくインポートされたデータをロードすることができます。</li>
+<li>If a collection has already been loaded before an import, you can use the <code translate="no">refresh_load</code> function to load the newly imported data after the import is complete.</li>
 </ul></li>
-<li><p>クエリおよび検索の動作に関する制約：</p>
+<li><p>Constraints regarding the query & search behaviors:</p>
 <ul>
-<li><p>インポートジョブのステータスが「<strong>完了</strong>」になるまでは、新しくインポートされたデータはクエリや検索の対象外となることが保証されています。</p></li>
-<li><p>ジョブのステータスが「<strong>完了</strong>」になると、</p>
+<li><p>Before the import job status is <strong>Completed</strong>, the newly import data is guaranteed to be invisible to queries and searches.</p></li>
+<li><p>Once the job status is <strong>Completed</strong>,</p>
 <ul>
-<li><p>コレクションが読み込まれていない場合は、<code translate="no">load</code> 関数を使用して、新しくインポートされたデータを読み込むことができます。</p></li>
-<li><p>コレクションがすでに読み込まれている場合は、<code translate="no">load(is_refresh=True)</code> を呼び出して、インポートされたデータを読み込むことができます。</p></li>
+<li><p>If the collection is not loaded, you can use the <code translate="no">load</code> function to load the newly imported data.</p></li>
+<li><p>If the collection is already loaded, you can call <code translate="no">load(is_refresh=True)</code> to load the imported data.</p></li>
 </ul></li>
 </ul></li>
-<li><p>削除動作に関する制約：</p>
+<li><p>Constraints regarding the delete behavior:</p>
 <ul>
-<li><p>インポートジョブのステータスが「<strong>完了</strong>」になる前は、削除が保証されず、成功する場合もあれば失敗する場合もあります。</p></li>
-<li><p>ジョブのステータスが「<strong>完了</strong>」になった後の削除は、確実に成功します。</p></li>
+<li><p>Before the import job status is <strong>Completed</strong>, deletion is not guaranteed and may or may not succeed.</p></li>
+<li><p>Deletion after the job status is <strong>Completed</strong> is guaranted to succeed.</p></li>
 </ul></li>
 </ul>
-<h2 id="Recommendations" class="common-anchor-header">推奨事項<button data-href="#Recommendations" class="anchor-icon" translate="no">
+<h2 id="Recommendations" class="common-anchor-header">Recommendations<button data-href="#Recommendations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -413,4 +458,4 @@ curl --request POST &quot;http://${MILVUS_URI}/v2/vectordb/jobs/import/list&quot
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>1回のリクエストで複数のファイルをアップロードできる「複数ファイルインポート」機能の利用を強く推奨します。この方法により、インポートプロセスが簡素化されるだけでなく、インポートのパフォーマンスも大幅に向上します。また、アップロードを統合することで、データ管理に費やす時間を削減し、ワークフローの効率化を図ることができます。</p>
+    </button></h2><p>We highly recommend utilizing the multi-file import feature, which allows you to upload several files in a single request. This method not only simplifies the import process but also significantly boosts import performance. Meanwhile, by consolidating your uploads, you can reduce the time spent on data management and make your workflow more efficient.</p>

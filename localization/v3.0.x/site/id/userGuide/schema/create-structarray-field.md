@@ -2,11 +2,11 @@
 id: create-structarray-field.md
 title: Create a StructArray Field
 summary: >-
-  Buatlah bidang StructArray jika suatu entitas perlu berisi daftar elemen
-  terstruktur yang terurut. Bidang StructArray adalah bidang Array yang tipe
-  elemennya adalah Struct. Setiap elemen Struct mengikuti skema yang sama dan
-  dapat berisi subbidang skalar, subbidang vektor, serta—mulai dari Milvus
-  3.0.6—subbidang array skalar.
+  Create a StructArray field when one entity needs to contain an ordered list of
+  structured elements. A StructArray field is an Array field whose element type
+  is Struct. Each Struct element follows the same schema and can contain scalar
+  subfields, vector subfields, and, starting in Milvus 3.0.6, scalar array
+  subfields.
 ---
 <h1 id="Create-a-StructArray-Field" class="common-anchor-header">Create a StructArray Field<button data-href="#Create-a-StructArray-Field" class="anchor-icon" translate="no">
       <svg translate="no"

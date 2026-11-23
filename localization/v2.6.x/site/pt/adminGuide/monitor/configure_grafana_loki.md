@@ -1,11 +1,11 @@
 ---
 id: configure_grafana_loki.md
-title: Configurar o Grafana Loki
+title: Configure Grafana Loki
 summary: >-
-  Este tópico descreve como coletar logs usando o Loki e consultar logs de um
-  cluster Milvus usando o Grafana.
+  This topic describes how to collect logs using Loki and query logs for a
+  Milvus cluster using Grafana.
 ---
-<h1 id="Configure-Grafana-Loki" class="common-anchor-header">Configurar o Grafana Loki<button data-href="#Configure-Grafana-Loki" class="anchor-icon" translate="no">
+<h1 id="Configure-Grafana-Loki" class="common-anchor-header">Configure Grafana Loki<button data-href="#Configure-Grafana-Loki" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,15 +20,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Este guia fornece instruções sobre como configurar o Loki para coletar logs e o Grafana para consultar e exibir logs para um cluster Milvus.</p>
-<p>Neste guia, você aprenderá como:</p>
+    </button></h1><p>This guide provides instructions on how to configure Loki to collect logs and Grafana to query and display logs for a Milvus cluster.</p>
+<p>In this guide, you will learn how to:</p>
 <ul>
-<li>Implantar <a href="https://grafana.com/docs/loki/latest/get-started/overview/">o Loki</a> e <a href="https://grafana.com/docs/alloy/latest/">o Alloy</a> em um cluster Milvus usando o Helm.</li>
-<li>Configurar o armazenamento de objetos para o Loki.</li>
-<li>Consultar logs usando o Grafana.</li>
+<li>Deploy <a href="https://grafana.com/docs/loki/latest/get-started/overview/">Loki</a> and <a href="https://grafana.com/docs/alloy/latest/">Alloy</a> on a Milvus cluster using Helm.</li>
+<li>Configure object storage for Loki.</li>
+<li>Query logs using Grafana.</li>
 </ul>
-<p>Para referência, <a href="https://grafana.com/docs/loki/latest/send-data/promtail/#promtail-agent">o Promtail</a> será descontinuado. Portanto, apresentamos o Alloy, que foi oficialmente sugerido pelo Grafana Labs como o novo agente para coletar logs do Kubernetes e encaminhá-los para o Loki.</p>
-<h2 id="Prerequisites" class="common-anchor-header">Pré-requisitos<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+<p>For reference, <a href="https://grafana.com/docs/loki/latest/send-data/promtail/#promtail-agent">Promtail</a> will be deprecated.
+So we introduce Alloy, which has been officially suggested by Grafana Labs as the new agent to collect Kubernetes logs and forward them to Loki.</p>
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -44,10 +45,10 @@ summary: >-
         ></path>
       </svg>
     </button></h2><ul>
-<li>Você instalou <a href="/docs/pt/install_cluster-helm.md">um cluster Milvus no K8s</a>.</li>
-<li>Você instalou as ferramentas necessárias, incluindo <a href="https://helm.sh/docs/intro/install/">Helm</a> e <a href="https://kubernetes.io/docs/tasks/tools/">Kubectl</a>.</li>
+<li>You have <a href="/docs/pt/v2.6.x/install_cluster-helm.md">installed a Milvus cluster on K8s</a>.</li>
+<li>You have installed necessary tools, including <a href="https://helm.sh/docs/intro/install/">Helm</a> and <a href="https://kubernetes.io/docs/tasks/tools/">Kubectl</a>.</li>
 </ul>
-<h2 id="Deploy-Loki" class="common-anchor-header">Implantar o Loki<button data-href="#Deploy-Loki" class="anchor-icon" translate="no">
+<h2 id="Deploy-Loki" class="common-anchor-header">Deploy Loki<button data-href="#Deploy-Loki" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -62,8 +63,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>O Loki é um sistema de agregação de logs inspirado no Prometheus. Implante o Loki usando o Helm para coletar logs do seu cluster Milvus.</p>
-<h3 id="1-Add-Grafanas-Helm-Chart-Repository" class="common-anchor-header">1. Adicionar o repositório de gráficos do Helm do Grafana<button data-href="#1-Add-Grafanas-Helm-Chart-Repository" class="anchor-icon" translate="no">
+    </button></h2><p>Loki is a log aggregation system inspired by Prometheus. Deploy Loki using Helm to collect logs from your Milvus cluster.</p>
+<h3 id="1-Add-Grafanas-Helm-Chart-Repository" class="common-anchor-header">1. Add Grafana’s Helm Chart Repository<button data-href="#1-Add-Grafanas-Helm-Chart-Repository" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -78,11 +79,11 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Adicione o repositório de gráficos do Grafana ao Helm e atualize-o:</p>
+    </button></h3><p>Add Grafana’s chart repository to Helm and update it:</p>
 <pre><code translate="no">helm repo <span class="hljs-keyword">add</span> grafana https:<span class="hljs-comment">//grafana.github.io/helm-charts</span>
 helm repo update
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="2-Configure-Object-Storage-for-Loki" class="common-anchor-header">2. Configurar o armazenamento de objetos para o Loki<button data-href="#2-Configure-Object-Storage-for-Loki" class="anchor-icon" translate="no">
+<h3 id="2-Configure-Object-Storage-for-Loki" class="common-anchor-header">2. Configure Object Storage for Loki<button data-href="#2-Configure-Object-Storage-for-Loki" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -97,9 +98,9 @@ helm repo update
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Escolha uma das seguintes opções de armazenamento e crie um arquivo de configuração <code translate="no">loki.yaml</code>:</p>
+    </button></h3><p>Choose one of the following storage options and create a <code translate="no">loki.yaml</code> configuration file:</p>
 <ul>
-<li><p>Opção 1: Usando o MinIO para armazenamento</p>
+<li><p>Option 1: Using MinIO for storage</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">loki:</span>
   <span class="hljs-attr">commonConfig:</span>
     <span class="hljs-attr">replication_factor:</span> <span class="hljs-number">1</span>
@@ -108,8 +109,8 @@ helm repo update
 <span class="hljs-attr">minio:</span>
   <span class="hljs-attr">enabled:</span> <span class="hljs-literal">true</span>
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>Opção 2: usar o AWS S3 para armazenamento</p>
-<p>No exemplo a seguir, substitua <code translate="no">&lt;accessKey&gt;</code> e <code translate="no">&lt;keyId&gt;</code> por sua própria chave de acesso e ID do S3, <code translate="no">s3.endpoint</code> pelo ponto de extremidade do S3 e <code translate="no">s3.region</code> pela região do S3.</p>
+<li><p>Option 2: Using AWS S3 for storage</p>
+<p>In the following example, replace <code translate="no">&lt;accessKey&gt;</code> and <code translate="no">&lt;keyId&gt;</code> with your own S3 access key and ID, <code translate="no">s3.endpoint</code> with the S3 endpoint, and <code translate="no">s3.region</code> with the S3 region.</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">loki:</span>
   <span class="hljs-attr">commonConfig:</span>
     <span class="hljs-attr">replication_factor:</span> <span class="hljs-number">1</span>
@@ -127,7 +128,7 @@ helm repo update
       <span class="hljs-attr">accessKeyId:</span> <span class="hljs-string">&lt;keyId&gt;</span>
 <button class="copy-code-btn"></button></code></pre></li>
 </ul>
-<h3 id="3-Install-Loki" class="common-anchor-header">3. Instalar o Loki<button data-href="#3-Install-Loki" class="anchor-icon" translate="no">
+<h3 id="3-Install-Loki" class="common-anchor-header">3. Install Loki<button data-href="#3-Install-Loki" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -142,11 +143,11 @@ helm repo update
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Execute os seguintes comandos para instalar o Loki:</p>
+    </button></h3><p>Run the following commands to install Loki:</p>
 <pre><code translate="no" class="language-shell">kubectl create ns loki
 helm install --values loki.yaml loki grafana/loki -n loki
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Deploy-Alloy" class="common-anchor-header">Implantar o Alloy<button data-href="#Deploy-Alloy" class="anchor-icon" translate="no">
+<h2 id="Deploy-Alloy" class="common-anchor-header">Deploy Alloy<button data-href="#Deploy-Alloy" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -161,8 +162,8 @@ helm install --values loki.yaml loki grafana/loki -n loki
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Mostraremos <a href="https://grafana.com/docs/alloy/latest/configure/">a configuração</a> do Alloy.</p>
-<h3 id="1-Create-Alloy-Configuration" class="common-anchor-header">1. Criar a configuração do Alloy<button data-href="#1-Create-Alloy-Configuration" class="anchor-icon" translate="no">
+    </button></h2><p>We will show you Alloy <a href="https://grafana.com/docs/alloy/latest/configure/">Configuration</a>.</p>
+<h3 id="1-Create-Alloy-Configuration" class="common-anchor-header">1. Create Alloy Configuration<button data-href="#1-Create-Alloy-Configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -177,7 +178,7 @@ helm install --values loki.yaml loki grafana/loki -n loki
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Usaremos o seguinte <code translate="no">alloy.yaml</code> para coletar logs de todos os pods do Kubernetes e enviá-los para o Loki via loki-gateway:</p>
+    </button></h3><p>We will use the following <code translate="no">alloy.yaml</code> to collect logs of all Kubernetes pods & send them to Loki via loki-gateway:</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">alloy:</span>
   <span class="hljs-attr">enableReporting:</span> <span class="hljs-literal">false</span>
   <span class="hljs-attr">resources:</span> {}
@@ -257,7 +258,7 @@ helm install --values loki.yaml loki grafana/loki -n loki
         }
       }
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="2-Install-Alloy" class="common-anchor-header">2. Instalar o Alloy<button data-href="#2-Install-Alloy" class="anchor-icon" translate="no">
+<h3 id="2-Install-Alloy" class="common-anchor-header">2. Install Alloy<button data-href="#2-Install-Alloy" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -274,7 +275,7 @@ helm install --values loki.yaml loki grafana/loki -n loki
       </svg>
     </button></h3><pre><code translate="no" class="language-shell">helm install --values alloy.yaml alloy grafana/alloy -n loki
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Query-Logs-with-Grafana" class="common-anchor-header">Consultar logs com o Grafana<button data-href="#Query-Logs-with-Grafana" class="anchor-icon" translate="no">
+<h2 id="Query-Logs-with-Grafana" class="common-anchor-header">Query Logs with Grafana<button data-href="#Query-Logs-with-Grafana" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -289,8 +290,8 @@ helm install --values loki.yaml loki grafana/loki -n loki
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Implante o Grafana e configure-o para se conectar ao Loki para consultar os logs.</p>
-<h3 id="1-Deploy-Grafana" class="common-anchor-header">1. Implantar o Grafana<button data-href="#1-Deploy-Grafana" class="anchor-icon" translate="no">
+    </button></h2><p>Deploy Grafana and configure it to connect to Loki for querying logs.</p>
+<h3 id="1-Deploy-Grafana" class="common-anchor-header">1. Deploy Grafana<button data-href="#1-Deploy-Grafana" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -305,18 +306,18 @@ helm install --values loki.yaml loki grafana/loki -n loki
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Instale o Grafana usando os seguintes comandos:</p>
+    </button></h3><p>Install Grafana using the following commands:</p>
 <pre><code translate="no" class="language-shell">kubectl create ns monitoring
 helm install my-grafana grafana/grafana --namespace monitoring
 <button class="copy-code-btn"></button></code></pre>
-<p>Antes de poder acessar o Grafana, é necessário recuperar a senha <code translate="no">admin</code>:</p>
+<p>Before you can access Grafana, you need to retrieve the <code translate="no">admin</code> password:</p>
 <pre><code translate="no" class="language-shell">kubectl get secret --namespace monitoring my-grafana -o jsonpath=&quot;{.data.admin-password}&quot; | base64 --decode ; echo
 <button class="copy-code-btn"></button></code></pre>
-<p>Em seguida, encaminhe a porta do Grafana para sua máquina local:</p>
+<p>Then, forward the Grafana port to your local machine:</p>
 <pre><code translate="no" class="language-shell">export POD_NAME=$(kubectl get pods --namespace monitoring -l &quot;app.kubernetes.io/name=grafana,app.kubernetes.io/instance=my-grafana&quot; -o jsonpath=&quot;{.items[0].metadata.name}&quot;)
 kubectl --namespace monitoring port-forward $POD_NAME 3000
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="2-Add-Loki-as-a-Data-Source-in-Grafana" class="common-anchor-header">2. Adicionar o Loki como uma fonte de dados no Grafana<button data-href="#2-Add-Loki-as-a-Data-Source-in-Grafana" class="anchor-icon" translate="no">
+<h3 id="2-Add-Loki-as-a-Data-Source-in-Grafana" class="common-anchor-header">2. Add Loki as a Data Source in Grafana<button data-href="#2-Add-Loki-as-a-Data-Source-in-Grafana" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -331,18 +332,20 @@ kubectl --namespace monitoring port-forward $POD_NAME 3000
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Quando o Grafana estiver em execução, você precisará adicionar o Loki como uma fonte de dados para consultar os logs.</p>
+    </button></h3><p>Once Grafana is running, you need to add Loki as a data source to query logs.</p>
 <ol>
-<li>Abra um navegador da Web e navegue até <code translate="no">127.0.0.1:3000</code>. Faça login usando o nome de usuário <code translate="no">admin</code> e a senha obtida anteriormente.</li>
-<li>No menu do lado esquerdo, escolha <strong>Conexões</strong> &gt; <strong>Adicionar nova conexão</strong>.</li>
-<li>Na página que aparece, escolha <strong>Loki</strong> como o tipo de fonte de dados. Pode introduzir <strong>loki</strong> na barra de pesquisa para encontrar a fonte de dados.</li>
-<li>Nas definições da fonte de dados Loki, especifique o <strong>Nome</strong> e o <strong>URL</strong> e, em seguida, clique em <strong>Guardar e testar</strong>.</li>
+<li>Open a web browser and navigate to <code translate="no">127.0.0.1:3000</code>. Log in using the username <code translate="no">admin</code> and the password obtained earlier.</li>
+<li>In the left-side menu, choose <strong>Connections</strong> > <strong>Add new connection</strong>.</li>
+<li>On the page that appears, choose <strong>Loki</strong> as the data source type. You can enter <strong>loki</strong> in the search bar to find the data source.</li>
+<li>In the Loki data source settings, specify the <strong>Name</strong> and <strong>URL</strong>, and then click <strong>Save & test</strong>.</li>
 </ol>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="/docs/v2.6.x/assets/datasource.jpg" alt="DataSource" class="doc-image" id="datasource" />
-   </span> <span class="img-wrapper"> <span>Fonte de dados</span> </span></p>
-<h3 id="3-Query-Milvus-Logs" class="common-anchor-header">3. Consultar registos do Milvus<button data-href="#3-Query-Milvus-Logs" class="anchor-icon" translate="no">
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/datasource.jpg" alt="DataSource" class="doc-image" id="datasource" />
+    <span>DataSource</span>
+  </span>
+</p>
+<h3 id="3-Query-Milvus-Logs" class="common-anchor-header">3. Query Milvus Logs<button data-href="#3-Query-Milvus-Logs" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -357,13 +360,15 @@ kubectl --namespace monitoring port-forward $POD_NAME 3000
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Depois de adicionar o Loki como uma fonte de dados, consulte os logs do Milvus no Grafana:</p>
+    </button></h3><p>After adding Loki as a data source, query Milvus logs in Grafana:</p>
 <ol>
-<li>No menu do lado esquerdo, clique em <strong>Explore (Explorar</strong>).</li>
-<li>No canto superior esquerdo da página, escolha a fonte de dados loki.</li>
-<li>Use <strong>o navegador de rótulos</strong> para selecionar rótulos e consultar logs.</li>
+<li>In the left-side menu, click <strong>Explore</strong>.</li>
+<li>In the upper-left corner of the page, choose the loki data source.</li>
+<li>Use <strong>Label browser</strong> to select labels and query logs.</li>
 </ol>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="/docs/v2.6.x/assets/milvuslog.jpg" alt="Query" class="doc-image" id="query" />
-   </span> <span class="img-wrapper"> <span>Consultar</span> </span></p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/milvuslog.jpg" alt="Query" class="doc-image" id="query" />
+    <span>Query</span>
+  </span>
+</p>

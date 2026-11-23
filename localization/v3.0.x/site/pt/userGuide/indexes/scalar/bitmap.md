@@ -2,11 +2,8 @@
 id: bitmap.md
 title: BITMAP
 summary: >-
-  A indexação de bitmap é uma técnica de indexação eficiente concebida para
-  melhorar o desempenho das consultas em campos escalares de baixa
-  cardinalidade. A cardinalidade refere-se ao número de valores distintos num
-  campo. Os campos com menos elementos distintos são considerados de baixa
-  cardinalidade.
+  Use BITMAP for low-cardinality scalar filtering. Check supported filters,
+  field restrictions, and index creation.
 ---
 <h1 id="BITMAP" class="common-anchor-header">BITMAP<button data-href="#BITMAP" class="anchor-icon" translate="no">
       <svg translate="no"
@@ -23,9 +20,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>A indexação bitmap é uma técnica de indexação eficiente concebida para melhorar o desempenho das consultas em campos escalares de baixa cardinalidade. A cardinalidade refere-se ao número de valores distintos num campo. Os campos com menos elementos distintos são considerados de baixa cardinalidade.</p>
-<p>Este tipo de índice ajuda a reduzir o tempo de recuperação de consultas escalares, representando os valores dos campos num formato binário compacto e realizando operações bit a bit eficientes sobre os mesmos. Em comparação com outros tipos de índices, os índices bitmap apresentam normalmente uma maior eficiência de espaço e velocidades de consulta mais rápidas quando lidam com campos de baixa cardinalidade.</p>
-<h2 id="Overview" class="common-anchor-header">Visão geral<button data-href="#Overview" class="anchor-icon" translate="no">
+    </button></h1><p><code translate="no">BITMAP</code> accelerates scalar filtering on fields with few distinct values, such as status codes and categories. Cardinality is the number of distinct values in a field. This page describes supported filters, field restrictions, and index creation.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -40,26 +36,10 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>O termo <strong>«bitmap»</strong> combina duas palavras: <strong>«bit»</strong> e <strong>«map</strong>». Um bit representa a menor unidade de dados num computador, que só pode conter um valor de <strong>0</strong> ou <strong>1</strong>. Um «map», neste contexto, refere-se ao processo de transformar e organizar dados de acordo com o valor que deve ser atribuído a 0 e a 1.</p>
-<p>Um índice bitmap é composto por dois componentes principais: bitmaps e chaves. As chaves representam os valores únicos no campo indexado. Para cada valor único, existe um bitmap correspondente. O comprimento destes bitmaps é igual ao número de registos na coleção. Cada bit no bitmap corresponde a um registo na coleção. Se o valor do campo indexado num registo corresponder à chave, o bit correspondente é definido como <strong>1</strong>; caso contrário, é definido como <strong>0</strong>.</p>
-<p>Considere uma coleção de documentos com os campos <strong>«Categoria»</strong> e <strong>«Público</strong>». Pretendemos recuperar documentos que se enquadrem na categoria <strong>«Tech»</strong> e que estejam abertos ao <strong>«Público</strong>». Neste caso, as chaves para os nossos índices de bitmap são <strong>«Tech</strong> » e <strong>«Público</strong>».</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/bitmap.png" alt="Bitmap" class="doc-image" id="bitmap" /> 
-   <span>Mapa de bits</span>
-  
- </span></p>
-<p>Conforme ilustrado na figura, os índices de mapa de bits para <strong>«Categoria»</strong> e <strong>«Público»</strong> são:</p>
-<ul>
-<li><p><strong>Tech</strong>: [1, 0, 1, 0, 0], o que indica que apenas o 1.º e o 3.º documentos pertencem à categoria <strong>«Tech</strong> ».</p></li>
-<li><p><strong>Público</strong>: [1, 0, 0, 1, 0], o que indica que apenas o 1.º e o 4.º documentos estão abertos ao <strong>Público</strong>.</p></li>
-</ul>
-<p>Para encontrar os documentos que correspondem a ambos os critérios, realizamos uma operação AND bit a bit nestes dois bitmaps:</p>
-<ul>
-<li><strong>Tecnologia</strong> E <strong>Público</strong>: [1, 0, 0, 0, 0]</li>
-</ul>
-<p>O mapa de bits resultante [1, 0, 0, 0, 0] indica que apenas o primeiro documento (<strong>ID</strong> <strong>1</strong>) satisfaz ambos os critérios. Ao utilizar índices de mapa de bits e operações bit a bit eficientes, podemos restringir rapidamente o âmbito da pesquisa, eliminando a necessidade de analisar todo o conjunto de dados.</p>
-<h2 id="Create-a-bitmap-index" class="common-anchor-header">Criar um índice de mapa de bits<button data-href="#Create-a-bitmap-index" class="anchor-icon" translate="no">
+    </button></h2><!-- Preserve the published #Limits link and the filter link used by related pages. These anchors are not headings. -->
+<a id="Limits"></a>
+<a id="Queries-accelerated-by-BITMAP"></a>
+<h3 id="Index-targets-and-filters" class="common-anchor-header">Index targets and filters<button data-href="#Index-targets-and-filters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -74,16 +54,115 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Para criar um índice de mapa de bits no Milvus, utilize o método ` <code translate="no">create_index()</code> ` e defina o parâmetro ` <code translate="no">index_type</code> ` como ` <code translate="no">&quot;BITMAP&quot;</code>`.</p>
+    </button></h3><p>To create a <code translate="no">BITMAP</code> index explicitly, choose a non-primary-key target from the table below. Each row pairs a supported target with the filters the index can help evaluate:</p>
+<table>
+<thead>
+<tr><th>Index target</th><th>Filters that can use the index</th></tr>
+</thead>
+<tbody>
+<tr><td><code translate="no">BOOL</code> field</td><td>Equality (<code translate="no">==</code>, <code translate="no">!=</code>) and membership (<code translate="no">in</code>, <code translate="no">not in</code>).</td></tr>
+<tr><td>Integer field (<code translate="no">INT8</code>, <code translate="no">INT16</code>, <code translate="no">INT32</code>, <code translate="no">INT64</code>)</td><td>Equality, membership, and ranges (<code translate="no">&lt;</code>, <code translate="no">&lt;=</code>, <code translate="no">&gt;</code>, <code translate="no">&gt;=</code>).</td></tr>
+<tr><td><code translate="no">VARCHAR</code> field</td><td>Equality, membership, ranges, and <a href="/docs/pt/pattern-matching.md">LIKE or regex patterns</a>. Pattern evaluation can visit many distinct indexed strings.</td></tr>
+<tr><td>Ordinary <code translate="no">ARRAY</code> field with <code translate="no">BOOL</code>, <code translate="no">INT8</code>, <code translate="no">INT16</code>, <code translate="no">INT32</code>, <code translate="no">INT64</code>, or <code translate="no">VARCHAR</code> elements</td><td><code translate="no">ARRAY_CONTAINS</code>, <code translate="no">ARRAY_CONTAINS_ANY</code>, <code translate="no">ARRAY_CONTAINS_ALL</code>. See <a href="/docs/pt/array_data_type.md#Array-index-support">Array index support</a>.</td></tr>
+<tr><td>JSON path cast to <code translate="no">BOOL</code> or <code translate="no">VARCHAR</code></td><td>Filters for the corresponding Boolean or string values above, subject to the <a href="/docs/pt/json-indexing.md#Index-requirements">JSON index requirements</a>.</td></tr>
+</tbody>
+</table>
+<div class="alert note">
+<blockquote>
+<p>Scalar indexes, including <code translate="no">AUTOINDEX</code>, do not support recursive ARRAY fields or arrays with nullable elements. See <a href="/docs/pt/array_data_type.md#Array-index-support">Array index support</a> for ordinary-array filters and <a href="/docs/pt/index-structarray-fields.md#Create-scalar-indexes">Index StructArray Fields</a> for subfield rules.</p>
+</blockquote>
+</div>
+<p>For ARRAY targets, <code translate="no">BITMAP</code> serves element-containment filters, not whole-array equality, element access by position, or array length. See <a href="/docs/pt/array_data_type.md#Array-index-support">Array index support</a>.</p>
+<p>For automatic selection beyond these explicit targets, see <a href="/docs/pt/scalar_index.md#AUTOINDEX-behavior">AUTOINDEX behavior</a>.</p>
+<div class="alert note">
+<blockquote>
+<p>These are index capabilities, not limits on valid filter expressions. See <a href="/docs/pt/scalar_index.md#Filter-execution">Scalar Index</a> for shared lookup constraints. For <code translate="no">AND</code>, <code translate="no">OR</code>, <code translate="no">NOT</code>, and NULL tests (<code translate="no">IS NULL</code>, <code translate="no">IS NOT NULL</code>), see <a href="/docs/pt/basic-operators.md">Basic Operators</a>.</p>
+</blockquote>
+</div>
+<h3 id="Memory-considerations" class="common-anchor-header">Memory considerations<button data-href="#Memory-considerations" class="anchor-icon" translate="no">
+      <svg translate="no"
+        aria-hidden="true"
+        focusable="false"
+        height="20"
+        version="1.1"
+        viewBox="0 0 16 16"
+        width="16"
+      >
+        <path
+          fill="#0092E4"
+          fill-rule="evenodd"
+          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+        ></path>
+      </svg>
+    </button></h3><p>Memory and query costs depend on the number of distinct values and their distribution. Compare indexes with representative filters rather than treating a fixed cardinality as a universal performance cutoff.</p>
+<p>For dense bitmaps, a rough estimate in bytes is <code translate="no">(D + 1) * N / 8</code>, where <code translate="no">N</code> is the number of entities and <code translate="no">D</code> the number of distinct values. This includes one bitmap per distinct value and one for validity. Value storage and other overhead add to the estimate; an optional offset cache adds approximately <code translate="no">8 * N</code> bytes on a 64-bit system. Compressed bitmap representations can have substantially different memory use.</p>
+<p>These rough estimates cover loaded index memory with memory mapping disabled. Calculate them per segment, then sum across loaded segments and replicas.</p>
+<div class="alert note">
+<blockquote>
+<p>Allow extra memory for loaded field data, vector indexes, collection and index overhead, and temporary allocations. Validate with representative data and queries; arrays, JSON, older index formats, and memory mapping require separate measurement.</p>
+</blockquote>
+</div>
+<h3 id="How-BITMAP-works" class="common-anchor-header">How BITMAP works<button data-href="#How-BITMAP-works" class="anchor-icon" translate="no">
+      <svg translate="no"
+        aria-hidden="true"
+        focusable="false"
+        height="20"
+        version="1.1"
+        viewBox="0 0 16 16"
+        width="16"
+      >
+        <path
+          fill="#0092E4"
+          fill-rule="evenodd"
+          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+        ></path>
+      </svg>
+    </button></h3><p><details>
+<summary><strong>View a bitmap filtering example</strong></summary></p>
+<p>A bitmap index associates each distinct field value with a bitmap. Each bit corresponds to an entity: <strong>1</strong> means the entity has that value, and <strong>0</strong> means it does not.</p>
+<p>For example, to find public documents in the <strong>Tech</strong> category, combine the bitmaps for <strong>Category = Tech</strong> and <strong>Public = true</strong>:</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/bitmap.png" alt="Bitmap" class="doc-image" id="bitmap" />
+    <span>Bitmap</span>
+  </span>
+</p>
+<p>As shown in the figure, the bitmap indexes for <strong>Category</strong> and <strong>Public</strong> are:</p>
+<ul>
+<li><p><strong>Tech</strong>: [1, 0, 1, 0, 0], which shows that only the 1st and 3rd documents fall into the <strong>Tech</strong> category.</p></li>
+<li><p><strong>Public</strong>: [1, 0, 0, 1, 0], which shows that only the 1st and 4th documents are open to the <strong>Public</strong>.</p></li>
+</ul>
+<p>To find the documents that match both criteria, we perform a bitwise AND operation on these two bitmaps:</p>
+<ul>
+<li><strong>Tech</strong> AND <strong>Public</strong>: [1, 0, 0, 0, 0]</li>
+</ul>
+<p>Only the first document (<strong>ID 1</strong>) satisfies both criteria.</p>
+<p></details></p>
+<h2 id="Create-a-bitmap-index" class="common-anchor-header">Create a bitmap index<button data-href="#Create-a-bitmap-index" class="anchor-icon" translate="no">
+      <svg translate="no"
+        aria-hidden="true"
+        focusable="false"
+        height="20"
+        version="1.1"
+        viewBox="0 0 16 16"
+        width="16"
+      >
+        <path
+          fill="#0092E4"
+          fill-rule="evenodd"
+          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+        ></path>
+      </svg>
+    </button></h2><p>To create a bitmap index in Milvus, use the <code translate="no">create_index()</code> method and set the <code translate="no">index_type</code> parameter to <code translate="no">&quot;BITMAP&quot;</code>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -242,9 +321,8 @@ curl --request POST \
 <span class="hljs-comment">#     &quot;data&quot;: {}</span>
 <span class="hljs-comment"># }</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Neste exemplo, criamos um índice bitmap no campo « <code translate="no">category</code> » da coleção « <code translate="no">my_collection</code> ». O método « <code translate="no">add_index()</code> » é utilizado para especificar o nome do campo, o tipo de índice e o nome do índice.</p>
-<p>Depois de criado o índice de bitmap, pode utilizar o parâmetro ` <code translate="no">filter</code> ` em operações de consulta para efetuar filtragem escalar com base no campo indexado. Isto permite-lhe restringir de forma eficiente os resultados da pesquisa utilizando o índice de bitmap. Para mais informações, consulte <a href="/docs/pt/boolean.md">Explicação</a> sobre <a href="/docs/pt/boolean.md">filtragem</a>.</p>
-<h2 id="Drop-an-index" class="common-anchor-header">Eliminar um índice<button data-href="#Drop-an-index" class="anchor-icon" translate="no">
+<p>This creates an index on <code translate="no">my_collection.category</code>. Use the field in a query or search <code translate="no">filter</code>; see <a href="/docs/pt/boolean.md">Filtering Explained</a>.</p>
+<h2 id="Drop-an-index" class="common-anchor-header">Drop an index<button data-href="#Drop-an-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -259,22 +337,21 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Utilize o método ` <code translate="no">drop_index()</code> ` para remover um índice existente de uma coleção.</p>
+    </button></h2><p>Use the <code translate="no">drop_index()</code> method to remove an existing index from a collection.</p>
 <div class="alert note">
-<ul>
-<li><p>Na <strong>v2.6.3</strong> ou anterior, é necessário libertar a coleção antes de eliminar um índice escalar.</p></li>
-<li><p>A partir <strong>da v2.6.4</strong> ou posterior, pode eliminar um índice escalar diretamente assim que este já não for necessário — não é necessário libertar a coleção primeiro.</p></li>
-</ul>
+<blockquote>
+<p>For release requirements when dropping a scalar index, see <a href="/docs/pt/scalar_index.md#Drop-index-compatibility">Scalar Index</a>.</p>
+</blockquote>
 </div>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.drop_index(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,   <span class="hljs-comment"># Name of the collection</span>
@@ -386,37 +463,3 @@ curl --request POST \
 <span class="hljs-comment">#     &quot;data&quot;: {}</span>
 <span class="hljs-comment"># }</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Limits" class="common-anchor-header">Limites<button data-href="#Limits" class="anchor-icon" translate="no">
-      <svg translate="no"
-        aria-hidden="true"
-        focusable="false"
-        height="20"
-        version="1.1"
-        viewBox="0 0 16 16"
-        width="16"
-      >
-        <path
-          fill="#0092E4"
-          fill-rule="evenodd"
-          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
-        ></path>
-      </svg>
-    </button></h2><ul>
-<li><p>Os índices de bitmap só são suportados para campos escalares que não sejam chaves primárias.</p></li>
-<li><p>O tipo de dados do campo deve ser um dos seguintes:</p>
-<ul>
-<li><p><code translate="no">BOOL</code>, <code translate="no">INT8</code>, <code translate="no">INT16</code>, <code translate="no">INT32</code>, <code translate="no">INT64</code>, <code translate="no">VARCHAR</code></p></li>
-<li><p><code translate="no">ARRAY</code> (os elementos devem ser um dos seguintes: <code translate="no">BOOL</code>, <code translate="no">INT8</code>, <code translate="no">INT16</code>, <code translate="no">INT32</code>, <code translate="no">INT64</code>, <code translate="no">VARCHAR</code>)</p></li>
-</ul></li>
-<li><p>Os índices de bitmap não suportam os seguintes tipos de dados:</p>
-<ul>
-<li><p><code translate="no">FLOAT</code>, <code translate="no">DOUBLE</code>: Os tipos de ponto flutuante não são compatíveis com a natureza binária dos índices bitmap.</p></li>
-<li><p><code translate="no">JSON</code>: Os tipos de dados JSON têm uma estrutura complexa que não pode ser representada de forma eficiente utilizando índices bitmap.</p></li>
-</ul></li>
-<li><p>Os índices bitmap não são adequados para campos com elevada cardinalidade (ou seja, campos com um grande número de valores distintos).</p>
-<ul>
-<li><p>Como orientação geral, os índices bitmap são mais eficazes quando a cardinalidade de um campo é inferior a 500.</p></li>
-<li><p>Quando a cardinalidade ultrapassa este limiar, os benefícios de desempenho dos índices bitmap diminuem e a sobrecarga de armazenamento torna-se significativa.</p></li>
-<li><p>Para campos de alta cardinalidade, considere a utilização de técnicas de indexação alternativas, tais como índices invertidos, dependendo do seu caso de utilização específico e dos requisitos da consulta.</p></li>
-</ul></li>
-</ul>

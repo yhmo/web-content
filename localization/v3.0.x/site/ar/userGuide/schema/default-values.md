@@ -1,11 +1,11 @@
 ---
 id: default-values.md
-title: القيم الافتراضية
+title: Default Values
 summary: >-
-  تعيين القيم الافتراضية للحقول القياسية حتى يقوم Milvus بملء القيم الناقصة عند
-  إدراج الكيانات.
+  Set default values for scalar fields so Milvus fills missing values during
+  entity insertion.
 ---
-<h1 id="Default-Values" class="common-anchor-header">القيم الافتراضية<button data-href="#Default-Values" class="anchor-icon" translate="no">
+<h1 id="Default-Values" class="common-anchor-header">Default Values<button data-href="#Default-Values" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,9 +20,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>يتيح لك Milvus تعيين قيم افتراضية للحقول العددية (باستثناء الحقل الأساسي). عندما يتم تكوين قيمة افتراضية لحقل ما، يقوم Milvus تلقائيًا بتطبيق هذه القيمة في حالة عدم توفير أي بيانات أثناء الإدراج.</p>
-<p>تسهل القيم الافتراضية عملية ترحيل البيانات من أنظمة قواعد البيانات الأخرى إلى Milvus من خلال الحفاظ على إعدادات القيم الافتراضية الحالية. يمكنك أيضًا استخدام القيم الافتراضية للحقول التي قد تكون قيمها غير مؤكدة في وقت الإدراج.</p>
-<h2 id="Limits" class="common-anchor-header">القيود<button data-href="#Limits" class="anchor-icon" translate="no">
+    </button></h1><p>Milvus allows you to set default values for scalar fields (excluding the primary field). When a field has a default value configured, Milvus automatically applies this value if no data is provided during insertion.</p>
+<p>Default values simplify data migration from other database systems to Milvus by preserving existing default value settings. You can also use default values for fields where values might be uncertain at the time of insertion.</p>
+<h2 id="Limits" class="common-anchor-header">Limits<button data-href="#Limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -38,11 +38,11 @@ summary: >-
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>تدعم الحقول العددية فقط القيم الافتراضية. لا يمكن أن يكون للحقل الأساسي والحقول المتجهة قيم افتراضية.</p></li>
-<li><p><code translate="no">JSON</code> ولا تدعم الحقول من نوع " <code translate="no">ARRAY</code> " القيم الافتراضية.</p></li>
-<li><p>لا يمكن تكوين القيم الافتراضية إلا أثناء إنشاء المجموعة ولا يمكن تعديلها بعد ذلك.</p></li>
+<li><p>Only scalar fields support default values. The primary field and vector fields cannot have default values.</p></li>
+<li><p><code translate="no">JSON</code> and <code translate="no">ARRAY</code> fields do not support default values.</p></li>
+<li><p>Default values can only be configured during collection creation and cannot be modified afterward.</p></li>
 </ul>
-<h2 id="Set-default-values" class="common-anchor-header">تعيين القيم الافتراضية<button data-href="#Set-default-values" class="anchor-icon" translate="no">
+<h2 id="Set-default-values" class="common-anchor-header">Set default values<button data-href="#Set-default-values" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -57,17 +57,17 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>عند إنشاء مجموعة، استخدم المعلمة <code translate="no">default_value</code> في <code translate="no">add_field()</code> لتحديد القيمة الافتراضية لحقل ما.</p>
-<p>يُنشئ المثال التالي مجموعة تحتوي على حقلين عدديين لهما قيم افتراضية: القيمة الافتراضية لـ <code translate="no">age</code> هي <code translate="no">18</code> ، والقيمة الافتراضية لـ <code translate="no">status</code> هي <code translate="no">&quot;active&quot;</code>.</p>
+    </button></h2><p>When creating a collection, use the <code translate="no">default_value</code> parameter in <code translate="no">add_field()</code> to define the default value for a field.</p>
+<p>The following example creates a collection with two scalar fields that have default values: <code translate="no">age</code> defaults to <code translate="no">18</code> and <code translate="no">status</code> defaults to <code translate="no">&quot;active&quot;</code>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
 
@@ -535,7 +535,7 @@ curl --request POST \
     &quot;collectionName&quot;: &quot;my_collection&quot;
   }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Insert-entities" class="common-anchor-header">إدراج الكيانات<button data-href="#Insert-entities" class="anchor-icon" translate="no">
+<h2 id="Insert-entities" class="common-anchor-header">Insert entities<button data-href="#Insert-entities" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -550,16 +550,16 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>عند إدراج البيانات، إذا حذفت حقلًا له قيمة افتراضية أو قمت بتعيينه صراحةً على NULL، فإن Milvus يستخدم تلقائيًا القيمة الافتراضية المُعدة مسبقًا.</p>
+    </button></h2><p>When inserting data, if you omit a field that has a default value or explicitly set it to NULL, Milvus automatically uses the configured default value.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">data = [
     <span class="hljs-comment"># All fields provided explicitly</span>
@@ -839,7 +839,7 @@ curl --request POST \
     &quot;collectionName&quot;: &quot;my_collection&quot;
   }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Search-and-query-with-default-values" class="common-anchor-header">البحث والاستعلام باستخدام القيم الافتراضية<button data-href="#Search-and-query-with-default-values" class="anchor-icon" translate="no">
+<h2 id="Search-and-query-with-default-values" class="common-anchor-header">Search and query with default values<button data-href="#Search-and-query-with-default-values" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -854,17 +854,17 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>تتصرف الكيانات التي تحتوي على قيم افتراضية بنفس الطريقة التي تتصرف بها أي كيانات أخرى أثناء عمليات البحث المتجهية والتصفية القياسية. يمكنك التصفية حسب القيم الافتراضية في كل من عمليات " <code translate="no">search</code> " و" <code translate="no">query</code> ".</p>
-<p>يبحث المثال التالي عن الكيانات التي يكون فيها <code translate="no">age</code> مساويًا للقيمة الافتراضية <code translate="no">18</code>:</p>
+    </button></h2><p>Entities containing default values behave the same as any other entities during vector searches and scalar filtering. You can filter by default values in both <code translate="no">search</code> and <code translate="no">query</code> operations.</p>
+<p>The following example searches for entities where <code translate="no">age</code> equals the default value <code translate="no">18</code>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">res = client.search(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,
@@ -1056,23 +1056,23 @@ Console.WriteLine(<span class="hljs-string">&quot;Search results (age == 18):&qu
   }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
 <p><details></p>
-<p><summary>النتيجة المتوقعة</summary></p>
+<p><summary>Expected output</summary></p>
 <pre><code translate="no" class="language-plaintext">Output:
 Search results (age == 18):
   id: 2, age: 18, status: active
   id: 4, age: 18, status: inactive
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<p>يمكنك أيضًا الاستعلام عن الكيانات من خلال مطابقة القيم الافتراضية مباشرةً:</p>
+<p>You can also query entities by matching default values directly:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Query entities where age equals the default value (18)</span>
 default_age_results = client.query(
@@ -1330,7 +1330,7 @@ curl --request POST \
   }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
 <p><details></p>
-<p><summary>النتيجة المتوقعة</summary></p>
+<p><summary>Expected output</summary></p>
 <pre><code translate="no" class="language-plaintext">Query results (age == 18):
   id: 2, age: 18, status: active
   id: 4, age: 18, status: inactive
@@ -1340,7 +1340,7 @@ Query results (status == &#x27;active&#x27;):
   id: 3, age: 25, status: active
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<h2 id="Applicable-rules" class="common-anchor-header">القواعد المطبقة<button data-href="#Applicable-rules" class="anchor-icon" translate="no">
+<h2 id="Applicable-rules" class="common-anchor-header">Applicable rules<button data-href="#Applicable-rules" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1355,49 +1355,49 @@ Query results (status == &#x27;active&#x27;):
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>عندما يتم تكوين كل من " <code translate="no">nullable</code> " و" <code translate="no">default_value</code> " لحقل ما، تحدد القواعد التالية كيفية تعامل Milvus مع المدخلات NULL أو قيم الحقول المفقودة أثناء الإدراج.</p>
+    </button></h2><p>When both <code translate="no">nullable</code> and <code translate="no">default_value</code> are configured for a field, the following rules determine how Milvus handles NULL input or missing field values during insertion.</p>
 <table>
    <tr>
-     <th><p>قابل للإفراغ</p></th>
-     <th><p>القيمة الافتراضية</p></th>
-     <th><p>مدخلات المستخدم</p></th>
-     <th><p>النتيجة</p></th>
+     <th><p>Nullable</p></th>
+     <th><p>Default Value</p></th>
+     <th><p>User Input</p></th>
+     <th><p>Result</p></th>
    </tr>
    <tr>
      <td><p>✅</p></td>
-     <td><p>✅ (غير NULL)</p></td>
-     <td><p>NULL أو تم تجاهلها</p></td>
-     <td><p>يستخدم القيمة الافتراضية</p></td>
+     <td><p>✅ (non-NULL)</p></td>
+     <td><p>NULL or omitted</p></td>
+     <td><p>Uses the default value</p></td>
    </tr>
    <tr>
      <td><p>✅</p></td>
      <td><p>❌</p></td>
-     <td><p>NULL أو تم حذفه</p></td>
-     <td><p>يتم تخزينه كـ NULL</p></td>
+     <td><p>NULL or omitted</p></td>
+     <td><p>Stored as NULL</p></td>
    </tr>
    <tr>
      <td><p>❌</p></td>
-     <td><p>✅ (غير NULL)</p></td>
-     <td><p>NULL أو محذوف</p></td>
-     <td><p>يستخدم القيمة الافتراضية</p></td>
+     <td><p>✅ (non-NULL)</p></td>
+     <td><p>NULL or omitted</p></td>
+     <td><p>Uses the default value</p></td>
    </tr>
    <tr>
      <td><p>❌</p></td>
      <td><p>❌</p></td>
-     <td><p>NULL أو تم حذفه</p></td>
-     <td><p>يُحدث خطأً</p></td>
+     <td><p>NULL or omitted</p></td>
+     <td><p>Throws an error</p></td>
    </tr>
    <tr>
      <td><p>❌</p></td>
      <td><p>✅ (NULL)</p></td>
-     <td><p>NULL أو تم حذفه</p></td>
-     <td><p>يُحدث خطأً</p></td>
+     <td><p>NULL or omitted</p></td>
+     <td><p>Throws an error</p></td>
    </tr>
 </table>
-<p><strong>النقاط الرئيسية:</strong></p>
+<p><strong>Key takeaways:</strong></p>
 <ul>
-<li><p>عندما يحتوي الحقل على قيمة افتراضية غير NULL، يتم استخدام تلك القيمة بغض النظر عما إذا كان الخيار " <code translate="no">nullable</code> " ممكّنًا أم لا.</p></li>
-<li><p>عندما تكون ميزة " <code translate="no">nullable=True</code> " مفعّلة دون تعيين قيمة افتراضية، يخزن الحقل القيمة NULL.</p></li>
-<li><p>عندما تكون ميزة " <code translate="no">nullable=False</code> " مفعّلة دون تعيين أي قيمة افتراضية، يفشل الإدراج ويظهر خطأ.</p></li>
-<li><p>يُعد تعيين قيمة افتراضية NULL لحقل غير قابل للقيمة NULL غير صالح ويؤدي إلى ظهور خطأ.</p></li>
+<li><p>When a field has a non-NULL default value, that value is used regardless of whether <code translate="no">nullable</code> is enabled.</p></li>
+<li><p>When <code translate="no">nullable=True</code> but no default value is set, the field stores NULL.</p></li>
+<li><p>When <code translate="no">nullable=False</code> and no default value is set, insertion fails with an error.</p></li>
+<li><p>Setting a NULL default value on a non-nullable field is invalid and causes an error.</p></li>
 </ul>

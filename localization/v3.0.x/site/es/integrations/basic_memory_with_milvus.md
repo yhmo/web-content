@@ -1,14 +1,12 @@
 ---
 id: basic_memory_with_milvus.md
 summary: >-
-  En este tutorial, crearemos un pequeño proyecto de gestión de la memoria para
-  un equipo de desarrollo de aplicaciones. Tomaremos notas sobre el
-  almacenamiento en caché, la autenticación, las implementaciones y las copias
-  de seguridad, y luego recuperaremos la nota adecuada mediante la búsqueda
-  semántica e híbrida.
-title: Crear una memoria semántica del proyecto con Basic Memory y Milvus
+  In this tutorial, we will build a small memory project for an application
+  team. We will record notes about caching, authentication, deployments, and
+  backups, then retrieve the right note with semantic and hybrid search.
+title: Build Semantic Project Memory with Basic Memory and Milvus
 ---
-<h1 id="Build-Semantic-Project-Memory-with-Basic-Memory-and-Milvus" class="common-anchor-header">Crear una memoria semántica del proyecto con Basic Memory y Milvus<button data-href="#Build-Semantic-Project-Memory-with-Basic-Memory-and-Milvus" class="anchor-icon" translate="no">
+<h1 id="Build-Semantic-Project-Memory-with-Basic-Memory-and-Milvus" class="common-anchor-header">Build Semantic Project Memory with Basic Memory and Milvus<button data-href="#Build-Semantic-Project-Memory-with-Basic-Memory-and-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -23,9 +21,9 @@ title: Crear una memoria semántica del proyecto con Basic Memory y Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p><a href="https://github.com/basicmachines-co/basic-memory">Basic Memory</a> almacena el conocimiento del proyecto en archivos Markdown normales y lo pone a disposición a través de una interfaz de línea de comandos (CLI) y un servidor MCP. Esto proporciona a un agente de programación un lugar permanente donde recordar decisiones, guías operativas y lecciones que deben conservarse más allá de una sola conversación.</p>
-<p>En este tutorial, crearemos un pequeño proyecto de memoria para un equipo de desarrollo de aplicaciones. Registraremos notas sobre el almacenamiento en caché, la autenticación, las implementaciones y las copias de seguridad, y luego recuperaremos la nota adecuada mediante la búsqueda semántica e híbrida.</p>
-<p><a href="https://milvus.io/">Milvus</a> almacenará los vectores y realizará la búsqueda por similitud. Basic Memory seguirá gestionando las notas Markdown, los metadatos del proyecto, la búsqueda de texto completo y el manifiesto de vectores en PostgreSQL.</p>
+    </button></h1><p><a href="https://github.com/basicmachines-co/basic-memory">Basic Memory</a> keeps project knowledge in ordinary Markdown files and makes it available through a CLI and MCP server. This gives a coding agent a durable place to remember decisions, runbooks, and lessons that should survive beyond one conversation.</p>
+<p>In this tutorial, we will build a small memory project for an application team. We will record notes about caching, authentication, deployments, and backups, then retrieve the right note with semantic and hybrid search.</p>
+<p><a href="https://milvus.io/">Milvus</a> will store the vectors and run similarity search. Basic Memory will continue to manage the Markdown notes, project metadata, full-text search, and vector manifest in PostgreSQL.</p>
 <pre><code translate="no" class="language-text">Markdown notes
       |
       v
@@ -34,8 +32,8 @@ Basic Memory CLI / MCP
       |-- OpenAI: embeddings
       `-- Milvus: vector persistence and similarity search
 <button class="copy-code-btn"></button></code></pre>
-<p>Este tutorial utiliza Milvus Lite, que se ejecuta localmente en una ruta de tu equipo. La misma configuración de Basic Memory puede apuntar posteriormente a Milvus Standalone, Milvus Distributed o Zilliz Cloud.</p>
-<h2 id="Prerequisites" class="common-anchor-header">Requisitos previos<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+<p>This tutorial uses Milvus Lite, which runs locally at a path on your machine. The same Basic Memory configuration can later point to Milvus Standalone, Milvus Distributed, or Zilliz Cloud.</p>
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -50,17 +48,17 @@ Basic Memory CLI / MCP
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Necesitas:</p>
+    </button></h2><p>You need:</p>
 <ul>
-<li>Python 3.12 o posterior</li>
+<li>Python 3.12 or later</li>
 <li><a href="https://docs.astral.sh/uv/"><code translate="no">uv</code></a></li>
-<li>Una base de datos PostgreSQL y su URL de conexión <code translate="no">postgresql+asyncpg://...</code> </li>
-<li>Una clave de API de OpenAI</li>
+<li>A PostgreSQL database and its <code translate="no">postgresql+asyncpg://...</code> connection URL</li>
+<li>An OpenAI API key</li>
 </ul>
-<p>Instala Basic Memory con sus dependencias opcionales de Milvus desde PyPI:</p>
+<p>Install Basic Memory with its Milvus optional dependencies from PyPI:</p>
 <pre><code translate="no" class="language-bash">uv tool install --python 3.12 <span class="hljs-string">&quot;basic-memory[milvus]&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Configure-Basic-Memory" class="common-anchor-header">Configura Basic Memory<button data-href="#Configure-Basic-Memory" class="anchor-icon" translate="no">
+<h2 id="Configure-Basic-Memory" class="common-anchor-header">Configure Basic Memory<button data-href="#Configure-Basic-Memory" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -75,13 +73,13 @@ Basic Memory CLI / MCP
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Crea un espacio de trabajo para el tutorial. Mantener aquí la configuración de Basic Memory y los datos de Milvus Lite facilita la revisión del ejemplo y su posterior eliminación.</p>
+    </button></h2><p>Create a workspace for the tutorial. Keeping the Basic Memory configuration and Milvus Lite data here makes the example easy to inspect and remove later.</p>
 <pre><code translate="no" class="language-bash"><span class="hljs-built_in">mkdir</span> -p basic-memory-milvus-demo/notes
 <span class="hljs-built_in">cd</span> basic-memory-milvus-demo
 
 <span class="hljs-built_in">export</span> BASIC_MEMORY_CONFIG_DIR=<span class="hljs-string">&quot;<span class="hljs-variable">$PWD</span>/.basic-memory&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Configura PostgreSQL como base de datos principal, OpenAI como proveedor de incrustaciones y Milvus como índice vectorial:</p>
+<p>Configure PostgreSQL as the primary database, OpenAI as the embedding provider, and Milvus as the vector index:</p>
 <pre><code translate="no" class="language-bash"><span class="hljs-built_in">export</span> BASIC_MEMORY_DATABASE_BACKEND=postgres
 <span class="hljs-built_in">export</span> BASIC_MEMORY_DATABASE_URL=<span class="hljs-string">&quot;postgresql+asyncpg://USER:PASSWORD@HOST:5432/DATABASE&quot;</span>
 
@@ -93,9 +91,9 @@ Basic Memory CLI / MCP
 <span class="hljs-built_in">export</span> BASIC_MEMORY_SEMANTIC_EMBEDDING_MODEL=text-embedding-3-small
 <span class="hljs-built_in">export</span> OPENAI_API_KEY=<span class="hljs-string">&quot;sk-***********&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>En este caso, « <code translate="no">BASIC_MEMORY_MILVUS_URI</code> » es una ruta local, por lo que PyMilvus inicia Milvus Lite automáticamente. No se requiere un servidor Milvus independiente.</p>
-<p>Milvus es opcional en «Memoria básica» en general, pero es el backend vectorial seleccionado en este tutorial. Actualmente, esta selección solo se aplica cuando el backend de la base de datos principal es PostgreSQL. Los proyectos de «Memoria básica» basados en SQLite utilizan en su lugar <code translate="no">sqlite-vec</code>.</p>
-<h2 id="Create-a-memory-project" class="common-anchor-header">Crear un proyecto de memoria<button data-href="#Create-a-memory-project" class="anchor-icon" translate="no">
+<p>Here, <code translate="no">BASIC_MEMORY_MILVUS_URI</code> is a local path, so PyMilvus starts Milvus Lite automatically. No separate Milvus server is required.</p>
+<p>Milvus is optional in Basic Memory as a whole, but it is the selected vector backend in this tutorial. The selection currently applies only when the primary database backend is PostgreSQL. SQLite-based Basic Memory projects use <code translate="no">sqlite-vec</code> instead.</p>
+<h2 id="Create-a-memory-project" class="common-anchor-header">Create a memory project<button data-href="#Create-a-memory-project" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -110,11 +108,11 @@ Basic Memory CLI / MCP
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Un proyecto de Basic Memory asigna un nombre a un directorio de notas en formato Markdown. Añade el directorio del tutorial como proyecto y configúralo como predeterminado:</p>
+    </button></h2><p>A Basic Memory project maps a name to a directory of Markdown notes. Add the tutorial directory as a project and make it the default:</p>
 <pre><code translate="no" class="language-bash">bm project add app-memory <span class="hljs-string">&quot;<span class="hljs-variable">$PWD</span>/notes&quot;</span> --default
 <button class="copy-code-btn"></button></code></pre>
-<p>El equipo de la aplicación dispone ahora de un espacio de memoria duradero. Rellenémoslo con un pequeño catálogo mixto. Algunas notas serán relevantes para nuestras preguntas posteriores, mientras que otras servirán como distracciones realistas.</p>
-<h2 id="Record-project-memories" class="common-anchor-header">Registrar las memorias del proyecto<button data-href="#Record-project-memories" class="anchor-icon" translate="no">
+<p>The application team now has a durable memory space. Let us fill it with a small, mixed catalog. Some notes will be relevant to our later questions, while others provide realistic distractors.</p>
+<h2 id="Record-project-memories" class="common-anchor-header">Record project memories<button data-href="#Record-project-memories" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -129,7 +127,7 @@ Basic Memory CLI / MCP
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Empieza por la decisión de almacenamiento en caché de la aplicación:</p>
+    </button></h2><p>Start with the application’s caching decision:</p>
 <pre><code translate="no" class="language-bash">bm tool write-note \
   --title <span class="hljs-string">&quot;Caching Strategy&quot;</span> \
   --folder <span class="hljs-string">&quot;engineering&quot;</span> \
@@ -139,7 +137,7 @@ Basic Memory CLI / MCP
 The application caches read-heavy product responses <span class="hljs-keyword">in</span> Redis <span class="hljs-keyword">for</span> five minutes. This avoids repeated database queries and makes repeated requests faster. Cache entries are invalidated immediately after a write.
 EOF
 <button class="copy-code-btn"></button></code></pre>
-<p>Registra cómo se gestionan los tokens de autenticación:</p>
+<p>Record how authentication tokens are handled:</p>
 <pre><code translate="no" class="language-bash">bm tool write-note \
   --title <span class="hljs-string">&quot;Authentication Tokens&quot;</span> \
   --folder <span class="hljs-string">&quot;engineering&quot;</span> \
@@ -149,7 +147,7 @@ EOF
 JWT access tokens expire after fifteen minutes. Refresh tokens rotate on every use. After suspicious activity, revoke the entire token family and require the user to sign <span class="hljs-keyword">in</span> again.
 EOF
 <button class="copy-code-btn"></button></code></pre>
-<p>Añade dos manuales de operaciones:</p>
+<p>Add two operational runbooks:</p>
 <pre><code translate="no" class="language-bash">bm tool write-note \
   --title <span class="hljs-string">&quot;Deployment Reliability&quot;</span> \
   --folder <span class="hljs-string">&quot;operations&quot;</span> \
@@ -168,7 +166,7 @@ bm tool write-note \
 PostgreSQL uses daily snapshots and continuous write-ahead <span class="hljs-built_in">log</span> archiving. The team runs a restore drill every month and records the recovery point and recovery time.
 EOF
 <button class="copy-code-btn"></button></code></pre>
-<p>Por último, añade dos notas sobre productos no relacionadas. Estas hacen que el ejercicio de búsqueda sea más representativo que un catálogo en el que todos los documentos son relevantes:</p>
+<p>Finally, add two unrelated product notes. These make the search exercise more representative than a catalog in which every document is relevant:</p>
 <pre><code translate="no" class="language-bash">bm tool write-note \
   --title <span class="hljs-string">&quot;UI Accessibility&quot;</span> \
   --folder <span class="hljs-string">&quot;product&quot;</span> \
@@ -187,8 +185,8 @@ bm tool write-note \
 The content calendar tracks blog drafts, launch screenshots, reviewers, and publication dates <span class="hljs-keyword">for</span> the next product release.
 EOF
 <button class="copy-code-btn"></button></code></pre>
-<p>Cada nota sigue siendo un archivo Markdown normal ubicado en <code translate="no">notes/</code>. Basic Memory añade la estructura de búsqueda sin restar control al sistema de archivos.</p>
-<h2 id="Build-the-search-indexes" class="common-anchor-header">Crea los índices de búsqueda<button data-href="#Build-the-search-indexes" class="anchor-icon" translate="no">
+<p>Every note is still an ordinary Markdown file under <code translate="no">notes/</code>. Basic Memory adds the searchable structure without taking ownership away from the filesystem.</p>
+<h2 id="Build-the-search-indexes" class="common-anchor-header">Build the search indexes<button data-href="#Build-the-search-indexes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -203,19 +201,19 @@ EOF
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Ejecuta una reindexación completa tras añadir o modificar sustancialmente un grupo de notas:</p>
+    </button></h2><p>Run a full reindex after adding or substantially changing a group of notes:</p>
 <pre><code translate="no" class="language-bash">bm reindex --full --project app-memory
 <button class="copy-code-btn"></button></code></pre>
-<p>Durante este paso, Basic Memory:</p>
+<p>During this step, Basic Memory:</p>
 <ol>
-<li>Lee y divide en fragmentos las notas Markdown.</li>
-<li>Crea el índice de texto completo de PostgreSQL.</li>
-<li>Envía los fragmentos al modelo de incrustación de OpenAI configurado.</li>
-<li>Almacena los vectores resultantes en la colección Milvus específica del proyecto.</li>
-<li>Marca los fragmentos almacenados correctamente como «listos» en su manifiesto de vectores de PostgreSQL.</li>
+<li>Reads and chunks the Markdown notes.</li>
+<li>Builds the PostgreSQL full-text index.</li>
+<li>Sends the chunks to the configured OpenAI embedding model.</li>
+<li>Stores the resulting vectors in the project-specific Milvus collection.</li>
+<li>Marks successfully stored chunks as ready in its PostgreSQL vector manifest.</li>
 </ol>
-<p>Basic Memory utiliza una colección Milvus determinista para cada proyecto. No es necesario que crees ni nombres la colección tú mismo.</p>
-<h2 id="Retrieve-a-memory-by-meaning" class="common-anchor-header">Recuperar un recuerdo por su significado<button data-href="#Retrieve-a-memory-by-meaning" class="anchor-icon" translate="no">
+<p>Basic Memory uses a deterministic Milvus collection for each project. You do not need to create or name the collection yourself.</p>
+<h2 id="Retrieve-a-memory-by-meaning" class="common-anchor-header">Retrieve a memory by meaning<button data-href="#Retrieve-a-memory-by-meaning" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -230,8 +228,8 @@ EOF
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Supongamos que un ingeniero nuevo recuerda que la aplicación cuenta con una optimización para las solicitudes repetidas, pero no recuerda que el equipo la denominara «estrategia de almacenamiento en caché».</p>
-<p>Utiliza la búsqueda vectorial para formular la pregunta en lenguaje natural:</p>
+    </button></h2><p>Suppose a new engineer remembers that the application has an optimization for repeated requests, but does not remember that the team called it a caching strategy.</p>
+<p>Use vector search to ask the question in natural language:</p>
 <pre><code translate="no" class="language-bash">bm tool search-notes \
   <span class="hljs-string">&quot;How does the application make repeated requests faster?&quot;</span> \
   --vector \
@@ -239,9 +237,9 @@ EOF
   --page-size 3 \
   --plain
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">Caching Strategy</code> debería ser el resultado principal, aunque la consulta no tenga que repetir el título de la nota. La búsqueda vectorial incorpora la pregunta y solicita a Milvus los fragmentos almacenados más cercanos.</p>
-<p>Las puntuaciones exactas y los resultados de menor rango pueden variar en función del modelo de incrustación y del contenido del proyecto.</p>
-<h2 id="Combine-semantic-and-keyword-signals" class="common-anchor-header">Combina señales semánticas y de palabras clave<button data-href="#Combine-semantic-and-keyword-signals" class="anchor-icon" translate="no">
+<p><code translate="no">Caching Strategy</code> should be the leading result even though the query does not need to repeat the note title. Vector search embeds the question and asks Milvus for the nearest stored chunks.</p>
+<p>Exact scores and lower-ranked results can vary with the embedding model and the contents of the project.</p>
+<h2 id="Combine-semantic-and-keyword-signals" class="common-anchor-header">Combine semantic and keyword signals<button data-href="#Combine-semantic-and-keyword-signals" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -256,8 +254,8 @@ EOF
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Ahora imagina que tienes que responder a un incidente de seguridad. La consulta contiene términos exactos como « <code translate="no">JWT</code> », pero también queremos lenguaje conceptualmente relacionado con la revocación de tokens y volver a iniciar sesión.</p>
-<p>Utiliza la búsqueda híbrida:</p>
+    </button></h2><p>Now imagine responding to a security incident. The query contains exact terms such as <code translate="no">JWT</code>, but we also want conceptually related language about token revocation and signing in again.</p>
+<p>Use hybrid search:</p>
 <pre><code translate="no" class="language-bash">bm tool search-notes \
   <span class="hljs-string">&quot;JWT rotation after suspicious activity&quot;</span> \
   --hybrid \
@@ -265,19 +263,19 @@ EOF
   --page-size 3 \
   --plain
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">Authentication Tokens</code> debería ser el resultado principal. Basic Memory combina la recuperación de texto completo de PostgreSQL con la recuperación vectorial de Milvus, dando prioridad al contenido que destaca en cualquiera de las dos vías y, especialmente, al contenido encontrado por ambas.</p>
-<p>Los tres modos de búsqueda tienen diferentes puntos fuertes:</p>
+<p><code translate="no">Authentication Tokens</code> should be the leading result. Basic Memory combines PostgreSQL full-text retrieval with Milvus vector retrieval, rewarding content that is strong in either path and especially content found by both.</p>
+<p>The three search modes have different strengths:</p>
 <table>
 <thead>
-<tr><th>Modo</th><th>Indicador de comando</th><th>Mejor uso</th></tr>
+<tr><th>Mode</th><th>Command flag</th><th>Best use</th></tr>
 </thead>
 <tbody>
-<tr><td>Texto completo</td><td>Sin indicador de modo</td><td>Términos exactos, frases y consultas con palabras clave booleanas</td></tr>
-<tr><td>Vector</td><td><code translate="no">--vector</code></td><td>Parafrasis, conceptos y preguntas exploratorias</td></tr>
-<tr><td>Híbrido</td><td><code translate="no">--hybrid</code></td><td>Búsqueda de uso general que utiliza tanto señales de palabras clave como semánticas</td></tr>
+<tr><td>Full text</td><td>No mode flag</td><td>Exact terms, phrases, and boolean keyword queries</td></tr>
+<tr><td>Vector</td><td><code translate="no">--vector</code></td><td>Paraphrases, concepts, and exploratory questions</td></tr>
+<tr><td>Hybrid</td><td><code translate="no">--hybrid</code></td><td>General-purpose retrieval using both keyword and semantic signals</td></tr>
 </tbody>
 </table>
-<h2 id="Use-another-Milvus-deployment" class="common-anchor-header">Utiliza otra implementación de Milvus<button data-href="#Use-another-Milvus-deployment" class="anchor-icon" translate="no">
+<h2 id="Use-another-Milvus-deployment" class="common-anchor-header">Use another Milvus deployment<button data-href="#Use-another-Milvus-deployment" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -292,19 +290,19 @@ EOF
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>El código de la aplicación y los comandos de Basic Memory no cambian cuando se supera la capacidad de Milvus Lite. Cambia el URI y, cuando sea necesario, proporciona un token.</p>
-<p>Para un servidor Milvus:</p>
+    </button></h2><p>The application code and Basic Memory commands do not change when you outgrow Milvus Lite. Change the URI and, when required, provide a token.</p>
+<p>For a Milvus server:</p>
 <pre><code translate="no" class="language-bash"><span class="hljs-built_in">export</span> BASIC_MEMORY_MILVUS_URI=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>
 <span class="hljs-built_in">export</span> BASIC_MEMORY_MILVUS_TOKEN=<span class="hljs-string">&quot;root:Milvus&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Para Zilliz Cloud:</p>
+<p>For Zilliz Cloud:</p>
 <pre><code translate="no" class="language-bash"><span class="hljs-built_in">export</span> BASIC_MEMORY_MILVUS_URI=<span class="hljs-string">&quot;https://YOUR_CLUSTER_ENDPOINT&quot;</span>
 <span class="hljs-built_in">export</span> BASIC_MEMORY_MILVUS_TOKEN=<span class="hljs-string">&quot;YOUR_API_KEY&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Crea una nueva colección de destino o sigue el procedimiento de migración del almacén vectorial de Basic Memory antes de cambiar un proyecto existente entre backends vectoriales. A continuación, vuelve a generar los vectores:</p>
+<p>Create a fresh target collection or follow Basic Memory’s vector-store migration procedure before switching an existing project between vector backends. Then rebuild the vectors:</p>
 <pre><code translate="no" class="language-bash">bm reindex --full --project app-memory
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Use-the-same-memory-through-MCP" class="common-anchor-header">Utiliza la misma memoria a través de MCP<button data-href="#Use-the-same-memory-through-MCP" class="anchor-icon" translate="no">
+<h2 id="Use-the-same-memory-through-MCP" class="common-anchor-header">Use the same memory through MCP<button data-href="#Use-the-same-memory-through-MCP" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -319,8 +317,8 @@ EOF
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>La CLI resulta útil para la configuración, el mantenimiento, la creación de scripts y la comprensión del flujo de datos. En el trabajo diario, un cliente MCP puede iniciar el mismo servicio de Basic Memory y llamar directamente a herramientas como <code translate="no">write_note</code>, <code translate="no">search_notes</code> y <code translate="no">build_context</code>.</p>
-<p>Por ejemplo, una configuración de Codex MCP puede ejecutar el comando instalado por <code translate="no">uv tool</code>:</p>
+    </button></h2><p>The CLI is useful for setup, maintenance, scripting, and understanding the data flow. In daily work, an MCP client can start the same Basic Memory service and call tools such as <code translate="no">write_note</code>, <code translate="no">search_notes</code>, and <code translate="no">build_context</code> directly.</p>
+<p>For example, a Codex MCP configuration can run the command installed by <code translate="no">uv tool</code>:</p>
 <pre><code translate="no" class="language-toml"><span class="hljs-section">[mcp_servers.basic-memory]</span>
 <span class="hljs-attr">command</span> = <span class="hljs-string">&quot;basic-memory&quot;</span>
 <span class="hljs-attr">args</span> = [<span class="hljs-string">&quot;mcp&quot;</span>]
@@ -336,7 +334,7 @@ EOF
 <span class="hljs-attr">BASIC_MEMORY_SEMANTIC_EMBEDDING_MODEL</span> = <span class="hljs-string">&quot;text-embedding-3-small&quot;</span>
 <span class="hljs-attr">OPENAI_API_KEY</span> = <span class="hljs-string">&quot;sk-***********&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Otros clientes MCP utilizan el mismo ejecutable y los mismos argumentos en formato JSON:</p>
+<p>Other MCP clients use the same executable and arguments in JSON form:</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
   <span class="hljs-attr">&quot;mcpServers&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
     <span class="hljs-attr">&quot;basic-memory&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
@@ -357,8 +355,8 @@ EOF
   <span class="hljs-punctuation">}</span>
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Mantenga las contraseñas de la base de datos y las claves de API en el sistema de gestión de secretos de su cliente o en el entorno de ejecución siempre que sea posible. Es fundamental que el proceso de MCP reciba la misma configuración de memoria básica que utiliza la CLI.</p>
-<h2 id="What-each-storage-layer-owns" class="common-anchor-header">Qué gestiona cada capa de almacenamiento<button data-href="#What-each-storage-layer-owns" class="anchor-icon" translate="no">
+<p>Keep database passwords and API keys in your client’s secret management or launch environment when possible. The important requirement is that the MCP process receives the same Basic Memory configuration used by the CLI.</p>
+<h2 id="What-each-storage-layer-owns" class="common-anchor-header">What each storage layer owns<button data-href="#What-each-storage-layer-owns" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -373,12 +371,12 @@ EOF
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Al final del tutorial, las responsabilidades se separan deliberadamente:</p>
+    </button></h2><p>At the end of the tutorial, the responsibilities are deliberately separated:</p>
 <ul>
-<li>El directorio del proyecto es responsable de las notas Markdown originales.</li>
-<li>PostgreSQL se encarga de los proyectos, las entidades, los metadatos, el índice de texto completo y el manifiesto vectorial de referencia de Basic Memory.</li>
-<li>OpenAI convierte fragmentos de notas y consultas de búsqueda en representaciones vectoriales.</li>
-<li>Milvus se encarga de la persistencia de vectores y la recuperación del vecino más cercano.</li>
-<li>Basic Memory coordina las capas y ofrece una única experiencia de CLI y MCP.</li>
+<li>The project directory owns the original Markdown notes.</li>
+<li>PostgreSQL owns Basic Memory’s projects, entities, metadata, full-text index, and authoritative vector manifest.</li>
+<li>OpenAI turns note chunks and search questions into embeddings.</li>
+<li>Milvus owns vector persistence and nearest-neighbor retrieval.</li>
+<li>Basic Memory coordinates the layers and exposes one CLI and MCP experience.</li>
 </ul>
-<p>Por lo tanto, Milvus no sustituye a PostgreSQL en esta integración. Sustituye la ruta « <code translate="no">pgvector</code> » de PostgreSQL para el almacenamiento de vectores y la búsqueda de similitudes, mientras que el resto de las funciones relacionales y de texto completo de Basic Memory permanecen en PostgreSQL.</p>
+<p>Milvus therefore does not replace PostgreSQL in this integration. It replaces the PostgreSQL <code translate="no">pgvector</code> path for vector storage and similarity search, while the rest of Basic Memory’s relational and full-text features remain in PostgreSQL.</p>

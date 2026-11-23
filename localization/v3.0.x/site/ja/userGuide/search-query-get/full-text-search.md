@@ -1,10 +1,11 @@
 ---
 id: full-text-search.md
-title: 全文検索
+title: Full Text Search
 summary: >-
-  全文検索は、入力された生のテキストに対してBM25アルゴリズムを用いて、文書に含まれる用語に基づいて文書をランク付けします。エンベディングモデルは必要ありません。
+  Full text search ranks documents by the terms they contain using the BM25
+  algorithm on raw text input, no embedding models needed.
 ---
-<h1 id="Full-Text-Search" class="common-anchor-header">全文検索<button data-href="#Full-Text-Search" class="anchor-icon" translate="no">
+<h1 id="Full-Text-Search" class="common-anchor-header">Full Text Search<button data-href="#Full-Text-Search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -19,12 +20,12 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>全文検索は、クエリに含まれる用語やフレーズを含むドキュメントを検索し、関連性に基づいて結果をランク付けします。これは、正確な用語を見落とすことがあるセマンティック検索を補完するものであり、特定の検索用語に厳密に一致するドキュメントが最も重要となる「検索強化生成（RAG）」のシナリオにおいて特に有用です。</p>
-<p>全文検索では、埋め込みモデルを省略することも可能です。生のテキストを指定するだけで、Milvusが自動的にそれをスパース埋め込みに変換します。</p>
+    </button></h1><p>Full text search retrieves documents that contain the terms or phrases in your query and ranks the results by relevance. It complements semantic search, which can overlook precise terms, and is especially useful in retrieval-augmented generation (RAG) scenarios, where documents that closely match specific search terms matter most.</p>
+<p>With full text search, you can also skip embedding models: you provide raw text, and Milvus converts it into sparse embeddings automatically.</p>
 <div class="alert note">
-<p>全文検索をセマンティックベースの密ベクトル検索と統合することで、検索結果の精度と関連性を高めることができます。詳細については、「<a href="/docs/ja/multi-vector-search.md">ハイブリッド検索</a>」を参照してください。</p>
+<p>By integrating full text search with semantic-based dense vector search, you can enhance the accuracy and relevance of search results. For more information, refer to <a href="/docs/ja/multi-vector-search.md">Hybrid Search</a>.</p>
 </div>
-<h2 id="BM25-implementation" class="common-anchor-header">BM25の実装<button data-href="#BM25-implementation" class="anchor-icon" translate="no">
+<h2 id="BM25-implementation" class="common-anchor-header">BM25 implementation<button data-href="#BM25-implementation" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -39,28 +40,28 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvusは、情報検索システムで広く採用されているスコアリング関数であるBM25関連性アルゴリズムを用いて全文検索を実装し、これを検索ワークフローに統合することで、正確で関連性の高い順にランク付けされたテキスト検索結果を提供します。</p>
-<p>Milvusにおける全文検索のワークフローは以下の通りです：</p>
+    </button></h2><p>Milvus implements full text search with the BM25 relevance algorithm, a widely adopted scoring function in information retrieval systems, and integrates it into the search workflow to deliver accurate, relevance-ranked text results.</p>
+<p>Full text search in Milvus follows the workflow below:</p>
 <ol>
-<li><p><strong>生テキストの入力</strong>：テキスト文書を挿入するか、プレーンテキストでクエリを指定します。埋め込みモデルは不要です。</p></li>
-<li><p><strong>テキスト分析</strong>：Milvusは<a href="/docs/ja/analyzer-overview.md">アナライザー</a>を使用して、テキストをインデックス化および検索可能な意味のある用語に処理します。</p></li>
-<li><p><strong>BM25関数による処理</strong>：組み込み関数が、これらの用語をBM25スコアリングに最適化されたスパースベクトル表現に変換します。</p></li>
-<li><p><strong>コレクションへの保存</strong>：Milvusは、高速な検索とランク付けのために、結果として得られた疎な埋め込みベクトルをコレクションに保存します。</p></li>
-<li><p><strong>BM25 関連性スコアリング</strong>：検索時、Milvus は BM25 スコアリング関数を適用して文書の関連性を計算し、クエリ用語に最も一致する結果をランク付けして返します。</p></li>
+<li><p><strong>Raw text input</strong>: You insert text documents or provide a query using plain text, no embedding models required.</p></li>
+<li><p><strong>Text analysis</strong>: Milvus uses an <a href="/docs/ja/analyzer-overview.md">analyzer</a> to process your text into meaningful terms that can be indexed and searched.</p></li>
+<li><p><strong>BM25 function processing</strong>: A built-in function transforms these terms into sparse vector representations optimized for BM25 scoring.</p></li>
+<li><p><strong>Collection store</strong>: Milvus stores the resulting sparse embeddings in a collection for fast retrieval and ranking.</p></li>
+<li><p><strong>BM25 relevance scoring</strong>: At search time, Milvus applies the BM25 scoring function to compute document relevance and return ranked results that best match the query terms.</p></li>
 </ol>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/full-text-search.png" alt="Full Text Search" class="doc-image" id="full-text-search" /> 
-   <span>全文検索</span>
-  
- </span></p>
-<p>全文検索を使用するには、以下の主な手順に従ってください：</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/full-text-search.png" alt="Full Text Search" class="doc-image" id="full-text-search" />
+    <span>Full Text Search</span>
+  </span>
+</p>
+<p>To use full text search, follow these main steps:</p>
 <ol>
-<li><p><a href="/docs/ja/full-text-search.md#Create-a-collection-for-BM25-full-text-search">コレクションの作成</a>：必要なフィールドを設定し、生テキストを疎な埋め込み表現に変換するBM25関数を定義します。</p></li>
-<li><p><a href="/docs/ja/full-text-search.md#Insert-text-data">データの挿入</a>：生のテキスト文書をコレクションに取り込みます。</p></li>
-<li><p><a href="/docs/ja/full-text-search.md#Perform-full-text-search">検索の実行</a>：自然言語のクエリテキストを使用して、BM25の関連性に基づいてランク付けされた検索結果を取得します。</p></li>
+<li><p><a href="/docs/ja/full-text-search.md#Create-a-collection-for-BM25-full-text-search">Create a collection</a>: Set up the required fields and define a BM25 function that converts raw text into sparse embeddings.</p></li>
+<li><p><a href="/docs/ja/full-text-search.md#Insert-text-data">Insert data</a>: Ingest your raw text documents to the collection.</p></li>
+<li><p><a href="/docs/ja/full-text-search.md#Perform-full-text-search">Perform searches</a>: Use natural-language query text to retrieve ranked results based on BM25 relevance.</p></li>
 </ol>
-<h2 id="Create-a-collection-for-BM25-full-text-search" class="common-anchor-header">BM25 フルテキスト検索用のコレクションを作成する<button data-href="#Create-a-collection-for-BM25-full-text-search" class="anchor-icon" translate="no">
+<h2 id="Create-a-collection-for-BM25-full-text-search" class="common-anchor-header">Create a collection for BM25 full text search<button data-href="#Create-a-collection-for-BM25-full-text-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -75,8 +76,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>BM25を利用した全文検索を有効にするには、必要なフィールドを含むコレクションを準備し、スパースベクトルを生成するBM25関数を定義し、インデックスを設定してから、コレクションを作成する必要があります。</p>
-<h3 id="Define-schema-fields" class="common-anchor-header">スキーマフィールドの定義<button data-href="#Define-schema-fields" class="anchor-icon" translate="no">
+    </button></h2><p>To enable BM25-powered full text search, you must prepare a collection with the required fields, define a BM25 function to generate sparse vectors, configure an index, and then create the collection.</p>
+<h3 id="Define-schema-fields" class="common-anchor-header">Define schema fields<button data-href="#Define-schema-fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -91,19 +92,19 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>コレクションのスキーマには、少なくとも 3 つの必須フィールドを含める必要があります。</p>
+    </button></h3><p>Your collection schema must include at least three required fields:</p>
 <ul>
-<li><p><strong>プライマリフィールド</strong>：コレクション内の各エンティティを一意に識別します。</p></li>
-<li><p><strong>文字列フィールド</strong>（<code translate="no">VARCHAR</code> または<code translate="no">TEXT</code> ）：生のテキストドキュメントを格納します。MilvusがBM25の関連性ランキングのためにテキストを処理できるように、<code translate="no">enable_analyzer=True</code> を設定する必要があります。デフォルトでは、Milvusは<a href="/docs/ja/standard-analyzer.md"><code translate="no">standard</code> アナライザー</a>を使用します。別のアナライザーを設定するには、「<a href="/docs/ja/analyzer-overview.md">アナライザーの概要</a>」を参照してください。 このページの例では `<code translate="no">VARCHAR</code>` を使用しています。長文の場合は、フィールドを `<code translate="no">TEXT</code> ` として定義し、`<code translate="no">max_length</code>` を省略してください。完全な例については、「<a href="/docs/ja/text.md">テキストフィールド</a>」を参照してください。</p></li>
-<li><p><strong>スパースベクトルフィールド</strong>(<code translate="no">SPARSE_FLOAT_VECTOR</code>)：BM25関数によって自動的に生成されたスパース埋め込みを格納します。</p></li>
+<li><p><strong>Primary field</strong>: Uniquely identifies each entity in the collection.</p></li>
+<li><p><strong>String field</strong> (<code translate="no">VARCHAR</code> or <code translate="no">TEXT</code>): Stores raw text documents. You must set <code translate="no">enable_analyzer=True</code> so that Milvus can process the text for BM25 relevance ranking. By default, Milvus uses the <a href="/docs/ja/standard-analyzer.md"><code translate="no">standard</code> analyzer</a>; to configure a different analyzer, refer to <a href="/docs/ja/analyzer-overview.md">Analyzer Overview</a>. The examples on this page use <code translate="no">VARCHAR</code>; for long text, define the field as <code translate="no">TEXT</code> and omit <code translate="no">max_length</code>. For a complete example, refer to <a href="/docs/ja/text.md">Text Field</a>.</p></li>
+<li><p><strong>Sparse vector field</strong> (<code translate="no">SPARSE_FLOAT_VECTOR</code>): Stores sparse embeddings automatically generated by the BM25 function.</p></li>
 </ul>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#cpp">   C++</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#cpp">C++</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType, Function, FunctionType
 
@@ -245,13 +246,13 @@ schema-&gt;<span class="hljs-built_in">AddField</span>(milvus::<span class="hljs
         ]
     }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>前述の設定では、</p>
+<p>In the preceding config,</p>
 <ul>
-<li><p><code translate="no">id</code>: は主キーとして機能し、<code translate="no">auto_id=True</code> によって自動的に生成されます。</p></li>
-<li><p><code translate="no">text</code>: 全文検索操作用の生のテキストデータを格納します。このフィールドでは、範囲が限定されたテキストの場合は `<code translate="no">VARCHAR</code> ` を、長いソースコンテンツの場合は `<code translate="no">TEXT</code> ` を使用できます。</p></li>
-<li><p><code translate="no">sparse</code>: 全文検索処理のために内部で生成されたスパース埋め込みを格納するために予約されたベクトルフィールドです。データ型は<code translate="no">SPARSE_FLOAT_VECTOR</code> でなければなりません。</p></li>
+<li><p><code translate="no">id</code>: serves as the primary key and is automatically generated with <code translate="no">auto_id=True</code>.</p></li>
+<li><p><code translate="no">text</code>: stores your raw text data for full text search operations. The field can use <code translate="no">VARCHAR</code> for bounded text or <code translate="no">TEXT</code> for long source content.</p></li>
+<li><p><code translate="no">sparse</code>: a vector field reserved to store internally generated sparse embeddings for full text search operations. The data type must be <code translate="no">SPARSE_FLOAT_VECTOR</code>.</p></li>
 </ul>
-<h3 id="Define-the-BM25-function" class="common-anchor-header">BM25関数の定義<button data-href="#Define-the-BM25-function" class="anchor-icon" translate="no">
+<h3 id="Define-the-BM25-function" class="common-anchor-header">Define the BM25 function<button data-href="#Define-the-BM25-function" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -266,15 +267,15 @@ schema-&gt;<span class="hljs-built_in">AddField</span>(milvus::<span class="hljs
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>BM25関数は、トークン化されたテキストを、BM25スコアリングに対応したスパースベクトルに変換します。</p>
-<p>関数を定義し、スキーマに追加します:</p>
+    </button></h3><p>The BM25 function converts tokenized text into sparse vectors that support BM25 scoring.</p>
+<p>Define the function and add it to your schema:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#cpp">   C++</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#cpp">C++</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">bm25_function = Function(
     name=<span class="hljs-string">&quot;text_bm25_emb&quot;</span>, <span class="hljs-comment"># Function name</span>
@@ -355,30 +356,30 @@ schema-&gt;<span class="hljs-built_in">AddFunction</span>(function);
 <button class="copy-code-btn"></button></code></pre>
 <table>
    <tr>
-     <th><p>パラメータ</p></th>
-     <th><p>説明</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Description</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">name</code></p></td>
-     <td><p>関数の名前。この関数は、<code translate="no">text</code> フィールドの生のテキストを、<code translate="no">sparse</code> フィールドに格納されるBM25互換のスパースベクトルに変換します。</p></td>
+     <td><p>The name of the function. This function converts your raw text from the <code translate="no">text</code> field into BM25-compatible sparse vectors that will be stored in the <code translate="no">sparse</code> field.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">input_field_names</code></p></td>
-     <td><p>テキストからスパースベクトルへの変換が必要な<code translate="no">VARCHAR</code> または<code translate="no">TEXT</code> フィールドの名前。<code translate="no">FunctionType.BM25</code> の場合、このパラメータには1つのフィールド名のみ指定できます。</p></td>
+     <td><p>The name of the <code translate="no">VARCHAR</code> or <code translate="no">TEXT</code> field requiring text-to-sparse-vector conversion. For <code translate="no">FunctionType.BM25</code>, this parameter accepts only one field name.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">output_field_names</code></p></td>
-     <td><p>内部で生成されたスパースベクトルが格納されるフィールド名。<code translate="no">FunctionType.BM25</code> の場合、このパラメータには1つのフィールド名のみ指定できます。</p></td>
+     <td><p>The name of the field where the internally generated sparse vectors will be stored. For <code translate="no">FunctionType.BM25</code>, this parameter accepts only one field name.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">function_type</code></p></td>
-     <td><p>使用する関数のタイプ。<code translate="no">FunctionType.BM25</code> でなければなりません。</p></td>
+     <td><p>The type of the function to use. Must be <code translate="no">FunctionType.BM25</code>.</p></td>
    </tr>
 </table>
 <div class="alert note">
-<p>複数のテキストフィールドで BM25 処理が必要な場合は、<strong>フィールドごとに 1 つの BM25 関数を定義し</strong>、それぞれに一意の名前と出力フィールドを指定してください。</p>
+<p>If multiple text fields require BM25 processing, define <strong>one BM25 function per field</strong>, each with a unique name and output field.</p>
 </div>
-<h3 id="Configure-the-index" class="common-anchor-header">インデックスの設定<button data-href="#Configure-the-index" class="anchor-icon" translate="no">
+<h3 id="Configure-the-index" class="common-anchor-header">Configure the index<button data-href="#Configure-the-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -393,14 +394,14 @@ schema-&gt;<span class="hljs-built_in">AddFunction</span>(function);
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>必要なフィールドと組み込み関数を使用してスキーマを定義した後、コレクションのインデックスを設定します。</p>
+    </button></h3><p>After defining the schema with necessary fields and the built-in function, set up the index for your collection.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#cpp">   C++</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#cpp">C++</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">index_params = client.prepare_index_params()
 
@@ -471,39 +472,39 @@ index_params.<span class="hljs-built_in">AddExtraParam</span>(<span class="hljs-
 <button class="copy-code-btn"></button></code></pre>
 <table>
    <tr>
-     <th><p>パラメータ</p></th>
-     <th><p>説明</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Description</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">field_name</code></p></td>
-     <td><p>インデックス化するベクトルフィールドの名前。全文検索の場合、これは生成されたスパースベクトルが格納されるフィールドである必要があります。この例では、値を `<code translate="no">sparse</code>` に設定します。</p></td>
+     <td><p>The name of the vector field to index. For full text search, this should be the field that stores the generated sparse vectors. In this example, set the value to <code translate="no">sparse</code>.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">index_type</code></p></td>
-     <td><p>作成するインデックスのタイプ。MilvusでのBM25全文検索の場合、この値を<code translate="no">SPARSE_INVERTED_INDEX</code> に設定します。詳細については、<a href="/docs/ja/sparse-inverted-index.md">SPARSE_INVERTED_INDEXを</a>参照してください。</p></td>
+     <td><p>The type of the index to create. For BM25 full text search in Milvus, set this value to <code translate="no">SPARSE_INVERTED_INDEX</code>. For more information, refer to <a href="/docs/ja/sparse-inverted-index.md">SPARSE_INVERTED_INDEX</a>.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">metric_type</code></p></td>
-     <td><p>このパラメータの値は、全文検索機能を使用する場合に限り、<code translate="no">BM25</code> に設定する必要があります。</p></td>
+     <td><p>The value for this parameter must be set to <code translate="no">BM25</code> specifically for full text search functionality.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params</code></p></td>
-     <td><p>インデックス固有の追加パラメータの辞書。</p></td>
+     <td><p>A dictionary of additional parameters specific to the index.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.inverted_index_algo</code></p></td>
-     <td><p>BM25 スパース反転インデックスの構築およびクエリ実行に使用されるアルゴリズム。有効な値：</p><ul><li><p><code translate="no">"DAAT_MAXSCORE"</code> (デフォルト): Document-at-a-Time MaxScore クエリ処理。このオプションは、<em>k</em>値が大きい全文検索ワークロードや、多くの検索語を含むクエリに適しています。背景については、「<a href="https://dl.acm.org/doi/10.1016/0306-4573%2895%2900020-H">クエリ評価: 戦略と最適化</a>」を参照してください。</p></li><li><p><code translate="no">"DAAT_WAND"</code>: Document-at-a-Time WAND クエリ処理。このオプションは、<em>k</em>値が小さいフルテキスト検索ワークロードや、短いクエリに適しています。背景については、「<a href="https://dl.acm.org/doi/10.1145/956863.956944">2 段階検索プロセスによる効率的なクエリ評価</a>」を参照してください。</p></li><li><p><code translate="no">"TAAT_NAIVE"</code>: 基本的な「Term-at-a-Time」クエリ処理。このオプションは、ベースラインとして、または平均ドキュメント長などのコレクション全体の統計情報に合わせてスコアリングを動的に調整する必要がある場合に使用します。</p></li><li><p><code translate="no">"BLOCK_MAX_MAXSCORE"</code>: ブロックレベルの最大スコアメタデータを用いた MaxScore クエリ処理。背景については、「<a href="https://dl.acm.org/doi/10.1145/2009916.2010048">Block-Max インデックスを用いた高速なトップ k ドキュメント検索</a>」を参照してください。</p></li><li><p><code translate="no">"BLOCK_MAX_WAND"</code>: ブロックレベルの最大スコア・メタデータを用いた WAND クエリ処理。背景については、「<a href="https://dl.acm.org/doi/10.1145/2009916.2010048">Block-Max インデックスを用いた高速なトップ k ドキュメント検索</a>」を参照してください。</p></li></ul></td>
+     <td><p>The algorithm used for building and querying the BM25 sparse inverted index. Valid values:</p><ul><li><p><code translate="no">"DAAT_MAXSCORE"</code> (default): Document-at-a-Time MaxScore query processing. This option is suitable for full text search workloads with high <em>k</em> values or queries with many terms. For background, refer to <a href="https://dl.acm.org/doi/10.1016/0306-4573%2895%2900020-H">Query Evaluation: Strategies and Optimizations</a>.</p></li><li><p><code translate="no">"DAAT_WAND"</code>: Document-at-a-Time WAND query processing. This option is suitable for full text search workloads with small <em>k</em> values or short queries. For background, refer to <a href="https://dl.acm.org/doi/10.1145/956863.956944">Efficient Query Evaluation using a Two-Level Retrieval Process</a>.</p></li><li><p><code translate="no">"TAAT_NAIVE"</code>: Basic Term-at-a-Time query processing. Use this option as a baseline, or when you need scoring to adapt dynamically to global collection statistics such as average document length.</p></li><li><p><code translate="no">"BLOCK_MAX_MAXSCORE"</code>: MaxScore query processing with block-level max-score metadata. For background, refer to <a href="https://dl.acm.org/doi/10.1145/2009916.2010048">Faster Top-k Document Retrieval Using Block-Max Indexes</a>.</p></li><li><p><code translate="no">"BLOCK_MAX_WAND"</code>: WAND query processing with block-level max-score metadata. For background, refer to <a href="https://dl.acm.org/doi/10.1145/2009916.2010048">Faster Top-k Document Retrieval Using Block-Max Indexes</a>.</p></li></ul></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.bm25_k1</code></p></td>
-     <td><p>用語頻度の飽和度を制御します。値が大きいほど、ドキュメントのランキングにおける用語頻度の重要度が高まります。推奨範囲：[1.2, 2.0]。デフォルト値：1.2。</p></td>
+     <td><p>Controls the term frequency saturation. Higher values increase the importance of term frequencies in document ranking. Recommended range: [1.2, 2.0]. Default value: 1.2.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.bm25_b</code></p></td>
-     <td><p>文書の長さを正規化する程度を制御します。通常、0 から 1 までの値が使用され、デフォルト値は 0.75 です。値が 0 の場合は長さの正規化が行われず、値が 1 の場合は完全な長さの正規化が行われます。</p></td>
+     <td><p>Controls the extent to which document length is normalized. Values between 0 and 1 are typically used, with a default value of 0.75. A value of 0 means no length normalization, while a value of 1 means full length normalization.</p></td>
    </tr>
 </table>
-<h3 id="Create-the-collection" class="common-anchor-header">コレクションの作成<button data-href="#Create-the-collection" class="anchor-icon" translate="no">
+<h3 id="Create-the-collection" class="common-anchor-header">Create the collection<button data-href="#Create-the-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -518,14 +519,14 @@ index_params.<span class="hljs-built_in">AddExtraParam</span>(<span class="hljs-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>定義したスキーマとインデックスパラメータを使用して、コレクションを作成します。</p>
+    </button></h3><p>Now create the collection using the schema and index parameters defined.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#cpp">   C++</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#cpp">C++</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.create_collection(
     collection_name=<span class="hljs-string">&#x27;my_collection&#x27;</span>, 
@@ -601,7 +602,7 @@ curl --request POST \
     &quot;collectionName&quot;: &quot;my_collection&quot;
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Insert-text-data" class="common-anchor-header">テキストデータの挿入<button data-href="#Insert-text-data" class="anchor-icon" translate="no">
+<h2 id="Insert-text-data" class="common-anchor-header">Insert text data<button data-href="#Insert-text-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -616,14 +617,14 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>コレクションとインデックスの設定が完了したら、テキストデータを挿入できます。必要なのは生のテキストのみです。先に定義したBM25関数が、各テキストエントリに対応するスパースベクトルを自動的に生成します。</p>
+    </button></h2><p>After setting up your collection and index, you can insert text data. You only need to provide the raw text — the BM25 function defined earlier automatically generates the corresponding sparse vector for each text entry.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#cpp">   C++</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#cpp">C++</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.insert(<span class="hljs-string">&#x27;my_collection&#x27;</span>, [
     {<span class="hljs-string">&#x27;text&#x27;</span>: <span class="hljs-string">&#x27;information retrieval is a field of study.&#x27;</span>},
@@ -699,7 +700,7 @@ milvus::InsertResponse response;
 }&#x27;</span>
 
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Perform-full-text-search" class="common-anchor-header">全文検索の実行<button data-href="#Perform-full-text-search" class="anchor-icon" translate="no">
+<h2 id="Perform-full-text-search" class="common-anchor-header">Perform full text search<button data-href="#Perform-full-text-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -714,17 +715,17 @@ milvus::InsertResponse response;
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>コレクションにデータを挿入したら、生のテキストクエリを使用して検索を行うことができます。Milvusはクエリを自動的にスパースベクトルに変換し、BM25アルゴリズムを使用して一致した結果をランク付けし、上位<code translate="no">limit</code> 件の結果を返します。</p>
+    </button></h2><p>Once you’ve inserted data into your collection, you can search it with raw text queries. Milvus automatically converts your query into a sparse vector, ranks the matched results using the BM25 algorithm, and returns the top <code translate="no">limit</code> results.</p>
 <div class="alert note">
-<p>テキストハイライターを設定することで、検索結果内の一致した用語をハイライト表示できます。詳細については、「<a href="/docs/ja/text-highlighter.md">テキストハイライター</a>」を参照してください。</p>
+<p>You can highlight the matched terms in search results by configuring a text highlighter. See <a href="/docs/ja/text-highlighter.md">Text Highlighter</a> for details.</p>
 </div>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#cpp">   C++</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#cpp">C++</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">res = client.search(
     collection_name=<span class="hljs-string">&#x27;my_collection&#x27;</span>, 
@@ -820,32 +821,32 @@ milvus::SearchResponse response;
 <button class="copy-code-btn"></button></code></pre>
 <table>
    <tr>
-     <th><p>パラメータ</p></th>
-     <th><p>説明</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Description</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">search_params</code></p></td>
-     <td><p>検索パラメータを含む辞書。</p></td>
+     <td><p>A dictionary containing search parameters.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.drop_ratio_search</code></p></td>
-     <td><p>検索時に無視する重要度の低い用語の割合。値は [0.0, 1.0) の範囲で指定する必要があります。詳細については、「<a href="/docs/ja/sparse_vector.md">スパースベクトル</a>」を参照してください。</p></td>
+     <td><p>Proportion of low-importance terms to ignore during search. The value must be in the range [0.0, 1.0). For details, refer to <a href="/docs/ja/sparse_vector.md">Sparse Vector</a>.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">data</code></p></td>
-     <td><p>自然言語による生のクエリテキスト。MilvusはBM25関数を使用してテキストクエリを自動的にスパースベクトルに変換します。あらかじめ計算済みのベクトルを指定しないでください。</p></td>
+     <td><p>Raw query text in natural language. Milvus automatically converts your text query into sparse vectors using the BM25 function - do not provide pre-computed vectors.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">anns_field</code></p></td>
-     <td><p>内部で生成されたスパースベクトルが格納されるフィールド名。</p></td>
+     <td><p>The name of the field that contains internally generated sparse vectors.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">output_fields</code></p></td>
-     <td><p>検索結果に返すフィールド名のリスト。BM25 によって生成された埋め込みを含む<strong>スパースベクトルフィールドを除く、</strong>すべてのフィールドをサポートしています。一般的な出力フィールドには、主キーフィールド（例：<code translate="no">id</code> ）や元のテキストフィールド（例：<code translate="no">text</code> ）などがあります。詳細については、<a href="/docs/ja/full-text-search.md#Can-I-output-or-access-the-sparse-vectors-generated-by-the-BM25-function-in-full-text-search">FAQ</a> を参照してください。</p></td>
+     <td><p>List of field names to return in search results. Supports all fields <strong>except the sparse vector field</strong> containing BM25-generated embeddings. Common output fields include the primary key field (e.g., <code translate="no">id</code>) and the original text field (e.g., <code translate="no">text</code>). For more information, refer to <a href="/docs/ja/full-text-search.md#Can-I-output-or-access-the-sparse-vectors-generated-by-the-BM25-function-in-full-text-search">FAQ</a>.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">limit</code></p></td>
-     <td><p>返す上位一致件数の最大値。</p></td>
+     <td><p>Maximum number of top matches to return.</p></td>
    </tr>
 </table>
 <h2 id="FAQ" class="common-anchor-header">FAQ<button data-href="#FAQ" class="anchor-icon" translate="no">
@@ -863,7 +864,7 @@ milvus::SearchResponse response;
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Can-I-output-or-access-the-sparse-vectors-generated-by-the-BM25-function-in-full-text-search" class="common-anchor-header">全文検索において、BM25関数によって生成されたスパースベクトルを出力したり、アクセスしたりすることはできますか？<button data-href="#Can-I-output-or-access-the-sparse-vectors-generated-by-the-BM25-function-in-full-text-search" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Can-I-output-or-access-the-sparse-vectors-generated-by-the-BM25-function-in-full-text-search" class="common-anchor-header">Can I output or access the sparse vectors generated by the BM25 function in full text search?<button data-href="#Can-I-output-or-access-the-sparse-vectors-generated-by-the-BM25-function-in-full-text-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -878,20 +879,20 @@ milvus::SearchResponse response;
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>いいえ、BM25関数によって生成されたスパースベクトルは、全文検索において直接アクセスしたり返したりすることはできません。詳細は以下の通りです：</p>
+    </button></h3><p>No, the sparse vectors generated by the BM25 function are not directly accessible or returnable in full text search. Here are the details:</p>
 <ul>
-<li><p>BM25 関数は、ランキングおよび検索のために内部でスパースベクトルを生成します。</p></li>
-<li><p>これらのベクトルはスパースフィールドに格納されますが、<code translate="no">output_fields</code> には含めることはできません。</p></li>
-<li><p>出力できるのは、元のテキストフィールドとメタデータ（<code translate="no">id</code> 、<code translate="no">text</code> など）のみです。</p></li>
+<li><p>The BM25 function generates sparse vectors internally for ranking and retrieval.</p></li>
+<li><p>These vectors are stored in the sparse field but cannot be included in <code translate="no">output_fields</code>.</p></li>
+<li><p>You can only output the original text fields and metadata (like <code translate="no">id</code>, <code translate="no">text</code>).</p></li>
 </ul>
-<p>例：</p>
+<p>Example:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#cpp">   C++</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#cpp">C++</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">search_params = {<span class="hljs-string">&quot;metric_type&quot;</span>: <span class="hljs-string">&quot;BM25&quot;</span>}
 
@@ -968,7 +969,7 @@ milvus::SearchRequest request = milvus::<span class="hljs-built_in">SearchReques
     &quot;outputFields&quot;: [&quot;text&quot;]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Why-do-I-need-to-define-a-sparse-vector-field-if-I-cant-access-it" class="common-anchor-header">アクセスできないのになぜスパースベクトルフィールドを定義する必要があるのですか？<button data-href="#Why-do-I-need-to-define-a-sparse-vector-field-if-I-cant-access-it" class="anchor-icon" translate="no">
+<h3 id="Why-do-I-need-to-define-a-sparse-vector-field-if-I-cant-access-it" class="common-anchor-header">Why do I need to define a sparse vector field if I can’t access it?<button data-href="#Why-do-I-need-to-define-a-sparse-vector-field-if-I-cant-access-it" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -983,16 +984,16 @@ milvus::SearchRequest request = milvus::<span class="hljs-built_in">SearchReques
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>疎ベクトルフィールドは、ユーザーが直接操作することのないデータベースのインデックスと同様に、内部の検索インデックスとして機能します。</p>
-<p><strong>設計の根拠</strong>：</p>
+    </button></h3><p>The sparse vector field serves as an internal search index, similar to database indexes that users don’t directly interact with.</p>
+<p><strong>Design rationale</strong>:</p>
 <ul>
-<li><p><strong>関心の分離</strong>：ユーザーは入力と出力としてテキストを扱い、ベクトルの処理はMilvusが内部で処理します。</p></li>
-<li><p><strong>パフォーマンス</strong>：事前に計算されたスパースベクトルにより、クエリ実行時のBM25ランキング処理が高速化されます。</p></li>
-<li><p><strong>ユーザー体験</strong>：複雑なベクトル演算は、シンプルなテキストインターフェースの背後で抽象化されています。</p></li>
+<li><p><strong>Separation of concerns</strong>: You work with text for input and output, and Milvus handles the vectors internally.</p></li>
+<li><p><strong>Performance</strong>: Pre-computed sparse vectors enable fast BM25 ranking during queries.</p></li>
+<li><p><strong>User experience</strong>: Complex vector operations are abstracted away behind a simple text interface.</p></li>
 </ul>
-<p><strong>ベクトルへのアクセスが必要な場合</strong>：</p>
+<p><strong>If you need vector access</strong>:</p>
 <ul>
-<li><p>全文検索の代わりに、手動による疎ベクトル演算を使用してください。</p></li>
-<li><p>カスタム疎ベクトルワークフロー用に、個別のコレクションを作成してください。</p></li>
+<li><p>Use manual sparse vector operations instead of full text search.</p></li>
+<li><p>Create separate collections for custom sparse vector workflows.</p></li>
 </ul>
-<p>詳細については、「<a href="/docs/ja/sparse_vector.md">スパースベクトル</a>」を参照してください。</p>
+<p>For details, refer to <a href="/docs/ja/sparse_vector.md">Sparse Vector</a>.</p>

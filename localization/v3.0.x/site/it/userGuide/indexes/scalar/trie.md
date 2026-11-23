@@ -2,10 +2,8 @@
 id: trie.md
 title: TRIE
 summary: >-
-  L'indice TRIE organizza i valori dei campi VARCHAR in una struttura ad albero
-  per velocizzare il confronto di uguaglianza delle stringhe e la corrispondenza
-  dei prefissi. È l'indice scalare più veloce per ricerche esatte e filtri
-  basati sui prefissi, come ad esempio name LIKE "abc%".
+  Use TRIE to accelerate exact string lookups and prefix filters on VARCHAR
+  fields.
 ---
 <h1 id="TRIE" class="common-anchor-header">TRIE<button data-href="#TRIE" class="anchor-icon" translate="no">
       <svg translate="no"
@@ -22,13 +20,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>L'indice " <code translate="no">TRIE</code> " in Milvus organizza i valori del campo " <code translate="no">VARCHAR</code> " in un albero dei prefissi (un <em>trie</em>). Ogni carattere di una stringa corrisponde a un nodo dell'albero e i prefissi comuni vengono memorizzati una sola volta. Questa struttura rende veloci le ricerche esatte delle stringhe e la corrispondenza dei prefissi, senza dover scansionare ogni singolo valore del campo.</p>
-<p>Utilizzare l’indice “ <code translate="no">TRIE</code> ” se si eseguono frequentemente query con:</p>
-<ul>
-<li><p>Uguaglianza esatta su valori di stringa, come <code translate="no">category == &quot;books&quot;</code></p></li>
-<li><p>filtri per prefisso, come <code translate="no">name LIKE &quot;abc%&quot;</code></p></li>
-</ul>
-<h2 id="Supported-data-types" class="common-anchor-header">Tipi di dati supportati<button data-href="#Supported-data-types" class="anchor-icon" translate="no">
+    </button></h1><p><code translate="no">TRIE</code> organizes strings in a prefix tree to accelerate exact lookups and prefix filters such as <code translate="no">name LIKE &quot;abc%&quot;</code>.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -43,11 +36,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><ul>
-<li><code translate="no">VARCHAR</code> campi. Per ulteriori dettagli, consultare <a href="/docs/it/string.md">Campo stringa</a>.</li>
-</ul>
-<p><code translate="no">TRIE</code> È supportato solo sui campi di tipo " <code translate="no">VARCHAR</code> ". Per indicizzare un valore stringa all'interno di un campo " <code translate="no">JSON</code> ", convertire il percorso in " <code translate="no">VARCHAR</code> " e utilizzare invece l'indice <a href="/docs/it/ngram.md">NGRAM</a>.</p>
-<h2 id="How-it-works" class="common-anchor-header">Come funziona<button data-href="#How-it-works" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Supported-data-types" class="common-anchor-header">Supported data types<button data-href="#Supported-data-types" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -62,23 +51,10 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus implementa l'<code translate="no">TRIE</code> in due fasi:</p>
-<ol>
-<li><p><strong>Creazione dell’indice</strong></p>
-<ul>
-<li><p>Durante l’acquisizione, Milvus legge ogni valore del campo indicizzato.</p></li>
-<li><p>I valori vengono inseriti in un trie: i caratteri vengono memorizzati lungo i bordi e ogni nodo terminale registra gli ID delle entità che condividono quella stringa.</p></li>
-<li><p>L'albero completato viene salvato come indice.</p></li>
-</ul></li>
-<li><p><strong>Accelerazione delle query</strong></p>
-<ul>
-<li><p>Per la ricerca di uguaglianza, Milvus percorre l’albero carattere per carattere fino a raggiungere il nodo corrispondente al valore esatto e restituisce gli ID delle entità.</p></li>
-<li><p>Per un prefisso, Milvus percorre l’albero fino al nodo corrispondente al prefisso e raccoglie gli ID delle entità presenti nel suo sottoalbero.</p></li>
-<li><p>Gli ID delle entità corrispondenti vengono passati all’esecutore della query per l’assemblaggio del risultato finale.</p></li>
-</ul></li>
-</ol>
-<p>Per i filtri di uguaglianza e prefisso, il costo della ricerca è proporzionale alla lunghezza della stringa piuttosto che al numero di entità, il che mantiene queste query veloci su grandi collezioni.</p>
-<h2 id="Create-a-TRIE-index" class="common-anchor-header">Creazione di un indice TRIE<button data-href="#Create-a-TRIE-index" class="anchor-icon" translate="no">
+    </button></h3><p>Only <a href="/docs/it/string.md">VARCHAR fields</a>. For JSON string paths, choose a compatible index in <a href="/docs/it/json-indexing.md">JSON Indexing</a>.</p>
+<p><a id="Queries-accelerated-by-TRIE"></a></p>
+<p><a id="Supported-filters"></a></p>
+<h3 id="Filter-acceleration" class="common-anchor-header">Filter acceleration<button data-href="#Filter-acceleration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -93,16 +69,74 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>È possibile creare un indice TRIE ( <code translate="no">TRIE</code> ) su un campo <code translate="no">VARCHAR</code>. Non sono richiesti parametri aggiuntivi.</p>
-<p>L’esempio seguente mostra come creare un indice TRIE ( <code translate="no">TRIE</code> ) su un campo <code translate="no">VARCHAR</code>:</p>
+    </button></h3><p>A <code translate="no">TRIE</code> index can help evaluate the following conditions on a <code translate="no">VARCHAR</code> field. The expressions are examples:</p>
+<table>
+<thead>
+<tr><th>Filters that can use the index</th><th>Example expression</th></tr>
+</thead>
+<tbody>
+<tr><td>Equality (<code translate="no">==</code>, <code translate="no">!=</code>)</td><td><code translate="no">category == &quot;books&quot;</code></td></tr>
+<tr><td>Membership (<code translate="no">in</code>, <code translate="no">not in</code>)</td><td><code translate="no">category in [&quot;books&quot;, &quot;electronics&quot;]</code></td></tr>
+<tr><td>Prefix match</td><td><code translate="no">category LIKE &quot;elec%&quot;</code></td></tr>
+<tr><td>Range (<code translate="no">&lt;</code>, <code translate="no">&lt;=</code>, <code translate="no">&gt;</code>, <code translate="no">&gt;=</code>)</td><td><code translate="no">category &gt;= &quot;a&quot; and category &lt; &quot;m&quot;</code></td></tr>
+</tbody>
+</table>
+<p>For expression syntax, see <a href="/docs/it/basic-operators.md">Basic Operators</a> and <a href="/docs/it/pattern-matching.md">Pattern Matching</a>.</p>
+<p>Range evaluation may visit multiple indexed strings. Suffix, substring, general <code translate="no">LIKE</code>, and regex patterns can also be evaluated against the indexed strings, but they may require visiting many distinct values. For substring or regex workloads, compare <a href="/docs/it/ngram.md">NGRAM</a> using its pattern eligibility rules.</p>
+<p><a id="Best-practices"></a></p>
+<p>Compare query latency with representative string lengths, prefixes, and result counts.</p>
+<p><a id="Usage-notes"></a></p>
+<div class="alert note">
+<blockquote>
+<p>These are index capabilities, not limits on valid filter expressions. See <a href="/docs/it/scalar_index.md#Filter-execution">Scalar Index</a> for shared lookup constraints. For <code translate="no">AND</code>, <code translate="no">OR</code>, <code translate="no">NOT</code>, and NULL tests (<code translate="no">IS NULL</code>, <code translate="no">IS NOT NULL</code>), see <a href="/docs/it/basic-operators.md">Basic Operators</a>.</p>
+</blockquote>
+</div>
+<p><a id="How-it-works"></a></p>
+<h3 id="How-TRIE-works" class="common-anchor-header">How TRIE works<button data-href="#How-TRIE-works" class="anchor-icon" translate="no">
+      <svg translate="no"
+        aria-hidden="true"
+        focusable="false"
+        height="20"
+        version="1.1"
+        viewBox="0 0 16 16"
+        width="16"
+      >
+        <path
+          fill="#0092E4"
+          fill-rule="evenodd"
+          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+        ></path>
+      </svg>
+    </button></h3><p><details>
+<summary><strong>View the prefix tree lookup process</strong></summary></p>
+<p>During index building, Milvus inserts strings into a prefix tree and persists it. Characters are stored along edges, shared prefixes are stored once, and each terminal node records the entity IDs with that string.</p>
+<p>For equality, traverse the tree to the exact string’s terminal node. For a prefix, find the prefix node and collect IDs from its subtree. The query executor receives the matching entity IDs.</p>
+<p>Traversing to the string or prefix node depends on the pattern length; returning matches also requires collecting the associated entity IDs.</p>
+<p></details></p>
+<h2 id="Create-a-TRIE-index" class="common-anchor-header">Create a TRIE index<button data-href="#Create-a-TRIE-index" class="anchor-icon" translate="no">
+      <svg translate="no"
+        aria-hidden="true"
+        focusable="false"
+        height="20"
+        version="1.1"
+        viewBox="0 0 16 16"
+        width="16"
+      >
+        <path
+          fill="#0092E4"
+          fill-rule="evenodd"
+          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+        ></path>
+      </svg>
+    </button></h2><p>Set <code translate="no">index_type</code> to <code translate="no">TRIE</code>; no extra index parameters are required:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -242,7 +276,7 @@ curl --request POST \
 <span class="hljs-comment">#     &quot;data&quot;: {}</span>
 <span class="hljs-comment"># }</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Queries-accelerated-by-TRIE" class="common-anchor-header">Query accelerate da TRIE<button data-href="#Queries-accelerated-by-TRIE" class="anchor-icon" translate="no">
+<h2 id="Drop-an-index" class="common-anchor-header">Drop an index<button data-href="#Drop-an-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -257,53 +291,20 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>L'indice <code translate="no">TRIE</code> accelera i seguenti modelli di filtro su un campo <code translate="no">VARCHAR</code>:</p>
-<ul>
-<li><p><strong>Uguaglianza</strong></p>
-<pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;category == &quot;books&quot;&#x27;</span>
-<button class="copy-code-btn"></button></code></pre></li>
-<li><p><strong>Appartenenza</strong></p>
-<pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;category in [&quot;books&quot;, &quot;electronics&quot;]&#x27;</span>
-<button class="copy-code-btn"></button></code></pre></li>
-<li><p><strong>Corrispondenza prefisso</strong></p>
-<pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;category LIKE &quot;elec%&quot;&#x27;</span>
-<button class="copy-code-btn"></button></code></pre></li>
-<li><p><strong>Intervallo</strong></p>
-<pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;category &gt;= &quot;a&quot; and category &lt; &quot;m&quot;&#x27;</span>
-<button class="copy-code-btn"></button></code></pre>
-<p>La valutazione dell’intervallo può comportare l’accesso a più stringhe indicizzate.</p></li>
-</ul>
-<p>Anche i modelli di corrispondenza di suffissi, sottostringhe e espressioni regolari ( <code translate="no">LIKE</code> ) possono essere valutati rispetto alle stringhe indicizzate, ma potrebbero richiedere la visita di molti valori distinti. Se il carico di lavoro è dominato dalla corrispondenza di sottostringhe o di espressioni regolari, prendere in considerazione invece l’indice <a href="/docs/it/fmindex.md">FMINDEX</a> o <a href="/docs/it/ngram.md">NGRAM</a>.</p>
-<h2 id="Drop-an-index" class="common-anchor-header">Eliminazione di un indice<button data-href="#Drop-an-index" class="anchor-icon" translate="no">
-      <svg translate="no"
-        aria-hidden="true"
-        focusable="false"
-        height="20"
-        version="1.1"
-        viewBox="0 0 16 16"
-        width="16"
-      >
-        <path
-          fill="#0092E4"
-          fill-rule="evenodd"
-          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
-        ></path>
-      </svg>
-    </button></h2><p>Utilizzare il metodo <code translate="no">drop_index()</code> per rimuovere un indice esistente da una collezione.</p>
+    </button></h2><p>Use the <code translate="no">drop_index()</code> method to remove an existing index from a collection.</p>
 <div class="alert note">
-<ul>
-<li><p>Nella <strong>versione 2.6.3</strong> o precedenti, è necessario liberare la collezione prima di eliminare un indice scalare.</p></li>
-<li><p>A partire <strong>dalla v2.6.4</strong> o successive, è possibile eliminare direttamente un indice scalare una volta che non è più necessario, senza dover prima liberare la collezione.</p></li>
-</ul>
+<blockquote>
+<p>For release requirements when dropping a scalar index, see <a href="/docs/it/scalar_index.md#Drop-index-compatibility">Scalar Index</a>.</p>
+</blockquote>
 </div>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.drop_index(
     collection_name=<span class="hljs-string">&quot;product_catalog&quot;</span>,   <span class="hljs-comment"># Name of the collection</span>
@@ -407,42 +408,3 @@ curl --request POST \
 <span class="hljs-comment">#     &quot;data&quot;: {}</span>
 <span class="hljs-comment"># }</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Usage-notes" class="common-anchor-header">Note sull'utilizzo<button data-href="#Usage-notes" class="anchor-icon" translate="no">
-      <svg translate="no"
-        aria-hidden="true"
-        focusable="false"
-        height="20"
-        version="1.1"
-        viewBox="0 0 16 16"
-        width="16"
-      >
-        <path
-          fill="#0092E4"
-          fill-rule="evenodd"
-          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
-        ></path>
-      </svg>
-    </button></h2><ul>
-<li><p><strong>Tipi di campo:</strong> Funziona solo con i campi di tipo " <code translate="no">VARCHAR</code> ". Per ulteriori informazioni sui tipi di dati, consultare <a href="/docs/it/string.md">il campo String</a>.</p></li>
-<li><p><strong>Parametri:</strong> non sono necessari parametri di indicizzazione.</p></li>
-<li><p><strong>Corrispondenza dei pattern:</strong> l'<code translate="no">TRIE</code> è più veloce per i filtri di uguaglianza e prefisso. I filtri di intervallo sono supportati, ma potrebbero richiedere l'analisi di più stringhe indicizzate. I pattern di suffisso, sottostringa e " <code translate="no">LIKE</code> " generici possono essere valutati, ma potrebbero richiedere la scansione di molte stringhe indicizzate.</p></li>
-</ul>
-<h2 id="Best-practices" class="common-anchor-header">Migliori pratiche<button data-href="#Best-practices" class="anchor-icon" translate="no">
-      <svg translate="no"
-        aria-hidden="true"
-        focusable="false"
-        height="20"
-        version="1.1"
-        viewBox="0 0 16 16"
-        width="16"
-      >
-        <path
-          fill="#0092E4"
-          fill-rule="evenodd"
-          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
-        ></path>
-      </svg>
-    </button></h2><ul>
-<li><p>Utilizzare <code translate="no">TRIE</code> quando i filtri sono prevalentemente basati su ricerche esatte o corrispondenze di prefissi.</p></li>
-<li><p>Se il carico di lavoro si basa su filtri di sottostringa (<code translate="no">LIKE &quot;%abc%&quot;</code>) o espressioni regolari, utilizzare invece <a href="/docs/it/fmindex.md">FMINDEX</a> per la corrispondenza esatta con ancoraggio o <a href="/docs/it/ngram.md">NGRAM</a> per restringere i candidati.</p></li>
-</ul>

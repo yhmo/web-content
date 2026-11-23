@@ -1,9 +1,11 @@
 ---
 id: whitespace-tokenizer.md
-title: 空白字元
-summary: 空白字元分析器會根據五種 ASCII 空白字元來分割文字：制表符、換行符、換頁符、回車符以及空格。
+title: Whitespace
+summary: >-
+  The whitespace tokenizer splits text at five ASCII whitespace characters: tab,
+  line feed, form feed, carriage return, and space.
 ---
-<h1 id="Whitespace" class="common-anchor-header">空白字元<button data-href="#Whitespace" class="anchor-icon" translate="no">
+<h1 id="Whitespace" class="common-anchor-header">Whitespace<button data-href="#Whitespace" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,8 +20,8 @@ summary: 空白字元分析器會根據五種 ASCII 空白字元來分割文字�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p><code translate="no">whitespace</code> 標記化器會根據五種 ASCII 空白字元來分割文字：制表符、換行符、換頁符、回車符和空格。</p>
-<h2 id="Tokenization-rules" class="common-anchor-header">分詞規則<button data-href="#Tokenization-rules" class="anchor-icon" translate="no">
+    </button></h1><p>The <code translate="no">whitespace</code> tokenizer splits text at five ASCII whitespace characters: tab, line feed, form feed, carriage return, and space.</p>
+<h2 id="Tokenization-rules" class="common-anchor-header">Tokenization rules<button data-href="#Tokenization-rules" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -34,25 +36,25 @@ summary: 空白字元分析器會根據五種 ASCII 空白字元來分割文字�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">whitespace</code> 詞元化器僅會根據以下五種 ASCII 空白字元將文字分割：</p>
+    </button></h2><p>The <code translate="no">whitespace</code> tokenizer splits text only at the following five ASCII whitespace characters:</p>
 <table>
 <thead>
-<tr><th>字元</th><th>名稱</th><th>Unicode 碼點</th></tr>
+<tr><th>Character</th><th>Name</th><th>Unicode code point</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">\t</code></td><td>水平制表符</td><td>U+0009</td></tr>
-<tr><td><code translate="no">\n</code></td><td>換行</td><td>U+000A</td></tr>
-<tr><td><code translate="no">\x0C</code> 或<code translate="no">\f</code></td><td>換頁符</td><td>U+000C</td></tr>
-<tr><td><code translate="no">\r</code></td><td>回車</td><td>U+000D</td></tr>
-<tr><td><code translate="no">' '</code></td><td>空格</td><td>U+0020</td></tr>
+<tr><td><code translate="no">\t</code></td><td>Horizontal tab</td><td>U+0009</td></tr>
+<tr><td><code translate="no">\n</code></td><td>Line feed</td><td>U+000A</td></tr>
+<tr><td><code translate="no">\x0C</code> or <code translate="no">\f</code></td><td>Form feed</td><td>U+000C</td></tr>
+<tr><td><code translate="no">\r</code></td><td>Carriage return</td><td>U+000D</td></tr>
+<tr><td><code translate="no">' '</code></td><td>Space</td><td>U+0020</td></tr>
 </tbody>
 </table>
-<p>這些分隔符會被捨棄，且連續出現的分隔符不會產生空標記。標點符號及其他字元仍保留在標記中。特別是，垂直制表符（<code translate="no">\x0B</code> ，U+000B）、不換行空格（<code translate="no">\u00A0</code> ）及表意字空格（<code translate="no">\u3000</code> ）不會觸發分割。</p>
-<p>此集遵循 Rust 的 <a href="https://doc.rust-lang.org/std/primitive.char.html#method.is_ascii_whitespace"><code translate="no">char::is_ascii_whitespace()</code></a>，該規範會排除其他 Unicode 空白字元。</p>
-<p>以下範例使用未套用任何篩選條件的<code translate="no">{&quot;tokenizer&quot;: &quot;whitespace&quot;}</code> 。輸入與輸出均採用 Python 字串表示法：如<code translate="no">\t</code> 和<code translate="no">\u00A0</code> 等轉義序列代表實際字元。</p>
+<p>These separators are discarded, and consecutive separators do not produce empty tokens. Punctuation and other characters remain in the tokens. In particular, vertical tab (<code translate="no">\x0B</code>, U+000B), no-break space (<code translate="no">\u00A0</code>), and ideographic space (<code translate="no">\u3000</code>) do not trigger splitting.</p>
+<p>This set follows Rust’s <a href="https://doc.rust-lang.org/std/primitive.char.html#method.is_ascii_whitespace"><code translate="no">char::is_ascii_whitespace()</code></a>, which excludes other Unicode whitespace characters.</p>
+<p>The following examples use <code translate="no">{&quot;tokenizer&quot;: &quot;whitespace&quot;}</code> with no filters. Inputs and outputs use Python string notation: escape sequences such as <code translate="no">\t</code> and <code translate="no">\u00A0</code> represent the actual characters.</p>
 <table>
 <thead>
-<tr><th>輸入</th><th>輸出標記</th></tr>
+<tr><th>Input</th><th>Output tokens</th></tr>
 </thead>
 <tbody>
 <tr><td><code translate="no">&quot;a\tb\nc\x0Cd\re f&quot;</code></td><td><code translate="no">[&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;, &quot;e&quot;, &quot;f&quot;]</code></td></tr>
@@ -63,7 +65,7 @@ summary: 空白字元分析器會根據五種 ASCII 空白字元來分割文字�
 <tr><td><code translate="no">&quot; a b &quot;</code></td><td><code translate="no">[&quot;a&quot;, &quot;b&quot;]</code></td></tr>
 </tbody>
 </table>
-<h2 id="Configuration" class="common-anchor-header">設定<button data-href="#Configuration" class="anchor-icon" translate="no">
+<h2 id="Configuration" class="common-anchor-header">Configuration<button data-href="#Configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -78,16 +80,16 @@ summary: 空白字元分析器會根據五種 ASCII 空白字元來分割文字�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>若要使用<code translate="no">whitespace</code> 標記器來配置分析器，請在<code translate="no">analyzer_params</code> 中將<code translate="no">tokenizer</code> 設定為<code translate="no">whitespace</code> 。</p>
+    </button></h2><p>To configure an analyzer using the <code translate="no">whitespace</code> tokenizer, set <code translate="no">tokenizer</code> to <code translate="no">whitespace</code> in <code translate="no">analyzer_params</code>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;whitespace&quot;</span>,
@@ -121,16 +123,16 @@ Dictionary&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">analyzerParams=<span class="hljs-string">&#x27;{&quot;tokenizer&quot;: &quot;whitespace&quot;}&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>空白字元分詞器可與一個或多個篩選器配合使用。例如，以下程式碼定義了一個分析器，該分析器使用<code translate="no">whitespace</code> 分詞器與<a href="/docs/zh-hant/lowercase-filter.md">小寫篩選器</a>：</p>
+<p>The whitespace tokenizer can work in conjunction with one or more filters. For example, the following code defines an analyzer that uses the <code translate="no">whitespace</code> tokenizer and the <a href="/docs/zh-hant/lowercase-filter.md">lowercase filter</a>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;whitespace&quot;</span>,
@@ -178,8 +180,8 @@ analyzerParams=<span class="hljs-string">&#x27;{
   ]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>定義<code translate="no">analyzer_params</code> 後，您可以在定義集合架構時，將其套用至<code translate="no">VARCHAR</code> 欄位。這使 Milvus 能使用指定的分析器處理該欄位中的文字，以實現高效的詞元化與過濾。詳細資訊請參閱<a href="/docs/zh-hant/analyzer-overview.md#Example-use">「使用範例</a>」。</p>
-<h2 id="Examples" class="common-anchor-header">範例<button data-href="#Examples" class="anchor-icon" translate="no">
+<p>After defining <code translate="no">analyzer_params</code>, you can apply them to a <code translate="no">VARCHAR</code> field when defining a collection schema. This allows Milvus to process the text in that field using the specified analyzer for efficient tokenization and filtering. For details, refer to <a href="/docs/zh-hant/analyzer-overview.md#Example-use">Example use</a>.</p>
+<h2 id="Examples" class="common-anchor-header">Examples<button data-href="#Examples" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -194,8 +196,8 @@ analyzerParams=<span class="hljs-string">&#x27;{
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>在將分析器設定套用至您的集合架構之前，請先使用 `<code translate="no">run_analyzer</code> ` 方法驗證其運作行為。請將以下設定與您所選語言的驗證範例一併使用。</p>
-<h3 id="Analyzer-configuration" class="common-anchor-header">分析器設定<button data-href="#Analyzer-configuration" class="anchor-icon" translate="no">
+    </button></h2><p>Before applying the analyzer configuration to your collection schema, verify its behavior using the <code translate="no">run_analyzer</code> method. Use the configuration below with the verification example for your selected language.</p>
+<h3 id="Analyzer-configuration" class="common-anchor-header">Analyzer configuration<button data-href="#Analyzer-configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -211,14 +213,14 @@ analyzerParams=<span class="hljs-string">&#x27;{
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;whitespace&quot;</span>,
@@ -266,7 +268,7 @@ analyzerParams=<span class="hljs-string">&#x27;{
   ]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Verification-using-runanalyzer" class="common-anchor-header">使用以下語言進行驗證<code translate="no">run_analyzer</code><span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.5.11+</span><button data-href="#Verification-using-runanalyzer" class="anchor-icon" translate="no">
+<h3 id="Verification-using-runanalyzer" class="common-anchor-header">Verification using <code translate="no">run_analyzer</code><span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.5.11+</span><button data-href="#Verification-using-runanalyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -282,14 +284,14 @@ analyzerParams=<span class="hljs-string">&#x27;{
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> (
     MilvusClient,
@@ -472,7 +474,7 @@ RunAnalyzerResp result = <span class="hljs-keyword">await</span> client.RunAnaly
     &quot;text&quot;: [&quot;The Milvus vector database is built for scale!&quot;]
   }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Expected-output" class="common-anchor-header">預期輸出<button data-href="#Expected-output" class="anchor-icon" translate="no">
+<h3 id="Expected-output" class="common-anchor-header">Expected output<button data-href="#Expected-output" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -487,6 +489,6 @@ RunAnalyzerResp result = <span class="hljs-keyword">await</span> client.RunAnaly
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>針對範例文字，分析器會依序產生以下標記。SDK 回應物件與輸出格式會因語言而異；REST 回應中包含這些標記，網址為<code translate="no">data.results[].tokens[].token</code> 。</p>
+    </button></h3><p>For the sample text, the analyzer produces the following tokens in order. SDK response objects and printed formatting vary by language; the REST response contains these tokens at <code translate="no">data.results[].tokens[].token</code>.</p>
 <pre><code translate="no" class="language-plaintext">[&#x27;the&#x27;, &#x27;milvus&#x27;, &#x27;vector&#x27;, &#x27;database&#x27;, &#x27;is&#x27;, &#x27;built&#x27;, &#x27;for&#x27;, &#x27;scale!&#x27;]
 <button class="copy-code-btn"></button></code></pre>

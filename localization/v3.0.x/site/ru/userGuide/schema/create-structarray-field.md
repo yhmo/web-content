@@ -2,12 +2,11 @@
 id: create-structarray-field.md
 title: Create a StructArray Field
 summary: >-
-  Поле StructArray следует создавать в том случае, если одна сущность должна
-  содержать упорядоченный список структурированных элементов. Поле StructArray
-  представляет собой поле типа Array, тип элементов которого — Struct. Каждый
-  элемент Struct соответствует одной и той же схеме и может содержать скалярные
-  подполя, векторные подполя, а также, начиная с версии Milvus 3.0.6, подполя в
-  виде скалярных массивов.
+  Create a StructArray field when one entity needs to contain an ordered list of
+  structured elements. A StructArray field is an Array field whose element type
+  is Struct. Each Struct element follows the same schema and can contain scalar
+  subfields, vector subfields, and, starting in Milvus 3.0.6, scalar array
+  subfields.
 ---
 <h1 id="Create-a-StructArray-Field" class="common-anchor-header">Create a StructArray Field<button data-href="#Create-a-StructArray-Field" class="anchor-icon" translate="no">
       <svg translate="no"

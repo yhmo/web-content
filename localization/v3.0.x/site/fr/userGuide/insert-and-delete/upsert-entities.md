@@ -2,8 +2,8 @@
 id: upsert-entities.md
 title: Upsert Entities
 summary: >-
-  L'opération « upsert » offre un moyen pratique d'insérer ou de mettre à jour
-  des entités dans une collection.
+  The upsert operation provides a convenient way to insert or update entities in
+  a collection.
 ---
 <h1 id="Upsert-Entities" class="common-anchor-header">Upsert Entities<button data-href="#Upsert-Entities" class="anchor-icon" translate="no">
       <svg translate="no"

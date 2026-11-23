@@ -1,11 +1,11 @@
 ---
 id: install-overview.md
 summary: >-
-  Pilihlah Milvus Lite, Standalone, atau Distributed sesuai dengan beban kerja,
-  persyaratan ketersediaan, dan lingkungan operasi Anda.
-title: Gambaran Umum Opsi Penerapan Milvus
+  Choose Milvus Lite, Standalone, or Distributed based on your workload,
+  availability requirements, and operating environment.
+title: Overview of Milvus Deployment Options
 ---
-<h1 id="Overview-of-Milvus-Deployment-Options" class="common-anchor-header">Gambaran Umum Opsi Penerapan Milvus<button data-href="#Overview-of-Milvus-Deployment-Options" class="anchor-icon" translate="no">
+<h1 id="Overview-of-Milvus-Deployment-Options" class="common-anchor-header">Overview of Milvus Deployment Options<button data-href="#Overview-of-Milvus-Deployment-Options" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,7 +20,7 @@ title: Gambaran Umum Opsi Penerapan Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Milvus mendukung prototipe lokal dan layanan pencarian vektor berskala besar. Pilihlah di antara Milvus Lite, Milvus Standalone, dan Milvus Distributed berdasarkan data Anda, beban baca dan tulis, persyaratan ketersediaan, serta lingkungan operasi.</p>
+    </button></h1><p>Milvus supports local prototypes and large-scale vector search services. Choose among Milvus Lite, Milvus Standalone, and Milvus Distributed based on your data, read and write load, availability requirements, and operating environment.</p>
 <h2 id="Milvus-Lite" class="common-anchor-header">Milvus Lite<button data-href="#Milvus-Lite" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -36,11 +36,11 @@ title: Gambaran Umum Opsi Penerapan Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><a href="https://milvus.io/docs/milvus_lite.md">Milvus Lite</a> adalah pustaka Python yang dapat diimpor ke dalam aplikasi Anda. Sebagai versi ringan dari Milvus, Milvus Lite sangat ideal untuk pembuatan prototipe cepat di Jupyter Notebooks atau dijalankan pada perangkat pintar dengan sumber daya terbatas. Milvus Lite mendukung API yang sama dengan deployment Milvus lainnya. Kode sisi klien yang berinteraksi dengan Milvus Lite juga dapat bekerja dengan instance Milvus dalam mode deployment lainnya.</p>
-<p>Untuk contoh lokal, gunakan Python 3.10 atau yang lebih baru dan instal dependensi Lite opsional secara eksplisit. Di Windows, pip melewatkan opsi ` <code translate="no">milvus-lite</code> `, sehingga nama paket yang eksplisit diperlukan:</p>
+    </button></h2><p><a href="https://milvus.io/docs/milvus_lite.md">Milvus Lite</a> is a Python library that can be imported into your applications. As a lightweight version of Milvus, it is ideal for quick prototyping in Jupyter Notebooks or running on smart devices with limited resources. Milvus Lite supports the same APIs as other Milvus deployments. The client-side code interacting with Milvus Lite can also work with Milvus instances in other deployment modes.</p>
+<p>For the local examples, use Python 3.10 or later and install the optional Lite dependency explicitly. On Windows, pip skips the <code translate="no">milvus-lite</code> extra, so the explicit package name is required:</p>
 <pre><code translate="no" class="language-bash">python3 -m pip install <span class="hljs-string">&quot;pymilvus[milvus-lite]==3.0.2&quot;</span> <span class="hljs-string">&quot;milvus-lite==3.2.2&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Gunakan ` <code translate="no">MilvusClient(&quot;./demo.db&quot;)</code> ` untuk membuka penyimpanan lokal. Milvus Lite 3.x membuat direktori di jalur ini; file basis data Milvus Lite 2.x yang sudah ada memerlukan ekspor dan migrasi. Lihat <a href="/docs/id/milvus_lite.md">Jalankan Milvus Lite</a> untuk persyaratan platform dan <a href="/docs/id/quickstart.md">Panduan Cepat</a> untuk contoh lengkap penyisipan dan pencarian.</p>
+<p>Use <code translate="no">MilvusClient(&quot;./demo.db&quot;)</code> to open local storage. Milvus Lite 3.x creates a directory at this path; an existing Milvus Lite 2.x database file requires export and migration. See <a href="/docs/id/milvus_lite.md">Run Milvus Lite</a> for platform requirements and <a href="/docs/id/quickstart.md">Quickstart</a> for a complete insert-and-search example.</p>
 <h2 id="Milvus-Standalone" class="common-anchor-header">Milvus Standalone<button data-href="#Milvus-Standalone" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -56,7 +56,7 @@ title: Gambaran Umum Opsi Penerapan Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus Standalone adalah penyebaran server pada satu mesin. Semua komponen Milvus Standalone dikemas ke dalam satu <a href="https://milvus.io/docs/install_standalone-docker.md">gambar Docker</a>, sehingga memudahkan penyebaran. Jika Anda memiliki beban kerja produksi tetapi memilih untuk tidak menggunakan Kubernetes, menjalankan Milvus Standalone pada satu mesin dengan memori yang memadai merupakan pilihan yang baik. Secara default, Milvus Standalone menjalankan <strong>Woodpecker</strong> (terintegrasi) sebagai antrian pesannya, sehingga tidak ada layanan pesan terpisah yang perlu dioperasikan.</p>
+    </button></h2><p>Milvus Standalone is a single-machine server deployment. All components of Milvus Standalone are packed into a single <a href="https://milvus.io/docs/install_standalone-docker.md">Docker image</a>, making deployment convenient. If you have a production workload but prefer not to use Kubernetes, running Milvus Standalone on a single machine with sufficient memory is a good option. By default, Milvus Standalone runs <strong>Woodpecker</strong> (embedded) as its message queue, so there’s no separate messaging service to operate.</p>
 <h2 id="Milvus-Distributed" class="common-anchor-header">Milvus Distributed<button data-href="#Milvus-Distributed" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -72,8 +72,8 @@ title: Gambaran Umum Opsi Penerapan Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus Distributed dapat diimplementasikan pada kluster <a href="https://milvus.io/docs/install_cluster-milvusoperator.md">Kubernetes</a>. Implementasi ini memiliki arsitektur cloud-native, di mana beban pengambilan data dan kueri pencarian ditangani secara terpisah oleh node-node yang terisolasi, sehingga memungkinkan redundansi untuk komponen-komponen kritis. Milvus Distributed menawarkan skalabilitas dan ketersediaan tertinggi, serta fleksibilitas dalam menyesuaikan sumber daya yang dialokasikan pada setiap komponen. Milvus Distributed adalah pilihan utama bagi pengguna perusahaan yang menjalankan sistem pencarian vektor berskala besar dalam produksi. Secara default, Milvus Distributed menjalankan <strong>Woodpecker</strong> sebagai antrian pesannya, yang diimplementasikan sebagai layanan khusus bersama Milvus.</p>
-<h2 id="Choose-the-Right-Deployment-for-Your-Use-Case" class="common-anchor-header">Pilih Penerapan yang Tepat untuk Kasus Penggunaan Anda<button data-href="#Choose-the-Right-Deployment-for-Your-Use-Case" class="anchor-icon" translate="no">
+    </button></h2><p>Milvus Distributed can be deployed on <a href="https://milvus.io/docs/install_cluster-milvusoperator.md">Kubernetes</a> clusters. This deployment features a cloud-native architecture, where ingestion load and search queries are separately handled by isolated nodes, allowing redundancy for critical components. It offers the highest scalability and availability, as well as the flexibility in customizing the allocated resources in each component. Milvus Distributed is the top choice for enterprise users running large-scale vector search systems in production. By default, Milvus Distributed runs <strong>Woodpecker</strong> as its message queue, deployed as a dedicated service alongside Milvus.</p>
+<h2 id="Choose-the-Right-Deployment-for-Your-Use-Case" class="common-anchor-header">Choose the Right Deployment for Your Use Case<button data-href="#Choose-the-Right-Deployment-for-Your-Use-Case" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -88,32 +88,32 @@ title: Gambaran Umum Opsi Penerapan Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Pemilihan mode penerapan biasanya bergantung pada tahap pengembangan aplikasi Anda:</p>
+    </button></h2><p>The selection of a deployment mode typically depends on the development stage of your application:</p>
 <ul>
-<li><p><strong>Untuk Pembuatan Prototipe Cepat</strong></p>
-<p>Gunakan Milvus Lite di notebook untuk menguji embedding, strategi chunking RAG, dan perilaku pengambilan data. Beralihlah ke Milvus Standalone saat Anda memerlukan server bersama atau ketika beban memori dan kueri yang terukur melebihi kapasitas lingkungan lokal. API kliennya serupa, tetapi periksa perbedaan fitur dan migrasikan data yang tersimpan secara terpisah.</p></li>
-<li><p><strong>Penerapan Produksi Skala Kecil</strong></p>
-<p>Gunakan Milvus Standalone jika satu server dapat memenuhi persyaratan beban kerja dan ketersediaan Anda, dan Anda lebih memilih untuk beroperasi tanpa Kubernetes. Perkirakan memori dari dimensi vektor, bidang skalar, pengaturan indeks, dan replika, lalu ukur kinerja konkurensi kueri dan laju penulisan yang diharapkan. Jumlah vektor saja tidak menentukan kapasitas.</p></li>
-<li><p><strong>Penerapan Produksi Skala Besar</strong></p>
-<p>Seiring pertumbuhan bisnis Anda yang pesat dan skala data melampaui kapasitas satu server, inilah saatnya mempertimbangkan Milvus Distributed. Anda dapat tetap menggunakan Milvus Standalone untuk lingkungan pengembangan atau staging karena kemudahannya, sekaligus mengoperasikan kluster K8s yang menjalankan Milvus Distributed. Hal ini dapat mendukung Anda hingga puluhan miliar vektor, serta memberikan fleksibilitas dalam menyesuaikan ukuran node untuk beban kerja khusus Anda, seperti kasus pembacaan tinggi, penulisan jarang, atau penulisan tinggi, pembacaan rendah.</p></li>
-<li><p><strong>Pencarian Lokal di Perangkat Edge</strong></p>
-<p>Untuk melakukan pencarian pada data pribadi atau sensitif di perangkat tepi, Anda dapat mengimplementasikan Milvus Lite di perangkat tersebut tanpa bergantung pada layanan berbasis cloud untuk melakukan pencarian teks atau gambar. Hal ini cocok untuk kasus seperti pencarian dokumen eksklusif, atau deteksi objek di perangkat.</p></li>
+<li><p><strong>For Quick Prototyping</strong></p>
+<p>Use Milvus Lite in a notebook to test embeddings, RAG chunking strategies, and retrieval behavior. Move to Milvus Standalone when you need a shared server or when the measured memory and query load exceed the local environment. The client API is similar, but check feature differences and migrate the stored data separately.</p></li>
+<li><p><strong>Small-Scale Production Deployment</strong></p>
+<p>Use Milvus Standalone when a single server can meet your workload and availability requirements, and you prefer to operate without Kubernetes. Estimate memory from vector dimensions, scalar fields, index settings, and replicas, then benchmark the expected query concurrency and write rate. A vector count alone does not establish capacity.</p></li>
+<li><p><strong>Large-Scale Production Deployment</strong></p>
+<p>As your business is rapidly growing and the data scale exceeds the capacity of a single server, it’s time to consider Milvus Distributed. You can keep using Milvus Standalone for dev or staging environment for its convenience, and operate the K8s cluster that runs Milvus Distributed. This can sustain you towards tens of billions of vectors, as well as providing flexibility on tailoring the node size for your particular workload, such as high-read, infrequent write or high-write, low read cases.</p></li>
+<li><p><strong>Local Search on Edge Devices</strong></p>
+<p>For searching through private or sensitive on edge devices, you can deploy Milvus Lite on the device without relying on a cloud-based service to do text or image search. This is suitable for cases such as proprietary document search, or on-device object detection.</p></li>
 </ul>
-<p>Pilihan mode penerapan Milvus bergantung pada tahap dan skala proyek Anda. Milvus menyediakan solusi yang fleksibel dan kuat untuk berbagai kebutuhan, mulai dari pembuatan prototipe cepat hingga penerapan skala besar di perusahaan.</p>
+<p>The choice of Milvus deployment mode depends on your project’s stage and scale. Milvus provides a flexible and powerful solution for various needs, from rapid prototyping to large-scale enterprise deployment.</p>
 <ul>
-<li><strong>Milvus Lite</strong> cocok untuk evaluasi lokal dan beban kerja dalam sumber daya aplikasi tunggal.</li>
-<li><strong>Milvus Standalone</strong> menyediakan layanan bersama ketika satu server memenuhi persyaratan kapasitas dan ketersediaan yang Anda tentukan.</li>
-<li><strong>Milvus Distributed</strong> menyediakan penskalaan dan redundansi tingkat komponen ketika Anda perlu memperluas melampaui satu server atau memisahkan sumber daya baca dan tulis.</li>
+<li><strong>Milvus Lite</strong> fits local evaluation and workloads within a single application’s resources.</li>
+<li><strong>Milvus Standalone</strong> provides a shared service when one server meets your measured capacity and availability requirements.</li>
+<li><strong>Milvus Distributed</strong> provides component-level scaling and redundancy when you need to grow beyond one server or isolate read and write resources.</li>
 </ul>
-<p>Milvus Standalone dan Distributed menggunakan antrian pesan, penyimpanan objek, dan penyimpanan metadata. Milvus Lite berjalan secara lokal tanpa layanan terpisah tersebut. Untuk dependensi default dan opsi layanan eksternal pada penerapan server, lihat <a href="/docs/id/data-infra-integration-overview.md">Infrastruktur Data</a>.</p>
-<p>Jika Anda menginginkan layanan terkelola alih-alih mengoperasikan infrastruktur server, pertimbangkan <a href="https://zilliz.com/cloud">Zilliz Cloud</a>. Untuk penerapan mandiri, lanjutkan dengan <a href="/docs/id/install_standalone-docker.md">Docker</a> atau <a href="/docs/id/install_cluster-milvusoperator.md">Kubernetes</a>.</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/select-deployment-option.png" alt="Select deployment option for your use case" class="doc-image" id="select-deployment-option-for-your-use-case" /> 
-   <span>Pilih opsi penyebaran sesuai kebutuhan Anda</span>
-  
- </span></p>
-<h2 id="Comparison-on-functionalities" class="common-anchor-header">Perbandingan fitur<button data-href="#Comparison-on-functionalities" class="anchor-icon" translate="no">
+<p>Milvus Standalone and Distributed use a message queue, object storage, and a metadata store. Milvus Lite runs locally without those separate services. For the server deployments’ default dependencies and external service options, see <a href="/docs/id/data-infra-integration-overview.md">Data Infrastructure</a>.</p>
+<p>If you want a managed service instead of operating the server infrastructure, consider <a href="https://zilliz.com/cloud">Zilliz Cloud</a>. For a hands-on deployment, continue with <a href="/docs/id/install_standalone-docker.md">Docker</a> or <a href="/docs/id/install_cluster-milvusoperator.md">Kubernetes</a>.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/select-deployment-option.png" alt="Select deployment option for your use case" class="doc-image" id="select-deployment-option-for-your-use-case" />
+    <span>Select deployment option for your use case</span>
+  </span>
+</p>
+<h2 id="Comparison-on-functionalities" class="common-anchor-header">Comparison on functionalities<button data-href="#Comparison-on-functionalities" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -128,18 +128,18 @@ title: Gambaran Umum Opsi Penerapan Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Kolom Lite menjelaskan Milvus Lite 3.2.2. Periksa <a href="/docs/id/milvus_lite.md#Supported-features-and-limits">batasan Milvus Lite</a> sebelum mengandalkan fitur server dalam aplikasi lokal.</p>
+    </button></h2><p>The Lite column describes Milvus Lite 3.2.2. Check <a href="/docs/id/milvus_lite.md#Supported-features-and-limits">Milvus Lite limits</a> before relying on a server feature in a local application.</p>
 <table>
 <thead>
-<tr><th>Fitur</th><th>Milvus Lite</th><th>Milvus Standalone</th><th>Milvus Distributed</th></tr>
+<tr><th>Feature</th><th>Milvus Lite</th><th>Milvus Standalone</th><th>Milvus Distributed</th></tr>
 </thead>
 <tbody>
-<tr><td>SDK / pustaka klien</td><td>Python (adaptor PyMilvus lokal)</td><td>Python<br/>Go<br/>Java<br/>Node.js<br/>C#<br/>RESTful</td><td>Python<br/>Java<br/>Go<br/>Node.js<br/>C#<br/>RESTful</td></tr>
-<tr><td>Tipe data</td><td>Vektor Padat<br/>Vektor Jarang<br/>Boolean<br/>Bilangan Bulat<br/>Bilangan Pecahan<br/>VarChar<br/>Array<br/>JSON</td><td>Vektor Padat<br/>Vektor Jarang<br/>Vektor Biner<br/>Boolean<br/>Bilangan Bulat<br/>Bilangan Pecahan<br/>VarChar<br/>Array<br/>JSON</td><td>Vektor Padat<br/>Vektor Jarang<br/>Vektor Biner<br/>Boolean<br/>Bilangan Bulat<br/>Bilangan Pecahan<br/>VarChar<br/>Array<br/>JSON</td></tr>
-<tr><td>Fitur pencarian</td><td>Pencarian Vektor (Pencarian ANN)<br/>Penyaringan Metadata<br/>Pencarian Rentang<br/>Kueri Skalar<br/>Dapatkan Entitas berdasarkan Kunci Utama<br/>Pencarian Hibrida</td><td>Pencarian Vektor (Pencarian ANN)<br/>Penyaringan Metadata<br/>Pencarian Rentang<br/>Kueri Skalar<br/>Mengambil Entitas berdasarkan Kunci Utama<br/>Pencarian Hibrida</td><td>Pencarian Vektor (Pencarian ANN)<br/>Penyaringan Metadata<br/>Pencarian Rentang<br/>Kueri Skalar<br/>Mengambil Entitas berdasarkan Kunci Utama<br/>Pencarian Hibrida</td></tr>
-<tr><td>Operasi CRUD</td><td>✔️</td><td>✔️</td><td>✔️</td></tr>
-<tr><td>Manajemen data lanjutan</td><td>Basis data<br/>Partisi<br/>Alias<br/>Tanpa kontrol akses</td><td>Kontrol Akses<br/>Partisi<br/>Kunci Partisi</td><td>Kontrol Akses<br/>Partisi<br/>Kunci Partisi<br/>Pengelompokan Sumber Daya Fisik</td></tr>
-<tr><td>Tingkat Konsistensi</td><td>Tidak berlaku: satu proses lokal melayani semua permintaan; <code translate="no">consistency_level</code> diterima tetapi tidak berpengaruh</td><td><br/>Kuat, Keterlambatan Terbatas<br/>Sesi<br/>Akhirnya</td><td><br/>Kuat, Kedaluwarsa Terbatas,<br/>, Sesi,<br/>, Akhirnya</td></tr>
-<tr><td>Antrian pesan</td><td>N/A</td><td>Woodpecker (terintegrasi)</td><td>Woodpecker (layanan)</td></tr>
+<tr><td>SDK / client library</td><td>Python (local PyMilvus adapter)</td><td>Python<br/>Go<br/>Java<br/>Node.js<br/>C#<br/>RESTful</td><td>Python<br/>Java<br/>Go<br/>Node.js<br/>C#<br/>RESTful</td></tr>
+<tr><td>Data types</td><td>Dense Vector<br/>Sparse Vector<br/>Boolean<br/>Integer<br/>Floating Point<br/>VarChar<br/>Array<br/>JSON</td><td>Dense Vector<br/>Sparse Vector<br/>Binary Vector<br/>Boolean<br/>Integer<br/>Floating Point<br/>VarChar<br/>Array<br/>JSON</td><td>Dense Vector<br/>Sparse Vector<br/>Binary Vector<br/>Boolean<br/>Integer<br/>Floating Point<br/>VarChar<br/>Array<br/>JSON</td></tr>
+<tr><td>Search capabilities</td><td>Vector Search (ANN Search)<br/>Metadata Filtering<br/>Range Search<br/>Scalar Query<br/>Get Entities by Primary Key<br/>Hybrid Search</td><td>Vector Search (ANN Search)<br/>Metadata Filtering<br/>Range Search<br/>Scalar Query<br/>Get Entities by Primary Key<br/>Hybrid Search</td><td>Vector Search (ANN Search)<br/>Metadata Filtering<br/>Range Search<br/>Scalar Query<br/>Get Entities by Primary Key<br/>Hybrid Search</td></tr>
+<tr><td>CRUD operations</td><td>✔️</td><td>✔️</td><td>✔️</td></tr>
+<tr><td>Advanced data management</td><td>Databases<br/>Partitions<br/>Aliases<br/>No access control</td><td>Access Control<br/>Partition<br/>Partition Key</td><td>Access Control<br/>Partition<br/>Partition Key<br/>Physical Resource Grouping</td></tr>
+<tr><td>Consistency Levels</td><td>Not applicable: a single local process serves all requests; <code translate="no">consistency_level</code> is accepted but has no effect</td><td>Strong<br/>Bounded Staleness<br/>Session<br/>Eventual</td><td>Strong<br/>Bounded Staleness<br/>Session<br/>Eventual</td></tr>
+<tr><td>Message queue</td><td>N/A</td><td>Woodpecker (embedded)</td><td>Woodpecker (service)</td></tr>
 </tbody>
 </table>

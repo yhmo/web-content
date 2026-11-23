@@ -1,9 +1,12 @@
 ---
 id: range-search.md
-title: 範圍搜尋
-summary: 範圍搜尋透過將回傳實體的距離或分數限制在特定範圍內，來提升搜尋結果的相關性。本頁面將協助您了解何謂範圍搜尋，以及進行範圍搜尋的步驟。
+title: Range Search
+summary: >-
+  A range search improves search result relevancy by restricting the distance or
+  score of the returned entities within a specific range. This page helps you
+  understand what range search is and the procedures to conduct a range search.
 ---
-<h1 id="Range-Search" class="common-anchor-header">範圍搜尋<button data-href="#Range-Search" class="anchor-icon" translate="no">
+<h1 id="Range-Search" class="common-anchor-header">Range Search<button data-href="#Range-Search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,8 +21,8 @@ summary: 範圍搜尋透過將回傳實體的距離或分數限制在特定範�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>範圍搜尋透過將回傳實體的距離或分數限制在特定範圍內，來提升搜尋結果的相關性。本頁面將協助您了解何謂範圍搜尋，以及執行範圍搜尋的步驟。</p>
-<h2 id="Overview" class="common-anchor-header">概述<button data-href="#Overview" class="anchor-icon" translate="no">
+    </button></h1><p>A range search improves search result relevancy by restricting the distance or score of the returned entities within a specific range. This page helps you understand what range search is and the procedures to conduct a range search.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -34,53 +37,53 @@ summary: 範圍搜尋透過將回傳實體的距離或分數限制在特定範�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>執行範圍搜尋請求時，Milvus 會以 ANN 搜尋結果中與查詢向量最相似的向量作為中心，並以搜尋請求中指定的<strong>半徑</strong>作為外圈半徑，以及<strong>range_filter</strong>作為內圈半徑，藉此繪製兩個同心圓。 所有相似度分數落在由這兩條同心圓所形成的環狀區域內的向量，都會被回傳。在此<strong>，range_filter</strong>可設定為<strong>0</strong>，表示將回傳所有在指定相似度分數（半徑）範圍內的實體。</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/range-search.png" alt="Range Search" class="doc-image" id="range-search" /> 
-   <span>範圍搜尋</span>
-  
- </span></p>
-<p>上圖顯示，範圍搜尋請求包含兩個參數：<strong>半徑 (radius)</strong>與<strong>範圍篩選器 (range_filter)</strong>。收到範圍搜尋請求後，Milvus 會執行以下步驟：</p>
+    </button></h2><p>When executing a Range Search request, Milvus uses the most similar vectors to the query vector from the ANN Search results as the center, with the <strong>radius</strong> specified in the Search request as the outer circle’s radius, and the <strong>range_filter</strong> as the inner circle’s radius to draw two concentric circles. All vectors with similarity scores that fall within the annular region formed by these two concentric circles will be returned. Here, the <strong>range_filter</strong> can be set to <strong>0</strong>, indicating that all entities within the specified similarity score (radius) will be returned.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/range-search.png" alt="Range Search" class="doc-image" id="range-search" />
+    <span>Range Search</span>
+  </span>
+</p>
+<p>The above diagram shows that a range search request carries two parameters: <strong>radius</strong> and <strong>range_filter</strong>. Upon receiving a range search request, Milvus does the following:</p>
 <ul>
-<li><p>使用指定的度量類型（<strong>COSINE</strong>）找出與查詢向量最相似的所有向量嵌入。</p></li>
-<li><p>篩選那些與查詢向量的<strong>距離或</strong> <strong>分數</strong>落在<strong>radius</strong>和<strong>range_filter</strong>參數所指定範圍內的向量嵌入。</p></li>
-<li><p>從篩選後的結果中返回<strong>前 K</strong>個實體。</p></li>
+<li><p>Use the specified metric type (<strong>COSINE</strong>) to find all vector embeddings most similar to the query vector.</p></li>
+<li><p>Filter the vector embeddings whose <strong>distances</strong> or <strong>scores</strong> to the query vector fall within the range specified by the <strong>radius</strong> and <strong>range_filter</strong> parameters.</p></li>
+<li><p>Return the <strong>top-K</strong> entities from the filtered ones.</p></li>
 </ul>
-<p><strong>radius</strong>和<strong>range_filter</strong>的設定方式會因搜尋的度量類型而異。下表列出了針對不同度量類型設定這兩個參數的要求。</p>
+<p>The way to set <strong>radius</strong> and <strong>range_filter</strong> varies with the metric type of the search. The following table lists the requirements for setting these two parameters with different metric types.</p>
 <table>
    <tr>
-     <th><p>度量類型</p></th>
-     <th><p>符號說明</p></th>
-     <th><p>設定 radius 和 range_filter 的要求</p></th>
+     <th><p>Metric Type</p></th>
+     <th><p>Denotations</p></th>
+     <th><p>Requirements for Setting radius and range_filter</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">L2</code></p></td>
-     <td><p>L2 距離越小，表示相似度越高。</p></td>
-     <td><p>若要忽略最相似的向量嵌入，請確保</p><p><code translate="no">range_filter</code> &lt;= 距離 &lt;<code translate="no">radius</code></p></td>
+     <td><p>A smaller L2 distance indicates a higher similarity.</p></td>
+     <td><p>To ignore the most similar vector embeddings, ensure that</p><p><code translate="no">range_filter</code> &lt;= distance &lt; <code translate="no">radius</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">IP</code></p></td>
-     <td><p>IP 距離越大，表示相似度越高。</p></td>
-     <td><p>若要忽略最相似的向量嵌入，請確保</p><p><code translate="no">radius</code> &lt; 距離 &lt;=<code translate="no">range_filter</code></p></td>
+     <td><p>A greater IP distance indicates a higher similarity.</p></td>
+     <td><p>To ignore the most similar vector embeddings, ensure that</p><p><code translate="no">radius</code> &lt; distance &lt;= <code translate="no">range_filter</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">COSINE</code></p></td>
-     <td><p>COSINE 距離越大，表示相似度越高。</p></td>
-     <td><p>若要忽略最相似的向量嵌入，請確保</p><p><code translate="no">radius</code> &lt; 距離 &lt;=<code translate="no">range_filter</code></p></td>
+     <td><p>A greater COSINE distance indicates a higher similarity.</p></td>
+     <td><p>To ignore the most similar vector embeddings, ensure that</p><p><code translate="no">radius</code> &lt; distance &lt;= <code translate="no">range_filter</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">JACCARD</code></p></td>
-     <td><p>較小的雅卡德距離表示相似度較高。</p></td>
-     <td><p>若要忽略最相似的向量嵌入，請確保</p><p><code translate="no">range_filter</code> &lt;= 距離 &lt;<code translate="no">radius</code></p></td>
+     <td><p>A smaller Jaccard distance indicates a higher similarity.</p></td>
+     <td><p>To ignore the most similar vector embeddings, ensure that</p><p><code translate="no">range_filter</code> &lt;= distance &lt; <code translate="no">radius</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">HAMMING</code></p></td>
-     <td><p>哈明距離越小，表示相似度越高。</p></td>
-     <td><p>若要忽略最相似的向量嵌入，請確保</p><p><code translate="no">range_filter</code> &lt;= 距離 &lt;<code translate="no">radius</code></p></td>
+     <td><p>A smaller Hamming distance indicates a higher similarity.</p></td>
+     <td><p>To ignore the most similar vector embeddings, ensure that</p><p><code translate="no">range_filter</code> &lt;= distance &lt; <code translate="no">radius</code></p></td>
    </tr>
 </table>
-<h2 id="Examples" class="common-anchor-header">範例<button data-href="#Examples" class="anchor-icon" translate="no">
+<h2 id="Examples" class="common-anchor-header">Examples<button data-href="#Examples" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -95,17 +98,17 @@ summary: 範圍搜尋透過將回傳實體的距離或分數限制在特定範�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>本節將示範如何進行範圍搜尋。以下程式碼片段中的搜尋請求未指定度量類型，表示將套用預設度量類型<strong>COSINE</strong>。在此情況下，請確保<strong>半徑值</strong>小於<strong>range_filter</strong>的值。</p>
-<p>在以下程式碼片段中，將 `<code translate="no">radius</code> ` 設定為 `<code translate="no">0.4</code> `，並將 `<code translate="no">range_filter</code> ` 設定為 `<code translate="no">0.6</code> `，以便 Milvus 返回所有與查詢向量距離或分數介於<strong>0.4</strong>至<strong>0.6</strong> 之間的實體。</p>
+    </button></h2><p>This section demonstrates how to conduct a range search. The search requests in the following code snippets do not carry a metric type, indicating the default metric type <strong>COSINE</strong> applies. In this case, ensure that the <strong>radius</strong> value is smaller than the <strong>range_filter</strong> value.</p>
+<p>In the following code snippets, set <code translate="no">radius</code> to <code translate="no">0.4</code> and <code translate="no">range_filter</code> to <code translate="no">0.6</code> so that Milvus returns all entities whose distances or scores to the query vector fall within <strong>0.4</strong> to <strong>0.6</strong>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -353,5 +356,5 @@ curl --request POST \
 <span class="hljs-comment"># {&quot;code&quot;:0,&quot;cost&quot;:0,&quot;data&quot;:[]}</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>若查詢向量已存在於目標集合中，請考慮使用<code translate="no">ids</code> ，而非在搜尋前先將其擷取出來。詳細資訊請參閱《<a href="/docs/zh-hant/primary-key-search.md">主鍵搜尋</a>》。</p>
+<p>If the query vectors already exist in the target collection, consider using <code translate="no">ids</code> instead of retrieving them before searches. For details, refer to <a href="/docs/zh-hant/primary-key-search.md">Primary-Key Search</a>.</p>
 </div>

@@ -1,9 +1,8 @@
 ---
 id: milvus_cdc_overview.md
 summary: >-
-  Milvus CDC repliziert Datenänderungen von einem Milvus-Cluster in einen
-  anderen, um eine Disaster-Recovery-Lösung mit Primär- und Standby-System zu
-  gewährleisten.
+  Milvus CDC replicates data changes from one Milvus cluster to another for
+  primary-standby disaster recovery.
 title: Milvus CDC
 ---
 <h1 id="Milvus-CDC" class="common-anchor-header">Milvus CDC<button data-href="#Milvus-CDC" class="anchor-icon" translate="no">
@@ -21,9 +20,9 @@ title: Milvus CDC
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Milvus CDC (Change Data Capture) repliziert Datenänderungen von einem Milvus-Cluster in einen anderen. Mit CDC können Sie eine Primär-Standby-Topologie für die Notfallwiederherstellung in Milvus aufbauen.</p>
-<p>In einer Primär-Standby-Topologie fungiert ein Cluster als Primärcluster und nimmt Schreibvorgänge entgegen. Ein oder mehrere Standby-Cluster empfangen kontinuierlich Änderungen vom Primärcluster und können den Lesedatenverkehr bedienen. Wenn der Primärcluster nicht mehr verfügbar ist oder gewartet werden muss, können Sie den Datenverkehr auf einen Standby-Cluster umleiten.</p>
-<h2 id="Architecture" class="common-anchor-header">Architektur<button data-href="#Architecture" class="anchor-icon" translate="no">
+    </button></h1><p>Milvus CDC (Change Data Capture) replicates data changes from one Milvus cluster to another. You can use CDC to build a primary-standby disaster recovery topology for Milvus.</p>
+<p>In a primary-standby topology, one cluster acts as the primary and accepts writes. One or more standby clusters continuously receive changes from the primary and can serve read traffic. When the primary cluster becomes unavailable or needs maintenance, you can switch service traffic to a standby cluster.</p>
+<h2 id="Architecture" class="common-anchor-header">Architecture<button data-href="#Architecture" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -38,21 +37,21 @@ title: Milvus CDC
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Eine typische Topologie umfasst:</p>
+    </button></h2><p>A typical topology contains:</p>
 <ul>
-<li><strong>Primärcluster</strong>: Der Quellcluster für die Replikation. Er akzeptiert Lese- und Schreibzugriffe.</li>
-<li><strong>Standby-Cluster</strong>: Ein Zielcluster für die Replikation. Er empfängt Änderungen vom Primärcluster und ist schreibgeschützt, solange er im Standby-Modus bleibt.</li>
-<li><strong>CDC-Knoten</strong>: Eine Milvus-Komponente, die WAL-Änderungen vom aktuellen Primär- an die Standby-Cluster weiterleitet. Stellen Sie CDC auf jedem Cluster bereit, der nach einem Umschalten oder Failover zum Primärcluster werden könnte.</li>
-<li><strong>Replikationstopologie</strong>: Die konfigurierte Quelle-Ziel-Beziehung, z. B. Cluster-a -&gt; Cluster-b.
-Im Folgenden ist die Topologie dargestellt. <span class="img-wrapper">
+<li><strong>Primary cluster</strong>: The source cluster for replication. It accepts reads and writes.</li>
+<li><strong>Standby cluster</strong>: A target cluster for replication. It receives changes from the primary and is read-only while it remains a standby.</li>
+<li><strong>CDC node</strong>: A Milvus component that forwards WAL changes from the current primary to standby clusters. Deploy CDC on each cluster that may become primary after switchover or failover.</li>
+<li><strong>Replication topology</strong>: The configured source-to-target relationship, such as cluster-a -> cluster-b.
+The following is an illustration of the topology.
 
-  
-   <img translate="no" src="/docs/v3.0.x/assets/cdc-overview.png" alt="CDC workflow" class="doc-image" id="cdc-workflow" /> 
- <span>   CDC-Workflow</span>
-  
- </span></li>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v3.0.x/assets/cdc-overview.png" alt="CDC workflow" class="doc-image" id="cdc-workflow" />
+    <span>CDC workflow</span>
+  </span>
+</li>
 </ul>
-<h3 id="Supported-Topologies" class="common-anchor-header">Unterstützte Topologien<button data-href="#Supported-Topologies" class="anchor-icon" translate="no">
+<h3 id="Supported-Topologies" class="common-anchor-header">Supported Topologies<button data-href="#Supported-Topologies" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -67,18 +66,18 @@ Im Folgenden ist die Topologie dargestellt. <span class="img-wrapper">
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Die gängigste CDC-Bereitstellung besteht aus einem Primär- und einem Standby-Cluster:</p>
+    </button></h3><p>The most common CDC deployment is one primary and one standby:</p>
 <pre><code translate="no" class="language-text">Application writes
       |
       v
 Primary cluster A  -- CDC replication --&gt;  Standby cluster B
 <button class="copy-code-btn"></button></code></pre>
-<p>Milvus CDC unterstützt auch eine Topologie mit einem Primär- und mehreren Standby-Clustern:</p>
+<p>Milvus CDC also supports a single-primary, multi-standby topology:</p>
 <pre><code translate="no" class="language-text">Primary cluster A  -- CDC replication --&gt;  Standby cluster B
                   \-- CDC replication --&gt;  Standby cluster C
 <button class="copy-code-btn"></button></code></pre>
-<p>Milvus CDC unterstützt keine Multi-Primär- oder Aktiv-Aktiv-Bereitstellungen, bei denen zwei oder mehr Cluster gleichzeitig Schreibzugriffe annehmen.</p>
-<h2 id="Primary-and-Standby-Behavior" class="common-anchor-header">Verhalten von Primär- und Standby-Knoten<button data-href="#Primary-and-Standby-Behavior" class="anchor-icon" translate="no">
+<p>Milvus CDC does not support multi-primary or active-active deployments, where two or more clusters accept write traffic at the same time.</p>
+<h2 id="Primary-and-Standby-Behavior" class="common-anchor-header">Primary and Standby Behavior<button data-href="#Primary-and-Standby-Behavior" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -95,15 +94,15 @@ Primary cluster A  -- CDC replication --&gt;  Standby cluster B
       </svg>
     </button></h2><table>
 <thead>
-<tr><th>Rolle</th><th>Lesevorgänge</th><th>Schreibvorgänge</th><th>Replikationsverhalten</th></tr>
+<tr><th>Role</th><th>Reads</th><th>Writes</th><th>Replication behavior</th></tr>
 </thead>
 <tbody>
-<tr><td>Primär</td><td>Ja</td><td>Ja</td><td>Sendet Änderungen an Standby-Cluster</td></tr>
-<tr><td>Standby</td><td>Ja</td><td>Nein</td><td>Empfängt replizierte Änderungen vom Primärcluster</td></tr>
+<tr><td>Primary</td><td>Yes</td><td>Yes</td><td>Sends changes to standby clusters</td></tr>
+<tr><td>Standby</td><td>Yes</td><td>No</td><td>Receives replicated changes from the primary</td></tr>
 </tbody>
 </table>
-<p>Ein Standby-Cluster lehnt direkte Schreibanfragen ab. Dies verhindert ein „Split Brain“ und gewährleistet die Konsistenz der Replikationstopologie.</p>
-<h2 id="Planned-Switchover-vs-Failover" class="common-anchor-header">Geplante Umschaltung vs. Failover<button data-href="#Planned-Switchover-vs-Failover" class="anchor-icon" translate="no">
+<p>A standby cluster rejects direct write requests. This prevents split brain and keeps the replication topology consistent.</p>
+<h2 id="Planned-Switchover-vs-Failover" class="common-anchor-header">Planned Switchover vs. Failover<button data-href="#Planned-Switchover-vs-Failover" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -118,18 +117,18 @@ Primary cluster A  -- CDC replication --&gt;  Standby cluster B
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus CDC bietet zwei Möglichkeiten, den Dienstverkehr vom aktuellen Primärserver auf einen Standby-Cluster umzuleiten.</p>
+    </button></h2><p>Milvus CDC provides two ways to move service traffic from the current primary to a standby cluster.</p>
 <table>
 <thead>
-<tr><th>Vorgang</th><th>Verwendung bei</th><th>Datenverlust</th><th>Erwartetes Verhalten</th></tr>
+<tr><th>Operation</th><th>Use when</th><th>Data loss</th><th>Expected behavior</th></tr>
 </thead>
 <tbody>
-<tr><td><strong><a href="/docs/de/cdc_switchover.md">Umschaltung</a></strong></td><td>Der aktuelle Primärserver ist noch erreichbar, oder Sie führen geplante Wartungsarbeiten durch</td><td>RPO = 0</td><td>Wartet auf die verbleibenden replizierten Daten, bevor die Rollen gewechselt werden</td></tr>
-<tr><td><strong><a href="/docs/de/cdc_failover.md">Failover</a></strong></td><td>Der aktuelle Primärserver ist nicht verfügbar und kann nicht schnell wiederhergestellt werden</td><td>Möglich</td><td>Der Standby-Server wird sofort zum Primärserver befördert, sodass Schreibvorgänge wieder aufgenommen werden können</td></tr>
+<tr><td><strong><a href="/docs/de/cdc_switchover.md">Switchover</a></strong></td><td>The current primary is still reachable, or you are doing planned maintenance</td><td>RPO = 0</td><td>Waits for the remaining replicated data before roles change</td></tr>
+<tr><td><strong><a href="/docs/de/cdc_failover.md">Failover</a></strong></td><td>The current primary is unavailable and cannot be recovered quickly</td><td>Possible</td><td>Promotes the standby immediately so writes can resume</td></tr>
 </tbody>
 </table>
-<p>Verwenden Sie „Switchover“, wann immer der aktuelle Primärserver noch reagieren kann. Verwenden Sie „Failover“ nur, wenn die Wiederherstellung der Verfügbarkeit wichtiger ist als das Warten auf den ursprünglichen Primärserver.</p>
-<h2 id="CDC-Lag-and-Why-It-Matters" class="common-anchor-header">CDC-Verzögerung und warum sie wichtig ist<button data-href="#CDC-Lag-and-Why-It-Matters" class="anchor-icon" translate="no">
+<p>Use switchover whenever the current primary can still respond. Use failover only when restoring availability is more important than waiting for the original primary.</p>
+<h2 id="CDC-Lag-and-Why-It-Matters" class="common-anchor-header">CDC Lag and Why It Matters<button data-href="#CDC-Lag-and-Why-It-Matters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -144,14 +143,14 @@ Primary cluster A  -- CDC replication --&gt;  Standby cluster B
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Der CDC-Verzug ist die Datenmenge, die in den Primärcluster geschrieben, aber noch nicht auf einen Standby-Cluster übertragen wurde.</p>
-<p>Der CDC-Verzug wirkt sich auf beide Wiederherstellungsoptionen aus:</p>
+    </button></h2><p>CDC lag is the amount of data that has been written to the primary cluster but has not yet been applied to a standby cluster.</p>
+<p>CDC lag affects both recovery options:</p>
 <ul>
-<li>Während eines Switchovers bedeutet ein geringerer CDC-Verzug in der Regel, dass der Vorgang schneller abgeschlossen wird.</li>
-<li>Beim Failover stellt der CDC-Verzug das Datenfenster dar, das verloren gehen kann, wenn der ursprüngliche Primärserver nicht verfügbar ist.</li>
+<li>During switchover, lower CDC lag usually means the operation completes faster.</li>
+<li>During failover, CDC lag represents the data window that may be lost if the original primary is unavailable.</li>
 </ul>
-<p>Sie sollten den CDC-Verzug kontinuierlich überwachen und so gering wie möglich halten. Die Seite <a href="/docs/de/set_up_cdc_replication.md">„CDC-Replikation einrichten“</a> enthält ein PromQL-Beispiel zur Schätzung des CDC-Verzugs.</p>
-<h2 id="Bulk-Import-in-CDC-Replication" class="common-anchor-header">Massenimport bei der CDC-Replikation<button data-href="#Bulk-Import-in-CDC-Replication" class="anchor-icon" translate="no">
+<p>You should monitor CDC lag continuously and keep it as low as possible. The <a href="/docs/de/set_up_cdc_replication.md">Set Up CDC Replication</a> page includes a PromQL example for estimating CDC lag.</p>
+<h2 id="Bulk-Import-in-CDC-Replication" class="common-anchor-header">Bulk Import in CDC Replication<button data-href="#Bulk-Import-in-CDC-Replication" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -166,8 +165,8 @@ Primary cluster A  -- CDC replication --&gt;  Standby cluster B
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>In einer CDC-Replikationstopologie muss der Massenimport im Two-Phase-Commit-Modus (2PC) mit der Option „ <code translate="no">auto_commit=false</code> “ erfolgen. Führen Sie den Import und das Commit ausschließlich auf dem Primärcluster durch und stellen Sie sicher, dass die Importdateien sowohl für den Primär- als auch für den Standby-Cluster verfügbar sind. Weitere Informationen finden Sie unter <a href="/docs/de/bulk_import_in_cdc_replication.md">„Massenimport in der CDC-Replikation</a>“.</p>
-<h2 id="Limitations" class="common-anchor-header">Einschränkungen<button data-href="#Limitations" class="anchor-icon" translate="no">
+    </button></h2><p>In a CDC replication topology, bulk import must use two-phase commit (2PC) mode with <code translate="no">auto_commit=false</code>. Run the import and commit against the primary cluster only, and make sure the import files are available to both the primary and standby clusters. For details, refer to <a href="/docs/de/bulk_import_in_cdc_replication.md">Bulk Import in CDC Replication</a>.</p>
+<h2 id="Limitations" class="common-anchor-header">Limitations<button data-href="#Limitations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -182,13 +181,13 @@ Primary cluster A  -- CDC replication --&gt;  Standby cluster B
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus CDC unterliegt derzeit folgenden Einschränkungen:</p>
+    </button></h2><p>Milvus CDC currently has the following limits:</p>
 <ul>
-<li>Es werden ausschließlich Topologien <strong>mit einem einzigen Primärcluster</strong> unterstützt.</li>
-<li>Es unterstützt <strong>keine</strong> Aktiv-Aktiv- oder Multi-Primär-Schreibvorgänge.</li>
-<li>Standby-Cluster können Lesezugriffe bedienen, lehnen jedoch direkte Schreibvorgänge ab, solange sie im Standby-Modus bleiben.</li>
-<li>Bei einem Failover können Daten verloren gehen, die auf den alten Primärserver geschrieben, aber noch nicht auf den Standby-Server repliziert wurden.</li>
-<li>Die konfigurierte „ <code translate="no">pchannels</code> “ muss mit dem tatsächlichen Kanal-Layout jedes Clusters übereinstimmen.</li>
+<li>It supports <strong>single-primary</strong> topologies only.</li>
+<li>It does <strong>not</strong> support active-active or multi-primary writes.</li>
+<li>Standby clusters can serve read traffic, but they reject direct writes while they remain standbys.</li>
+<li>Failover may lose data that was written to the old primary but not yet replicated to the standby.</li>
+<li>The configured <code translate="no">pchannels</code> must match the actual channel layout of each cluster.</li>
 </ul>
 <h2 id="FAQ" class="common-anchor-header">FAQ<button data-href="#FAQ" class="anchor-icon" translate="no">
       <svg translate="no"
@@ -205,7 +204,7 @@ Primary cluster A  -- CDC replication --&gt;  Standby cluster B
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Can-a-standby-cluster-serve-queries" class="common-anchor-header">Kann ein Standby-Cluster Abfragen bedienen?<button data-href="#Can-a-standby-cluster-serve-queries" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Can-a-standby-cluster-serve-queries" class="common-anchor-header">Can a standby cluster serve queries?<button data-href="#Can-a-standby-cluster-serve-queries" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -220,8 +219,8 @@ Primary cluster A  -- CDC replication --&gt;  Standby cluster B
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Ja. Ein Standby-Cluster kann Lesezugriffe bedienen. Er kann jedoch keine Schreibvorgänge akzeptieren, bis er zum Primärcluster wird.</p>
-<h3 id="Does-Milvus-CDC-support-active-active-writes" class="common-anchor-header">Unterstützt Milvus CDC Aktiv-Aktiv-Schreibvorgänge?<button data-href="#Does-Milvus-CDC-support-active-active-writes" class="anchor-icon" translate="no">
+    </button></h3><p>Yes. A standby cluster can serve read traffic. It cannot accept writes until it becomes the primary.</p>
+<h3 id="Does-Milvus-CDC-support-active-active-writes" class="common-anchor-header">Does Milvus CDC support active-active writes?<button data-href="#Does-Milvus-CDC-support-active-active-writes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -236,8 +235,8 @@ Primary cluster A  -- CDC replication --&gt;  Standby cluster B
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Nein. Milvus CDC ist für eine Topologie mit einem einzigen Primärcluster ausgelegt. Das gleichzeitige Schreiben in mehrere Cluster kann zu einem „Split Brain“ und zu Datenabweichungen führen.</p>
-<h3 id="Does-switchover-lose-data" class="common-anchor-header">Gehen beim Switchover Daten verloren?<button data-href="#Does-switchover-lose-data" class="anchor-icon" translate="no">
+    </button></h3><p>No. Milvus CDC is designed for a single-primary topology. Writing to multiple clusters at the same time can cause split brain and data divergence.</p>
+<h3 id="Does-switchover-lose-data" class="common-anchor-header">Does switchover lose data?<button data-href="#Does-switchover-lose-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -252,8 +251,8 @@ Primary cluster A  -- CDC replication --&gt;  Standby cluster B
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Nein. Bei der Umschaltung wird gewartet, bis die verbleibenden Daten repliziert sind, bevor der Standby-Cluster zum Primärcluster wird.</p>
-<h3 id="Does-failover-lose-data" class="common-anchor-header">Gehen beim Failover Daten verloren?<button data-href="#Does-failover-lose-data" class="anchor-icon" translate="no">
+    </button></h3><p>No. Switchover waits for the remaining data to be replicated before the standby becomes primary.</p>
+<h3 id="Does-failover-lose-data" class="common-anchor-header">Does failover lose data?<button data-href="#Does-failover-lose-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -268,8 +267,8 @@ Primary cluster A  -- CDC replication --&gt;  Standby cluster B
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Das ist möglich. Alle Daten, die auf den alten Primärserver geschrieben, aber noch nicht auf den Standby-Server repliziert wurden, können verloren gehen.</p>
-<h3 id="How-much-data-can-be-lost-during-failover" class="common-anchor-header">Wie viele Daten können beim Failover verloren gehen?<button data-href="#How-much-data-can-be-lost-during-failover" class="anchor-icon" translate="no">
+    </button></h3><p>It can. Any data written to the old primary but not yet replicated to the standby may be lost.</p>
+<h3 id="How-much-data-can-be-lost-during-failover" class="common-anchor-header">How much data can be lost during failover?<button data-href="#How-much-data-can-be-lost-during-failover" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -284,4 +283,4 @@ Primary cluster A  -- CDC replication --&gt;  Standby cluster B
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Der potenzielle Datenverlust ist durch den CDC-Verzug zum Zeitpunkt der Nichtverfügbarkeit des Primärservers begrenzt.</p>
+    </button></h3><p>The potential data loss is bounded by CDC lag at the time the primary became unavailable.</p>

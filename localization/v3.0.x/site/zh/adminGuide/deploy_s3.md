@@ -1,10 +1,10 @@
 ---
 id: deploy_s3.md
-title: 使用 Docker Compose 或 Helm 配置对象存储
+title: Configure Object Storage with Docker Compose or Helm
 related_key: 'S3, storage'
-summary: 了解如何使用 Docker Compose 或 Helm 为 Milvus 配置 S3 存储。
+summary: Learn how to set up S3 storage for Milvus with Docker Compose or Helm.
 ---
-<h1 id="Configure-Object-Storage-with-Docker-Compose-or-Helm" class="common-anchor-header">使用 Docker Compose 或 Helm 配置对象存储<button data-href="#Configure-Object-Storage-with-Docker-Compose-or-Helm" class="anchor-icon" translate="no">
+<h1 id="Configure-Object-Storage-with-Docker-Compose-or-Helm" class="common-anchor-header">Configure Object Storage with Docker Compose or Helm<button data-href="#Configure-Object-Storage-with-Docker-Compose-or-Helm" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -19,9 +19,9 @@ summary: 了解如何使用 Docker Compose 或 Helm 为 Milvus 配置 S3 存储�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Milvus 默认使用 MinIO 作为对象存储，但也支持将<a href="https://aws.amazon.com/s3/">Amazon Simple Storage Service (S3)</a>及其他与 S3 兼容的对象存储（例如 Backblaze B2 或 Cloudflare R2）用作日志和索引文件的持久化对象存储。本节介绍如何为 Milvus 配置 S3。 如果您对 MinIO 感到满意，可以跳过本节。</p>
-<p>您可以通过<a href="https://docs.docker.com/get-started/overview/">Docker Compose</a>或在 K8s 上配置 S3。</p>
-<h2 id="Configure-S3-with-Docker-Compose" class="common-anchor-header">使用 Docker Compose 配置 S3<button data-href="#Configure-S3-with-Docker-Compose" class="anchor-icon" translate="no">
+    </button></h1><p>Milvus uses MinIO for object storage by default, but it also supports using <a href="https://aws.amazon.com/s3/">Amazon Simple Storage Service (S3)</a> and other S3-compatible object stores (for example, Backblaze B2 or Cloudflare R2) as persistent object storage for log and index files. This topic describes how to configure S3 for Milvus. You can skip this topic if you are satisfied with MinIO.</p>
+<p>You can configure S3 with <a href="https://docs.docker.com/get-started/overview/">Docker Compose</a> or on K8s.</p>
+<h2 id="Configure-S3-with-Docker-Compose" class="common-anchor-header">Configure S3 with Docker Compose<button data-href="#Configure-S3-with-Docker-Compose" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -36,7 +36,7 @@ summary: 了解如何使用 Docker Compose 或 Helm 为 Milvus 配置 S3 存储�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="1-Configure-S3" class="common-anchor-header">1. 配置 S3<button data-href="#1-Configure-S3" class="anchor-icon" translate="no">
+    </button></h2><h3 id="1-Configure-S3" class="common-anchor-header">1. Configure S3<button data-href="#1-Configure-S3" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -51,7 +51,7 @@ summary: 了解如何使用 Docker Compose 或 Helm 为 Milvus 配置 S3 存储�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><a href="https://min.io/product/overview">MinIO</a>与 S3 兼容。若要通过 Docker Compose 配置 S3，请在 milvus/configs 路径下的<code translate="no">milvus.yaml</code> 文件中，为<code translate="no">minio</code> 部分提供相应的值。</p>
+    </button></h3><p><a href="https://min.io/product/overview">MinIO</a> is compatible with S3. To configure S3 with Docker Compose, provide your values for the <code translate="no">minio</code> section in the <code translate="no">milvus.yaml</code> file on the milvus/configs path.</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">minio:</span>
   <span class="hljs-attr">address:</span> <span class="hljs-string">&lt;your_s3_endpoint&gt;</span>
   <span class="hljs-attr">port:</span> <span class="hljs-string">&lt;your_s3_port&gt;</span>
@@ -60,8 +60,8 @@ summary: 了解如何使用 Docker Compose 或 Helm 为 Milvus 配置 S3 存储�
   <span class="hljs-attr">useSSL:</span> <span class="hljs-string">&lt;true/false&gt;</span>
   <span class="hljs-attr">bucketName:</span> <span class="hljs-string">&quot;&lt;your_bucket_name&gt;&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>更多信息请参阅《<a href="/docs/zh/configure_minio.md">MinIO/S3 配置</a>》。</p>
-<p>硬编码访问密钥和密钥虽然可行，但若您在支持工作负载身份（例如 EC2 实例配置文件或 EKS 上的 IRSA）的主机或集群上运行 Milvus，我们建议改用 IAM 角色。将<code translate="no">useIAM</code> 设置为<code translate="no">true</code> ，并删除<code translate="no">accessKeyID</code> 和<code translate="no">secretAccessKey</code> ：</p>
+<p>See <a href="/docs/zh/configure_minio.md">MinIO/S3 Configurations</a> for more information.</p>
+<p>Hard-coding an access key and secret key works, but if you run Milvus on a host or cluster that supports workload identity (for example, an EC2 instance profile, or IRSA on EKS), we recommend using an IAM role instead. Set <code translate="no">useIAM</code> to <code translate="no">true</code> and remove <code translate="no">accessKeyID</code> and <code translate="no">secretAccessKey</code>:</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">minio:</span>
   <span class="hljs-attr">address:</span> <span class="hljs-string">&lt;your_s3_endpoint&gt;</span>
   <span class="hljs-attr">port:</span> <span class="hljs-string">&lt;your_s3_port&gt;</span>
@@ -70,8 +70,8 @@ summary: 了解如何使用 Docker Compose 或 Helm 为 Milvus 配置 S3 存储�
   <span class="hljs-attr">useSSL:</span> <span class="hljs-string">&lt;true/false&gt;</span>
   <span class="hljs-attr">bucketName:</span> <span class="hljs-string">&quot;&lt;your_bucket_name&gt;&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>随后，Milvus 将从附加到工作负载的 IAM 角色中获取临时凭据。<code translate="no">cloudProvider</code> 支持<code translate="no">aws</code> 、<code translate="no">gcp</code> 或<code translate="no">aliyun</code> ，而<code translate="no">iamEndpoint</code> 可选地指定用于获取 IAM 角色凭据的自定义端点。</p>
-<h3 id="2-Refine-docker-composeyaml" class="common-anchor-header">2. 优化 docker-compose.yaml<button data-href="#2-Refine-docker-composeyaml" class="anchor-icon" translate="no">
+<p>Milvus then obtains temporary credentials from the IAM role attached to the workload. <code translate="no">cloudProvider</code> accepts <code translate="no">aws</code>, <code translate="no">gcp</code>, or <code translate="no">aliyun</code>, and <code translate="no">iamEndpoint</code> can optionally specify a custom endpoint for fetching IAM role credentials.</p>
+<h3 id="2-Refine-docker-composeyaml" class="common-anchor-header">2. Refine docker-compose.yaml<button data-href="#2-Refine-docker-composeyaml" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -86,8 +86,8 @@ summary: 了解如何使用 Docker Compose 或 Helm 为 Milvus 配置 S3 存储�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>你还需要移除<code translate="no">docker-compose.yaml</code> 处 milvus 服务的<code translate="no">MINIO_ADDRESS</code> 环境变量。默认情况下，milvus 将使用本地 Minio 而不是外部 S3。</p>
-<h3 id="3-Run-Milvus" class="common-anchor-header">3. 运行 Milvus<button data-href="#3-Run-Milvus" class="anchor-icon" translate="no">
+    </button></h3><p>You’d also remove the <code translate="no">MINIO_ADDRESS</code> environment variable for milvus service at <code translate="no">docker-compose.yaml</code>. By default milvus will use local minio instead of external S3.</p>
+<h3 id="3-Run-Milvus" class="common-anchor-header">3. Run Milvus<button data-href="#3-Run-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -102,11 +102,11 @@ summary: 了解如何使用 Docker Compose 或 Helm 为 Milvus 配置 S3 存储�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>运行以下命令以启动使用 S3 配置的 Milvus。</p>
+    </button></h3><p>Run the following command to start Milvus that uses the S3 configurations.</p>
 <pre><code translate="no" class="language-shell">docker compose up
 <button class="copy-code-btn"></button></code></pre>
-<div class="alert note">配置仅在 Milvus 启动后生效。更多信息请参阅《<a href="https://milvus.io/docs/install_standalone-docker.md#Start-Milvus">启动 Milvus</a>》。</div>
-<h2 id="Configure-S3-on-K8s" class="common-anchor-header">在 K8s 上配置 S3<button data-href="#Configure-S3-on-K8s" class="anchor-icon" translate="no">
+<div class="alert note">Configurations only take effect after Milvus starts. See <a href="https://milvus.io/docs/install_standalone-docker.md#Start-Milvus">Start Milvus</a> for more information.</div>
+<h2 id="Configure-S3-on-K8s" class="common-anchor-header">Configure S3 on K8s<button data-href="#Configure-S3-on-K8s" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -121,29 +121,29 @@ summary: 了解如何使用 Docker Compose 或 Helm 为 Milvus 配置 S3 存储�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>对于运行在 K8s 上的 Milvus 集群，您可以在启动 Milvus 的同一条命令中配置 S3。或者，您也可以在启动 Milvus 之前，使用<a href="https://github.com/milvus-io/milvus-helm">milvus-Helm</a>存储库中 /charts/milvus 路径下的<code translate="no">values.yml</code> 文件来配置 S3。</p>
-<p>下表列出了 YAML 文件中用于配置 S3 的键。</p>
+    </button></h2><p>For Milvus clusters on K8s, you can configure S3 in the same command that starts Milvus. Alternatively, you can configure S3 using the <code translate="no">values.yml</code> file on the /charts/milvus path in the <a href="https://github.com/milvus-io/milvus-helm">milvus-helm</a> repository before you start Milvus.</p>
+<p>The following table lists the keys for configuring S3 in the YAML file.</p>
 <table>
 <thead>
-<tr><th>键</th><th>描述</th><th>值</th></tr>
+<tr><th>Key</th><th>Description</th><th>Value</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">minio.enabled</code></td><td>启用或禁用 MinIO。</td><td><code translate="no">true</code>/<code translate="no">false</code></td></tr>
-<tr><td><code translate="no">externalS3.enabled</code></td><td>启用或禁用 S3。</td><td><code translate="no">true</code>/<code translate="no">false</code></td></tr>
-<tr><td><code translate="no">externalS3.host</code></td><td>访问 S3 的端点。</td><td></td></tr>
-<tr><td><code translate="no">externalS3.port</code></td><td>访问 S3 的端口。</td><td></td></tr>
-<tr><td><code translate="no">externalS3.rootPath</code></td><td>S3 存储的根路径。</td><td>默认值为空字符串。</td></tr>
-<tr><td><code translate="no">externalS3.accessKey</code></td><td>S3 的访问密钥 ID。</td><td></td></tr>
-<tr><td><code translate="no">externalS3.secretKey</code></td><td>S3 的密钥。</td><td></td></tr>
-<tr><td><code translate="no">externalS3.bucketName</code></td><td>S3 存储桶的名称。</td><td></td></tr>
-<tr><td><code translate="no">externalS3.useSSL</code></td><td>连接时是否使用 SSL</td><td>默认值为<code translate="no">false</code></td></tr>
-<tr><td><code translate="no">externalS3.useIAM</code></td><td>是否使用 IAM 角色代替访问密钥/秘密密钥来访问 S3。</td><td>默认值为<code translate="no">false</code></td></tr>
-<tr><td><code translate="no">externalS3.cloudProvider</code></td><td>签发 IAM 角色凭据的云提供商。</td><td><code translate="no">aws</code>、<code translate="no">gcp</code> 或<code translate="no">aliyun</code> ；默认值为<code translate="no">aws</code></td></tr>
-<tr><td><code translate="no">externalS3.iamEndpoint</code></td><td>用于获取 IAM 角色凭据的自定义端点。</td><td>留空即使用提供商的默认值。</td></tr>
+<tr><td><code translate="no">minio.enabled</code></td><td>Enables or disables MinIO.</td><td><code translate="no">true</code>/<code translate="no">false</code></td></tr>
+<tr><td><code translate="no">externalS3.enabled</code></td><td>Enables or disables S3.</td><td><code translate="no">true</code>/<code translate="no">false</code></td></tr>
+<tr><td><code translate="no">externalS3.host</code></td><td>The endpoint to access S3.</td><td></td></tr>
+<tr><td><code translate="no">externalS3.port</code></td><td>The port to access S3.</td><td></td></tr>
+<tr><td><code translate="no">externalS3.rootPath</code></td><td>The root path of the S3 storage.</td><td>An emtpy string by default.</td></tr>
+<tr><td><code translate="no">externalS3.accessKey</code></td><td>The access key ID for S3.</td><td></td></tr>
+<tr><td><code translate="no">externalS3.secretKey</code></td><td>The secret access key for S3.</td><td></td></tr>
+<tr><td><code translate="no">externalS3.bucketName</code></td><td>The name of the S3 bucket.</td><td></td></tr>
+<tr><td><code translate="no">externalS3.useSSL</code></td><td>Whether to use SSL when connecting</td><td>The values defaults to <code translate="no">false</code></td></tr>
+<tr><td><code translate="no">externalS3.useIAM</code></td><td>Whether to use an IAM role instead of access/secret keys to access S3.</td><td>The value defaults to <code translate="no">false</code></td></tr>
+<tr><td><code translate="no">externalS3.cloudProvider</code></td><td>Cloud provider that issues the IAM role credentials.</td><td><code translate="no">aws</code>, <code translate="no">gcp</code>, or <code translate="no">aliyun</code>; defaults to <code translate="no">aws</code></td></tr>
+<tr><td><code translate="no">externalS3.iamEndpoint</code></td><td>Custom endpoint for fetching IAM role credentials.</td><td>Leave empty to use the provider default.</td></tr>
 </tbody>
 </table>
-<p>如果您的集群支持工作负载身份（例如 EKS 上的 IRSA），请将<code translate="no">externalS3.useIAM</code> 设置为<code translate="no">true</code> ，并删除<code translate="no">externalS3.accessKey</code> 和<code translate="no">externalS3.secretKey</code> — Milvus 将从附加到工作负载的 IAM 角色中获取临时凭据。</p>
-<h3 id="Using-the-YAML-file" class="common-anchor-header">使用 YAML 文件<button data-href="#Using-the-YAML-file" class="anchor-icon" translate="no">
+<p>If your cluster supports workload identity (for example, IRSA on EKS), set <code translate="no">externalS3.useIAM</code> to <code translate="no">true</code> and remove <code translate="no">externalS3.accessKey</code> and <code translate="no">externalS3.secretKey</code> — Milvus will obtain temporary credentials from the IAM role attached to the workload.</p>
+<h3 id="Using-the-YAML-file" class="common-anchor-header">Using the YAML file<button data-href="#Using-the-YAML-file" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -159,13 +159,13 @@ summary: 了解如何使用 Docker Compose 或 Helm 为 Milvus 配置 S3 存储�
         ></path>
       </svg>
     </button></h3><ol>
-<li>在<code translate="no">values.yaml</code> 文件中配置<code translate="no">minio</code> 部分。</li>
+<li>Configure the <code translate="no">minio</code> section in the <code translate="no">values.yaml</code> file.</li>
 </ol>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">minio:</span>
   <span class="hljs-attr">enabled:</span> <span class="hljs-literal">false</span>
 <button class="copy-code-btn"></button></code></pre>
 <ol start="2">
-<li>在<code translate="no">values.yaml</code> 文件中，根据您的具体值配置<code translate="no">externalS3</code> 部分。</li>
+<li>Configure the <code translate="no">externalS3</code> section using your values in the <code translate="no">values.yaml</code> file.</li>
 </ol>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">externalS3:</span>
   <span class="hljs-attr">enabled:</span> <span class="hljs-literal">true</span>
@@ -177,11 +177,11 @@ summary: 了解如何使用 Docker Compose 或 Helm 为 Milvus 配置 S3 存储�
   <span class="hljs-attr">bucketName:</span> <span class="hljs-string">&quot;&lt;your_bucket_name&gt;&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
 <ol start="3">
-<li>配置完上述部分并保存<code translate="no">values.yaml</code> 文件后，运行以下命令以安装使用S3配置的Milvus。</li>
+<li>After configuring the preceding sections and saving the <code translate="no">values.yaml</code> file, run the following command to install Milvus that uses the S3 configurations.</li>
 </ol>
 <pre><code translate="no" class="language-shell">helm install &lt;your_release_name&gt; milvus/milvus -f values.yaml
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Using-a-command" class="common-anchor-header">使用以下命令<button data-href="#Using-a-command" class="anchor-icon" translate="no">
+<h3 id="Using-a-command" class="common-anchor-header">Using a command<button data-href="#Using-a-command" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -196,10 +196,10 @@ summary: 了解如何使用 Docker Compose 或 Helm 为 Milvus 配置 S3 存储�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>要安装 Milvus 并配置 S3，请根据您的具体值运行以下命令。</p>
+    </button></h3><p>To install Milvus and configure S3, run the following command using your values.</p>
 <pre><code translate="no" class="language-shell">helm install &lt;your_release_name&gt; milvus/milvus --set cluster.enabled=true  --set minio.enabled=false --set externalS3.enabled=true --set externalS3.host=&lt;your_s3_endpoint&gt; --set externalS3.port=&lt;your_s3_port&gt; --set externalS3.accessKey=&lt;your_s3_access_key_id&gt; --set externalS3.secretKey=&lt;your_s3_secret_key&gt; --set externalS3.bucketName=&lt;your_bucket_name&gt;
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Whats-next" class="common-anchor-header">下一步<button data-href="#Whats-next" class="anchor-icon" translate="no">
+<h2 id="Whats-next" class="common-anchor-header">What’s next<button data-href="#Whats-next" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -214,8 +214,8 @@ summary: 了解如何使用 Docker Compose 或 Helm 为 Milvus 配置 S3 存储�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>了解如何使用 Docker Compose 或 Helm 配置其他 Milvus 依赖项：</p>
+    </button></h2><p>Learn how to configure other Milvus dependencies with Docker Compose or Helm:</p>
 <ul>
-<li><a href="/docs/zh/deploy_etcd.md">使用 Docker Compose 或 Helm 配置 Meta Storage</a></li>
-<li><a href="/docs/zh/deploy_pulsar.md">使用 Docker Compose 或 Helm 配置消息存储</a></li>
+<li><a href="/docs/zh/deploy_etcd.md">Configure Meta Storage with Docker Compose or Helm</a></li>
+<li><a href="/docs/zh/deploy_pulsar.md">Configure Message Storage with Docker Compose or Helm</a></li>
 </ul>

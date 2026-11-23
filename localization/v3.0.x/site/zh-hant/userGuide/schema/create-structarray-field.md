@@ -2,8 +2,11 @@
 id: create-structarray-field.md
 title: Create a StructArray Field
 summary: >-
-  當一個實體需要包含一組有序的結構化元素清單時，請建立一個 StructArray 欄位。StructArray 欄位是一種 Array 欄位，其元素類型為
-  Struct。每個 Struct 元素皆遵循相同的結構，並可包含標量子欄位、向量子欄位，以及自 Milvus 3.0.6 起新增的標量陣列子欄位。
+  Create a StructArray field when one entity needs to contain an ordered list of
+  structured elements. A StructArray field is an Array field whose element type
+  is Struct. Each Struct element follows the same schema and can contain scalar
+  subfields, vector subfields, and, starting in Milvus 3.0.6, scalar array
+  subfields.
 ---
 <h1 id="Create-a-StructArray-Field" class="common-anchor-header">Create a StructArray Field<button data-href="#Create-a-StructArray-Field" class="anchor-icon" translate="no">
       <svg translate="no"

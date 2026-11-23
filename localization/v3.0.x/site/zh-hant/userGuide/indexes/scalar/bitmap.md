@@ -1,9 +1,11 @@
 ---
 id: bitmap.md
-title: 位圖
-summary: 位圖索引是一種高效的索引技術，旨在提升低基數標量欄位的查詢效能。所謂基數，是指欄位中不同值的數量。不同元素數量較少的欄位被視為低基數欄位。
+title: BITMAP
+summary: >-
+  Use BITMAP for low-cardinality scalar filtering. Check supported filters,
+  field restrictions, and index creation.
 ---
-<h1 id="BITMAP" class="common-anchor-header">位圖<button data-href="#BITMAP" class="anchor-icon" translate="no">
+<h1 id="BITMAP" class="common-anchor-header">BITMAP<button data-href="#BITMAP" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,9 +20,8 @@ summary: 位圖索引是一種高效的索引技術，旨在提升低基數標�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>位圖索引是一種高效的索引技術，旨在提升低基數標量欄位的查詢效能。基數指的是欄位中不同值的數量。不同元素較少的欄位被視為低基數欄位。</p>
-<p>此索引類型透過將欄位值以緊湊的二進位格式表示，並對其執行高效的位元運算，有助於縮短標量查詢的檢索時間。相較於其他類型的索引，在處理低基數欄位時，位圖索引通常具有更高的空間效率與更快的查詢速度。</p>
-<h2 id="Overview" class="common-anchor-header">概述<button data-href="#Overview" class="anchor-icon" translate="no">
+    </button></h1><p><code translate="no">BITMAP</code> accelerates scalar filtering on fields with few distinct values, such as status codes and categories. Cardinality is the number of distinct values in a field. This page describes supported filters, field restrictions, and index creation.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -35,26 +36,109 @@ summary: 位圖索引是一種高效的索引技術，旨在提升低基數標�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>「<strong>位圖」（Bitmap）</strong>一詞由「<strong>位元</strong>」（<strong>Bit</strong>）和<strong>「地圖</strong>」<strong>（Map）</strong>兩個詞彙組合而成。位元代表電腦中資料的最小單位，僅能儲存<strong>0</strong>或<strong>1</strong> 其中一個值；在此語境下，「地圖」則指根據應將何種值指派給 0 與 1，來轉換與組織資料的過程。</p>
-<p>位圖索引由兩個主要組成部分構成：位圖和鍵。鍵代表索引欄位中的唯一值。每個唯一值都對應一個位圖。這些位圖的長度等於集合中的記錄數。 位圖中的每個位元對應集合中的一筆記錄。若某筆記錄中索引欄位的值與金鑰相符，則對應的位元會被設為<strong>1</strong>；否則，則設為<strong>0</strong>。</p>
-<p>假設有一個包含<strong>「Category」</strong>和<strong>「Public」</strong>兩個欄位的文件集合。我們希望檢索屬於<strong>「Tech」</strong>類別且對「<strong>Public」</strong>開放的文件。在此情況下，位圖索引的鍵即為<strong>「Tech」</strong>和<strong>「Public」</strong>。</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/bitmap.png" alt="Bitmap" class="doc-image" id="bitmap" /> 
-   <span>位圖</span>
-  
- </span></p>
-<p>如圖所示，<strong>Category</strong>和<strong>Public</strong>的位圖索引如下：</p>
+    </button></h2><!-- Preserve the published #Limits link and the filter link used by related pages. These anchors are not headings. -->
+<a id="Limits"></a>
+<a id="Queries-accelerated-by-BITMAP"></a>
+<h3 id="Index-targets-and-filters" class="common-anchor-header">Index targets and filters<button data-href="#Index-targets-and-filters" class="anchor-icon" translate="no">
+      <svg translate="no"
+        aria-hidden="true"
+        focusable="false"
+        height="20"
+        version="1.1"
+        viewBox="0 0 16 16"
+        width="16"
+      >
+        <path
+          fill="#0092E4"
+          fill-rule="evenodd"
+          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+        ></path>
+      </svg>
+    </button></h3><p>To create a <code translate="no">BITMAP</code> index explicitly, choose a non-primary-key target from the table below. Each row pairs a supported target with the filters the index can help evaluate:</p>
+<table>
+<thead>
+<tr><th>Index target</th><th>Filters that can use the index</th></tr>
+</thead>
+<tbody>
+<tr><td><code translate="no">BOOL</code> field</td><td>Equality (<code translate="no">==</code>, <code translate="no">!=</code>) and membership (<code translate="no">in</code>, <code translate="no">not in</code>).</td></tr>
+<tr><td>Integer field (<code translate="no">INT8</code>, <code translate="no">INT16</code>, <code translate="no">INT32</code>, <code translate="no">INT64</code>)</td><td>Equality, membership, and ranges (<code translate="no">&lt;</code>, <code translate="no">&lt;=</code>, <code translate="no">&gt;</code>, <code translate="no">&gt;=</code>).</td></tr>
+<tr><td><code translate="no">VARCHAR</code> field</td><td>Equality, membership, ranges, and <a href="/docs/zh-hant/pattern-matching.md">LIKE or regex patterns</a>. Pattern evaluation can visit many distinct indexed strings.</td></tr>
+<tr><td>Ordinary <code translate="no">ARRAY</code> field with <code translate="no">BOOL</code>, <code translate="no">INT8</code>, <code translate="no">INT16</code>, <code translate="no">INT32</code>, <code translate="no">INT64</code>, or <code translate="no">VARCHAR</code> elements</td><td><code translate="no">ARRAY_CONTAINS</code>, <code translate="no">ARRAY_CONTAINS_ANY</code>, <code translate="no">ARRAY_CONTAINS_ALL</code>. See <a href="/docs/zh-hant/array_data_type.md#Array-index-support">Array index support</a>.</td></tr>
+<tr><td>JSON path cast to <code translate="no">BOOL</code> or <code translate="no">VARCHAR</code></td><td>Filters for the corresponding Boolean or string values above, subject to the <a href="/docs/zh-hant/json-indexing.md#Index-requirements">JSON index requirements</a>.</td></tr>
+</tbody>
+</table>
+<div class="alert note">
+<blockquote>
+<p>Scalar indexes, including <code translate="no">AUTOINDEX</code>, do not support recursive ARRAY fields or arrays with nullable elements. See <a href="/docs/zh-hant/array_data_type.md#Array-index-support">Array index support</a> for ordinary-array filters and <a href="/docs/zh-hant/index-structarray-fields.md#Create-scalar-indexes">Index StructArray Fields</a> for subfield rules.</p>
+</blockquote>
+</div>
+<p>For ARRAY targets, <code translate="no">BITMAP</code> serves element-containment filters, not whole-array equality, element access by position, or array length. See <a href="/docs/zh-hant/array_data_type.md#Array-index-support">Array index support</a>.</p>
+<p>For automatic selection beyond these explicit targets, see <a href="/docs/zh-hant/scalar_index.md#AUTOINDEX-behavior">AUTOINDEX behavior</a>.</p>
+<div class="alert note">
+<blockquote>
+<p>These are index capabilities, not limits on valid filter expressions. See <a href="/docs/zh-hant/scalar_index.md#Filter-execution">Scalar Index</a> for shared lookup constraints. For <code translate="no">AND</code>, <code translate="no">OR</code>, <code translate="no">NOT</code>, and NULL tests (<code translate="no">IS NULL</code>, <code translate="no">IS NOT NULL</code>), see <a href="/docs/zh-hant/basic-operators.md">Basic Operators</a>.</p>
+</blockquote>
+</div>
+<h3 id="Memory-considerations" class="common-anchor-header">Memory considerations<button data-href="#Memory-considerations" class="anchor-icon" translate="no">
+      <svg translate="no"
+        aria-hidden="true"
+        focusable="false"
+        height="20"
+        version="1.1"
+        viewBox="0 0 16 16"
+        width="16"
+      >
+        <path
+          fill="#0092E4"
+          fill-rule="evenodd"
+          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+        ></path>
+      </svg>
+    </button></h3><p>Memory and query costs depend on the number of distinct values and their distribution. Compare indexes with representative filters rather than treating a fixed cardinality as a universal performance cutoff.</p>
+<p>For dense bitmaps, a rough estimate in bytes is <code translate="no">(D + 1) * N / 8</code>, where <code translate="no">N</code> is the number of entities and <code translate="no">D</code> the number of distinct values. This includes one bitmap per distinct value and one for validity. Value storage and other overhead add to the estimate; an optional offset cache adds approximately <code translate="no">8 * N</code> bytes on a 64-bit system. Compressed bitmap representations can have substantially different memory use.</p>
+<p>These rough estimates cover loaded index memory with memory mapping disabled. Calculate them per segment, then sum across loaded segments and replicas.</p>
+<div class="alert note">
+<blockquote>
+<p>Allow extra memory for loaded field data, vector indexes, collection and index overhead, and temporary allocations. Validate with representative data and queries; arrays, JSON, older index formats, and memory mapping require separate measurement.</p>
+</blockquote>
+</div>
+<h3 id="How-BITMAP-works" class="common-anchor-header">How BITMAP works<button data-href="#How-BITMAP-works" class="anchor-icon" translate="no">
+      <svg translate="no"
+        aria-hidden="true"
+        focusable="false"
+        height="20"
+        version="1.1"
+        viewBox="0 0 16 16"
+        width="16"
+      >
+        <path
+          fill="#0092E4"
+          fill-rule="evenodd"
+          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+        ></path>
+      </svg>
+    </button></h3><p><details>
+<summary><strong>View a bitmap filtering example</strong></summary></p>
+<p>A bitmap index associates each distinct field value with a bitmap. Each bit corresponds to an entity: <strong>1</strong> means the entity has that value, and <strong>0</strong> means it does not.</p>
+<p>For example, to find public documents in the <strong>Tech</strong> category, combine the bitmaps for <strong>Category = Tech</strong> and <strong>Public = true</strong>:</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/bitmap.png" alt="Bitmap" class="doc-image" id="bitmap" />
+    <span>Bitmap</span>
+  </span>
+</p>
+<p>As shown in the figure, the bitmap indexes for <strong>Category</strong> and <strong>Public</strong> are:</p>
 <ul>
-<li><p><strong>Tech</strong>：[1, 0, 1, 0, 0]，這表示只有第 1 份和第 3 份文件屬於<strong>Tech</strong>類別。</p></li>
-<li><p><strong>Public</strong>：[1, 0, 0, 1, 0]，表示僅第 1 份和第 4 份文件對<strong>Public</strong> 開放。</p></li>
+<li><p><strong>Tech</strong>: [1, 0, 1, 0, 0], which shows that only the 1st and 3rd documents fall into the <strong>Tech</strong> category.</p></li>
+<li><p><strong>Public</strong>: [1, 0, 0, 1, 0], which shows that only the 1st and 4th documents are open to the <strong>Public</strong>.</p></li>
 </ul>
-<p>為了找出同時符合這兩項條件的文件，我們對這兩個位圖執行位元與（AND）運算：</p>
+<p>To find the documents that match both criteria, we perform a bitwise AND operation on these two bitmaps:</p>
 <ul>
-<li><strong>「技術」</strong>與「<strong>公開」</strong>：[1, 0, 0, 0, 0]</li>
+<li><strong>Tech</strong> AND <strong>Public</strong>: [1, 0, 0, 0, 0]</li>
 </ul>
-<p>所得的位圖 [1, 0, 0, 0, 0] 表示僅有第一份文件（<strong>ID</strong> <strong>1</strong>）同時滿足這兩項條件。透過使用位圖索引與高效的位元運算，我們能迅速縮小搜尋範圍，無需掃描整個資料集。</p>
-<h2 id="Create-a-bitmap-index" class="common-anchor-header">建立位圖索引<button data-href="#Create-a-bitmap-index" class="anchor-icon" translate="no">
+<p>Only the first document (<strong>ID 1</strong>) satisfies both criteria.</p>
+<p></details></p>
+<h2 id="Create-a-bitmap-index" class="common-anchor-header">Create a bitmap index<button data-href="#Create-a-bitmap-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -69,16 +153,16 @@ summary: 位圖索引是一種高效的索引技術，旨在提升低基數標�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>要在 Milvus 中建立位圖索引，請使用 `<code translate="no">create_index()</code> ` 方法，並將 `<code translate="no">index_type</code> ` 參數設定為 `<code translate="no">&quot;BITMAP&quot;</code>`。</p>
+    </button></h2><p>To create a bitmap index in Milvus, use the <code translate="no">create_index()</code> method and set the <code translate="no">index_type</code> parameter to <code translate="no">&quot;BITMAP&quot;</code>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -237,9 +321,8 @@ curl --request POST \
 <span class="hljs-comment">#     &quot;data&quot;: {}</span>
 <span class="hljs-comment"># }</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>在此範例中，我們針對 `<code translate="no">my_collection</code> ` 集合的 `<code translate="no">category</code> ` 欄位建立位圖索引。透過 `<code translate="no">add_index()</code> ` 方法指定欄位名稱、索引類型及索引名稱。</p>
-<p>建立位圖索引後，您可以在查詢操作中使用 `<code translate="no">filter</code> ` 參數，根據已建立索引的欄位執行標量篩選。這讓您能夠透過位圖索引有效率地縮小搜尋結果範圍。如需更多資訊，請參閱<a href="/docs/zh-hant/boolean.md">《篩選說明</a>》。</p>
-<h2 id="Drop-an-index" class="common-anchor-header">刪除索引<button data-href="#Drop-an-index" class="anchor-icon" translate="no">
+<p>This creates an index on <code translate="no">my_collection.category</code>. Use the field in a query or search <code translate="no">filter</code>; see <a href="/docs/zh-hant/boolean.md">Filtering Explained</a>.</p>
+<h2 id="Drop-an-index" class="common-anchor-header">Drop an index<button data-href="#Drop-an-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -254,22 +337,21 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>請使用 `<code translate="no">drop_index()</code> ` 方法從集合中移除現有索引。</p>
+    </button></h2><p>Use the <code translate="no">drop_index()</code> method to remove an existing index from a collection.</p>
 <div class="alert note">
-<ul>
-<li><p>在<strong>v2.6.3</strong>或更早版本中，您必須先釋放集合，才能刪除標量索引。</p></li>
-<li><p>自<strong>v2.6.4</strong>或更新版本起，一旦不再需要標量索引，即可直接刪除該索引——無需先釋放集合。</p></li>
-</ul>
+<blockquote>
+<p>For release requirements when dropping a scalar index, see <a href="/docs/zh-hant/scalar_index.md#Drop-index-compatibility">Scalar Index</a>.</p>
+</blockquote>
 </div>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.drop_index(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,   <span class="hljs-comment"># Name of the collection</span>
@@ -381,37 +463,3 @@ curl --request POST \
 <span class="hljs-comment">#     &quot;data&quot;: {}</span>
 <span class="hljs-comment"># }</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Limits" class="common-anchor-header">限制<button data-href="#Limits" class="anchor-icon" translate="no">
-      <svg translate="no"
-        aria-hidden="true"
-        focusable="false"
-        height="20"
-        version="1.1"
-        viewBox="0 0 16 16"
-        width="16"
-      >
-        <path
-          fill="#0092E4"
-          fill-rule="evenodd"
-          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
-        ></path>
-      </svg>
-    </button></h2><ul>
-<li><p>位圖索引僅支援非主鍵的標量欄位。</p></li>
-<li><p>該欄位的資料型別必須為以下其中一種：</p>
-<ul>
-<li><p><code translate="no">BOOL</code>,<code translate="no">INT8</code>,<code translate="no">INT16</code>,<code translate="no">INT32</code>,<code translate="no">INT64</code>,<code translate="no">VARCHAR</code></p></li>
-<li><p><code translate="no">ARRAY</code> （元素必須為以下其中一種：<code translate="no">BOOL</code> 、<code translate="no">INT8</code> 、<code translate="no">INT16</code> 、<code translate="no">INT32</code> 、<code translate="no">INT64</code> 、<code translate="no">VARCHAR</code> ）</p></li>
-</ul></li>
-<li><p>位圖索引不支援以下資料類型：</p>
-<ul>
-<li><p><code translate="no">FLOAT</code>,<code translate="no">DOUBLE</code> ：浮點數類型與位圖索引的二進位特性不相容。</p></li>
-<li><p><code translate="no">JSON</code>：JSON 資料型別具有複雜的結構，無法透過位圖索引有效率地表示。</p></li>
-</ul></li>
-<li><p>位圖索引不適用於高基數的欄位（即具有大量不同值的欄位）。</p>
-<ul>
-<li><p>一般而言，當欄位的基數小於 500 時，位圖索引的效果最佳。</p></li>
-<li><p>當基數超過此閾值時，位圖索引的效能優勢便會減弱，且儲存開銷也會變得相當可觀。</p></li>
-<li><p>對於高基數欄位，請根據您的具體使用情境和查詢需求，考慮使用其他索引技術（例如倒排索引）。</p></li>
-</ul></li>
-</ul>

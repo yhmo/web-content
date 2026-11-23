@@ -1,9 +1,11 @@
 ---
 id: array-operators.md
-title: مشغلات المصفوفات
-summary: توفر Milvus مشغلات ARRAY لتصفية حقول ARRAY وتحديث قيم حقول ARRAY جزئيًا.
+title: ARRAY Operators
+summary: >-
+  Milvus provides ARRAY operators for filtering ARRAY fields and partially
+  updating ARRAY field values.
 ---
-<h1 id="ARRAY-Operators" class="common-anchor-header">مشغلات المصفوفات<button data-href="#ARRAY-Operators" class="anchor-icon" translate="no">
+<h1 id="ARRAY-Operators" class="common-anchor-header">ARRAY Operators<button data-href="#ARRAY-Operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,16 +20,16 @@ summary: توفر Milvus مشغلات ARRAY لتصفية حقول ARRAY وتحد
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>يوفر Milvus مشغلات ARRAY لتصفية حقول ARRAY وتحديث قيم حقول ARRAY جزئيًا.</p>
+    </button></h1><p>Milvus provides ARRAY operators for filtering ARRAY fields and partially updating ARRAY field values.</p>
 <div class="alert note">
-<p>يجب أن تكون جميع العناصر داخل المصفوفة من نفس النوع، ويتم التعامل مع الهياكل المتداخلة داخل المصفوفات على أنها سلاسل نصية عادية. لذلك، عند العمل مع حقول المصفوفات، يُنصح بتجنب التداخل المفرط والتأكد من أن هياكل البيانات الخاصة بك مسطحة قدر الإمكان لتحقيق الأداء الأمثل.</p>
+<p>All elements within an array must be the same type, and nested structures within arrays are treated as plain strings. Therefore, when working with ARRAY fields, it is advisable to avoid excessively deep nesting and ensure that your data structures are as flat as possible for optimal performance.</p>
 </div>
-<p>تغطي مشغلات المصفوفات في Milvus سيناريوهين للاستخدام:</p>
+<p>ARRAY operators in Milvus cover two usage scenarios:</p>
 <ul>
-<li><p>تعبيرات التصفية للاستعلام والبحث.</p></li>
-<li><p>التحديثات الجزئية في طلبات « <code translate="no">upsert</code> ».</p></li>
+<li><p>Filter expressions for query and search.</p></li>
+<li><p>Partial updates in <code translate="no">upsert</code> requests.</p></li>
 </ul>
-<h2 id="Available-ARRAY-operators" class="common-anchor-header">مشغلات ARRAY المتاحة<button data-href="#Available-ARRAY-operators" class="anchor-icon" translate="no">
+<h2 id="Available-ARRAY-operators" class="common-anchor-header">Available ARRAY operators<button data-href="#Available-ARRAY-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -42,18 +44,18 @@ summary: توفر Milvus مشغلات ARRAY لتصفية حقول ARRAY وتحد
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يسرد الجدول التالي عوامل ARRAY المتاحة في Milvus.</p>
+    </button></h2><p>The following table lists ARRAY operators available in Milvus.</p>
 <table>
 <thead>
-<tr><th>المُشغِّل</th><th>الاستخدام في</th><th>الوصف</th></tr>
+<tr><th>Operator</th><th>Use in</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr><td><a href="/docs/ar/v2.6.x/array-operators.md#ARRAYCONTAINS">ARRAY_CONTAINS(المعرف، التعبير)</a></td><td>تعبير التصفية</td><td>يتحقق من وجود عنصر معين في حقل ARRAY.</td></tr>
-<tr><td><a href="/docs/ar/v2.6.x/array-operators.md#ARRAYCONTAINSALL">ARRAY_CONTAINS_ALL(المعرف، التعبير)</a></td><td>تعبير التصفية</td><td>يتحقق مما إذا كانت جميع العناصر الموجودة في قائمة محددة موجودة في حقل ARRAY.</td></tr>
-<tr><td><a href="/docs/ar/v2.6.x/array-operators.md#ARRAYCONTAINSANY">ARRAY_CONTAINS_ANY(المعرف، التعبير)</a></td><td>تعبير التصفية</td><td>يتحقق مما إذا كان أي عنصر في قائمة محددة موجودًا في حقل ARRAY.</td></tr>
-<tr><td><a href="/docs/ar/v2.6.x/array-operators.md#ARRAYLENGTH">ARRAY_LENGTH(المعرف)</a></td><td>تعبير التصفية</td><td>تُرجع عدد العناصر الموجودة في حقل ARRAY ويمكن دمجها مع عوامل المقارنة لأغراض التصفية.</td></tr>
-<tr><td><a href="/docs/ar/v2.6.x/array-operators.md#ARRAYAPPEND">ARRAY_APPEND</a></td><td><code translate="no">upsert</code> مع <code translate="no">field_ops</code></td><td>يُضيف عناصر الحمولة إلى حقل ARRAY موجود. متوفر في Milvus الإصدار 2.6.17 والإصدارات الأحدث.</td></tr>
-<tr><td><a href="/docs/ar/v2.6.x/array-operators.md#ARRAYREMOVE">ARRAY_REMOVE</a></td><td><code translate="no">upsert</code> مع <code translate="no">field_ops</code></td><td>يزيل كل عنصر من حقل ARRAY موجود يتطابق مع قيمة في حمولة الطلب. متوفر في Milvus الإصدار 2.6.17 والإصدارات الأحدث.</td></tr>
+<tr><td><a href="/docs/ar/v2.6.x/array-operators.md#ARRAYCONTAINS">ARRAY_CONTAINS(identifier, expr)</a></td><td>Filter expression</td><td>Checks whether a specific element exists in an ARRAY field.</td></tr>
+<tr><td><a href="/docs/ar/v2.6.x/array-operators.md#ARRAYCONTAINSALL">ARRAY_CONTAINS_ALL(identifier, expr)</a></td><td>Filter expression</td><td>Checks whether all elements in a specified list exist in an ARRAY field.</td></tr>
+<tr><td><a href="/docs/ar/v2.6.x/array-operators.md#ARRAYCONTAINSANY">ARRAY_CONTAINS_ANY(identifier, expr)</a></td><td>Filter expression</td><td>Checks whether any element in a specified list exists in an ARRAY field.</td></tr>
+<tr><td><a href="/docs/ar/v2.6.x/array-operators.md#ARRAYLENGTH">ARRAY_LENGTH(identifier)</a></td><td>Filter expression</td><td>Returns the number of elements in an ARRAY field and can be combined with comparison operators for filtering.</td></tr>
+<tr><td><a href="/docs/ar/v2.6.x/array-operators.md#ARRAYAPPEND">ARRAY_APPEND</a></td><td><code translate="no">upsert</code> with <code translate="no">field_ops</code></td><td>Appends payload elements to an existing ARRAY field. Available in Milvus v2.6.17 and later.</td></tr>
+<tr><td><a href="/docs/ar/v2.6.x/array-operators.md#ARRAYREMOVE">ARRAY_REMOVE</a></td><td><code translate="no">upsert</code> with <code translate="no">field_ops</code></td><td>Removes every element from an existing ARRAY field that matches a value in the request payload. Available in Milvus v2.6.17 and later.</td></tr>
 </tbody>
 </table>
 <h2 id="ARRAYCONTAINS" class="common-anchor-header">ARRAY_CONTAINS<button data-href="#ARRAYCONTAINS" class="anchor-icon" translate="no">
@@ -71,12 +73,12 @@ summary: توفر Milvus مشغلات ARRAY لتصفية حقول ARRAY وتحد
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يقوم عامل التشغيل « <code translate="no">ARRAY_CONTAINS</code> » بالتحقق من وجود عنصر معين في حقل صفيف. وهو مفيد عندما تريد العثور على الكيانات التي يحتوي صفيفها على عنصر معين.</p>
-<p><strong>مثال</strong></p>
-<p>لنفترض أن لديك حقل صفيف <code translate="no">history_temperatures</code> ، الذي يحتوي على أدنى درجات الحرارة المسجلة لسنوات مختلفة. للعثور على جميع الكيانات التي يحتوي صفيفها على القيمة <code translate="no">23</code> ، يمكنك استخدام تعبير التصفية التالي:</p>
+    </button></h2><p>The <code translate="no">ARRAY_CONTAINS</code> operator checks if a specific element exists in an array field. It’s useful when you want to find entities where a given element is present in the array.</p>
+<p><strong>Example</strong></p>
+<p>Suppose you have an array field <code translate="no">history_temperatures</code>, which contains the recorded lowest temperatures for different years. To find all entities where the array contains the value <code translate="no">23</code>, you can use the following filter expression:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;ARRAY_CONTAINS(history_temperatures, 23)&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>سيؤدي هذا إلى إرجاع جميع الكيانات التي يحتوي فيها المصفوف « <code translate="no">history_temperatures</code> » على القيمة « <code translate="no">23</code> ».</p>
+<p>This will return all entities where the <code translate="no">history_temperatures</code> array contains the value <code translate="no">23</code>.</p>
 <h2 id="ARRAYCONTAINSALL" class="common-anchor-header">ARRAY_CONTAINS_ALL<button data-href="#ARRAYCONTAINSALL" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -92,12 +94,12 @@ summary: توفر Milvus مشغلات ARRAY لتصفية حقول ARRAY وتحد
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يضمن عامل التشغيل <code translate="no">ARRAY_CONTAINS_ALL</code> وجود جميع عناصر القائمة المحددة في حقل المصفوفة. ويُعد هذا العامل مفيدًا عندما تريد مطابقة الكيانات التي تحتوي على قيم متعددة في المصفوفة.</p>
-<p><strong>مثال</strong></p>
-<p>إذا كنت تريد العثور على جميع الكيانات التي يحتوي مصفوفة <code translate="no">history_temperatures</code> فيها على كل من <code translate="no">23</code> و <code translate="no">24</code> ، فيمكنك استخدام:</p>
+    </button></h2><p>The <code translate="no">ARRAY_CONTAINS_ALL</code> operator ensures that all elements of the specified list are present in the array field. This operator is useful when you want to match entities that contain multiple values in the array.</p>
+<p><strong>Example</strong></p>
+<p>If you want to find all entities where the <code translate="no">history_temperatures</code> array contains both <code translate="no">23</code> and <code translate="no">24</code>, you can use:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;ARRAY_CONTAINS_ALL(history_temperatures, [23, 24])&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>سيؤدي هذا إلى إرجاع جميع الكيانات التي يحتوي فيها المصفوف <code translate="no">history_temperatures</code> على كلتا القيمتين المحددتين.</p>
+<p>This will return all entities where the <code translate="no">history_temperatures</code> array contains both of the specified values.</p>
 <h2 id="ARRAYCONTAINSANY" class="common-anchor-header">ARRAY_CONTAINS_ANY<button data-href="#ARRAYCONTAINSANY" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -113,12 +115,12 @@ summary: توفر Milvus مشغلات ARRAY لتصفية حقول ARRAY وتحد
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يتحقق عامل التشغيل <code translate="no">ARRAY_CONTAINS_ANY</code> من وجود أي عنصر من العناصر الموجودة في القائمة المحددة في حقل المصفوفة. ويكون هذا مفيدًا عندما تريد مطابقة الكيانات التي تحتوي على قيمة واحدة على الأقل من القيم المحددة في المصفوفة.</p>
-<p><strong>مثال</strong></p>
-<p>للعثور على جميع الكيانات التي يحتوي مصفوفة <code translate="no">history_temperatures</code> فيها على إما <code translate="no">23</code> أو <code translate="no">24</code> ، يمكنك استخدام:</p>
+    </button></h2><p>The <code translate="no">ARRAY_CONTAINS_ANY</code> operator checks if any of the elements from the specified list are present in the array field. This is useful when you want to match entities that contain at least one of the specified values in the array.</p>
+<p><strong>Example</strong></p>
+<p>To find all entities where the <code translate="no">history_temperatures</code> array contains either <code translate="no">23</code> or <code translate="no">24</code>, you can use:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;ARRAY_CONTAINS_ANY(history_temperatures, [23, 24])&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>سيؤدي هذا إلى إرجاع جميع الكيانات التي يحتوي فيها المصفوف <code translate="no">history_temperatures</code> على قيمة واحدة على الأقل من القيم <code translate="no">23</code> أو <code translate="no">24</code>.</p>
+<p>This will return all entities where the <code translate="no">history_temperatures</code> array contains at least one of the values <code translate="no">23</code> or <code translate="no">24</code>.</p>
 <h2 id="ARRAYLENGTH" class="common-anchor-header">ARRAY_LENGTH<button data-href="#ARRAYLENGTH" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -134,13 +136,13 @@ summary: توفر Milvus مشغلات ARRAY لتصفية حقول ARRAY وتحد
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>تُرجع دالة <code translate="no">ARRAY_LENGTH</code> طول (عدد عناصر) حقل المصفوفة. وهي تقبل معلمة واحدة فقط: معرف حقل المصفوفة.</p>
-<p><strong>مثال</strong></p>
-<p>للعثور على جميع الكيانات التي يحتوي فيها المصفوفة <code translate="no">history_temperatures</code> على أقل من 10 عناصر:</p>
+    </button></h2><p>The <code translate="no">ARRAY_LENGTH</code> returns the length (number of elements) of an array field. It accepts exactly one parameter: the array field identifier.</p>
+<p><strong>Example</strong></p>
+<p>To find all entities where the <code translate="no">history_temperatures</code> array has fewer than 10 elements:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;ARRAY_LENGTH(history_temperatures) &lt; 10&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>سيُرجع هذا جميع الكيانات التي يحتوي مصفوفة <code translate="no">history_temperatures</code> الخاصة بها على أقل من 10 عناصر.</p>
-<h2 id="ARRAYAPPEND--Milvus-2617+" class="common-anchor-header">ARRAY_APPEND<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.17+</span><button data-href="#ARRAYAPPEND--Milvus-2617+" class="anchor-icon" translate="no">
+<p>This will return all entities where the <code translate="no">history_temperatures</code> array has fewer than 10 elements.</p>
+<h2 id="ARRAYAPPEND" class="common-anchor-header">ARRAY_APPEND<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.17+</span><button data-href="#ARRAYAPPEND" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -155,8 +157,8 @@ summary: توفر Milvus مشغلات ARRAY لتصفية حقول ARRAY وتحد
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يقوم عامل التشغيل <code translate="no">ARRAY_APPEND</code> بإلحاق عناصر الحمولة بحقل ARRAY موجود أثناء طلب <code translate="no">upsert</code>. وهو ليس تعبير تصفية. استخدمه عندما تريد إضافة قيم إلى مصفوفة دون الاستعلام أولاً عن قيمة المصفوفة الحالية.</p>
-<p>يضيف المثال التالي بلغة Python <code translate="no">&quot;premium&quot;</code> إلى حقل ARRAY الخاص بـ <code translate="no">tags</code> للكيان الذي يكون مفتاحه الأساسي هو <code translate="no">1</code>:</p>
+    </button></h2><p>The <code translate="no">ARRAY_APPEND</code> operator appends payload elements to an existing ARRAY field during an <code translate="no">upsert</code> request. It is not a filter expression. Use it when you want to add values to an array without first querying the current array value.</p>
+<p>The following Python example appends <code translate="no">&quot;premium&quot;</code> to the <code translate="no">tags</code> ARRAY field of the entity whose primary key is <code translate="no">1</code>:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> FieldOp, MilvusClient
 
 client = MilvusClient(
@@ -170,8 +172,8 @@ client.upsert(
 <span class="highlighted-wrapper-line">    field_ops={<span class="hljs-string">&quot;tags&quot;</span>: FieldOp.array_append()},</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>يؤدي إرفاق <code translate="no">ARRAY_APPEND</code> بحقل عبر <code translate="no">field_ops</code> إلى تمكين دلالات التحديث الجزئي لهذا الحقل. للاطلاع على سير العمل الكامل وأنواع العناصر المدعومة والحدود، راجع <a href="/docs/ar/v2.6.x/upsert-entities.md#Upsert-ARRAY-fields-with-partial-update-operators">«حقول ARRAY في Upsert باستخدام عوامل التحديث الجزئي</a>».</p>
-<h2 id="ARRAYREMOVE--Milvus-2617+" class="common-anchor-header">ARRAY_REMOVE<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.17+</span><button data-href="#ARRAYREMOVE--Milvus-2617+" class="anchor-icon" translate="no">
+<p>Attaching <code translate="no">ARRAY_APPEND</code> to a field through <code translate="no">field_ops</code> enables partial-update semantics for that field. For the full workflow, supported element types, and limits, refer to <a href="/docs/ar/v2.6.x/upsert-entities.md#Upsert-ARRAY-fields-with-partial-update-operators">Upsert ARRAY fields with partial-update operators</a>.</p>
+<h2 id="ARRAYREMOVE" class="common-anchor-header">ARRAY_REMOVE<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.17+</span><button data-href="#ARRAYREMOVE" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -186,8 +188,8 @@ client.upsert(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يقوم عامل " <code translate="no">ARRAY_REMOVE</code> " بإزالة كل عنصر من حقل ARRAY موجود يطابق قيمة في حمولة الطلب أثناء طلب " <code translate="no">upsert</code> ". وهو ليس تعبير تصفية. استخدمه عندما تريد إزالة القيم المطابقة من المصفوفة دون الاستعلام أولاً عن قيمة المصفوفة الحالية.</p>
-<p>يزيل المثال التالي بلغة Python <code translate="no">&quot;trial&quot;</code> من حقل ARRAY الخاص بـ <code translate="no">tags</code> للكيان الذي يكون مفتاحه الأساسي هو <code translate="no">1</code>:</p>
+    </button></h2><p>The <code translate="no">ARRAY_REMOVE</code> operator removes every element from an existing ARRAY field that matches a value in the request payload during an <code translate="no">upsert</code> request. It is not a filter expression. Use it when you want to remove matching values from an array without first querying the current array value.</p>
+<p>The following Python example removes <code translate="no">&quot;trial&quot;</code> from the <code translate="no">tags</code> ARRAY field of the entity whose primary key is <code translate="no">1</code>:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> FieldOp, MilvusClient
 
 client = MilvusClient(
@@ -201,4 +203,4 @@ client.upsert(
 <span class="highlighted-wrapper-line">    field_ops={<span class="hljs-string">&quot;tags&quot;</span>: FieldOp.array_remove()},</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>يؤدي ربط <code translate="no">ARRAY_REMOVE</code> بحقل عبر <code translate="no">field_ops</code> إلى تمكين دلالات التحديث الجزئي لهذا الحقل. للاطلاع على سير العمل الكامل وأنواع العناصر المدعومة والحدود، راجع <a href="/docs/ar/v2.6.x/upsert-entities.md#Upsert-ARRAY-fields-with-partial-update-operators">حقول ARRAY</a> في <a href="/docs/ar/v2.6.x/upsert-entities.md#Upsert-ARRAY-fields-with-partial-update-operators">Upsert مع مشغلات التحديث الجزئي</a>.</p>
+<p>Attaching <code translate="no">ARRAY_REMOVE</code> to a field through <code translate="no">field_ops</code> enables partial-update semantics for that field. For the full workflow, supported element types, and limits, refer to <a href="/docs/ar/v2.6.x/upsert-entities.md#Upsert-ARRAY-fields-with-partial-update-operators">Upsert ARRAY fields with partial-update operators</a>.</p>

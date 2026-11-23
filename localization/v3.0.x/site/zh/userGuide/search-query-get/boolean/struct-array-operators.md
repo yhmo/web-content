@@ -1,11 +1,13 @@
 ---
 id: struct-array-operators.md
-title: StructArray 操作符
+title: StructArray Operators
 summary: >-
-  StructArray 操作符通过评估 StructArray 字段内标量子字段上的谓词来过滤实体。请将本页作为
-  element_filter、MATCH_* 运算符族以及 StructArray 路径上行级谓词的语法参考。
+  StructArray operators filter entities by evaluating predicates on scalar
+  subfields inside a StructArray field. Use this page as a syntax reference for
+  element_filter, the MATCH_* operator family, and row-level predicates on
+  StructArray paths.
 ---
-<h1 id="StructArray-Operators" class="common-anchor-header">StructArray 操作符<button data-href="#StructArray-Operators" class="anchor-icon" translate="no">
+<h1 id="StructArray-Operators" class="common-anchor-header">StructArray Operators<button data-href="#StructArray-Operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,20 +22,20 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>StructArray 操作符通过评估 StructArray 字段内标量子字段上的谓词来过滤实体。本页面可作为<code translate="no">element_filter</code> 、<code translate="no">MATCH_*</code> 操作符族以及 StructArray 路径上的行级谓词的语法参考。</p>
-<p>StructArray 过滤包含两个操作符家族和一组行级路径谓词：</p>
+    </button></h1><p>StructArray operators filter entities by evaluating predicates on scalar subfields inside a StructArray field. Use this page as a syntax reference for <code translate="no">element_filter</code>, the <code translate="no">MATCH_*</code> operator family, and row-level predicates on StructArray paths.</p>
+<p>StructArray filtering has two operator families and a set of row-level path predicates:</p>
 <table>
 <thead>
-<tr><th>过滤形式</th><th>主要用途</th><th>结果行为</th></tr>
+<tr><th>Filter form</th><th>Main purpose</th><th>Result behavior</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">element_filter</code></td><td>匹配满足标量谓词的 Struct 元素。</td><td>在元素级搜索中，匹配结果可能包含元素偏移量。在行级查询或过滤搜索中，结果的结构取决于 API 和输出字段。</td></tr>
-<tr><td><code translate="no">MATCH_*</code></td><td>根据满足标量谓词的 Struct 元素数量来选择实体。</td><td>行级过滤。这些操作符本身不会返回元素偏移量。</td></tr>
-<tr><td>行级路径谓词</td><td>在不使用<code translate="no">$[...]</code> 谓词的情况下，测试单个元素的位置、统计Struct元素的数量，或测试跨元素的子字段值。</td><td>行级过滤。这些谓词不会返回元素偏移量。</td></tr>
+<tr><td><code translate="no">element_filter</code></td><td>Match Struct elements that satisfy a scalar predicate.</td><td>In element-level search, matched hits can include element offsets. In row-level query or filtered search, result shape depends on the API and output fields.</td></tr>
+<tr><td><code translate="no">MATCH_*</code></td><td>Select entities by how many Struct elements satisfy a scalar predicate.</td><td>Row-level filtering. These operators do not return element offsets by themselves.</td></tr>
+<tr><td>Row-level path predicates</td><td>Test one element position, count Struct elements, or test subfield values across elements without a <code translate="no">$[...]</code> predicate.</td><td>Row-level filtering. These predicates do not return element offsets.</td></tr>
 </tbody>
 </table>
-<p>在 StructArray 操作符中，请使用标量子字段；在 Milvus 3.0.6 及更高版本中，请使用数组子字段。向量子字段用于向量搜索路径，不能作为标量谓词的输入。</p>
-<h2 id="When-to-use-which-operator" class="common-anchor-header">何时使用哪个操作符<button data-href="#When-to-use-which-operator" class="anchor-icon" translate="no">
+<p>Use scalar subfields, and array subfields in Milvus 3.0.6 and later, in StructArray operators. Vector subfields are used by vector search paths and are not scalar predicate inputs.</p>
+<h2 id="When-to-use-which-operator" class="common-anchor-header">When to use which operator<button data-href="#When-to-use-which-operator" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -48,23 +50,23 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>请根据您的过滤目标选择操作符：</p>
+    </button></h2><p>Choose an operator according to your filtering goal:</p>
 <table>
 <thead>
-<tr><th>目标</th><th>使用</th></tr>
+<tr><th>Goal</th><th>Use</th></tr>
 </thead>
 <tbody>
-<tr><td>将元素级向量搜索限制为符合标量条件的元素。</td><td><code translate="no">element_filter</code></td></tr>
-<tr><td>匹配同一 Struct 元素内的多个标量条件。</td><td><code translate="no">element_filter</code></td></tr>
-<tr><td>仅返回至少有一个 Struct 元素满足谓词的实体。</td><td><code translate="no">MATCH_ANY</code></td></tr>
-<tr><td>仅返回所有 Struct 元素均满足某个谓词的实体。</td><td><code translate="no">MATCH_ALL</code></td></tr>
-<tr><td>仅返回至少、至多或恰好有<code translate="no">N</code> 个 Struct 元素满足某个谓词的实体。</td><td><code translate="no">MATCH_LEAST</code>、<code translate="no">MATCH_MOST</code> 或<code translate="no">MATCH_EXACT</code></td></tr>
-<tr><td>检查特定位置的 Struct 元素，例如第一个块。</td><td>位置路径，例如<code translate="no">chunks[0][section]</code></td></tr>
-<tr><td>按实体中Struct元素的数量进行过滤。</td><td><code translate="no">array_length(chunks)</code></td></tr>
-<tr><td>检查任何结构元素是否包含子字段值，而不将同一元素上的条件组合在一起。</td><td><code translate="no">array_contains</code>，<code translate="no">array_contains_any</code> ，或<code translate="no">array_contains_all</code> ，应用于子字段路径，例如<code translate="no">chunks[section]</code></td></tr>
+<tr><td>Constrain element-level vector search to elements that match scalar conditions.</td><td><code translate="no">element_filter</code></td></tr>
+<tr><td>Match multiple scalar conditions within the same Struct element.</td><td><code translate="no">element_filter</code></td></tr>
+<tr><td>Return only entities where at least one Struct element satisfies a predicate.</td><td><code translate="no">MATCH_ANY</code></td></tr>
+<tr><td>Return only entities where all Struct elements satisfy a predicate.</td><td><code translate="no">MATCH_ALL</code></td></tr>
+<tr><td>Return only entities where at least, at most, or exactly <code translate="no">N</code> Struct elements satisfy a predicate.</td><td><code translate="no">MATCH_LEAST</code>, <code translate="no">MATCH_MOST</code>, or <code translate="no">MATCH_EXACT</code></td></tr>
+<tr><td>Check the Struct element at a specific position, such as the first chunk.</td><td>A positional path such as <code translate="no">chunks[0][section]</code></td></tr>
+<tr><td>Filter by the number of Struct elements in an entity.</td><td><code translate="no">array_length(chunks)</code></td></tr>
+<tr><td>Check whether any Struct element holds a subfield value, without combining conditions on the same element.</td><td><code translate="no">array_contains</code>, <code translate="no">array_contains_any</code>, or <code translate="no">array_contains_all</code> on a subfield path such as <code translate="no">chunks[section]</code></td></tr>
 </tbody>
 </table>
-<h2 id="Example-data" class="common-anchor-header">示例数据<button data-href="#Example-data" class="anchor-icon" translate="no">
+<h2 id="Example-data" class="common-anchor-header">Example data<button data-href="#Example-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -79,8 +81,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>以下部分实体示例仅显示<strong>实体 A</strong>和<strong>实体 B</strong> 的<code translate="no">chunks</code> 字段。它们并非完整的插入有效载荷。</p>
-<p><strong>实体 A</strong>：</p>
+    </button></h2><p>The following partial entity examples show only the <code translate="no">chunks</code> fields of <strong>Entity A</strong> and <strong>Entity B</strong>. They are not complete insert payloads.</p>
+<p><strong>Entity A</strong>:</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
     <span class="hljs-attr">&quot;chunks&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
         <span class="hljs-punctuation">{</span>
@@ -106,7 +108,7 @@ summary: >-
     <span class="hljs-punctuation">]</span>
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>实体 B</strong>：</p>
+<p><strong>Entity B</strong>:</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
     <span class="hljs-attr">&quot;chunks&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
         <span class="hljs-punctuation">{</span>
@@ -127,7 +129,7 @@ summary: >-
     <span class="hljs-punctuation">]</span>
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Element-Filter" class="common-anchor-header">元素过滤器<button data-href="#Element-Filter" class="anchor-icon" translate="no">
+<h2 id="Element-Filter" class="common-anchor-header">Element Filter<button data-href="#Element-Filter" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -142,25 +144,25 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>使用<code translate="no">element_filter(structArrayField, predicate)</code> 来匹配StructArray字段中的Struct元素。</p>
-<p>在谓词内部，使用<code translate="no">$[subfield]</code> 来引用当前Struct元素的标量子字段。</p>
+    </button></h2><p>Use <code translate="no">element_filter(structArrayField, predicate)</code> to match Struct elements in a StructArray field.</p>
+<p>Inside the predicate, use <code translate="no">$[subfield]</code> to refer to a scalar subfield of the current Struct element.</p>
 <pre><code translate="no" class="language-text">element_filter(chunks, $[section] == &quot;index&quot;)
 <button class="copy-code-btn"></button></code></pre>
-<p>实体 A 和实体 B 均符合条件：所示的全部七个元素中，<code translate="no">section</code> 均设置为<code translate="no">&quot;index&quot;</code> 。</p>
-<p>当谓词内部使用多个条件时，所有<code translate="no">$[subfield]</code> 引用均指向同一个 Struct 元素：</p>
+<p>Both Entity A and Entity B match: all seven shown elements have <code translate="no">section</code> set to <code translate="no">&quot;index&quot;</code>.</p>
+<p>When multiple conditions are used inside the predicate, all <code translate="no">$[subfield]</code> references apply to the same Struct element:</p>
 <pre><code translate="no" class="language-text">element_filter(chunks, $[section] == &quot;index&quot; &amp;&amp; $[quality_score] &gt; 0.9)
 <button class="copy-code-btn"></button></code></pre>
-<p>只有实体 B 匹配：其所有三个元素均满足这两个条件。</p>
-<p>当将实体级谓词与<code translate="no">element_filter</code> 结合使用时，请将<code translate="no">element_filter</code> 置于表达式末尾：</p>
+<p>Only Entity B matches: all three of its elements satisfy both conditions.</p>
+<p>When you combine an entity-level predicate with <code translate="no">element_filter</code>, place <code translate="no">element_filter</code> at the end of the expression:</p>
 <pre><code translate="no" class="language-text"># Correct
 category == &quot;index&quot; &amp;&amp; element_filter(chunks, $[quality_score] &gt; 0.9)
 
 # Incorrect
 element_filter(chunks, $[quality_score] &gt; 0.9) &amp;&amp; category == &quot;index&quot;
 <button class="copy-code-btn"></button></code></pre>
-<p>该<code translate="no">category</code> 示例独立于示例数据说明了表达式的排序规则，该示例数据中并未定义<code translate="no">category</code> 。</p>
-<p><code translate="no">element_filter</code> 在过滤表达式中只能出现一次。请勿将<code translate="no">element_filter</code> 或<code translate="no">MATCH_*</code> 嵌套在另一个<code translate="no">element_filter</code> 中。</p>
-<h2 id="Match-Family-Operators" class="common-anchor-header">匹配家族操作符<button data-href="#Match-Family-Operators" class="anchor-icon" translate="no">
+<p>The <code translate="no">category</code> example illustrates expression ordering independently of the example data, which does not define <code translate="no">category</code>.</p>
+<p><code translate="no">element_filter</code> can appear only once in a filter expression. Do not nest <code translate="no">element_filter</code> or <code translate="no">MATCH_*</code> inside another <code translate="no">element_filter</code>.</p>
+<h2 id="Match-Family-Operators" class="common-anchor-header">Match Family Operators<button data-href="#Match-Family-Operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -175,20 +177,20 @@ element_filter(chunks, $[quality_score] &gt; 0.9) &amp;&amp; category == &quot;i
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>当需要根据满足谓词的 Struct 元素数量来选择实体时，请使用<code translate="no">MATCH_*</code> 操作符。这些操作符的含义如下：</p>
+    </button></h2><p>Use <code translate="no">MATCH_*</code> operators when an entity should be selected based on how many Struct elements satisfy a predicate. The operators have the following meanings:</p>
 <table>
 <thead>
-<tr><th>操作符</th><th>含义</th></tr>
+<tr><th>Operator</th><th>Meaning</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">MATCH_ANY(field, predicate)</code></td><td>至少有一个 Struct 元素满足该谓词。</td></tr>
-<tr><td><code translate="no">MATCH_ALL(field, predicate)</code></td><td>所有 Struct 元素都满足该谓词。</td></tr>
-<tr><td><code translate="no">MATCH_LEAST(field, predicate, threshold=N)</code></td><td>至少有<code translate="no">N</code> 个Struct元素满足谓词。</td></tr>
-<tr><td><code translate="no">MATCH_MOST(field, predicate, threshold=N)</code></td><td>至多有<code translate="no">N</code> 个Struct元素满足该谓词。</td></tr>
-<tr><td><code translate="no">MATCH_EXACT(field, predicate, threshold=N)</code></td><td>恰有<code translate="no">N</code> 个Struct元素满足该谓词。</td></tr>
+<tr><td><code translate="no">MATCH_ANY(field, predicate)</code></td><td>At least one Struct element satisfies the predicate.</td></tr>
+<tr><td><code translate="no">MATCH_ALL(field, predicate)</code></td><td>All Struct elements satisfy the predicate.</td></tr>
+<tr><td><code translate="no">MATCH_LEAST(field, predicate, threshold=N)</code></td><td>At least <code translate="no">N</code> Struct elements satisfy the predicate.</td></tr>
+<tr><td><code translate="no">MATCH_MOST(field, predicate, threshold=N)</code></td><td>At most <code translate="no">N</code> Struct elements satisfy the predicate.</td></tr>
+<tr><td><code translate="no">MATCH_EXACT(field, predicate, threshold=N)</code></td><td>Exactly <code translate="no">N</code> Struct elements satisfy the predicate.</td></tr>
 </tbody>
 </table>
-<p><code translate="no">MATCH_ANY</code> <code translate="no">element_filter</code> 均可表示至少有一个 Struct 元素满足该谓词。当仅需行级过滤时，请使用 。当需要元素级约束时（例如过滤哪些 Struct 元素参与元素级向量搜索），请使用 。<code translate="no">MATCH_ANY</code> <code translate="no">element_filter</code> </p>
+<p><code translate="no">MATCH_ANY</code> and <code translate="no">element_filter</code> can both express that at least one Struct element satisfies a predicate. Use <code translate="no">MATCH_ANY</code> when you only need row-level filtering. Use <code translate="no">element_filter</code> when you need element-level constraints, such as filtering which Struct elements participate in element-level vector search.</p>
 <h3 id="MATCHANY" class="common-anchor-header">MATCH_ANY<button data-href="#MATCHANY" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -204,11 +206,11 @@ element_filter(chunks, $[quality_score] &gt; 0.9) &amp;&amp; category == &quot;i
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">MATCH_ANY</code> 如果 StructArray 中至少有一个元素满足该谓词，则其计算结果为<code translate="no">true</code> 。</p>
+    </button></h3><p><code translate="no">MATCH_ANY</code> evaluates to <code translate="no">true</code> if at least one element in the StructArray satisfies the predicate.</p>
 <pre><code translate="no" class="language-text">MATCH_ANY(chunks, $[section] == &quot;index&quot;)
 <button class="copy-code-btn"></button></code></pre>
-<p>实体 A 和实体 B 均匹配，因为它们各自至少有一个元素的<code translate="no">section</code> 被设置为<code translate="no">&quot;index&quot;</code> 。</p>
-<p>对于空的 StructArray，<code translate="no">MATCH_ANY</code> 返回<code translate="no">false</code> 。</p>
+<p>Both Entity A and Entity B match because each has at least one element with <code translate="no">section</code> set to <code translate="no">&quot;index&quot;</code>.</p>
+<p>For an empty StructArray, <code translate="no">MATCH_ANY</code> returns <code translate="no">false</code>.</p>
 <h3 id="MATCHALL" class="common-anchor-header">MATCH_ALL<button data-href="#MATCHALL" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -224,11 +226,11 @@ element_filter(chunks, $[quality_score] &gt; 0.9) &amp;&amp; category == &quot;i
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">MATCH_ALL</code> 如果 StructArray 中的每个元素都满足该谓词，则其计算结果为<code translate="no">true</code> 。</p>
+    </button></h3><p><code translate="no">MATCH_ALL</code> evaluates to <code translate="no">true</code> if every element in the StructArray satisfies the predicate.</p>
 <pre><code translate="no" class="language-text">MATCH_ALL(chunks, $[has_code] == true)
 <button class="copy-code-btn"></button></code></pre>
-<p>实体 A 和实体 B 都匹配，因为每个显示的元素的<code translate="no">has_code</code> 都设置为<code translate="no">true</code> 。</p>
-<p>对于空的 StructArray，<code translate="no">MATCH_ALL</code> 返回<code translate="no">true</code> 。</p>
+<p>Both Entity A and Entity B match because every shown element has <code translate="no">has_code</code> set to <code translate="no">true</code>.</p>
+<p>For an empty StructArray, <code translate="no">MATCH_ALL</code> returns <code translate="no">true</code>.</p>
 <h3 id="MATCHLEAST" class="common-anchor-header">MATCH_LEAST<button data-href="#MATCHLEAST" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -244,11 +246,11 @@ element_filter(chunks, $[quality_score] &gt; 0.9) &amp;&amp; category == &quot;i
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">MATCH_LEAST</code> 若满足谓词的元素个数大于或等于<code translate="no">threshold</code> ，则其计算结果为<code translate="no">true</code> 。</p>
+    </button></h3><p><code translate="no">MATCH_LEAST</code> evaluates to <code translate="no">true</code> if the number of elements satisfying the predicate is greater than or equal to <code translate="no">threshold</code>.</p>
 <pre><code translate="no" class="language-text">MATCH_LEAST(chunks, $[quality_score] &gt; 0.9, threshold=2)
 <button class="copy-code-btn"></button></code></pre>
-<p>只有实体 B 匹配：实体 A 没有符合条件的元素，而实体 B 有三个。</p>
-<p>对于<code translate="no">MATCH_LEAST</code> ，<code translate="no">threshold</code> 必须是一个正整数。</p>
+<p>Only Entity B matches: Entity A has zero qualifying elements, and Entity B has three.</p>
+<p>For <code translate="no">MATCH_LEAST</code>, <code translate="no">threshold</code> must be a positive integer.</p>
 <h3 id="MATCHMOST" class="common-anchor-header">MATCH_MOST<button data-href="#MATCHMOST" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -264,11 +266,11 @@ element_filter(chunks, $[quality_score] &gt; 0.9) &amp;&amp; category == &quot;i
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">MATCH_MOST</code> 的评估结果为<code translate="no">true</code> ，前提是满足谓词的元素个数小于或等于<code translate="no">threshold</code> 。</p>
+    </button></h3><p><code translate="no">MATCH_MOST</code> evaluates to <code translate="no">true</code> if the number of elements satisfying the predicate is less than or equal to <code translate="no">threshold</code>.</p>
 <pre><code translate="no" class="language-text">MATCH_MOST(chunks, $[has_code] == true, threshold=1)
 <button class="copy-code-btn"></button></code></pre>
-<p>两个实体均不匹配：实体 A 有四个符合条件的元素，实体 B 有三个。</p>
-<p>对于<code translate="no">MATCH_MOST</code> ，<code translate="no">threshold</code> 可以是零或一个正整数。</p>
+<p>Neither entity matches: Entity A has four qualifying elements, and Entity B has three.</p>
+<p>For <code translate="no">MATCH_MOST</code>, <code translate="no">threshold</code> can be zero or a positive integer.</p>
 <h3 id="MATCHEXACT" class="common-anchor-header">MATCH_EXACT<button data-href="#MATCHEXACT" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -284,12 +286,12 @@ element_filter(chunks, $[quality_score] &gt; 0.9) &amp;&amp; category == &quot;i
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">MATCH_EXACT</code> 如果满足谓词的元素个数恰好等于<code translate="no">threshold</code> ，则其计算结果为<code translate="no">true</code> 。</p>
+    </button></h3><p><code translate="no">MATCH_EXACT</code> evaluates to <code translate="no">true</code> if the number of elements satisfying the predicate is exactly equal to <code translate="no">threshold</code>.</p>
 <pre><code translate="no" class="language-text">MATCH_EXACT(chunks, $[section] == &quot;filter&quot;, threshold=1)
 <button class="copy-code-btn"></button></code></pre>
-<p>由于两个实体都没有元素的<code translate="no">section</code> 被设置为<code translate="no">&quot;filter&quot;</code> ，因此均不匹配。</p>
-<p>对于<code translate="no">MATCH_EXACT</code> ，<code translate="no">threshold</code> 可以是零或正整数。</p>
-<h2 id="Row-level-predicates-on-StructArray-paths" class="common-anchor-header">StructArray 路径上的行级谓词<button data-href="#Row-level-predicates-on-StructArray-paths" class="anchor-icon" translate="no">
+<p>Neither entity matches because neither has an element with <code translate="no">section</code> set to <code translate="no">&quot;filter&quot;</code>.</p>
+<p>For <code translate="no">MATCH_EXACT</code>, <code translate="no">threshold</code> can be zero or a positive integer.</p>
+<h2 id="Row-level-predicates-on-StructArray-paths" class="common-anchor-header">Row-level predicates on StructArray paths<button data-href="#Row-level-predicates-on-StructArray-paths" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -304,8 +306,8 @@ element_filter(chunks, $[quality_score] &gt; 0.9) &amp;&amp; category == &quot;i
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>除了 `<code translate="no">element_filter</code> ` 和 `<code translate="no">MATCH_*</code>` 之外，常规过滤表达式还可以直接引用 StructArray 字段或其标量子字段之一。这些谓词在实体级别进行求值，且不返回元素偏移量。</p>
-<h3 id="Subfield-access" class="common-anchor-header">子字段访问<button data-href="#Subfield-access" class="anchor-icon" translate="no">
+    </button></h2><p>Besides <code translate="no">element_filter</code> and <code translate="no">MATCH_*</code>, a regular filter expression can reference a StructArray field or one of its scalar subfields directly. These predicates evaluate at the entity level and do not return element offsets.</p>
+<h3 id="Subfield-access" class="common-anchor-header">Subfield access<button data-href="#Subfield-access" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -320,11 +322,11 @@ element_filter(chunks, $[quality_score] &gt; 0.9) &amp;&amp; category == &quot;i
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><h4 id="Access-a-Struct-element-by-position" class="common-anchor-header">按位置访问 Struct 元素</h4><p>使用<code translate="no">structArrayField[index][subfield]</code> 引用 Struct 元素中以零为起点的某个标量子字段。先写位置，再写子字段名称。反向路径<code translate="no">chunks[quality_score][0] &gt; 0.8</code> 无效。</p>
-<p>例如，测试第一个元素的质量得分：</p>
+    </button></h3><h4 id="Access-a-Struct-element-by-position" class="common-anchor-header">Access a Struct element by position</h4><p>Use <code translate="no">structArrayField[index][subfield]</code> to reference one scalar subfield of the Struct element at a zero-based position. Write the position first, then the subfield name. The reversed path <code translate="no">chunks[quality_score][0] &gt; 0.8</code> is invalid.</p>
+<p>For example, test the first element’s quality score:</p>
 <pre><code translate="no" class="language-text">chunks[0][quality_score] &gt; 0.8
 <button class="copy-code-btn"></button></code></pre>
-<p>只有实体 B 符合此表达式。</p>
+<p>Only Entity B matches this expression.</p>
 <pre><code translate="no" class="language-text"># The first chunk belongs to the &quot;index&quot; section.
 chunks[0][section] == &quot;index&quot;
 
@@ -337,9 +339,9 @@ chunks[0][page] in [1, 2, 3]
 # Chained range on a positional path.
 0.8 &lt; chunks[0][quality_score] &lt; 0.95
 <button class="copy-code-btn"></button></code></pre>
-<p>对于实体 A 和实体 B，第一个分段谓词匹配两个实体，第二个评分谓词仅匹配实体 B，而严格的评分范围则均不匹配。<code translate="no">page</code> 谓词是一个通用示例；示例数据中未定义<code translate="no">page</code> 。</p>
-<p>位置路径支持对标量子字段进行比较、<code translate="no">in</code> 、<code translate="no">not in</code> 以及链式范围谓词。当实体的 StructArray 字段在该位置没有元素时，该实体不匹配。</p>
-<h3 id="ARRAY-operators" class="common-anchor-header">ARRAY 操作符<button data-href="#ARRAY-operators" class="anchor-icon" translate="no">
+<p>For Entity A and Entity B, the first section predicate matches both entities, the second score predicate matches only Entity B, and the strict score range matches neither. The <code translate="no">page</code> predicate is a generic example; the example data does not define <code translate="no">page</code>.</p>
+<p>Positional paths support comparison, <code translate="no">in</code>, <code translate="no">not in</code>, and chained range predicates on scalar subfields. An entity does not match when its StructArray field has no element at that position.</p>
+<h3 id="ARRAY-operators" class="common-anchor-header">ARRAY operators<button data-href="#ARRAY-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -354,7 +356,7 @@ chunks[0][page] in [1, 2, 3]
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><h4 id="Access-array-subfields-by-position" class="common-anchor-header">按位置访问数组子字段<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.6</span></h4><p>从 Milvus 3.0.6 开始，位置路径还可以引用标量<code translate="no">ARRAY</code> 子字段。<code translate="no">chunks[0][tags]</code> 是第一个 Struct 元素的内部数组。它支持使用数组字面量进行<code translate="no">==</code> 和<code translate="no">!=</code> 运算，以及<code translate="no">array_contains</code> 、<code translate="no">array_contains_any</code> 、<code translate="no">array_contains_all</code> 和<code translate="no">array_length</code> 。对其进行的比较运算符（<code translate="no">in</code> 、<code translate="no">like</code> ）和算术运算将被拒绝。</p>
+    </button></h3><h4 id="Access-array-subfields-by-position" class="common-anchor-header">Access array subfields by position<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.6</span></h4><p>Starting in Milvus 3.0.6, a positional path can also reference a scalar <code translate="no">ARRAY</code> subfield. <code translate="no">chunks[0][tags]</code> is the inner array of the first Struct element. It supports <code translate="no">==</code> and <code translate="no">!=</code> with an array literal, <code translate="no">array_contains</code>, <code translate="no">array_contains_any</code>, <code translate="no">array_contains_all</code>, and <code translate="no">array_length</code>. Comparison operators, <code translate="no">in</code>, <code translate="no">like</code>, and arithmetic on it are rejected.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># The first chunk is tagged &quot;tuning&quot;.</span>
 array_contains(chunks[<span class="hljs-number">0</span>][tags], <span class="hljs-string">&quot;tuning&quot;</span>)
 
@@ -364,23 +366,23 @@ chunks[<span class="hljs-number">0</span>][tags] == [<span class="hljs-string">&
 <span class="hljs-comment"># The first chunk has at least two tags.</span>
 array_length(chunks[<span class="hljs-number">0</span>][tags]) &gt;= <span class="hljs-number">2</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">array_contains*</code>对于整个数组子字段路径（例如<code translate="no">array_contains(chunks[tags], &quot;tuning&quot;)</code> ），<code translate="no">==</code> 和<code translate="no">!=</code> 均被拒绝，因为该路径中每个 Struct 元素包含一个内部数组。请改用<code translate="no">MATCH_ANY(chunks, array_contains($[tags], &quot;tuning&quot;))</code> 。</p>
-<h4 id="Count-Struct-elements" class="common-anchor-header">统计 Struct 元素数量</h4><p>使用<code translate="no">array_length(structArrayField)</code> 根据实体中的 Struct 元素数量进行筛选。在子字段路径（例如<code translate="no">array_length(chunks[section])</code> ）上使用<code translate="no">array_length</code> 会返回相同的计数，因为每个子字段都为每个 Struct 元素存储一个值。</p>
+<p><code translate="no">array_contains*</code>, <code translate="no">==</code>, and <code translate="no">!=</code> on the whole array subfield path, such as <code translate="no">array_contains(chunks[tags], &quot;tuning&quot;)</code>, are rejected because that path holds one inner array per Struct element. Use <code translate="no">MATCH_ANY(chunks, array_contains($[tags], &quot;tuning&quot;))</code> instead.</p>
+<h4 id="Count-Struct-elements" class="common-anchor-header">Count Struct elements</h4><p>Use <code translate="no">array_length(structArrayField)</code> to filter by the number of Struct elements in an entity. <code translate="no">array_length</code> on a subfield path, such as <code translate="no">array_length(chunks[section])</code>, returns the same count, because every subfield holds one value per Struct element.</p>
 <pre><code translate="no" class="language-text"># Articles with at least three chunks.
 array_length(chunks) &gt;= 3
 
 # Articles with exactly one chunk.
 array_length(chunks) == 1
 <button class="copy-code-btn"></button></code></pre>
-<p>对于 `<code translate="no">&gt;= 3</code> `，父字段计数谓词会匹配两个实体；而对于 `<code translate="no">== 1</code>`，则两个实体均不匹配。您还可以对子字段路径上的值进行计数：</p>
+<p>The parent-field count predicates match both entities for <code translate="no">&gt;= 3</code> and neither for <code translate="no">== 1</code>. You can also count values on a subfield path:</p>
 <pre><code translate="no" class="language-text">ARRAY_LENGTH(chunks[quality_score]) == 3
 <button class="copy-code-btn"></button></code></pre>
-<p>只有实体 B 匹配，因为其<code translate="no">quality_score</code> 子字段有三个值。</p>
-<h4 id="Test-subfield-values-across-elements" class="common-anchor-header">跨元素测试子字段值</h4><p>例如，测试是否有任何质量得分等于<code translate="no">0.74</code> ：</p>
+<p>Only Entity B matches because its <code translate="no">quality_score</code> subfield has three values.</p>
+<h4 id="Test-subfield-values-across-elements" class="common-anchor-header">Test subfield values across elements</h4><p>For example, test whether any quality score equals <code translate="no">0.74</code>:</p>
 <pre><code translate="no" class="language-text">ARRAY_CONTAINS(chunks[quality_score], 0.74)
 <button class="copy-code-btn"></button></code></pre>
-<p>只有实体 A 匹配。</p>
-<p>在标量子字段路径上使用<code translate="no">array_contains</code> 、<code translate="no">array_contains_any</code> 或<code translate="no">array_contains_all</code> ，可在该实体中的所有 Struct 元素上测试该子字段的值。每个子字段路径均单独进行评估，因此不同子字段的条件可由不同的 Struct 元素满足。</p>
+<p>Only Entity A matches.</p>
+<p>Use <code translate="no">array_contains</code>, <code translate="no">array_contains_any</code>, or <code translate="no">array_contains_all</code> on a scalar subfield path to test the values of that subfield across all Struct elements in the entity. Each subfield path is evaluated on its own, so conditions on different subfields can be satisfied by different Struct elements.</p>
 <pre><code translate="no" class="language-text"># At least one chunk belongs to the &quot;index&quot; section.
 array_contains(chunks[section], &quot;index&quot;)
 
@@ -391,9 +393,9 @@ array_contains_any(chunks[section], [&quot;index&quot;, &quot;search&quot;])
 # not necessarily in the same chunk.
 array_contains_all(chunks[section], [&quot;index&quot;, &quot;search&quot;])
 <button class="copy-code-btn"></button></code></pre>
-<p>对于示例数据，<code translate="no">array_contains</code> 和<code translate="no">array_contains_any</code> 这两个表达式均匹配两个实体。而<code translate="no">array_contains_all</code> 表达式则均不匹配，因为这两个实体均不包含<code translate="no">&quot;search&quot;</code> 部分。这些示例并未展示由不同元素在不同子字段上满足的条件。</p>
-<p><code translate="no">array_contains(chunks[section], &quot;index&quot;)</code> 与<code translate="no">MATCH_ANY(chunks, $[section] == &quot;index&quot;)</code> 选择相同的实体。当同一 Struct 元素必须满足多个条件时，请使用<code translate="no">MATCH_*</code> 或<code translate="no">element_filter</code> ，因为<code translate="no">$[...]</code> 谓词是按元素逐个评估的。</p>
-<h3 id="Test-whether-a-nullable-StructArray-field-is-null" class="common-anchor-header">测试可为空的 StructArray 字段是否为空<button data-href="#Test-whether-a-nullable-StructArray-field-is-null" class="anchor-icon" translate="no">
+<p>For the example data, the <code translate="no">array_contains</code> and <code translate="no">array_contains_any</code> expressions match both entities. The <code translate="no">array_contains_all</code> expression matches neither because neither entity has a <code translate="no">&quot;search&quot;</code> section. These examples do not demonstrate conditions satisfied by different elements on different subfields.</p>
+<p><code translate="no">array_contains(chunks[section], &quot;index&quot;)</code> selects the same entities as <code translate="no">MATCH_ANY(chunks, $[section] == &quot;index&quot;)</code>. Use <code translate="no">MATCH_*</code> or <code translate="no">element_filter</code> when several conditions must hold for the same Struct element, because <code translate="no">$[...]</code> predicates are evaluated per element.</p>
+<h3 id="Test-whether-a-nullable-StructArray-field-is-null" class="common-anchor-header">Test whether a nullable StructArray field is null<button data-href="#Test-whether-a-nullable-StructArray-field-is-null" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -408,15 +410,15 @@ array_contains_all(chunks[section], [&quot;index&quot;, &quot;search&quot;])
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>对可为空的 StructArray 字段使用<code translate="no">IS NULL</code> 或<code translate="no">IS NOT NULL</code> 来测试整个字段值。NULL 适用于整个 StructArray 字段，因此这些谓词仅接受字段名，而不接受子字段路径。</p>
+    </button></h3><p>Use <code translate="no">IS NULL</code> or <code translate="no">IS NOT NULL</code> on a nullable StructArray field to test the whole field value. NULL applies to the entire StructArray field, so these predicates accept only the field name, not a subfield path.</p>
 <pre><code translate="no" class="language-text"># Entities that have no chunks value.
 chunks is null
 
 # Entities that have a chunks value.
 chunks is not null
 <button class="copy-code-btn"></button></code></pre>
-<p>有关适用性，请参阅《<a href="/docs/zh/structarray-limits.md#Nullable-and-dynamic-schema-limits">可为空和动态 Schema 限制</a>》。实体 A 和实体 B 均具有非 NULL 的 StructArray 值。</p>
-<h2 id="Supported-predicates" class="common-anchor-header">支持的谓词<button data-href="#Supported-predicates" class="anchor-icon" translate="no">
+<p>For applicability, see <a href="/docs/zh/structarray-limits.md#Nullable-and-dynamic-schema-limits">Nullable and dynamic schema limits</a>. Entity A and Entity B both have non-NULL StructArray values.</p>
+<h2 id="Supported-predicates" class="common-anchor-header">Supported predicates<button data-href="#Supported-predicates" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -431,23 +433,23 @@ chunks is not null
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">$[...]</code> 语法表示当前Struct元素的标量值。谓词的支持情况取决于标量子字段的类型：</p>
+    </button></h2><p>The <code translate="no">$[...]</code> syntax represents the scalar value of the current Struct element. Predicate support depends on the scalar subfield type:</p>
 <table>
 <thead>
-<tr><th>子字段类型</th><th>元素级谓词支持</th></tr>
+<tr><th>Subfield type</th><th>Element-level predicate support</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">BOOL</code></td><td>标量谓词，例如<code translate="no">$[has_code] == true</code> 或<code translate="no">!($[has_code] == true)</code> 。请避免使用裸布尔表达式，例如<code translate="no">$[has_code]</code> 。</td></tr>
-<tr><td><code translate="no">INT8</code>、<code translate="no">INT16</code> 、<code translate="no">INT32</code> 、<code translate="no">INT64</code></td><td>比较运算、链式范围、<code translate="no">in</code> 、<code translate="no">not in</code> ，以及包含<code translate="no">+</code> 、<code translate="no">-</code> 、<code translate="no">*</code> 、<code translate="no">/</code> 或<code translate="no">%</code> 后接比较运算的算术表达式，还有逻辑组合。</td></tr>
-<tr><td><code translate="no">FLOAT</code>,<code translate="no">DOUBLE</code></td><td>比较、链式范围、<code translate="no">in</code> 、<code translate="no">not in</code> 、包含<code translate="no">+</code> 、<code translate="no">-</code> 、<code translate="no">*</code> 或<code translate="no">/</code> 的算术表达式后跟比较，以及逻辑组合。<code translate="no">%</code> 操作符不支持浮点子字段。</td></tr>
-<tr><td><code translate="no">VARCHAR</code></td><td>字符串比较、链式范围、<code translate="no">in</code> 、<code translate="no">not in</code> 、<code translate="no">like</code> 、<code translate="no">=~</code> 、<code translate="no">!~</code> 以及逻辑组合。</td></tr>
-<tr><td>标量<code translate="no">ARRAY</code> 子字段（Milvus 3.0.6 及更高版本）</td><td><code translate="no">array_contains</code>、<code translate="no">array_contains_any</code> 、<code translate="no">array_contains_all</code> 以及<code translate="no">array_length</code> 作用于<code translate="no">$[tags]</code> ，此外还有<code translate="no">$[tags] is null</code> 和<code translate="no">$[tags] is not null</code> 。比较操作符、<code translate="no">in</code> 以及<code translate="no">like</code> 作用于<code translate="no">$[tags]</code> 时将被拒绝。</td></tr>
-<tr><td>任何元素可为空的子字段（Milvus 3.0.6 及更高版本）</td><td><code translate="no">$[subfield] is null</code> 以及<code translate="no">$[subfield] is not null</code> 用于测试当前 Struct 元素中的值是否为 null。对于无法包含 null 值的子字段，<code translate="no">is null</code> 始终返回 false。</td></tr>
-<tr><td>向量子场</td><td>不支持作为<code translate="no">$[...]</code> 标量谓词的输入，但Milvus 3.0.6及更高版本中，针对元素可为空的向量子字段，<code translate="no">$[emb] is null</code> 和<code translate="no">$[emb] is not null</code> 除外。请改用EmbeddingList搜索或元素级向量搜索来处理向量子字段。</td></tr>
+<tr><td><code translate="no">BOOL</code></td><td>Scalar predicates such as <code translate="no">$[has_code] == true</code> or <code translate="no">!($[has_code] == true)</code>. Avoid bare boolean expressions such as <code translate="no">$[has_code]</code>.</td></tr>
+<tr><td><code translate="no">INT8</code>, <code translate="no">INT16</code>, <code translate="no">INT32</code>, <code translate="no">INT64</code></td><td>Comparison, chained range, <code translate="no">in</code>, <code translate="no">not in</code>, arithmetic expressions with <code translate="no">+</code>, <code translate="no">-</code>, <code translate="no">*</code>, <code translate="no">/</code>, or <code translate="no">%</code> followed by comparison, and logical combinations.</td></tr>
+<tr><td><code translate="no">FLOAT</code>, <code translate="no">DOUBLE</code></td><td>Comparison, chained range, <code translate="no">in</code>, <code translate="no">not in</code>, arithmetic expressions with <code translate="no">+</code>, <code translate="no">-</code>, <code translate="no">*</code>, or <code translate="no">/</code> followed by comparison, and logical combinations. The <code translate="no">%</code> operator is not supported for floating-point subfields.</td></tr>
+<tr><td><code translate="no">VARCHAR</code></td><td>String comparison, chained range, <code translate="no">in</code>, <code translate="no">not in</code>, <code translate="no">like</code>, <code translate="no">=~</code>, <code translate="no">!~</code>, and logical combinations.</td></tr>
+<tr><td>Scalar <code translate="no">ARRAY</code> subfields (Milvus 3.0.6 and later)</td><td><code translate="no">array_contains</code>, <code translate="no">array_contains_any</code>, <code translate="no">array_contains_all</code>, and <code translate="no">array_length</code> on <code translate="no">$[tags]</code>, plus <code translate="no">$[tags] is null</code> and <code translate="no">$[tags] is not null</code>. Comparison operators, <code translate="no">in</code>, and <code translate="no">like</code> on <code translate="no">$[tags]</code> are rejected.</td></tr>
+<tr><td>Any element-nullable subfield (Milvus 3.0.6 and later)</td><td><code translate="no">$[subfield] is null</code> and <code translate="no">$[subfield] is not null</code> test whether the value in the current Struct element is null. On a subfield that cannot hold null values, <code translate="no">is null</code> is always false.</td></tr>
+<tr><td>Vector subfields</td><td>Not supported as <code translate="no">$[...]</code> scalar predicate inputs, except <code translate="no">$[emb] is null</code> and <code translate="no">$[emb] is not null</code> on an element-nullable vector subfield in Milvus 3.0.6 and later. Use vector subfields through EmbeddingList search or element-level vector search instead.</td></tr>
 </tbody>
 </table>
-<p><code translate="no">&amp;&amp;</code> 、<code translate="no">||</code> 和<code translate="no">!</code> 等逻辑操作符适用于谓词表达式。例如，应写成<code translate="no">!($[has_code] == true)</code> ，而非<code translate="no">!$[has_code]</code> 。</p>
-<h2 id="Null-values-in-element-level-predicates" class="common-anchor-header">元素级谓词中的空值<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.6</span><button data-href="#Null-values-in-element-level-predicates" class="anchor-icon" translate="no">
+<p>Logical operators such as <code translate="no">&amp;&amp;</code>, <code translate="no">||</code>, and <code translate="no">!</code> apply to predicate expressions. For example, write <code translate="no">!($[has_code] == true)</code> instead of <code translate="no">!$[has_code]</code>.</p>
+<h2 id="Null-values-in-element-level-predicates" class="common-anchor-header">Null values in element-level predicates<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.6</span><button data-href="#Null-values-in-element-level-predicates" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -462,13 +464,13 @@ chunks is not null
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>从 Milvus 3.0.6 开始，Struct 元素中的可为空子字段可以包含空值。在 StructArray 谓词中，空值遵循三值逻辑：</p>
+    </button></h2><p>Starting in Milvus 3.0.6, an element-nullable subfield can hold a null value in a Struct element. Null values follow three-valued logic in StructArray predicates:</p>
 <ul>
-<li><p>对空值子字段进行的比较（如<code translate="no">in</code> ）、<code translate="no">like</code> 或算术谓词，其结果为未知而非假。<code translate="no">&amp;&amp;</code> 、<code translate="no">\|\|</code> 和<code translate="no">!</code> 会传播未知结果，因此当<code translate="no">$[lang]</code> 为空时，<code translate="no">!($[lang] == &quot;en&quot;)</code> 的结果仍为未知。</p></li>
-<li><p><code translate="no">element_filter</code> 仅保留谓词为 true 的 Struct 元素。未知元素不会被匹配。</p></li>
-<li><p><code translate="no">MATCH_*</code> 将未知元素计为未匹配。当任何元素为未知时，<code translate="no">MATCH_ALL</code> 为 false，而空的 StructArray 仍满足<code translate="no">MATCH_ALL</code> 。</p></li>
-<li><p><code translate="no">$[subfield] is null</code> <code translate="no">$[subfield] is not null</code> 始终为真或假。它们读取当前元素的有效性，因此 仅精确匹配那些 值为 null 的元素。<code translate="no">$[lang] is null</code> <code translate="no">lang</code> </p></li>
-<li><p>对于数组子字段，当<code translate="no">$[tags]</code> 为真时，<code translate="no">array_contains*</code> 会跳过 null 的内部值，且绝不会匹配 null 的内部数组；<code translate="no">array_length($[tags])</code> 会计入 null 的内部值；而<code translate="no">$[tags] is null</code> 仅在内部数组为 null 时为真。</p></li>
+<li><p>A comparison, <code translate="no">in</code>, <code translate="no">like</code>, or arithmetic predicate on a null subfield value is unknown rather than false. <code translate="no">&amp;&amp;</code>, <code translate="no">\|\|</code>, and <code translate="no">!</code> propagate unknown results, so <code translate="no">!($[lang] == &quot;en&quot;)</code> is still unknown when <code translate="no">$[lang]</code> is null.</p></li>
+<li><p><code translate="no">element_filter</code> keeps only Struct elements whose predicate is true. Unknown elements are not matched.</p></li>
+<li><p><code translate="no">MATCH_*</code> counts an unknown element as a miss. <code translate="no">MATCH_ALL</code> is false when any element is unknown, while an empty StructArray still satisfies <code translate="no">MATCH_ALL</code>.</p></li>
+<li><p><code translate="no">$[subfield] is null</code> and <code translate="no">$[subfield] is not null</code> are always true or false. They read the validity of the current element, so <code translate="no">$[lang] is null</code> matches exactly the elements whose <code translate="no">lang</code> value is null.</p></li>
+<li><p>On an array subfield, <code translate="no">array_contains*</code> on <code translate="no">$[tags]</code> skips null inner values and never matches a null inner array, <code translate="no">array_length($[tags])</code> counts null inner values, and <code translate="no">$[tags] is null</code> is true only for a null inner array.</p></li>
 </ul>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Chunks whose language is unknown.</span>
 element_filter(chunks, $[lang] <span class="hljs-keyword">is</span> null)
@@ -479,8 +481,8 @@ MATCH_ALL(chunks, $[lang] <span class="hljs-keyword">is</span> <span class="hljs
 <span class="hljs-comment"># Entities with at least one chunk tagged &quot;tuning&quot;.</span>
 MATCH_ANY(chunks, array_contains($[tags], <span class="hljs-string">&quot;tuning&quot;</span>))
 <button class="copy-code-btn"></button></code></pre>
-<p>行级位置路径遵循相同的规则：当第一个元素的<code translate="no">lang</code> 值为 null、实体在该位置没有元素，或者 StructArray 字段为 null 时，<code translate="no">chunks[0][lang] == &quot;en&quot;</code> 的结果未知，因此实体不匹配。</p>
-<h2 id="Unsupported-predicates" class="common-anchor-header">不支持的谓词<button data-href="#Unsupported-predicates" class="anchor-icon" translate="no">
+<p>Row-level positional paths follow the same rule: <code translate="no">chunks[0][lang] == &quot;en&quot;</code> is unknown when the <code translate="no">lang</code> value of the first element is null, when the entity has no element at that position, or when the StructArray field is null, so the entity does not match.</p>
+<h2 id="Unsupported-predicates" class="common-anchor-header">Unsupported predicates<button data-href="#Unsupported-predicates" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -495,22 +497,22 @@ MATCH_ANY(chunks, array_contains($[tags], <span class="hljs-string">&quot;tuning
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>元素级<code translate="no">$[...]</code> 谓词不支持：</p>
+    </button></h2><p>Element-level <code translate="no">$[...]</code> predicates do not support:</p>
 <ul>
-<li><p>文本匹配函数，例如 `<code translate="no">text_match(field, &quot;...&quot;)</code> ` 或 `<code translate="no">phrase_match(field, &quot;...&quot;)</code>`。</p></li>
-<li><p>JSON路径语法、针对JSON路径的<code translate="no">exists</code> ，或诸如<code translate="no">json_contains</code> 、<code translate="no">json_contains_all</code> 或<code translate="no">json_contains_any</code> 等JSON函数。</p></li>
-<li><p>数组容器函数，例如<code translate="no">array_contains</code> 、<code translate="no">array_contains_all</code> 、<code translate="no">array_contains_any</code> 或<code translate="no">array_length</code> ，这些函数作用于标量子字段的<code translate="no">$[subfield]</code> 。请改在行级谓词中，对诸如<code translate="no">chunks[section]</code> 之类的子字段路径使用这些函数。从 Milvus 3.0.6 开始，这些函数在标量<code translate="no">ARRAY</code> 子字段的<code translate="no">$[tags]</code> 上也受支持。</p></li>
-<li><p><code translate="no">$[subfield] is null</code> 或在 Milvus 3.0.6 之前，使用<code translate="no">$[subfield] is not null</code> 。</p></li>
+<li><p>Text match functions, such as <code translate="no">text_match(field, &quot;...&quot;)</code> or <code translate="no">phrase_match(field, &quot;...&quot;)</code>.</p></li>
+<li><p>JSON path syntax, <code translate="no">exists</code> on JSON paths, or JSON functions such as <code translate="no">json_contains</code>, <code translate="no">json_contains_all</code>, or <code translate="no">json_contains_any</code>.</p></li>
+<li><p>Array container functions such as <code translate="no">array_contains</code>, <code translate="no">array_contains_all</code>, <code translate="no">array_contains_any</code>, or <code translate="no">array_length</code> on <code translate="no">$[subfield]</code> of a scalar subfield. Use these functions on a subfield path such as <code translate="no">chunks[section]</code> in a row-level predicate instead. Starting in Milvus 3.0.6, they are supported on <code translate="no">$[tags]</code> for scalar <code translate="no">ARRAY</code> subfields.</p></li>
+<li><p><code translate="no">$[subfield] is null</code> or <code translate="no">$[subfield] is not null</code> before Milvus 3.0.6.</p></li>
 </ul>
 <ul>
-<li><p>数组子字段的下标，例如<code translate="no">$[tags][0]</code> ，以及<code translate="no">$[tags]</code> 上的<code translate="no">like</code> 。</p></li>
-<li><p>几何/GIS 函数。</p></li>
-<li><p>带时区的时间戳表达式。</p></li>
-<li><p><code translate="no">random_sample(...)</code>。</p></li>
-<li><p>字段级向量谓词。</p></li>
-<li><p>通用过滤函数调用，除非特定函数的签名和执行路径明确支持 StructArray 元素级谓词。</p></li>
+<li><p>A subscript into an array subfield, such as <code translate="no">$[tags][0]</code>, and <code translate="no">like</code> on <code translate="no">$[tags]</code>.</p></li>
+<li><p>Geometry / GIS functions.</p></li>
+<li><p>Timestamptz expressions.</p></li>
+<li><p><code translate="no">random_sample(...)</code>.</p></li>
+<li><p>Field-level vector predicates.</p></li>
+<li><p>Generic filter function calls unless the specific function signature and execution path explicitly support StructArray element-level predicates.</p></li>
 </ul>
-<h2 id="Syntax-rules" class="common-anchor-header">语法规则<button data-href="#Syntax-rules" class="anchor-icon" translate="no">
+<h2 id="Syntax-rules" class="common-anchor-header">Syntax rules<button data-href="#Syntax-rules" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -525,24 +527,24 @@ MATCH_ANY(chunks, array_contains($[tags], <span class="hljs-string">&quot;tuning
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>请遵循以下语法规则：</p>
+    </button></h2><p>Follow these syntax rules:</p>
 <ul>
-<li><p><code translate="no">MATCH_*</code> 操作符名称不区分大小写。</p></li>
-<li><p>仅在<code translate="no">element_filter</code> 或<code translate="no">MATCH_*</code> 谓词内部使用<code translate="no">$[subfield]</code> 。例如，<code translate="no">array_length($[section])</code> 将被拒绝。</p></li>
-<li><p>请勿将<code translate="no">$[subfield]</code> 用作JSON路径、数组容器或向量字段引用。</p></li>
-<li><p>请勿将<code translate="no">element_filter</code> 或<code translate="no">MATCH_*</code> 嵌套在另一个 StructArray 操作符中。</p></li>
-<li><p>对于<code translate="no">MATCH_LEAST</code> 、<code translate="no">MATCH_MOST</code> 和<code translate="no">MATCH_EXACT</code> ，请使用命名的<code translate="no">threshold=N</code> 。</p></li>
-<li><p>在位置路径中，应将元素位置写在子字段名称之前：<code translate="no">chunks[0][section]</code> ，而非<code translate="no">chunks[section][0]</code> 。</p></li>
+<li><p><code translate="no">MATCH_*</code> operator names are case-insensitive.</p></li>
+<li><p>Use <code translate="no">$[subfield]</code> only inside <code translate="no">element_filter</code> or <code translate="no">MATCH_*</code> predicates. For example, <code translate="no">array_length($[section])</code> is rejected.</p></li>
+<li><p>Do not use <code translate="no">$[subfield]</code> as a JSON path, array container, or vector field reference.</p></li>
+<li><p>Do not nest <code translate="no">element_filter</code> or <code translate="no">MATCH_*</code> inside another StructArray operator.</p></li>
+<li><p>Use named <code translate="no">threshold=N</code> for <code translate="no">MATCH_LEAST</code>, <code translate="no">MATCH_MOST</code>, and <code translate="no">MATCH_EXACT</code>.</p></li>
+<li><p>In positional paths, write the element position before the subfield name: <code translate="no">chunks[0][section]</code>, not <code translate="no">chunks[section][0]</code>.</p></li>
 </ul>
 <ul>
-<li>仅在整个 StructArray 字段上使用<code translate="no">IS NULL</code> 和<code translate="no">IS NOT NULL</code> ，例如<code translate="no">chunks is null</code> ；或者从 Milvus 3.0.6 开始，在<code translate="no">element_filter</code> 或<code translate="no">MATCH_*</code> 中的<code translate="no">$[subfield]</code> 上使用。请勿在子字段路径（如<code translate="no">chunks[section]</code> ）上使用它们。</li>
+<li>Use <code translate="no">IS NULL</code> and <code translate="no">IS NOT NULL</code> only on the whole StructArray field, such as <code translate="no">chunks is null</code>, or, starting in Milvus 3.0.6, on <code translate="no">$[subfield]</code> inside <code translate="no">element_filter</code> or <code translate="no">MATCH_*</code>. Do not use them on a subfield path such as <code translate="no">chunks[section]</code>.</li>
 </ul>
 <ul>
-<li><p>请勿对数组子字段进行下标操作。<code translate="no">$[tags][0]</code> 和<code translate="no">chunks[0][tags][0]</code> 均不被支持。</p></li>
-<li><p><code translate="no">MATCH_ANY</code> 对空的 StructArray 调用时，返回<code translate="no">false</code> 。</p></li>
-<li><p><code translate="no">MATCH_ALL</code> 对空的 StructArray 调用该函数将返回<code translate="no">true</code> 。</p></li>
+<li><p>Do not subscript into an array subfield. <code translate="no">$[tags][0]</code> and <code translate="no">chunks[0][tags][0]</code> are not supported.</p></li>
+<li><p><code translate="no">MATCH_ANY</code> on an empty StructArray returns <code translate="no">false</code>.</p></li>
+<li><p><code translate="no">MATCH_ALL</code> on an empty StructArray returns <code translate="no">true</code>.</p></li>
 </ul>
-<h2 id="See-also" class="common-anchor-header">另请参阅<button data-href="#See-also" class="anchor-icon" translate="no">
+<h2 id="See-also" class="common-anchor-header">See also<button data-href="#See-also" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -557,10 +559,10 @@ MATCH_ANY(chunks, array_contains($[tags], <span class="hljs-string">&quot;tuning
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>有关相关指导，请参阅：</p>
+    </button></h2><p>For related guidance, see:</p>
 <ul>
-<li><p><a href="/docs/zh/filtered-search-with-structarray.md">使用 StructArray 进行过滤搜索</a></p></li>
-<li><p><a href="/docs/zh/basic-vector-search-with-structarray.md">使用 StructArray 进行基本向量搜索</a></p></li>
-<li><p><a href="/docs/zh/index-structarray-fields.md">索引 StructArray 字段</a></p></li>
-<li><p><a href="/docs/zh/structarray-limits.md">StructArray 的限制</a></p></li>
+<li><p><a href="/docs/zh/filtered-search-with-structarray.md">Filtered Search with StructArray</a></p></li>
+<li><p><a href="/docs/zh/basic-vector-search-with-structarray.md">Basic Vector Search with StructArray</a></p></li>
+<li><p><a href="/docs/zh/index-structarray-fields.md">Index StructArray Fields</a></p></li>
+<li><p><a href="/docs/zh/structarray-limits.md">StructArray Limits</a></p></li>
 </ul>

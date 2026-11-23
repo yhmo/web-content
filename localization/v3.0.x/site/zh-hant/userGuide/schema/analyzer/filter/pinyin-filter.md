@@ -1,10 +1,12 @@
 ---
 id: pinyin-filter.md
-title: 拼音Compatible with Milvus 3.0.x
-summary: 在文字分析過程中，拼音過濾器會將中文字元片段轉換為拼音片段，從而使中文文字能夠進行基於拼音的比對。
+title: PinyinCompatible with Milvus 3.0.x
+summary: >-
+  The pinyin filter converts Chinese character tokens into Pinyin tokens during
+  text analysis, enabling Pinyin-based matching for Chinese text.
 beta: Milvus 3.0.x
 ---
-<h1 id="Pinyin" class="common-anchor-header">拼音<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Pinyin" class="anchor-icon" translate="no">
+<h1 id="Pinyin" class="common-anchor-header">Pinyin<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Pinyin" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -19,9 +21,9 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>中文文字搜尋通常需要使用者精確輸入與索引文字中完全相同的漢字。在名稱查詢、自動完成及邊打字邊搜尋的工作流程中，使用者經常會輸入拼音而非漢字。 例如，使用者可能會輸入「<code translate="no">zuqiu</code> 」來搜尋「<code translate="no">足球</code> 」。<code translate="no">pinyin</code> 過濾器會在分析器輸出中加入拼音標記，使中文文字能與拼音輸入進行比對，而無需維護獨立的拼音欄位。</p>
-<p><code translate="no">pinyin</code> 篩選器通常與<a href="/docs/zh-hant/jieba-tokenizer.md">Jieba</a>分詞器搭配使用於中文文本。它可在自訂分析器篩選器管線中運作，並能針對同一個中文詞元輸出多種拼音詞元形式。</p>
-<h2 id="Configuration" class="common-anchor-header">設定<button data-href="#Configuration" class="anchor-icon" translate="no">
+    </button></h1><p>Chinese text search often requires users to enter Chinese characters exactly as they appear in the indexed text. In name lookup, autocomplete, and search-as-you-type workflows, users frequently type Pinyin instead of Chinese characters. For example, a user may type <code translate="no">zuqiu</code> to search for <code translate="no">足球</code>. The <code translate="no">pinyin</code> filter adds Pinyin tokens to the analyzer output so Chinese text can match Pinyin input without maintaining a separate Pinyin field.</p>
+<p>The <code translate="no">pinyin</code> filter is typically used with the <a href="/docs/zh-hant/jieba-tokenizer.md">Jieba</a> tokenizer for Chinese text. It works in a custom analyzer filter pipeline and can emit multiple Pinyin token forms for the same Chinese token.</p>
+<h2 id="Configuration" class="common-anchor-header">Configuration<button data-href="#Configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -36,16 +38,16 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>若要使用預設選項，請在<code translate="no">analyzer_params</code> 的<code translate="no">filter</code> 區段中指定<code translate="no">&quot;pinyin&quot;</code> 。</p>
+    </button></h2><p>To use the default options, specify <code translate="no">&quot;pinyin&quot;</code> in the <code translate="no">filter</code> section of <code translate="no">analyzer_params</code>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;jieba&quot;</span>,
@@ -94,17 +96,17 @@ analyzerParams=<span class="hljs-string">&#x27;{
   &quot;filter&quot;: [&quot;pinyin&quot;]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>此簡寫方式會保留原始的中文標記，並輸出字元級別的拼音標記。除非您明確啟用相關選項，否則不會輸出連音拼音或拼音首字母。</p>
-<p>若需完全控制，請將篩選器指定為物件，並配置 Milvus 所產出的拼音標記形式。</p>
+<p>This shorthand keeps the original Chinese tokens and emits character-level Pinyin tokens. It does not emit joined Pinyin or Pinyin initials unless you enable those options explicitly.</p>
+<p>For full control, specify the filter as an object and configure the Pinyin token forms that Milvus emits.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;jieba&quot;</span>,
@@ -217,20 +219,20 @@ analyzerParams=<span class="hljs-string">&#x27;{
   ]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>此篩選器接受以下參數。</p>
+<p>The filter accepts the following parameters.</p>
 <table>
 <thead>
-<tr><th>參數</th><th>類型</th><th>預設值</th><th>說明</th></tr>
+<tr><th>Parameter</th><th>Type</th><th>Default</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">keep_original</code></td><td>布林值</td><td><code translate="no">true</code></td><td>在分析器的輸出中保留原始的中文標記。</td></tr>
-<tr><td><code translate="no">keep_full_pinyin</code></td><td>布林值</td><td><code translate="no">true</code></td><td>輸出字元層級的拼音標記。例如，<code translate="no">中文</code> 會產生<code translate="no">zhong</code> 和<code translate="no">wen</code> 。</td></tr>
-<tr><td><code translate="no">keep_joined_full_pinyin</code></td><td>布林值</td><td><code translate="no">false</code></td><td>針對每個來源詞元，輸出一個連接後的拼音詞元。例如，<code translate="no">中文</code> 會產生<code translate="no">zhongwen</code> 。</td></tr>
-<tr><td><code translate="no">keep_separate_first_letter</code></td><td>布林值</td><td><code translate="no">false</code></td><td>針對每個來源詞元，輸出一個拼音首字母詞元。例如，<code translate="no">中文</code> 會產生<code translate="no">zw</code> 。</td></tr>
+<tr><td><code translate="no">keep_original</code></td><td>Boolean</td><td><code translate="no">true</code></td><td>Keeps the original Chinese token in the analyzer output.</td></tr>
+<tr><td><code translate="no">keep_full_pinyin</code></td><td>Boolean</td><td><code translate="no">true</code></td><td>Emits character-level Pinyin tokens. For example, <code translate="no">中文</code> produces <code translate="no">zhong</code> and <code translate="no">wen</code>.</td></tr>
+<tr><td><code translate="no">keep_joined_full_pinyin</code></td><td>Boolean</td><td><code translate="no">false</code></td><td>Emits a joined Pinyin token for each source token. For example, <code translate="no">中文</code> produces <code translate="no">zhongwen</code>.</td></tr>
+<tr><td><code translate="no">keep_separate_first_letter</code></td><td>Boolean</td><td><code translate="no">false</code></td><td>Emits a Pinyin-initials token for each source token. For example, <code translate="no">中文</code> produces <code translate="no">zw</code>.</td></tr>
 </tbody>
 </table>
-<p>此篩選器針對分詞器產生的詞元進行處理。對於中文文本，請搭配如<code translate="no">jieba</code> 這樣的分詞器使用。</p>
-<h2 id="Examples" class="common-anchor-header">範例<button data-href="#Examples" class="anchor-icon" translate="no">
+<p>The filter operates on tokens produced by the tokenizer. For Chinese text, use it with a tokenizer such as <code translate="no">jieba</code>.</p>
+<h2 id="Examples" class="common-anchor-header">Examples<button data-href="#Examples" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -245,16 +247,16 @@ analyzerParams=<span class="hljs-string">&#x27;{
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>在將分析器設定套用至您的集合架構之前，請先使用<code translate="no">run_analyzer</code> 驗證其運作行為。</p>
+    </button></h2><p>Before applying the analyzer configuration to your collection schema, verify its behavior with <code translate="no">run_analyzer</code>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -342,7 +344,7 @@ std::string sample_text = <span class="hljs-string">&quot;中文测试&quot;</sp
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <span class="hljs-comment"># The run_analyzer request is sent directly to the endpoint below.</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Match-Chinese-text-with-character-level-Pinyin" class="common-anchor-header">將中文文字與字元級別的拼音進行配對<button data-href="#Match-Chinese-text-with-character-level-Pinyin" class="anchor-icon" translate="no">
+<h3 id="Match-Chinese-text-with-character-level-Pinyin" class="common-anchor-header">Match Chinese text with character-level Pinyin<button data-href="#Match-Chinese-text-with-character-level-Pinyin" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -357,16 +359,16 @@ std::string sample_text = <span class="hljs-string">&quot;中文测试&quot;</sp
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>預設的<code translate="no">pinyin</code> 過濾器會保留原始的中文詞元，並輸出字元級的拼音詞元。</p>
+    </button></h3><p>The default <code translate="no">pinyin</code> filter keeps the original Chinese tokens and emits character-level Pinyin tokens.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;jieba&quot;</span>,
@@ -479,10 +481,10 @@ Console.WriteLine(<span class="hljs-built_in">string</span>.Join(<span class="hl
         &quot;analyzerParams&quot;: &quot;{\&quot;tokenizer\&quot;: \&quot;jieba\&quot;, \&quot;filter\&quot;: [\&quot;pinyin\&quot;]}&quot;
      }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>預期輸出：</p>
+<p>Expected output:</p>
 <pre><code translate="no" class="language-plaintext">[&#x27;中文&#x27;, &#x27;zhong&#x27;, &#x27;wen&#x27;, &#x27;测试&#x27;, &#x27;ce&#x27;, &#x27;shi&#x27;]
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Match-Chinese-terms-with-joined-Pinyin" class="common-anchor-header">將中文詞彙與連寫拼音進行配對<button data-href="#Match-Chinese-terms-with-joined-Pinyin" class="anchor-icon" translate="no">
+<h3 id="Match-Chinese-terms-with-joined-Pinyin" class="common-anchor-header">Match Chinese terms with joined Pinyin<button data-href="#Match-Chinese-terms-with-joined-Pinyin" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -497,16 +499,16 @@ Console.WriteLine(<span class="hljs-built_in">string</span>.Join(<span class="hl
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>當您需要讓中文詞彙與其完整的連寫拼音形式進行配對時，請啟用<code translate="no">keep_joined_full_pinyin</code> 。</p>
+    </button></h3><p>Enable <code translate="no">keep_joined_full_pinyin</code> when you need a Chinese term to match its full joined Pinyin form.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;jieba&quot;</span>,
@@ -675,10 +677,10 @@ Console.WriteLine(<span class="hljs-built_in">string</span>.Join(<span class="hl
         &quot;analyzerParams&quot;: &quot;{\&quot;tokenizer\&quot;: \&quot;jieba\&quot;, \&quot;filter\&quot;: [{\&quot;type\&quot;: \&quot;pinyin\&quot;, \&quot;keep_original\&quot;: true, \&quot;keep_full_pinyin\&quot;: false, \&quot;keep_joined_full_pinyin\&quot;: true, \&quot;keep_separate_first_letter\&quot;: false}]}&quot;
      }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>預期輸出：</p>
+<p>Expected output:</p>
 <pre><code translate="no" class="language-plaintext">[&#x27;中文&#x27;, &#x27;zhongwen&#x27;, &#x27;测试&#x27;, &#x27;ceshi&#x27;]
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Match-Chinese-terms-with-Pinyin-initials" class="common-anchor-header">將中文術語與拼音首字母進行配對<button data-href="#Match-Chinese-terms-with-Pinyin-initials" class="anchor-icon" translate="no">
+<h3 id="Match-Chinese-terms-with-Pinyin-initials" class="common-anchor-header">Match Chinese terms with Pinyin initials<button data-href="#Match-Chinese-terms-with-Pinyin-initials" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -693,16 +695,16 @@ Console.WriteLine(<span class="hljs-built_in">string</span>.Join(<span class="hl
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>當您需要讓中文詞彙與其拼音形式的首字母進行配對時，請啟用<code translate="no">keep_separate_first_letter</code> 。</p>
+    </button></h3><p>Enable <code translate="no">keep_separate_first_letter</code> when you need a Chinese term to match the initials of its Pinyin form.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;jieba&quot;</span>,
@@ -871,6 +873,6 @@ Console.WriteLine(<span class="hljs-built_in">string</span>.Join(<span class="hl
         &quot;analyzerParams&quot;: &quot;{\&quot;tokenizer\&quot;: \&quot;jieba\&quot;, \&quot;filter\&quot;: [{\&quot;type\&quot;: \&quot;pinyin\&quot;, \&quot;keep_original\&quot;: true, \&quot;keep_full_pinyin\&quot;: false, \&quot;keep_joined_full_pinyin\&quot;: false, \&quot;keep_separate_first_letter\&quot;: true}]}&quot;
      }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>預期輸出：</p>
+<p>Expected output:</p>
 <pre><code translate="no" class="language-plaintext">[&#x27;中文&#x27;, &#x27;zw&#x27;, &#x27;测试&#x27;, &#x27;cs&#x27;]
 <button class="copy-code-btn"></button></code></pre>

@@ -2,9 +2,8 @@
 id: hugging-face-ranker.md
 title: Hugging Face RankerCompatible with Milvus v2.6.20+
 summary: >-
-  Cette rubrique explique comment réorganiser le classement des résultats de
-  recherche Milvus à l'aide des modèles de similarité entre phrases hébergés par
-  Hugging Face.
+  This topic describes how to rerank Milvus search results with hosted Hugging
+  Face sentence-similarity models.
 beta: Milvus v2.6.20+
 ---
 <h1 id="Hugging-Face-Ranker" class="common-anchor-header">Hugging Face Ranker<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus v2.6.20+</span><button data-href="#Hugging-Face-Ranker" class="anchor-icon" translate="no">
@@ -22,9 +21,9 @@ beta: Milvus v2.6.20+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>La recherche vectorielle classe les résultats en fonction de la distance vectorielle, mais l'ordre initial peut ne pas refléter la pertinence des réponses textuelles de chaque candidat par rapport à la requête. Hugging Face Ranker envoie la requête et les textes des candidats aux <a href="https://huggingface.co/docs/inference-providers/index">fournisseurs d'inférence Hugging Face</a> hébergés et utilise les scores d'<code translate="no">sentence-similarity</code> s pour réorganiser l'ordre des candidats renvoyés par Milvus.</p>
-<p>Cette intégration utilise le routeur hébergé de Hugging Face. Pour effectuer un reclassement à l’aide d’un service Text Embeddings Inference (TEI) déployé séparément, consultez <a href="/docs/fr/tei-ranker.md">TEI Ranker</a>.</p>
-<h2 id="Limits" class="common-anchor-header">Limites<button data-href="#Limits" class="anchor-icon" translate="no">
+    </button></h1><p>Vector search orders results by vector distance, but the initial order may not reflect how well each candidate’s text answers the query. Hugging Face Ranker sends query and candidate text to hosted <a href="https://huggingface.co/docs/inference-providers/index">Hugging Face Inference Providers</a> and uses <code translate="no">sentence-similarity</code> scores to reorder the candidates returned by Milvus.</p>
+<p>This integration uses the hosted Hugging Face router. To rerank with a separately deployed Text Embeddings Inference (TEI) service, see <a href="/docs/fr/tei-ranker.md">TEI Ranker</a>.</p>
+<h2 id="Limits" class="common-anchor-header">Limits<button data-href="#Limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -40,10 +39,10 @@ beta: Milvus v2.6.20+
         ></path>
       </svg>
     </button></h2><ul>
-<li>La fonction doit référencer exactement un champ « <code translate="no">VARCHAR</code> » non nul dans <code translate="no">input_field_names</code>.</li>
-<li>Le nombre de chaînes de caractères dans ` <code translate="no">queries</code> ` doit être égal au nombre de requêtes de recherche (<code translate="no">nq</code>).</li>
+<li>The Function must reference exactly one non-nullable <code translate="no">VARCHAR</code> field in <code translate="no">input_field_names</code>.</li>
+<li>The number of strings in <code translate="no">queries</code> must equal the number of search queries (<code translate="no">nq</code>).</li>
 </ul>
-<h2 id="How-it-works" class="common-anchor-header">Fonctionnement<button data-href="#How-it-works" class="anchor-icon" translate="no">
+<h2 id="How-it-works" class="common-anchor-header">How it works<button data-href="#How-it-works" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -58,34 +57,34 @@ beta: Milvus v2.6.20+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><span class="img-wrapper">
-  
-   <img translate="no" src="/docs/v3.0.x/assets/hugging-face-ranker-flow.png" alt="Hugging Face Ranker workflow" class="doc-image" id="hugging-face-ranker-workflow" /> 
-   <span>Workflow de Hugging Face Ranker</span>
-  
- </span></p>
-<p>Hugging Face Ranker s'exécute après la recherche vectorielle initiale :</p>
+    </button></h2><p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v3.0.x/assets/hugging-face-ranker-flow.png" alt="Hugging Face Ranker workflow" class="doc-image" id="hugging-face-ranker-workflow" />
+    <span>Hugging Face Ranker workflow</span>
+  </span>
+</p>
+<p>Hugging Face Ranker runs after the initial vector search:</p>
 <ol>
-<li><strong>Récupération des entités candidates.</strong> Milvus effectue une recherche dans le champ vectoriel configuré et collecte les entités candidates.</li>
-<li><strong>Préparation du texte pour le reclassement.</strong> La fonction lit le texte de la requête à partir de <code translate="no">params.queries</code> et le texte des entités candidates à partir du champ <code translate="no">VARCHAR</code> spécifié dans <code translate="no">input_field_names</code>.</li>
-<li><strong>Demande des scores de similarité.</strong> Milvus envoie la requête via <code translate="no">source_sentence</code> et les textes candidats via <code translate="no">sentences</code>, en passant par <code translate="no">hf-inference</code>, vers le pipeline Hugging Face <code translate="no">sentence-similarity</code>.</li>
-<li><strong>Réclassement des candidats.</strong> Hugging Face renvoie un score par candidat. Milvus classe les candidats du score le plus élevé au plus bas et renvoie les résultats reclassés.</li>
+<li><strong>Retrieve candidate entities.</strong> Milvus searches the configured vector field and collects candidate entities.</li>
+<li><strong>Prepare text for reranking.</strong> The Function reads query text from <code translate="no">params.queries</code> and candidate text from the <code translate="no">VARCHAR</code> field specified in <code translate="no">input_field_names</code>.</li>
+<li><strong>Request similarity scores.</strong> Milvus sends the query as <code translate="no">source_sentence</code> and the candidate texts as <code translate="no">sentences</code> through <code translate="no">hf-inference</code> to the Hugging Face <code translate="no">sentence-similarity</code> pipeline.</li>
+<li><strong>Rerank the candidates.</strong> Hugging Face returns one score per candidate. Milvus orders candidates from highest to lowest score and returns the reranked results.</li>
 </ol>
-<p><strong>Comment les scores de similarité sont-ils calculés ?</strong></p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="/docs/v3.0.x/assets/hugging-face-ranker-scoring.png" alt="How Hugging Face Ranker calculates similarity scores" class="doc-image" id="how-hugging-face-ranker-calculates-similarity-scores" /> 
-   <span>Comment Hugging Face Ranker calcule les scores de similarité</span>
-  
- </span></p>
-<p>Le modèle Hugging Face calcule les scores en trois étapes :</p>
+<p><strong>How similarity scores are calculated</strong></p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v3.0.x/assets/hugging-face-ranker-scoring.png" alt="How Hugging Face Ranker calculates similarity scores" class="doc-image" id="how-hugging-face-ranker-calculates-similarity-scores" />
+    <span>How Hugging Face Ranker calculates similarity scores</span>
+  </span>
+</p>
+<p>The Hugging Face model calculates the scores in three stages:</p>
 <ol>
-<li><strong>Préparation des entrées textuelles.</strong> Le Ranker lit le texte de la requête à partir de <code translate="no">params.queries</code> et le texte des candidats à partir du champ <code translate="no">VARCHAR</code> configuré.</li>
-<li><strong>Création de représentations distinctes pour le modèle.</strong> Milvus envoie la requête sous la forme <code translate="no">source_sentence</code> et les textes candidats sous la forme <code translate="no">sentences</code>. Le modèle encode en interne la requête et chaque candidat séparément.</li>
-<li><strong>Comparaison et retour des scores.</strong> Le modèle compare la représentation de la requête à celle de chaque candidat et renvoie un score de similarité par candidat.</li>
+<li><strong>Prepare the text inputs.</strong> The Ranker reads the query text from <code translate="no">params.queries</code> and candidate text from the configured <code translate="no">VARCHAR</code> field.</li>
+<li><strong>Create separate model representations.</strong> Milvus sends the query as <code translate="no">source_sentence</code> and candidate texts as <code translate="no">sentences</code>. The model internally encodes the query and each candidate separately.</li>
+<li><strong>Compare and return scores.</strong> The model compares the query representation with each candidate representation and returns one similarity score per candidate.</li>
 </ol>
-<p>Les embeddings ou représentations utilisés par le modèle Hugging Face constituent une étape intermédiaire du traitement du modèle. Hugging Face renvoie des scores, et non des vecteurs. La récupération initiale des vecteurs et le reclassement par le modèle utilisent donc des représentations distinctes et peuvent faire appel à des modèles différents.</p>
-<h2 id="Before-you-start" class="common-anchor-header">Avant de commencer<button data-href="#Before-you-start" class="anchor-icon" translate="no">
+<p>The embeddings or representations used by the Hugging Face model are intermediate model processing. Hugging Face returns scores, not vectors. Initial vector retrieval and model reranking therefore use separate representations and may use different models.</p>
+<h2 id="Before-you-start" class="common-anchor-header">Before you start<button data-href="#Before-you-start" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -100,19 +99,19 @@ beta: Milvus v2.6.20+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Avant d’utiliser Hugging Face Ranker, assurez-vous de disposer de :</p>
+    </button></h2><p>Before using Hugging Face Ranker, ensure that you have:</p>
 <ul>
-<li>Milvus 2.6.20 ou une version ultérieure de la branche 2.6.</li>
-<li>PyMilvus 2.6.16 ou une version ultérieure.</li>
-<li>Un jeton d’accès utilisateur Hugging Face permettant d’appeler les fournisseurs d’inférence.</li>
-<li>Un modèle actuellement hébergé par <code translate="no">hf-inference</code> pour la <a href="https://huggingface.co/tasks/sentence-similarity"><code translate="no">sentence-similarity</code></a> tâche.</li>
-<li>Une collection stockant les textes candidats dans un champ <code translate="no">VARCHAR</code> non nul.</li>
+<li>Milvus 2.6.20 or later in the 2.6 release line.</li>
+<li>PyMilvus 2.6.16 or later.</li>
+<li>A Hugging Face User Access Token that can call Inference Providers.</li>
+<li>A model currently served by <code translate="no">hf-inference</code> for the <a href="https://huggingface.co/tasks/sentence-similarity"><code translate="no">sentence-similarity</code></a> task.</li>
+<li>A collection that stores candidate text in a non-nullable <code translate="no">VARCHAR</code> field.</li>
 </ul>
 <div class="alert note">
-<p>Milvus ne contrôle pas si un modèle Hugging Face reste disponible via <code translate="no">hf-inference</code>, ni si le modèle répond à vos exigences en matière de stabilité, de latence et de qualité de sortie. Vérifiez le modèle sur Hugging Face et évaluez-le pour votre charge de travail avant de l’utiliser en production.</p>
+<p>Milvus does not control whether a Hugging Face model remains available through <code translate="no">hf-inference</code>, or whether the model meets your stability, latency, and output-quality requirements. Verify the model on Hugging Face and evaluate it for your workload before using it in production.</p>
 </div>
-<p>Les exemples utilisent <a href="https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2"><code translate="no">sentence-transformers/all-MiniLM-L6-v2</code></a> uniquement à des fins de démonstration de la configuration. Le modèle ne constitue ni une recommandation ni une certification de la part de Milvus.</p>
-<h2 id="Configure-credentials" class="common-anchor-header">Configurer les identifiants<button data-href="#Configure-credentials" class="anchor-icon" translate="no">
+<p>The examples use <a href="https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2"><code translate="no">sentence-transformers/all-MiniLM-L6-v2</code></a> only to demonstrate the configuration. The model is not a Milvus recommendation or certification.</p>
+<h2 id="Configure-credentials" class="common-anchor-header">Configure credentials<button data-href="#Configure-credentials" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -127,11 +126,11 @@ beta: Milvus v2.6.20+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Vous pouvez configurer le jeton d’accès utilisateur Hugging Face sur <code translate="no">milvus.yaml</code> ou via une variable d’environnement.</p>
-<p>L'ordre de priorité des identifiants est le suivant :</p>
+    </button></h2><p>You can configure the Hugging Face User Access Token in <code translate="no">milvus.yaml</code> or through an environment variable.</p>
+<p>Credential precedence is:</p>
 <pre><code translate="no" class="language-text">Function credential label -&gt; provider credential label in milvus.yaml -&gt; environment variable
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Option-1-Configuration-file" class="common-anchor-header">Option 1 : Fichier de configuration<button data-href="#Option-1-Configuration-file" class="anchor-icon" translate="no">
+<h3 id="Option-1-Configuration-file" class="common-anchor-header">Option 1: Configuration file<button data-href="#Option-1-Configuration-file" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -146,7 +145,7 @@ beta: Milvus v2.6.20+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Définissez le jeton dans la section de niveau supérieur « <code translate="no">credential</code> », puis pointez le fournisseur de classement Hugging Face vers le libellé des identifiants :</p>
+    </button></h3><p>Define the token under the top-level <code translate="no">credential</code> section, then point the Hugging Face ranker provider to the credential label:</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-comment"># milvus.yaml</span>
 <span class="hljs-attr">credential:</span>
   <span class="hljs-attr">huggingface_apikey:</span>
@@ -160,8 +159,8 @@ beta: Milvus v2.6.20+
           <span class="hljs-attr">credential:</span> <span class="hljs-string">huggingface_apikey</span>
           <span class="hljs-comment"># url: https://router.huggingface.co</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Un paramètre « <code translate="no">credential</code> » au niveau de la fonction peut remplacer le libellé au niveau du fournisseur. Sa valeur doit être un libellé d’identifiant défini dans <code translate="no">milvus.yaml</code>, et non le jeton lui-même.</p>
-<h3 id="Option-2-Environment-variable" class="common-anchor-header">Option 2 : variable d’environnement<button data-href="#Option-2-Environment-variable" class="anchor-icon" translate="no">
+<p>A Function-level <code translate="no">credential</code> parameter can override the provider-level label. Its value must be a credential label defined in <code translate="no">milvus.yaml</code>, not the token itself.</p>
+<h3 id="Option-2-Environment-variable" class="common-anchor-header">Option 2: Environment variable<button data-href="#Option-2-Environment-variable" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -176,13 +175,13 @@ beta: Milvus v2.6.20+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Si ni la configuration de la fonction ni celle du fournisseur ne spécifient de libellé d’ <code translate="no">MILVUS_HUGGINGFACE_API_KEY</code>, définissez l’ dans l’environnement du service Milvus :</p>
+    </button></h3><p>If neither the Function nor the provider configuration specifies a credential label, set <code translate="no">MILVUS_HUGGINGFACE_API_KEY</code> in the Milvus service environment:</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-comment"># docker-compose.yaml</span>
 <span class="hljs-attr">standalone:</span>
   <span class="hljs-attr">environment:</span>
     <span class="hljs-attr">MILVUS_HUGGINGFACE_API_KEY:</span> <span class="hljs-string">&lt;YOUR_HUGGING_FACE_TOKEN&gt;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Use-Hugging-Face-Ranker" class="common-anchor-header">Utilisation de Hugging Face Ranker<button data-href="#Use-Hugging-Face-Ranker" class="anchor-icon" translate="no">
+<h2 id="Use-Hugging-Face-Ranker" class="common-anchor-header">Use Hugging Face Ranker<button data-href="#Use-Hugging-Face-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -197,8 +196,8 @@ beta: Milvus v2.6.20+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Hugging Face Ranker est défini et appliqué au moment de la recherche. Vous pouvez modifier ou omettre le ranker pour chaque recherche sans modifier le schéma de la collection.</p>
-<h3 id="Step-1-Prepare-a-collection" class="common-anchor-header">Étape 1 : Préparer une collection<button data-href="#Step-1-Prepare-a-collection" class="anchor-icon" translate="no">
+    </button></h2><p>Hugging Face Ranker is defined and applied at search time. You can change or omit the ranker for each search without changing the collection schema.</p>
+<h3 id="Step-1-Prepare-a-collection" class="common-anchor-header">Step 1: Prepare a collection<button data-href="#Step-1-Prepare-a-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -213,7 +212,7 @@ beta: Milvus v2.6.20+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>L'exemple suivant crée une collection comportant un champ de type texte pour le reclassement et un champ de type vecteur pour la recherche initiale :</p>
+    </button></h3><p>The following example creates a collection with a text field for reranking and a vector field for initial retrieval:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> DataType, Function, FunctionType, MilvusClient
 
 client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>)
@@ -263,7 +262,7 @@ client.insert(
     ],
 )
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Step-2-Define-the-rerank-Function" class="common-anchor-header">Étape 2 : Définir la fonction de reclassement<button data-href="#Step-2-Define-the-rerank-Function" class="anchor-icon" translate="no">
+<h3 id="Step-2-Define-the-rerank-Function" class="common-anchor-header">Step 2: Define the rerank Function<button data-href="#Step-2-Define-the-rerank-Function" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -278,7 +277,7 @@ client.insert(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Définissez une fonction « <code translate="no">RERANK</code> » qui lit le texte des candidats à partir de <code translate="no">document</code> et utilise le texte de la requête dans <code translate="no">queries</code>:</p>
+    </button></h3><p>Define a <code translate="no">RERANK</code> Function that reads candidate text from <code translate="no">document</code> and uses the query text in <code translate="no">queries</code>:</p>
 <pre><code translate="no" class="language-python">hugging_face_ranker = Function(
     name=<span class="hljs-string">&quot;hugging_face_semantic_ranker&quot;</span>,
     input_field_names=[<span class="hljs-string">&quot;document&quot;</span>],
@@ -294,23 +293,23 @@ client.insert(
 <span class="highlighted-comment-line">    },</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>Si vous utilisez uniquement les identifiants au niveau du fournisseur ou une variable d’environnement, omettez <code translate="no">credential</code> des paramètres de la fonction.</p>
-<p>Le tableau suivant décrit les paramètres de Hugging Face Ranker :</p>
+<p>If you use only the provider-level credential or environment variable, omit <code translate="no">credential</code> from the Function parameters.</p>
+<p>The following table describes the Hugging Face Ranker parameters:</p>
 <table>
 <thead>
-<tr><th>Paramètre</th><th>Obligatoire ?</th><th>Description</th></tr>
+<tr><th>Parameter</th><th>Required?</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">reranker</code></td><td>Oui</td><td>Implémentation du reclassement. Définissez cette valeur sur « <code translate="no">model</code> ».</td></tr>
-<tr><td><code translate="no">provider</code></td><td>Oui</td><td>Le fournisseur de modèle. Définissez cette valeur sur <code translate="no">huggingface</code>.</td></tr>
-<tr><td><code translate="no">model_name</code></td><td>Oui</td><td>L'ID du modèle Hugging Face pour un modèle fourni via <code translate="no">hf-inference</code> pour la tâche « <code translate="no">sentence-similarity</code> ».</td></tr>
-<tr><td><code translate="no">queries</code></td><td>Oui</td><td>Chaînes de requête utilisées pour le reclassement. Indiquez exactement une chaîne par requête de recherche, même lorsque la récupération initiale utilise des vecteurs de requête.</td></tr>
-<tr><td><code translate="no">hf_provider</code></td><td>Non</td><td>La route du fournisseur d'inférence Hugging Face. La valeur par défaut et la seule prise en charge dans Milvus 2.6.20 est <code translate="no">hf-inference</code>.</td></tr>
-<tr><td><code translate="no">credential</code></td><td>Non</td><td>L'étiquette d'un identifiant défini dans la section de niveau supérieur <code translate="no">credential</code> de <code translate="no">milvus.yaml</code>. Cette valeur n'est pas le jeton lui-même.</td></tr>
-<tr><td><code translate="no">max_client_batch_size</code></td><td>Non</td><td>Le nombre maximal de textes candidats envoyés dans une seule requête Hugging Face. La valeur par défaut est <code translate="no">32</code>, et cette valeur doit être supérieure à <code translate="no">0</code>.</td></tr>
+<tr><td><code translate="no">reranker</code></td><td>Yes</td><td>The reranking implementation. Set this value to <code translate="no">model</code>.</td></tr>
+<tr><td><code translate="no">provider</code></td><td>Yes</td><td>The model provider. Set this value to <code translate="no">huggingface</code>.</td></tr>
+<tr><td><code translate="no">model_name</code></td><td>Yes</td><td>The Hugging Face model ID for a model served through <code translate="no">hf-inference</code> for the <code translate="no">sentence-similarity</code> task.</td></tr>
+<tr><td><code translate="no">queries</code></td><td>Yes</td><td>Query strings used for reranking. Provide exactly one string per search query, even when initial retrieval uses query vectors.</td></tr>
+<tr><td><code translate="no">hf_provider</code></td><td>No</td><td>The Hugging Face Inference Provider route. The default and only supported value in Milvus 2.6.20 is <code translate="no">hf-inference</code>.</td></tr>
+<tr><td><code translate="no">credential</code></td><td>No</td><td>The label of a credential defined in the top-level <code translate="no">credential</code> section of <code translate="no">milvus.yaml</code>. This value is not the token itself.</td></tr>
+<tr><td><code translate="no">max_client_batch_size</code></td><td>No</td><td>The maximum number of candidate texts sent in one Hugging Face request. The default value is <code translate="no">32</code>, and the value must be greater than <code translate="no">0</code>.</td></tr>
 </tbody>
 </table>
-<h3 id="Step-3-Search-with-the-ranker" class="common-anchor-header">Étape 3 : Effectuer une recherche avec le classificateur<button data-href="#Step-3-Search-with-the-ranker" class="anchor-icon" translate="no">
+<h3 id="Step-3-Search-with-the-ranker" class="common-anchor-header">Step 3: Search with the ranker<button data-href="#Step-3-Search-with-the-ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -325,7 +324,7 @@ client.insert(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Transmettez la fonction via le paramètre <code translate="no">ranker</code> de <code translate="no">search()</code>:</p>
+    </button></h3><p>Pass the Function through the <code translate="no">ranker</code> parameter of <code translate="no">search()</code>:</p>
 <pre><code translate="no" class="language-python">query_vector = [<span class="hljs-number">0.12</span>, <span class="hljs-number">0.21</span>, <span class="hljs-number">0.29</span>, <span class="hljs-number">0.41</span>]
 
 results = client.search(
@@ -340,8 +339,8 @@ results = client.search(
 
 <span class="hljs-built_in">print</span>(results)
 <button class="copy-code-btn"></button></code></pre>
-<p>Milvus récupère d’abord les candidats à partir de <code translate="no">dense</code>, puis utilise le texte de la requête dans <code translate="no">queries</code> et le texte des candidats dans <code translate="no">document</code> pour calculer les scores de similarité des phrases. Les candidats renvoyés sont classés selon les scores Hugging Face.</p>
-<h2 id="Troubleshooting" class="common-anchor-header">Dépannage<button data-href="#Troubleshooting" class="anchor-icon" translate="no">
+<p>Milvus first retrieves candidates from <code translate="no">dense</code>, then uses the query text in <code translate="no">queries</code> and the candidate text in <code translate="no">document</code> to calculate sentence-similarity scores. The returned candidates are ordered by the Hugging Face scores.</p>
+<h2 id="Troubleshooting" class="common-anchor-header">Troubleshooting<button data-href="#Troubleshooting" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -356,7 +355,7 @@ results = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="The-model-is-unavailable-for-sentence-similarity" class="common-anchor-header">Le modèle n’est pas disponible pour la similarité des phrases<button data-href="#The-model-is-unavailable-for-sentence-similarity" class="anchor-icon" translate="no">
+    </button></h2><h3 id="The-model-is-unavailable-for-sentence-similarity" class="common-anchor-header">The model is unavailable for sentence similarity<button data-href="#The-model-is-unavailable-for-sentence-similarity" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -371,8 +370,8 @@ results = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Ouvrez la page du modèle sur Hugging Face et consultez la section « <strong>Inference Providers</strong> ». Vérifiez que <code translate="no">hf-inference</code> héberge bien le modèle pour <code translate="no">sentence-similarity</code>. Si ce n’est pas le cas, sélectionnez un autre modèle prenant en charge cette tâche.</p>
-<h3 id="The-number-of-query-strings-does-not-match-the-search-request" class="common-anchor-header">Le nombre de chaînes de requête ne correspond pas à la requête de recherche<button data-href="#The-number-of-query-strings-does-not-match-the-search-request" class="anchor-icon" translate="no">
+    </button></h3><p>Open the model page on Hugging Face and check the <strong>Inference Providers</strong> section. Confirm that <code translate="no">hf-inference</code> serves the model for <code translate="no">sentence-similarity</code>. If not, select another model that supports the task.</p>
+<h3 id="The-number-of-query-strings-does-not-match-the-search-request" class="common-anchor-header">The number of query strings does not match the search request<button data-href="#The-number-of-query-strings-does-not-match-the-search-request" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -387,8 +386,8 @@ results = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Le nombre de chaînes dans « <code translate="no">queries</code> » doit être égal au nombre de requêtes de recherche (<code translate="no">nq</code>). Pour une recherche avec un seul vecteur de requête, fournissez exactement une chaîne de requête.</p>
-<h3 id="Candidate-text-is-missing-or-nullable" class="common-anchor-header">Le texte candidat est manquant ou peut être nul<button data-href="#Candidate-text-is-missing-or-nullable" class="anchor-icon" translate="no">
+    </button></h3><p>The number of strings in <code translate="no">queries</code> must equal the number of search queries (<code translate="no">nq</code>). For a search with one query vector, provide exactly one query string.</p>
+<h3 id="Candidate-text-is-missing-or-nullable" class="common-anchor-header">Candidate text is missing or nullable<button data-href="#Candidate-text-is-missing-or-nullable" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -403,8 +402,8 @@ results = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Assurez-vous que <code translate="no">input_field_names</code> contient exactement un champ <code translate="no">VARCHAR</code> non nul et que chaque entité candidate contient du texte dans ce champ.</p>
-<h3 id="Milvus-reports-missing-Hugging-Face-credentials" class="common-anchor-header">Milvus signale l’absence d’identifiants Hugging Face<button data-href="#Milvus-reports-missing-Hugging-Face-credentials" class="anchor-icon" translate="no">
+    </button></h3><p>Ensure that <code translate="no">input_field_names</code> contains exactly one non-nullable <code translate="no">VARCHAR</code> field and that every candidate entity contains text in that field.</p>
+<h3 id="Milvus-reports-missing-Hugging-Face-credentials" class="common-anchor-header">Milvus reports missing Hugging Face credentials<button data-href="#Milvus-reports-missing-Hugging-Face-credentials" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -419,8 +418,8 @@ results = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Vérifiez que le libellé « Function credential » existe dans ` <code translate="no">milvus.yaml</code>`, que le libellé au niveau du fournisseur est valide, ou que ` <code translate="no">MILVUS_HUGGINGFACE_API_KEY</code> ` est présent dans l’environnement de service Milvus.</p>
-<h2 id="Next-steps" class="common-anchor-header">Étapes suivantes<button data-href="#Next-steps" class="anchor-icon" translate="no">
+    </button></h3><p>Confirm that the Function credential label exists in <code translate="no">milvus.yaml</code>, that the provider-level label is valid, or that <code translate="no">MILVUS_HUGGINGFACE_API_KEY</code> is present in the Milvus service environment.</p>
+<h2 id="Next-steps" class="common-anchor-header">Next steps<button data-href="#Next-steps" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -436,7 +435,7 @@ results = client.search(
         ></path>
       </svg>
     </button></h2><ul>
-<li>Pour connaître le comportement et les limites du Model Ranker partagé, consultez <a href="/docs/fr/model-ranker-overview.md">la présentation du Model Ranker</a>.</li>
-<li>Pour générer des représentations vectorielles via les fournisseurs d’inférence Hugging Face hébergés, consultez la section <a href="/docs/fr/hugging-face.md">Hugging Face</a>.</li>
-<li>Pour appliquer le classificateur à la recherche hybride, consultez la section « <a href="/docs/fr/multi-vector-search.md">Recherche hybride multi-vecteurs</a> ».</li>
+<li>For shared model-ranker behavior and limits, see <a href="/docs/fr/model-ranker-overview.md">Model Ranker Overview</a>.</li>
+<li>To generate embeddings through hosted Hugging Face Inference Providers, see <a href="/docs/fr/hugging-face.md">Hugging Face</a>.</li>
+<li>To apply the ranker to hybrid search, see <a href="/docs/fr/multi-vector-search.md">Multi-Vector Hybrid Search</a>.</li>
 </ul>

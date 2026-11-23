@@ -1,9 +1,9 @@
 ---
 id: quickstart.md
-summary: Milvusを使い始めましょう。
-title: クイックスタート
+summary: Get started with Milvus.
+title: Quickstart
 ---
-<h1 id="Quickstart" class="common-anchor-header">クイックスタート<button data-href="#Quickstart" class="anchor-icon" translate="no">
+<h1 id="Quickstart" class="common-anchor-header">Quickstart<button data-href="#Quickstart" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,9 +20,9 @@ title: クイックスタート
       </svg>
     </button></h1><p><a href="https://colab.research.google.com/github/milvus-io/bootcamp/blob/master/tutorials/quickstart/quickstart.ipynb" target="_parent"><img translate="no" src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 <a href="https://github.com/milvus-io/bootcamp/blob/master/tutorials/quickstart/quickstart.ipynb" target="_blank"><img translate="no" src="https://img.shields.io/badge/View%20on%20GitHub-555555?style=flat&logo=github&logoColor=white" alt="GitHub Repository"/></a></p>
-<p>ニューラルネットワークモデルの出力データ形式であるベクトルは、情報を効果的に符号化することができ、ナレッジベース、セマンティック検索、検索強化生成（RAG）などのAIアプリケーションにおいて極めて重要な役割を果たします。</p>
-<p>Milvusは、Jupyterノートブックでのデモ用チャットボットの実行から、数十億人のユーザーにサービスを提供するウェブスケールの検索システムの構築に至るまで、あらゆる規模のAIアプリケーションに適したオープンソースのベクトルデータベースです。このガイドでは、数分でMilvusをローカルにセットアップし、Pythonクライアントライブラリを使用してベクトルを生成、保存、検索する方法について解説します。</p>
-<h2 id="Install-Milvus" class="common-anchor-header">Milvusのインストール<button data-href="#Install-Milvus" class="anchor-icon" translate="no">
+<p>Vectors, the output data format of Neural Network models, can effectively encode information and serve a pivotal role in AI applications such as knowledge base, semantic search, Retrieval Augmented Generation (RAG) and more.</p>
+<p>Milvus is an open-source vector database that suits AI applications of every size from running a demo chatbot in Jupyter notebook to building web-scale search that serves billions of users. In this guide, we will walk you through how to set up Milvus locally within minutes and use the Python client library to generate, store and search vectors.</p>
+<h2 id="Install-Milvus" class="common-anchor-header">Install Milvus<button data-href="#Install-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,8 +37,8 @@ title: クイックスタート
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>以下のいずれかの方法を選択してください：ローカルでのサンプルには Milvus Lite を使用するか、すでにデプロイ済みの Milvus サーバーに接続します。どちらの方法でも、以下のコレクションおよびクエリのサンプルを使用します。</p>
-<h3 id="Use-a-local-database" class="common-anchor-header">ローカルデータベースを使用する<button data-href="#Use-a-local-database" class="anchor-icon" translate="no">
+    </button></h2><p>Choose one path: use Milvus Lite for a local example, or connect to a Milvus server you have already deployed. Both paths use the collection and query examples below.</p>
+<h3 id="Use-a-local-database" class="common-anchor-header">Use a local database<button data-href="#Use-a-local-database" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -53,17 +53,17 @@ title: クイックスタート
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>このガイドでは、PyMilvus Python SDKのオプション依存関係であり、ローカルで実行されるMilvus Liteを使用します。サーバーへのデプロイについては、<a href="/docs/ja/install_standalone-docker.md">Dockerまたは</a> <a href="/docs/ja/install_cluster-milvusoperator.md">Kubernetesを</a>参照してください。</p>
-<p>macOS、Linux、またはWindowsでPython 3.10以降を使用し、<code translate="no">faiss-cpu</code> や<code translate="no">pyarrow</code> など、Milvus Liteの依存関係に対応するバイナリホイールが利用可能である必要があります。サンプルではPyMilvus 3.0.2とMilvus Lite 3.2.2を使用しています。両方のパッケージを明示的にインストールしてください：</p>
+    </button></h3><p>This guide uses Milvus Lite, an optional dependency of the PyMilvus Python SDK that runs locally. For a server deployment, see <a href="/docs/ja/install_standalone-docker.md">Docker</a> or <a href="/docs/ja/install_cluster-milvusoperator.md">Kubernetes</a>.</p>
+<p>Use Python 3.10 or later on macOS, Linux, or Windows, with binary wheels available for Milvus Lite’s dependencies such as <code translate="no">faiss-cpu</code> and <code translate="no">pyarrow</code>. The examples use PyMilvus 3.0.2 and Milvus Lite 3.2.2. Install both packages explicitly:</p>
 <pre><code translate="no" class="language-bash">python3 -m pip install <span class="hljs-string">&quot;pymilvus[milvus-lite]==3.0.2&quot;</span> <span class="hljs-string">&quot;milvus-lite==3.2.2&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Windows では、pip は PyMilvus 3.0.2 の<code translate="no">milvus-lite</code> をスキップします。上記のコマンドでは<code translate="no">milvus-lite</code> を明示的に指定しているため、ローカルパスでも正常に動作します。SDK のみのインストール要件については、<a href="/docs/ja/install-pymilvus.md">「Milvus Python SDK のインストール」を</a>参照してください。</p>
+<p>On Windows, pip skips the <code translate="no">milvus-lite</code> extra of PyMilvus 3.0.2; the command above names <code translate="no">milvus-lite</code> explicitly, so the local path works there as well. For SDK-only installation requirements, see <a href="/docs/ja/install-pymilvus.md">Install Milvus Python SDK</a>.</p>
 <div class="alert note">
 <blockquote>
-<p>Google Colab を使用している場合、インストールしたばかりの依存機能を有効にするには、<strong>ランタイムを再起動</strong>する必要がある場合があります。（画面上部の「Runtime」メニューをクリックし、ドロップダウンメニューから「Restart session」を選択してください）。</p>
+<p>If you are using Google Colab, to enable dependencies just installed, you may need to <strong>restart the runtime</strong>. (Click on the “Runtime” menu at the top of the screen, and select “Restart session” from the dropdown menu).</p>
 </blockquote>
 </div>
-<h3 id="Use-an-existing-Milvus-server" class="common-anchor-header">既存の Milvus サーバーを使用する場合<button data-href="#Use-an-existing-Milvus-server" class="anchor-icon" translate="no">
+<h3 id="Use-an-existing-Milvus-server" class="common-anchor-header">Use an existing Milvus server<button data-href="#Use-an-existing-Milvus-server" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -78,11 +78,11 @@ title: クイックスタート
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>すでに Docker や Kubernetes で Milvus をインストール済みであるか、Zilliz Cloud のエンドポイントをお持ちの場合は、SDK のみをインストールしてください。PyMilvus 3.0.2 には Python 3.9 以降が必要です。この方法では、ローカルの Lite 依存関係は必要ありません：</p>
+    </button></h3><p>If you have already installed Milvus with Docker or Kubernetes, or have a Zilliz Cloud endpoint, install only the SDK. PyMilvus 3.0.2 requires Python 3.9 or later; you do not need the local Lite dependency for this path:</p>
 <pre><code translate="no" class="language-bash">python3 -m pip install <span class="hljs-string">&quot;pymilvus==3.0.2&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">.db</code> のパスを開く代わりに、次のセクションにあるサーバー接続ブロックを使用してください。SDKのバージョンがサーバーと互換性があることを確認してください。詳細は<a href="/docs/ja/release_notes.md">リリースノートを</a>参照してください。</p>
-<h2 id="Set-Up-Vector-Database" class="common-anchor-header">ベクトルデータベースの設定<button data-href="#Set-Up-Vector-Database" class="anchor-icon" translate="no">
+<p>Use the server connection block in the next section instead of opening a <code translate="no">.db</code> path. Confirm that the SDK version is compatible with your server; see <a href="/docs/ja/release_notes.md">Release Notes</a>.</p>
+<h2 id="Set-Up-Vector-Database" class="common-anchor-header">Set Up Vector Database<button data-href="#Set-Up-Vector-Database" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -97,8 +97,8 @@ title: クイックスタート
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>以下の接続ブロックから、必ず1つだけ選択してください。</p>
-<h3 id="Local-Milvus-Lite" class="common-anchor-header">ローカル Milvus Lite<button data-href="#Local-Milvus-Lite" class="anchor-icon" translate="no">
+    </button></h2><p>Choose exactly one connection block below.</p>
+<h3 id="Local-Milvus-Lite" class="common-anchor-header">Local Milvus Lite<button data-href="#Local-Milvus-Lite" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -113,13 +113,13 @@ title: クイックスタート
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>ローカルの Milvus ベクトルデータベースを作成するには、<code translate="no">milvus_demo.db</code> などの保存パスを指定して<code translate="no">MilvusClient</code> をインスタンス化してください。Milvus Lite 3.x は、パス名が<code translate="no">.db</code> で終わる場合でも、このパスにディレクトリを作成します。</p>
-<p>Milvus Lite 2.x で作成されたデータベースファイルがある場合は、移行前に旧バージョンでエクスポートしてください。そのファイルを Milvus Lite 3.x で直接開かないでください。「<a href="/docs/ja/milvus_lite.md#Migrating-data-from-Milvus-Lite">Milvus Lite からのデータ移行</a>」を参照してください。</p>
+    </button></h3><p>To create a local Milvus vector database, instantiate a <code translate="no">MilvusClient</code> with a storage path, such as <code translate="no">milvus_demo.db</code>. Milvus Lite 3.x creates a directory at this path, even when its name ends in <code translate="no">.db</code>.</p>
+<p>If you have a database file created by Milvus Lite 2.x, export it with the old version before migrating. Do not open that file directly with Milvus Lite 3.x. See <a href="/docs/ja/milvus_lite.md#Migrating-data-from-Milvus-Lite">Migrating data from Milvus Lite</a>.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client = MilvusClient(<span class="hljs-string">&quot;milvus_demo.db&quot;</span>)
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Existing-Milvus-server" class="common-anchor-header">既存のMilvusサーバー<button data-href="#Existing-Milvus-server" class="anchor-icon" translate="no">
+<h3 id="Existing-Milvus-server" class="common-anchor-header">Existing Milvus server<button data-href="#Existing-Milvus-server" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -134,13 +134,13 @@ client = MilvusClient(<span class="hljs-string">&quot;milvus_demo.db&quot;</span
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>ローカルの Docker 展開の場合は、そのサーバーエンドポイントに接続してください。Zilliz Cloud の場合は、URI をクラスターエンドポイントに、トークンを自身の API キーに置き換えてください：</p>
+    </button></h3><p>For a local Docker deployment, connect to its server endpoint. For Zilliz Cloud, replace the URI with the cluster endpoint and the token with your API key:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>, token=<span class="hljs-string">&quot;root:Milvus&quot;</span>)
 <button class="copy-code-btn"></button></code></pre>
-<p>認証情報を変更している場合は、設定済みの認証情報を使用してください。以降の例では、選択した<code translate="no">client</code> を使用します。別途ローカルのLiteデータベースは必要ありません。</p>
-<h2 id="Create-a-Collection" class="common-anchor-header">コレクションの作成<button data-href="#Create-a-Collection" class="anchor-icon" translate="no">
+<p>Use your configured credentials if you have changed them. The remaining examples use the <code translate="no">client</code> you selected; they do not require a separate local Lite database.</p>
+<h2 id="Create-a-Collection" class="common-anchor-header">Create a Collection<button data-href="#Create-a-Collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -155,7 +155,7 @@ client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus では、ベクトルとその関連メタデータを格納するためにコレクションが必要です。これは、従来の SQL データベースにおけるテーブルのようなものと考えることができます。コレクションを作成する際、スキーマやインデックスパラメータを定義して、次元数、インデックスタイプ、距離メトリックなどのベクトル仕様を設定できます。 また、ベクトル検索のパフォーマンスを最適化するためのインデックスに関する複雑な概念も存在します。ここでは、まずは基本に焦点を当て、可能な限りデフォルト設定を使用することにしましょう。最低限、コレクション名と、コレクションのベクトルフィールドの次元を設定するだけで十分です。</p>
+    </button></h2><p>In Milvus, we need a collection to store vectors and their associated metadata. You can think of it as a table in traditional SQL databases. When creating a collection, you can define schema and index params to configure vector specs such as dimensionality, index types and distant metrics. There are also complex concepts to optimize the index for vector search performance. For now, let’s just focus on the basics and use default for everything possible. At minimum, you only need to set the collection name and the dimension of the vector field of the collection.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">if</span> client.has_collection(collection_name=<span class="hljs-string">&quot;demo_collection&quot;</span>):
     client.drop_collection(collection_name=<span class="hljs-string">&quot;demo_collection&quot;</span>)
 client.create_collection(
@@ -163,14 +163,14 @@ client.create_collection(
     dimension=<span class="hljs-number">768</span>,  <span class="hljs-comment"># The vectors we will use in this demo have 768 dimensions</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>上記の設定では、</p>
+<p>In the above setup,</p>
 <ul>
-<li>主キーとベクトルフィールドには、デフォルト名（「id」と「vector」）が使用されています。</li>
-<li>メトリックタイプ（ベクトル距離の定義）はデフォルト値（<a href="https://milvus.io/docs/metric.md#Cosine-Similarity">COSINE</a>）に設定されています。</li>
-<li>主キーフィールドは整数を受け入れ、自動インクリメントは行われません（つまり、<a href="https://milvus.io/docs/schema.md">auto-id 機能は</a>使用していません）。
-あるいは、この<a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Collections/create_schema.md">手順</a>に従ってコレクションのスキーマを正式に定義することもできます。</li>
+<li>The primary key and vector fields use their default names (“id” and “vector”).</li>
+<li>The metric type (vector distance definition) is set to its default value (<a href="https://milvus.io/docs/metric.md#Cosine-Similarity">COSINE</a>).</li>
+<li>The primary key field accepts integers and does not automatically increment (namely, not using <a href="https://milvus.io/docs/schema.md">auto-id feature</a>).
+Alternatively, you can formally define the schema of the collection by following this <a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Collections/create_schema.md">instruction</a>.</li>
 </ul>
-<h2 id="Prepare-Data" class="common-anchor-header">データの準備<button data-href="#Prepare-Data" class="anchor-icon" translate="no">
+<h2 id="Prepare-Data" class="common-anchor-header">Prepare Data<button data-href="#Prepare-Data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -185,8 +185,8 @@ client.create_collection(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>このガイドでは、テキストのセマンティック検索を行うためにベクトルを使用します。埋め込みモデルをダウンロードして、テキスト用のベクトルを生成する必要があります。これは、<code translate="no">pymilvus[model]</code> ライブラリのユーティリティ関数を使用することで簡単に実行できます。</p>
-<h2 id="Represent-text-with-vectors" class="common-anchor-header">テキストをベクトルで表現する<button data-href="#Represent-text-with-vectors" class="anchor-icon" translate="no">
+    </button></h2><p>In this guide, we use vectors to perform semantic search on text. We need to generate vectors for text by downloading embedding models. This can be easily done by using the utility functions from <code translate="no">pymilvus[model]</code> library.</p>
+<h2 id="Represent-text-with-vectors" class="common-anchor-header">Represent text with vectors<button data-href="#Represent-text-with-vectors" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -201,10 +201,10 @@ client.create_collection(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>まず、モデルライブラリをインストールします。このパッケージには、PyTorch などの必須の機械学習ツールが含まれています。ローカル環境に PyTorch がインストールされたことがない場合、パッケージのダウンロードに時間がかかることがあります。</p>
+    </button></h2><p>First, install the model library. This package includes essential ML tools such as PyTorch. The package download may take some time if your local environment has never installed PyTorch.</p>
 <pre><code translate="no" class="language-bash">python3 -m pip install <span class="hljs-string">&quot;pymilvus[model]==3.0.2&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>デフォルトのモデルを使用してベクトル埋め込みを生成します。Milvusでは、データが辞書のリストとして整理されて挿入されることを想定しています。各辞書は、エンティティと呼ばれるデータレコードを表します。</p>
+<p>Generate vector embeddings with default model. Milvus expects data to be inserted organized as a list of dictionaries, where each dictionary represents a data record, termed as an entity.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> model
 
 <span class="hljs-comment"># If connection to https://huggingface.co/ failed, uncomment the following path</span>
@@ -239,7 +239,7 @@ data = [
 Data has <span class="hljs-number">3</span> entities, <span class="hljs-keyword">each</span> <span class="hljs-keyword">with</span> fields:  dict_keys([<span class="hljs-string">&#x27;id&#x27;</span>, <span class="hljs-string">&#x27;vector&#x27;</span>, <span class="hljs-string">&#x27;text&#x27;</span>, <span class="hljs-string">&#x27;subject&#x27;</span>])
 Vector dim: <span class="hljs-number">768</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Alternatively-Use-fake-representation-with-random-vectors" class="common-anchor-header">[代替案] ランダムベクトルを用いた擬似表現を使用する<button data-href="#Alternatively-Use-fake-representation-with-random-vectors" class="anchor-icon" translate="no">
+<h2 id="Alternatively-Use-fake-representation-with-random-vectors" class="common-anchor-header">[Alternatively] Use fake representation with random vectors<button data-href="#Alternatively-Use-fake-representation-with-random-vectors" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -254,7 +254,7 @@ Vector dim: <span class="hljs-number">768</span>
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>ネットワークの問題などでモデルをダウンロードできなかった場合、回避策として、ランダムなベクトルを使用してテキストを表現し、例題を完了させることも可能です。ただし、ベクトルが架空のものであるため、検索結果には意味的な類似性が反映されない点にご注意ください。</p>
+    </button></h2><p>If you couldn’t download the model due to network issues, as a walkaround, you can use random vectors to represent the text and still finish the example. Just note that the search result won’t reflect semantic similarity as the vectors are fake ones.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> random
 
 <span class="hljs-comment"># Text strings to search from.</span>
@@ -290,7 +290,7 @@ data = [
 <pre><code translate="no">Data has <span class="hljs-number">3</span> entities, <span class="hljs-keyword">each</span> <span class="hljs-keyword">with</span> fields:  dict_keys([<span class="hljs-string">&#x27;id&#x27;</span>, <span class="hljs-string">&#x27;vector&#x27;</span>, <span class="hljs-string">&#x27;text&#x27;</span>, <span class="hljs-string">&#x27;subject&#x27;</span>])
 Vector dim: <span class="hljs-number">768</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Insert-Data" class="common-anchor-header">データの挿入<button data-href="#Insert-Data" class="anchor-icon" translate="no">
+<h2 id="Insert-Data" class="common-anchor-header">Insert Data<button data-href="#Insert-Data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -305,14 +305,14 @@ Vector dim: <span class="hljs-number">768</span>
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>コレクションにデータを挿入しましょう：</p>
+    </button></h2><p>Let’s insert the data into the collection:</p>
 <pre><code translate="no" class="language-python">res = client.insert(collection_name=<span class="hljs-string">&quot;demo_collection&quot;</span>, data=data)
 
 <span class="hljs-built_in">print</span>(res)
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no">{<span class="hljs-string">&#x27;insert_count&#x27;</span>: 3, <span class="hljs-string">&#x27;ids&#x27;</span>: [0, 1, 2], <span class="hljs-string">&#x27;cost&#x27;</span>: 0}
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Semantic-Search" class="common-anchor-header">セマンティック検索<button data-href="#Semantic-Search" class="anchor-icon" translate="no">
+<h2 id="Semantic-Search" class="common-anchor-header">Semantic Search<button data-href="#Semantic-Search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -327,8 +327,8 @@ Vector dim: <span class="hljs-number">768</span>
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>これで、検索クエリのテキストをベクトルとして表現し、Milvus上でベクトル類似度検索を行うことで、セマンティック検索が可能になります。</p>
-<h3 id="Vector-search" class="common-anchor-header">ベクトル検索<button data-href="#Vector-search" class="anchor-icon" translate="no">
+    </button></h2><p>Now we can do semantic searches by representing the search query text as vector, and conduct vector similarity search on Milvus.</p>
+<h3 id="Vector-search" class="common-anchor-header">Vector search<button data-href="#Vector-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -343,7 +343,7 @@ Vector dim: <span class="hljs-number">768</span>
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Milvusは、1つまたは複数のベクトル検索リクエストを同時に受け付けます。query_vectors変数の値はベクトルのリストであり、各ベクトルは浮動小数点数の配列です。</p>
+    </button></h3><p>Milvus accepts one or multiple vector search requests at the same time. The value of the query_vectors variable is a list of vectors, where each vector is an array of float numbers.</p>
 <pre><code translate="no" class="language-python">query_vectors = embedding_fn.encode_queries([<span class="hljs-string">&quot;Who is Alan Turing?&quot;</span>])
 <span class="hljs-comment"># If you don&#x27;t have the embedding function you can use a fake vector to finish the demo:</span>
 <span class="hljs-comment"># query_vectors = [ [ random.uniform(-1, 1) for _ in range(768) ] ]</span>
@@ -359,8 +359,8 @@ res = client.search(
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no"><span class="hljs-keyword">data</span>: [<span class="hljs-string">&quot;[{&#x27;id&#x27;: 2, &#x27;distance&#x27;: 0.5859944820404053, &#x27;entity&#x27;: {&#x27;text&#x27;: &#x27;Born in Maida Vale, London, Turing was raised in southern England.&#x27;, &#x27;subject&#x27;: &#x27;history&#x27;}}, {&#x27;id&#x27;: 1, &#x27;distance&#x27;: 0.5118255615234375, &#x27;entity&#x27;: {&#x27;text&#x27;: &#x27;Alan Turing was the first person to conduct substantial research in AI.&#x27;, &#x27;subject&#x27;: &#x27;history&#x27;}}]&quot;</span>] , extra_info: {<span class="hljs-string">&#x27;cost&#x27;</span>: <span class="hljs-number">0</span>}
 <button class="copy-code-btn"></button></code></pre>
-<p>出力は結果のリストであり、それぞれがベクトル検索クエリに対応付けられています。各クエリには結果のリストが含まれており、各結果にはエンティティのプライマリキー、クエリベクトルまでの距離、および指定された<code translate="no">output_fields</code> によるエンティティの詳細が含まれています。</p>
-<h2 id="Vector-Search-with-Metadata-Filtering" class="common-anchor-header">メタデータフィルタリングを用いたベクトル検索<button data-href="#Vector-Search-with-Metadata-Filtering" class="anchor-icon" translate="no">
+<p>The output is a list of results, each mapping to a vector search query. Each query contains a list of results, where each result contains the entity primary key, the distance to the query vector, and the entity details with specified <code translate="no">output_fields</code>.</p>
+<h2 id="Vector-Search-with-Metadata-Filtering" class="common-anchor-header">Vector Search with Metadata Filtering<button data-href="#Vector-Search-with-Metadata-Filtering" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -375,7 +375,7 @@ res = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>メタデータの値（Milvusでは「スカラー」フィールドと呼ばれます。スカラーとはベクトルデータ以外のデータを指します）を考慮しながらベクトル検索を行うことも可能です。これは、特定の条件を指定するフィルタ式を使用して行われます。以下の例で、<code translate="no">subject</code> フィールドを使用した検索とフィルタリングの方法を見てみましょう。</p>
+    </button></h2><p>You can also conduct vector search while considering the values of the metadata (called “scalar” fields in Milvus, as scalar refers to non-vector data). This is done with a filter expression specifying certain criteria. Let’s see how to search and filter with the <code translate="no">subject</code> field in the following example.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Insert more docs in another subject.</span>
 docs = [
     <span class="hljs-string">&quot;Machine learning has been used for drug design.&quot;</span>,
@@ -403,9 +403,9 @@ res = client.search(
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no"><span class="hljs-keyword">data</span>: [<span class="hljs-string">&quot;[{&#x27;id&#x27;: 4, &#x27;distance&#x27;: 0.27030569314956665, &#x27;entity&#x27;: {&#x27;text&#x27;: &#x27;Computational synthesis with AI algorithms predicts molecular properties.&#x27;, &#x27;subject&#x27;: &#x27;biology&#x27;}}, {&#x27;id&#x27;: 3, &#x27;distance&#x27;: 0.16425910592079163, &#x27;entity&#x27;: {&#x27;text&#x27;: &#x27;Machine learning has been used for drug design.&#x27;, &#x27;subject&#x27;: &#x27;biology&#x27;}}]&quot;</span>] , extra_info: {<span class="hljs-string">&#x27;cost&#x27;</span>: <span class="hljs-number">0</span>}
 <button class="copy-code-btn"></button></code></pre>
-<p>デフォルトでは、スカラーフィールドはインデックス化されません。大規模なデータセットでメタデータによるフィルタリング検索を実行する必要がある場合は、固定スキーマの使用を検討するとともに、<a href="https://milvus.io/docs/scalar_index.md">インデックス</a>を有効にして検索パフォーマンスを向上させることができます。</p>
-<p>ベクトル検索に加え、以下の種類の検索も実行できます：</p>
-<h3 id="Query" class="common-anchor-header">クエリ<button data-href="#Query" class="anchor-icon" translate="no">
+<p>By default, the scalar fields are not indexed. If you need to perform metadata filtered search in large dataset, you can consider using fixed schema and also turn on the <a href="https://milvus.io/docs/scalar_index.md">index</a> to improve the search performance.</p>
+<p>In addition to vector search, you can also perform other types of searches:</p>
+<h3 id="Query" class="common-anchor-header">Query<button data-href="#Query" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -420,22 +420,22 @@ res = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>query() は、<a href="https://milvus.io/docs/boolean.md">フィルタ式</a>や特定の ID との一致など、条件に合致するすべてのエンティティを取得する操作です。</p>
-<p>たとえば、スカラーフィールドが特定の値を持つすべてのエンティティを取得する場合：</p>
+    </button></h3><p>A query() is an operation that retrieves all entities matching a criteria, such as a <a href="https://milvus.io/docs/boolean.md">filter expression</a> or matching some ids.</p>
+<p>For example, retrieving all entities whose scalar field has a particular value:</p>
 <pre><code translate="no" class="language-python">res = client.query(
     collection_name=<span class="hljs-string">&quot;demo_collection&quot;</span>,
     <span class="hljs-built_in">filter</span>=<span class="hljs-string">&quot;subject == &#x27;history&#x27;&quot;</span>,
     output_fields=[<span class="hljs-string">&quot;text&quot;</span>, <span class="hljs-string">&quot;subject&quot;</span>],
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>プライマリキーによってエンティティを直接取得する：</p>
+<p>Directly retrieve entities by primary key:</p>
 <pre><code translate="no" class="language-python">res = client.query(
     collection_name=<span class="hljs-string">&quot;demo_collection&quot;</span>,
     ids=[<span class="hljs-number">0</span>, <span class="hljs-number">2</span>],
     output_fields=[<span class="hljs-string">&quot;vector&quot;</span>, <span class="hljs-string">&quot;text&quot;</span>, <span class="hljs-string">&quot;subject&quot;</span>],
 )
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Delete-Entities" class="common-anchor-header">エンティティの削除<button data-href="#Delete-Entities" class="anchor-icon" translate="no">
+<h2 id="Delete-Entities" class="common-anchor-header">Delete Entities<button data-href="#Delete-Entities" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -450,7 +450,7 @@ res = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>データを削除したい場合は、主キーを指定してエンティティを削除するか、特定のフィルタ式に一致するすべてのエンティティを削除することができます。</p>
+    </button></h2><p>If you’d like to purge data, you can delete entities specifying the primary key or delete all entities matching a particular filter expression.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Delete entities by primary key</span>
 res = client.delete(collection_name=<span class="hljs-string">&quot;demo_collection&quot;</span>, ids=[<span class="hljs-number">0</span>, <span class="hljs-number">2</span>])
 
@@ -467,7 +467,7 @@ res = client.delete(
 <pre><code translate="no">[<span class="hljs-meta">0, 2</span>]
 [<span class="hljs-meta">3, 4, 5</span>]
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Load-Existing-Data" class="common-anchor-header">既存データの読み込み<button data-href="#Load-Existing-Data" class="anchor-icon" translate="no">
+<h2 id="Load-Existing-Data" class="common-anchor-header">Load Existing Data<button data-href="#Load-Existing-Data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -482,14 +482,14 @@ res = client.delete(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>このセクションは、ローカルの Lite パスに適用されます。サーバー展開の場合は、代わりに同じサーバー URI と認証情報を使用して再接続してください。</p>
-<p>Milvus Liteは、ローカルストレージパスにデータを保存します。既存のコレクションを引き続き使用するには、クライアントを一度閉じてから、同じパスを再度開いてください:</p>
+    </button></h2><p>This section applies to the local Lite path. For a server deployment, reconnect with the same server URI and credentials instead.</p>
+<p>Milvus Lite persists data under its local storage path. Close the client before reopening the same path to continue using the existing collections:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client.close()
 client = MilvusClient(<span class="hljs-string">&quot;milvus_demo.db&quot;</span>)
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Drop-the-collection" class="common-anchor-header">コレクションの削除<button data-href="#Drop-the-collection" class="anchor-icon" translate="no">
+<h2 id="Drop-the-collection" class="common-anchor-header">Drop the collection<button data-href="#Drop-the-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -504,11 +504,11 @@ client = MilvusClient(<span class="hljs-string">&quot;milvus_demo.db&quot;</span
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>コレクション内のすべてのデータを削除したい場合は、次のコマンドでコレクションを削除できます。</p>
+    </button></h2><p>If you would like to delete all the data in a collection, you can drop the collection with</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Drop collection</span>
 client.drop_collection(collection_name=<span class="hljs-string">&quot;demo_collection&quot;</span>)
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Learn-More" class="common-anchor-header">詳細<button data-href="#Learn-More" class="anchor-icon" translate="no">
+<h2 id="Learn-More" class="common-anchor-header">Learn More<button data-href="#Learn-More" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -523,19 +523,19 @@ client.drop_collection(collection_name=<span class="hljs-string">&quot;demo_coll
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>ローカルでのサンプルを完了したら、次のステップを選択してください：</p>
+    </button></h2><p>After completing the local example, choose a next step:</p>
 <ul>
-<li><a href="/docs/ja/build-rag-with-milvus.md">Retrieval Augmented Generation (RAG)</a> を使用してアプリケーションを構築する。</li>
-<li>「<a href="/docs/ja/schema-hands-on.md">検索用データモデル設計</a>」を使用して、独自のデータ用のフィールドやフィルターを設計する。</li>
-<li>「<a href="/docs/ja/install-overview.md">Milvus デプロイメントオプション</a>」で、ローカル環境とサーバー環境の要件を比較してください。</li>
+<li>Build an application with <a href="/docs/ja/build-rag-with-milvus.md">Retrieval Augmented Generation (RAG)</a>.</li>
+<li>Design fields and filters for your own data with <a href="/docs/ja/schema-hands-on.md">Data Model Design for Search</a>.</li>
+<li>Compare local and server requirements with <a href="/docs/ja/install-overview.md">Milvus Deployment Options</a>.</li>
 </ul>
-<p>Milvus Liteは、ローカルのPythonプログラムで始めるのに最適です。大規模なデータをお持ちの場合や、本番環境でMilvusを使用したい場合は、<a href="https://milvus.io/docs/install_standalone-docker.md">Dockerや</a> <a href="https://milvus.io/docs/install_cluster-milvusoperator.md">Kubernetes</a>へのMilvusのデプロイについて学ぶことができます。 Milvusのすべてのデプロイモードは同じAPIを共有しているため、別のデプロイモードに移行する場合でも、クライアント側のコードを大幅に変更する必要はありません。どこにデプロイされたMilvusサーバーであっても、<a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Client/MilvusClient.md">そのURIとトークンを</a>指定するだけで済みます：</p>
+<p>Milvus Lite is great for getting started with a local python program. If you have large scale data or would like to use Milvus in production, you can learn about deploying Milvus on <a href="https://milvus.io/docs/install_standalone-docker.md">Docker</a> and <a href="https://milvus.io/docs/install_cluster-milvusoperator.md">Kubernetes</a>. All deployment modes of Milvus share the same API, so your client side code doesn’t need to change much if moving to another deployment mode. Simply specify the <a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Client/MilvusClient.md">URI and Token</a> of a Milvus server deployed anywhere:</p>
 <pre><code translate="no" class="language-python">client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>, token=<span class="hljs-string">&quot;root:Milvus&quot;</span>)
 <button class="copy-code-btn"></button></code></pre>
-<p>Milvus Lite から Docker または Kubernetes 上にデプロイされた Milvus へデータを移行するには、「<a href="/docs/ja/milvus_lite.md#Migrating-data-from-Milvus-Lite">Milvus Lite からのデータ移行</a>」を参照してください。</p>
-<p>MilvusはRESTおよびgRPC APIを提供しており、<a href="https://milvus.io/docs/install-pymilvus.md">Python</a>、<a href="https://milvus.io/docs/install-java.md">Java</a>、<a href="https://milvus.io/docs/install-go.md">Go</a>、C#、<a href="https://milvus.io/docs/install-node.md">Node.js</a>などの言語に対応したクライアントライブラリが用意されています。</p>
-<p>スキーマ設計に関しては、Milvusは柔軟なスキーマ設計をサポートしており、ベクトルフィールドを含むフィールドとそのデータ型を定義できます。また、各フィールドのインデックスタイプやパラメータを定義することも可能です。詳細については、「<a href="https://milvus.io/docs/schema-hands-on.md">検索のためのデータモデル設計</a>」を参照してください。</p>
-<h2 id="Milvus-for-AI-Agents" class="common-anchor-header">AIエージェント向けMilvus<button data-href="#Milvus-for-AI-Agents" class="anchor-icon" translate="no">
+<p>To migrate data from Milvus Lite to Milvus deployed on Docker or Kubernetes, refer to <a href="/docs/ja/milvus_lite.md#Migrating-data-from-Milvus-Lite">Migrating data from Milvus Lite</a>.</p>
+<p>Milvus provides REST and gRPC API, with client libraries in languages such as <a href="https://milvus.io/docs/install-pymilvus.md">Python</a>, <a href="https://milvus.io/docs/install-java.md">Java</a>, <a href="https://milvus.io/docs/install-go.md">Go</a>, C# and <a href="https://milvus.io/docs/install-node.md">Node.js</a>.</p>
+<p>For schema design, Milvus supports flexible schema design, where you can define the fields and their data types, including vector fields. You can also define the index type and parameters for each field. For more information, see <a href="https://milvus.io/docs/schema-hands-on.md">Data Model Design for Search</a>.</p>
+<h2 id="Milvus-for-AI-Agents" class="common-anchor-header">Milvus for AI Agents<button data-href="#Milvus-for-AI-Agents" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -550,5 +550,5 @@ client.drop_collection(collection_name=<span class="hljs-string">&quot;demo_coll
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Claude Code や Cursor などの AI コーディングアシスタントをご利用の場合は、<a href="https://github.com/zilliztech/milvus-skill">Milvus Skill</a>をインストールすることで、AI ツールが正しい Milvus コードを記述できるようになります。</p>
-<p>MCPサーバーや厳選されたプロンプトなど、その他のエージェントツールについては、「<a href="/docs/ja/milvus_for_agents.md">AIエージェント向けMilvus</a>」を参照してください。</p>
+    </button></h2><p>If you are using AI coding assistants like Claude Code or Cursor, you can install <a href="https://github.com/zilliztech/milvus-skill">Milvus Skill</a> to help your AI tools write correct Milvus code.</p>
+<p>For more agent tools including MCP servers and curated prompts, see <a href="/docs/ja/milvus_for_agents.md">Milvus for AI Agents</a>.</p>

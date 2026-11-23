@@ -1,10 +1,12 @@
 ---
 id: basic_memory_with_milvus.md
 summary: >-
-  在本教學中，我們將為一個應用程式的開發團隊建置一個小型記憶體專案。我們將記錄有關快取、身份驗證、部署及備份的筆記，然後透過語義搜尋和混合搜尋來檢索正確的筆記。
-title: 利用 Basic Memory 與 Milvus 建構語義化專案記憶庫
+  In this tutorial, we will build a small memory project for an application
+  team. We will record notes about caching, authentication, deployments, and
+  backups, then retrieve the right note with semantic and hybrid search.
+title: Build Semantic Project Memory with Basic Memory and Milvus
 ---
-<h1 id="Build-Semantic-Project-Memory-with-Basic-Memory-and-Milvus" class="common-anchor-header">利用 Basic Memory 與 Milvus 建構語義化專案記憶庫<button data-href="#Build-Semantic-Project-Memory-with-Basic-Memory-and-Milvus" class="anchor-icon" translate="no">
+<h1 id="Build-Semantic-Project-Memory-with-Basic-Memory-and-Milvus" class="common-anchor-header">Build Semantic Project Memory with Basic Memory and Milvus<button data-href="#Build-Semantic-Project-Memory-with-Basic-Memory-and-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -19,9 +21,9 @@ title: 利用 Basic Memory 與 Milvus 建構語義化專案記憶庫
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p><a href="https://github.com/basicmachines-co/basic-memory">Basic Memory</a>將專案知識儲存於普通的 Markdown 檔案中，並透過命令列介面（CLI）和 MCP 伺服器提供存取。這為程式碼代理提供了一個持久的儲存空間，用以記錄應在單次對話結束後仍能保留的決策、操作手冊及經驗教訓。</p>
-<p>在本教學中，我們將為一個應用程式團隊建置一個小型記憶體專案。我們將記錄關於快取、身分驗證、部署及備份的筆記，並透過語義搜尋與混合搜尋來檢索正確的筆記。</p>
-<p><a href="https://milvus.io/">Milvus</a>將負責儲存向量並執行相似度搜尋。Basic Memory 則會持續在 PostgreSQL 中管理 Markdown 筆記、專案元資料、全文搜尋以及向量清單。</p>
+    </button></h1><p><a href="https://github.com/basicmachines-co/basic-memory">Basic Memory</a> keeps project knowledge in ordinary Markdown files and makes it available through a CLI and MCP server. This gives a coding agent a durable place to remember decisions, runbooks, and lessons that should survive beyond one conversation.</p>
+<p>In this tutorial, we will build a small memory project for an application team. We will record notes about caching, authentication, deployments, and backups, then retrieve the right note with semantic and hybrid search.</p>
+<p><a href="https://milvus.io/">Milvus</a> will store the vectors and run similarity search. Basic Memory will continue to manage the Markdown notes, project metadata, full-text search, and vector manifest in PostgreSQL.</p>
 <pre><code translate="no" class="language-text">Markdown notes
       |
       v
@@ -30,8 +32,8 @@ Basic Memory CLI / MCP
       |-- OpenAI: embeddings
       `-- Milvus: vector persistence and similarity search
 <button class="copy-code-btn"></button></code></pre>
-<p>本教學使用 Milvus Lite，它會在您的機器上某個路徑中本地運行。相同的 Basic Memory 配置日後可指向 Milvus Standalone、Milvus Distributed 或 Zilliz Cloud。</p>
-<h2 id="Prerequisites" class="common-anchor-header">先決條件<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+<p>This tutorial uses Milvus Lite, which runs locally at a path on your machine. The same Basic Memory configuration can later point to Milvus Standalone, Milvus Distributed, or Zilliz Cloud.</p>
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -46,17 +48,17 @@ Basic Memory CLI / MCP
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>您需要：</p>
+    </button></h2><p>You need:</p>
 <ul>
-<li>Python 3.12 或更新版本</li>
+<li>Python 3.12 or later</li>
 <li><a href="https://docs.astral.sh/uv/"><code translate="no">uv</code></a></li>
-<li>一個 PostgreSQL 資料庫及其<code translate="no">postgresql+asyncpg://...</code> 連線網址</li>
-<li>一個 OpenAI API 金鑰</li>
+<li>A PostgreSQL database and its <code translate="no">postgresql+asyncpg://...</code> connection URL</li>
+<li>An OpenAI API key</li>
 </ul>
-<p>從 PyPI 安裝 Basic Memory 及其 Milvus 選用依賴項：</p>
+<p>Install Basic Memory with its Milvus optional dependencies from PyPI:</p>
 <pre><code translate="no" class="language-bash">uv tool install --python 3.12 <span class="hljs-string">&quot;basic-memory[milvus]&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Configure-Basic-Memory" class="common-anchor-header">設定 Basic Memory<button data-href="#Configure-Basic-Memory" class="anchor-icon" translate="no">
+<h2 id="Configure-Basic-Memory" class="common-anchor-header">Configure Basic Memory<button data-href="#Configure-Basic-Memory" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -71,13 +73,13 @@ Basic Memory CLI / MCP
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>為本教學建立一個工作區。將 Basic Memory 的設定與 Milvus Lite 資料存放於此，可讓範例日後更容易檢視與移除。</p>
+    </button></h2><p>Create a workspace for the tutorial. Keeping the Basic Memory configuration and Milvus Lite data here makes the example easy to inspect and remove later.</p>
 <pre><code translate="no" class="language-bash"><span class="hljs-built_in">mkdir</span> -p basic-memory-milvus-demo/notes
 <span class="hljs-built_in">cd</span> basic-memory-milvus-demo
 
 <span class="hljs-built_in">export</span> BASIC_MEMORY_CONFIG_DIR=<span class="hljs-string">&quot;<span class="hljs-variable">$PWD</span>/.basic-memory&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>將 PostgreSQL 設定為主資料庫、OpenAI 設定為嵌入式模型供應商，並將 Milvus 設定為向量索引：</p>
+<p>Configure PostgreSQL as the primary database, OpenAI as the embedding provider, and Milvus as the vector index:</p>
 <pre><code translate="no" class="language-bash"><span class="hljs-built_in">export</span> BASIC_MEMORY_DATABASE_BACKEND=postgres
 <span class="hljs-built_in">export</span> BASIC_MEMORY_DATABASE_URL=<span class="hljs-string">&quot;postgresql+asyncpg://USER:PASSWORD@HOST:5432/DATABASE&quot;</span>
 
@@ -89,9 +91,9 @@ Basic Memory CLI / MCP
 <span class="hljs-built_in">export</span> BASIC_MEMORY_SEMANTIC_EMBEDDING_MODEL=text-embedding-3-small
 <span class="hljs-built_in">export</span> OPENAI_API_KEY=<span class="hljs-string">&quot;sk-***********&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>此處的 `<code translate="no">BASIC_MEMORY_MILVUS_URI</code> ` 為本機路徑，因此 PyMilvus 會自動啟動 Milvus Lite，無需另行設定 Milvus 伺服器。</p>
-<p>在「基本記憶體」中，Milvus 雖屬選用組件，但本教學中已將其設為向量後端。此設定目前僅適用於主資料庫後端為 PostgreSQL 的情況。基於 SQLite 的「基本記憶體」專案則改用<code translate="no">sqlite-vec</code> 。</p>
-<h2 id="Create-a-memory-project" class="common-anchor-header">建立記憶體專案<button data-href="#Create-a-memory-project" class="anchor-icon" translate="no">
+<p>Here, <code translate="no">BASIC_MEMORY_MILVUS_URI</code> is a local path, so PyMilvus starts Milvus Lite automatically. No separate Milvus server is required.</p>
+<p>Milvus is optional in Basic Memory as a whole, but it is the selected vector backend in this tutorial. The selection currently applies only when the primary database backend is PostgreSQL. SQLite-based Basic Memory projects use <code translate="no">sqlite-vec</code> instead.</p>
+<h2 id="Create-a-memory-project" class="common-anchor-header">Create a memory project<button data-href="#Create-a-memory-project" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -106,11 +108,11 @@ Basic Memory CLI / MCP
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>「基本記憶體」專案會將名稱映射至 Markdown 筆記的目錄。請將本教學的目錄新增為專案，並設定為預設專案：</p>
+    </button></h2><p>A Basic Memory project maps a name to a directory of Markdown notes. Add the tutorial directory as a project and make it the default:</p>
 <pre><code translate="no" class="language-bash">bm project add app-memory <span class="hljs-string">&quot;<span class="hljs-variable">$PWD</span>/notes&quot;</span> --default
 <button class="copy-code-btn"></button></code></pre>
-<p>應用程式團隊現在擁有了一個持久的記憶體空間。讓我們用一個小型且內容混雜的目錄來填滿它。其中部分筆記將與我們稍後的提問相關，而其他筆記則會提供逼真的干擾選項。</p>
-<h2 id="Record-project-memories" class="common-anchor-header">記錄專案記憶內容<button data-href="#Record-project-memories" class="anchor-icon" translate="no">
+<p>The application team now has a durable memory space. Let us fill it with a small, mixed catalog. Some notes will be relevant to our later questions, while others provide realistic distractors.</p>
+<h2 id="Record-project-memories" class="common-anchor-header">Record project memories<button data-href="#Record-project-memories" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -125,7 +127,7 @@ Basic Memory CLI / MCP
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>首先從應用程式的快取決策開始：</p>
+    </button></h2><p>Start with the application’s caching decision:</p>
 <pre><code translate="no" class="language-bash">bm tool write-note \
   --title <span class="hljs-string">&quot;Caching Strategy&quot;</span> \
   --folder <span class="hljs-string">&quot;engineering&quot;</span> \
@@ -135,7 +137,7 @@ Basic Memory CLI / MCP
 The application caches read-heavy product responses <span class="hljs-keyword">in</span> Redis <span class="hljs-keyword">for</span> five minutes. This avoids repeated database queries and makes repeated requests faster. Cache entries are invalidated immediately after a write.
 EOF
 <button class="copy-code-btn"></button></code></pre>
-<p>記錄身份驗證令牌的處理方式：</p>
+<p>Record how authentication tokens are handled:</p>
 <pre><code translate="no" class="language-bash">bm tool write-note \
   --title <span class="hljs-string">&quot;Authentication Tokens&quot;</span> \
   --folder <span class="hljs-string">&quot;engineering&quot;</span> \
@@ -145,7 +147,7 @@ EOF
 JWT access tokens expire after fifteen minutes. Refresh tokens rotate on every use. After suspicious activity, revoke the entire token family and require the user to sign <span class="hljs-keyword">in</span> again.
 EOF
 <button class="copy-code-btn"></button></code></pre>
-<p>新增兩份運作手冊：</p>
+<p>Add two operational runbooks:</p>
 <pre><code translate="no" class="language-bash">bm tool write-note \
   --title <span class="hljs-string">&quot;Deployment Reliability&quot;</span> \
   --folder <span class="hljs-string">&quot;operations&quot;</span> \
@@ -164,7 +166,7 @@ bm tool write-note \
 PostgreSQL uses daily snapshots and continuous write-ahead <span class="hljs-built_in">log</span> archiving. The team runs a restore drill every month and records the recovery point and recovery time.
 EOF
 <button class="copy-code-btn"></button></code></pre>
-<p>最後，新增兩則無關的產品筆記。與所有文件都相關的目錄相比，這些筆記能讓搜尋演練更具代表性：</p>
+<p>Finally, add two unrelated product notes. These make the search exercise more representative than a catalog in which every document is relevant:</p>
 <pre><code translate="no" class="language-bash">bm tool write-note \
   --title <span class="hljs-string">&quot;UI Accessibility&quot;</span> \
   --folder <span class="hljs-string">&quot;product&quot;</span> \
@@ -183,8 +185,8 @@ bm tool write-note \
 The content calendar tracks blog drafts, launch screenshots, reviewers, and publication dates <span class="hljs-keyword">for</span> the next product release.
 EOF
 <button class="copy-code-btn"></button></code></pre>
-<p>每則備註仍是一個位於<code translate="no">notes/</code> 下的普通 Markdown 檔案。Basic Memory 添加了可搜尋的結構，同時不剝奪檔案系統對檔案的控制權。</p>
-<h2 id="Build-the-search-indexes" class="common-anchor-header">建立搜尋索引<button data-href="#Build-the-search-indexes" class="anchor-icon" translate="no">
+<p>Every note is still an ordinary Markdown file under <code translate="no">notes/</code>. Basic Memory adds the searchable structure without taking ownership away from the filesystem.</p>
+<h2 id="Build-the-search-indexes" class="common-anchor-header">Build the search indexes<button data-href="#Build-the-search-indexes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -199,19 +201,19 @@ EOF
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>在新增或大幅修改一組筆記後，執行完整重新索引：</p>
+    </button></h2><p>Run a full reindex after adding or substantially changing a group of notes:</p>
 <pre><code translate="no" class="language-bash">bm reindex --full --project app-memory
 <button class="copy-code-btn"></button></code></pre>
-<p>在此步驟中，Basic Memory 會：</p>
+<p>During this step, Basic Memory:</p>
 <ol>
-<li>讀取並將 Markdown 筆記分割為區塊。</li>
-<li>建立 PostgreSQL 全文索引。</li>
-<li>將分塊資料傳送至已設定的 OpenAI 嵌入模型。</li>
-<li>將生成的向量儲存至專案專屬的 Milvus 集合中。</li>
-<li>將成功儲存的區塊標記為「已準備就緒」，並記錄於其 PostgreSQL 向量清單中。</li>
+<li>Reads and chunks the Markdown notes.</li>
+<li>Builds the PostgreSQL full-text index.</li>
+<li>Sends the chunks to the configured OpenAI embedding model.</li>
+<li>Stores the resulting vectors in the project-specific Milvus collection.</li>
+<li>Marks successfully stored chunks as ready in its PostgreSQL vector manifest.</li>
 </ol>
-<p>Basic Memory 會為每個專案使用一個確定性的 Milvus 集合。您無需自行建立或命名該集合。</p>
-<h2 id="Retrieve-a-memory-by-meaning" class="common-anchor-header">根據意涵檢索記憶體<button data-href="#Retrieve-a-memory-by-meaning" class="anchor-icon" translate="no">
+<p>Basic Memory uses a deterministic Milvus collection for each project. You do not need to create or name the collection yourself.</p>
+<h2 id="Retrieve-a-memory-by-meaning" class="common-anchor-header">Retrieve a memory by meaning<button data-href="#Retrieve-a-memory-by-meaning" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -226,8 +228,8 @@ EOF
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>假設一位新進工程師記得應用程式針對重複請求有項優化措施，但不記得團隊將其稱為「快取策略」。</p>
-<p>使用向量搜尋以自然語言提出問題：</p>
+    </button></h2><p>Suppose a new engineer remembers that the application has an optimization for repeated requests, but does not remember that the team called it a caching strategy.</p>
+<p>Use vector search to ask the question in natural language:</p>
 <pre><code translate="no" class="language-bash">bm tool search-notes \
   <span class="hljs-string">&quot;How does the application make repeated requests faster?&quot;</span> \
   --vector \
@@ -235,9 +237,9 @@ EOF
   --page-size 3 \
   --plain
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">Caching Strategy</code> 即使查詢中未重複註記標題，該結果仍應位居首位。向量搜尋會將問題進行嵌入，並向 Milvus 查詢最接近的儲存區塊。</p>
-<p>確切的得分與排名較低的結果，可能會因嵌入模型及專案內容而有所不同。</p>
-<h2 id="Combine-semantic-and-keyword-signals" class="common-anchor-header">結合語義與關鍵字訊號<button data-href="#Combine-semantic-and-keyword-signals" class="anchor-icon" translate="no">
+<p><code translate="no">Caching Strategy</code> should be the leading result even though the query does not need to repeat the note title. Vector search embeds the question and asks Milvus for the nearest stored chunks.</p>
+<p>Exact scores and lower-ranked results can vary with the embedding model and the contents of the project.</p>
+<h2 id="Combine-semantic-and-keyword-signals" class="common-anchor-header">Combine semantic and keyword signals<button data-href="#Combine-semantic-and-keyword-signals" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -252,8 +254,8 @@ EOF
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>現在試想處理一則資安事件的情境。查詢中包含「<code translate="no">JWT</code> 」等精確術語，但我們也希望涵蓋關於憑證撤銷與重新登入等概念上相關的表述。</p>
-<p>使用混合搜尋：</p>
+    </button></h2><p>Now imagine responding to a security incident. The query contains exact terms such as <code translate="no">JWT</code>, but we also want conceptually related language about token revocation and signing in again.</p>
+<p>Use hybrid search:</p>
 <pre><code translate="no" class="language-bash">bm tool search-notes \
   <span class="hljs-string">&quot;JWT rotation after suspicious activity&quot;</span> \
   --hybrid \
@@ -261,19 +263,19 @@ EOF
   --page-size 3 \
   --plain
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">Authentication Tokens</code> 應為首選結果。「基本記憶體（Basic Memory）」模式結合了 PostgreSQL 全文檢索與 Milvus 向量檢索，優先呈現任一途徑中表現優異的內容，特別是同時被兩者檢索到的內容。</p>
-<p>這三種搜尋模式各有其優勢：</p>
+<p><code translate="no">Authentication Tokens</code> should be the leading result. Basic Memory combines PostgreSQL full-text retrieval with Milvus vector retrieval, rewarding content that is strong in either path and especially content found by both.</p>
+<p>The three search modes have different strengths:</p>
 <table>
 <thead>
-<tr><th>模式</th><th>指令標誌</th><th>最佳用途</th></tr>
+<tr><th>Mode</th><th>Command flag</th><th>Best use</th></tr>
 </thead>
 <tbody>
-<tr><td>全文</td><td>無模式標誌</td><td>精確術語、短語及布林關鍵字查詢</td></tr>
-<tr><td>向量</td><td><code translate="no">--vector</code></td><td>換語、概念及探索性問題</td></tr>
-<tr><td>混合式</td><td><code translate="no">--hybrid</code></td><td>同時運用關鍵字與語義訊號進行通用檢索</td></tr>
+<tr><td>Full text</td><td>No mode flag</td><td>Exact terms, phrases, and boolean keyword queries</td></tr>
+<tr><td>Vector</td><td><code translate="no">--vector</code></td><td>Paraphrases, concepts, and exploratory questions</td></tr>
+<tr><td>Hybrid</td><td><code translate="no">--hybrid</code></td><td>General-purpose retrieval using both keyword and semantic signals</td></tr>
 </tbody>
 </table>
-<h2 id="Use-another-Milvus-deployment" class="common-anchor-header">使用其他 Milvus 部署環境<button data-href="#Use-another-Milvus-deployment" class="anchor-icon" translate="no">
+<h2 id="Use-another-Milvus-deployment" class="common-anchor-header">Use another Milvus deployment<button data-href="#Use-another-Milvus-deployment" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -288,19 +290,19 @@ EOF
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>當您需要超越 Milvus Lite 的處理能力時，應用程式程式碼和 Basic Memory 指令均無需變更。只需變更 URI，並在必要時提供存取憑證。</p>
-<p>針對 Milvus 伺服器：</p>
+    </button></h2><p>The application code and Basic Memory commands do not change when you outgrow Milvus Lite. Change the URI and, when required, provide a token.</p>
+<p>For a Milvus server:</p>
 <pre><code translate="no" class="language-bash"><span class="hljs-built_in">export</span> BASIC_MEMORY_MILVUS_URI=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>
 <span class="hljs-built_in">export</span> BASIC_MEMORY_MILVUS_TOKEN=<span class="hljs-string">&quot;root:Milvus&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>針對 Zilliz Cloud：</p>
+<p>For Zilliz Cloud:</p>
 <pre><code translate="no" class="language-bash"><span class="hljs-built_in">export</span> BASIC_MEMORY_MILVUS_URI=<span class="hljs-string">&quot;https://YOUR_CLUSTER_ENDPOINT&quot;</span>
 <span class="hljs-built_in">export</span> BASIC_MEMORY_MILVUS_TOKEN=<span class="hljs-string">&quot;YOUR_API_KEY&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>在將現有專案切換至其他向量後端之前，請建立新的目標集合，或遵循 Basic Memory 的向量儲存庫遷移程序。接著重新建構向量：</p>
+<p>Create a fresh target collection or follow Basic Memory’s vector-store migration procedure before switching an existing project between vector backends. Then rebuild the vectors:</p>
 <pre><code translate="no" class="language-bash">bm reindex --full --project app-memory
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Use-the-same-memory-through-MCP" class="common-anchor-header">透過 MCP 使用相同的記憶體<button data-href="#Use-the-same-memory-through-MCP" class="anchor-icon" translate="no">
+<h2 id="Use-the-same-memory-through-MCP" class="common-anchor-header">Use the same memory through MCP<button data-href="#Use-the-same-memory-through-MCP" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -315,8 +317,8 @@ EOF
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>命令列介面（CLI）對於設定、維護、腳本編寫以及理解資料流非常有用。在日常工作中，MCP 客戶端可以啟動相同的 Basic Memory 服務，並直接呼叫<code translate="no">write_note</code> 、<code translate="no">search_notes</code> 以及<code translate="no">build_context</code> 等工具。</p>
-<p>例如，Codex MCP 配置可執行由<code translate="no">uv tool</code> 安裝的指令：</p>
+    </button></h2><p>The CLI is useful for setup, maintenance, scripting, and understanding the data flow. In daily work, an MCP client can start the same Basic Memory service and call tools such as <code translate="no">write_note</code>, <code translate="no">search_notes</code>, and <code translate="no">build_context</code> directly.</p>
+<p>For example, a Codex MCP configuration can run the command installed by <code translate="no">uv tool</code>:</p>
 <pre><code translate="no" class="language-toml"><span class="hljs-section">[mcp_servers.basic-memory]</span>
 <span class="hljs-attr">command</span> = <span class="hljs-string">&quot;basic-memory&quot;</span>
 <span class="hljs-attr">args</span> = [<span class="hljs-string">&quot;mcp&quot;</span>]
@@ -332,7 +334,7 @@ EOF
 <span class="hljs-attr">BASIC_MEMORY_SEMANTIC_EMBEDDING_MODEL</span> = <span class="hljs-string">&quot;text-embedding-3-small&quot;</span>
 <span class="hljs-attr">OPENAI_API_KEY</span> = <span class="hljs-string">&quot;sk-***********&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>其他 MCP 客戶端則使用相同的可執行檔及以 JSON 格式呈現的參數：</p>
+<p>Other MCP clients use the same executable and arguments in JSON form:</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
   <span class="hljs-attr">&quot;mcpServers&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
     <span class="hljs-attr">&quot;basic-memory&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
@@ -353,8 +355,8 @@ EOF
   <span class="hljs-punctuation">}</span>
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>請盡可能將資料庫密碼和 API 金鑰存放於您的客戶端機密管理系統或啟動環境中。關鍵要求在於 MCP 進程必須接收與 CLI 所使用的相同 Basic Memory 配置。</p>
-<h2 id="What-each-storage-layer-owns" class="common-anchor-header">各儲存層的權限範圍<button data-href="#What-each-storage-layer-owns" class="anchor-icon" translate="no">
+<p>Keep database passwords and API keys in your client’s secret management or launch environment when possible. The important requirement is that the MCP process receives the same Basic Memory configuration used by the CLI.</p>
+<h2 id="What-each-storage-layer-owns" class="common-anchor-header">What each storage layer owns<button data-href="#What-each-storage-layer-owns" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -369,12 +371,12 @@ EOF
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>在本教學結束時，各項職責已刻意進行分離：</p>
+    </button></h2><p>At the end of the tutorial, the responsibilities are deliberately separated:</p>
 <ul>
-<li>專案目錄負責管理原始的 Markdown 筆記。</li>
-<li>PostgreSQL 負責管理 Basic Memory 的專案、實體、元資料、全文索引以及權威向量清單。</li>
-<li>OpenAI 將筆記片段和搜尋問題轉換為嵌入向量。</li>
-<li>Milvus 負責向量持久化與最近鄰檢索。</li>
-<li>Basic Memory 負責協調各層，並提供統一的 CLI 與 MCP 使用體驗。</li>
+<li>The project directory owns the original Markdown notes.</li>
+<li>PostgreSQL owns Basic Memory’s projects, entities, metadata, full-text index, and authoritative vector manifest.</li>
+<li>OpenAI turns note chunks and search questions into embeddings.</li>
+<li>Milvus owns vector persistence and nearest-neighbor retrieval.</li>
+<li>Basic Memory coordinates the layers and exposes one CLI and MCP experience.</li>
 </ul>
-<p>因此，在此整合中，Milvus 並未取代 PostgreSQL。它僅取代了 PostgreSQL 中用於向量儲存與相似度搜尋的<code translate="no">pgvector</code> 路徑，而 Basic Memory 的其餘關聯式資料庫與全文搜尋功能則仍保留在 PostgreSQL 中。</p>
+<p>Milvus therefore does not replace PostgreSQL in this integration. It replaces the PostgreSQL <code translate="no">pgvector</code> path for vector storage and similarity search, while the rest of Basic Memory’s relational and full-text features remain in PostgreSQL.</p>

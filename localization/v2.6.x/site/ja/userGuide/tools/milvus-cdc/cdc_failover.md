@@ -1,9 +1,11 @@
 ---
 id: cdc_failover.md
-summary: プライマリMilvusクラスタが利用できなくなった場合にフェイルオーバーを実行する方法について説明します。
-title: フェイルオーバー
+summary: >-
+  Learn how to perform a failover when the primary Milvus cluster becomes
+  unavailable.
+title: Failover
 ---
-<h1 id="Failover" class="common-anchor-header">フェイルオーバー<button data-href="#Failover" class="anchor-icon" translate="no">
+<h1 id="Failover" class="common-anchor-header">Failover<button data-href="#Failover" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,14 +20,14 @@ title: フェイルオーバー
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>フェイルオーバーは、元のプライマリが完全に利用できなくなった場合に、スタンバイクラスタをスタンドアロンのプライマリに昇格させます。これは可用性優先の操作であり、障害前にレプリケートされていなかったデータが失われる可能性があります。</p>
-<p>このガイドでは、元のトポロジを前提としています：</p>
+    </button></h1><p>Failover promotes a standby cluster to a standalone primary when the original primary is completely unavailable. It is an availability-first operation and may lose data that was not replicated before the failure.</p>
+<p>This guide assumes the original topology is:</p>
 <pre><code translate="no" class="language-text">cluster-a (primary)  -&gt;  cluster-b (standby)
 <button class="copy-code-btn"></button></code></pre>
-<p>フェイルオーバー後、<code translate="no">cluster-b</code> はスタンドアロンのプライマリになります：</p>
+<p>After failover, <code translate="no">cluster-b</code> becomes a standalone primary:</p>
 <pre><code translate="no" class="language-text">cluster-b (primary)
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="When-to-Use-Failover" class="common-anchor-header">フェイルオーバーを使用するタイミング<button data-href="#When-to-Use-Failover" class="anchor-icon" translate="no">
+<h2 id="When-to-Use-Failover" class="common-anchor-header">When to Use Failover<button data-href="#When-to-Use-Failover" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -40,14 +42,14 @@ title: フェイルオーバー
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>フェイルオーバーは、以下の場合にのみ使用してください：</p>
+    </button></h2><p>Use failover only when:</p>
 <ul>
-<li>元のプライマリが要求に応答できない。</li>
-<li>プライマリを許容時間内に回復できない。</li>
-<li>書き込み可用性を回復することの方が、古いプライマリを待つことよりも重要である。</li>
+<li>The original primary cannot respond to requests.</li>
+<li>The primary cannot be recovered within an acceptable time.</li>
+<li>Restoring write availability is more important than waiting for the old primary.</li>
 </ul>
-<p>プライマリにまだ到達可能な場合は、代わりに<a href="/docs/ja/v2.6.x/cdc_switchover.md">スイッチオーバーを</a>使用します。スイッチオーバーにより、データ損失を回避できます。</p>
-<h2 id="Data-Loss-Risk" class="common-anchor-header">データ損失のリスク<button data-href="#Data-Loss-Risk" class="anchor-icon" translate="no">
+<p>If the primary is still reachable, use <a href="/docs/ja/v2.6.x/cdc_switchover.md">Switchover</a> instead. Switchover avoids data loss.</p>
+<h2 id="Data-Loss-Risk" class="common-anchor-header">Data Loss Risk<button data-href="#Data-Loss-Risk" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -62,20 +64,20 @@ title: フェイルオーバー
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>フェイルオーバーでは、元のプライマリを待つことはありません。旧プライマリに書き込まれ、スタンバイにまだレプリケートされていないデータは失われる可能性があります。</p>
-<p>データ損失の可能性は、プライマリが使用できなくなった時点のCDCラグによって決まります。</p>
-<p>フェイルオーバーを実行する前に、トレードオフを理解してください：</p>
+    </button></h2><p>Failover does not wait for the original primary. Any data written to the old primary but not yet replicated to the standby may be lost.</p>
+<p>The possible data loss is determined by CDC lag at the time the primary became unavailable.</p>
+<p>Before running failover, understand the tradeoff:</p>
 <table>
 <thead>
-<tr><th>目標</th><th>スイッチオーバー</th><th>フェイルオーバー</th></tr>
+<tr><th>Goal</th><th>Switchover</th><th>Failover</th></tr>
 </thead>
 <tbody>
-<tr><td>プライマリがアクセスできない間に書き込みをリストアする</td><td>いいえ</td><td>可</td></tr>
-<tr><td>データ損失の回避</td><td>可</td><td>保証なし</td></tr>
-<tr><td>旧プライマリの応答が必要</td><td>保証なし</td><td>保証しない</td></tr>
+<tr><td>Restore writes while primary is unreachable</td><td>No</td><td>Yes</td></tr>
+<tr><td>Avoid data loss</td><td>Yes</td><td>Not guaranteed</td></tr>
+<tr><td>Requires old primary to respond</td><td>Yes</td><td>No</td></tr>
 </tbody>
 </table>
-<h2 id="Before-You-Begin" class="common-anchor-header">始める前に<button data-href="#Before-You-Begin" class="anchor-icon" translate="no">
+<h2 id="Before-You-Begin" class="common-anchor-header">Before You Begin<button data-href="#Before-You-Begin" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -90,16 +92,16 @@ title: フェイルオーバー
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>以下を確認してください：</p>
+    </button></h2><p>Confirm the following:</p>
 <ul>
-<li>元のプライマリが使用できない。</li>
-<li>プライマリの復旧を待たないことにした。</li>
-<li>アプリケーション・トラフィックをスタンバイにリダイレクトできる。</li>
-<li>トラフィック・オートメーションが回復しても、古いプライマリに書き込みを送り返さない。</li>
-<li>スタンバイ・クラスタID、アドレス、トークン、およびpchannelsを持っている。</li>
+<li>The original primary is unavailable.</li>
+<li>You have decided not to wait for primary recovery.</li>
+<li>Application traffic can be redirected to the standby.</li>
+<li>Traffic automation will not send writes back to the old primary if it recovers.</li>
+<li>You have the standby cluster ID, address, token, and pchannels.</li>
 </ul>
-<p>最も重要な安全要件はスプリットブレインを防ぐことです。フェイルオーバー後、昇格したスタンバイだけがアプリケーションの書き込みを受け付けるようにします。</p>
-<h2 id="Build-the-Failover-Configuration" class="common-anchor-header">フェイルオーバー構成の構築<button data-href="#Build-the-Failover-Configuration" class="anchor-icon" translate="no">
+<p>The most important safety requirement is to prevent split brain. After failover, only the promoted standby should accept application writes.</p>
+<h2 id="Build-the-Failover-Configuration" class="common-anchor-header">Build the Failover Configuration<button data-href="#Build-the-Failover-Configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -114,7 +116,7 @@ title: フェイルオーバー
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>スタンバイ・クラスタのみを含み、レプリケーション・トポロジを含まない構成を構築します。<code translate="no">force_promote=True</code> を設定します。</p>
+    </button></h2><p>Build a configuration that contains only the standby cluster and no replication topology. Set <code translate="no">force_promote=True</code>.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># If you followed Set Up CDC Replication, cluster B is the original target cluster.</span>
 cluster_b_id = target_cluster_id
 cluster_b_addr = target_cluster_addr
@@ -137,7 +139,7 @@ failover_config = {
     <span class="hljs-string">&quot;force_promote&quot;</span>: <span class="hljs-literal">True</span>,
 }
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Promote-the-Standby" class="common-anchor-header">スタンバイのプロモート<button data-href="#Promote-the-Standby" class="anchor-icon" translate="no">
+<h2 id="Promote-the-Standby" class="common-anchor-header">Promote the Standby<button data-href="#Promote-the-Standby" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -152,7 +154,7 @@ failover_config = {
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>リクエストをスタンバイ・クラスタに送信します。</p>
+    </button></h2><p>Send the request to the standby cluster.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
@@ -162,8 +164,8 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
 <span class="hljs-keyword">finally</span>:
     client_b.close()
 <button class="copy-code-btn"></button></code></pre>
-<p>要求が成功すると、<code translate="no">cluster-b</code> はスタンドアロンのプライマリになり、書き込みを受け付けることができます。</p>
-<h2 id="Redirect-Application-Traffic" class="common-anchor-header">アプリケーション・トラフィックのリダイレクト<button data-href="#Redirect-Application-Traffic" class="anchor-icon" translate="no">
+<p>If the request succeeds, <code translate="no">cluster-b</code> becomes a standalone primary and can accept writes.</p>
+<h2 id="Redirect-Application-Traffic" class="common-anchor-header">Redirect Application Traffic<button data-href="#Redirect-Application-Traffic" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -178,14 +180,14 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>昇格後：</p>
+    </button></h2><p>After promotion:</p>
 <ol>
-<li>書き込みトラフィックを<code translate="no">cluster-b</code> にリダイレクトします。</li>
-<li>書き込みエンドポイント、ロードバランサー、DNSレコード、および自動化から<code translate="no">cluster-a</code> 。</li>
-<li><code translate="no">cluster-b</code> が書き込みを受け付けることを確認する。</li>
-<li><code translate="no">cluster-a</code> は、廃止されるか明示的に再構築されるまで隔離しておく。</li>
+<li>Redirect write traffic to <code translate="no">cluster-b</code>.</li>
+<li>Remove <code translate="no">cluster-a</code> from write endpoints, load balancers, DNS records, and automation.</li>
+<li>Verify that <code translate="no">cluster-b</code> accepts writes.</li>
+<li>Keep <code translate="no">cluster-a</code> isolated until it is decommissioned or explicitly rebuilt.</li>
 </ol>
-<p>書き込みの検証例：</p>
+<p>Example write verification:</p>
 <pre><code translate="no" class="language-python">client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
 
 <span class="hljs-keyword">try</span>:
@@ -196,8 +198,8 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
 <span class="hljs-keyword">finally</span>:
     client_b.close()
 <button class="copy-code-btn"></button></code></pre>
-<p>コレクション名とスキーマフィールドを、デプロイメントに合わせて調整する。</p>
-<h2 id="Verify-the-Result" class="common-anchor-header">結果の検証<button data-href="#Verify-the-Result" class="anchor-icon" translate="no">
+<p>Adjust the collection name and schema fields to match your deployment.</p>
+<h2 id="Verify-the-Result" class="common-anchor-header">Verify the Result<button data-href="#Verify-the-Result" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -212,13 +214,13 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>プロモートされたクラスタを直接検証します：</p>
+    </button></h2><p>Verify the promoted cluster directly:</p>
 <ul>
-<li>書き込みは<code translate="no">cluster-b</code> で成功します。</li>
-<li>読み取りは期待されるデータを返します。</li>
-<li><code translate="no">cluster-a</code> へのアプリケーション・コンポーネントの書き込みはありません。</li>
+<li>Writes succeed on <code translate="no">cluster-b</code>.</li>
+<li>Reads return expected data.</li>
+<li>No application component writes to <code translate="no">cluster-a</code>.</li>
 </ul>
-<h2 id="Handling-the-Old-Primary" class="common-anchor-header">古いプライマリの処理<button data-href="#Handling-the-Old-Primary" class="anchor-icon" translate="no">
+<h2 id="Handling-the-Old-Primary" class="common-anchor-header">Handling the Old Primary<button data-href="#Handling-the-Old-Primary" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -233,9 +235,9 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>フェイルオーバー後、<code translate="no">cluster-a</code> をステールとして扱います。再び到達可能になった場合は、アプリケーションの書き込みを送信しないでください。<code translate="no">cluster-b</code> にレプリケー トされなかったデータが含まれている可能性があり、フェイルオーバー後に<code translate="no">cluster-b</code> に新しい書き込みが既に含まれている可能性があります。</p>
-<p><code translate="no">cluster-a</code> を古いトポロジーに自動的に再接続しないでください。古いプライマリの再導入は、慎重に計画する必要がある別の復旧作業です。</p>
-<h2 id="Minimizing-Data-Loss" class="common-anchor-header">データ損失の最小化<button data-href="#Minimizing-Data-Loss" class="anchor-icon" translate="no">
+    </button></h2><p>After failover, treat <code translate="no">cluster-a</code> as stale. Do not send application writes to it if it becomes reachable again. It may contain data that was never replicated to <code translate="no">cluster-b</code>, and <code translate="no">cluster-b</code> may already contain new writes after failover.</p>
+<p>Do not reconnect <code translate="no">cluster-a</code> to the old topology automatically. Reintroducing the old primary is a separate recovery task that must be planned carefully.</p>
+<h2 id="Minimizing-Data-Loss" class="common-anchor-header">Minimizing Data Loss<button data-href="#Minimizing-Data-Loss" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -250,16 +252,16 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>フェイルオーバーによるデータ損失のリスクをすべて取り除くことはできませんが、減らすことはできます：</p>
+    </button></h2><p>You cannot remove all data-loss risk from failover, but you can reduce it:</p>
 <ul>
-<li>CDCのラグを継続的に監視する。</li>
-<li>プライマリの書き込みレートを処理できるようにスタンバイ・クラスタをプロビジョニングしておく。</li>
-<li>クロス・クラスタのネットワーク・レイテンシとパケット・ロスを低く抑える。</li>
-<li>アプリケーションの書き込みを偶発的なものにする。</li>
-<li>フェイルオーバー後に成功が不確実な書き込みを再試行する。</li>
-<li>プライマリがまだ応答できる場合は、いつでも切り替えを優先する。</li>
+<li>Monitor CDC lag continuously.</li>
+<li>Keep standby clusters provisioned to handle the primary write rate.</li>
+<li>Keep cross-cluster network latency and packet loss low.</li>
+<li>Make application writes idempotent.</li>
+<li>Retry writes whose success is uncertain after failover.</li>
+<li>Prefer switchover whenever the primary can still respond.</li>
 </ul>
-<h2 id="FAQ" class="common-anchor-header">よくある質問<button data-href="#FAQ" class="anchor-icon" translate="no">
+<h2 id="FAQ" class="common-anchor-header">FAQ<button data-href="#FAQ" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -274,7 +276,7 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Does-failover-always-lose-data" class="common-anchor-header">フェイルオーバーすると必ずデータが失われますか？<button data-href="#Does-failover-always-lose-data" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Does-failover-always-lose-data" class="common-anchor-header">Does failover always lose data?<button data-href="#Does-failover-always-lose-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -289,8 +291,8 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>いいえ。プライマリに障害が発生する前にすべての書き込みがすでにレプリケートされていた場合、データは失われません。CDCのラグが存在する場合、ラグのあるデータが失われる可能性があります。</p>
-<h3 id="How-long-does-failover-take" class="common-anchor-header">フェイルオーバーにはどのくらい時間がかかりますか？<button data-href="#How-long-does-failover-take" class="anchor-icon" translate="no">
+    </button></h3><p>No, but it can. If all writes were already replicated before the primary failed, no data is lost. If CDC lag existed, the lagging data may be lost.</p>
+<h3 id="How-long-does-failover-take" class="common-anchor-header">How long does failover take?<button data-href="#How-long-does-failover-take" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -305,8 +307,8 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>スタンバイのクラスタ状態と制御プレーンの可用性によりますが、通常は数秒以内に完了します。</p>
-<h3 id="Can-I-run-failover-on-the-primary" class="common-anchor-header">プライマリでフェイルオーバーを実行できますか?<button data-href="#Can-I-run-failover-on-the-primary" class="anchor-icon" translate="no">
+    </button></h3><p>It typically completes within seconds, depending on cluster state and control-plane availability on the standby.</p>
+<h3 id="Can-I-run-failover-on-the-primary" class="common-anchor-header">Can I run failover on the primary?<button data-href="#Can-I-run-failover-on-the-primary" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -321,8 +323,8 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>フェイルオーバーはスタンバイクラスタを対象としています。現在のプライマリが利用可能な場合は、スイッチオーバーを使用してください。</p>
-<h3 id="Can-the-old-primary-rejoin-automatically" class="common-anchor-header">古いプライマリは自動的に再参加できますか?<button data-href="#Can-the-old-primary-rejoin-automatically" class="anchor-icon" translate="no">
+    </button></h3><p>No. Failover is intended for a standby cluster. If the current primary is available, use switchover.</p>
+<h3 id="Can-the-old-primary-rejoin-automatically" class="common-anchor-header">Can the old primary rejoin automatically?<button data-href="#Can-the-old-primary-rejoin-automatically" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -337,8 +339,8 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>いいえ。フェイルオーバー後、古いプライマリが再びレプリケーションに参加できるようになるには、古いプライマリをステールとして扱い、退役させるか再構築する必要があります。</p>
-<h3 id="How-do-I-avoid-split-brain" class="common-anchor-header">スプリットブレインを回避するにはどうすればよいですか?<button data-href="#How-do-I-avoid-split-brain" class="anchor-icon" translate="no">
+    </button></h3><p>No. After failover, the old primary must be treated as stale and decommissioned or rebuilt before it can participate in replication again.</p>
+<h3 id="How-do-I-avoid-split-brain" class="common-anchor-header">How do I avoid split brain?<button data-href="#How-do-I-avoid-split-brain" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -353,4 +355,4 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>昇格したクラスタのみが書き込みを受け取るようにします。復旧してトラフィックを受け付ける前に、すべての書き込みパスから古いプライマリを削除します。</p>
+    </button></h3><p>Ensure that only the promoted cluster receives writes. Remove the old primary from all write paths before it can recover and accept traffic.</p>

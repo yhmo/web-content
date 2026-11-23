@@ -1,16 +1,15 @@
 ---
 id: use-partition-key.md
-title: Использование ключа раздела
+title: Use Partition Key
 summary: >-
-  «Ключ разбиения» — это решение для оптимизации поиска, основанное на разбиении
-  данных на партиции. Определив конкретное скалярное поле в качестве ключа
-  разбиения и указав при поиске условия фильтрации на основе этого ключа, можно
-  сузить область поиска до нескольких партиций, что позволяет повысить
-  эффективность поиска. В данной статье рассказывается о том, как использовать
-  ключ разбиения, а также о связанных с этим аспектах, которые следует
-  учитывать.
+  The Partition Key is a search optimization solution based on partitions. By
+  designating a specific scalar field as the Partition Key and specifying
+  filtering conditions based on the Partition Key during the search, the search
+  scope can be narrowed down to several partitions, thereby improving search
+  efficiency. This article will introduce how to use the Partition Key and
+  related considerations.
 ---
-<h1 id="Use-Partition-Key" class="common-anchor-header">Использование ключа раздела<button data-href="#Use-Partition-Key" class="anchor-icon" translate="no">
+<h1 id="Use-Partition-Key" class="common-anchor-header">Use Partition Key<button data-href="#Use-Partition-Key" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -25,8 +24,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Ключ разбиения — это решение для оптимизации поиска, основанное на разбиениях. Обозначив конкретное скалярное поле в качестве ключа разбиения и указав условия фильтрации на основе этого ключа во время поиска, можно сузить область поиска до нескольких разбиений, тем самым повысив эффективность поиска. В этой статье рассказывается, как использовать ключ разбиения, а также приводятся соответствующие рекомендации.</p>
-<h2 id="Overview" class="common-anchor-header">Обзор<button data-href="#Overview" class="anchor-icon" translate="no">
+    </button></h1><p>The Partition Key is a search optimization solution based on partitions. By designating a specific scalar field as the Partition Key and specifying filtering conditions based on the Partition Key during the search, the search scope can be narrowed down to several partitions, thereby improving search efficiency. This article will introduce how to use the Partition Key and related considerations.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -41,26 +40,26 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>В Milvus можно использовать партиции для разделения данных и повышения производительности поиска за счёт ограничения области поиска конкретными партициями. Если вы решите управлять разделами вручную, в коллекции можно создать не более 1 024 разделов и вставлять сущности в эти разделы по определённому правилу, что позволит сузить область поиска, ограничив его определённым количеством разделов.</p>
-<p>Milvus вводит ключ раздела (Partition Key), позволяющий повторно использовать разделы при сегрегации данных, чтобы обойти ограничение на количество разделов, которые можно создать в коллекции. При создании коллекции в качестве ключа раздела можно использовать скалярное поле. Как только коллекция готова, Milvus создает указанное количество разделов внутри коллекции. При получении вставляемого объекта Milvus вычисляет хеш-значение, используя значение ключа разбиения (Partition Key) этого объекта, выполняет операцию по модулю на основе хеш-значения и свойства « <code translate="no">partitions_num</code> » коллекции для получения идентификатора целевого раздела, а затем сохраняет объект в целевом разделе.</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="/docs/v2.6.x/assets/partition-vs-partition-key.png" alt="Partition Vs Partition Key" class="doc-image" id="partition-vs-partition-key" /> 
-   <span>Раздел против ключа разбиения</span>
-  
- </span></p>
-<p>На следующем рисунке показано, как Milvus обрабатывает запросы на поиск в коллекции с включенной или отключенной функцией ключа раздела.</p>
+    </button></h2><p>In Milvus, you can use partitions to implement data segregation and improve search performance by restricting the search scope to specific partitions. If you choose to manage partitions manually, you can create a maximum of 1,024 partitions in a collection, and insert entities into these partitions based on a specific rule so that you can narrow the search scope by restricting searches within a specific number of partitions.</p>
+<p>Milvus introduces the Partition Key for you to reuse partitions in data segregation to overcome the limit on the number of partitions you can create in a collection. When creating a collection, you can use a scalar field as the Partition Key. Once the collection is ready, Milvus creates the specified number of partitions inside the collection. Upon receiving an inserted entity, Milvus calculates a hash value using the Partition Key value of the entity, executes a modulo operation based on the hash value and the <code translate="no">partitions_num</code> property of the collection to obtain the target partition ID, and stores the entity in the target partition.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/partition-vs-partition-key.png" alt="Partition Vs Partition Key" class="doc-image" id="partition-vs-partition-key" />
+    <span>Partition Vs Partition Key</span>
+  </span>
+</p>
+<p>The following figure illustrates how Milvus processes the search requests in a collection with or without the Partition Key feature enabled.</p>
 <ul>
-<li><p>Если функция «Partition Key» отключена, Milvus ищет в коллекции сущности, наиболее похожие на вектор запроса. Вы можете сузить область поиска, если знаете, в каком разделе находятся наиболее релевантные результаты.</p></li>
-<li><p>Если ключ раздела включен, Milvus определяет область поиска на основе значения ключа раздела, указанного в фильтре поиска, и сканирует только сущности в соответствующих разделах.</p></li>
+<li><p>If the Partition Key is disabled, Milvus searches for entities that are the most similar to the query vector within the collection. You can narrow the search scope if you know which partition contains the most relevant results.</p></li>
+<li><p>If the Partition Key is enabled, Milvus determines the search scope based on the Partition Key value specified in a search filter and scans only the entities within the partitions that match.</p></li>
 </ul>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="/docs/v2.6.x/assets/with-and-without-partition-key.png" alt="With And Without Partition Key" class="doc-image" id="with-and-without-partition-key" /> 
-   <span>С ключом разбиения и без</span> </span>него <span class="img-wrapper">
-  
- </span></p>
-<h2 id="Use-Partition-Key" class="common-anchor-header">Использование ключа раздела<button data-href="#Use-Partition-Key" class="anchor-icon" translate="no">
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/with-and-without-partition-key.png" alt="With And Without Partition Key" class="doc-image" id="with-and-without-partition-key" />
+    <span>With And Without Partition Key</span>
+  </span>
+</p>
+<h2 id="Use-Partition-Key" class="common-anchor-header">Use Partition Key<button data-href="#Use-Partition-Key" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -75,14 +74,14 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Чтобы использовать ключ раздела, необходимо</p>
+    </button></h2><p>To use the Partition Key, you need to</p>
 <ul>
-<li><p><a href="/docs/ru/v2.6.x/use-partition-key.md#Set-Partition-Key">установить ключ разбиения</a>,</p></li>
-<li><p><a href="/docs/ru/v2.6.x/use-partition-key.md#Set-Partition-Numbers">указать количество создаваемых раздела</a> (необязательно),</p></li>
-<li><p><a href="/docs/ru/v2.6.x/use-partition-key.md#Create-Filtering-Condition">создать условие фильтрации на основе ключа разбиения</a>, а также</p></li>
-<li><p><a href="/docs/ru/v2.6.x/use-partition-key.md#Index-Partition-Key">индексировать ключ разбиения</a> (рекомендуется).</p></li>
+<li><p><a href="/docs/ru/v2.6.x/use-partition-key.md#Set-Partition-Key">Set the Partition Key</a>,</p></li>
+<li><p><a href="/docs/ru/v2.6.x/use-partition-key.md#Set-Partition-Numbers">Set the number of partitions to create</a> (Optional),</p></li>
+<li><p><a href="/docs/ru/v2.6.x/use-partition-key.md#Create-Filtering-Condition">Create a filtering condition based on the Partition Key</a>, and</p></li>
+<li><p><a href="/docs/ru/v2.6.x/use-partition-key.md#Index-Partition-Key">Index the Partition Key</a> (Recommended).</p></li>
 </ul>
-<h3 id="Set-Partition-Key" class="common-anchor-header">Установка ключа разбиения<button data-href="#Set-Partition-Key" class="anchor-icon" translate="no">
+<h3 id="Set-Partition-Key" class="common-anchor-header">Set Partition Key<button data-href="#Set-Partition-Key" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -97,16 +96,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Чтобы назначить скалярное поле в качестве ключа разбиения, необходимо при добавлении скалярного поля установить для его атрибута « <code translate="no">is_partition_key</code> » значение « <code translate="no">true</code> ».</p>
+    </button></h3><p>To designate a scalar field as the Partition Key, you need to set its <code translate="no">is_partition_key</code> attribute to <code translate="no">true</code> when you add the scalar field.</p>
 <div class="alert note">
-<p>Если скалярное поле задано в качестве ключа разбиения, значения этого поля не могут быть пустыми или равными null.</p>
+<p>When you set a scalar field as the Partition Key, the field values cannot be empty or null.</p>
 </div>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> (
     MilvusClient, DataType
@@ -252,7 +251,7 @@ schema.WithField(entity.NewField().
         ]
     }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Set-Partition-Numbers" class="common-anchor-header">Установка количества партиций<button data-href="#Set-Partition-Numbers" class="anchor-icon" translate="no">
+<h3 id="Set-Partition-Numbers" class="common-anchor-header">Set Partition Numbers<button data-href="#Set-Partition-Numbers" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -267,14 +266,14 @@ schema.WithField(entity.NewField().
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>При назначении скалярного поля в коллекции в качестве ключа разбиения Milvus автоматически создает 16 разбиений в коллекции. При получении сущности Milvus выбирает разбиение на основе значения ключа разбиения этой сущности и сохраняет сущность в этом разбиении, в результате чего в некоторых или во всех разбиениях хранятся сущности с разными значениями ключа разбиения.</p>
-<p>Вы также можете указать количество разбиений, которые будут созданы вместе с коллекцией. Это возможно только в том случае, если в качестве ключа разбиения указано скалярное поле.</p>
+    </button></h3><p>When you designate a scalar field in a collection as the Partition Key, Milvus automatically creates 16 partitions in the collection. Upon receiving an entity, Milvus chooses a partition based on the Partition Key value of this entity and stores the entity in the partition, resulting in some or all partitions holding entities with different Partition Key values.</p>
+<p>You can also determine the number of partitions to create along with the collection. This is valid only if you have a scalar field designated as the Partition Key.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.create_collection(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,
@@ -323,7 +322,7 @@ curl --request POST \
     \&quot;params\&quot;: <span class="hljs-variable">$params</span>
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Create-Filtering-Condition" class="common-anchor-header">Создание условия фильтрации<button data-href="#Create-Filtering-Condition" class="anchor-icon" translate="no">
+<h3 id="Create-Filtering-Condition" class="common-anchor-header">Create Filtering Condition<button data-href="#Create-Filtering-Condition" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -338,15 +337,15 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>При выполнении поиска с помощью ANN в коллекции с включенной функцией «Ключ раздела» необходимо включить в запрос на поиск выражение фильтрации, содержащее ключ раздела. В выражении фильтрации можно ограничить значение ключа раздела определенным диапазоном, чтобы Milvus ограничил область поиска соответствующими разделами.</p>
-<p>При выполнении операций удаления рекомендуется включать выражение фильтрации, указывающее один ключ разбиения, для обеспечения более эффективного удаления. Такой подход ограничивает операцию удаления конкретным разбиением, снижая амплификацию записи во время уплотнения и экономя ресурсы для уплотнения и индексирования.</p>
-<p>В приведенных ниже примерах показана фильтрация по ключу раздела на основе конкретного значения ключа раздела и набора значений ключа раздела.</p>
+    </button></h3><p>When conducting ANN searches in a collection with the Partition Key feature enabled, you need to include a filtering expression involving the Partition Key in the search request. In the filtering expression, you can restrict the Partition Key value within a specific range so that Milvus restricts the search scope within the corresponding partitions.</p>
+<p>When performing delete operations, It is advisable to include a filter expression that specifies a single partition key to achieve more efficient deletion. This approach limits the delete operation to a particular partition, reducing write amplification during compaction and conserving resources for compaction and indexing.</p>
+<p>The following examples demonstrate Partition-Key-based filtering based on a specific Partition Key value and a set of Partition Key values.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Filter based on a single partition key value, or</span>
 <span class="hljs-built_in">filter</span>=<span class="hljs-string">&#x27;partition_key == &quot;x&quot; &amp;&amp; &lt;other conditions&gt;&#x27;</span>
@@ -379,9 +378,9 @@ filter = <span class="hljs-string">&quot;partition_key in [&#x27;x&#x27;, &#x27;
 <span class="hljs-built_in">export</span> filter=<span class="hljs-string">&#x27;partition_key in [&quot;x&quot;, &quot;y&quot;, &quot;z&quot;] &amp;&amp; &lt;other conditions&gt;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>Необходимо заменить <code translate="no">partition_key</code> на имя поля, назначенного в качестве ключа раздела.</p>
+<p>You have to replace <code translate="no">partition_key</code> with the name of the field that is designated as the partition key.</p>
 </div>
-<h3 id="Index-Partition-Key" class="common-anchor-header">Индекс ключа раздела<button data-href="#Index-Partition-Key" class="anchor-icon" translate="no">
+<h3 id="Index-Partition-Key" class="common-anchor-header">Index Partition Key<button data-href="#Index-Partition-Key" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -396,22 +395,22 @@ filter = <span class="hljs-string">&quot;partition_key in [&#x27;x&#x27;, &#x27;
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Мы рекомендуем создать скалярный индекс на поле ключа раздела.</p>
-<p>Ключ раздела сужает поиск до тех разделов, которые могут содержать соответствующие значения ключа раздела. Однако каждый раздел обычно содержит сущности со множеством различных значений ключа раздела, поэтому Milvus по-прежнему оценивает фильтр на основе ключа раздела по каждой сущности в разделах, в которых он выполняет поиск. Без скалярного индекса на этом поле такая оценка представляет собой полное сканирование значений поля, что может занимать значительную долю задержки поиска в больших коллекциях. При наличии скалярного индекса Milvus вместо этого ищет соответствующие сущности в индексе.</p>
-<p>Эта оценка происходит независимо от типа векторного индекса. Milvus может встраивать значения ключа разбиения в векторные индексы семейства HNSW, так что поиск с фильтрацией по ключу разбиения проходит только по соответствующим подиндексам, но эта оптимизация сужает область обхода вектора — она не устраняет саму оценку фильтра. Для поисков, фильтрующих исключительно по скалярным полям, аналогичного упрощения нет. В обоих случаях именно скалярный индекс по полю ключа разбиения обеспечивает высокую скорость оценки.</p>
-<p>Выбирайте тип индекса в зависимости от поля ключа разбиения:</p>
+    </button></h3><p>We recommend that you create a scalar index on the Partition Key field.</p>
+<p>The Partition Key narrows a search down to the partitions that may hold the matching Partition Key values. However, each partition usually holds entities with many different Partition Key values, so Milvus still evaluates the Partition-Key-based filter against every entity in the partitions it searches. Without a scalar index on the field, that evaluation is a full scan of the field values, which can take up a large share of search latency on large collections. With a scalar index, Milvus looks up the matching entities in the index instead.</p>
+<p>This evaluation happens regardless of the vector index type. Milvus can embed Partition Key values into HNSW-family vector indexes so that a Partition-Key-filtered search traverses only the relevant sub-indexes, but that optimization narrows the vector traversal — it does not remove the filter evaluation. Searches that filter on scalar fields alone have no equivalent shortcut. In both cases, a scalar index on the Partition Key field is what keeps the evaluation fast.</p>
+<p>Choose the index type based on the Partition Key field:</p>
 <ul>
-<li><p><a href="/docs/ru/v2.6.x/inverted.md">INVERTED</a> подходит для большинства полей ключа разбиения, поскольку фильтры на основе ключа разбиения используют условия « <code translate="no">==</code> » и « <code translate="no">in</code> ».</p></li>
-<li><p><a href="/docs/ru/v2.6.x/bitmap.md">BITMAP</a> подходит для полей с небольшим количеством различных значений. Как правило, его следует использовать только в том случае, если поле содержит менее 500 различных значений.</p></li>
-<li><p><a href="/docs/ru/v2.6.x/stl-sort.md">STL_SORT</a> — альтернатива для числовых полей и полей типа « <code translate="no">VARCHAR</code> ».</p></li>
+<li><p><a href="/docs/ru/v2.6.x/inverted.md">INVERTED</a> suits most Partition Key fields, because Partition-Key-based filters use <code translate="no">==</code> and <code translate="no">in</code> conditions.</p></li>
+<li><p><a href="/docs/ru/v2.6.x/bitmap.md">BITMAP</a> suits fields with few distinct values. As a general guideline, use it only when the field holds fewer than 500 distinct values.</p></li>
+<li><p><a href="/docs/ru/v2.6.x/stl-sort.md">STL_SORT</a> is an alternative for numeric and <code translate="no">VARCHAR</code> fields.</p></li>
 </ul>
-<p>В приведённых ниже примерах к параметрам индекса коллекции добавляется индекс <code translate="no">INVERTED</code> для поля Partition Key наряду с индексом для поля vector.</p>
+<p>The following examples add an <code translate="no">INVERTED</code> index on the Partition Key field to the index parameters of the collection, alongside the index on the vector field.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">index_params = client.prepare_index_params()
 
@@ -509,8 +508,8 @@ curl --request POST \
     \&quot;indexParams\&quot;: <span class="hljs-variable">$indexParams</span>
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Передайте эти параметры индекса при создании коллекции или создайте индекс для существующей коллекции. Подробности см. в разделе <a href="/docs/ru/v2.6.x/create-collection.md">«Создание коллекции</a>».</p>
-<h2 id="Use-Partition-Key-Isolation" class="common-anchor-header">Использование изоляции ключа разбиения<button data-href="#Use-Partition-Key-Isolation" class="anchor-icon" translate="no">
+<p>Pass these index parameters when you create the collection, or create the index on an existing collection. For details, refer to <a href="/docs/ru/v2.6.x/create-collection.md">Create Collection</a>.</p>
+<h2 id="Use-Partition-Key-Isolation" class="common-anchor-header">Use Partition Key Isolation<button data-href="#Use-Partition-Key-Isolation" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -525,20 +524,20 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>В сценарии многопользовательской среды вы можете назначить скалярное поле, связанное с идентификаторами арендаторов, в качестве ключа разбиения и создать фильтр на основе конкретного значения в этом скалярном поле. Для дальнейшего повышения производительности поиска в подобных сценариях в Milvus реализована функция «Изоляция ключа разбиения».</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="/docs/v2.6.x/assets/partition-key-isolation.png" alt="Partition Key Isolation" class="doc-image" id="partition-key-isolation" /> 
-   <span>Изоляция ключа разбиения</span>
-  
- </span></p>
-<p>Как показано на рисунке выше, Milvus группирует сущности на основе значения ключа разбиения и создает отдельный индекс для каждой из этих групп. При получении запроса на поиск Milvus находит индекс на основе значения ключа разбиения, указанного в условии фильтрации, и ограничивает область поиска сущностями, включенными в индекс, что позволяет избежать сканирования нерелевантных сущностей во время поиска и значительно повысить производительность поиска.</p>
-<p>После включения изоляции ключа раздела необходимо указать только одно конкретное значение в фильтре на основе ключа раздела, чтобы Milvus мог ограничить область поиска сущностями, включенными в индекс и соответствующими этому значению.</p>
+    </button></h2><p>In the multi-tenancy scenario, you can designate the scalar field related to tenant identities as the partition key and create a filter based on a specific value in this scalar field. To further improve search performance in similar scenarios, Milvus introduces the Partition Key Isolation feature.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/partition-key-isolation.png" alt="Partition Key Isolation" class="doc-image" id="partition-key-isolation" />
+    <span>Partition Key Isolation</span>
+  </span>
+</p>
+<p>As shown in the above figure, Milvus groups entities based on the Partition Key value and creates a separate index for each of these groups. Upon receiving a search request, Milvus locates the index based on the Partition Key value specified in the filtering condition and restricts the search scope within the entities included in the index, thus avoiding scanning irrelevant entities during the search and greatly enhancing the search performance.</p>
+<p>Once you have enabled Partition Key Isolation, you must include only one specific value in the Partition-key-based filter so that Milvus can restrict the search scope within the entities included in the index that match.</p>
 <div class="alert note">
-<p>В настоящее время функция «Изоляция ключа раздела» применяется только к поискам с типом индекса, установленным на HNSW.</p>
+<p>Currently, the Partition-Key Isolation feature applies only to searches with the index type set to HNSW.</p>
 </div>
-<p>Изоляция ключа раздела не заменяет скалярный индекс по полю ключа раздела. Значение ключа раздела в фильтре позволяет найти соответствующий подиндекс, но Milvus по-прежнему оценивает сам фильтр для определения соответствующих объектов, поэтому мы рекомендуем также <a href="/docs/ru/v2.6.x/use-partition-key.md#Index-Partition-Key">индексировать ключ раздела</a>.</p>
-<h3 id="Enable-Partition-Key-Isolation" class="common-anchor-header">Включение изоляции ключа раздела<button data-href="#Enable-Partition-Key-Isolation" class="anchor-icon" translate="no">
+<p>Partition Key Isolation does not replace the scalar index on the Partition Key field. The Partition Key value in the filter locates the matching sub-index, but Milvus still evaluates the filter itself to identify the matching entities, so we recommend that you also <a href="/docs/ru/v2.6.x/use-partition-key.md#Index-Partition-Key">index the Partition Key</a>.</p>
+<h3 id="Enable-Partition-Key-Isolation" class="common-anchor-header">Enable Partition Key Isolation<button data-href="#Enable-Partition-Key-Isolation" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -553,13 +552,13 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>В приведённых ниже примерах кода показано, как включить изоляцию ключа раздела.</p>
+    </button></h3><p>The following code examples demonstrate how to enable Partition Key Isolation.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.create_collection(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,
@@ -612,4 +611,4 @@ curl --request POST \
     \&quot;params\&quot;: <span class="hljs-variable">$params</span>
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>После включения изоляции ключа раздела вы по-прежнему можете задавать ключ раздела и количество разделов, как описано в <a href="/docs/ru/v2.6.x/use-partition-key.md#Set-Partition-Numbers">разделе «Установка номеров разделов</a>». Обратите внимание, что фильтр на основе ключа раздела должен содержать только конкретное значение ключа раздела.</p>
+<p>Once you have enabled Partition Key Isolation, you can still set the Partition Key and number of partitions as described in <a href="/docs/ru/v2.6.x/use-partition-key.md#Set-Partition-Numbers">Set Partition Numbers</a>. Note that the Partition-Key-based filter should include only a specific Partition Key value.</p>

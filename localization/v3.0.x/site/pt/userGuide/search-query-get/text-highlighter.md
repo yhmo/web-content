@@ -2,10 +2,10 @@
 id: text-highlighter.md
 title: Text HighlighterCompatible with Milvus 2.6.8+
 summary: >-
-  O Highlighter do Milvus assinala os termos correspondentes nos campos de
-  texto, envolvendo-os em etiquetas personalizáveis. O realce ajuda a explicar
-  por que razão um documento corresponde, melhora a legibilidade dos resultados
-  e permite uma apresentação mais rica em aplicações de pesquisa e RAG.
+  The Highlighter in Milvus annotates matched terms in text fields by wrapping
+  them with customizable tags. Highlighting helps explain why a document
+  matches, improves result readability, and supports rich rendering in search
+  and RAG applications.
 beta: Milvus 2.6.8+
 ---
 <h1 id="Text-Highlighter" class="common-anchor-header">Text Highlighter<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.8+</span><button data-href="#Text-Highlighter" class="anchor-icon" translate="no">

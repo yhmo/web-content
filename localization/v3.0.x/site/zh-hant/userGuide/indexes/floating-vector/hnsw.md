@@ -1,7 +1,11 @@
 ---
 id: hnsw.md
 title: HNSW
-summary: HNSW 索引是一種基於圖的索引演算法，能在搜尋高維度浮點向量時提升效能。它不僅具備卓越的搜尋準確度與低延遲，但為了維持其層級圖結構，需要較高的記憶體開銷。
+summary: >-
+  The HNSW index is a graph-based indexing algorithm that can improve
+  performance when searching for high-dimensional floating vectors. It offers
+  excellent search accuracy and low latency, while it requires high memory
+  overhead to maintain its hierarchical graph structure.
 ---
 <h1 id="HNSW" class="common-anchor-header">HNSW<button data-href="#HNSW" class="anchor-icon" translate="no">
       <svg translate="no"
@@ -18,8 +22,8 @@ summary: HNSW 索引是一種基於圖的索引演算法，能在搜尋高維度
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p><strong>HNSW</strong>索引是一種<strong>基於圖的</strong>索引演算法，能在搜尋高維度浮點向量時提升效能。它不僅具備<strong>卓越的</strong>搜尋準確度與<strong>低延遲</strong>，但為了維持其階層式圖結構，需要<strong>較高的</strong>記憶體開銷。</p>
-<h2 id="Overview" class="common-anchor-header">概述<button data-href="#Overview" class="anchor-icon" translate="no">
+    </button></h1><p>The <strong>HNSW</strong> index is a <strong>graph-based</strong> indexing algorithm that can improve performance when searching for high-dimensional floating vectors. It offers <strong>excellent</strong> search accuracy and <strong>low</strong> latency, while it requires <strong>high</strong> memory overhead to maintain its hierarchical graph structure.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -34,29 +38,29 @@ summary: HNSW 索引是一種基於圖的索引演算法，能在搜尋高維度
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>分層可導航小世界（HNSW）演算法會建構一個多層次圖，類似於具有不同縮放層級的地圖。<strong>最底層</strong>包含所有資料點，<strong>而上層</strong>則由從底層採樣而來的資料點子集組成。</p>
-<p>在此層級結構中，每一層都包含代表資料點的節點，並透過表示其距離的邊相互連接。較高層級可提供長距離跳躍以快速接近目標，而較低層級則能進行細粒度的搜尋以獲得最精確的結果。</p>
-<p>其運作方式如下：</p>
+    </button></h2><p>The Hierarchical Navigable Small World (HNSW) algorithm builds a multi-layered graph, kind of like a map with different zoom levels. The <strong>bottom layer</strong> contains all the data points, while the <strong>upper layers</strong> consist of a subset of data points sampled from the lower layer.</p>
+<p>In this hierarchy, each layer contains nodes representing data points, connected by edges that indicate their proximity. The higher layers provide long-distance jumps to quickly get close to the target, while the lower layers enable a fine-grained search for the most accurate results.</p>
+<p>Here’s how it works:</p>
 <ol>
-<li><p><strong>起點</strong>：搜尋從頂層的固定起點開始，該起點是圖中預先指定的節點。</p></li>
-<li><p><strong>貪婪搜尋</strong>：演算法會貪婪地移動至當前層級中最鄰近的節點，直到無法再更接近查詢向量為止。上層主要發揮導航功能，作為粗略篩選機制，用以定位下層精細搜尋的潛在起點。</p></li>
-<li><p><strong>層級下降</strong>：當在當前層級達到<strong>局部極小值</strong>時，演算法會透過預先建立的連結跳轉至較低層級，並重複貪婪搜尋。</p></li>
-<li><p><strong>最終精細化</strong>：此過程持續進行直至抵達最底層，此時透過最終精細化步驟來識別最近鄰。</p></li>
+<li><p><strong>Entry point</strong>: The search starts at a fixed entry point at the top layer, which is a pre-determined node in the graph.</p></li>
+<li><p><strong>Greedy search</strong>: The algorithm greedily moves to the closest neighbor at the current layer until it cannot get any closer to the query vector. The upper layers serve a navigational purpose, acting as a coarse filter to locate potential entry points for the finer search at the lower levels.</p></li>
+<li><p><strong>Layer descend</strong>: Once a <strong>local minimum</strong> is reached at the current layer, the algorithm jumps down to the lower layer, using a pre-established connection, and repeats the greedy search.</p></li>
+<li><p><strong>Final</strong> <strong>refinement</strong>: This process continues until the bottom layer is reached, where a final refinement step identifies the nearest neighbors.</p></li>
 </ol>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/hnsw.png" alt="HNSW" class="doc-image" id="hnsw" /> 
-   <span>HNSW</span>
-  
- </span></p>
-<p>HNSW 的效能取決於幾個關鍵參數，這些參數同時控制圖的結構與搜尋行為。其中包括：</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/hnsw.png" alt="HNSW" class="doc-image" id="hnsw" />
+    <span>HNSW</span>
+  </span>
+</p>
+<p>The performance of HNSW depends on several key parameters that control both the structure of the graph and the search behavior. These include:</p>
 <ul>
-<li><p><code translate="no">M</code>：在層級結構的每個層級中，圖中每個節點所能擁有的邊或連結的最大數量。較高的<code translate="no">M</code> 會導致圖更為密集，並因搜尋可探索的路徑更多而提高召回率與準確度；但由於額外的連結，也會消耗更多記憶體並延長插入時間。 如上圖<strong>所示，M = 5</strong>表示 HNSW 圖中每個節點最多可直接連接 5 個其他節點。這形成了一種中等密度的圖結構，節點之間有多條路徑可相互連通。</p></li>
-<li><p><code translate="no">efConstruction</code>: 建立索引時所考慮的候選節點數量。較高的「<code translate="no">efConstruction</code> 」通常能產生品質較佳的圖，但需要更長的時間來建構。</p></li>
-<li><p><code translate="no">ef</code>：搜尋過程中評估的鄰居數量。增加<code translate="no">ef</code> 可提高找到最近鄰居的機率，但會減慢搜尋過程。</p></li>
+<li><p><code translate="no">M</code>: The maximum number of edges or connections each node can have in the graph at each level of the hierarchy. A higher <code translate="no">M</code> results in a denser graph and increases recall and accuracy as the search has more pathways to explore, which also consumes more memory and slows down insertion time due to additional connections. As shown in the image above, <strong>M = 5</strong> indicates that each node in the HNSW graph is directly connected to a maximum of 5 other nodes. This creates a moderately dense graph structure where nodes have multiple pathways to reach other nodes.</p></li>
+<li><p><code translate="no">efConstruction</code>: The number of candidates considered during index construction. A higher <code translate="no">efConstruction</code> generally results in a better quality graph but requires more time to build.</p></li>
+<li><p><code translate="no">ef</code>: The number of neighbors evaluated during a search. Increasing <code translate="no">ef</code> improves the likelihood of finding the nearest neighbors but slows down the search process.</p></li>
 </ul>
-<p>有關如何根據需求調整這些設定的詳細資訊，請參閱「<a href="/docs/zh-hant/hnsw.md#Index-params">索引參數</a>」。</p>
-<h2 id="Build-index" class="common-anchor-header">建立索引<button data-href="#Build-index" class="anchor-icon" translate="no">
+<p>For details on how to adjust these settings to suit your needs, refer to <a href="/docs/zh-hant/hnsw.md#Index-params">Index params</a>.</p>
+<h2 id="Build-index" class="common-anchor-header">Build index<button data-href="#Build-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -71,8 +75,8 @@ summary: HNSW 索引是一種基於圖的索引演算法，能在搜尋高維度
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>此範例使用名為<code translate="no">client</code> 的連通<code translate="no">MilvusClient</code> ，以及名為<code translate="no">your_collection_name</code> 的現有集合。該集合包含一個名為<code translate="no">your_vector_field_name</code> 的五維<code translate="no">FLOAT_VECTOR</code> 欄位。有關 SDK 相容性，請參閱《<a href="/docs/zh-hant/install-pymilvus.md">安裝 Milvus Python SDK</a>》；關於資料結構與連線設定，請參閱<a href="/docs/zh-hant/create-collection.md">《建立集合》</a>。將範例套用至您的嵌入向量時，請一併替換欄位名稱與查詢維度。</p>
-<p>請使用 `<code translate="no">add_index()</code>` 定義索引參數，然後使用 `<code translate="no">create_index()</code>` 建立索引。</p>
+    </button></h2><p>This example uses a connected <code translate="no">MilvusClient</code> named <code translate="no">client</code> and an existing collection named <code translate="no">your_collection_name</code>. The collection has a five-dimensional <code translate="no">FLOAT_VECTOR</code> field named <code translate="no">your_vector_field_name</code>. See <a href="/docs/zh-hant/install-pymilvus.md">Install Milvus Python SDK</a> for SDK compatibility and <a href="/docs/zh-hant/create-collection.md">Create Collection</a> for the schema and connection setup. Replace the field name and query dimension together when adapting the example to your embeddings.</p>
+<p>Define the index parameters with <code translate="no">add_index()</code>, then build the index with <code translate="no">create_index()</code>.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 <span class="hljs-comment"># Prepare index building params</span>
@@ -94,19 +98,19 @@ client.create_index(
     index_params=index_params
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>在此設定中：</p>
+<p>In this configuration:</p>
 <ul>
-<li><p><code translate="no">index_type</code>: 將要建立的索引類型。在此範例中，請將值設定為<code translate="no">HNSW</code> 。</p></li>
-<li><p><code translate="no">metric_type</code>: 用於計算向量之間距離的方法。支援的值包括<code translate="no">COSINE</code> 、<code translate="no">L2</code> 以及<code translate="no">IP</code> 。詳細資訊請參閱「<a href="/docs/zh-hant/metric.md">度量類型</a>」。</p></li>
-<li><p><code translate="no">params</code>: 建立索引的額外設定選項。</p>
+<li><p><code translate="no">index_type</code>: The type of index to be built. In this example, set the value to <code translate="no">HNSW</code>.</p></li>
+<li><p><code translate="no">metric_type</code>: The method used to calculate the distance between vectors. Supported values include <code translate="no">COSINE</code>, <code translate="no">L2</code>, and <code translate="no">IP</code>. For details, refer to <a href="/docs/zh-hant/metric.md">Metric Types</a>.</p></li>
+<li><p><code translate="no">params</code>: Additional configuration options for building the index.</p>
 <ul>
-<li><p><code translate="no">M</code>: 每個節點可連接的鄰居最大數量。</p></li>
-<li><p><code translate="no">efConstruction</code>: 在索引建構過程中，用於評估連線的候選鄰居數量。</p></li>
+<li><p><code translate="no">M</code>: Maximum number of neighbors each node can connect to.</p></li>
+<li><p><code translate="no">efConstruction</code>: Number of candidate neighbors considered for connection during index construction.</p></li>
 </ul>
-<p>此範例將 `<code translate="no">M=64</code> ` 和 `<code translate="no">efConstruction=100</code> ` 設定為調校覆寫值。有關預設值和有效範圍，請參閱「<a href="/docs/zh-hant/hnsw.md#Index-building-params">索引建置參數</a>」。</p></li>
+<p>The example sets <code translate="no">M=64</code> and <code translate="no">efConstruction=100</code> as tuning overrides. For defaults and accepted ranges, see <a href="/docs/zh-hant/hnsw.md#Index-building-params">Index building params</a>.</p></li>
 </ul>
-<p>若要同時建立集合及其索引，請將索引參數傳遞給<code translate="no">create_collection()</code> 。詳細資訊請參閱「<a href="/docs/zh-hant/create-collection.md">建立集合</a>」。</p>
-<h2 id="Search-on-index" class="common-anchor-header">在索引上進行搜尋<button data-href="#Search-on-index" class="anchor-icon" translate="no">
+<p>To create a collection and its index together, pass the index parameters to <code translate="no">create_collection()</code>. For details, see <a href="/docs/zh-hant/create-collection.md">Create Collection</a>.</p>
+<h2 id="Search-on-index" class="common-anchor-header">Search on index<button data-href="#Search-on-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -121,7 +125,7 @@ client.create_index(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>建立索引並插入實體後，請載入集合並搜尋其向量欄位。對於一般的 kNN 搜尋，請將 `<code translate="no">ef</code> ` 設定為至少 `<code translate="no">limit</code>`。</p>
+    </button></h2><p>After building the index and inserting entities, load the collection and search its vector field. For ordinary kNN searches, set <code translate="no">ef</code> to at least <code translate="no">limit</code>.</p>
 <pre><code translate="no" class="language-python">search_params = {
     <span class="hljs-string">&quot;params&quot;</span>: {
         <span class="hljs-string">&quot;ef&quot;</span>: <span class="hljs-number">10</span>, <span class="hljs-comment"># Number of neighbors to consider during the search</span>
@@ -138,15 +142,15 @@ res = client.search(
     search_params=search_params
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>在此設定中：</p>
+<p>In this configuration:</p>
 <ul>
-<li><p><code translate="no">params</code>：針對索引搜尋的額外設定選項。</p>
+<li><p><code translate="no">params</code>: Additional configuration options for searching on the index.</p>
 <ul>
-<li><code translate="no">ef</code>: 搜尋時考慮的鄰居數量。</li>
+<li><code translate="no">ef</code>: Number of neighbors to consider during a search.</li>
 </ul>
-<p>如需瞭解<code translate="no">HNSW</code> 索引可用的更多搜尋參數，請參閱《<a href="/docs/zh-hant/hnsw.md#Index-specific-search-params">索引專用搜尋參數》</a>。</p></li>
+<p>To learn more search parameters available for the <code translate="no">HNSW</code> index, refer to <a href="/docs/zh-hant/hnsw.md#Index-specific-search-params">Index-specific search params</a>.</p></li>
 </ul>
-<h2 id="Index-params" class="common-anchor-header">索引參數<button data-href="#Index-params" class="anchor-icon" translate="no">
+<h2 id="Index-params" class="common-anchor-header">Index params<button data-href="#Index-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -161,8 +165,8 @@ res = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>下表列出了索引建立與搜尋的相關參數。若未指定某些參數，伺服器設定可覆寫其預設值。</p>
-<h3 id="Index-building-params" class="common-anchor-header">索引建立參數<button data-href="#Index-building-params" class="anchor-icon" translate="no">
+    </button></h2><p>The tables below list the parameters for index building and search. Server settings can override the defaults for parameters you omit.</p>
+<h3 id="Index-building-params" class="common-anchor-header">Index building params<button data-href="#Index-building-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -177,28 +181,28 @@ res = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>下表列出了在<code translate="no">params</code> 中<a href="/docs/zh-hant/hnsw.md#Build-index">建立索引</a>時可配置的參數。</p>
+    </button></h3><p>The following table lists the parameters that can be configured in <code translate="no">params</code> when <a href="/docs/zh-hant/hnsw.md#Build-index">building an index</a>.</p>
 <table>
    <tr>
-     <th><p>參數</p></th>
-     <th><p>說明</p></th>
-     <th><p>數值範圍</p></th>
-     <th><p>調校建議</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Description</p></th>
+     <th><p>Value Range</p></th>
+     <th><p>Tuning Suggestion</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">M</code></p></td>
-     <td><p>每個節點在圖中可擁有的最大連接數（或邊數），包含出邊與入邊。此參數會直接影響索引建構與搜尋。</p></td>
-     <td><p><strong>類型</strong>：整數<strong>範圍</strong>：[2, 2048]</p><p><strong>預設值</strong>：<code translate="no">30</code> （每個節點最多 30 條出邊和 30 條入邊）</p></td>
-     <td><p>較大的<code translate="no">M</code> 通常能<strong>提升準確度</strong>，但<strong>會增加記憶體開銷</strong>，<strong>並減緩索引建置與搜尋速度</strong>。若資料集維度較高，或當高召回率至關重要時，請考慮增加<code translate="no">M</code> 。</p><p>若記憶體使用量與搜尋速度是首要考量，請考慮降低<code translate="no">M</code> 的數值。</p><p>在大多數情況下，我們建議您將數值設定在此範圍內：[5, 100]。</p></td>
+     <td><p>Maximum number of connections （or edges) each node can have in the graph, including both outgoing and incoming edges. This parameter directly affects both index construction and search.</p></td>
+     <td><p><strong>Type</strong>: Integer <strong>Range</strong>: [2, 2048]</p><p><strong>Default value</strong>: <code translate="no">30</code> (up to 30 outgoing and 30 incoming edges per node)</p></td>
+     <td><p>A larger <code translate="no">M</code> generally leads to <strong>higher accuracy</strong> but <strong>increases memory overhead</strong> and <strong>slows down both index building and search</strong>. Consider increasing <code translate="no">M</code> for datasets with high dimensionality or when high recall is crucial.</p><p>Consider decreasing <code translate="no">M</code> when memory usage and search speed are primary concerns.</p><p>In most cases, we recommend you set a value within this range: [5, 100].</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">efConstruction</code></p></td>
-     <td><p>在建立索引時，用於評估連接的候選鄰居數量。對於每個新元素，系統會評估較大的候選鄰居池，但實際建立的連接最大數量仍受<code translate="no">M</code> 限制。</p></td>
-     <td><p><strong>類型</strong>：整數<strong>範圍</strong>：[1,<em>int_max</em>]</p><p><strong>預設值</strong>：<code translate="no">360</code></p></td>
-     <td><p>較高的 `<code translate="no">efConstruction</code> ` 通常會產生<strong>更精確的索引，</strong>因為會探索更多潛在的連結。然而，這也會導致<strong>建立索引的時間更長，且</strong>在建立過程中<strong>增加記憶體使用量</strong>。若需提升精確度，請考慮增加 `<code translate="no">efConstruction</code> `，特別是在索引時間並非關鍵考量的情境下。</p><p>若資源限制是考量因素，請考慮降低<code translate="no">efConstruction</code> 以加快索引建構速度。</p><p>在大多數情況下，我們建議您將數值設定在此範圍內：[50, 500]。</p></td>
+     <td><p>Number of candidate neighbors considered for connection during index construction. A larger pool of candidates is evaluated for each new element, but the maximum number of connections actually established is still limited by <code translate="no">M</code>.</p></td>
+     <td><p><strong>Type</strong>: Integer <strong>Range</strong>: [1, <em>int_max</em>]</p><p><strong>Default value</strong>: <code translate="no">360</code></p></td>
+     <td><p>A higher <code translate="no">efConstruction</code> typically results in a <strong>more accurate index</strong>, as more potential connections are explored. However, this also leads to <strong>longer indexing time and increased memory usage</strong> during construction. Consider increasing <code translate="no">efConstruction</code> for improved accuracy, especially in scenarios where indexing time is less critical.</p><p>Consider decreasing <code translate="no">efConstruction</code> to speed up index construction when resource constraints are a concern.</p><p>In most cases, we recommend you set a value within this range: [50, 500].</p></td>
    </tr>
 </table>
-<h3 id="Index-specific-search-params" class="common-anchor-header">索引專屬搜尋參數<button data-href="#Index-specific-search-params" class="anchor-icon" translate="no">
+<h3 id="Index-specific-search-params" class="common-anchor-header">Index-specific search params<button data-href="#Index-specific-search-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -213,22 +217,22 @@ res = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>下表列出了<a href="/docs/zh-hant/hnsw.md#Search-on-index">在索引上進行搜尋</a>時，可於<code translate="no">search_params.params</code> 中設定的參數。</p>
+    </button></h3><p>The following table lists the parameters that can be configured in <code translate="no">search_params.params</code> when <a href="/docs/zh-hant/hnsw.md#Search-on-index">searching on the index</a>.</p>
 <table>
    <tr>
-     <th><p>參數</p></th>
-     <th><p>說明</p></th>
-     <th><p>值範圍</p></th>
-     <th><p>調校建議</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Description</p></th>
+     <th><p>Value Range</p></th>
+     <th><p>Tuning Suggestion</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">ef</code></p></td>
-     <td><p>控制最近鄰檢索過程中的搜尋範圍。此參數決定將造訪並評估多少個節點作為潛在的最近鄰。此參數僅影響搜尋過程，且僅適用於圖的底層。</p></td>
-     <td><p><strong>類型</strong>：整數<strong>範圍</strong>：[1,<em>int_max</em>]</p><p><strong>預設值</strong>：<code translate="no">max(limit, 16)</code> （適用於一般 kNN 搜尋）；<code translate="no">512</code> （適用於範圍搜尋）。</p><p>對於一般 kNN 搜尋，顯式設定的<code translate="no">ef</code> 必須大於或等於<code translate="no">limit</code> （即要回傳的最近鄰節點數）。</p></td>
-     <td><p>較大的<code translate="no">ef</code> 通常會因納入更多潛在鄰居而<strong>提高搜尋準確度</strong>。然而，這也會<strong>增加搜尋時間</strong>。當達成高召回率至關重要，且搜尋速度並非首要考量時，建議考慮增加<code translate="no">ef</code> 。</p><p>若需優先確保搜尋速度，特別是當搜尋準確度可接受輕微下降時，請考慮降低<code translate="no">ef</code> 的數值。</p><p>在大多數情況下，我們建議您將數值設定在此範圍內：[K, 10K]。</p></td>
+     <td><p>Controls the breadth of search during nearest neighbor retrieval. It determines how many nodes are visited and evaluated as potential nearest neighbors.  This parameter affects only the search process and applies exclusively to the bottom layer of the graph.</p></td>
+     <td><p><strong>Type</strong>: Integer <strong>Range</strong>: [1, <em>int_max</em>]</p><p><strong>Default value</strong>: <code translate="no">max(limit, 16)</code> for ordinary kNN search; <code translate="no">512</code> for range search.</p><p>For ordinary kNN search, an explicit <code translate="no">ef</code> must be greater than or equal to <code translate="no">limit</code> (the number of nearest neighbors to return).</p></td>
+     <td><p>A larger <code translate="no">ef</code> generally leads to <strong>higher search accuracy</strong> as more potential neighbors are considered. However, this also <strong>increases search time</strong>. Consider increasing <code translate="no">ef</code> when achieving high recall is critical and search speed is less of a concern.</p><p>Consider decreasing <code translate="no">ef</code> to prioritize faster searches, especially in scenarios where a slight reduction in accuracy is acceptable.</p><p>In most cases, we recommend you set a value within this range: [K, 10K].</p></td>
    </tr>
 </table>
-<h2 id="Evaluate-the-trade-offs" class="common-anchor-header">評估取捨<button data-href="#Evaluate-the-trade-offs" class="anchor-icon" translate="no">
+<h2 id="Evaluate-the-trade-offs" class="common-anchor-header">Evaluate the trade-offs<button data-href="#Evaluate-the-trade-offs" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -243,11 +247,11 @@ res = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>請使用具代表性的資料和查詢來選擇參數，而非將範例值視為生產環境的預設值：</p>
+    </button></h2><p>Use representative data and queries to choose parameters rather than treating the example values as production defaults:</p>
 <ol>
-<li>固定嵌入模型、指標、<code translate="no">limit</code> 以及任何<a href="/docs/zh-hant/filtered-search.md">篩選條件</a>。針對相同的查詢和符合條件的實體計算精確最近鄰（例如使用<a href="/docs/zh-hant/flat.md">FLAT</a>索引），以測量召回率。</li>
-<li>在目標並發數下，逐步調整搜尋時的<code translate="no">ef</code> 。同時記錄召回率、吞吐量及尾部延遲。增加<code translate="no">ef</code> 無需重建索引。</li>
-<li>若搜尋時段的調校無法達到目標，請比較採用不同<code translate="no">M</code> 和<code translate="no">efConstruction</code> 重建的索引。同時記錄索引建置時間、記憶體使用量以及查詢效能。</li>
-<li>請將載入策略與快取狀態納入測試範圍。若使用<a href="/docs/zh-hant/tiered-storage-overview.md">分層儲存</a>，請將擷取未快取資料的查詢與暖快取查詢分開測量。</li>
+<li>Fix the embedding model, metric, <code translate="no">limit</code>, and any <a href="/docs/zh-hant/filtered-search.md">filter conditions</a>. Compute exact nearest neighbors for the same queries and eligible entities, for example with a <a href="/docs/zh-hant/flat.md">FLAT</a> index, to measure recall.</li>
+<li>Sweep the search-time <code translate="no">ef</code> at your target concurrency. Record recall, throughput, and tail latency together. Increasing <code translate="no">ef</code> does not require rebuilding the index.</li>
+<li>If search-time tuning cannot meet the target, compare rebuilt indexes with different <code translate="no">M</code> and <code translate="no">efConstruction</code>. Record index build time and memory use as well as query performance.</li>
+<li>Include the loading strategy and cache state in the test. When using <a href="/docs/zh-hant/tiered-storage-overview.md">Tiered Storage</a>, measure queries that fetch uncached data separately from warm-cache queries.</li>
 </ol>
-<p>若受記憶體限制，或有不同的回溯率與延遲目標，請參閱《<a href="/docs/zh-hant/index-explained.md">索引詳解</a>》中的替代方案進行比較。</p>
+<p>For memory constraints or a different recall and latency target, compare the alternatives in <a href="/docs/zh-hant/index-explained.md">Index Explained</a>.</p>

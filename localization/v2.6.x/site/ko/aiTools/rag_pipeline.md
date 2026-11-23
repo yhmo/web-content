@@ -1,9 +1,9 @@
 ---
 id: rag_pipeline.md
-title: '프롬프트: Milvus RAG 파이프라인'
-summary: Milvus로 RAG 파이프라인을 구축하는 AI 코딩 어시스턴트를 위한 규칙입니다.
+title: 'Prompt: Milvus RAG Pipeline'
+summary: Rules for AI coding assistants to build RAG pipelines with Milvus.
 ---
-<h1 id="RAG-Pipeline" class="common-anchor-header">RAG 파이프라인<button data-href="#RAG-Pipeline" class="anchor-icon" translate="no">
+<h1 id="RAG-Pipeline" class="common-anchor-header">RAG Pipeline<button data-href="#RAG-Pipeline" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,8 +18,8 @@ summary: Milvus로 RAG 파이프라인을 구축하는 AI 코딩 어시스턴트
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>수집, 청킹, 임베딩, BM25를 사용한 하이브리드 검색, 업서트를 사용한 문서 업데이트 등 Milvus로 RAG 파이프라인을 구축하기 위한 엔드투엔드 규칙입니다. 아래의 전체 프롬프트를 AI 도구에 복사하여 이러한 규칙을 자동으로 적용하세요. 모든 프롬프트에 대한 개요는 <a href="/docs/ko/milvus_for_agents.md">AI 프롬프트를</a> 참조하세요.</p>
-<h2 id="How-to-use-this-prompt" class="common-anchor-header">이 프롬프트를 사용하는 방법<button data-href="#How-to-use-this-prompt" class="anchor-icon" translate="no">
+    </button></h1><p>End-to-end rules for building RAG pipelines with Milvus, including ingestion, chunking, embedding, hybrid retrieval with BM25, and document updates with upsert. Copy the full prompt below into your AI tool to apply these rules automatically. For an overview of all prompts, see <a href="/docs/ko/v2.6.x/milvus_for_agents.md">AI Prompts</a>.</p>
+<h2 id="How-to-use-this-prompt" class="common-anchor-header">How to use this prompt<button data-href="#How-to-use-this-prompt" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -35,12 +35,12 @@ summary: Milvus로 RAG 파이프라인을 구축하는 AI 코딩 어시스턴트
         ></path>
       </svg>
     </button></h2><ol>
-<li>아래의 <a href="#full-prompt">전체</a> 프롬프트 섹션에서 전체 프롬프트를<strong>복사합니다</strong>.</li>
-<li>AI 도구가 예상하는 위치에<strong>저장합니다</strong> (배치에 대한 자세한 내용은 <a href="/docs/ko/milvus_for_agents.md">환경 표를</a> 참조하세요).</li>
-<li>AI 어시스턴트는 Milvus 코드를 생성하거나 검토할 때 이러한 규칙을 자동으로 적용합니다.</li>
+<li><strong>Copy</strong> the full prompt from the <a href="#full-prompt">Full prompt</a> section below.</li>
+<li><strong>Save</strong> it to the location your AI tool expects — see the <a href="/docs/ko/v2.6.x/milvus_for_agents.md">environment table</a> for placement details.</li>
+<li>Your AI assistant will automatically apply these rules when generating or reviewing Milvus code.</li>
 </ol>
-<p><strong>커서</strong> 사용자의 경우: <a href="#full-prompt">전체 프롬프트</a> 섹션에서 프롬프트를 복사하여 프로젝트의 <code translate="no">.cursor/rules/</code> 아래에 저장합니다.</p>
-<h2 id="Full-prompt" class="common-anchor-header">전체 프롬프트<button data-href="#Full-prompt" class="anchor-icon" translate="no">
+<p>For <strong>Cursor</strong> users: copy the prompt from the <a href="#full-prompt">Full prompt</a> section and save it under <code translate="no">.cursor/rules/</code> in your project.</p>
+<h2 id="Full-prompt" class="common-anchor-header">Full prompt<button data-href="#Full-prompt" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"

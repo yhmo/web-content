@@ -2,11 +2,10 @@
 id: boost-ranker.md
 title: Boost RankerCompatible with Milvus v2.6.2+
 summary: >-
-  Au lieu de se fonder uniquement sur la similarité sémantique calculée à partir
-  des distances vectorielles, les « Boost Rankers » vous permettent d'influencer
-  les résultats de recherche de manière pertinente. C'est la solution idéale
-  pour ajuster rapidement les résultats de recherche grâce au filtrage par
-  métadonnées.
+  Instead of relying solely on semantic similarity calculated based on vector
+  distances, Boost Rankers allow you to influence search results in a meaningful
+  way. It is ideal for quickly adjusting search results using metadata
+  filtering.
 beta: Milvus v2.6.2+
 ---
 <h1 id="Boost-Ranker" class="common-anchor-header">Boost Ranker<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus v2.6.2+</span><button data-href="#Boost-Ranker" class="anchor-icon" translate="no">
@@ -24,9 +23,9 @@ beta: Milvus v2.6.2+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Au lieu de se fier uniquement à la similarité sémantique calculée à partir des distances vectorielles, les Boost Rankers vous permettent d’influencer les résultats de recherche de manière pertinente. Ils sont idéaux pour ajuster rapidement les résultats de recherche à l’aide d’un filtrage par métadonnées.</p>
-<p>Lorsqu’une requête de recherche inclut une fonction « Boost Ranker », Milvus utilise la condition de filtrage optionnelle définie dans cette fonction pour trouver des correspondances parmi les résultats candidats, puis augmente les scores de ces correspondances en appliquant la pondération spécifiée, ce qui permet de faire monter ou descendre les entités correspondantes dans le classement du résultat final.</p>
-<h2 id="When-to-use-Boost-Ranker" class="common-anchor-header">Quand utiliser le Boost Ranker<button data-href="#When-to-use-Boost-Ranker" class="anchor-icon" translate="no">
+    </button></h1><p>Instead of relying solely on semantic similarity calculated based on vector distances, Boost Rankers allow you to influence search results in a meaningful way. It is ideal for quickly adjusting search results using metadata filtering.</p>
+<p>When a search request includes a Boost Ranker function, Milvus uses the optional filtering condition within the function to find matches among search result candidates and boosts the scores of those matches by applying the specified weight, helping promote or demote the rankings of the matched entities in the final result.</p>
+<h2 id="When-to-use-Boost-Ranker" class="common-anchor-header">When to use Boost Ranker<button data-href="#When-to-use-Boost-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -41,25 +40,25 @@ beta: Milvus v2.6.2+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Contrairement à d’autres systèmes de classement qui s’appuient sur des modèles inter-encodeurs ou des algorithmes de fusion, un Boost Ranker intègre directement des règles optionnelles basées sur les métadonnées dans le processus de classement, ce qui le rend plus adapté aux scénarios suivants.</p>
+    </button></h2><p>Unlike other rankers that rely on cross-encoder models or fusion algorithms, a Boost Ranker directly injects optional metadata-driven rules into the ranking process, which makes it more suitable in the following scenarios.</p>
 <table>
    <tr>
-     <th><p>Cas d’utilisation</p></th>
-     <th><p>Exemples</p></th>
-     <th><p>Pourquoi Boost Ranker fonctionne-t-il si bien ?</p></th>
+     <th><p>Use Case</p></th>
+     <th><p>Examples</p></th>
+     <th><p>Why Boost Ranker Works Well</p></th>
    </tr>
    <tr>
-     <td><p>Priorisation du contenu en fonction des besoins de l’entreprise</p></td>
-     <td><ul><li><p>Mise en avant des produits haut de gamme dans les résultats de recherche e-commerce</p></li><li><p>Augmentez la visibilité des contenus présentant des indicateurs d’engagement élevés (tels que les vues, les « j’aime » et les partages)</p></li><li><p>Mettre en avant les contenus récents dans les applications de recherche où le facteur temps est déterminant</p></li><li><p>Priorité accordée aux contenus provenant de sources vérifiées ou fiables</p></li><li><p>Mise en avant des résultats correspondant à des expressions exactes ou à des mots-clés hautement pertinents</p></li></ul></td>
-     <td rowspan="2"><p>Sans avoir à reconstruire les index ni à modifier les modèles d’embedding vectoriel — des opérations qui peuvent prendre beaucoup de temps —, vous pouvez instantanément faire remonter ou descendre des éléments spécifiques dans les résultats de recherche en appliquant des filtres de métadonnées optionnels en temps réel. Ce mécanisme permet un classement de recherche flexible et dynamique qui s’adapte facilement à l’évolution des besoins métier.</p></td>
+     <td><p>Business-driven content prioritization</p></td>
+     <td><ul><li><p>Highlight premium products in e-commerce search results</p></li><li><p>Increase visibility of content with high user engagement metrics (such as views, likes, and shares)</p></li><li><p>Elevating recent content in time-sensitive search applications</p></li><li><p>Prioritizing content from verified or trusted sources</p></li><li><p>Boosting results that match exact phrases or high-relevance keywords</p></li></ul></td>
+     <td rowspan="2"><p>Without the need to rebuild indexes or modify vector embedding models—operations that can be time-consuming—you can instantly promote or demote specific items in search results by applying optional metadata filters in real time. This mechanism enables flexible, dynamic search rankings that easily adapt to evolving business requirements.</p></td>
    </tr>
    <tr>
-     <td><p>Déclassement stratégique de contenus</p></td>
-     <td><ul><li><p>Réduire la visibilité des éléments dont le stock est faible sans les supprimer complètement</p></li><li><p>Abaisser le classement des contenus contenant des termes potentiellement contestables, sans recourir à la censure</p></li><li><p>Reléguer les anciennes documentations tout en les gardant accessibles dans les recherches techniques</p></li><li><p>Réduire subtilement la visibilité des produits concurrents dans les recherches sur les places de marché</p></li><li><p>Diminuer la pertinence des contenus présentant des signes de qualité inférieure (tels que des problèmes de mise en forme, une longueur réduite, etc.)</p></li></ul></td>
+     <td><p>Strategic content downranking</p></td>
+     <td><ul><li><p>Reducing the prominence of items with low inventory without removing them completely</p></li><li><p>Lowering the rank of content with potentially objectionable terms without censorship</p></li><li><p>Demoting older documentation while keeping it accessible in technical searches</p></li><li><p>Subtly reducing the visibility of competitor products in marketplace searches</p></li><li><p>Decreasing relevance of content with lower quality indications (such as formatting issues, shorter length, etc.)</p></li></ul></td>
    </tr>
 </table>
-<p>Vous pouvez également combiner plusieurs Boost Rankers pour mettre en œuvre une stratégie de classement basée sur la pondération, plus dynamique et plus robuste.</p>
-<h2 id="Mechanism-of-Boost-Ranker" class="common-anchor-header">Fonctionnement de Boost Ranker<button data-href="#Mechanism-of-Boost-Ranker" class="anchor-icon" translate="no">
+<p>You can also combine multiple Boost Rankers to implement a more dynamic and robust weight-based ranking strategy.</p>
+<h2 id="Mechanism-of-Boost-Ranker" class="common-anchor-header">Mechanism of Boost Ranker<button data-href="#Mechanism-of-Boost-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -74,23 +73,23 @@ beta: Milvus v2.6.2+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Le diagramme suivant illustre le flux de travail principal des « Boost Rankers ».</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/boost-ranker-mechanism.png" alt="Boost Ranker Mechanism" class="doc-image" id="boost-ranker-mechanism" /> 
-   <span>Fonctionnement du « Boost Ranker</span> </span>» <span class="img-wrapper">
-  
- </span></p>
-<p>Lorsque vous insérez des données, Milvus les répartit entre différents segments. Lors d’une recherche, chaque segment renvoie un ensemble de candidats, et Milvus classe ces candidats issus de tous les segments pour produire les résultats finaux. Lorsqu’une requête de recherche inclut un « Boost Ranker », Milvus l’applique aux résultats candidats de chaque segment afin d’éviter toute perte potentielle de précision et d’améliorer le rappel.</p>
-<p>Avant de finaliser les résultats, Milvus traite ces candidats à l’aide du « Boost Ranker » comme suit :</p>
+    </button></h2><p>The following diagram illustrates the main workflow of Boost Rankers.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/boost-ranker-mechanism.png" alt="Boost Ranker Mechanism" class="doc-image" id="boost-ranker-mechanism" />
+    <span>Boost Ranker Mechanism</span>
+  </span>
+</p>
+<p>When you insert data, Milvus distributes it across segments. During a search, each segment returns a set of candidates, and Milvus ranks these candidates from all segments to produce the final results. When a search request includes a Boost Ranker, Milvus applies it to the candidate results from each segment to prevent potential precision loss and improve recall.</p>
+<p>Before finalizing the results, Milvus processes these candidates with the Boost Ranker as follows:</p>
 <ol>
-<li><p>Il applique l’expression de filtrage facultative spécifiée dans le « Boost Ranker » afin d’identifier les entités qui correspondent à cette expression.</p></li>
-<li><p>Il applique la pondération spécifiée dans le « Boost Ranker » pour augmenter les scores des entités identifiées.</p></li>
+<li><p>Applies the optional filtering expression specified in the Boost Ranker to identify the entities that match the expression.</p></li>
+<li><p>Applies the weight specified in the Boost Ranker to boost the scores of the identified entities.</p></li>
 </ol>
 <div class="alert note">
-<p>Vous ne pouvez pas utiliser le « Boost Ranker » comme algorithme de classement dans une recherche hybride multi-vecteurs. Vous pouvez toutefois l’utiliser comme algorithme de classement dans n’importe laquelle de ses sous-requêtes (<code translate="no">AnnSearchRequest</code>).</p>
+<p>You cannot use Boost Ranker as the ranker in a multi-vector hybrid search. However, you can use it as the ranker in any of its sub-requests (<code translate="no">AnnSearchRequest</code>).</p>
 </div>
-<h2 id="Examples-of-Boost-Ranker" class="common-anchor-header">Exemples d’utilisation de Boost Ranker<button data-href="#Examples-of-Boost-Ranker" class="anchor-icon" translate="no">
+<h2 id="Examples-of-Boost-Ranker" class="common-anchor-header">Examples of Boost Ranker<button data-href="#Examples-of-Boost-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -105,318 +104,318 @@ beta: Milvus v2.6.2+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>L'exemple suivant illustre l'utilisation d'un Boost Ranker dans une recherche à vecteur unique qui nécessite de renvoyer les cinq entités les plus pertinentes et d'ajouter des pondérations aux scores des entités de type « doc abstrait ».</p>
+    </button></h2><p>The following example illustrates the use of a Boost Ranker in a single-vector search that requires returning the top five most relevant entities and adding weights to the scores of entities with the abstract doc type.</p>
 <ol>
-<li><p><strong>Collecter les candidats aux résultats de recherche par segments.</strong></p>
-<p>Le tableau suivant part du principe que Milvus répartit les entités en deux segments (<strong>0001</strong> et <strong>0002</strong>), chaque segment renvoyant cinq candidats.</p>
+<li><p><strong>Collect search result candidates in segments.</strong></p>
+<p>The following table assumes Milvus distributes entities into two segments (<strong>0001</strong> and <strong>0002</strong>), with each segment returning five candidates.</p>
 <p><table>
 <tr>
 <th><p>ID</p></th>
-<th><p>Type de document</p></th>
+<th><p>DocType</p></th>
 <th><p>Score</p></th>
-<th><p>Classement</p></th>
+<th><p>Rank</p></th>
 <th><p>segment</p></th>
 </tr>
 <tr>
 <td><p>117</p></td>
-<td><p>résumé</p></td>
-<td><p>0,344</p></td>
+<td><p>abstract</p></td>
+<td><p>0.344</p></td>
 <td><p>1</p></td>
 <td><p>0001</p></td>
 </tr>
 <tr>
 <td><p>89</p></td>
-<td><p>résumé</p></td>
-<td><p>0,456</p></td>
+<td><p>abstract</p></td>
+<td><p>0.456</p></td>
 <td><p>2</p></td>
 <td><p>0001</p></td>
 </tr>
 <tr>
 <td><p>257</p></td>
-<td><p>corps</p></td>
-<td><p>0,578</p></td>
+<td><p>body</p></td>
+<td><p>0.578</p></td>
 <td><p>3</p></td>
 <td><p>0001</p></td>
 </tr>
 <tr>
 <td><p>358</p></td>
-<td><p>titre</p></td>
-<td><p>0,788</p></td>
+<td><p>title</p></td>
+<td><p>0.788</p></td>
 <td><p>4</p></td>
 <td><p>0001</p></td>
 </tr>
 <tr>
 <td><p>168</p></td>
-<td><p>corps</p></td>
-<td><p>0,899</p></td>
+<td><p>body</p></td>
+<td><p>0.899</p></td>
 <td><p>5</p></td>
 <td><p>0001</p></td>
 </tr>
 <tr>
 <td><p>46</p></td>
-<td><p>corps</p></td>
-<td><p>0,189</p></td>
+<td><p>body</p></td>
+<td><p>0.189</p></td>
 <td><p>1</p></td>
 <td><p>0002</p></td>
 </tr>
 <tr>
 <td><p>48</p></td>
-<td><p>corps</p></td>
+<td><p>body</p></td>
 <td><p>0265</p></td>
 <td><p>2</p></td>
 <td><p>0002</p></td>
 </tr>
 <tr>
 <td><p>561</p></td>
-<td><p>résumé</p></td>
-<td><p>0,366</p></td>
+<td><p>abstract</p></td>
+<td><p>0.366</p></td>
 <td><p>3</p></td>
 <td><p>0002</p></td>
 </tr>
 <tr>
 <td><p>344</p></td>
-<td><p>résumé</p></td>
-<td><p>0,444</p></td>
+<td><p>abstract</p></td>
+<td><p>0.444</p></td>
 <td><p>4</p></td>
 <td><p>0002</p></td>
 </tr>
 <tr>
 <td><p>276</p></td>
-<td><p>résumé</p></td>
-<td><p>0,845</p></td>
+<td><p>abstract</p></td>
+<td><p>0.845</p></td>
 <td><p>5</p></td>
 <td><p>0002</p></td>
 </tr>
 </table></p></li>
-<li><p><strong>Appliquer l'expression de filtrage spécifiée dans le Boost Ranker</strong> (<code translate="no">doctype='abstract'</code>).</p>
-<p>Comme indiqué par le champ « <code translate="no">DocType</code> » dans le tableau ci-dessous, Milvus marquera toutes les entités dont le champ « <code translate="no">doctype</code> » est défini sur « <code translate="no">abstract</code> » en vue d’un traitement ultérieur.</p>
+<li><p><strong>Apply the filtering expression specified in the Boost Ranker</strong> (<code translate="no">doctype='abstract'</code>).</p>
+<p>As denoted by the <code translate="no">DocType</code> field in the following table, Milvus will mark all entities with their <code translate="no">doctype</code> set to <code translate="no">abstract</code> for further processing.</p>
 <p><table>
 <tr>
 <th><p>ID</p></th>
-<th><p>Type de document</p></th>
+<th><p>DocType</p></th>
 <th><p>Score</p></th>
-<th><p>Classement</p></th>
+<th><p>Rank</p></th>
 <th><p>segment</p></th>
 </tr>
 <tr>
 <td><p><strong>117</strong></p></td>
-<td><p><strong>résumé</strong></p></td>
-<td><p><strong>0,344</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
+<td><p><strong>0.344</strong></p></td>
 <td><p><strong>1</strong></p></td>
 <td><p><strong>0001</strong></p></td>
 </tr>
 <tr>
 <td><p><strong>89</strong></p></td>
-<td><p><strong>résumé</strong></p></td>
-<td><p><strong>0,456</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
+<td><p><strong>0.456</strong></p></td>
 <td><p><strong>2</strong></p></td>
 <td><p><strong>0001</strong></p></td>
 </tr>
 <tr>
 <td><p>257</p></td>
-<td><p>corps</p></td>
-<td><p>0,578</p></td>
+<td><p>body</p></td>
+<td><p>0.578</p></td>
 <td><p>3</p></td>
 <td><p>0001</p></td>
 </tr>
 <tr>
 <td><p>358</p></td>
-<td><p>titre</p></td>
-<td><p>0,788</p></td>
+<td><p>title</p></td>
+<td><p>0.788</p></td>
 <td><p>4</p></td>
 <td><p>0001</p></td>
 </tr>
 <tr>
 <td><p>168</p></td>
-<td><p>corps</p></td>
-<td><p>0,899</p></td>
+<td><p>body</p></td>
+<td><p>0.899</p></td>
 <td><p>5</p></td>
 <td><p>0001</p></td>
 </tr>
 <tr>
 <td><p>46</p></td>
-<td><p>corps</p></td>
-<td><p>0,189</p></td>
+<td><p>body</p></td>
+<td><p>0.189</p></td>
 <td><p>1</p></td>
 <td><p>0002</p></td>
 </tr>
 <tr>
 <td><p>48</p></td>
-<td><p>corps</p></td>
+<td><p>body</p></td>
 <td><p>0265</p></td>
 <td><p>2</p></td>
 <td><p>0002</p></td>
 </tr>
 <tr>
 <td><p><strong>561</strong></p></td>
-<td><p><strong>résumé</strong></p></td>
-<td><p><strong>0,366</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
+<td><p><strong>0.366</strong></p></td>
 <td><p><strong>3</strong></p></td>
 <td><p><strong>0002</strong></p></td>
 </tr>
 <tr>
 <td><p><strong>344</strong></p></td>
-<td><p><strong>résumé</strong></p></td>
-<td><p><strong>0,444</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
+<td><p><strong>0.444</strong></p></td>
 <td><p><strong>4</strong></p></td>
 <td><p><strong>0002</strong></p></td>
 </tr>
 <tr>
 <td><p><strong>276</strong></p></td>
-<td><p><strong>résumé</strong></p></td>
-<td><p><strong>0,845</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
+<td><p><strong>0.845</strong></p></td>
 <td><p><strong>5</strong></p></td>
 <td><p><strong>0002</strong></p></td>
 </tr>
 </table></p></li>
-<li><p><strong>Appliquer la pondération spécifiée dans le Boost Ranker</strong> (<code translate="no">weight=0.5</code>).</p>
-<p>Toutes les entités identifiées à l'étape précédente seront multipliées par la pondération spécifiée dans le Boost Ranker, ce qui entraînera des changements dans leur classement.</p>
+<li><p><strong>Apply the weight specified in the Boost Ranker</strong> (<code translate="no">weight=0.5</code>).</p>
+<p>All identified entities in the previous step will be multiplied by the weight specified in the Boost Ranker, resulting in changes in their ranks.</p>
 <p><table>
 <tr>
 <th><p>ID</p></th>
-<th><p>Type de document</p></th>
+<th><p>DocType</p></th>
 <th><p>Score</p></th>
-<th><p>Score pondéré </p><p>(= score × pondération)</p></th>
-<th><p>Classement</p></th>
+<th><p>Weighted Score </p><p>(= score x weight)</p></th>
+<th><p>Rank</p></th>
 <th><p>segment</p></th>
 </tr>
 <tr>
 <td><p><strong>117</strong></p></td>
-<td><p><strong>résumé</strong></p></td>
-<td><p><strong>0,344</strong></p></td>
-<td><p><strong>0,172</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
+<td><p><strong>0.344</strong></p></td>
+<td><p><strong>0.172</strong></p></td>
 <td><p><strong>1</strong></p></td>
 <td><p><strong>0001</strong></p></td>
 </tr>
 <tr>
 <td><p><strong>89</strong></p></td>
-<td><p><strong>résumé</strong></p></td>
-<td><p><strong>0,456</strong></p></td>
-<td><p><strong>0,228</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
+<td><p><strong>0.456</strong></p></td>
+<td><p><strong>0.228</strong></p></td>
 <td><p><strong>2</strong></p></td>
 <td><p><strong>0001</strong></p></td>
 </tr>
 <tr>
 <td><p>257</p></td>
-<td><p>corps</p></td>
-<td><p>0,578</p></td>
-<td><p>0,578</p></td>
+<td><p>body</p></td>
+<td><p>0.578</p></td>
+<td><p>0.578</p></td>
 <td><p>3</p></td>
 <td><p>0001</p></td>
 </tr>
 <tr>
 <td><p>358</p></td>
-<td><p>titre</p></td>
-<td><p>0,788</p></td>
-<td><p>0,788</p></td>
+<td><p>title</p></td>
+<td><p>0.788</p></td>
+<td><p>0.788</p></td>
 <td><p>4</p></td>
 <td><p>0001</p></td>
 </tr>
 <tr>
 <td><p>168</p></td>
-<td><p>corps</p></td>
-<td><p>0,899</p></td>
-<td><p>0,899</p></td>
+<td><p>body</p></td>
+<td><p>0.899</p></td>
+<td><p>0.899</p></td>
 <td><p>5</p></td>
 <td><p>0001</p></td>
 </tr>
 <tr>
 <td><p><strong>561</strong></p></td>
-<td><p><strong>résumé</strong></p></td>
-<td><p><strong>0,366</strong></p></td>
-<td><p><strong>0,183</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
+<td><p><strong>0.366</strong></p></td>
+<td><p><strong>0.183</strong></p></td>
 <td><p><strong>1</strong></p></td>
 <td><p><strong>0002</strong></p></td>
 </tr>
 <tr>
 <td><p>46</p></td>
-<td><p>corps</p></td>
-<td><p>0,189</p></td>
-<td><p>0,189</p></td>
+<td><p>body</p></td>
+<td><p>0.189</p></td>
+<td><p>0.189</p></td>
 <td><p>2</p></td>
 <td><p>0002</p></td>
 </tr>
 <tr>
 <td><p><strong>344</strong></p></td>
-<td><p><strong>résumé</strong></p></td>
-<td><p><strong>0,444</strong></p></td>
-<td><p><strong>0,222</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
+<td><p><strong>0.444</strong></p></td>
+<td><p><strong>0.222</strong></p></td>
 <td><p><strong>3</strong></p></td>
 <td><p><strong>0002</strong></p></td>
 </tr>
 <tr>
 <td><p>48</p></td>
-<td><p>corps</p></td>
-<td><p>0,265</p></td>
-<td><p>0,265</p></td>
+<td><p>body</p></td>
+<td><p>0.265</p></td>
+<td><p>0.265</p></td>
 <td><p>4</p></td>
 <td><p>0002</p></td>
 </tr>
 <tr>
 <td><p><strong>276</strong></p></td>
-<td><p><strong>résumé</strong></p></td>
-<td><p><strong>0,845</strong></p></td>
-<td><p><strong>0,423</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
+<td><p><strong>0.845</strong></p></td>
+<td><p><strong>0.423</strong></p></td>
 <td><p><strong>5</strong></p></td>
 <td><p><strong>0002</strong></p></td>
 </tr>
 </table></p>
 <p><div class="alert note"></p>
-<p>La pondération doit être un nombre à virgule flottante de votre choix. Dans les cas comme celui de l'exemple ci-dessus, où un score plus faible indique une plus grande pertinence, utilisez une pondération inférieure à <strong>1</strong>. Sinon, utilisez une pondération supérieure à <strong>1</strong>.</p>
+<p>The weight must be a floating-point number that you choose. In cases like the above example, where a smaller score indicates greater relevance, use a weight less than <strong>1</strong>. Otherwise, use a weight greater than <strong>1</strong>.</p>
 <p></div></p></li>
-<li><p><strong>Regroupez les candidats de tous les segments en fonction des scores pondérés pour finaliser les résultats.</strong></p>
+<li><p><strong>Aggregate the candidates from all segments based on the weighted scores to finalize the results.</strong></p>
 <p><table>
 <tr>
 <th><p>ID</p></th>
-<th><p>Type de document</p></th>
+<th><p>DocType</p></th>
 <th><p>Score</p></th>
-<th><p>Score pondéré</p></th>
-<th><p>Classement</p></th>
+<th><p>Weighted Score</p></th>
+<th><p>Rank</p></th>
 <th><p>segment</p></th>
 </tr>
 <tr>
 <td><p><strong>117</strong></p></td>
-<td><p><strong>résumé</strong></p></td>
-<td><p><strong>0,344</strong></p></td>
-<td><p><strong>0,172</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
+<td><p><strong>0.344</strong></p></td>
+<td><p><strong>0.172</strong></p></td>
 <td><p><strong>1</strong></p></td>
 <td><p><strong>0001</strong></p></td>
 </tr>
 <tr>
 <td><p><strong>561</strong></p></td>
-<td><p><strong>résumé</strong></p></td>
-<td><p><strong>0,366</strong></p></td>
-<td><p><strong>0,183</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
+<td><p><strong>0.366</strong></p></td>
+<td><p><strong>0.183</strong></p></td>
 <td><p><strong>2</strong></p></td>
 <td><p><strong>0002</strong></p></td>
 </tr>
 <tr>
 <td><p>46</p></td>
-<td><p>corps</p></td>
-<td><p>0,189</p></td>
-<td><p>0,189</p></td>
+<td><p>body</p></td>
+<td><p>0.189</p></td>
+<td><p>0.189</p></td>
 <td><p>3</p></td>
 <td><p>0002</p></td>
 </tr>
 <tr>
 <td><p><strong>344</strong></p></td>
-<td><p><strong>résumé</strong></p></td>
-<td><p><strong>0,444</strong></p></td>
-<td><p><strong>0,222</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
+<td><p><strong>0.444</strong></p></td>
+<td><p><strong>0.222</strong></p></td>
 <td><p><strong>4</strong></p></td>
 <td><p><strong>0002</strong></p></td>
 </tr>
 <tr>
 <td><p><strong>89</strong></p></td>
-<td><p><strong>résumé</strong></p></td>
-<td><p><strong>0,456</strong></p></td>
-<td><p><strong>0,228</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
+<td><p><strong>0.456</strong></p></td>
+<td><p><strong>0.228</strong></p></td>
 <td><p><strong>5</strong></p></td>
 <td><p><strong>0001</strong></p></td>
 </tr>
 </table></p></li>
 </ol>
-<h2 id="Usage-of-Boost-Ranker" class="common-anchor-header">Utilisation de Boost Ranker<button data-href="#Usage-of-Boost-Ranker" class="anchor-icon" translate="no">
+<h2 id="Usage-of-Boost-Ranker" class="common-anchor-header">Usage of Boost Ranker<button data-href="#Usage-of-Boost-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -431,8 +430,8 @@ beta: Milvus v2.6.2+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Dans cette section, vous découvrirez des exemples illustrant comment utiliser Boost Ranker pour influencer les résultats d’une recherche à vecteur unique.</p>
-<h3 id="Create-a-Boost-Ranker" class="common-anchor-header">Créer un Boost Ranker<button data-href="#Create-a-Boost-Ranker" class="anchor-icon" translate="no">
+    </button></h2><p>In this section, you will see examples of how to use Boost Ranker to influence the results of a single-vector search.</p>
+<h3 id="Create-a-Boost-Ranker" class="common-anchor-header">Create a Boost Ranker<button data-href="#Create-a-Boost-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -447,15 +446,15 @@ beta: Milvus v2.6.2+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Avant de transmettre un Boost Ranker en tant que fonction de reclassement d’une requête de recherche, vous devez définir correctement le Boost Ranker en tant que fonction de reclassement comme suit :</p>
+    </button></h3><p>Before passing a Boost Ranker as the reranker of a search request, you should properly define the Boost Ranker as a reranking function as follows:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> Function, FunctionType
 
@@ -547,55 +546,55 @@ rerank-&gt;<span class="hljs-built_in">SetWeight</span>(<span class="hljs-number
 <button class="copy-code-btn"></button></code></pre>
 <table>
    <tr>
-     <th><p>Paramètre</p></th>
-     <th><p>Obligatoire ?</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Required?</p></th>
      <th><p>Description</p></th>
-     <th><p>Valeur/Exemple</p></th>
+     <th><p>Value/Example</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">name</code></p></td>
-     <td><p>Oui</p></td>
-     <td><p>Identifiant unique de cette fonction</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Unique identifier for this Function</p></td>
      <td><p><code translate="no">"boost"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">input_field_names</code></p></td>
-     <td><p>Oui</p></td>
-     <td><p>Liste des champs vectoriels auxquels appliquer la fonction (doit être vide pour Boost Ranker)</p></td>
+     <td><p>Yes</p></td>
+     <td><p>List of vector fields to apply the function to (must be empty for Boost Ranker)</p></td>
      <td><p><code translate="no">[]</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">function_type</code></p></td>
-     <td><p>Oui</p></td>
-     <td><p>Type de fonction à invoquer ; utilisez « <code translate="no">RERANK</code> » pour spécifier une stratégie de reclassement</p></td>
+     <td><p>Yes</p></td>
+     <td><p>The type of Function to invoke; use <code translate="no">RERANK</code> to specify a reranking strategy</p></td>
      <td><p><code translate="no">FunctionType.RERANK</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.reranker</code></p></td>
-     <td><p>Oui</p></td>
-     <td><p>Spécifie le type du reclassement.</p><p>Doit être défini sur « <code translate="no">boost</code> » pour utiliser Boost Ranker.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Specifies the type of the reranker.</p><p>Must be set to <code translate="no">boost</code> to use Boost Ranker.</p></td>
      <td><p><code translate="no">"boost"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.weight</code></p></td>
-     <td><p>Oui</p></td>
-     <td><p>Spécifie le poids qui sera multiplié par les scores de toutes les entités correspondantes dans les résultats bruts de la recherche.</p><p>La valeur doit être un nombre à virgule flottante. </p><ul><li><p>Pour mettre en avant l’importance des entités correspondantes, définissez-la sur une valeur qui augmente les scores.</p></li><li><p>Pour dévaloriser les entités correspondantes, attribuez à ce paramètre une valeur qui diminue leurs scores.</p></li></ul></td>
+     <td><p>Yes</p></td>
+     <td><p>Specifies the weight that will be multiplied by the scores of any matching entities in the raw search results.</p><p>The value should be a floating-point number. </p><ul><li><p>To emphasize the importance of matching entities, set it to a value that boosts the scores.</p></li><li><p>To demote matching entities, assign this parameter a value that lowers their scores.</p></li></ul></td>
      <td><p><code translate="no">1</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.filter</code></p></td>
-     <td><p>Non</p></td>
-     <td><p>Spécifie l'expression de filtrage qui sera utilisée pour faire correspondre des entités parmi celles des résultats de recherche. Il peut s'agir de n'importe quelle expression de filtrage de base valide mentionnée dans la section « <a href="/docs/fr/boolean.md">Explication du filtrage</a> ».</p><p><strong>Remarque</strong>: n’utilisez que des opérateurs de base, tels que <code translate="no">==</code>, <code translate="no">&gt;</code> ou <code translate="no">&lt;</code>. L’utilisation d’opérateurs avancés, tels que <code translate="no">text_match</code> ou <code translate="no">phrase_match</code>, dégradera les performances de recherche.</p></td>
+     <td><p>No</p></td>
+     <td><p>Specifies the filter expression that will be used to match entities among search result entities. It can be any valid basic filter expression mentioned in <a href="/docs/fr/boolean.md">Filtering Explained</a>.</p><p><strong>Note</strong>: Only use basic operators, such as <code translate="no">==</code>, <code translate="no">&gt;</code>, or <code translate="no">&lt;</code>. Using advanced operators, such as <code translate="no">text_match</code> or <code translate="no">phrase_match</code>, will degrade search performance.</p></td>
      <td><p><code translate="no">"doctype == 'abstract'"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.random_score</code></p></td>
-     <td><p>Non</p></td>
-     <td><p>Spécifie la fonction aléatoire qui génère de manière aléatoire une valeur comprise entre <code translate="no">0</code> et <code translate="no">1</code>. Elle dispose des deux arguments facultatifs suivants :</p><ul><li><p><code translate="no">seed</code> (nombre) Spécifie une valeur initiale utilisée pour démarrer un générateur de nombres pseudo-aléatoires (PRNG).</p></li><li><p><code translate="no">field</code> (chaîne) Spécifie le nom d’un champ dont la valeur sera utilisée comme facteur aléatoire pour générer le nombre aléatoire. Un champ contenant des valeurs uniques suffit.</p><p>Il est recommandé de définir à la fois <code translate="no">seed</code> et <code translate="no">field</code> afin de garantir la cohérence entre les générations en utilisant les mêmes valeurs de graine et de champ.</p></li></ul></td>
+     <td><p>No</p></td>
+     <td><p>Specifies the random function that generates a value between <code translate="no">0</code> and <code translate="no">1</code> randomly. It has the following two optional arguments:</p><ul><li><p><code translate="no">seed</code> (number) Specifies an initial value used to start a pseudorandom number generator (PRNG).</p></li><li><p><code translate="no">field</code> (string) Specifies the name of a field whose value will be used as a random factor in generating the random number. A field with unique values will suffice.</p><p>You are advised to set both <code translate="no">seed</code> and <code translate="no">field</code> to ensure consistency across generations by using the same seed and field values.</p></li></ul></td>
      <td><p><code translate="no">{"seed": 126, "field": "id"}</code></p></td>
    </tr>
 </table>
-<h3 id="Search-with-a-single-Boost-Ranker" class="common-anchor-header">Recherche avec un seul Boost Ranker<button data-href="#Search-with-a-single-Boost-Ranker" class="anchor-icon" translate="no">
+<h3 id="Search-with-a-single-Boost-Ranker" class="common-anchor-header">Search with a single Boost Ranker<button data-href="#Search-with-a-single-Boost-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -610,15 +609,15 @@ rerank-&gt;<span class="hljs-built_in">SetWeight</span>(<span class="hljs-number
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Une fois la fonction Boost Ranker prête, vous pouvez l’utiliser dans une requête de recherche. L’exemple suivant part du principe que vous avez déjà créé une collection comportant les champs suivants : <strong>id</strong>, <strong>vector</strong> et <strong>doctype</strong>.</p>
+    </button></h3><p>Once the Boost Ranker function is ready, you can reference it in a search request. The following example assumes that you have already created a collection that has the following fields: <strong>id</strong>, <strong>vector</strong>, and <strong>doctype</strong>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -787,7 +786,7 @@ curl --request POST \
     }
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Search-with-multiple-Boost-Rankers" class="common-anchor-header">Recherche avec plusieurs Boost Rankers<button data-href="#Search-with-multiple-Boost-Rankers" class="anchor-icon" translate="no">
+<h3 id="Search-with-multiple-Boost-Rankers" class="common-anchor-header">Search with multiple Boost Rankers<button data-href="#Search-with-multiple-Boost-Rankers" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -802,16 +801,16 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Vous pouvez combiner plusieurs « Boost Rankers » dans une même recherche afin d’influencer les résultats. Pour ce faire, créez plusieurs « Boost Rankers », référencez-les dans une instance <strong>FunctionScore</strong>, puis utilisez cette instance <strong>FunctionScore</strong> comme classificateur dans la requête de recherche.</p>
-<p>L'exemple suivant montre comment modifier les scores de toutes les entités identifiées en leur appliquant une pondération comprise entre <strong>0,8</strong> et <strong>1,2</strong>.</p>
+    </button></h3><p>You can combine multiple Boost Rankers in a single search to influence the search results. To do so, create several Boost Rankers, reference them in a <strong>FunctionScore</strong> instance, and use the <strong>FunctionScore</strong> instance as the ranker in the search request.</p>
+<p>The following example shows how to modify the scores of all identified entities by applying a weight between <strong>0.8</strong> and <strong>1.2</strong>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, Function, FunctionType, FunctionScore
 
@@ -1100,31 +1099,31 @@ curl --request POST \
     }
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Plus précisément, il existe deux « Boost Rankers » : l’un applique une pondération fixe à toutes les entités trouvées, tandis que l’autre leur attribue une pondération aléatoire. Ensuite, nous référençons ces deux « rankers » dans un <strong>FunctionScore</strong>, qui définit également la manière dont les pondérations influencent les scores des entités trouvées.</p>
-<p>Le tableau suivant répertorie les paramètres requis pour créer une instance <strong>de FunctionScore</strong>.</p>
+<p>Specifically, there are two Boost Rankers: one applies a fixed weight to all found entities, while the other assigns a random weight to them. Then, we reference these two rankers in a <strong>FunctionScore</strong>, which also defines how the weights influence the scores of the found entities.</p>
+<p>The following table lists the parameters required to create a <strong>FunctionScore</strong> instance.</p>
 <table>
    <tr>
-     <th><p>Paramètre</p></th>
-     <th><p>Obligatoire ?</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Required?</p></th>
      <th><p>Description</p></th>
-     <th><p>Valeur/Exemple</p></th>
+     <th><p>Value/Example</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">functions</code></p></td>
-     <td><p>Oui</p></td>
-     <td><p>Spécifie les noms des classements cibles dans une liste.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Specifies the names of the target rankers in a list.</p></td>
      <td><p><code translate="no">["fix_weight_ranker", "random_weight_ranker"]</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.boost_mode</code></p></td>
-     <td><p>Non</p></td>
-     <td><p>Spécifie comment les pondérations indiquées influencent les scores des entités correspondantes.</p><p>Les valeurs possibles sont les suivantes :</p><ul><li><p><code translate="no">Multiply</code></p><p>Indique que la valeur pondérée est égale au score d'origine d'une entité correspondante multiplié par la pondération spécifiée. </p><p>Il s'agit de la valeur par défaut.</p></li><li><p><code translate="no">Sum</code></p><p>Indique que la valeur pondérée est égale à la somme du score d'origine d'une entité correspondante et de la pondération spécifiée</p></li></ul></td>
+     <td><p>No</p></td>
+     <td><p>Specifies how the specified weights influence the scores of any matching entities.</p><p>Possible values are:</p><ul><li><p><code translate="no">Multiply</code></p><p>Indicates that the weighted value is equal to the original score of a matching entity multiplied by the specified weight. </p><p>This is the default value.</p></li><li><p><code translate="no">Sum</code></p><p>Indicates that the weighted value is equal to the sum of the original score of a matching entity and the specified weight</p></li></ul></td>
      <td><p><code translate="no">"Sum"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.function_mode</code></p></td>
-     <td><p>Non</p></td>
-     <td><p>Spécifie la manière dont les valeurs pondérées provenant de différents classements Boost sont traitées.</p><p>Les valeurs possibles sont :</p><ul><li><p><code translate="no">Multiply</code></p><p>Indique que le score final d’une entité correspondante est égal au produit des valeurs pondérées de tous les « Boost Rankers ».</p><p>Il s'agit de la valeur par défaut.</p></li><li><p><code translate="no">Sum</code></p><p>Indique que le score final d'une entité correspondante est égal à la somme des valeurs pondérées de tous les classements Boost.</p></li></ul></td>
+     <td><p>No</p></td>
+     <td><p>Specifies how the weighted values from various Boost Rankers are processed.</p><p>Possible values are:</p><ul><li><p><code translate="no">Multiply</code></p><p>Indicates that the final score of a matching entity is equal to the product of the weighted values from all Boost Rankers.</p><p>This is the default value.</p></li><li><p><code translate="no">Sum</code></p><p>Indicates that the final score of a matching entity is equal to the sum of the weighted values from all Boost Rankers.</p></li></ul></td>
      <td><p><code translate="no">"Sum"</code></p></td>
    </tr>
 </table>

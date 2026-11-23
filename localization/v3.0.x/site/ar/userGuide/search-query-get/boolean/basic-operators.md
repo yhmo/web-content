@@ -1,12 +1,12 @@
 ---
 id: basic-operators.md
-title: المشغلات الأساسية
+title: Basic Operators
 summary: >-
-  استخدم عوامل المقارنة، وعوامل النطاق، وعوامل الحساب، وعوامل المنطق، وعوامل
-  NULL لتصفية الكيانات. بدءًا من الإصدار Milvus 3.0.3، تدعم عوامل IS NULL و IS
-  NOT NULL أيضًا الحقول المتجهة العادية.
+  Use comparison, range, arithmetic, logical, and NULL operators to filter
+  entities. Starting in Milvus 3.0.3, IS NULL and IS NOT NULL also support
+  ordinary vector fields.
 ---
-<h1 id="Basic-Operators" class="common-anchor-header">المشغلات الأساسية<button data-href="#Basic-Operators" class="anchor-icon" translate="no">
+<h1 id="Basic-Operators" class="common-anchor-header">Basic Operators<button data-href="#Basic-Operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -21,12 +21,11 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>يوفر Milvus عوامل مقارنة، وعوامل نطاق، وعوامل حسابية، وعوامل منطقية، وعوامل NULL لتصفية الكيانات. يدعم كل عامل أنواع حقول محددة.</p>
+    </button></h1><p>Milvus provides comparison, range, arithmetic, logical, and NULL operators for filtering entities. Each operator supports specific field types.</p>
 <div class="alert note">
-<p>يمكن أن يكون القيمة الثابتة الموجودة على الجانب الأيسر من تعبير التصفية إما اسم حقل مجموعة، مثل <code translate="no">status</code> و <code translate="no">color</code> ، وما إلى ذلك، المستخدمة في الأمثلة أدناه، أو اسم حقل فرعي لـ StructArray عند مؤشر عنصر محدد، كما في <code translate="no">filter = 'struct[0][subfield] &gt; 10'</code>.</p>
-<p>للحصول على تفاصيل حول التصفية القياسية في حقل StructArray، راجع <a href="/docs/ar/struct-array-operators.md">«عوامل StructArray</a>».</p>
+<p>The left operand can be a collection field, such as <code translate="no">status</code>, or a StructArray subfield at a specific element index, such as <code translate="no">struct[0][subfield] &gt; 10</code>. See <a href="/docs/ar/struct-array-operators.md">StructArray Operators</a>.</p>
 </div>
-<h2 id="Comparison-operators" class="common-anchor-header">عوامل المقارنة<button data-href="#Comparison-operators" class="anchor-icon" translate="no">
+<h2 id="Comparison-operators" class="common-anchor-header">Comparison operators<button data-href="#Comparison-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -41,8 +40,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>تُستخدم عوامل المقارنة لتصفية البيانات بناءً على المساواة أو عدم المساواة أو الحجم. وهي قابلة للتطبيق على الحقول الرقمية والنصية.</p>
-<h3 id="Supported-comparison-operators" class="common-anchor-header">عوامل المقارنة المدعومة<button data-href="#Supported-comparison-operators" class="anchor-icon" translate="no">
+    </button></h2><p>Comparison operators are used to filter data based on equality, inequality, or size. They are applicable to numeric and text fields.</p>
+<h3 id="Supported-comparison-operators" class="common-anchor-header">Supported comparison operators<button data-href="#Supported-comparison-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -58,14 +57,14 @@ summary: >-
         ></path>
       </svg>
     </button></h3><ul>
-<li><p><code translate="no">==</code> (يساوي)</p></li>
-<li><p><code translate="no">!=</code> (لا يساوي)</p></li>
-<li><p><code translate="no">&gt;</code> (أكبر من)</p></li>
-<li><p><code translate="no">&lt;</code> (أصغر من)</p></li>
-<li><p><code translate="no">&gt;=</code> (أكبر من أو يساوي)</p></li>
-<li><p><code translate="no">&lt;=</code> (أصغر من أو يساوي)</p></li>
+<li><p><code translate="no">==</code> (Equal to)</p></li>
+<li><p><code translate="no">!=</code> (Not equal to)</p></li>
+<li><p><code translate="no">&gt;</code> (Greater than)</p></li>
+<li><p><code translate="no">&lt;</code> (Less than)</p></li>
+<li><p><code translate="no">&gt;=</code> (Greater than or equal to)</p></li>
+<li><p><code translate="no">&lt;=</code> (Less than or equal to)</p></li>
 </ul>
-<h3 id="Example-1-Filtering-with-equal-to-" class="common-anchor-header">المثال 1: التصفية باستخدام "يساوي" (<code translate="no">==</code>)<button data-href="#Example-1-Filtering-with-equal-to-" class="anchor-icon" translate="no">
+<h3 id="Example-1-Filtering-with-equal-to-" class="common-anchor-header">Example 1: Filtering with equal to (<code translate="no">==</code>)<button data-href="#Example-1-Filtering-with-equal-to-" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -80,16 +79,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>افترض أن لديك حقلًا باسم <code translate="no">status</code> وتريد العثور على جميع الكيانات التي تكون فيها قيمة <code translate="no">status</code> هي "active". يمكنك استخدام عامل المساواة <code translate="no">==</code>:</p>
+    </button></h3><p>Assume you have a field named <code translate="no">status</code> and you want to find all entities where <code translate="no">status</code> is "active". You can use the equality operator <code translate="no">==</code>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;status == &quot;active&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -107,7 +106,7 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;status == &quot;active&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-2-Filtering-with-not-equal-to-" class="common-anchor-header">المثال 2: التصفية باستخدام "لا يساوي" (<code translate="no">!=</code>)<button data-href="#Example-2-Filtering-with-not-equal-to-" class="anchor-icon" translate="no">
+<h3 id="Example-2-Filtering-with-not-equal-to-" class="common-anchor-header">Example 2: Filtering with not equal to (<code translate="no">!=</code>)<button data-href="#Example-2-Filtering-with-not-equal-to-" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -122,16 +121,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>للعثور على الكيانات التي لا يكون فيها <code translate="no">status</code> «غير نشط»:</p>
+    </button></h3><p>To find entities where <code translate="no">status</code> is not "inactive":</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;status != &quot;inactive&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -149,7 +148,7 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;status != &quot;inactive&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-3-Filtering-with-greater-than-" class="common-anchor-header">المثال 3: التصفية باستخدام "أكبر من" (<code translate="no">&gt;</code>)<button data-href="#Example-3-Filtering-with-greater-than-" class="anchor-icon" translate="no">
+<h3 id="Example-3-Filtering-with-greater-than-" class="common-anchor-header">Example 3: Filtering with greater than (<code translate="no">&gt;</code>)<button data-href="#Example-3-Filtering-with-greater-than-" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -164,16 +163,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>إذا كنت تريد العثور على جميع الكيانات التي يكون <code translate="no">age</code> فيها أكبر من 30:</p>
+    </button></h3><p>If you want to find all entities with an <code translate="no">age</code> greater than 30:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;age &gt; 30&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -191,7 +190,7 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;age &gt; 30&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-4-Filtering-with-less-than" class="common-anchor-header">المثال 4: التصفية باستخدام "أقل من"<button data-href="#Example-4-Filtering-with-less-than" class="anchor-icon" translate="no">
+<h3 id="Example-4-Filtering-with-less-than" class="common-anchor-header">Example 4: Filtering with less than<button data-href="#Example-4-Filtering-with-less-than" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -206,16 +205,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>للعثور على الكيانات التي يكون فيها <code translate="no">price</code> أقل من 100:</p>
+    </button></h3><p>To find entities where <code translate="no">price</code> is less than 100:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;price &lt; 100&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -233,7 +232,7 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;price &lt; 100&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-5-Filtering-with-greater-than-or-equal-to-" class="common-anchor-header">المثال 5: التصفية باستخدام أكبر من أو يساوي (<code translate="no">&gt;=</code>)<button data-href="#Example-5-Filtering-with-greater-than-or-equal-to-" class="anchor-icon" translate="no">
+<h3 id="Example-5-Filtering-with-greater-than-or-equal-to-" class="common-anchor-header">Example 5: Filtering with greater than or equal to (<code translate="no">&gt;=</code>)<button data-href="#Example-5-Filtering-with-greater-than-or-equal-to-" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -248,16 +247,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>إذا كنت تريد العثور على جميع الكيانات التي يكون فيها <code translate="no">rating</code> أكبر من أو يساوي 4:</p>
+    </button></h3><p>If you want to find all entities with <code translate="no">rating</code> greater than or equal to 4:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;rating &gt;= 4&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -275,7 +274,7 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;rating &gt;= 4&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-6-Filtering-with-less-than-or-equal-to" class="common-anchor-header">المثال 6: التصفية باستخدام "أقل من أو يساوي"<button data-href="#Example-6-Filtering-with-less-than-or-equal-to" class="anchor-icon" translate="no">
+<h3 id="Example-6-Filtering-with-less-than-or-equal-to" class="common-anchor-header">Example 6: Filtering with less than or equal to<button data-href="#Example-6-Filtering-with-less-than-or-equal-to" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -290,16 +289,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>للعثور على الكيانات التي تبلغ نسبة " <code translate="no">discount</code> " فيها أقل من أو تساوي 10%:</p>
+    </button></h3><p>To find entities with <code translate="no">discount</code> less than or equal to 10%:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;discount &lt;= 10&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -317,7 +316,7 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;discount &lt;= 10&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Range-operators" class="common-anchor-header">مشغلات النطاق<button data-href="#Range-operators" class="anchor-icon" translate="no">
+<h2 id="Range-operators" class="common-anchor-header">Range operators<button data-href="#Range-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -332,17 +331,17 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>تساعد عوامل النطاق في تصفية البيانات بناءً على مجموعة محددة من القيم. يدعم Milvus <code translate="no">IN</code> للتحقق من الانتماء إلى المجموعة.</p>
-<p>إذا كنت تريد العثور على جميع الكيانات التي يكون فيها مؤشر " <code translate="no">color</code> " إما "red" أو "green" أو "blue":</p>
+    </button></h2><p>Range operators help filter data based on a specific set of values. Milvus supports <code translate="no">IN</code> for set membership checks.</p>
+<p>If you want to find all entities where the <code translate="no">color</code> is either "red", "green", or "blue":</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;color in [&quot;red&quot;, &quot;green&quot;, &quot;blue&quot;]&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -360,8 +359,7 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;color in [&quot;red&quot;, &quot;green&quot;, &quot;blue&quot;]&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>يُعد هذا مفيدًا عندما تريد التحقق من الانتماء إلى قائمة من القيم.</p>
-<h2 id="Pattern-matching-operators" class="common-anchor-header">عمليات مطابقة الأنماط<button data-href="#Pattern-matching-operators" class="anchor-icon" translate="no">
+<h2 id="Pattern-matching-operators" class="common-anchor-header">Pattern matching operators<button data-href="#Pattern-matching-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -376,22 +374,22 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>تساعد عوامل مطابقة الأنماط في تصفية قيم السلاسل بناءً على أنماط أحرف البدل أو التعبيرات العادية.</p>
+    </button></h2><p>Pattern matching operators help filter string values based on wildcard patterns or regular expressions.</p>
 <ul>
-<li><p><code translate="no">LIKE</code>: تُستخدم لمطابقة أنماط أحرف البدل البسيطة على قيم السلاسل. على سبيل المثال، تتطابق <code translate="no">name LIKE &quot;Prod%&quot;</code> مع القيم التي تبدأ بـ <code translate="no">Prod</code>.</p></li>
-<li><p><code translate="no">=~</code>: تُستخدم لمطابقة قيمة سلسلة مع تعبير عادي RE2. على سبيل المثال، <code translate="no">code =~ &quot;E[0-9]{4}&quot;</code> تتطابق مع القيم التي تحتوي على رمز خطأ مثل <code translate="no">E1001</code>.</p></li>
-<li><p><code translate="no">!~</code>: يُستخدم لاستبعاد قيم السلاسل التي تتطابق مع تعبير عادي RE2. وهذا يعادل <code translate="no">NOT (field =~ &quot;pattern&quot;)</code>.</p></li>
+<li><p><code translate="no">LIKE</code>: Used to match simple wildcard patterns on string values. For example, <code translate="no">name LIKE &quot;Prod%&quot;</code> matches values that start with <code translate="no">Prod</code>.</p></li>
+<li><p><code translate="no">=~</code>: Used to match a string value with an RE2 regular expression. For example, <code translate="no">code =~ &quot;E[0-9]{4}&quot;</code> matches values that contain an error code such as <code translate="no">E1001</code>.</p></li>
+<li><p><code translate="no">!~</code>: Used to exclude string values that match an RE2 regular expression. This is equivalent to <code translate="no">NOT (field =~ &quot;pattern&quot;)</code>.</p></li>
 </ul>
-<p>للعثور على الكيانات التي تبدأ فيها <code translate="no">name</code> بـ <code translate="no">Prod</code>:</p>
+<p>To find entities where <code translate="no">name</code> starts with <code translate="no">Prod</code>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;name LIKE &quot;Prod%&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -409,16 +407,16 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;name LIKE &quot;Prod%&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>للعثور على الكيانات التي يحتوي <code translate="no">code</code> الخاص بها على رمز خطأ مثل <code translate="no">E1001</code>:</p>
+<p>To find entities whose <code translate="no">code</code> contains an error code such as <code translate="no">E1001</code>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;code =~ &quot;E[0-9]{4}&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -436,16 +434,16 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;code =~ &quot;E[0-9]{4}&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>لاستبعاد الكيانات التي يبدأ عنوان <code translate="no">message</code> الخاص بها بـ <code translate="no">DEBUG</code>:</p>
+<p>To exclude entities whose <code translate="no">message</code> starts with <code translate="no">DEBUG</code>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;message !~ &quot;^DEBUG&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -463,8 +461,8 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;message !~ &quot;^DEBUG&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>لمزيد من التفاصيل حول الاختيار بين <code translate="no">LIKE</code> و regex، وأنواع الحقول المدعومة، وصيغة regex، وقواعد الهروب، والأداء، راجع <a href="/docs/ar/pattern-matching.md">مطابقة الأنماط</a>. يتيح لك Milvus أيضًا إنشاء فهرس <code translate="no">NGRAM</code> على حقول <code translate="no">VARCHAR</code> أو مسارات سلاسل JSON لتسريع مرشحات مطابقة الأنماط المؤهلة. لمزيد من التفاصيل، راجع <a href="/docs/ar/ngram.md">NGRAM</a>.</p>
-<h2 id="Arithmetic-operators" class="common-anchor-header">المُشغِّلات الحسابية<button data-href="#Arithmetic-operators" class="anchor-icon" translate="no">
+<p>For syntax, escaping, field support, and acceleration options such as <code translate="no">NGRAM</code>, see <a href="/docs/ar/pattern-matching.md">Pattern Matching</a>.</p>
+<h2 id="Arithmetic-operators" class="common-anchor-header">Arithmetic operators<button data-href="#Arithmetic-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -479,8 +477,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>تتيح لك العوامل الحسابية إنشاء شروط تستند إلى حسابات تتضمن حقولًا رقمية.</p>
-<h3 id="Supported-arithmetic-operators" class="common-anchor-header">المُشغِّلات الحسابية المدعومة<button data-href="#Supported-arithmetic-operators" class="anchor-icon" translate="no">
+    </button></h2><p>Arithmetic operators allow you to create conditions based on calculations involving numeric fields.</p>
+<h3 id="Supported-arithmetic-operators" class="common-anchor-header">Supported arithmetic operators<button data-href="#Supported-arithmetic-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -496,14 +494,14 @@ summary: >-
         ></path>
       </svg>
     </button></h3><ul>
-<li><p><code translate="no">+</code> (الجمع)</p></li>
-<li><p><code translate="no">-</code> (الطرح)</p></li>
-<li><p><code translate="no">*</code> (الضرب)</p></li>
-<li><p><code translate="no">/</code> (القسمة)</p></li>
-<li><p><code translate="no">%</code> (المعامل)</p></li>
-<li><p><code translate="no">**</code> (الرفع إلى القوة)</p></li>
+<li><p><code translate="no">+</code> (Addition)</p></li>
+<li><p><code translate="no">-</code> (Subtraction)</p></li>
+<li><p><code translate="no">*</code> (Multiplication)</p></li>
+<li><p><code translate="no">/</code> (Division)</p></li>
+<li><p><code translate="no">%</code> (Modulus)</p></li>
+<li><p><code translate="no">**</code> (Exponentiation)</p></li>
 </ul>
-<h3 id="Example-1-Using-modulus-" class="common-anchor-header">المثال 1: استخدام المودولوس (<code translate="no">%</code>)<button data-href="#Example-1-Using-modulus-" class="anchor-icon" translate="no">
+<h3 id="Example-1-Using-modulus-" class="common-anchor-header">Example 1: Using modulus (<code translate="no">%</code>)<button data-href="#Example-1-Using-modulus-" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -518,16 +516,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>لإيجاد القيم التي يكون فيها <code translate="no">id</code> عددًا زوجيًا (أي قابلًا للقسمة على 2):</p>
+    </button></h3><p>To find entities where the <code translate="no">id</code> is an even number (i.e., divisible by 2):</p>
 <div class="multipleCode">
-   <a href="#python">بايثون</a>
- <a href="#java">   جافا</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;id % 2 == 0&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -545,7 +543,7 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;id % 2 == 0&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-2-Using-exponentiation-" class="common-anchor-header">المثال 2: استخدام الأسي (<code translate="no">**</code>)<button data-href="#Example-2-Using-exponentiation-" class="anchor-icon" translate="no">
+<h3 id="Example-2-Using-exponentiation-" class="common-anchor-header">Example 2: Using exponentiation (<code translate="no">**</code>)<button data-href="#Example-2-Using-exponentiation-" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -560,16 +558,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>للعثور على الكيانات التي يكون فيها <code translate="no">price</code> مرفوعًا إلى القوة 2 أكبر من 1000:</p>
+    </button></h3><p>To find entities where <code translate="no">price</code> raised to the power of 2 is greater than 1000:</p>
 <div class="multipleCode">
-   <a href="#python">بايثون</a>
- <a href="#java">   جافا</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;price ** 2 &gt; 1000&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -588,9 +586,9 @@ summary: >-
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;price ** 2 &gt; 1000&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>لا تدعم العوامل الحسابية سوى التعبيرات التي تتضمن <strong>حقلًا واحدًا وثابتًا</strong>. التعبيرات التي تجمع بين حقلين حسابيًا — مثل <code translate="no">price * quantity &gt; 100</code> — غير مدعومة حاليًا وستُرجع خطأً. إذا كنت بحاجة إلى التصفية بناءً على قيمة مشتقة محسوبة من حقول متعددة، ففكر في تخزين القيمة المحسوبة مسبقًا كحقل قياسي منفصل عند الإدراج.</p>
+<p>Arithmetic operators only support expressions involving a <strong>single field and a constant</strong>. Expressions that combine two fields arithmetically — such as <code translate="no">price * quantity &gt; 100</code> — are not currently supported and will return an error. If you need to filter on a derived value computed from multiple fields, consider storing the pre-computed value as a separate scalar field at insert time.</p>
 </div>
-<h2 id="Bitwise-operators" class="common-anchor-header">المُشغِّلات البتية<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.0+</span><button data-href="#Bitwise-operators" class="anchor-icon" translate="no">
+<h2 id="Bitwise-operators" class="common-anchor-header">Bitwise operators<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.0+</span><button data-href="#Bitwise-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -605,9 +603,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>تُعد العوامل البتية مفيدة عندما يقوم حقل عدد صحيح بترميز علامات متعددة، مثل الأذونات أو علامات الميزات أو بتات الحالة. يمكنك استخدام هذه العوامل في تعبيرات التصفية للتحقق من البتات الفردية في قيمة عدد صحيح أو دمجها أو مقارنتها.</p>
-<p>بالنسبة للحقول القياسية، تنطبق عوامل التشغيل البتية على أنواع الحقول الصحيحة، مثل <code translate="no">INT8</code> و <code translate="no">INT16</code> و <code translate="no">INT32</code> و <code translate="no">INT64</code>.</p>
-<h3 id="Supported-bitwise-operators" class="common-anchor-header">المشغلات البتية المدعومة<button data-href="#Supported-bitwise-operators" class="anchor-icon" translate="no">
+    </button></h2><p>Bitwise operators are useful when an integer field encodes multiple flags, such as permissions, feature flags, or status bits. You can use these operators in filter expressions to check, combine, or compare individual bits in an integer value.</p>
+<p>For scalar fields, bitwise operators apply to integer field types, such as <code translate="no">INT8</code>, <code translate="no">INT16</code>, <code translate="no">INT32</code>, and <code translate="no">INT64</code>.</p>
+<h3 id="Supported-bitwise-operators" class="common-anchor-header">Supported bitwise operators<button data-href="#Supported-bitwise-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -624,15 +622,15 @@ summary: >-
       </svg>
     </button></h3><table>
 <thead>
-<tr><th>المُشغِّل</th><th>الاسم</th><th>الاستخدام النموذجي</th></tr>
+<tr><th>Operator</th><th>Name</th><th>Typical use</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">&amp;</code></td><td>العمليّة "AND" على مستوى البتات</td><td>التحقق مما إذا كانت بتات معينة محددة أم لا.</td></tr>
-<tr><td><code translate="no">|</code></td><td>العمليات الحسابية على مستوى البتات OR</td><td>دمج البتات قبل المقارنة.</td></tr>
-<tr><td><code translate="no">^</code></td><td>العمليات المنطقية XOR</td><td>قارن الاختلافات في البتات بين قيمتين.</td></tr>
+<tr><td><code translate="no">&amp;</code></td><td>Bitwise AND</td><td>Check whether specific bits are set.</td></tr>
+<tr><td><code translate="no">|</code></td><td>Bitwise OR</td><td>Combine bits before comparison.</td></tr>
+<tr><td><code translate="no">^</code></td><td>Bitwise XOR</td><td>Compare bit differences between two values.</td></tr>
 </tbody>
 </table>
-<h3 id="Example-Filtering-by-permission-bits" class="common-anchor-header">مثال: التصفية حسب بتات الأذونات<button data-href="#Example-Filtering-by-permission-bits" class="anchor-icon" translate="no">
+<h3 id="Example-Filtering-by-permission-bits" class="common-anchor-header">Example: Filtering by permission bits<button data-href="#Example-Filtering-by-permission-bits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -647,10 +645,10 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>افترض أن لديك حقلًا صحيحًا باسم <code translate="no">permissions</code> ، وأن كل بت في هذا العدد الصحيح يمثل علامة أذونات:</p>
+    </button></h3><p>Assume you have an integer field named <code translate="no">permissions</code>, and each bit in the integer represents a permission flag:</p>
 <table>
 <thead>
-<tr><th>علامة الأذونات</th><th>قيمة البت</th></tr>
+<tr><th>Permission flag</th><th>Bit value</th></tr>
 </thead>
 <tbody>
 <tr><td><code translate="no">READ</code></td><td><code translate="no">1</code></td></tr>
@@ -659,17 +657,17 @@ summary: >-
 <tr><td><code translate="no">ADMIN</code></td><td><code translate="no">8</code></td></tr>
 </tbody>
 </table>
-<p>على سبيل المثال، <code translate="no">permissions = 5</code> يعني أن بتتي <code translate="no">READ</code> و <code translate="no">SHARE</code> محددان، لأن <code translate="no">5 = 1 + 4</code>.</p>
-<p>للعثور على الكيانات التي تم تعيين بت <code translate="no">SHARE</code> فيها، استخدم عملية AND على مستوى البتات (<code translate="no">&amp;</code>):</p>
+<p>For example, <code translate="no">permissions = 5</code> means that the <code translate="no">READ</code> and <code translate="no">SHARE</code> bits are set, because <code translate="no">5 = 1 + 4</code>.</p>
+<p>To find entities where the <code translate="no">SHARE</code> bit is set, use bitwise AND (<code translate="no">&amp;</code>):</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&quot;(permissions &amp; 4) == 4&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -687,16 +685,16 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;(permissions &amp; 4) == 4&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>للعثور على الكيانات التي يؤدي فيها تعيين بت « <code translate="no">WRITE</code> » إلى إنتاج مجموعة الأذونات <code translate="no">READ + WRITE + SHARE</code> ، استخدم عملية «OR» على مستوى البتات (<code translate="no">|</code>):</p>
+<p>To find entities where setting the <code translate="no">WRITE</code> bit produces the <code translate="no">READ + WRITE + SHARE</code> permission set, use bitwise OR (<code translate="no">|</code>):</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&quot;(permissions | 2) == 7&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -714,16 +712,16 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;(permissions | 2) == 7&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>للعثور على الكيانات التي تختلف بتات أذوناتها عن <code translate="no">READ + WRITE + SHARE</code> فقط في بت <code translate="no">WRITE</code> ، استخدم عملية XOR على مستوى البتات (<code translate="no">^</code>):</p>
+<p>To find entities whose permission bits differ from <code translate="no">READ + WRITE + SHARE</code> by only the <code translate="no">WRITE</code> bit, use bitwise XOR (<code translate="no">^</code>):</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&quot;(permissions ^ 7) == 2&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -742,9 +740,9 @@ summary: >-
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;(permissions ^ 7) == 2&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>احرص دائمًا على وضع العملية على مستوى البتات بين قوسين قبل مقارنة النتيجة، مثل <code translate="no">(permissions &amp; 4) == 4</code>. يدعم Milvus <code translate="no">&amp;</code> و <code translate="no">|</code> و <code translate="no">^</code> في تعبيرات التصفية. لا يتم دعم عملية NOT على مستوى البتات (<code translate="no">~</code>) وعوامل الإزاحة (<code translate="no">&lt;&lt;</code> و <code translate="no">&gt;&gt;</code>).</p>
+<p>Always wrap the bitwise operation in parentheses before comparing the result, such as <code translate="no">(permissions &amp; 4) == 4</code>. Milvus supports <code translate="no">&amp;</code>, <code translate="no">|</code>, and <code translate="no">^</code> in filter expressions. Bitwise NOT (<code translate="no">~</code>) and shift operators (<code translate="no">&lt;&lt;</code> and <code translate="no">&gt;&gt;</code>) are not supported.</p>
 </div>
-<h2 id="Logical-operators" class="common-anchor-header">المشغلات المنطقية<button data-href="#Logical-operators" class="anchor-icon" translate="no">
+<h2 id="Logical-operators" class="common-anchor-header">Logical operators<button data-href="#Logical-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -759,8 +757,11 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>تُستخدم العوامل المنطقية لدمج شروط متعددة في تعبير تصفية أكثر تعقيدًا. وتشمل هذه العوامل <code translate="no">AND</code> ، و <code translate="no">OR</code> ، و <code translate="no">NOT</code>.</p>
-<h3 id="Supported-logical-operators" class="common-anchor-header">المشغلات المنطقية المدعومة<button data-href="#Supported-logical-operators" class="anchor-icon" translate="no">
+    </button></h2><p>Logical operators are used to combine multiple conditions into a more complex filter expression. These include <code translate="no">AND</code>, <code translate="no">OR</code>, and <code translate="no">NOT</code>.</p>
+<div class="alert note">
+<p>Each condition can use its own eligible index or scan path; one index type need not serve the entire expression. See <a href="/docs/ar/scalar_index.md">Scalar Index</a>.</p>
+</div>
+<h3 id="Supported-logical-operators" class="common-anchor-header">Supported logical operators<button data-href="#Supported-logical-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -776,11 +777,11 @@ summary: >-
         ></path>
       </svg>
     </button></h3><ul>
-<li><p><code translate="no">AND</code>: يجمع بين شروط متعددة يجب أن تكون جميعها صحيحة.</p></li>
-<li><p><code translate="no">OR</code>: يجمع بين الشروط بحيث يجب أن يكون واحد منها على الأقل صحيحًا.</p></li>
-<li><p><code translate="no">NOT</code>: ينفي شرطًا.</p></li>
+<li><p><code translate="no">AND</code>: Combines multiple conditions that must all be true.</p></li>
+<li><p><code translate="no">OR</code>: Combines conditions where at least one must be true.</p></li>
+<li><p><code translate="no">NOT</code>: Negates a condition.</p></li>
 </ul>
-<h3 id="Example-1-Using-AND-to-combine-conditions" class="common-anchor-header">المثال 1: استخدام <code translate="no">AND</code> لدمج الشروط<button data-href="#Example-1-Using-AND-to-combine-conditions" class="anchor-icon" translate="no">
+<h3 id="Example-1-Using-AND-to-combine-conditions" class="common-anchor-header">Example 1: Using <code translate="no">AND</code> to combine conditions<button data-href="#Example-1-Using-AND-to-combine-conditions" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -795,16 +796,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>لإيجاد جميع المنتجات التي يكون فيها <code translate="no">price</code> أكبر من 100 و <code translate="no">stock</code> أكبر من 50:</p>
+    </button></h3><p>To find all products where <code translate="no">price</code> is greater than 100 and <code translate="no">stock</code> is greater than 50:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;price &gt; 100 AND stock &gt; 50&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -822,7 +823,7 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;price &gt; 100 AND stock &gt; 50&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-2-Using-OR-to-combine-conditions" class="common-anchor-header">المثال 2: استخدام <code translate="no">OR</code> لدمج الشروط<button data-href="#Example-2-Using-OR-to-combine-conditions" class="anchor-icon" translate="no">
+<h3 id="Example-2-Using-OR-to-combine-conditions" class="common-anchor-header">Example 2: Using <code translate="no">OR</code> to combine conditions<button data-href="#Example-2-Using-OR-to-combine-conditions" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -837,16 +838,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>لإيجاد جميع المنتجات التي يكون فيها <code translate="no">color</code> إما «red» أو «blue»:</p>
+    </button></h3><p>To find all products where <code translate="no">color</code> is either “red” or "blue":</p>
 <div class="multipleCode">
-   <a href="#python">بايثون</a>
- <a href="#java">   جافا</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;color == &quot;red&quot; OR color == &quot;blue&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -864,7 +865,7 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;color == &quot;red&quot; OR color == &quot;blue&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-3-Using-NOT-to-exclude-a-condition" class="common-anchor-header">المثال 3: استخدام <code translate="no">NOT</code> لاستبعاد شرط<button data-href="#Example-3-Using-NOT-to-exclude-a-condition" class="anchor-icon" translate="no">
+<h3 id="Example-3-Using-NOT-to-exclude-a-condition" class="common-anchor-header">Example 3: Using <code translate="no">NOT</code> to exclude a condition<button data-href="#Example-3-Using-NOT-to-exclude-a-condition" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -879,16 +880,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>للعثور على جميع المنتجات التي لا يكون فيها <code translate="no">color</code> "green":</p>
+    </button></h3><p>To find all products where <code translate="no">color</code> is not "green":</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;NOT color == &quot;green&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -906,7 +907,7 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;NOT color == &quot;green&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="IS-NULL-and-IS-NOT-NULL-operators" class="common-anchor-header">عوامل IS NULL و IS NOT NULL<button data-href="#IS-NULL-and-IS-NOT-NULL-operators" class="anchor-icon" translate="no">
+<h2 id="IS-NULL-and-IS-NOT-NULL-operators" class="common-anchor-header">IS NULL and IS NOT NULL operators<button data-href="#IS-NULL-and-IS-NOT-NULL-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -921,20 +922,20 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>استخدم " <code translate="no">IS NULL</code> " و" <code translate="no">IS NOT NULL</code> " للعثور على الكيانات التي تحتوي على قيم حقول مفقودة أو متوفرة. على سبيل المثال، يمكنك العثور على المنتجات التي لا تحتوي على فئة أو الكيانات التي تكون تضميناتها جاهزة للبحث. يعمل كلا المشغلين على الحقول القياسية والمتجهة المدعومة، بنفس المعنى:</p>
+    </button></h2><p>Use <code translate="no">IS NULL</code> and <code translate="no">IS NOT NULL</code> to find entities with missing or available field values. For example, you can find products without a category or entities whose embeddings are ready for search. Both operators work on supported scalar and vector fields, with the same meaning:</p>
 <table>
 <thead>
-<tr><th>المُشغِّل</th><th>يتطابق مع</th></tr>
+<tr><th>Operator</th><th>Matches</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">&lt;field&gt; IS NULL</code></td><td>الكيانات التي تحتوي الحقول المحددة فيها على قيمة NULL</td></tr>
-<tr><td><code translate="no">&lt;field&gt; IS NOT NULL</code></td><td>الكيانات التي تحتوي الحقول المحددة فيها على قيمة غير NULL</td></tr>
+<tr><td><code translate="no">&lt;field&gt; IS NULL</code></td><td>Entities whose specified field has a NULL value</td></tr>
+<tr><td><code translate="no">&lt;field&gt; IS NOT NULL</code></td><td>Entities whose specified field has a non-NULL value</td></tr>
 </tbody>
 </table>
-<p>تشمل الحقول القياسية المدعومة الحقول المنطقية (Boolean) والرقمية و <code translate="no">VARCHAR</code> و <code translate="no">JSON</code> و <code translate="no">ARRAY</code>. لا تدعم هذه العوامل <a href="/docs/ar/text.md">الحقول النصية (TEXT)</a>.</p>
-<p>بدءًا من Milvus 3.0.3، تدعم العوامل أيضًا الحقول المتجهة العادية: <code translate="no">FLOAT_VECTOR</code> و <code translate="no">BINARY_VECTOR</code> و <code translate="no">FLOAT16_VECTOR</code> و <code translate="no">BFLOAT16_VECTOR</code> و <code translate="no">SPARSE_FLOAT_VECTOR</code> و <code translate="no">INT8_VECTOR</code>.</p>
-<p>لا تراعي علامات التشغيل حالة الأحرف: <code translate="no">IS NULL</code> و <code translate="no">is null</code> متطابقان، وكذلك <code translate="no">IS NOT NULL</code> و <code translate="no">is not null</code>.</p>
-<h3 id="Example-Find-entities-with-missing-or-available-values" class="common-anchor-header">مثال: البحث عن الكيانات ذات القيم المفقودة أو المتوفرة<button data-href="#Example-Find-entities-with-missing-or-available-values" class="anchor-icon" translate="no">
+<p>Supported scalar fields include Boolean, numeric, <code translate="no">VARCHAR</code>, <code translate="no">JSON</code>, and <code translate="no">ARRAY</code> fields. These operators do not support <a href="/docs/ar/text.md">TEXT fields</a>.</p>
+<p>Starting in Milvus 3.0.3, the operators also support ordinary vector fields: <code translate="no">FLOAT_VECTOR</code>, <code translate="no">BINARY_VECTOR</code>, <code translate="no">FLOAT16_VECTOR</code>, <code translate="no">BFLOAT16_VECTOR</code>, <code translate="no">SPARSE_FLOAT_VECTOR</code>, and <code translate="no">INT8_VECTOR</code>.</p>
+<p>The operators are case-insensitive: <code translate="no">IS NULL</code> and <code translate="no">is null</code> are equivalent, as are <code translate="no">IS NOT NULL</code> and <code translate="no">is not null</code>.</p>
+<h3 id="Example-Find-entities-with-missing-or-available-values" class="common-anchor-header">Example: Find entities with missing or available values<button data-href="#Example-Find-entities-with-missing-or-available-values" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -949,7 +950,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>لنفترض أن مجموعة باسم <code translate="no">products</code> قد تم فهرستها وتحميلها. تحتوي المجموعة على مفتاح أساسي <code translate="no">INT64</code> باسم <code translate="no">id</code> ، وحقل قابل للقيمة الفارغة <code translate="no">VARCHAR</code> باسم <code translate="no">category</code> ، وحقل ثلاثي الأبعاد قابل للقيمة الفارغة <code translate="no">FLOAT_VECTOR</code> باسم <code translate="no">embedding</code>. وهي تحتوي بالفعل على الكيانات التالية:</p>
+    </button></h3><p>Assume a collection named <code translate="no">products</code> is indexed and loaded on Milvus 3.0.3 or later. The collection has an <code translate="no">INT64</code> primary key named <code translate="no">id</code>, a nullable <code translate="no">VARCHAR</code> field named <code translate="no">category</code>, and a nullable, three-dimensional <code translate="no">FLOAT_VECTOR</code> field named <code translate="no">embedding</code>. It already contains the following entities:</p>
 <table>
 <thead>
 <tr><th><code translate="no">id</code></th><th><code translate="no">category</code></th><th><code translate="no">embedding</code></th></tr>
@@ -960,17 +961,17 @@ summary: >-
 <tr><td><code translate="no">3</code></td><td><code translate="no">&quot;book&quot;</code></td><td>NULL</td></tr>
 </tbody>
 </table>
-<p>تم حذف خطوات إنشاء المجموعة وإدراج البيانات. للاطلاع على هذه الخطوات، راجع <a href="/docs/ar/nullable-and-default.md">الحقول القابلة للقيمة الفارغة</a>.</p>
-<p>للعثور على الكيانات التي لا تزال بحاجة إلى تضمين، قم بالاستعلام عن <code translate="no">embedding IS NULL</code>. اضبط إعدادات الاتصال الخاصة بخادمك.</p>
+<p>Collection creation and data insertion are omitted. For those steps, see <a href="/docs/ar/nullable-and-default.md">Nullable Fields</a>.</p>
+<p>To find entities that still need an embedding, query for <code translate="no">embedding IS NULL</code>. Adjust the connection settings for your server.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -1133,23 +1134,23 @@ QueryResp results = <span class="hljs-keyword">await</span> client.QueryAsync(<s
     &quot;limit&quot;: 10
   }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>استبدل <code translate="no">filter</code> في نفس الاستعلام للتحقق من أي حقل أو دمج الشروط:</p>
+<p>Replace the <code translate="no">filter</code> in the same query to check either field or combine conditions:</p>
 <table>
 <thead>
-<tr><th>تعبير التصفية</th><th>معرفات مطابقة</th><th>الغرض</th></tr>
+<tr><th>Filter expression</th><th>Matching IDs</th><th>Purpose</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">category IS NULL</code></td><td><code translate="no">2</code></td><td>البحث عن الكيانات التي لا تنتمي إلى أي فئة</td></tr>
-<tr><td><code translate="no">category IS NOT NULL</code></td><td><code translate="no">1</code>، <code translate="no">3</code></td><td>البحث عن الكيانات التي لها فئة</td></tr>
-<tr><td><code translate="no">embedding IS NULL</code></td><td><code translate="no">3</code></td><td>البحث عن الكيانات التي لا تحتوي على تضمين</td></tr>
-<tr><td><code translate="no">embedding IS NOT NULL</code></td><td><code translate="no">1</code>، <code translate="no">2</code></td><td>البحث عن الكيانات التي تحتوي على تضمين</td></tr>
-<tr><td><code translate="no">category IS NOT NULL AND embedding IS NOT NULL</code></td><td><code translate="no">1</code></td><td>البحث عن الكيانات التي تحتوي على كلتا القيمتين</td></tr>
+<tr><td><code translate="no">category IS NULL</code></td><td><code translate="no">2</code></td><td>Find entities without a category</td></tr>
+<tr><td><code translate="no">category IS NOT NULL</code></td><td><code translate="no">1</code>, <code translate="no">3</code></td><td>Find entities with a category</td></tr>
+<tr><td><code translate="no">embedding IS NULL</code></td><td><code translate="no">3</code></td><td>Find entities without an embedding</td></tr>
+<tr><td><code translate="no">embedding IS NOT NULL</code></td><td><code translate="no">1</code>, <code translate="no">2</code></td><td>Find entities with an embedding</td></tr>
+<tr><td><code translate="no">category IS NOT NULL AND embedding IS NOT NULL</code></td><td><code translate="no">1</code></td><td>Find entities with both values</td></tr>
 </tbody>
 </table>
 <p><a id="Regular-scalar-fields-with-null-values"></a>
 <a id="JSON-fields-with-null-values"></a>
 <a id="ARRAY-fields-with-null-values"></a></p>
-<h3 id="How-field-values-are-treated" class="common-anchor-header">كيفية معالجة قيم الحقول<button data-href="#How-field-values-are-treated" class="anchor-icon" translate="no">
+<h3 id="How-field-values-are-treated" class="common-anchor-header">How field values are treated<button data-href="#How-field-values-are-treated" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1164,20 +1165,23 @@ QueryResp results = <span class="hljs-keyword">await</span> client.QueryAsync(<s
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>تتحقق العوامل من قيمة الحقل المخزنة. بالنسبة للحقل القابل للقيمة الفارغة الذي لا يحتوي على قيمة افتراضية، فإن حذف الحقل أثناء الإدراج أو تعيينه صراحةً إلى NULL يؤدي إلى تخزين NULL. يمكن أن تؤدي القيمة الافتراضية المُعدة مسبقًا إلى تغيير ما يتم تخزينه. لمزيد من التفاصيل، راجع <a href="/docs/ar/nullable-and-default.md">الحقول القابلة للقيمة الفارغة</a> <a href="/docs/ar/default-values.md">والقيم الافتراضية</a>.</p>
+    </button></h3><p>The operators check the stored field value. For a nullable field without a default value, omitting the field during insertion or explicitly setting it to NULL stores NULL. A configured default value can change what is stored. For details, see <a href="/docs/ar/nullable-and-default.md">Nullable Fields</a> and <a href="/docs/ar/default-values.md">Default Values</a>.</p>
 <table>
 <thead>
-<tr><th>نوع الحقل</th><th>سلوك NULL</th></tr>
+<tr><th>Field type</th><th>NULL behavior</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">VARCHAR</code></td><td>تُعتبر السلسلة الفارغة <code translate="no">&quot;&quot;</code> قيمة غير NULL.</td></tr>
-<tr><td><code translate="no">JSON</code></td><td>تتطابق القيمة NULL للحقل بأكمله مع <code translate="no">IS NULL</code>. يُعد كائن JSON مثل <code translate="no">{&quot;category&quot;: null}</code> غير NULL، حتى لو كانت إحدى القيم بداخله NULL.</td></tr>
-<tr><td><code translate="no">ARRAY</code></td><td>تتطابق القيمة NULL للحقل بأكمله مع <code translate="no">IS NULL</code>. لا يمكن أن تكون العناصر الفردية NULL، ولا يدعم كل من <code translate="no">IS NULL</code> و <code translate="no">IS NOT NULL</code> الوصول إلى عناصر المصفوفة مثل <code translate="no">tags[0]</code>. انظر <a href="/docs/ar/array_data_type.md">حقل المصفوفة</a>.</td></tr>
-<tr><td>أنواع المتجهات العادية</td><td>تعني القيمة NULL أن قيمة المتجه غير موجودة. المتجه الذي تكون مكوناته صفرًا ليس NULL.</td></tr>
+<tr><td><code translate="no">VARCHAR</code></td><td>An empty string <code translate="no">&quot;&quot;</code> is a non-NULL value.</td></tr>
+<tr><td><code translate="no">JSON</code></td><td>A NULL value for the entire field matches <code translate="no">IS NULL</code>. A JSON object such as <code translate="no">{&quot;category&quot;: null}</code> is non-NULL, even though a value inside it is NULL.</td></tr>
+<tr><td><code translate="no">ARRAY</code></td><td>A NULL value for the entire field matches <code translate="no">IS NULL</code>. Individual elements cannot be NULL, and <code translate="no">IS NULL</code> / <code translate="no">IS NOT NULL</code> do not support array element access such as <code translate="no">tags[0]</code>. See <a href="/docs/ar/array_data_type.md">Array Field</a>.</td></tr>
+<tr><td>Ordinary vector types</td><td>NULL means the vector value is absent. A vector whose components are zero is not NULL.</td></tr>
 </tbody>
 </table>
-<p>بالنسبة للحقل المدعوم المُعرَّف باستخدام <code translate="no">nullable=False</code> ، فإن <code translate="no">IS NULL</code> لا يطابق أي كيانات، بينما يطابق <code translate="no">IS NOT NULL</code> جميع الكيانات المرئية. ولا تزال الشروط الأخرى في عامل التصفية سارية.</p>
-<h3 id="Use-NULL-filters-in-vector-search" class="common-anchor-header">استخدام عوامل تصفية NULL في البحث المتجهي<button data-href="#Use-NULL-filters-in-vector-search" class="anchor-icon" translate="no">
+<p>For a supported field defined with <code translate="no">nullable=False</code>, <code translate="no">IS NULL</code> matches no entities and <code translate="no">IS NOT NULL</code> matches all visible entities. Other conditions in the filter still apply.</p>
+<div class="alert note">
+<p>Scalar NULL filters use validity information from an eligible index or field data; they do not require a particular scalar index type. A non-nullable field can produce a constant result.</p>
+</div>
+<h3 id="Use-NULL-filters-in-vector-search" class="common-anchor-header">Use NULL filters in vector search<button data-href="#Use-NULL-filters-in-vector-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1192,21 +1196,20 @@ QueryResp results = <span class="hljs-keyword">await</span> client.QueryAsync(<s
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>يمكن استخدام نفس العوامل في عوامل تصفية البحث، ولكن الكيان يحتاج أيضًا إلى متجه في الحقل الذي يتم البحث فيه للمشاركة في البحث عن التشابه.</p>
-<p>باستخدام البيانات المثال أعلاه، لنفترض إجراء بحث باستخدام <code translate="no">anns_field=&quot;embedding&quot;</code>:</p>
+    </button></h3><p>The same operators can be used in search filters, but an entity also needs a vector in the field being searched to participate in similarity search.</p>
+<p>Using the example data above, consider a search with <code translate="no">anns_field=&quot;embedding&quot;</code>:</p>
 <table>
 <thead>
-<tr><th>تعبير المرشح</th><th>الكيانات المؤهلة للبحث عن التشابه</th><th>السبب</th></tr>
+<tr><th>Filter expression</th><th>Entities eligible for similarity search</th><th>Reason</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">category IS NULL</code></td><td><code translate="no">2</code></td><td>الكيان <code translate="no">2</code> ليس له فئة، ولكنه يحتوي على متجه <code translate="no">embedding</code>.</td></tr>
-<tr><td><code translate="no">embedding IS NULL</code></td><td>لا شيء</td><td>الكيان <code translate="no">3</code> يطابق معيار التصفية، ولكنه لا يحتوي على متجه <code translate="no">embedding</code> لمقارنته بمتجه الاستعلام.</td></tr>
-<tr><td><code translate="no">embedding IS NOT NULL</code></td><td><code translate="no">1</code>، <code translate="no">2</code></td><td>يحتوي كلا الكيانين على متجه <code translate="no">embedding</code>.</td></tr>
+<tr><td><code translate="no">category IS NULL</code></td><td><code translate="no">2</code></td><td>Entity <code translate="no">2</code> has no category, but has an <code translate="no">embedding</code> vector.</td></tr>
+<tr><td><code translate="no">embedding IS NULL</code></td><td>None</td><td>Entity <code translate="no">3</code> matches the filter, but has no <code translate="no">embedding</code> vector to compare with the query vector.</td></tr>
+<tr><td><code translate="no">embedding IS NOT NULL</code></td><td><code translate="no">1</code>, <code translate="no">2</code></td><td>Both entities have an <code translate="no">embedding</code> vector.</td></tr>
 </tbody>
 </table>
-<p>جميع المرشحات الثلاثة صالحة. لا يُسفر البحث عن " <code translate="no">embedding</code> " باستخدام " <code translate="no">embedding IS NULL</code> " عن أي نتائج لأن لا يوجد كيان يستوفي كلا الشرطين. لاسترداد الكيانات التي تفتقد إلى التضمينات، استخدم " <code translate="no">query()</code> " كما هو موضح أعلاه.</p>
-<p>يتخطى البحث المتجه بالفعل الكيانات التي يكون حقل المتجه الذي يتم البحث عنه فيها NULL، لذا فإن <code translate="no">embedding IS NOT NULL</code> لا يضيق نطاق المرشحين للبحث على <code translate="no">embedding</code> بشكل إضافي. ولا يزال الترتيب، والمرشحات الأخرى، وحد البحث هي التي تحدد المرشحين الذين يتم إرجاعهم.</p>
-<h2 id="Tips-on-using-basic-operators-with-JSON-and-ARRAY-fields" class="common-anchor-header">نصائح حول استخدام العوامل الأساسية مع حقول JSON وARRAY<button data-href="#Tips-on-using-basic-operators-with-JSON-and-ARRAY-fields" class="anchor-icon" translate="no">
+<p>To retrieve missing embeddings, use <code translate="no">query()</code>; a search on <code translate="no">embedding</code> with <code translate="no">embedding IS NULL</code> is valid but returns no hits. Vector search already skips NULL embeddings, so <code translate="no">embedding IS NOT NULL</code> does not further narrow candidates. Ranking, other filters, and the search limit still determine the returned hits.</p>
+<h2 id="Tips-on-using-basic-operators-with-JSON-and-ARRAY-fields" class="common-anchor-header">Tips on using basic operators with JSON and ARRAY fields<button data-href="#Tips-on-using-basic-operators-with-JSON-and-ARRAY-fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1221,17 +1224,16 @@ QueryResp results = <span class="hljs-keyword">await</span> client.QueryAsync(<s
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>على الرغم من أن العوامل الأساسية في Milvus متعددة الاستخدامات ويمكن تطبيقها على الحقول القياسية، إلا أنه يمكن أيضًا استخدامها بفعالية مع المفاتيح والفهارس في حقول JSON وARRAY.</p>
-<p>على سبيل المثال، إذا كان لديك حقل <code translate="no">product</code> يحتوي على مفاتيح متعددة مثل <code translate="no">price</code> و <code translate="no">model</code> و <code translate="no">tags</code> ، فاحرص دائمًا على الإشارة إلى المفتاح مباشرةً:</p>
+    </button></h2><p>Reference a JSON key or ARRAY element directly in the expression. For example, to filter the <code translate="no">price</code> key in a JSON field named <code translate="no">product</code>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;product[&quot;price&quot;] &gt; 1000&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -1249,16 +1251,16 @@ QueryResp results = <span class="hljs-keyword">await</span> client.QueryAsync(<s
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;product[&quot;price&quot;] &gt; 1000&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>للعثور على السجلات التي تتجاوز فيها درجة الحرارة الأولى في مصفوفة درجات الحرارة المسجلة قيمة معينة، استخدم:</p>
+<p>To find records where the first temperature in an array of recorded temperatures exceeds a certain value, use:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;history_temperatures[0] &gt; 30&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -1276,7 +1278,8 @@ QueryResp results = <span class="hljs-keyword">await</span> client.QueryAsync(<s
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;history_temperatures[0] &gt; 30&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Conclusion" class="common-anchor-header">الخلاصة<button data-href="#Conclusion" class="anchor-icon" translate="no">
+<p><a id="Conclusion"></a></p>
+<h2 id="FAQ" class="common-anchor-header">FAQ<button data-href="#FAQ" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1291,22 +1294,6 @@ QueryResp results = <span class="hljs-keyword">await</span> client.QueryAsync(<s
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يوفر Milvus مجموعة من العوامل الأساسية التي تمنحك المرونة في تصفية بياناتك والاستعلام عنها. من خلال الجمع بين عوامل المقارنة والنطاق والحسابية والمنطقية، يمكنك إنشاء تعبيرات تصفية قوية لتضييق نطاق نتائج البحث واسترداد البيانات التي تحتاجها بكفاءة.</p>
-<h2 id="FAQ" class="common-anchor-header">الأسئلة الشائعة<button data-href="#FAQ" class="anchor-icon" translate="no">
-      <svg translate="no"
-        aria-hidden="true"
-        focusable="false"
-        height="20"
-        version="1.1"
-        viewBox="0 0 16 16"
-        width="16"
-      >
-        <path
-          fill="#0092E4"
-          fill-rule="evenodd"
-          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
-        ></path>
-      </svg>
-    </button></h2><p><strong>هل هناك حد لطول قائمة قيم المطابقة في شروط التصفية (على سبيل المثال، filter=’color in ["red", "green", “blue”]')؟ ماذا أفعل إذا كانت القائمة طويلة جدًا؟</strong></p>
-<p>لا يفرض Milvus حدًا أقصى لطول قائمة قيم المطابقة في شروط التصفية. ومع ذلك، يمكن أن تؤثر القائمة الطويلة جدًّا بشكل كبير على أداء الاستعلام.
-إذا كانت شروط التصفية الخاصة بك تتضمن قائمة طويلة من قيم المطابقة أو تعبيرًا معقدًا يحتوي على العديد من العناصر، نوصي باستخدام <a href="/docs/ar/filtering-templating.md">«قوالب التصفية»</a> لتحسين أداء الاستعلام.</p>
+    </button></h2><p><strong>Is there a limit to the length of the match value list in filter conditions (e.g., filter=’color in ["red", "green", “blue”]')? What should I do if the list is too long?</strong></p>
+<p>Milvus does not impose a length limit on the match value list in filter conditions. However, an excessively long list can significantly impact query performance.
+If your filter condition includes a long list of match values or a complex expression with many elements, we recommend using <a href="/docs/ar/filtering-templating.md">Filter Templating</a> to improve query performance.</p>

@@ -1,14 +1,12 @@
 ---
 id: milvus_backup_0_6_cli.md
 summary: >-
-  Konfigurasikan Milvus Backup, buat cadangan, dan verifikasi data yang telah
-  dipulihkan menggunakan CLI.
-title: >-
-  Mencadangkan dan Memulihkan Data Menggunakan PerintahCompatible with Milvus
-  Backup 0.6.x
+  Configure Milvus Backup, create a backup, and verify restored data using the
+  CLI.
+title: Back up and Restore Data Using CommandsCompatible with Milvus Backup 0.6.x
 beta: Milvus Backup 0.6.x
 ---
-<h1 id="Back-up-and-Restore-Data-Using-Commands" class="common-anchor-header">Mencadangkan dan Memulihkan Data Menggunakan Perintah<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus Backup 0.6.x</span><button data-href="#Back-up-and-Restore-Data-Using-Commands" class="anchor-icon" translate="no">
+<h1 id="Back-up-and-Restore-Data-Using-Commands" class="common-anchor-header">Back up and Restore Data Using Commands<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus Backup 0.6.x</span><button data-href="#Back-up-and-Restore-Data-Using-Commands" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -23,9 +21,9 @@ beta: Milvus Backup 0.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Gunakan Milvus Backup untuk mencadangkan koleksi dan memulihkannya di instance Milvus yang sama atau yang lain. Fitur pencadangan dan pemulihan pada Milvus 3.0 secara resmi didukung mulai dari <strong>Milvus 3.0.1</strong>. Milvus Backup juga mendukung alur kerja binlog pada versi Milvus 2.x yang didukung; periksa <a href="/docs/id/milvus_backup_overview.md#Compatibility-matrix">kompatibilitas Milvus Backup</a>.</p>
-<p>Jika Anda masih menggunakan Milvus Backup 0.5.x, gunakan <a href="/docs/id/milvus_backup_cli.md">panduan CLI 0.5.x</a>. Jika Anda melakukan peningkatan versi, ikuti <a href="/docs/id/milvus_backup_upgrade.md">panduan Peningkatan Milvus Backup</a> terlebih dahulu.</p>
-<h2 id="Obtain-Milvus-Backup" class="common-anchor-header">Mendapatkan Milvus Backup<button data-href="#Obtain-Milvus-Backup" class="anchor-icon" translate="no">
+    </button></h1><p>Use Milvus Backup to back up collections and restore them in the same or another Milvus instance. Backup and restore on Milvus 3.0 is officially supported starting with <strong>Milvus 3.0.1</strong>. Milvus Backup also supports binlog workflows on supported Milvus 2.x versions; check <a href="/docs/id/milvus_backup_overview.md#Compatibility-matrix">Milvus Backup compatibility</a>.</p>
+<p>If you are keeping Backup 0.5.x, use the <a href="/docs/id/milvus_backup_cli.md">0.5.x CLI guide</a>. If you are upgrading, follow <a href="/docs/id/milvus_backup_upgrade.md">Upgrade Milvus Backup</a> first.</p>
+<h2 id="Obtain-Milvus-Backup" class="common-anchor-header">Obtain Milvus Backup<button data-href="#Obtain-Milvus-Backup" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -40,14 +38,14 @@ beta: Milvus Backup 0.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Contoh di bawah ini telah diverifikasi dengan <strong>Milvus Backup 0.6.0</strong>. Unduh file biner untuk sistem operasi dan arsitektur Anda dari <a href="https://github.com/zilliztech/milvus-backup/releases/tag/v0.6.0">rilis v0.6.0</a>, lalu ekstrak. Pastikan file biner dan contoh konfigurasi berada pada rilis yang sama.</p>
-<p>Untuk membangun dari sumber, instal <strong>Go 1.26 atau yang lebih baru</strong>, lalu jalankan:</p>
+    </button></h2><p>The examples below were validated with <strong>Milvus Backup 0.6.0</strong>. Download the binary for your operating system and architecture from the <a href="https://github.com/zilliztech/milvus-backup/releases/tag/v0.6.0">v0.6.0 release</a>, then extract it. Keep the binary and configuration examples on the same release.</p>
+<p>To build from source instead, install <strong>Go 1.26 or later</strong>, then run:</p>
 <pre><code translate="no" class="language-shell">git clone --branch v0.6.0 --depth 1 https://github.com/zilliztech/milvus-backup.git
 cd milvus-backup
 go build
 <button class="copy-code-btn"></button></code></pre>
-<p>Biner yang sudah dibuat sebelumnya tidak memerlukan Go. Jalankan semua perintah shell berikutnya dari direktori yang berisi <code translate="no">milvus-backup</code>.</p>
-<h2 id="Prepare-configuration-file" class="common-anchor-header">Siapkan berkas konfigurasi<button data-href="#Prepare-configuration-file" class="anchor-icon" translate="no">
+<p>The prebuilt binary does not require Go. Run all subsequent shell commands from the directory containing <code translate="no">milvus-backup</code>.</p>
+<h2 id="Prepare-configuration-file" class="common-anchor-header">Prepare configuration file<button data-href="#Prepare-configuration-file" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -62,11 +60,11 @@ go build
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus Backup memerlukan akses ke titik akhir gRPC Milvus, titik akhir manajemennya, penyimpanan instance, dan tujuan pencadangan. Untuk pencadangan snapshot, server Milvus juga memerlukan akses ke penyimpanan pencadangan.</p>
-<p>Buat direktori konfigurasi:</p>
+    </button></h2><p>Milvus Backup needs access to the Milvus gRPC endpoint, its management endpoint, the instance’s storage, and the backup destination. For snapshot backups, the Milvus server also needs access to the backup storage.</p>
+<p>Create a configuration directory:</p>
 <pre><code translate="no" class="language-shell">mkdir -p configs
 <button class="copy-code-btn"></button></code></pre>
-<p>Simpan contoh MinIO ini sebagai <code translate="no">configs/backup.yaml</code>. Ganti alamat, kredensial, bucket, dan jalur akar dengan pengaturan deployment Anda. Kredensial <code translate="no">minioadmin</code> adalah pengaturan default uji coba MinIO.</p>
+<p>Save this MinIO example as <code translate="no">configs/backup.yaml</code>. Replace the addresses, credentials, bucket, and root path with the settings of your deployment. The <code translate="no">minioadmin</code> credentials are MinIO test defaults.</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">configVersion:</span> <span class="hljs-string">v2</span>
 <span class="hljs-attr">milvus:</span>
   <span class="hljs-attr">grpc:</span>
@@ -93,30 +91,30 @@ go build
   <span class="hljs-attr">mode:</span> <span class="hljs-string">auto</span>
 <button class="copy-code-btn"></button></code></pre>
 <ul>
-<li><code translate="no">milvus.grpc</code> terhubung ke instance yang sedang dicadangkan atau dipulihkan. Jika otentikasi diaktifkan, atur juga <code translate="no">milvus.user</code> dan <code translate="no">milvus.password</code>.</li>
-<li><code translate="no">milvus.management.endpoint</code> digunakan untuk menjeda/melanjutkan pengumpulan sampah selama proses pencadangan.</li>
-<li><code translate="no">milvus.storage</code> harus sesuai dengan penyimpanan objek aktual dari instance tersebut. Menetapkan bucket di sini tidak mengubah konfigurasi Milvus.</li>
-<li><code translate="no">backup.storage</code> mengidentifikasi lokasi pencadangan. Bidang yang tidak diatur akan mewarisi nilai dari <code translate="no">milvus.storage</code>, kecuali <code translate="no">rootPath</code>, yang secara default diatur ke <code translate="no">backup</code>.</li>
-<li><code translate="no">transfer.mode: auto</code> memilih penyalinan di sisi penyimpanan jika backend cocok, dan streaming melalui Milvus Backup jika tidak. Pengaturan ini mengontrol transfer objek, bukan format pencadangan.</li>
+<li><code translate="no">milvus.grpc</code> connects to the instance being backed up or restored. If authentication is enabled, also set <code translate="no">milvus.user</code> and <code translate="no">milvus.password</code>.</li>
+<li><code translate="no">milvus.management.endpoint</code> is used for garbage collection pause/resume during backup.</li>
+<li><code translate="no">milvus.storage</code> must match the instance’s actual object storage. Setting a bucket here does not change Milvus configuration.</li>
+<li><code translate="no">backup.storage</code> identifies the backup location. Unset fields inherit from <code translate="no">milvus.storage</code>, except <code translate="no">rootPath</code>, which defaults to <code translate="no">backup</code>.</li>
+<li><code translate="no">transfer.mode: auto</code> selects storage-side copying when the backends match and streaming through Milvus Backup otherwise. This setting controls object transfer, not the backup format.</li>
 </ul>
-<p>Nilai default penyimpanan yang umum ditampilkan di bawah ini. Pastikan nilai-nilai tersebut sesuai dengan deployment yang sedang berjalan sebelum menggunakannya.</p>
+<p>Typical storage defaults are shown below. Confirm the values in your running deployment before using them.</p>
 <table>
 <thead>
-<tr><th>Pengaturan</th><th>Docker Compose</th><th>Helm / Milvus Operator</th></tr>
+<tr><th>Setting</th><th>Docker Compose</th><th>Helm / Milvus Operator</th></tr>
 </thead>
 <tbody>
 <tr><td>Bucket</td><td><code translate="no">a-bucket</code></td><td><code translate="no">milvus-bucket</code></td></tr>
-<tr><td>Jalur akar</td><td><code translate="no">files</code></td><td><code translate="no">file</code></td></tr>
+<tr><td>Root path</td><td><code translate="no">files</code></td><td><code translate="no">file</code></td></tr>
 </tbody>
 </table>
-<p>Jika server Milvus menggunakan alamat yang berbeda untuk mengakses penyimpanan cadangan, atur ` <code translate="no">backup.storage.milvusAddress</code> ` dan ` <code translate="no">milvusPort</code> ` ke alamat yang dapat dijangkau oleh server. Untuk otentikasi, TLS, penyedia penyimpanan lain, dan pengaturan tambahan, lihat <a href="https://github.com/zilliztech/milvus-backup/blob/v0.6.0/configs/backup.yaml">contoh konfigurasi versi 0.6.0</a>.</p>
-<p>Periksa nilai yang berlaku dan uji konektivitas:</p>
+<p>If the Milvus server uses a different address to reach the backup store, set <code translate="no">backup.storage.milvusAddress</code> and <code translate="no">milvusPort</code> to the server-reachable address. For authentication, TLS, other storage providers, and additional settings, see the <a href="https://github.com/zilliztech/milvus-backup/blob/v0.6.0/configs/backup.yaml">0.6.0 configuration example</a>.</p>
+<p>Inspect the effective values and check connectivity:</p>
 <pre><code translate="no" class="language-shell">./milvus-backup config show --config configs/backup.yaml
 ./milvus-backup check --config configs/backup.yaml
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">config show</code> menyembunyikan nilai rahasia dan melaporkan asal setiap nilai. Pemeriksaan konektivitas harus melaporkan <code translate="no">Success!</code>. Selesaikan kesalahan koneksi atau penyimpanan sebelum membuat cadangan.</p>
-<p>Untuk konfigurasi v1 yang sudah ada, lihat <a href="/docs/id/milvus_backup_upgrade.md#Migrate-the-configuration">Memperbarui Cadangan Milvus</a>. Terjemahan konfigurasi otomatis tidak menggantikan bendera CLI yang dihapus.</p>
-<h2 id="Prepare-data" class="common-anchor-header">Siapkan data<button data-href="#Prepare-data" class="anchor-icon" translate="no">
+<p><code translate="no">config show</code> masks secret values and reports where each value came from. The connectivity check should report <code translate="no">Success!</code>. Resolve connection or storage errors before creating a backup.</p>
+<p>For existing v1 configurations, see <a href="/docs/id/milvus_backup_upgrade.md#Migrate-the-configuration">Upgrade Milvus Backup</a>. Automatic configuration translation does not replace removed CLI flags.</p>
+<h2 id="Prepare-data" class="common-anchor-header">Prepare data<button data-href="#Prepare-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -131,8 +129,8 @@ go build
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Gunakan koleksi yang sudah ada bernama <code translate="no">coll</code> dan pastikan bahwa <code translate="no">coll_bak</code> tidak ada. Catat skema, jumlah entitas, nilai skalar dan vektor yang representatif, serta hasil pencarian yang diketahui sebelum pencadangan. Pertahankan data contoh tanpa perubahan saat membandingkan salinan yang dipulihkan. Untuk membuat kumpulan <a href="/docs/id/snapshot-backup-and-restore.md#Prepare-sample-data">data</a> sekali pakai yang kecil sebagai gantinya, gunakan <a href="/docs/id/snapshot-backup-and-restore.md#Prepare-sample-data">Siapkan data sampel</a>.</p>
-<h2 id="Back-up-data" class="common-anchor-header">Cadangkan data<button data-href="#Back-up-data" class="anchor-icon" translate="no">
+    </button></h2><p>Use an existing collection named <code translate="no">coll</code> and ensure that <code translate="no">coll_bak</code> does not exist. Record the schema, entity count, representative scalar and vector values, and a known search result before backup. Keep the example data unchanged while comparing the restored copy. To create a small disposable dataset instead, use <a href="/docs/id/snapshot-backup-and-restore.md#Prepare-sample-data">Prepare sample data</a>.</p>
+<h2 id="Back-up-data" class="common-anchor-header">Back up data<button data-href="#Back-up-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -147,14 +145,14 @@ go build
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Buat cadangan bernama dari ` <code translate="no">coll</code>`:</p>
+    </button></h2><p>Create a named backup of <code translate="no">coll</code>:</p>
 <pre><code translate="no" class="language-shell">./milvus-backup create --filter coll -n my_backup --config configs/backup.yaml
 ./milvus-backup list --config configs/backup.yaml
 ./milvus-backup get -n my_backup --config configs/backup.yaml
 <button class="copy-code-btn"></button></code></pre>
-<p>Perintah create harus melaporkan <code translate="no">create backup success</code>. <code translate="no">get</code> mengembalikan metadata cadangan; pastikan koleksi yang diharapkan ada. Mengabaikan <code translate="no">--filter</code> akan mencadangkan semua koleksi yang memenuhi syarat. Koleksi eksternal dilewati.</p>
-<p><code translate="no">--filter</code> Menerima nama yang dipisahkan dengan koma: ` <code translate="no">coll</code> ` di basis data default, ` <code translate="no">db1.coll</code>`, atau ` <code translate="no">'db1.*'</code> ` untuk semua koleksi dalam basis data. Gunakan tanda kutip pada pola yang mengandung ` <code translate="no">*</code> ` untuk mencegah ekspansi shell.</p>
-<h3 id="Choose-a-backup-format-or-purpose" class="common-anchor-header">Pilih format atau tujuan cadangan<button data-href="#Choose-a-backup-format-or-purpose" class="anchor-icon" translate="no">
+<p>The create command should report <code translate="no">create backup success</code>. <code translate="no">get</code> returns backup metadata; check that the expected collection is present. Omitting <code translate="no">--filter</code> backs up all eligible collections. External collections are skipped.</p>
+<p><code translate="no">--filter</code> accepts comma-separated names: <code translate="no">coll</code> in the default database, <code translate="no">db1.coll</code>, or <code translate="no">'db1.*'</code> for all collections in a database. Quote patterns containing <code translate="no">*</code> to prevent shell expansion.</p>
+<h3 id="Choose-a-backup-format-or-purpose" class="common-anchor-header">Choose a backup format or purpose<button data-href="#Choose-a-backup-format-or-purpose" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -169,24 +167,24 @@ go build
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Dengan nilai default <code translate="no">--format auto</code>, Milvus 3.0 menggunakan cadangan snapshot; server Milvus 2.x yang didukung menggunakan binlog. Untuk mempertahankan perilaku binlog secara eksplisit, gunakan <code translate="no">--format binlog</code>. <a href="/docs/id/snapshot-backup-and-restore.md">Contoh snapshot</a> secara eksplisit memilih <code translate="no">--format snapshot</code>.</p>
-<p>Gunakan ` <code translate="no">--for</code> ` jika tujuannya sesuai dengan alur kerja Anda:</p>
+    </button></h3><p>With the default <code translate="no">--format auto</code>, Milvus 3.0 uses snapshot backups; supported Milvus 2.x servers use binlog. To retain binlog behavior explicitly, pass <code translate="no">--format binlog</code>. The <a href="/docs/id/snapshot-backup-and-restore.md">snapshot example</a> selects <code translate="no">--format snapshot</code> explicitly.</p>
+<p>Use <code translate="no">--for</code> when a purpose matches your workflow:</p>
 <table>
 <thead>
-<tr><th>Tujuan</th><th>Nilai yang diterapkan oleh preset</th><th>Penggunaan yang dimaksud</th></tr>
+<tr><th>Purpose</th><th>Values applied by the preset</th><th>Intended use</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">clone</code></td><td>Mengaktifkan pencadangan RBAC; mempertahankan pilihan format dan strategi Anda</td><td>Menyalin data ke instance lain; <code translate="no">auto</code> menggunakan snapshot pada Milvus 3.0</td></tr>
-<tr><td><code translate="no">archive</code></td><td>Memaksa penggunaan " <code translate="no">binlog</code> " dan mengaktifkan pencadangan RBAC</td><td>Menyimpan cadangan dalam format binlog untuk pemulihan di kemudian hari</td></tr>
-<tr><td><code translate="no">secondary</code></td><td>Memaksa penggunaan <code translate="no">binlog</code>, <code translate="no">bulk_flush</code>, pencadangan RBAC, dan metadata tambahan indeks</td><td>Inisialisasi server sekunder dalam topologi replikasi yang telah dikonfigurasi</td></tr>
+<tr><td><code translate="no">clone</code></td><td>Enables RBAC backup; keeps your format and strategy choices</td><td>Copy data to another instance; <code translate="no">auto</code> uses snapshot on Milvus 3.0</td></tr>
+<tr><td><code translate="no">archive</code></td><td>Forces <code translate="no">binlog</code> and enables RBAC backup</td><td>Keep a binlog-format backup for later restoration</td></tr>
+<tr><td><code translate="no">secondary</code></td><td>Forces <code translate="no">binlog</code>, <code translate="no">bulk_flush</code>, RBAC backup, and index extra metadata</td><td>Initialize a secondary in a configured replication topology</td></tr>
 </tbody>
 </table>
-<p>Contoh:</p>
+<p>For example:</p>
 <pre><code translate="no" class="language-shell">./milvus-backup create --for clone --filter coll -n clone_backup --config configs/backup.yaml
 <button class="copy-code-btn"></button></code></pre>
-<p>Pengaturan awal akan menggantikan nilai yang bertentangan untuk opsi yang diperbaikinya. Misalnya, ` <code translate="no">--for archive --format snapshot</code> ` menghasilkan cadangan binlog. Mencadangkan metadata RBAC tidak secara otomatis memulihkannya; gunakan opsi ` <code translate="no">--rbac</code> ` pada perintah `restore` jika diperlukan.</p>
-<p><code translate="no">secondary</code> bukanlah jalan pintas untuk pemulihan antar-instans biasa. Proses ini juga memerlukan akses ke etcd sumber untuk metadata indeks, ID dan saluran kluster replikasi yang benar, serta target sekunder yang baru. Cadangan harus mempertahankan metadata lengkapnya, termasuk ` <code translate="no">meta/full_meta.json</code>`. Konfigurasi replikasi dan pelaksanaan failover berada di luar cakupan panduan ini. Lihat <a href="https://github.com/zilliztech/milvus-backup/tree/v0.6.0">sumber dan referensi</a> versi <a href="https://github.com/zilliztech/milvus-backup/tree/v0.6.0">0.6.0</a> untuk implementasi dan persyaratan khusus versi tersebut.</p>
-<h3 id="Preserve-the-complete-backup" class="common-anchor-header">Pertahankan cadangan secara lengkap<button data-href="#Preserve-the-complete-backup" class="anchor-icon" translate="no">
+<p>A preset overrides conflicting values for the options it fixes. For example, <code translate="no">--for archive --format snapshot</code> produces a binlog backup. Backing up RBAC metadata does not automatically restore it; use the restore command’s <code translate="no">--rbac</code> option when required.</p>
+<p><code translate="no">secondary</code> is not a shortcut for ordinary cross-instance restoration. It also requires access to the source etcd for index metadata, correct replication cluster IDs and channels, and a fresh secondary target. The backup must retain its complete metadata, including <code translate="no">meta/full_meta.json</code>. Configuring replication and performing failover are outside this guide. See the <a href="https://github.com/zilliztech/milvus-backup/tree/v0.6.0">0.6.0 source and reference</a> for the version-specific implementation and requirements.</p>
+<h3 id="Preserve-the-complete-backup" class="common-anchor-header">Preserve the complete backup<button data-href="#Preserve-the-complete-backup" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -201,9 +199,9 @@ go build
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Cadangan disimpan di bawah <code translate="no">&lt;backup.storage.bucketName&gt;/&lt;backup.storage.rootPath&gt;/&lt;backup_name&gt;</code>. Simpan setiap objek di direktori ini. Cadangan snapshot mencakup bundel yang diekspor serta metadata.</p>
-<p>Jangan hanya menyalin berkas metadata atau menganggap cadangan snapshot memiliki tata letak yang sama dengan cadangan binlog.</p>
-<h2 id="Restore-data" class="common-anchor-header">Memulihkan data<button data-href="#Restore-data" class="anchor-icon" translate="no">
+    </button></h3><p>A backup is stored under <code translate="no">&lt;backup.storage.bucketName&gt;/&lt;backup.storage.rootPath&gt;/&lt;backup_name&gt;</code>. Preserve every object in this directory. Snapshot backups include an exported bundle as well as metadata.</p>
+<p>Do not copy only the metadata files or assume a snapshot backup has the same layout as a binlog backup.</p>
+<h2 id="Restore-data" class="common-anchor-header">Restore data<button data-href="#Restore-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -218,15 +216,15 @@ go build
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Pulihkan <code translate="no">coll</code> sebagai <code translate="no">coll_bak</code> di instance yang telah dikonfigurasi:</p>
+    </button></h2><p>Restore <code translate="no">coll</code> as <code translate="no">coll_bak</code> in the configured instance:</p>
 <pre><code translate="no" class="language-shell">./milvus-backup restore --filter coll_bak -n my_backup -s _bak --config configs/backup.yaml
 <button class="copy-code-btn"></button></code></pre>
-<p>Di CLI, <code translate="no">--filter</code> akan mencocokkan nama-nama <strong>setelah</strong> <code translate="no">-s</code> atau <code translate="no">--rename</code> diterapkan. Perintah dengan <code translate="no">--filter coll -s _bak</code> tidak akan mencocokkan apa pun dan dapat keluar dengan sukses tanpa memulihkan koleksi.</p>
-<p>Untuk memulihkan menggunakan nama asli, pilih target di mana nama koleksi tersebut tidak ada, arahkan konfigurasi ke target tersebut dan lokasi cadangan, serta hilangkan sufiks:</p>
+<p>On the CLI, <code translate="no">--filter</code> matches names <strong>after</strong> <code translate="no">-s</code> or <code translate="no">--rename</code> is applied. A command with <code translate="no">--filter coll -s _bak</code> matches nothing and can exit successfully without restoring a collection.</p>
+<p>To restore using the original name, choose a target where that collection name does not exist, point the configuration to that target and the backup location, and omit the suffix:</p>
 <pre><code translate="no" class="language-shell">./milvus-backup restore --filter coll -n my_backup --config configs/backup-target.yaml
 <button class="copy-code-btn"></button></code></pre>
-<p>Untuk contoh lengkap pada instans yang sama, lihat <a href="/docs/id/snapshot-backup-and-restore.md">Pencadangan dan Pemulihan Snapshot dalam Satu Instans</a>. Halaman kasus umum lintas instans yang ada menggunakan konfigurasi Backup 0.5.16 dan v1; jangan terapkan perintah tersebut secara langsung ke 0.6.0. Untuk konfigurasi transfer 0.6.0, lihat <a href="https://github.com/zilliztech/milvus-backup/blob/v0.6.0/docs/user_guide/transfer.md">panduan transfer versi terbaru</a>.</p>
-<h2 id="Verify-restored-data" class="common-anchor-header">Verifikasi data yang dipulihkan<button data-href="#Verify-restored-data" class="anchor-icon" translate="no">
+<p>For a complete same-instance example, see <a href="/docs/id/snapshot-backup-and-restore.md">Snapshot Backup and Restore in One Instance</a>. The existing cross-instance common-case pages use Backup 0.5.16 and v1 configuration; do not apply their commands unchanged to 0.6.0. For 0.6.0 transfer configuration, see the <a href="https://github.com/zilliztech/milvus-backup/blob/v0.6.0/docs/user_guide/transfer.md">versioned transfer guide</a>.</p>
+<h2 id="Verify-restored-data" class="common-anchor-header">Verify restored data<button data-href="#Verify-restored-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -241,5 +239,5 @@ go build
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Pastikan bahwa <code translate="no">coll_bak</code> ada. Jika proses pemulihan tidak membuat ulang indeks vektornya, buatlah indeks yang sesuai dengan skema Anda sebelum memuat koleksi tersebut. Bandingkan skema, jumlah entitas, nilai skalar dan vektor, serta hasil pencarian yang diketahui dengan baseline yang diambil sebelum pencadangan.</p>
-<p>Untuk kumpulan data sekali pakai yang berisi 256 entitas, gunakan pemeriksaan lengkap yang tercantum dalam <a href="/docs/id/snapshot-backup-and-restore.md#Verify-the-result">bagian "Verifikasi Hasil"</a>. Perintah yang berhasil dijalankan saja tidak menjamin bahwa data yang diharapkan telah dipulihkan.</p>
+    </button></h2><p>Confirm that <code translate="no">coll_bak</code> exists. If the restore did not recreate its vector index, create the index appropriate to your schema before loading the collection. Compare its schema, entity count, scalar and vector values, and known search results against the baseline captured before backup.</p>
+<p>For the disposable 256-entity dataset, use the complete checks in <a href="/docs/id/snapshot-backup-and-restore.md#Verify-the-result">Verify the result</a>. A successful command alone does not prove that the expected data was restored.</p>

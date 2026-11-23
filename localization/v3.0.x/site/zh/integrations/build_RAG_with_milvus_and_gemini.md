@@ -1,9 +1,11 @@
 ---
 id: build_RAG_with_milvus_and_gemini.md
 summary: >-
-  在本教程中，我们将向您展示如何使用 Milvus 和 Gemini 构建一个 RAG（检索增强生成）管道。我们将利用 Gemini
-  模型根据给定的查询生成文本，同时使用 Milvus 来存储和检索生成的文本。
-title: 使用 Milvus 和 Gemini 构建 RAG
+  In this tutorial, we will show you how to build a RAG (Retrieval-Augmented
+  Generation) pipeline with Milvus and Gemini. We will use the Gemini model to
+  generate text based on a given query. We will also use Milvus to store and
+  retrieve the generated text.
+title: Build RAG with Milvus and Gemini
 ---
 <p><a href="https://colab.research.google.com/github/milvus-io/bootcamp/blob/master/integration/build_RAG_with_milvus_and_gemini.ipynb" target="_parent">
 <img translate="no" src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
@@ -11,7 +13,7 @@ title: 使用 Milvus 和 Gemini 构建 RAG
 <a href="https://github.com/milvus-io/bootcamp/blob/master/integration/build_RAG_with_milvus_and_gemini.ipynb" target="_blank">
 <img translate="no" src="https://img.shields.io/badge/View%20on%20GitHub-555555?style=flat&logo=github&logoColor=white" alt="GitHub Repository"/>
 </a></p>
-<h1 id="Build-RAG-with-Milvus-and-Gemini" class="common-anchor-header">使用 Milvus 和 Gemini 构建 RAG<button data-href="#Build-RAG-with-Milvus-and-Gemini" class="anchor-icon" translate="no">
+<h1 id="Build-RAG-with-Milvus-and-Gemini" class="common-anchor-header">Build RAG with Milvus and Gemini<button data-href="#Build-RAG-with-Milvus-and-Gemini" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -26,9 +28,9 @@ title: 使用 Milvus 和 Gemini 构建 RAG
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p><a href="https://ai.google.dev/gemini-api/docs">Gemini API</a>和<a href="https://ai.google.dev/aistudio">Google AI Studio</a>可帮助您开始使用 Google 的最新模型，并将您的创意转化为可扩展的应用程序。 Gemini 提供了对<code translate="no">Gemini-2.5-Flash</code> 和<code translate="no">Gemini-2.5-Pro</code> 等强大语言模型的访问权限，可用于文本生成、文档处理、视觉、音频分析等任务。它还提供了<code translate="no">Gemini Embedding 2</code> ，这是一个多模态 Embeddings 模型，支持文本、图像、视频、音频和 PDF 文档，并通过 Matryoshka 表征学习（Matryoshka Representation Learning）提供灵活的输出维度。 该 API 允许您输入包含数百万个令牌的长上下文，针对特定任务对模型进行微调，生成 JSON 等结构化输出，并利用语义检索和代码执行等功能。</p>
-<p>在本教程中，我们将向您展示如何使用 Milvus 和 Gemini 构建 RAG（检索增强生成）管道。我们将利用 Gemini 模型根据给定的查询生成响应，并结合从 Milvus 检索到的相关信息进行增强。</p>
-<h2 id="Preparation" class="common-anchor-header">准备工作<button data-href="#Preparation" class="anchor-icon" translate="no">
+    </button></h1><p>The <a href="https://ai.google.dev/gemini-api/docs">Gemini API</a> and <a href="https://ai.google.dev/aistudio">Google AI Studio</a> help you start working with Google’s latest models and turn your ideas into applications that scale. Gemini provides access to powerful language models like <code translate="no">Gemini-2.5-Flash</code> and <code translate="no">Gemini-2.5-Pro</code> for tasks such as text generation, document processing, vision, audio analysis, and more. It also offers <code translate="no">Gemini Embedding 2</code>, a multimodal embedding model supporting text, images, video, audio, and PDF documents with flexible output dimensions via Matryoshka Representation Learning. The API allows you to input long context with millions of tokens, fine-tune models for specific tasks, generate structured outputs like JSON, and leverage capabilities like semantic retrieval and code execution.</p>
+<p>In this tutorial, we will show you how to build a RAG (Retrieval-Augmented Generation) pipeline with Milvus and Gemini. We will use the Gemini model to generate responses based on a given query, augmented with relevant information retrieved from Milvus.</p>
+<h2 id="Preparation" class="common-anchor-header">Preparation<button data-href="#Preparation" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -43,7 +45,7 @@ title: 使用 Milvus 和 Gemini 构建 RAG
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Dependencies-and-Environment" class="common-anchor-header">依赖项与环境<button data-href="#Dependencies-and-Environment" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Dependencies-and-Environment" class="common-anchor-header">Dependencies and Environment<button data-href="#Dependencies-and-Environment" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -58,18 +60,18 @@ title: 使用 Milvus 和 Gemini 构建 RAG
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>首先，安装所需的包：</p>
+    </button></h3><p>First, install the required packages:</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">pip install --upgrade pymilvus milvus-lite google-genai requests tqdm</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>如果您使用的是 Google Colab，为了启用刚安装的依赖项，可能需要<strong>重启运行时</strong>（点击屏幕顶部的“Runtime”菜单，然后从下拉菜单中选择“Restart session”）。</p>
+<p>If you are using Google Colab, to enable dependencies just installed, you may need to <strong>restart the runtime</strong> (click on the “Runtime” menu at the top of the screen, and select “Restart session” from the dropdown menu).</p>
 </div>
-<p>您应先登录 Google AI Studio 平台，并将<a href="https://aistudio.google.com/apikey">API 密钥</a> <code translate="no">GEMINI_API_KEY</code> 设置为环境变量。</p>
+<p>You should first log in to the Google AI Studio platform and prepare the <a href="https://aistudio.google.com/apikey">api key</a> <code translate="no">GEMINI_API_KEY</code> as an environment variable.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> os
 
 os.environ[<span class="hljs-string">&quot;GEMINI_API_KEY&quot;</span>] = <span class="hljs-string">&quot;***********&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Prepare-the-data" class="common-anchor-header">准备数据<button data-href="#Prepare-the-data" class="anchor-icon" translate="no">
+<h3 id="Prepare-the-data" class="common-anchor-header">Prepare the data<button data-href="#Prepare-the-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -84,12 +86,12 @@ os.environ[<span class="hljs-string">&quot;GEMINI_API_KEY&quot;</span>] = <span 
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>我们将<a href="https://github.com/milvus-io/milvus-docs/releases/download/v2.4.6-preview/milvus_docs_2.4.x_en.zip">Milvus 文档 2.4.x</a>中的常见问题解答（FAQ）页面用作 RAG 中的私有知识，这是构建简单 RAG 管道的优质数据源。</p>
-<p>下载 zip 文件，并将文档解压到<code translate="no">milvus_docs</code> 文件夹中。</p>
+    </button></h3><p>We use the FAQ pages from the <a href="https://github.com/milvus-io/milvus-docs/releases/download/v2.4.6-preview/milvus_docs_2.4.x_en.zip">Milvus Documentation 2.4.x</a> as the private knowledge in our RAG, which is a good data source for a simple RAG pipeline.</p>
+<p>Download the zip file and extract documents to the folder <code translate="no">milvus_docs</code>.</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">wget https://github.com/milvus-io/milvus-docs/releases/download/v2.4.6-preview/milvus_docs_2.4.x_en.zip</span>
 <span class="hljs-meta prompt_">$ </span><span class="language-bash">unzip -q milvus_docs_2.4.x_en.zip -d milvus_docs</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>我们将从<code translate="no">milvus_docs/en/faq</code> 文件夹中加载所有 Markdown 文件。对于每个文档，我们仅使用“# ”来分隔文件中的内容，这可以大致划分出 Markdown 文件中各主要部分的内容。</p>
+<p>We load all markdown files from the folder <code translate="no">milvus_docs/en/faq</code>. For each document, we just simply use "# " to separate the content in the file, which can roughly separate the content of each main part of the markdown file.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> glob <span class="hljs-keyword">import</span> glob
 
 text_lines = []
@@ -100,7 +102,7 @@ text_lines = []
 
     text_lines += file_text.split(<span class="hljs-string">&quot;# &quot;</span>)
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Prepare-the-LLM-and-Embedding-Model" class="common-anchor-header">准备大语言模型（LLM）和Embeddings模型<button data-href="#Prepare-the-LLM-and-Embedding-Model" class="anchor-icon" translate="no">
+<h3 id="Prepare-the-LLM-and-Embedding-Model" class="common-anchor-header">Prepare the LLM and Embedding Model<button data-href="#Prepare-the-LLM-and-Embedding-Model" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -115,8 +117,8 @@ text_lines = []
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>我们将<code translate="no">gemini-2.5-flash</code> 作为 LLM，并将<code translate="no">gemini-embedding-2-preview</code> 作为嵌入模型。<code translate="no">gemini-embedding-2-preview</code> 是谷歌最新的多模态嵌入模型，通过 Matryoshka 表征学习（Matryoshka Representation Learning），支持文本、图像、视频、音频和 PDF 文档，并具有灵活的输出维度（128–3,072）。</p>
-<p>让我们尝试从该大语言模型（LLM）生成一条测试响应：</p>
+    </button></h3><p>We use the <code translate="no">gemini-2.5-flash</code> as LLM, and the <code translate="no">gemini-embedding-2-preview</code> as embedding model. <code translate="no">gemini-embedding-2-preview</code> is Google’s latest multimodal embedding model, supporting text, images, video, audio, and PDF documents with flexible output dimensions (128–3,072) via Matryoshka Representation Learning.</p>
+<p>Let’s try to generate a test response from the LLM:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> google <span class="hljs-keyword">import</span> genai
 
 client = genai.Client(api_key=os.environ[<span class="hljs-string">&quot;GEMINI_API_KEY&quot;</span>])
@@ -138,7 +140,7 @@ I'm designed to process and generate human-like text based on the vast amount of
 
 I don't have personal experiences, feelings, or consciousness. I'm a tool designed to be helpful and informative.
 </code></pre>
-<p>生成一个测试Embedding，并打印其维度及前几个元素。</p>
+<p>Generate a test embedding and print its dimension and first few elements.</p>
 <pre><code translate="no" class="language-python">test_embeddings = client.models.embed_content(
     model=<span class="hljs-string">&quot;gemini-embedding-2-preview&quot;</span>, contents=[<span class="hljs-string">&quot;This is a test1&quot;</span>, <span class="hljs-string">&quot;This is a test2&quot;</span>]
 )
@@ -150,7 +152,7 @@ embedding_dim = <span class="hljs-built_in">len</span>(test_embeddings.embedding
 <pre><code translate="no">3072
 [-0.016769307, 0.013630492, 0.020277105, 0.0035285393, 0.003968259, -0.013498845, 0.028525498, 0.025498547, -0.021553498, 0.015233516]
 </code></pre>
-<h2 id="Load-data-into-Milvus" class="common-anchor-header">将数据加载到 Milvus 中<button data-href="#Load-data-into-Milvus" class="anchor-icon" translate="no">
+<h2 id="Load-data-into-Milvus" class="common-anchor-header">Load data into Milvus<button data-href="#Load-data-into-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -165,7 +167,7 @@ embedding_dim = <span class="hljs-built_in">len</span>(test_embeddings.embedding
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Create-the-Collection" class="common-anchor-header">创建 Collection<button data-href="#Create-the-Collection" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Create-the-Collection" class="common-anchor-header">Create the Collection<button data-href="#Create-the-Collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -180,7 +182,7 @@ embedding_dim = <span class="hljs-built_in">len</span>(test_embeddings.embedding
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>让我们初始化 Milvus 客户端并设置我们的 Collection：</p>
+    </button></h3><p>Let’s initialize the Milvus client and set up our collection:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 milvus_client = MilvusClient(uri=<span class="hljs-string">&quot;./milvus_demo.db&quot;</span>)
@@ -188,19 +190,19 @@ milvus_client = MilvusClient(uri=<span class="hljs-string">&quot;./milvus_demo.d
 collection_name = <span class="hljs-string">&quot;my_rag_collection&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>关于<code translate="no">MilvusClient</code> 的参数：</p>
+<p>As for the argument of <code translate="no">MilvusClient</code>:</p>
 <ul>
-<li>将<code translate="no">uri</code> 设置为本地文件（例如<code translate="no">./milvus.db</code> ）是最便捷的方法，因为它会自动<a href="https://milvus.io/docs/milvus_lite.md">利用Milvus Lite将</a>所有数据存储在此文件中。</li>
-<li>如果您拥有海量数据，可以在<a href="https://milvus.io/docs/quickstart.md">Docker 或 Kubernetes</a> 上搭建性能更强的 Milvus 服务器。在此配置中，请将服务器 URI（例如<code translate="no">http://localhost:19530</code> ）作为您的<code translate="no">uri</code> 。</li>
-<li>若要使用<a href="https://zilliz.com/cloud">Zilliz Cloud</a>（Milvus 的全托管云服务），请调整<code translate="no">uri</code> 和<code translate="no">token</code> ，它们分别对应 Zilliz Cloud 中的<a href="https://docs.zilliz.com/docs/on-zilliz-cloud-console#free-cluster-details">公共端点和 API 密钥</a>。</li>
+<li>Setting the <code translate="no">uri</code> as a local file, e.g.<code translate="no">./milvus.db</code>, is the most convenient method, as it automatically utilizes <a href="https://milvus.io/docs/milvus_lite.md">Milvus Lite</a> to store all data in this file.</li>
+<li>If you have large scale of data, you can set up a more performant Milvus server on <a href="https://milvus.io/docs/quickstart.md">docker or kubernetes</a>. In this setup, please use the server uri, e.g.<code translate="no">http://localhost:19530</code>, as your <code translate="no">uri</code>.</li>
+<li>If you want to use <a href="https://zilliz.com/cloud">Zilliz Cloud</a>, the fully managed cloud service for Milvus, adjust the <code translate="no">uri</code> and <code translate="no">token</code>, which correspond to the <a href="https://docs.zilliz.com/docs/on-zilliz-cloud-console#free-cluster-details">Public Endpoint and Api key</a> in Zilliz Cloud.</li>
 </ul>
 </div>
-<p>检查 Collection 是否已存在，若已存在则将其删除。</p>
+<p>Check if the collection already exists and drop it if it does.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">if</span> milvus_client.has_collection(collection_name):
     milvus_client.drop_collection(collection_name)
 <button class="copy-code-btn"></button></code></pre>
-<p>使用指定的参数创建一个新的Collection。</p>
-<p>如果未指定任何字段信息，Milvus 将自动创建一个默认的<code translate="no">id</code> 字段作为主键，并创建一个<code translate="no">vector</code> 字段来存储向量数据。一个保留的 JSON 字段用于存储非 Schema 定义的字段及其值。</p>
+<p>Create a new collection with specified parameters.</p>
+<p>If we don’t specify any field information, Milvus will automatically create a default <code translate="no">id</code> field for primary key, and a <code translate="no">vector</code> field to store the vector data. A reserved JSON field is used to store non-schema-defined fields and their values.</p>
 <pre><code translate="no" class="language-python">milvus_client.create_collection(
     collection_name=collection_name,
     dimension=embedding_dim,
@@ -209,7 +211,7 @@ collection_name = <span class="hljs-string">&quot;my_rag_collection&quot;</span>
     <span class="hljs-comment"># consistency_level=&quot;Strong&quot;,  # Strong consistency level</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Insert-data" class="common-anchor-header">插入数据<button data-href="#Insert-data" class="anchor-icon" translate="no">
+<h3 id="Insert-data" class="common-anchor-header">Insert data<button data-href="#Insert-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -224,8 +226,8 @@ collection_name = <span class="hljs-string">&quot;my_rag_collection&quot;</span>
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>遍历文本行，创建Embeddings，然后将数据插入 Milvus。</p>
-<p>这里有一个新的字段<code translate="no">text</code> ，它是 Collection Schema 中未定义的字段。它将被自动添加到预留的 JSON Dynamic Field 中，从高层次来看，该字段可被视为普通字段。</p>
+    </button></h3><p>Iterate through the text lines, create embeddings, and then insert the data into Milvus.</p>
+<p>Here is a new field <code translate="no">text</code>, which is a non-defined field in the collection schema. It will be automatically added to the reserved JSON dynamic field, which can be treated as a normal field at a high level.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> tqdm <span class="hljs-keyword">import</span> tqdm
 
 data = []
@@ -245,7 +247,7 @@ milvus_client.insert(collection_name=collection_name, data=data)
 
 {'insert_count': 72, 'ids': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71], 'cost': 0}
 </code></pre>
-<h2 id="Build-RAG" class="common-anchor-header">构建 RAG<button data-href="#Build-RAG" class="anchor-icon" translate="no">
+<h2 id="Build-RAG" class="common-anchor-header">Build RAG<button data-href="#Build-RAG" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -260,7 +262,7 @@ milvus_client.insert(collection_name=collection_name, data=data)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Retrieve-data-for-a-query" class="common-anchor-header">检索查询数据<button data-href="#Retrieve-data-for-a-query" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Retrieve-data-for-a-query" class="common-anchor-header">Retrieve data for a query<button data-href="#Retrieve-data-for-a-query" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -275,10 +277,10 @@ milvus_client.insert(collection_name=collection_name, data=data)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>让我们指定一个关于 Milvus 的常见问题。</p>
+    </button></h3><p>Let’s specify a frequent question about Milvus.</p>
 <pre><code translate="no" class="language-python">question = <span class="hljs-string">&quot;How is data stored in milvus?&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>在Collection中搜索该问题，并检索语义匹配度最高的三个结果。</p>
+<p>Search for the question in the collection and retrieve the semantic top-3 matches.</p>
 <pre><code translate="no" class="language-python">quest_embed = client.models.embed_content(model=<span class="hljs-string">&quot;gemini-embedding-2-preview&quot;</span>, contents=question)
 
 search_res = milvus_client.search(
@@ -289,7 +291,7 @@ search_res = milvus_client.search(
     output_fields=[<span class="hljs-string">&quot;text&quot;</span>],  <span class="hljs-comment"># Return the text field</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>让我们来看看该查询的搜索结果</p>
+<p>Let’s take a look at the search results of the query</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> json
 
 retrieved_lines_with_distances = [
@@ -312,7 +314,7 @@ retrieved_lines_with_distances = [
     ]
 ]
 </code></pre>
-<h3 id="Use-LLM-to-get-a-RAG-response" class="common-anchor-header">使用 LLM 生成 RAG 响应<button data-href="#Use-LLM-to-get-a-RAG-response" class="anchor-icon" translate="no">
+<h3 id="Use-LLM-to-get-a-RAG-response" class="common-anchor-header">Use LLM to get a RAG response<button data-href="#Use-LLM-to-get-a-RAG-response" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -327,12 +329,12 @@ retrieved_lines_with_distances = [
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>将检索到的文档转换为字符串格式。</p>
+    </button></h3><p>Convert the retrieved documents into a string format.</p>
 <pre><code translate="no" class="language-python">context = <span class="hljs-string">&quot;\n&quot;</span>.join(
     [line_with_distance[<span class="hljs-number">0</span>] <span class="hljs-keyword">for</span> line_with_distance <span class="hljs-keyword">in</span> retrieved_lines_with_distances]
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>为语言模型定义系统提示和用户提示。该提示由从Milvus检索到的文档组合而成。</p>
+<p>Define system and user prompts for the Language Model. This prompt is assembled with the retrieved documents from Milvus.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> google.genai <span class="hljs-keyword">import</span> types
 
 SYSTEM_PROMPT = <span class="hljs-string">&quot;&quot;&quot;
@@ -348,7 +350,7 @@ Use the following pieces of information enclosed in &lt;context&gt; tags to prov
 &lt;/question&gt;
 &quot;&quot;&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>使用 Gemini 根据提示生成回复。</p>
+<p>Use Gemini to generate a response based on the prompts.</p>
 <pre><code translate="no" class="language-python">response = client.models.generate_content(
     model=<span class="hljs-string">&quot;gemini-2.5-flash&quot;</span>,
     config=types.GenerateContentConfig(system_instruction=SYSTEM_PROMPT),
@@ -361,7 +363,7 @@ Use the following pieces of information enclosed in &lt;context&gt; tags to prov
 1.  **Inserted Data:** This includes vector data, scalar data, and collection-specific schema. This type of data is stored in persistent storage as an incremental log. Milvus supports various object storage backends for this, such as MinIO, AWS S3, Google Cloud Storage (GCS), Azure Blob Storage, Alibaba Cloud OSS, and Tencent Cloud Object Storage (COS).
 2.  **Metadata:** Metadata is generated within Milvus by its various modules. Each module's metadata is stored in etcd.
 </code></pre>
-<h2 id="Multimodal-Search" class="common-anchor-header">多模态搜索<button data-href="#Multimodal-Search" class="anchor-icon" translate="no">
+<h2 id="Multimodal-Search" class="common-anchor-header">Multimodal Search<button data-href="#Multimodal-Search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -376,8 +378,8 @@ Use the following pieces of information enclosed in &lt;context&gt; tags to prov
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>由于<code translate="no">gemini-embedding-2-preview</code> 将文本、图像和其他模态映射到同一嵌入空间中，因此我们可以进行跨模态搜索——例如，使用文本查询来查找最相关的图像。</p>
-<h3 id="Prepare-image-data" class="common-anchor-header">准备图像数据<button data-href="#Prepare-image-data" class="anchor-icon" translate="no">
+    </button></h2><p>Since <code translate="no">gemini-embedding-2-preview</code> maps text, images, and other modalities into the same embedding space, we can perform cross-modal search — for example, using a text query to find the most relevant images.</p>
+<h3 id="Prepare-image-data" class="common-anchor-header">Prepare image data<button data-href="#Prepare-image-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -392,7 +394,7 @@ Use the following pieces of information enclosed in &lt;context&gt; tags to prov
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>我们从Milvus Bootcamp代码库下载了一组RAG架构图，作为我们的图像数据集。</p>
+    </button></h3><p>We download a set of RAG architecture diagrams from the Milvus Bootcamp repository to use as our image dataset.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> urllib.request
 <span class="hljs-keyword">from</span> pathlib <span class="hljs-keyword">import</span> Path
 
@@ -429,7 +431,7 @@ Downloaded hierarchical_index.png
 
 Total images: 6
 </code></pre>
-<h3 id="Embed-images-and-store-in-Milvus" class="common-anchor-header">对图像进行嵌入并存储在 Milvus 中<button data-href="#Embed-images-and-store-in-Milvus" class="anchor-icon" translate="no">
+<h3 id="Embed-images-and-store-in-Milvus" class="common-anchor-header">Embed images and store in Milvus<button data-href="#Embed-images-and-store-in-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -444,7 +446,7 @@ Total images: 6
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>我们将每张图像作为字节流读取，并将其传递给<code translate="no">gemini-embedding-2-preview</code> 生成Embeddings，随后将其存储在新的Milvus Collection中。</p>
+    </button></h3><p>We read each image as bytes and pass it to <code translate="no">gemini-embedding-2-preview</code> to generate embeddings, then store them in a new Milvus collection.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> google.genai <span class="hljs-keyword">import</span> types
 
 image_data = []
@@ -490,7 +492,7 @@ Embedded hierarchical_index.png
 
 Inserted 6 image embeddings (dim=3072)
 </code></pre>
-<h3 id="Cross-modal-search-Text-query-→-Image-results" class="common-anchor-header">跨模态搜索：文本查询 → 图像结果<button data-href="#Cross-modal-search-Text-query-→-Image-results" class="anchor-icon" translate="no">
+<h3 id="Cross-modal-search-Text-query-→-Image-results" class="common-anchor-header">Cross-modal search: Text query → Image results<button data-href="#Cross-modal-search-Text-query-→-Image-results" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -505,7 +507,7 @@ Inserted 6 image embeddings (dim=3072)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>现在，让我们使用文本查询在图像Embeddings中进行搜索。由于文本和图像都被映射到同一个Embeddings空间中，因此我们可以直接进行比较。</p>
+    </button></h3><p>Now let’s use a text query to search across image embeddings. Since both text and images are mapped into the same embedding space, we can directly compare them.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> IPython.display <span class="hljs-keyword">import</span> display, Image
 
 text_queries = [
@@ -535,28 +537,28 @@ text_queries = [
 <pre><code translate="no">Query: How does a basic RAG pipeline work?
 Match: vanilla_rag.png (score: 0.5132)
 </code></pre>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/advanced_rag/vanilla_rag.png" alt="Vanilla RAG Pipeline" class="doc-image" id="vanilla-rag-pipeline" /> 
-   <span>基础 RAG 管道</span>
-  
- </span></p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/advanced_rag/vanilla_rag.png" alt="Vanilla RAG Pipeline" class="doc-image" id="vanilla-rag-pipeline" />
+    <span>Vanilla RAG Pipeline</span>
+  </span>
+</p>
 <pre><code translate="no">Query: What is the hypothetical document embedding approach?
 Match: hyde.png (score: 0.4756)
 </code></pre>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/advanced_rag/hyde.png" alt="HyDE" class="doc-image" id="hyde" /> 
-   <span>HyDE</span>
-  
- </span></p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/advanced_rag/hyde.png" alt="HyDE" class="doc-image" id="hyde" />
+    <span>HyDE</span>
+  </span>
+</p>
 <pre><code translate="no">Query: How to combine hybrid search with reranking?
 Match: hybrid_and_rerank.png (score: 0.5271)
 </code></pre>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/advanced_rag/hybrid_and_rerank.png" alt="Hybrid Retrieval and Reranking" class="doc-image" id="hybrid-retrieval-and-reranking" /> 
-   <span>混合检索与重新排序</span>
-  
- </span></p>
-<p>太棒了！我们已成功利用Milvus和Gemini构建了一个RAG管道，并演示了通过文本查询检索相关图像的跨模态搜索——这一切都得益于<code translate="no">gemini-embedding-2-preview</code> 提供的统一Embeddings空间。</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/advanced_rag/hybrid_and_rerank.png" alt="Hybrid Retrieval and Reranking" class="doc-image" id="hybrid-retrieval-and-reranking" />
+    <span>Hybrid Retrieval and Reranking</span>
+  </span>
+</p>
+<p>Great! We have successfully built a RAG pipeline with Milvus and Gemini, and demonstrated cross-modal search using text queries to retrieve relevant images — all powered by the unified embedding space of <code translate="no">gemini-embedding-2-preview</code>.</p>

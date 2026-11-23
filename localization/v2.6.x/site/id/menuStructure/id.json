@@ -1,36 +1,36 @@
 [
   {
-    "label": "Tentang Milvus",
+    "label": "About Milvus",
     "id": "about",
     "isMenu": true,
     "order": 0,
     "children": [
       {
-        "label": "Apa itu Milvus?",
+        "label": "What is Milvus",
         "id": "overview.md",
         "order": 0,
         "children": []
       },
       {
-        "label": "Pengguna Milvus",
+        "label": "Milvus Adopters",
         "id": "milvus_adopters.md",
         "order": 1,
         "children": []
       },
       {
-        "label": "Peta Jalan Milvus",
+        "label": "Milvus Roadmap",
         "id": "roadmap.md",
         "order": 2,
         "children": []
       },
       {
-        "label": "Rilis",
+        "label": "Releases",
         "id": "release_notes.md",
         "order": 3,
         "children": []
       },
       {
-        "label": "Perbandingan",
+        "label": "Comparison",
         "id": "comparison.md",
         "order": 5,
         "children": []
@@ -38,43 +38,43 @@
     ]
   },
   {
-    "label": "Mulailah",
+    "label": "Get Started",
     "id": "getstarted",
     "isMenu": true,
     "order": 1,
     "children": [
       {
-        "label": "Panduan Cepat",
+        "label": "Quickstart",
         "id": "quickstart.md",
         "order": 0,
         "children": []
       },
       {
-        "label": "Instal Milvus",
+        "label": "Install Milvus",
         "id": "install_milvus",
         "order": 1,
         "isMenu": true,
         "children": [
           {
-            "label": "Gambaran Umum",
+            "label": "Overview",
             "id": "install-overview.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "Jalankan Milvus Lite",
+            "label": "Run Milvus Lite",
             "id": "milvus_lite.md",
             "order": 1,
             "children": []
           },
           {
-            "label": "Jalankan Milvus dalam Mode Mandiri",
+            "label": "Run Milvus Standalone",
             "id": "run_milvus_docker",
             "order": 2,
             "isMenu": true,
             "children": [
               {
-                "label": "Persyaratan",
+                "label": "Requirements",
                 "id": "prerequisite-docker.md",
                 "order": 0,
                 "children": []
@@ -106,25 +106,25 @@
             ]
           },
           {
-            "label": "Jalankan Milvus Distributed",
+            "label": "Run Milvus Distributed",
             "id": "run_milvus_k8s",
             "order": 3,
             "isMenu": true,
             "children": [
               {
-                "label": "Persyaratan",
+                "label": "Requirements",
                 "id": "prerequisite-helm.md",
                 "order": 0,
                 "children": []
               },
               {
-                "label": "Operator Milvus",
+                "label": "Milvus Operator",
                 "id": "install_cluster-milvusoperator.md",
                 "order": 1,
                 "children": []
               },
               {
-                "label": "Peta Helm",
+                "label": "Helm Chart",
                 "id": "install_cluster-helm.md",
                 "order": 2,
                 "children": []
@@ -132,19 +132,19 @@
             ]
           },
           {
-            "label": "Jalankan Milvus dengan GPU",
+            "label": "Run Milvus with GPU",
             "id": "run_milvus_gpu",
             "order": 4,
             "isMenu": true,
             "children": [
               {
-                "label": "Persyaratan",
+                "label": "Requirements",
                 "id": "prerequisite-gpu.md",
                 "order": 0,
                 "children": []
               },
               {
-                "label": "Peta Helm",
+                "label": "Helm Chart",
                 "id": "install_cluster-helm-gpu.md",
                 "order": 1,
                 "children": []
@@ -160,7 +160,7 @@
         ]
       },
       {
-        "label": "Instal SDK",
+        "label": "Install SDKs",
         "id": "install_sdks",
         "order": 2,
         "children": [
@@ -183,7 +183,7 @@
             "children": []
           },
           {
-            "label": "SDK Node.js",
+            "label": "Node.js SDK",
             "id": "install-node.md",
             "order": 3,
             "children": []
@@ -191,7 +191,7 @@
         ]
       },
       {
-        "label": "Terhubung ke Server Milvus",
+        "label": "Connect to Milvus Server",
         "id": "connect-to-milvus-server.md",
         "order": 3,
         "children": []
@@ -199,43 +199,43 @@
     ]
   },
   {
-    "label": "Konsep",
+    "label": "Concepts",
     "id": "concepts",
     "isMenu": true,
     "order": 2,
     "children": [
       {
-        "label": "Arsitektur",
+        "label": "Architecture",
         "id": "architecture",
         "order": 0,
         "isMenu": true,
         "children": [
           {
-            "label": "Gambaran Umum",
+            "label": "Overview",
             "id": "architecture_overview.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "Komponen Utama",
+            "label": "Main Components",
             "id": "main_components.md",
             "order": 1,
             "children": []
           },
           {
-            "label": "Layanan Streaming",
+            "label": "Streaming Service",
             "id": "streaming_service.md",
             "order": 2,
             "children": []
           },
           {
-            "label": "Pemrosesan Data",
+            "label": "Data Processing",
             "id": "data_processing.md",
             "order": 3,
             "children": []
           },
           {
-            "label": "Burung pelatuk",
+            "label": "Woodpecker",
             "id": "woodpecker_architecture.md",
             "order": 4,
             "children": []
@@ -255,37 +255,37 @@
         "children": []
       },
       {
-        "label": "Multi-penyewa",
+        "label": "Multi-tenancy",
         "id": "multi_tenancy.md",
         "order": 3,
         "children": []
       },
       {
-        "label": "Cap waktu",
+        "label": "Timestamp",
         "id": "timestamp.md",
         "order": 4,
         "children": []
       },
       {
-        "label": "Sinkronisasi Waktu",
+        "label": "Time Synchronization",
         "id": "time_sync.md",
         "order": 6,
         "children": []
       },
       {
-        "label": "Jenis Satuan Metrik",
+        "label": "Metric Types",
         "id": "metric.md",
         "order": 7,
         "children": []
       },
       {
-        "label": "Replika dalam Memori",
+        "label": "In-memory Replica",
         "id": "replica.md",
         "order": 8,
         "children": []
       },
       {
-        "label": "Istilah-istilah",
+        "label": "Terminology",
         "id": "glossary.md",
         "order": 9,
         "children": []
@@ -293,78 +293,78 @@
     ]
   },
   {
-    "label": "Panduan Pengguna",
+    "label": "User Guide",
     "id": "userguide",
     "isMenu": true,
     "order": 3,
     "children": [
       {
-        "label": "Basis Data",
+        "label": "Database",
         "id": "manage_databases.md",
         "order": 0,
         "children": []
       },
       {
-        "label": "Koleksi",
+        "label": "Collections",
         "id": "collections",
         "order": 1,
         "children": [
           {
-            "label": "Penjelasan Mengenai Koleksi",
+            "label": "Collection Explained",
             "id": "manage-collections.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "Buat Koleksi",
+            "label": "Create Collection",
             "id": "create-collection.md",
             "order": 1,
             "children": []
           },
           {
-            "label": "Lihat Koleksi",
+            "label": "View Collections",
             "id": "view-collections.md",
             "order": 3,
             "children": []
           },
           {
-            "label": "Ubah Koleksi",
+            "label": "Modify Collection",
             "id": "modify-collection.md",
             "order": 4,
             "children": []
           },
           {
-            "label": "Muat &amp; Lepaskan",
+            "label": "Load & Release",
             "id": "load-and-release.md",
             "order": 5,
             "children": []
           },
           {
-            "label": "Waktu Hidup Koleksi Set (TTL)",
+            "label": "Set Collection TTL",
             "id": "set-collection-ttl.md",
             "order": 6,
             "children": []
           },
           {
-            "label": "Tetapkan Tingkat Konsistensi",
+            "label": "Set Consistency Level",
             "id": "tune_consistency.md",
             "order": 7,
             "children": []
           },
           {
-            "label": "Mengelola Partisi",
+            "label": "Manage Partitions",
             "id": "manage-partitions.md",
             "order": 8,
             "children": []
           },
           {
-            "label": "Kelola Alias",
+            "label": "Manage Aliases",
             "id": "manage-aliases.md",
             "order": 9,
             "children": []
           },
           {
-            "label": "Pengambilan Barang",
+            "label": "Drop Collection",
             "id": "drop-collection.md",
             "order": 10,
             "children": []
@@ -372,71 +372,71 @@
         ]
       },
       {
-        "label": "Skema &amp; Bidang Data",
+        "label": "Schema & Data Fields",
         "id": "schema",
         "order": 2,
         "children": [
           {
-            "label": "Penjelasan Skema",
+            "label": "Schema Explained",
             "id": "schema.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "Kolom Utama &amp; AutoID",
+            "label": "Primary Field & AutoID",
             "id": "primary-field.md",
             "order": 1,
             "children": []
           },
           {
-            "label": "Vektor Padat",
+            "label": "Dense Vector",
             "id": "dense-vector.md",
             "order": 2,
             "children": []
           },
           {
-            "label": "Vektor Biner",
+            "label": "Binary Vector",
             "id": "binary-vector.md",
             "order": 3,
             "children": []
           },
           {
-            "label": "Vektor Jarang",
+            "label": "Sparse Vector",
             "id": "sparse_vector.md",
             "order": 4,
             "children": []
           },
           {
-            "label": "Kolom Teks",
+            "label": "String Field",
             "id": "string.md",
             "order": 5,
             "children": []
           },
           {
-            "label": "Kolom Angka",
+            "label": "Number Field",
             "id": "number.md",
             "order": 6,
             "children": []
           },
           {
-            "label": "Kolom JSON",
+            "label": "JSON Field",
             "id": "json-field",
             "order": 7,
             "children": [
               {
-                "label": "Gambaran Umum Bidang JSON",
+                "label": "JSON Field Overview",
                 "id": "json-field-overview.md",
                 "order": 0,
                 "children": []
               },
               {
-                "label": "Pengindeksan JSON",
+                "label": "JSON Indexing",
                 "id": "json-indexing.md",
                 "order": 1,
                 "children": []
               },
               {
-                "label": "Pemecahan JSON",
+                "label": "JSON Shredding",
                 "id": "json-shredding.md",
                 "order": 2,
                 "children": []
@@ -444,77 +444,77 @@
             ]
           },
           {
-            "label": "Bidang Array",
+            "label": "Array Field",
             "id": "array_data_type.md",
             "order": 8,
             "children": []
           },
           {
-            "label": "Array Struktur",
+            "label": "Array of Structs",
             "id": "array-of-structs.md",
             "order": 9,
             "children": []
           },
           {
-            "label": "Bidang Geometri",
+            "label": "Geometry Field",
             "id": "geometry-field.md",
             "order": 10,
             "children": []
           },
           {
-            "label": "Kolom TIMESTAMPTZ",
+            "label": "TIMESTAMPTZ Field",
             "id": "timestamptz-field.md",
             "order": 11,
             "children": []
           },
           {
-            "label": "Bidang Dinamis",
+            "label": "Dynamic Field",
             "id": "enable-dynamic-field.md",
             "order": 12,
             "children": []
           },
           {
-            "label": "Kolom yang Dapat Bernilai Nol",
+            "label": "Nullable Fields",
             "id": "nullable-and-default.md",
             "order": 13,
             "children": []
           },
           {
-            "label": "Nilai Default",
+            "label": "Default Values",
             "id": "default-values.md",
             "order": 14,
             "children": []
           },
           {
-            "label": "Alat Analisis",
+            "label": "Analyzer",
             "id": "analyzer",
             "order": 15,
             "children": [
               {
-                "label": "Gambaran Umum Alat Analisis",
+                "label": "Analyzer Overview",
                 "id": "analyzer-overview.md",
                 "order": 0,
                 "children": []
               },
               {
-                "label": "Alat Analisis Terintegrasi",
+                "label": "Built-in Analyzers",
                 "id": "built-in-analyzers",
                 "order": 1,
                 "children": [
                   {
-                    "label": "Standar",
+                    "label": "Standard",
                     "id": "standard-analyzer.md",
                     "order": 0,
                     "children": []
                   },
                   {
-                    "label": "Bahasa Inggris",
+                    "label": "English",
                     "id": "english-analyzer.md",
                     "order": 1,
                     "children": []
                   },
                   {
-                    "label": "Bahasa Mandarin",
+                    "label": "Chinese",
                     "id": "chinese-analyzer.md",
                     "order": 2,
                     "children": []
@@ -522,18 +522,18 @@
                 ]
               },
               {
-                "label": "Tokenizer",
+                "label": "Tokenizers",
                 "id": "tokenizers",
                 "order": 2,
                 "children": [
                   {
-                    "label": "Standar",
+                    "label": "Standard",
                     "id": "standard-tokenizer.md",
                     "order": 0,
                     "children": []
                   },
                   {
-                    "label": "Spasi kosong",
+                    "label": "Whitespace",
                     "id": "whitespace-tokenizer.md",
                     "order": 1,
                     "children": []
@@ -557,7 +557,7 @@
                     "children": []
                   },
                   {
-                    "label": "Pengidentifikasi Bahasa",
+                    "label": "Language Identifier",
                     "id": "language-identifier.md",
                     "order": 5,
                     "children": []
@@ -565,24 +565,24 @@
                 ]
               },
               {
-                "label": "Filter",
+                "label": "Filters",
                 "id": "filters",
                 "order": 3,
                 "children": [
                   {
-                    "label": "Huruf kecil",
+                    "label": "Lowercase",
                     "id": "lowercase-filter.md",
                     "order": 0,
                     "children": []
                   },
                   {
-                    "label": "Penyusunan ASCII",
+                    "label": "ASCII Folding",
                     "id": "ascii-folding-filter.md",
                     "order": 1,
                     "children": []
                   },
                   {
-                    "label": "Hanya huruf dan angka",
+                    "label": "Alphanumonly",
                     "id": "alphanumonly-filter.md",
                     "order": 2,
                     "children": []
@@ -600,19 +600,19 @@
                     "children": []
                   },
                   {
-                    "label": "Panjang",
+                    "label": "Length",
                     "id": "length-filter.md",
                     "order": 5,
                     "children": []
                   },
                   {
-                    "label": "Berhenti",
+                    "label": "Stop",
                     "id": "stop-filter.md",
                     "order": 6,
                     "children": []
                   },
                   {
-                    "label": "Alat Pemisah Senyawa",
+                    "label": "Decompounder",
                     "id": "decompounder-filter.md",
                     "order": 7,
                     "children": []
@@ -624,7 +624,7 @@
                     "children": []
                   },
                   {
-                    "label": "Hapus Tanda Titik",
+                    "label": "Remove Punct",
                     "id": "removepunct-filter.md",
                     "order": 9,
                     "children": []
@@ -638,13 +638,13 @@
                 ]
               },
               {
-                "label": "Penganalisis Multibahasa",
+                "label": "Multi-language Analyzers",
                 "id": "multi-language-analyzers.md",
                 "order": 4,
                 "children": []
               },
               {
-                "label": "Pilih Alat Analisis yang Tepat untuk Kebutuhan Anda",
+                "label": "Choose the Right Analyzer for Your Use Case",
                 "id": "choose-the-right-analyzer-for-your-use-case.md",
                 "order": 5,
                 "children": []
@@ -652,31 +652,31 @@
             ]
           },
           {
-            "label": "Mengubah Bidang Koleksi",
+            "label": "Alter Collection Field",
             "id": "alter-collection-field.md",
             "order": 15,
             "children": []
           },
           {
-            "label": "Menambahkan Bidang ke Koleksi yang Sudah Ada",
+            "label": "Add Fields to an Existing Collection",
             "id": "add-fields-to-an-existing-collection.md",
             "order": 16,
             "children": []
           },
           {
-            "label": "Praktik Terbaik",
+            "label": "Best Practices",
             "id": "best-practices",
             "isMenu": true,
             "order": 17,
             "children": [
               {
-                "label": "Desain Model Data untuk Pencarian",
+                "label": "Data Model Design for Search",
                 "id": "schema-hands-on.md",
                 "order": 0,
                 "children": []
               },
               {
-                "label": "Desain Model Data dengan Array Struktur",
+                "label": "Data Model Design with an Array of Structs",
                 "id": "best-practices-for-array-of-structs.md",
                 "order": 1,
                 "children": []
@@ -686,24 +686,24 @@
         ]
       },
       {
-        "label": "Sisipkan &amp; Hapus",
+        "label": "Insert & Delete",
         "id": "insert-and-delete",
         "order": 3,
         "children": [
           {
-            "label": "Sisipkan Entitas",
+            "label": "Insert Entities",
             "id": "insert-update-delete.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "Entitas Upsert",
+            "label": "Upsert Entities",
             "id": "upsert-entities.md",
             "order": 1,
             "children": []
           },
           {
-            "label": "Hapus Entitas",
+            "label": "Delete Entities",
             "id": "delete-entities.md",
             "order": 2,
             "children": []
@@ -711,19 +711,19 @@
         ]
       },
       {
-        "label": "Indeks",
+        "label": "Indexes",
         "id": "manage_indexes",
         "order": 4,
         "isMenu": true,
         "children": [
           {
-            "label": "Penjelasan tentang Indeks",
+            "label": "Index Explained",
             "id": "index-explained.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "Indeks Vektor Mengambang",
+            "label": "Floating Vector Indexes",
             "id": "floating-vector-indexes",
             "order": 1,
             "isMenu": true,
@@ -803,7 +803,7 @@
             ]
           },
           {
-            "label": "Indeks Vektor Biner",
+            "label": "Binary Vector Indexes",
             "id": "binary-vector-indexes",
             "order": 2,
             "isMenu": true,
@@ -829,7 +829,7 @@
             ]
           },
           {
-            "label": "Indeks Vektor Jarang",
+            "label": "Sparse Vector Indexes",
             "id": "sparse-vector-indexes",
             "order": 3,
             "isMenu": true,
@@ -843,7 +843,7 @@
             ]
           },
           {
-            "label": "Indeks Skalar",
+            "label": "Scalar Indexes",
             "id": "scalar-indexes",
             "order": 4,
             "isMenu": true,
@@ -855,7 +855,7 @@
                 "children": []
               },
               {
-                "label": "TERBALIK",
+                "label": "INVERTED",
                 "id": "inverted.md",
                 "order": 1,
                 "children": []
@@ -881,12 +881,12 @@
             ]
           },
           {
-            "label": "Indeks yang Didukung GPU",
+            "label": "GPU-enabled Indexes",
             "id": "gpu-enabled-indexes",
             "order": 5,
             "children": [
               {
-                "label": "Gambaran Umum Indeks GPU",
+                "label": "GPU Index Overview",
                 "id": "gpu-index-overview.md",
                 "order": 0,
                 "children": []
@@ -920,102 +920,102 @@
         ]
       },
       {
-        "label": "Cari",
+        "label": "Search",
         "id": "search-rerank",
         "order": 5,
         "isMenu": true,
         "children": [
           {
-            "label": "Pencarian Jaringan Saraf Tiruan Dasar",
+            "label": "Basic ANN Search",
             "id": "single-vector-search.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "Pencarian dengan Filter",
+            "label": "Filtered Search",
             "id": "filtered-search.md",
             "order": 1,
             "children": []
           },
           {
-            "label": "Pencarian Rentang",
+            "label": "Range Search",
             "id": "range-search.md",
             "order": 2,
             "children": []
           },
           {
-            "label": "Pencarian Berbasis Kelompok",
+            "label": "Grouping Search",
             "id": "grouping-search.md",
             "order": 3,
             "children": []
           },
           {
-            "label": "Pencarian Kunci Utama",
+            "label": "Primary-Key Search",
             "id": "primary-key-search.md",
             "order": 4,
             "children": []
           },
           {
-            "label": "Pencarian Hibrida",
+            "label": "Hybrid Search",
             "id": "multi-vector-search.md",
             "order": 5,
             "children": []
           },
           {
-            "label": "Permintaan",
+            "label": "Query",
             "id": "get-and-scalar-query.md",
             "order": 6,
             "children": []
           },
           {
-            "label": "Penyaringan",
+            "label": "Filtering",
             "id": "filtering",
             "order": 7,
             "children": [
               {
-                "label": "Penjelasan tentang Penyaringan",
+                "label": "Filtering Explained",
                 "id": "boolean.md",
                 "order": 0,
                 "children": []
               },
               {
-                "label": "Operator Dasar",
+                "label": "Basic Operators",
                 "id": "basic-operators.md",
                 "order": 1,
                 "children": []
               },
               {
-                "label": "Penyaringan dan Pembuatan Template",
+                "label": "Filtering Templating",
                 "id": "filtering-templating.md",
                 "order": 2,
                 "children": []
               },
               {
-                "label": "Operator JSON",
+                "label": "JSON Operators",
                 "id": "json-operators.md",
                 "order": 3,
                 "children": []
               },
               {
-                "label": "Operator Array",
+                "label": "Array Operators",
                 "id": "array-operators.md",
                 "order": 4,
                 "children": []
               },
               {
-                "label": "Operator StructArray",
+                "label": "StructArray Operators",
                 "id": "struct-array-operators.md",
                 "order": 5,
                 "children": []
               },
               {
-                "label": "Pengambilan Sampel Acak",
+                "label": "Random Sampling",
                 "id": "random-sampling.md",
                 "order": 6,
                 "children": []
               },
               {
-                "label": "Operator Geometri",
+                "label": "Geometry Operators",
                 "id": "geometry-operators.md",
                 "order": 7,
                 "children": []
@@ -1023,49 +1023,49 @@
             ]
           },
           {
-            "label": "Pencarian Teks Lengkap",
+            "label": "Full Text Search",
             "id": "full-text-search.md",
             "order": 8,
             "children": []
           },
           {
-            "label": "Pencocokan Teks",
+            "label": "Text Match",
             "id": "keyword-match.md",
             "order": 9,
             "children": []
           },
           {
-            "label": "Penyorot Teks",
+            "label": "Text Highlighter",
             "id": "text-highlighter.md",
             "order": 10,
             "children": []
           },
           {
-            "label": "Pencocokan Frasa",
+            "label": "Phrase Match",
             "id": "phrase-match.md",
             "order": 11,
             "children": []
           },
           {
-            "label": "Pencarian dengan Daftar Embedding",
+            "label": "Search with Embedding Lists",
             "id": "search-with-embedding-lists.md",
             "order": 12,
             "children": []
           },
           {
-            "label": "Kueri Elasticsearch ke Milvus",
+            "label": "Elasticsearch Queries to Milvus",
             "id": "elasticsearch-queries-to-milvus.md",
             "order": 13,
             "children": []
           },
           {
-            "label": "Iterator Pencarian",
+            "label": "Search Iterators",
             "id": "with-iterators.md",
             "order": 14,
             "children": []
           },
           {
-            "label": "Gunakan Kunci Partisi",
+            "label": "Use Partition Key",
             "id": "use-partition-key.md",
             "order": 15,
             "children": []
@@ -1073,19 +1073,19 @@
         ]
       },
       {
-        "label": "Embedding &amp; Penilaian Ulang",
+        "label": "Embeddings & Reranking",
         "id": "embeddings-reranking",
         "order": 6,
         "isMenu": true,
         "children": [
           {
-            "label": "Fungsi Penyisipan",
+            "label": "Embedding Function",
             "id": "embedding-function",
             "order": 0,
             "isMenu": true,
             "children": [
               {
-                "label": "Gambaran Umum Fungsi Embedding",
+                "label": "Embedding Function Overview",
                 "id": "embedding-function-overview.md",
                 "order": 0,
                 "children": []
@@ -1109,7 +1109,7 @@
                 "children": []
               },
               {
-                "label": "Batuan dasar",
+                "label": "Bedrock",
                 "id": "bedrock.md",
                 "order": 4,
                 "children": []
@@ -1159,61 +1159,61 @@
             ]
           },
           {
-            "label": "Fungsi Penentuan Peringkat Ulang",
+            "label": "Reranking Function",
             "id": "reranking",
             "order": 1,
             "isMenu": true,
             "children": [
               {
-                "label": "Peringkat Berbobot",
+                "label": "Weighted Ranker",
                 "id": "weighted-ranker.md",
                 "order": 0,
                 "children": []
               },
               {
-                "label": "Peringkat RRF",
+                "label": "RRF Ranker",
                 "id": "rrf-ranker.md",
                 "order": 1,
                 "children": []
               },
               {
-                "label": "Peningkat Peringkat",
+                "label": "Boost Ranker",
                 "id": "boost-ranker.md",
                 "order": 2,
                 "children": []
               },
               {
-                "label": "Peringkat Kerusakan",
+                "label": "Decay Ranker",
                 "id": "decay-ranker",
                 "isMenu": true,
                 "order": 3,
                 "children": [
                   {
-                    "label": "Gambaran Umum Decay Ranker",
+                    "label": "Decay Ranker Overview",
                     "id": "decay-ranker-overview.md",
                     "order": 0,
                     "children": []
                   },
                   {
-                    "label": "Peluruhan Gauss",
+                    "label": "Gaussian Decay",
                     "id": "gaussian-decay.md",
                     "order": 1,
                     "children": []
                   },
                   {
-                    "label": "Peluruhan Eksponensial",
+                    "label": "Exponential Decay",
                     "id": "exponential-decay.md",
                     "order": 2,
                     "children": []
                   },
                   {
-                    "label": "Peluruhan Linear",
+                    "label": "Linear Decay",
                     "id": "linear-decay.md",
                     "order": 3,
                     "children": []
                   },
                   {
-                    "label": "Tutorial: Menerapkan Peringkat Berbasis Waktu di Milvus",
+                    "label": "Tutorial: Implement Time-based Ranking in Milvus",
                     "id": "tutorial-implement-a-time-based-ranking-in-milvus.md",
                     "order": 4,
                     "children": []
@@ -1221,13 +1221,13 @@
                 ]
               },
               {
-                "label": "Model Peringkat",
+                "label": "Model Ranker",
                 "id": "model-ranker",
                 "order": 4,
                 "isMenu": true,
                 "children": [
                   {
-                    "label": "Gambaran Umum Model Ranker",
+                    "label": "Model Ranker Overview",
                     "id": "model-ranker-overview.md",
                     "order": 0,
                     "children": []
@@ -1239,7 +1239,7 @@
                     "children": []
                   },
                   {
-                    "label": "Peringkat TEI",
+                    "label": "TEI Ranker",
                     "id": "tei-ranker.md",
                     "order": 2,
                     "children": []
@@ -1251,7 +1251,7 @@
                     "children": []
                   },
                   {
-                    "label": "Peringkat AI Voyage",
+                    "label": "Voyage AI Ranker",
                     "id": "voyage-ai-ranker.md",
                     "order": 4,
                     "children": []
@@ -1275,43 +1275,43 @@
         ]
       },
       {
-        "label": "Optimalisasi Penyimpanan",
+        "label": "Storage Optimization",
         "id": "storage_optimization",
         "order": 10,
         "isMenu": true,
         "children": [
           {
-            "label": "Gunakan mmap",
+            "label": "Use mmap",
             "id": "mmap.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "Pemadatan Berkelompok",
+            "label": "Clustering Compaction",
             "id": "clustering-compaction.md",
             "order": 1,
             "children": []
           },
           {
-            "label": "Penyimpanan Berjenjang",
+            "label": "Tiered Storage",
             "id": "tiered_storage",
             "order": 2,
             "isMenu": true,
             "children": [
               {
-                "label": "Gambaran Umum Penyimpanan Berjenjang",
+                "label": "Tiered Storage Overview",
                 "id": "tiered-storage-overview.md",
                 "order": 0,
                 "children": []
               },
               {
-                "label": "Pemanasan",
+                "label": "Warm Up",
                 "id": "warm-up.md",
                 "order": 1,
                 "children": []
               },
               {
-                "label": "Penggusuran",
+                "label": "Eviction",
                 "id": "eviction.md",
                 "order": 2,
                 "children": []
@@ -1323,19 +1323,19 @@
     ]
   },
   {
-    "label": "Impor Data",
+    "label": "Data Import",
     "id": "data_import",
     "order": 5,
     "isMenu": true,
     "children": [
       {
-        "label": "Siapkan Data Sumber",
+        "label": "Prepare Source Data",
         "id": "prepare-source-data.md",
         "order": 0,
         "children": []
       },
       {
-        "label": "Impor Data",
+        "label": "Import Data",
         "id": "import-data.md",
         "order": 1,
         "children": []
@@ -1343,55 +1343,55 @@
     ]
   },
   {
-    "label": "Alat AI",
+    "label": "AI Tools",
     "id": "aiTools",
     "order": 4,
     "isMenu": true,
     "children": [
       {
-        "label": "Milvus untuk Agen AI",
+        "label": "Milvus for AI Agents",
         "id": "milvus_for_agents.md",
         "order": 0,
         "children": []
       },
       {
-        "label": "Prompt AI",
+        "label": "AI Prompts",
         "id": "ai_prompts",
         "isMenu": true,
         "order": 1,
         "children": [
           {
-            "label": "AGENTS.md untuk Milvus",
+            "label": "AGENTS.md for Milvus",
             "id": "agents_overview.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "SDK Python",
+            "label": "Python SDK",
             "id": "python_sdk.md",
             "order": 1,
             "children": []
           },
           {
-            "label": "Desain Skema",
+            "label": "Schema Design",
             "id": "schema_design.md",
             "order": 2,
             "children": []
           },
           {
-            "label": "Pola Pencarian",
+            "label": "Search Patterns",
             "id": "search_patterns.md",
             "order": 3,
             "children": []
           },
           {
-            "label": "Pemilihan Indeks",
+            "label": "Index Selection",
             "id": "index_selection.md",
             "order": 4,
             "children": []
           },
           {
-            "label": "Pipa RAG",
+            "label": "RAG Pipeline",
             "id": "rag_pipeline.md",
             "order": 5,
             "children": []
@@ -1399,21 +1399,21 @@
         ]
       },
       {
-        "label": "Keterampilan Milvus",
+        "label": "Milvus Skill",
         "id": "milvus_skill",
         "order": 2,
         "externalLink": "https://github.com/zilliztech/milvus-skill",
         "children": []
       },
       {
-        "label": "Server Milvus MCP",
+        "label": "Milvus MCP Server",
         "id": "mcp_server_milvus",
         "order": 3,
         "externalLink": "https://github.com/zilliztech/mcp-server-milvus",
         "children": []
       },
       {
-        "label": "Server MCP untuk Kode Claude",
+        "label": "MCP Server for Claude Code",
         "id": "mcp_claude_context",
         "order": 4,
         "externalLink": "https://github.com/zilliztech/claude-context",
@@ -1422,43 +1422,43 @@
     ]
   },
   {
-    "label": "Panduan Administrasi",
+    "label": "Administration Guide",
     "id": "admin_guide",
     "isMenu": true,
     "order": 9,
     "children": [
       {
-        "label": "Penerapan",
+        "label": "Deployment",
         "id": "deployment",
         "order": 0,
         "isMenu": true,
         "children": [
           {
-            "label": "Di Lokasi",
+            "label": "On Premises",
             "id": "on_premises",
             "order": 0,
             "isMenu": true,
             "children": [
               {
-                "label": "Dengan Docker",
+                "label": "With Docker",
                 "id": "configure-docker.md",
                 "order": 0,
                 "children": []
               },
               {
-                "label": "Dengan Helm",
+                "label": "With Helm",
                 "id": "configure-helm.md",
                 "order": 1,
                 "children": []
               },
               {
-                "label": "Bersama Milvus Operator",
+                "label": "With Milvus Operator",
                 "id": "configure_operator.md",
                 "order": 2,
                 "children": []
               },
               {
-                "label": "Mengalokasikan Sumber Daya",
+                "label": "Allocate Resources",
                 "id": "allocate.md",
                 "order": 3,
                 "children": []
@@ -1466,37 +1466,37 @@
             ]
           },
           {
-            "label": "Di Atas Awan",
+            "label": "On Clouds",
             "id": "on_cloud",
             "order": 1,
             "isMenu": true,
             "children": [
               {
-                "label": "Melakukan Deploy di AWS",
+                "label": "Deploy on AWS",
                 "id": "eks.md",
                 "order": 1,
                 "children": []
               },
               {
-                "label": "Melakukan deployment di GCP",
+                "label": "Deploy on GCP",
                 "id": "gcp.md",
                 "order": 2,
                 "children": []
               },
               {
-                "label": "Lakukan penyebaran di Azure",
+                "label": "Deploy on Azure",
                 "id": "azure.md",
                 "order": 3,
                 "children": []
               },
               {
-                "label": "Lakukan deployment di OpenShift",
+                "label": "Deploy on OpenShift",
                 "id": "openshift.md",
                 "order": 4,
                 "children": []
               },
               {
-                "label": "Penyeimbangan Beban Lapisan-7",
+                "label": "Layer-7 Load Balacing",
                 "id": "layer-7-lb",
                 "order": 5,
                 "isMenu": true,
@@ -1522,7 +1522,7 @@
                 ]
               },
               {
-                "label": "Penyimpanan Awan",
+                "label": "Cloud Storage",
                 "id": "cloud-storage",
                 "order": 6,
                 "isMenu": true,
@@ -1552,43 +1552,43 @@
         ]
       },
       {
-        "label": "Konfigurasi",
+        "label": "Configuration",
         "id": "configuration",
         "order": 1,
         "isMenu": true,
         "children": [
           {
-            "label": "Konfigurasi Sistem",
+            "label": "System Configurations",
             "id": "system_configuration.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "Secara Langsung",
+            "label": "On the Fly",
             "id": "dynamic_config.md",
             "order": 1,
             "children": []
           },
           {
-            "label": "Membatasi Jumlah Koleksi",
+            "label": "Limit Collection Counts",
             "id": "limit_collection_counts.md",
             "order": 2,
             "children": []
           },
           {
-            "label": "Mengonfigurasi Cache Chunk",
+            "label": "Configure Chunk Cache",
             "id": "chunk_cache.md",
             "order": 3,
             "children": []
           },
           {
-            "label": "Koordinator HA",
+            "label": "Coordinator HA",
             "id": "coordinator_ha.md",
             "order": 4,
             "children": []
           },
           {
-            "label": "QueryNode Menggunakan Disk Lokal",
+            "label": "QueryNode Using Local Disk",
             "id": "configure-querynode-localdisk.md",
             "order": 5,
             "children": []
@@ -1596,31 +1596,31 @@
         ]
       },
       {
-        "label": "Mengelola Ketergantungan",
+        "label": "Manage Dependencies",
         "id": "manage_dependencies",
         "order": 2,
         "isMenu": true,
         "children": [
           {
-            "label": "Dengan Docker atau Helm",
+            "label": "With Docker or Helm",
             "id": "docker_helm_dependencies",
             "order": 0,
             "isMenu": true,
             "children": [
               {
-                "label": "Penyimpanan Objek",
+                "label": "Object Storage",
                 "id": "deploy_s3.md",
                 "order": 0,
                 "children": []
               },
               {
-                "label": "Penyimpanan Meta",
+                "label": "Meta Storage",
                 "id": "deploy_etcd.md",
                 "order": 1,
                 "children": []
               },
               {
-                "label": "Penyimpanan Pesan",
+                "label": "Message Storage",
                 "id": "deploy_pulsar.md",
                 "order": 2,
                 "children": []
@@ -1628,25 +1628,25 @@
             ]
           },
           {
-            "label": "Bersama Milvus Operator",
+            "label": "With Milvus Operator",
             "id": "milvus_operator_dependencies",
             "order": 1,
             "isMenu": true,
             "children": [
               {
-                "label": "Penyimpanan Objek",
+                "label": "Object Storage",
                 "id": "object_storage_operator.md",
                 "order": 0,
                 "children": []
               },
               {
-                "label": "Penyimpanan Meta",
+                "label": "Meta Storage",
                 "id": "meta_storage_operator.md",
                 "order": 1,
                 "children": []
               },
               {
-                "label": "Penyimpanan Pesan",
+                "label": "Message Storage",
                 "id": "message_storage_operator.md",
                 "order": 2,
                 "children": []
@@ -1654,19 +1654,19 @@
             ]
           },
           {
-            "label": "Gunakan Pulsar bersama Milvus",
+            "label": "Use Pulsar with Milvus",
             "id": "pulsar_dependencies",
             "order": 2,
             "isMenu": true,
             "children": [
               {
-                "label": "Lakukan pembaruan ke Pulsar v3",
+                "label": "Upgrade to Pulsar v3",
                 "id": "upgrade-pulsar-v3.md",
                 "order": 0,
                 "children": []
               },
               {
-                "label": "Terus Gunakan Pulsar v2",
+                "label": "Continue Using Pulsar v2",
                 "id": "use-pulsar-v2.md",
                 "order": 1,
                 "children": []
@@ -1676,31 +1676,31 @@
         ]
       },
       {
-        "label": "Penskalaan",
+        "label": "Scaling",
         "id": "scaling",
         "order": 4,
         "isMenu": true,
         "children": [
           {
-            "label": "Kelompok Skala",
+            "label": "Scale Cluster",
             "id": "scaleout.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "Skala Mandiri",
+            "label": "Scale Standalone",
             "id": "scale-standalone.md",
             "order": 1,
             "children": []
           },
           {
-            "label": "Skalabilitas dengan HPA",
+            "label": "Scale with HPA",
             "id": "hpa.md",
             "order": 2,
             "children": []
           },
           {
-            "label": "Ketergantungan Skala",
+            "label": "Scale Dependencies",
             "id": "scale-dependencies.md",
             "order": 3,
             "children": []
@@ -1708,18 +1708,18 @@
         ]
       },
       {
-        "label": "Peningkatan",
+        "label": "Upgrade",
         "id": "upgrade_milvus",
         "order": 7,
         "children": [
           {
-            "label": "Meningkatkan Kapasitas Kluster Milvus",
+            "label": "Upgrade Milvus Cluster",
             "id": "upgrade_milvus_cluster-operator.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "Memperbarui Milvus Standalone",
+            "label": "Upgrade Milvus Standalone",
             "id": "upgrade_milvus_standalone-operator.md",
             "order": 1,
             "children": []
@@ -1727,37 +1727,37 @@
         ]
       },
       {
-        "label": "Pemantauan, Peringatan, dan Catatan",
+        "label": "Monitoring, Alerts & Logs",
         "id": "monitor_alert_log",
         "order": 8,
         "isMenu": true,
         "children": [
           {
-            "label": "Pemantauan",
+            "label": "Monitoring",
             "id": "monitoring",
             "order": 0,
             "isMenu": true,
             "children": [
               {
-                "label": "Arsitektur",
+                "label": "Architecture",
                 "id": "monitor_overview.md",
                 "order": 0,
                 "children": []
               },
               {
-                "label": "Menerapkan Layanan Pemantauan",
+                "label": "Deploy Monitoring Services",
                 "id": "monitor.md",
                 "order": 1,
                 "children": []
               },
               {
-                "label": "Menampilkan Metrik",
+                "label": "Visualize Metrics",
                 "id": "visualize.md",
                 "order": 2,
                 "children": []
               },
               {
-                "label": "Dasbor Metrik Milvus",
+                "label": "Milvus Metrics Dashboard",
                 "id": "metrics_dashboard.md",
                 "order": 3,
                 "children": []
@@ -1765,13 +1765,13 @@
             ]
           },
           {
-            "label": "Pemberitahuan",
+            "label": "Alerts",
             "id": "alerts",
             "order": 1,
             "isMenu": true,
             "children": [
               {
-                "label": "Buat Peringatan",
+                "label": "Create an Alert",
                 "id": "alert.md",
                 "order": 0,
                 "children": []
@@ -1779,19 +1779,19 @@
             ]
           },
           {
-            "label": "Catatan",
+            "label": "Logs",
             "id": "logs",
             "order": 2,
             "isMenu": true,
             "children": [
               {
-                "label": "Mengonfigurasi Grafana Loki",
+                "label": "Configure Grafana Loki",
                 "id": "configure_grafana_loki.md",
                 "order": 0,
                 "children": []
               },
               {
-                "label": "Mengonfigurasi Log Akses",
+                "label": "Configure Access Logs",
                 "id": "configure_access_logs.md",
                 "order": 1,
                 "children": []
@@ -1799,7 +1799,7 @@
             ]
           },
           {
-            "label": "Jejak",
+            "label": "Trace",
             "id": "trace",
             "order": 3,
             "isMenu": true,
@@ -1815,12 +1815,12 @@
         ]
       },
       {
-        "label": "Kelompok Sumber Daya",
+        "label": "Resource Groups",
         "id": "resource_groups",
         "order": 9,
         "children": [
           {
-            "label": "Mengelola Kelompok Sumber Daya",
+            "label": "Manage Resource Groups",
             "id": "resource_group.md",
             "order": 0,
             "children": []
@@ -1828,55 +1828,55 @@
         ]
       },
       {
-        "label": "Keamanan",
+        "label": "Security",
         "id": "security",
         "order": 11,
         "isMenu": true,
         "children": [
           {
-            "label": "Aktifkan Otentikasi",
+            "label": "Enable Authentication",
             "id": "authenticate.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "Aktifkan RBAC",
+            "label": "Enable RBAC",
             "id": "rbac",
             "order": 1,
             "isMenu": true,
             "children": [
               {
-                "label": "Gambaran Umum RBAC",
+                "label": "RBAC Overview",
                 "id": "rbac.md",
                 "order": 0,
                 "children": []
               },
               {
-                "label": "Pengguna, Hak Akses, dan Peran",
+                "label": "Users, Privileges, and Roles",
                 "id": "users_and_roles.md",
                 "order": 1,
                 "children": []
               },
               {
-                "label": "Kelompok Privilege",
+                "label": "Privilege Group",
                 "id": "privilege_group.md",
                 "order": 2,
                 "children": []
               },
               {
-                "label": "Memberikan Hak Istimewa",
+                "label": "Grant Privileges",
                 "id": "grant_privileges.md",
                 "order": 3,
                 "children": []
               },
               {
-                "label": "Peran Pemberian Dana",
+                "label": "Grant Roles",
                 "id": "grant_roles.md",
                 "order": 4,
                 "children": []
               },
               {
-                "label": "Hapus Pengguna &amp; Peran",
+                "label": "Drop Users & Roles",
                 "id": "drop_users_roles.md",
                 "order": 5,
                 "children": []
@@ -1884,13 +1884,13 @@
             ]
           },
           {
-            "label": "Enkripsi Selama Pengiriman",
+            "label": "Encryption in Transit",
             "id": "tls.md",
             "order": 2,
             "children": []
           },
           {
-            "label": "Terhubung ke Kafka menggunakan SASL/SSL",
+            "label": "Connect to Kafka with SASL/SSL",
             "id": "connect_kafka_ssl.md",
             "order": 3,
             "children": []
@@ -1904,24 +1904,24 @@
         "children": []
       },
       {
-        "label": "Burung pelatuk",
+        "label": "Woodpecker",
         "id": "use-woodpecker.md",
         "order": 13,
         "children": []
       },
       {
-        "label": "Ubah Jenis MQ",
+        "label": "Switch MQ Type",
         "id": "switch_milvus_mq_type",
         "order": 14,
         "children": [
           {
-            "label": "Switch Kluster Milvus Tipe MQ",
+            "label": "Milvus Cluster switch MQ Type",
             "id": "switch_milvus_cluster_mq_type-operator.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "Sakelar Mandiri Milvus tipe MQ",
+            "label": "Milvus Standalone switch MQ type",
             "id": "switch_milvus_standalone_mq_type-operator.md",
             "order": 1,
             "children": []
@@ -1931,13 +1931,13 @@
     ]
   },
   {
-    "label": "Alat",
+    "label": "Tools",
     "id": "tools",
     "isMenu": true,
     "order": 6,
     "children": [
       {
-        "label": "Attu (Antarmuka Pengguna Milvus)",
+        "label": "Attu (Milvus GUI)",
         "id": "milvus_attu",
         "order": 0,
         "externalLink": "https://github.com/zilliztech/attu",
@@ -1949,49 +1949,49 @@
         "order": 1,
         "children": [
           {
-            "label": "Gambaran Umum",
+            "label": "Overview",
             "id": "milvus_backup_overview.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "Perintah",
+            "label": "Commands",
             "id": "milvus_backup_cli.md",
             "order": 1,
             "children": []
           },
           {
-            "label": "API RESTful",
+            "label": "RESTful API",
             "id": "milvus_backup_api.md",
             "order": 2,
             "children": []
           },
           {
-            "label": "Kasus-Kasus Umum",
+            "label": "Common Cases",
             "id": "common-cases",
             "order": 3,
             "isMenu": true,
             "children": [
               {
-                "label": "Pencadangan dan Pemulihan dalam Satu Instansi",
+                "label": "Backup and Restore in One Instance",
                 "id": "single-instance-backup-and-restore.md",
                 "order": 0,
                 "children": []
               },
               {
-                "label": "Migrasi Antar Instansi dalam Satu Bucket",
+                "label": "Migrate Between Instances in One Bucket",
                 "id": "shared-bucket-backup-and-restore.md",
                 "order": 1,
                 "children": []
               },
               {
-                "label": "Migrasi Antar-Instan di Lintas Bucket",
+                "label": "Migrate Between Instances Across Buckets",
                 "id": "cross-bucket-backup-and-restore.md",
                 "order": 2,
                 "children": []
               },
               {
-                "label": "Migrasi Antar-Instan di Berbagai Lingkungan S3",
+                "label": "Migrate Between Instances Across S3 Environments",
                 "id": "multi-storage-backup-and-restore.md",
                 "order": 3,
                 "children": []
@@ -2001,24 +2001,24 @@
         ]
       },
       {
-        "label": "Pengamat Burung",
+        "label": "Birdwatcher",
         "id": "birdwatcher",
         "order": 3,
         "children": [
           {
-            "label": "Gambaran Umum",
+            "label": "Overview",
             "id": "birdwatcher_overview.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "Panduan Pemasangan",
+            "label": "Install Guides",
             "id": "birdwatcher_install_guides.md",
             "order": 1,
             "children": []
           },
           {
-            "label": "Panduan Penggunaan",
+            "label": "Usage Guides",
             "id": "birdwatcher_usage_guides.md",
             "order": 2,
             "children": []
@@ -2031,19 +2031,19 @@
         "order": 2,
         "children": [
           {
-            "label": "Gambaran Umum",
+            "label": "Overview",
             "id": "milvus_cdc_overview.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "Menyiapkan Replikasi CDC",
+            "label": "Set Up CDC Replication",
             "id": "set_up_cdc_replication.md",
             "order": 1,
             "children": []
           },
           {
-            "label": "Peralihan",
+            "label": "Switchover",
             "id": "cdc_switchover.md",
             "order": 2,
             "children": []
@@ -2063,19 +2063,19 @@
         "isMenu": true,
         "children": [
           {
-            "label": "Gambaran Umum",
+            "label": "Overview",
             "id": "cli_overview.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "Pemasangan",
+            "label": "Installation",
             "id": "install_cli.md",
             "order": 1,
             "children": []
           },
           {
-            "label": "Perintah",
+            "label": "Commands",
             "id": "cli_commands.md",
             "order": 2,
             "children": []
@@ -2083,7 +2083,7 @@
         ]
       },
       {
-        "label": "Konektor Milvus",
+        "label": "Milvus Connectors",
         "id": "milvus_connectors",
         "order": 5,
         "isMenu": true,
@@ -2104,40 +2104,40 @@
         "children": []
       },
       {
-        "label": "Alat Penentuan Ukuran Milvus",
+        "label": "Milvus Sizing Tool",
         "id": "sizing",
         "order": 7,
         "externalLink": "https://milvus.io/tools/sizing/",
         "children": []
       },
       {
-        "label": "Klien PowerShell Milvus",
+        "label": "Powershell Milvus Client",
         "id": "milvus_powershell",
         "order": 8,
         "externalLink": "https://github.com/rrg92/ps-milvus/blob/main/docs/integrate_powershell.md",
         "children": []
       },
       {
-        "label": "Log Ekspor",
+        "label": "ExportLog",
         "id": "export-log",
         "order": 9,
         "externalLink": "https://github.com/milvus-io/milvus/tree/master/deployments/export-log",
         "children": []
       },
       {
-        "label": "Model",
+        "label": "Models",
         "id": "models",
         "isMenu": true,
         "order": 10,
         "children": [
           {
-            "label": "Embedding",
+            "label": "Embeddings",
             "id": "embeddings",
             "order": 0,
             "isMenu": true,
             "children": [
               {
-                "label": "Gambaran Umum",
+                "label": "Overview",
                 "id": "embeddings.md",
                 "order": 0,
                 "children": []
@@ -2149,7 +2149,7 @@
                 "children": []
               },
               {
-                "label": "Transformator Kalimat",
+                "label": "Sentence Transformers",
                 "id": "embed-with-sentence-transform.md",
                 "order": 2,
                 "children": []
@@ -2167,7 +2167,7 @@
                 "children": []
               },
               {
-                "label": "Perjalanan",
+                "label": "Voyage",
                 "id": "embed-with-voyage.md",
                 "order": 6,
                 "children": []
@@ -2185,7 +2185,7 @@
                 "children": []
               },
               {
-                "label": "Instruktur",
+                "label": "Instructor",
                 "id": "embed-with-instructor.md",
                 "order": 9,
                 "children": []
@@ -2223,13 +2223,13 @@
             ]
           },
           {
-            "label": "Para Pengubah Peringkat",
+            "label": "Rerankers",
             "id": "rerankers",
             "order": 1,
             "isMenu": true,
             "children": [
               {
-                "label": "Gambaran Umum",
+                "label": "Overview",
                 "id": "rerankers-overview.md",
                 "order": 0,
                 "children": []
@@ -2247,13 +2247,13 @@
                 "children": []
               },
               {
-                "label": "Enkoder Silang",
+                "label": "Cross Encoder",
                 "id": "rerankers-cross-encoder.md",
                 "order": 3,
                 "children": []
               },
               {
-                "label": "Perjalanan",
+                "label": "Voyage",
                 "id": "rerankers-voyage.md",
                 "order": 4,
                 "children": []
@@ -2277,19 +2277,19 @@
     ]
   },
   {
-    "label": "Integrasi",
+    "label": "Integrations",
     "id": "integrations",
     "isMenu": true,
     "order": 8,
     "children": [
       {
-        "label": "Gambaran Umum",
+        "label": "Overview",
         "id": "integrations_overview.md",
         "order": 0,
         "children": []
       },
       {
-        "label": "Orkestrasi",
+        "label": "Orchestration",
         "id": "orchestrate-with-milvus",
         "order": 3,
         "children": [
@@ -2299,13 +2299,13 @@
             "order": 0,
             "children": [
               {
-                "label": "Penggunaan Dasar",
+                "label": "Basic Usage",
                 "id": "basic_usage_langchain.md",
                 "order": 1,
                 "children": []
               },
               {
-                "label": "Penyisipan Teks",
+                "label": "Text Embedding",
                 "id": "langchain_milvus_dido.md",
                 "order": 2,
                 "children": []
@@ -2317,25 +2317,25 @@
                 "children": []
               },
               {
-                "label": "Pencarian Hibrida",
+                "label": "Hybrid Search",
                 "id": "milvus_hybrid_search_retriever.md",
                 "order": 4,
                 "children": []
               },
               {
-                "label": "Pencarian Teks Lengkap",
+                "label": "Full-text Search",
                 "id": "full_text_search_with_langchain.md",
                 "order": 5,
                 "children": []
               },
               {
-                "label": "Pencarian Asinkron",
+                "label": "Asynchronous Search",
                 "id": "langchain_milvus_async.md",
                 "order": 6,
                 "children": []
               },
               {
-                "label": "Agen RAG",
+                "label": "Agent RAG",
                 "id": "agentic_rag_with_milvus_and_langgraph.md",
                 "order": 7,
                 "children": []
@@ -2354,25 +2354,25 @@
                 "children": []
               },
               {
-                "label": "API Asinkron Milvus",
+                "label": "Milvus Async API",
                 "id": "llamaindex_milvus_async.md",
                 "order": 1,
                 "children": []
               },
               {
-                "label": "Pencarian Teks Lengkap",
+                "label": "Full-text Search",
                 "id": "llamaindex_milvus_full_text_search.md",
                 "order": 2,
                 "children": []
               },
               {
-                "label": "Pencarian Hibrida",
+                "label": "Hybrid Search",
                 "id": "llamaindex_milvus_hybrid_search.md",
                 "order": 3,
                 "children": []
               },
               {
-                "label": "Penyaringan Metadata",
+                "label": "Metadata Filtering",
                 "id": "llamaindex_milvus_metadata_filter.md",
                 "order": 4,
                 "children": []
@@ -2403,7 +2403,7 @@
                 "children": []
               },
               {
-                "label": "Pencarian Teks Lengkap",
+                "label": "Full-text Search",
                 "id": "full_text_search_with_milvus_and_haystack.md",
                 "order": 1,
                 "children": []
@@ -2467,7 +2467,7 @@
         ]
       },
       {
-        "label": "Agen",
+        "label": "Agents",
         "id": "integrate-agents",
         "order": 4,
         "children": [
@@ -2478,7 +2478,7 @@
             "children": []
           },
           {
-            "label": "Unta",
+            "label": "Camel",
             "id": "integrate_with_camel.md",
             "order": 1,
             "children": []
@@ -2510,12 +2510,12 @@
         ]
       },
       {
-        "label": "Evaluasi &amp; Kemampuan Pemantauan",
+        "label": "Evaluation & Observability",
         "id": "evaluation-observability",
         "order": 6,
         "children": [
           {
-            "label": "Raga",
+            "label": "Ragas",
             "id": "integrate_with_ragas.md",
             "order": 0,
             "children": []
@@ -2533,7 +2533,7 @@
             "children": []
           },
           {
-            "label": "Arize Phoenix",
+            "label": "Arize Pheonix",
             "id": "evaluation_with_phoenix.md",
             "order": 3,
             "children": []
@@ -2553,7 +2553,7 @@
         ]
       },
       {
-        "label": "Penerapan Model",
+        "label": "Embedding Models",
         "id": "integrate-embeddings-models",
         "order": 1,
         "children": [
@@ -2620,7 +2620,7 @@
         ]
       },
       {
-        "label": "LLM",
+        "label": "LLMs",
         "id": "integrate-llms",
         "order": 2,
         "children": [
@@ -2637,7 +2637,7 @@
             "children": []
           },
           {
-            "label": "Kembang api",
+            "label": "Fireworks",
             "id": "build_RAG_with_milvus_and_fireworks.md",
             "order": 2,
             "children": []
@@ -2675,12 +2675,12 @@
         ]
       },
       {
-        "label": "Rekayasa Pengetahuan",
+        "label": "Knowledge Engineering",
         "id": "knowledge-engineering",
         "order": 5,
         "children": [
           {
-            "label": "MengapaBagaimana",
+            "label": "WhyHow",
             "id": "integrate_with_whyhow.md",
             "order": 0,
             "children": []
@@ -2692,7 +2692,7 @@
             "children": []
           },
           {
-            "label": "Tabel Pengetahuan",
+            "label": "Knowledge Table",
             "id": "knowledge_table_with_milvus.md",
             "order": 2,
             "children": []
@@ -2712,7 +2712,7 @@
         ]
       },
       {
-        "label": "Sumber Data",
+        "label": "Data Sources",
         "id": "data-sources",
         "order": 7,
         "children": [
@@ -2735,13 +2735,13 @@
             "children": []
           },
           {
-            "label": "Tidak terstruktur",
+            "label": "Unstructured",
             "id": "rag_with_milvus_and_unstructured.md",
             "order": 3,
             "children": []
           },
           {
-            "label": "Masker PII",
+            "label": "PII Masker",
             "id": "RAG_with_pii_and_milvus.md",
             "order": 4,
             "children": []
@@ -2771,7 +2771,7 @@
             "children": []
           },
           {
-            "label": "Pesta",
+            "label": "Feast",
             "id": "build_RAG_with_milvus_and_feast.md",
             "order": 9,
             "children": []
@@ -2809,18 +2809,18 @@
         ]
       },
       {
-        "label": "Lain-lain",
+        "label": "Others",
         "id": "other-integrations",
         "order": 8,
         "children": [
           {
-            "label": "Bunga salju",
+            "label": "Snowflake",
             "id": "integrate_with_snowpark.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "Lengan",
+            "label": "Arm",
             "id": "build_rag_on_arm.md",
             "order": 1,
             "children": []
@@ -2830,163 +2830,163 @@
     ]
   },
   {
-    "label": "Tutorial",
+    "label": "Tutorials",
     "id": "tutorials",
     "isMenu": true,
     "order": 7,
     "children": [
       {
-        "label": "Gambaran Umum",
+        "label": "Overview",
         "id": "tutorials-overview.md",
         "order": 0,
         "children": []
       },
       {
-        "label": "Bangun RAG dengan Milvus",
+        "label": "Build RAG with Milvus",
         "id": "build-rag-with-milvus.md",
         "order": 1,
         "children": []
       },
       {
-        "label": "RAG Tingkat Lanjut",
+        "label": "Advanced RAG",
         "id": "how_to_enhance_your_rag.md",
         "order": 2,
         "children": []
       },
       {
-        "label": "Pencarian Teks Lengkap dengan Milvus",
+        "label": "Full-Text Search with Milvus",
         "id": "full_text_search_with_milvus.md",
         "order": 3,
         "children": []
       },
       {
-        "label": "Pencarian Hibrida dengan Milvus",
+        "label": "Hybrid Search with Milvus",
         "id": "hybrid_search_with_milvus.md",
         "order": 4,
         "children": []
       },
       {
-        "label": "Pencarian Gambar dengan Milvus",
+        "label": "Image Search with Milvus",
         "id": "image_similarity_search.md",
         "order": 5,
         "children": []
       },
       {
-        "label": "RAG Multimodal",
+        "label": "Multimodal RAG",
         "id": "multimodal_rag_with_milvus.md",
         "order": 6,
         "children": []
       },
       {
-        "label": "Membuat Grafik RAG dengan Milvus",
+        "label": "Graph RAG with Milvus",
         "id": "graph_rag_with_milvus.md",
         "order": 7,
         "children": []
       },
       {
-        "label": "Pencarian Berdasarkan Konteks",
+        "label": "Contextual Retrieval",
         "id": "contextual_retrieval_with_milvus.md",
         "order": 8,
         "children": []
       },
       {
-        "label": "Pengelompokan HDBSCAN",
+        "label": "HDBSCAN Clustering",
         "id": "hdbscan_clustering_with_milvus.md",
         "order": 9,
         "children": []
       },
       {
-        "label": "Gunakan ColBERT dan ColPali dengan Milvus",
+        "label": "Use ColBERT and ColPali with Milvus",
         "id": "search-with-embedding-lists",
         "order": 10,
         "externalLink": "https://milvus.io/docs/search-with-embedding-lists.md",
         "children": []
       },
       {
-        "label": "Visualisasi Vektor",
+        "label": "Vector Visualization",
         "id": "vector_visualization.md",
         "order": 11,
         "children": []
       },
       {
-        "label": "Rekomendasi Film",
+        "label": "Movie Recommendation",
         "id": "movie_recommendation_with_milvus.md",
         "order": 12,
         "children": []
       },
       {
-        "label": "Pencarian Funnel dengan Embedding Matryoshka",
+        "label": "Funnel Search with Matryoshka Embeddings",
         "id": "funnel_search_with_matryoshka.md",
         "order": 13,
         "children": []
       },
       {
-        "label": "Panduan Cepat Menggunakan Attu",
+        "label": "Quickstart with Attu",
         "id": "quickstart_with_attu.md",
         "order": 14,
         "children": []
       },
       {
-        "label": "Gunakan AsyncMilvusClient bersama asyncio",
+        "label": "Use AsyncMilvusClient with asyncio",
         "id": "use-async-milvus-client-with-asyncio.md",
         "order": 15,
         "children": []
       },
       {
-        "label": "Pencarian Teks ke Gambar dengan Milvus",
+        "label": "Text-to-Image Search with Milvus",
         "id": "text_image_search.md",
         "order": 16,
         "children": []
       },
       {
-        "label": "Pembuatan Ekspresi Filter Kueri Milvus Menggunakan Model Bahasa Besar",
+        "label": "Generating Milvus Query Filter Expressions with Large Language Models",
         "id": "generating_milvus_query_filter_expressions.md",
         "order": 17,
         "children": []
       },
       {
-        "label": "Jelajahi Lebih Lanjut",
+        "label": "Explore More",
         "id": "explore-more",
         "order": 99,
         "children": [
           {
-            "label": "Sistem Penjawaban Pertanyaan",
+            "label": "Question Answering System",
             "id": "question_answering_system.md",
             "order": 5,
             "children": []
           },
           {
-            "label": "Sistem Rekomendasi",
+            "label": "Recommender System",
             "id": "recommendation_system.md",
             "order": 6,
             "children": []
           },
           {
-            "label": "Pencarian Kesamaan Video",
+            "label": "Video Similarity Search",
             "id": "video_similarity_search.md",
             "order": 7,
             "children": []
           },
           {
-            "label": "Pencarian Kesamaan Audio",
+            "label": "Audio Similarity Search",
             "id": "audio_similarity_search.md",
             "order": 8,
             "children": []
           },
           {
-            "label": "Klasifikasi Urutan DNA",
+            "label": "DNA Sequence Classification",
             "id": "dna_sequence_classification.md",
             "order": 9,
             "children": []
           },
           {
-            "label": "Mesin Pencari Teks",
+            "label": "Text Search Engine",
             "id": "text_search_engine.md",
             "order": 10,
             "children": []
           },
           {
-            "label": "Sistem Penghapusan Duplikasi Gambar",
+            "label": "Image Deduplication System",
             "id": "image_deduplication_system.md",
             "order": 12,
             "children": []
@@ -2996,37 +2996,37 @@
     ]
   },
   {
-    "label": "Pertanyaan yang Sering Diajukan",
+    "label": "FAQs",
     "id": "faq",
     "isMenu": true,
     "order": 9,
     "children": [
       {
-        "label": "Pertanyaan Umum tentang Kinerja",
+        "label": "Performance FAQs",
         "id": "performance_faq.md",
         "order": 0,
         "children": []
       },
       {
-        "label": "Pertanyaan Umum tentang Produk",
+        "label": "Product FAQs",
         "id": "product_faq.md",
         "order": 1,
         "children": []
       },
       {
-        "label": "Pertanyaan Umum (FAQ) Operasional",
+        "label": "Operational FAQs",
         "id": "operational_faq.md",
         "order": 2,
         "children": []
       },
       {
-        "label": "Batasan Milvus",
+        "label": "Milvus Limits",
         "id": "limitations.md",
         "order": 3,
         "children": []
       },
       {
-        "label": "Pemecahan Masalah",
+        "label": "Troubleshooting",
         "id": "troubleshooting.md",
         "order": 4,
         "children": []

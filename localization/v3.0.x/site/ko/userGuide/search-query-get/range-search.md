@@ -1,11 +1,12 @@
 ---
 id: range-search.md
-title: 범위 검색
+title: Range Search
 summary: >-
-  범위 검색은 반환되는 개체의 거리나 점수를 특정 범위로 제한함으로써 검색 결과의 관련성을 높여줍니다. 이 페이지에서는 범위 검색이 무엇인지,
-  그리고 범위 검색을 수행하는 방법을 이해하는 데 도움을 드립니다.
+  A range search improves search result relevancy by restricting the distance or
+  score of the returned entities within a specific range. This page helps you
+  understand what range search is and the procedures to conduct a range search.
 ---
-<h1 id="Range-Search" class="common-anchor-header">범위 검색<button data-href="#Range-Search" class="anchor-icon" translate="no">
+<h1 id="Range-Search" class="common-anchor-header">Range Search<button data-href="#Range-Search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,8 +21,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>범위 검색은 반환되는 엔티티의 거리나 점수를 특정 범위로 제한하여 검색 결과의 관련성을 높입니다. 이 페이지에서는 범위 검색이 무엇인지, 그리고 범위 검색을 수행하는 절차를 이해하는 데 도움을 드립니다.</p>
-<h2 id="Overview" class="common-anchor-header">개요<button data-href="#Overview" class="anchor-icon" translate="no">
+    </button></h1><p>A range search improves search result relevancy by restricting the distance or score of the returned entities within a specific range. This page helps you understand what range search is and the procedures to conduct a range search.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -36,53 +37,53 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>범위 검색 요청을 실행할 때, Milvus는 ANN 검색 결과에서 쿼리 벡터와 가장 유사한 벡터들을 중심으로 삼고, 검색 요청에 지정된 <strong>반지름을</strong> 바깥쪽 원의 반지름으로, <strong>range_filter를</strong> 안쪽 원의 반지름으로 사용하여 두 개의 동심원을 그립니다. 이 두 개의 동심원으로 형성된 고리 모양 영역 내에 유사도 점수가 포함되는 모든 벡터가 반환됩니다. 여기서 <strong>range_filter를</strong> <strong>0으로</strong> 설정하면, 지정된 유사도 점수(반경) 범위 내의 모든 엔티티가 반환됨을 의미합니다.</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/range-search.png" alt="Range Search" class="doc-image" id="range-search" /> 
-   <span>범위 검색</span>
-  
- </span></p>
-<p>위 다이어그램에서 볼 수 있듯이, 범위 검색 요청에는 <strong>반경(radius</strong> )과 <strong>범위 필터(range_filter</strong>)라는 두 가지 매개변수가 포함됩니다. Milvus는 범위 검색 요청을 수신하면 다음과 같은 작업을 수행합니다:</p>
+    </button></h2><p>When executing a Range Search request, Milvus uses the most similar vectors to the query vector from the ANN Search results as the center, with the <strong>radius</strong> specified in the Search request as the outer circle’s radius, and the <strong>range_filter</strong> as the inner circle’s radius to draw two concentric circles. All vectors with similarity scores that fall within the annular region formed by these two concentric circles will be returned. Here, the <strong>range_filter</strong> can be set to <strong>0</strong>, indicating that all entities within the specified similarity score (radius) will be returned.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/range-search.png" alt="Range Search" class="doc-image" id="range-search" />
+    <span>Range Search</span>
+  </span>
+</p>
+<p>The above diagram shows that a range search request carries two parameters: <strong>radius</strong> and <strong>range_filter</strong>. Upon receiving a range search request, Milvus does the following:</p>
 <ul>
-<li><p>지정된 메트릭 유형(<strong>COSINE</strong>)을 사용하여 쿼리 벡터와 가장 유사한 모든 벡터 임베딩을 찾습니다.</p></li>
-<li><p>쿼리 벡터와의 <strong>거리</strong> 또는 <strong>점수가</strong> <strong>반경(radius</strong> ) 및 <strong>range_filter</strong> 매개변수로 지정된 범위 내에 속하는 벡터 임베딩을 필터링합니다.</p></li>
-<li><p>필터링된 엔티티 중에서 <strong>상위 K개</strong> 엔티티를 반환합니다.</p></li>
+<li><p>Use the specified metric type (<strong>COSINE</strong>) to find all vector embeddings most similar to the query vector.</p></li>
+<li><p>Filter the vector embeddings whose <strong>distances</strong> or <strong>scores</strong> to the query vector fall within the range specified by the <strong>radius</strong> and <strong>range_filter</strong> parameters.</p></li>
+<li><p>Return the <strong>top-K</strong> entities from the filtered ones.</p></li>
 </ul>
-<p><strong>반경(radius</strong> )과 <strong>범위 필터(range_filter)를</strong> 설정하는 방법은 검색의 메트릭 유형에 따라 다릅니다. 다음 표에는 다양한 메트릭 유형에 따라 이 두 매개변수를 설정하기 위한 요구 사항이 나열되어 있습니다.</p>
+<p>The way to set <strong>radius</strong> and <strong>range_filter</strong> varies with the metric type of the search. The following table lists the requirements for setting these two parameters with different metric types.</p>
 <table>
    <tr>
-     <th><p>메트릭 유형</p></th>
-     <th><p>기호</p></th>
-     <th><p>radius 및 range_filter 설정 요건</p></th>
+     <th><p>Metric Type</p></th>
+     <th><p>Denotations</p></th>
+     <th><p>Requirements for Setting radius and range_filter</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">L2</code></p></td>
-     <td><p>L2 거리가 작을수록 유사성이 높음을 나타냅니다.</p></td>
-     <td><p>가장 유사한 벡터 임베딩을 제외하려면 다음 조건을 충족해야 합니다.</p><p><code translate="no">range_filter</code> &lt;= 거리 &lt; <code translate="no">radius</code></p></td>
+     <td><p>A smaller L2 distance indicates a higher similarity.</p></td>
+     <td><p>To ignore the most similar vector embeddings, ensure that</p><p><code translate="no">range_filter</code> &lt;= distance &lt; <code translate="no">radius</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">IP</code></p></td>
-     <td><p>IP 거리가 클수록 유사성이 더 높음을 나타냅니다.</p></td>
-     <td><p>가장 유사한 벡터 임베딩을 무시하려면 다음 조건을 충족해야 합니다.</p><p><code translate="no">radius</code> &lt; 거리 &lt;= <code translate="no">range_filter</code></p></td>
+     <td><p>A greater IP distance indicates a higher similarity.</p></td>
+     <td><p>To ignore the most similar vector embeddings, ensure that</p><p><code translate="no">radius</code> &lt; distance &lt;= <code translate="no">range_filter</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">COSINE</code></p></td>
-     <td><p>코사인 거리가 클수록 유사도가 더 높음을 나타냅니다.</p></td>
-     <td><p>가장 유사한 벡터 임베딩을 무시하려면 다음 조건을 충족해야 합니다.</p><p><code translate="no">radius</code> &lt; 거리 &lt;= <code translate="no">range_filter</code></p></td>
+     <td><p>A greater COSINE distance indicates a higher similarity.</p></td>
+     <td><p>To ignore the most similar vector embeddings, ensure that</p><p><code translate="no">radius</code> &lt; distance &lt;= <code translate="no">range_filter</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">JACCARD</code></p></td>
-     <td><p>자카드 거리가 작을수록 유사성이 더 높음을 나타냅니다.</p></td>
-     <td><p>가장 유사한 벡터 임베딩을 무시하려면 다음 조건을 충족해야 합니다.</p><p><code translate="no">range_filter</code> &lt;= 거리 &lt; <code translate="no">radius</code></p></td>
+     <td><p>A smaller Jaccard distance indicates a higher similarity.</p></td>
+     <td><p>To ignore the most similar vector embeddings, ensure that</p><p><code translate="no">range_filter</code> &lt;= distance &lt; <code translate="no">radius</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">HAMMING</code></p></td>
-     <td><p>해밍 거리가 작을수록 유사성이 더 높음을 나타냅니다.</p></td>
-     <td><p>가장 유사한 벡터 임베딩을 무시하려면 다음 조건을 충족해야 합니다.</p><p><code translate="no">range_filter</code> &lt;= 거리 &lt; <code translate="no">radius</code></p></td>
+     <td><p>A smaller Hamming distance indicates a higher similarity.</p></td>
+     <td><p>To ignore the most similar vector embeddings, ensure that</p><p><code translate="no">range_filter</code> &lt;= distance &lt; <code translate="no">radius</code></p></td>
    </tr>
 </table>
-<h2 id="Examples" class="common-anchor-header">예시<button data-href="#Examples" class="anchor-icon" translate="no">
+<h2 id="Examples" class="common-anchor-header">Examples<button data-href="#Examples" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -97,17 +98,17 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>이 섹션에서는 범위 검색을 수행하는 방법을 보여줍니다. 다음 코드 예제의 검색 요청에는 메트릭 유형이 지정되어 있지 않으므로, 기본 메트릭 유형인 <strong>COSINE이</strong> 적용됨을 의미합니다. 이 경우 <strong>반경</strong> 값이 <strong>range_filter</strong> 값보다 작도록 해야 합니다.</p>
-<p>다음 코드 스니펫에서 ` <code translate="no">radius</code> `을 ` <code translate="no">0.4</code> `으로, ` <code translate="no">range_filter</code> `을 ` <code translate="no">0.6</code> `으로 설정하면 Milvus는 쿼리 벡터와의 거리 또는 점수가 <strong>0.4에서</strong> <strong>0.6</strong> 사이인 모든 엔티티를 반환합니다.</p>
+    </button></h2><p>This section demonstrates how to conduct a range search. The search requests in the following code snippets do not carry a metric type, indicating the default metric type <strong>COSINE</strong> applies. In this case, ensure that the <strong>radius</strong> value is smaller than the <strong>range_filter</strong> value.</p>
+<p>In the following code snippets, set <code translate="no">radius</code> to <code translate="no">0.4</code> and <code translate="no">range_filter</code> to <code translate="no">0.6</code> so that Milvus returns all entities whose distances or scores to the query vector fall within <strong>0.4</strong> to <strong>0.6</strong>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -355,5 +356,5 @@ curl --request POST \
 <span class="hljs-comment"># {&quot;code&quot;:0,&quot;cost&quot;:0,&quot;data&quot;:[]}</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>쿼리 벡터가 대상 컬렉션에 이미 존재하는 경우, 검색 전에 벡터를 다시 가져오는 대신 <code translate="no">ids</code> 를 사용하는 것을 고려해 보십시오. 자세한 내용은 <a href="/docs/ko/primary-key-search.md">기본 키 검색을</a> 참조하십시오.</p>
+<p>If the query vectors already exist in the target collection, consider using <code translate="no">ids</code> instead of retrieving them before searches. For details, refer to <a href="/docs/ko/primary-key-search.md">Primary-Key Search</a>.</p>
 </div>

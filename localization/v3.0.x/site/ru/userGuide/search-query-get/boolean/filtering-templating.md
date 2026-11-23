@@ -1,17 +1,15 @@
 ---
 id: filtering-templating.md
-title: Шаблонизация фильтров
+title: Filter Templating
 summary: >-
-  В Milvus сложные выражения фильтров, содержащие множество элементов, особенно
-  те, в которых используются символы, не входящие в кодировку ASCII, например
-  символы CJK, могут существенно влиять на производительность запросов. Для
-  решения этой проблемы в Milvus внедрен механизм шаблонизации выражений
-  фильтров, призванный повысить эффективность за счет сокращения времени,
-  затрачиваемого на разбор сложных выражений. На этой странице рассказывается об
-  использовании шаблонов выражений фильтров в операциях поиска, запроса и
-  удаления.
+  In Milvus, complex filter expressions with numerous elements, especially those
+  involving non-ASCII characters like CJK characters, can significantly affect
+  query performance. To address this, Milvus introduces a filter expression
+  templating mechanism designed to improve efficiency by reducing the time spent
+  parsing complex expressions. This page explains using filter expression
+  templating in search, query, and delete operations.
 ---
-<h1 id="Filter-Templating" class="common-anchor-header">Шаблонизация фильтров<button data-href="#Filter-Templating" class="anchor-icon" translate="no">
+<h1 id="Filter-Templating" class="common-anchor-header">Filter Templating<button data-href="#Filter-Templating" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -26,12 +24,12 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>В Milvus сложные выражения фильтров, содержащие множество элементов, особенно те, в которых используются символы, отличные от ASCII, такие как символы CJK, могут существенно влиять на производительность запросов. Для решения этой проблемы в Milvus введен механизм шаблонизации выражений фильтров, предназначенный для повышения эффективности за счет сокращения времени, затрачиваемого на разбор сложных выражений. На этой странице объясняется использование шаблонизации выражений фильтров в операциях поиска, запроса и удаления.</p>
+    </button></h1><p>In Milvus, complex filter expressions with numerous elements, especially those involving non-ASCII characters like CJK characters, can significantly affect query performance. To address this, Milvus introduces a filter expression templating mechanism designed to improve efficiency by reducing the time spent parsing complex expressions. This page explains using filter expression templating in search, query, and delete operations.</p>
 <div class="alert note">
-<p>Литералом в левой части выражения фильтрации может быть либо имя поля коллекции, например <code translate="no">age</code>, <code translate="no">city</code> и т. д., используемое в примерах ниже, либо имя подполя StructArray с конкретным индексом элемента, как в <code translate="no">filter = 'struct[0][subfield] &gt; {var}'</code>.</p>
-<p>Подробнее о скалярной фильтрации в поле StructArray см. в разделе <a href="/docs/ru/struct-array-operators.md">«Операторы StructArray</a>».</p>
+<p>The literal on the left-hand side of a filtering expression can either be a collection field name, such as <code translate="no">age</code>, <code translate="no">city</code>, etc., used in examples below, or the name of a StructArray subfield at a specific element index, as in <code translate="no">filter = 'struct[0][subfield] &gt; {var}'</code>.</p>
+<p>For details on scalar filtering in a StructArray field, refer to <a href="/docs/ru/struct-array-operators.md">StructArray Operators</a>.</p>
 </div>
-<h2 id="Overview" class="common-anchor-header">Обзор<button data-href="#Overview" class="anchor-icon" translate="no">
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -46,17 +44,17 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Использование шаблонов в фильтрующих выражениях позволяет создавать фильтрующие выражения с заполнителями, которые динамически заменяются значениями во время выполнения запроса. Используя шаблоны, вы избегаете встраивания больших массивов или сложных выражений непосредственно в фильтр, что сокращает время синтаксического анализа и повышает производительность запроса.</p>
-<p>Предположим, у вас есть выражение фильтра, включающее два поля: ` <code translate="no">age</code> ` и ` <code translate="no">city</code>`, и вы хотите найти всех людей, чей возраст превышает 25 лет и которые проживают либо в «北京» (Пекин), либо в «上海» (Шанхай). Вместо того чтобы напрямую вставлять значения в выражение фильтра, вы можете использовать шаблон:</p>
+    </button></h2><p>Filter expression templating allows you to create filter expressions with placeholders that are dynamically substituted with values during query execution. Using templating, you avoid embedding large arrays or complex expressions directly into the filter, reducing parsing time and improving query performance.</p>
+<p>Let’s say you have a filter expression involving two fields, <code translate="no">age</code> and <code translate="no">city</code>, and you want to find all people whose age is greater than 25 and who live in either “北京” (Beijing) or “上海” (Shanghai). Instead of directly embedding the values in the filter expression, you can use a template:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&quot;age &gt; {age} AND city IN {city}&quot;</span>
 filter_params = {<span class="hljs-string">&quot;age&quot;</span>: <span class="hljs-number">25</span>, <span class="hljs-string">&quot;city&quot;</span>: [<span class="hljs-string">&quot;北京&quot;</span>, <span class="hljs-string">&quot;上海&quot;</span>]}
@@ -106,14 +104,14 @@ std::unordered_map&lt;std::string, nlohmann::json&gt; filterTemplates = {
 filter=<span class="hljs-string">&quot;age &gt; {age} AND city IN {city}&quot;</span>
 filter_params=<span class="hljs-string">&#x27;{&quot;age&quot;: 25, &quot;city&quot;: [&quot;北京&quot;, &quot;上海&quot;]}&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Здесь <code translate="no">{age}</code> и <code translate="no">{city}</code> являются заполнителями, которые при выполнении запроса будут заменены фактическими значениями из <code translate="no">filter_params</code>.</p>
-<p>Использование шаблонов выражений фильтрации в Milvus имеет несколько ключевых преимуществ:</p>
+<p>Here, <code translate="no">{age}</code> and <code translate="no">{city}</code> are placeholders that will be replaced with the actual values in <code translate="no">filter_params</code> when the query is executed.</p>
+<p>Using filter expression templating in Milvus has several key advantages:</p>
 <ul>
-<li><p><strong>Сокращение времени разбора</strong>: благодаря замене больших или сложных выражений фильтра на заполнители система тратит меньше времени на разбор и обработку фильтра.</p></li>
-<li><p><strong>Повышение производительности запросов</strong>: благодаря снижению накладных расходов на синтаксический анализ повышается производительность запросов, что приводит к увеличению количества запросов в секунду (QPS) и сокращению времени отклика.</p></li>
-<li><p><strong>Масштабируемость</strong>: по мере роста ваших наборов данных и усложнения выражений фильтра шаблонизация гарантирует, что производительность останется эффективной и масштабируемой.</p></li>
+<li><p><strong>Reduced Parsing Time</strong>: By replacing large or complex filter expressions with placeholders, the system spends less time parsing and processing the filter.</p></li>
+<li><p><strong>Improved Query Performance</strong>: With reduced parsing overhead, query performance improves, leading to higher QPS and faster response times.</p></li>
+<li><p><strong>Scalability</strong>: As your datasets grow and filter expressions become more complex, templating ensures that performance remains efficient and scalable.</p></li>
 </ul>
-<h2 id="Search-Operations" class="common-anchor-header">Операции поиска<button data-href="#Search-Operations" class="anchor-icon" translate="no">
+<h2 id="Search-Operations" class="common-anchor-header">Search Operations<button data-href="#Search-Operations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -128,16 +126,16 @@ filter_params=<span class="hljs-string">&#x27;{&quot;age&quot;: 25, &quot;city&q
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Для операций поиска в Milvus выражение <code translate="no">filter</code> используется для определения условия фильтрации, а параметр <code translate="no">filter_params</code> — для указания значений для заполнителей. Словарь <code translate="no">filter_params</code> содержит динамические значения, которые Milvus будет использовать для подстановки в выражение фильтра.</p>
+    </button></h2><p>For search operations in Milvus, the <code translate="no">filter</code> expression is used to define the filtering condition, and the <code translate="no">filter_params</code> parameter is used to specify the values for the placeholders. The <code translate="no">filter_params</code> dictionary contains the dynamic values that Milvus will use to substitute into the filter expression.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">expr = <span class="hljs-string">&quot;age &gt; {age} AND city IN {city}&quot;</span>
 filter_params = {<span class="hljs-string">&quot;age&quot;</span>: <span class="hljs-number">25</span>, <span class="hljs-string">&quot;city&quot;</span>: [<span class="hljs-string">&quot;北京&quot;</span>, <span class="hljs-string">&quot;上海&quot;</span>]}
@@ -298,8 +296,8 @@ curl --request POST \
       &quot;outputFields&quot;: [&quot;age&quot;, &quot;city&quot;]
   }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>В этом примере при выполнении поиска Milvus динамически заменит <code translate="no">{age}</code> на <code translate="no">25</code>, а <code translate="no">{city}</code> на <code translate="no">[&quot;北京&quot;, &quot;上海&quot;]</code>.</p>
-<h2 id="Query-Operations" class="common-anchor-header">Операции с запросами<button data-href="#Query-Operations" class="anchor-icon" translate="no">
+<p>In this example, Milvus will dynamically replace <code translate="no">{age}</code> with <code translate="no">25</code> and <code translate="no">{city}</code> with <code translate="no">[&quot;北京&quot;, &quot;上海&quot;]</code> when executing the search.</p>
+<h2 id="Query-Operations" class="common-anchor-header">Query Operations<button data-href="#Query-Operations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -314,16 +312,16 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Тот же механизм шаблонизации можно применять к операциям запросов в Milvus. В функции <code translate="no">query</code> вы определяете выражение фильтра и используете <code translate="no">filter_params</code> для указания значений, которые необходимо подставить.</p>
+    </button></h2><p>The same templating mechanism can be applied to query operations in Milvus. In the <code translate="no">query</code> function, you define the filter expression and use the <code translate="no">filter_params</code> to specify the values to substitute.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">expr = <span class="hljs-string">&quot;age &gt; {age} AND city IN {city}&quot;</span>
 filter_params = {<span class="hljs-string">&quot;age&quot;</span>: <span class="hljs-number">25</span>, <span class="hljs-string">&quot;city&quot;</span>: [<span class="hljs-string">&quot;北京&quot;</span>, <span class="hljs-string">&quot;上海&quot;</span>]}
@@ -456,8 +454,8 @@ curl --request POST \
       &quot;outputFields&quot;: [&quot;age&quot;, &quot;city&quot;]
   }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Используя ` <code translate="no">filter_params</code>`, Milvus эффективно обрабатывает динамическую вставку значений, повышая скорость выполнения запросов.</p>
-<h2 id="Delete-Operations" class="common-anchor-header">Операции удаления<button data-href="#Delete-Operations" class="anchor-icon" translate="no">
+<p>By using <code translate="no">filter_params</code>, Milvus efficiently handles the dynamic insertion of values, improving the speed of query execution.</p>
+<h2 id="Delete-Operations" class="common-anchor-header">Delete Operations<button data-href="#Delete-Operations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -472,16 +470,16 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Вы также можете использовать шаблоны выражений фильтра в операциях удаления. Как и в случае с поиском и запросами, выражение <code translate="no">filter</code> определяет условия, а <code translate="no">filter_params</code> предоставляет динамические значения для заполнителей.</p>
+    </button></h2><p>You can also use filter expression templating in delete operations. Similar to search and query, the <code translate="no">filter</code> expression defines the conditions, and the <code translate="no">filter_params</code> provides the dynamic values for the placeholders.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">expr = <span class="hljs-string">&quot;age &gt; {age} AND city IN {city}&quot;</span>
 filter_params = {<span class="hljs-string">&quot;age&quot;</span>: <span class="hljs-number">25</span>, <span class="hljs-string">&quot;city&quot;</span>: [<span class="hljs-string">&quot;北京&quot;</span>, <span class="hljs-string">&quot;上海&quot;</span>]}
@@ -602,8 +600,8 @@ curl --request POST \
       &quot;exprParams&quot;: {&quot;age&quot;: 25, &quot;city&quot;: [&quot;北京&quot;, &quot;上海&quot;]}
   }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Такой подход повышает производительность операций удаления, особенно при работе со сложными условиями фильтрации.</p>
-<h2 id="Regex-filter-templates" class="common-anchor-header">Шаблоны фильтров на основе регулярных выражений<button data-href="#Regex-filter-templates" class="anchor-icon" translate="no">
+<p>This approach improves the performance of delete operations, especially when dealing with complex filter conditions.</p>
+<h2 id="Regex-filter-templates" class="common-anchor-header">Regex filter templates<button data-href="#Regex-filter-templates" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -618,16 +616,16 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Вы можете использовать шаблонизацию выражений фильтрации с фильтрами на основе регулярных выражений. Это полезно, когда шаблон регулярного выражения предоставляется во время запроса.</p>
+    </button></h2><p>You can use filter expression templating with regex filters. This is useful when the regex pattern is provided at request time.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">expr = <span class="hljs-string">&quot;message =~ {pattern}&quot;</span>
 filter_params = {<span class="hljs-string">&quot;pattern&quot;</span>: <span class="hljs-string">&quot;E[0-9]{4}&quot;</span>}
@@ -754,16 +752,16 @@ curl --request POST \
       &quot;outputFields&quot;: [&quot;message&quot;]
   }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Вы также можете использовать параметры шаблонов с ` <code translate="no">!~</code>`:</p>
+<p>You can also use template parameters with <code translate="no">!~</code>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">expr = <span class="hljs-string">&quot;message !~ {pattern}&quot;</span>
 filter_params = {<span class="hljs-string">&quot;pattern&quot;</span>: <span class="hljs-string">&quot;^DEBUG&quot;</span>}
@@ -805,9 +803,9 @@ std::unordered_map&lt;std::string, nlohmann::json&gt; filterTemplates = {
 filter=<span class="hljs-string">&quot;message !~ {pattern}&quot;</span>
 filter_params=<span class="hljs-string">&#x27;{&quot;pattern&quot;: &quot;^DEBUG&quot;}&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Значение шаблона должно быть строкой, содержащей допустимый шаблон регулярного выражения RE2. Milvus проверяет шаблон перед выполнением фильтра.</p>
-<p>Шаблоны фильтров передают шаблон регулярного выражения в качестве значения, а не вставляют его в выражение фильтра. Это снижает нагрузку при разборе выражения и позволяет избежать случайного изменения структуры фильтра, если шаблон содержит кавычки или операторы.</p>
-<h2 id="Conclusion" class="common-anchor-header">Заключение<button data-href="#Conclusion" class="anchor-icon" translate="no">
+<p>The template value must be a string containing a valid RE2 regex pattern. Milvus validates the pattern before executing the filter.</p>
+<p>Filter templates pass the regex pattern as a value instead of concatenating it into the filter expression. This reduces expression parsing overhead and avoids accidentally changing the filter structure when the pattern contains quotes or operators.</p>
+<h2 id="Conclusion" class="common-anchor-header">Conclusion<button data-href="#Conclusion" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -822,4 +820,4 @@ filter_params=<span class="hljs-string">&#x27;{&quot;pattern&quot;: &quot;^DEBUG
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Использование шаблонов в выражениях фильтров — важный инструмент для оптимизации производительности запросов в Milvus. Используя заполнители и словарь ` <code translate="no">filter_params</code> `, можно значительно сократить время, затрачиваемое на разбор сложных выражений фильтров. Это приводит к ускорению выполнения запросов и повышению общей производительности.</p>
+    </button></h2><p>Filter expression templating is an essential tool for optimizing query performance in Milvus. By using placeholders and the <code translate="no">filter_params</code> dictionary, you can significantly reduce the time spent parsing complex filter expressions. This leads to faster query execution and better overall performance.</p>

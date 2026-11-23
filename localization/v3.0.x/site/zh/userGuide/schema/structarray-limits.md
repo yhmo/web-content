@@ -1,11 +1,12 @@
 ---
 id: structarray-limits.md
-title: StructArray 限制
+title: StructArray Limits
 summary: >-
-  StructArray 的支持范围涵盖 Schema 定义、插入有效载荷、索引、搜索模式以及 StructArray 专用的过滤器。在生产环境中依赖
-  StructArray 的行为之前，请将本页面作为限制参考。
+  StructArray support spans schema definition, insert payloads, indexing, search
+  modes, and StructArray-specific filters. Use this page as the limits reference
+  before you rely on StructArray behavior in production.
 ---
-<h1 id="StructArray-Limits" class="common-anchor-header">StructArray 限制<button data-href="#StructArray-Limits" class="anchor-icon" translate="no">
+<h1 id="StructArray-Limits" class="common-anchor-header">StructArray Limits<button data-href="#StructArray-Limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,9 +21,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>StructArray 的支持范围涵盖 Schema 定义、插入有效载荷、索引、搜索模式以及 StructArray 专用的过滤器。在生产环境中依赖 StructArray 的行为之前，请将本页面作为限制参考。</p>
-<p>大多数 StructArray 限制源自以下三个方面之一：StructArray 模式 Schema、您为向量字段选择的搜索模式，以及您的 Collection 所运行的 Milvus 版本。</p>
-<h2 id="Limits-at-a-glance" class="common-anchor-header">限制一览<button data-href="#Limits-at-a-glance" class="anchor-icon" translate="no">
+    </button></h1><p>StructArray support spans schema definition, insert payloads, indexing, search modes, and StructArray-specific filters. Use this page as the limits reference before you rely on StructArray behavior in production.</p>
+<p>Most StructArray limits come from one of three places: the StructArray schema model, the search mode you choose for vector subfields, and the Milvus version that your collection runs on.</p>
+<h2 id="Limits-at-a-glance" class="common-anchor-header">Limits at a glance<button data-href="#Limits-at-a-glance" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,26 +38,26 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>StructArray 的主要限制包括：</p>
+    </button></h2><p>The main StructArray limits are:</p>
 <table>
 <thead>
-<tr><th>领域</th><th>限制</th></tr>
+<tr><th>Area</th><th>Limit</th></tr>
 </thead>
 <tbody>
-<tr><td>Schema结构</td><td>Struct 只能用作数组字段的元素类型。不支持将 Struct 用作顶级 Collection 字段。</td></tr>
-<tr><td>子字段Schema</td><td>同一 StructArray 字段中的所有 Struct 元素共享一个预定义的 Struct Schema。</td></tr>
-<tr><td>嵌套子字段</td><td>从 Milvus 3.0.6 开始，Struct 可以包含单层嵌套的标量<code translate="no">ARRAY</code> 子字段。任何版本均不支持嵌套的<code translate="no">Struct</code> 、<code translate="no">ArrayOfStruct</code> 和 JSON 子字段。</td></tr>
-<tr><td>容量</td><td><code translate="no">max_capacity</code> 是必填字段，用于限制一个实体在 StructArray 字段中可存储的 Struct 元素数量。</td></tr>
-<tr><td>子字段更改</td><td>从 Milvus 3.0.6 开始，您可以向现有的 StructArray 字段添加一个允许为空的子字段，或从其中移除一个子字段。早期版本则需要先移除整个 StructArray 字段，然后重新添加。</td></tr>
-<tr><td>子字段路径</td><td>请使用<code translate="no">structArray[subfield]</code> 路径（例如<code translate="no">chunks[emb]</code> ），用于索引、搜索目标、输出字段和过滤器。请勿使用<code translate="no">chunks.emb</code> 。</td></tr>
-<tr><td>插入形状</td><td>将 StructArray 字段作为对象数组插入。请勿在插入有效载荷中使用路径语法。</td></tr>
-<tr><td>向量索引</td><td>向量字段或向量子字段仅接受一个索引。请分别使用独立的向量子字段进行 EmbeddingList 搜索和元素级搜索。</td></tr>
-<tr><td>函数</td><td>StructArray 字段内的字段或子字段不支持字段函数。</td></tr>
-<tr><td>可为空字段</td><td>可为空的 StructArray 字段受版本限制。行级空值将应用于整个 StructArray 字段。从 Milvus 3.0.6 开始，子字段还可以允许单个 Struct 元素包含空值：对于标量或向量字段，使用 `<code translate="no">nullable=True</code> `；对于数组子字段，使用 `<code translate="no">element_nullable=True</code> `。Struct 元素本身不能为空。</td></tr>
-<tr><td>动态添加字段</td><td>向现有 Collection 添加 StructArray 字段受版本限制，且所添加的字段必须为可空。</td></tr>
+<tr><td>Schema shape</td><td>A Struct can be used only as the element type of an Array field. Struct is not supported as a top-level collection field.</td></tr>
+<tr><td>Subfield schema</td><td>All Struct elements in the same StructArray field share one predefined Struct schema.</td></tr>
+<tr><td>Nested subfields</td><td>Starting in Milvus 3.0.6, a Struct can contain scalar <code translate="no">ARRAY</code> subfields with one nesting level. Nested <code translate="no">Struct</code>, <code translate="no">ArrayOfStruct</code>, and JSON subfields are not supported in any version.</td></tr>
+<tr><td>Capacity</td><td><code translate="no">max_capacity</code> is required and limits how many Struct elements one entity can store in the StructArray field.</td></tr>
+<tr><td>Subfield changes</td><td>Starting in Milvus 3.0.6, you can add an element-nullable subfield to an existing StructArray field or drop a subfield from it. Earlier versions require dropping and re-adding the whole StructArray field.</td></tr>
+<tr><td>Subfield path</td><td>Use <code translate="no">structArray[subfield]</code> paths, such as <code translate="no">chunks[emb]</code>, for indexes, search targets, output fields, and filters. Do not use <code translate="no">chunks.emb</code>.</td></tr>
+<tr><td>Insert shape</td><td>Insert a StructArray field as an array of objects. Do not use path syntax inside insert payloads.</td></tr>
+<tr><td>Vector indexes</td><td>A vector field or vector subfield accepts only one index. Use separate vector subfields for EmbeddingList search and element-level search.</td></tr>
+<tr><td>Functions</td><td>Field functions are not supported for fields or subfields inside a StructArray field.</td></tr>
+<tr><td>Nullable fields</td><td>Nullable StructArray fields are version-gated. Row-level null applies to the whole StructArray field. Starting in Milvus 3.0.6, a subfield can additionally allow a null value in an individual Struct element: <code translate="no">nullable=True</code> on a scalar or vector subfield, <code translate="no">element_nullable=True</code> on an array subfield. A Struct element itself cannot be null.</td></tr>
+<tr><td>Dynamic add field</td><td>Adding a StructArray field to an existing collection is version-gated and requires the added field to be nullable.</td></tr>
 </tbody>
 </table>
-<h2 id="Schema-limits" class="common-anchor-header">Schema限制<button data-href="#Schema-limits" class="anchor-icon" translate="no">
+<h2 id="Schema-limits" class="common-anchor-header">Schema limits<button data-href="#Schema-limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -71,25 +72,25 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>StructArray Schema 具有以下限制：</p>
+    </button></h2><p>StructArray schemas have the following limits:</p>
 <table>
 <thead>
-<tr><th>限制</th><th>详细信息</th></tr>
+<tr><th>Limit</th><th>Details</th></tr>
 </thead>
 <tbody>
-<tr><td>Struct 不能作为顶级字段类型。</td><td>创建一个 StructArray 字段，其定义为 `<code translate="no">datatype=DataType.ARRAY</code> `，并包含 `<code translate="no">element_type=DataType.STRUCT</code> ` 以及 `<code translate="no">struct_schema</code>`。</td></tr>
-<tr><td>所有元素共享一个Schema。</td><td>StructArray 字段中的每个 Struct 元素都遵循相同的子字段列表和子字段数据类型。</td></tr>
-<tr><td><code translate="no">max_capacity</code> 是必需的。</td><td>一个实体中的 Struct 元素数量不得超过为 StructArray 字段配置的<code translate="no">max_capacity</code> 。</td></tr>
-<tr><td>标量<code translate="no">ARRAY</code> 子字段具有每个子字段的<code translate="no">max_capacity</code> 。</td><td>标量<code translate="no">ARRAY</code> 子字段为其内部数组声明<code translate="no">max_capacity</code> ，如果某个Struct元素的内部数组超过该子字段声明的容量，Milvus将拒绝该Struct元素。各子字段的值无需一致。该值必须大于0，且不得超过<code translate="no">proxy.maxArrayCapacity</code> （默认值为4096）。</td></tr>
-<tr><td>在 Milvus 3.0.6 及更高版本中，子字段可以演化。</td><td>可通过其路径（例如<code translate="no">chunks[lang]</code> ）添加可为空的子字段，或删除子字段。您无法删除 StructArray 字段的最后一个子字段、Collection 的最后一个向量字段，或函数所使用的子字段。在早期版本中，请先删除该 StructArray 字段，然后使用更新的 Schema 将其重新添加。</td></tr>
-<tr><td>不支持嵌套 Struct。</td><td>Struct 不能包含嵌套的<code translate="no">Struct</code> 、<code translate="no">ArrayOfStruct</code> 或 JSON 子字段。从 Milvus 3.0.6 开始，Struct 可以包含具有一层嵌套的标量<code translate="no">ARRAY</code> 子字段。<code translate="no">ARRAY</code> 子字段不能包含向量。</td></tr>
-<tr><td>StructArray 内部不支持函数。</td><td>请勿为 StructArray 字段或其子字段定义字段函数。</td></tr>
-<tr><td>StructArray 字段的字段属性受到限制。</td><td>从 Milvus 3.0.6 开始，对 StructArray 字段或子字段路径执行的<code translate="no">alter_collection_field()</code> 操作仅接受<code translate="no">mmap.enabled</code> 、<code translate="no">field.description</code> 和<code translate="no">warmup</code> 。其他属性（如<code translate="no">max_capacity</code> 和<code translate="no">max_length</code> ）将被拒绝。</td></tr>
-<tr><td>子字段不支持文本分析。</td><td>在 Struct 子字段上设置<code translate="no">enable_match</code> 或<code translate="no">enable_analyzer</code> 将被拒绝。文本索引仅针对顶级字段构建。</td></tr>
+<tr><td>Struct is not a top-level field type.</td><td>Create a StructArray field as <code translate="no">datatype=DataType.ARRAY</code> with <code translate="no">element_type=DataType.STRUCT</code> and a <code translate="no">struct_schema</code>.</td></tr>
+<tr><td>All elements share one schema.</td><td>Every Struct element in a StructArray field follows the same subfield list and subfield data types.</td></tr>
+<tr><td><code translate="no">max_capacity</code> is required.</td><td>The number of Struct elements in one entity must not exceed the <code translate="no">max_capacity</code> configured for the StructArray field.</td></tr>
+<tr><td>Scalar <code translate="no">ARRAY</code> subfields have per-subfield <code translate="no">max_capacity</code>.</td><td>A scalar <code translate="no">ARRAY</code> subfield declares a <code translate="no">max_capacity</code> for its inner array, and Milvus rejects a Struct element whose inner array exceeds that subfield’s declared capacity. Values do not need to match across subfields. The value must be greater than 0 and must not exceed <code translate="no">proxy.maxArrayCapacity</code>, which defaults to 4096.</td></tr>
+<tr><td>Subfields can evolve in Milvus 3.0.6 and later.</td><td>Add an element-nullable subfield, or drop a subfield by its path, such as <code translate="no">chunks[lang]</code>. You cannot drop the last subfield of a StructArray field, the last vector field of the collection, or a subfield used by a Function. In earlier versions, drop the StructArray field and add it again with the updated schema.</td></tr>
+<tr><td>Nested Struct is not supported.</td><td>A Struct cannot contain nested <code translate="no">Struct</code>, <code translate="no">ArrayOfStruct</code>, or JSON subfields. Starting in Milvus 3.0.6, a Struct can contain scalar <code translate="no">ARRAY</code> subfields with one nesting level. An <code translate="no">ARRAY</code> subfield cannot hold vectors.</td></tr>
+<tr><td>Functions are not supported inside StructArray.</td><td>Do not define field functions for StructArray fields or their subfields.</td></tr>
+<tr><td>Field properties are limited on StructArray fields.</td><td>Starting in Milvus 3.0.6, <code translate="no">alter_collection_field()</code> on a StructArray field or on a subfield path accepts only <code translate="no">mmap.enabled</code>, <code translate="no">field.description</code>, and <code translate="no">warmup</code>. Other properties, such as <code translate="no">max_capacity</code> and <code translate="no">max_length</code>, are rejected.</td></tr>
+<tr><td>Text analysis is not supported on subfields.</td><td>Setting <code translate="no">enable_match</code> or <code translate="no">enable_analyzer</code> on a Struct subfield is rejected. Text indexes are built only for top-level fields.</td></tr>
 </tbody>
 </table>
-<p>有关 Schema 创建示例，请参阅<a href="/docs/zh/create-structarray-field.md">“创建 StructArray 字段”</a>。</p>
-<h2 id="Supported-subfield-data-types" class="common-anchor-header">支持的子字段数据类型<button data-href="#Supported-subfield-data-types" class="anchor-icon" translate="no">
+<p>For schema creation examples, see <a href="/docs/zh/create-structarray-field.md">Create a StructArray Field</a>.</p>
+<h2 id="Supported-subfield-data-types" class="common-anchor-header">Supported subfield data types<button data-href="#Supported-subfield-data-types" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -104,32 +105,32 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>StructArray 子字段映射到物理数组风格的存储。下表列出了受支持和不受支持的物理类型：</p>
+    </button></h2><p>StructArray subfields map to physical array-style storage. The following table lists supported and unsupported physical types:</p>
 <table>
 <thead>
-<tr><th>Struct子字段的物理类型</th><th>支持</th><th>备注</th></tr>
+<tr><th>Struct subfield physical type</th><th>Support</th><th>Notes</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">Array&lt;Bool&gt;</code></td><td>支持</td><td>将子字段定义为<code translate="no">DataType.BOOL</code> 。</td></tr>
-<tr><td><code translate="no">Array&lt;Int8/Int16/Int32/Int64&gt;</code></td><td>受支持</td><td>将子字段定义为<code translate="no">DataType.INT8</code> 、<code translate="no">DataType.INT16</code> 、<code translate="no">DataType.INT32</code> 或<code translate="no">DataType.INT64</code> 。</td></tr>
-<tr><td><code translate="no">Array&lt;Float/Double&gt;</code></td><td>受支持</td><td>将子字段定义为<code translate="no">DataType.FLOAT</code> 或<code translate="no">DataType.DOUBLE</code> 。</td></tr>
-<tr><td><code translate="no">Array&lt;VarChar&gt;</code></td><td>受支持</td><td>将子字段定义为<code translate="no">DataType.VARCHAR</code> ，并设置<code translate="no">max_length</code> 。</td></tr>
-<tr><td><code translate="no">ArrayOfVector&lt;FloatVector&gt;</code></td><td>受支持</td><td>将子字段定义为<code translate="no">DataType.FLOAT_VECTOR</code> ，并设置<code translate="no">dim</code> 。</td></tr>
-<tr><td><code translate="no">ArrayOfVector&lt;Float16Vector&gt;</code></td><td>受支持</td><td>将子字段定义为<code translate="no">DataType.FLOAT16_VECTOR</code> ，并设置<code translate="no">dim</code> 。</td></tr>
-<tr><td><code translate="no">ArrayOfVector&lt;BFloat16Vector&gt;</code></td><td>受支持</td><td>将子字段定义为<code translate="no">DataType.BFLOAT16_VECTOR</code> ，并设置<code translate="no">dim</code> 。</td></tr>
-<tr><td><code translate="no">ArrayOfVector&lt;Int8Vector&gt;</code></td><td>受支持</td><td>将子字段定义为<code translate="no">DataType.INT8_VECTOR</code> ，并设置<code translate="no">dim</code> 。</td></tr>
-<tr><td><code translate="no">ArrayOfVector&lt;BinaryVector&gt;</code></td><td>受支持</td><td>将子字段定义为<code translate="no">DataType.BINARY_VECTOR</code> ，并设置<code translate="no">dim</code> 。</td></tr>
-<tr><td><code translate="no">ArrayOfVector&lt;SparseFloatVector&gt;</code></td><td>不支持</td><td>StructArray 字段不支持稀疏向量子场。</td></tr>
-<tr><td><code translate="no">Array&lt;String&gt;</code></td><td>不支持</td><td>请使用 `<code translate="no">VARCHAR</code>`，而非 `<code translate="no">String</code>`。</td></tr>
-<tr><td><code translate="no">Array&lt;JSON&gt;</code></td><td>不支持</td><td>StructArray 字段不支持 JSON 子字段。</td></tr>
-<tr><td><code translate="no">Array&lt;Geometry&gt;</code></td><td>不支持</td><td>StructArray 字段不支持几何子字段和 GIS 函数。</td></tr>
-<tr><td><code translate="no">Array&lt;Text&gt;</code></td><td>不支持</td><td>StructArray 字段不支持文本子字段。</td></tr>
-<tr><td><code translate="no">Array&lt;Timestamptz&gt;</code></td><td>不支持</td><td>StructArray 字段不支持 Timestamptz 子字段和特定时间的表达式。</td></tr>
-<tr><td><code translate="no">Array&lt;Array&gt;</code></td><td>在 Milvus 3.0.6 及更高版本中受支持</td><td>将子字段定义为<code translate="no">DataType.ARRAY</code> ，其中包含标量<code translate="no">element_type</code> ，并为内部数组设置<code translate="no">max_capacity</code> 。这样，每个Struct元素便包含一个内部数组。将该子字段的<code translate="no">nullable=True</code> 设置为允许空内部数组，并将<code translate="no">element_nullable=True</code> 设置为允许内部包含空值。</td></tr>
-<tr><td><code translate="no">Array</code> <code translate="no">Array</code> 、 、 、向量、 ，或<code translate="no">Array</code> <code translate="no">Array</code> <code translate="no">Struct</code> <code translate="no">ArrayOfStruct</code></td><td>不支持</td><td>结构体内的数组嵌套仅限一层，内部数组不能包含向量，且不支持嵌套的结构体或数组-结构体子字段。</td></tr>
+<tr><td><code translate="no">Array&lt;Bool&gt;</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.BOOL</code>.</td></tr>
+<tr><td><code translate="no">Array&lt;Int8/Int16/Int32/Int64&gt;</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.INT8</code>, <code translate="no">DataType.INT16</code>, <code translate="no">DataType.INT32</code>, or <code translate="no">DataType.INT64</code>.</td></tr>
+<tr><td><code translate="no">Array&lt;Float/Double&gt;</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.FLOAT</code> or <code translate="no">DataType.DOUBLE</code>.</td></tr>
+<tr><td><code translate="no">Array&lt;VarChar&gt;</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.VARCHAR</code> and set <code translate="no">max_length</code>.</td></tr>
+<tr><td><code translate="no">ArrayOfVector&lt;FloatVector&gt;</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.FLOAT_VECTOR</code> and set <code translate="no">dim</code>.</td></tr>
+<tr><td><code translate="no">ArrayOfVector&lt;Float16Vector&gt;</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.FLOAT16_VECTOR</code> and set <code translate="no">dim</code>.</td></tr>
+<tr><td><code translate="no">ArrayOfVector&lt;BFloat16Vector&gt;</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.BFLOAT16_VECTOR</code> and set <code translate="no">dim</code>.</td></tr>
+<tr><td><code translate="no">ArrayOfVector&lt;Int8Vector&gt;</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.INT8_VECTOR</code> and set <code translate="no">dim</code>.</td></tr>
+<tr><td><code translate="no">ArrayOfVector&lt;BinaryVector&gt;</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.BINARY_VECTOR</code> and set <code translate="no">dim</code>.</td></tr>
+<tr><td><code translate="no">ArrayOfVector&lt;SparseFloatVector&gt;</code></td><td>Not supported</td><td>Sparse vector subfields are not supported in StructArray fields.</td></tr>
+<tr><td><code translate="no">Array&lt;String&gt;</code></td><td>Not supported</td><td>Use <code translate="no">VARCHAR</code>, not <code translate="no">String</code>.</td></tr>
+<tr><td><code translate="no">Array&lt;JSON&gt;</code></td><td>Not supported</td><td>JSON subfields are not supported in StructArray fields.</td></tr>
+<tr><td><code translate="no">Array&lt;Geometry&gt;</code></td><td>Not supported</td><td>Geometry subfields and GIS functions are not supported in StructArray fields.</td></tr>
+<tr><td><code translate="no">Array&lt;Text&gt;</code></td><td>Not supported</td><td>Text subfields are not supported in StructArray fields.</td></tr>
+<tr><td><code translate="no">Array&lt;Timestamptz&gt;</code></td><td>Not supported</td><td>Timestamptz subfields and time-specific expressions are not supported in StructArray fields.</td></tr>
+<tr><td><code translate="no">Array&lt;Array&gt;</code></td><td>Supported in Milvus 3.0.6 and later</td><td>Define the subfield as <code translate="no">DataType.ARRAY</code> with a scalar <code translate="no">element_type</code> and a <code translate="no">max_capacity</code> for the inner array. Each Struct element then holds one inner array. Set <code translate="no">nullable=True</code> on the subfield to allow a null inner array and <code translate="no">element_nullable=True</code> to allow null values inside it.</td></tr>
+<tr><td><code translate="no">Array</code> of <code translate="no">Array</code> of <code translate="no">Array</code>, <code translate="no">Array</code> of vectors, <code translate="no">Struct</code>, or <code translate="no">ArrayOfStruct</code></td><td>Not supported</td><td>Array nesting inside a Struct is limited to one level, the inner array cannot hold vectors, and nested Struct or Array-of-Struct subfields are not supported.</td></tr>
 </tbody>
 </table>
-<h2 id="Nullable-and-dynamic-schema-limits" class="common-anchor-header">可为空和动态Schema的限制<button data-href="#Nullable-and-dynamic-schema-limits" class="anchor-icon" translate="no">
+<h2 id="Nullable-and-dynamic-schema-limits" class="common-anchor-header">Nullable and dynamic schema limits<button data-href="#Nullable-and-dynamic-schema-limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -144,30 +145,30 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>下表描述了可空 StructArray 的行为以及动态 StructArray 字段的添加，但须遵守下方的可用性声明：</p>
+    </button></h2><p>The following table describes nullable StructArray behavior and dynamic StructArray field addition, subject to the availability statement below:</p>
 <table>
 <thead>
-<tr><th>功能</th><th>限制</th></tr>
+<tr><th>Capability</th><th>Limit</th></tr>
 </thead>
 <tbody>
-<tr><td>可空 StructArray 字段</td><td>在遵守以下可用性声明的前提下，请在 StructArray 父对象上设置 `<code translate="no">nullable=True</code> `；请勿单独将 Struct 子字段配置为可空。</td></tr>
-<tr><td>Python 中的 NULL 值</td><td>在 Python 中，请使用 `<code translate="no">None</code> ` 插入空的 StructArray 值。请勿使用 `<code translate="no">Null</code> ` 或 `<code translate="no">null</code>`。</td></tr>
-<tr><td>空值作用域</td><td>NULL 适用于整个 StructArray 字段。例如，<code translate="no">chunks=None</code> 仅在<code translate="no">chunks</code> 可为空时才有效。</td></tr>
-<tr><td>部分为空的 StructArray 值</td><td>当 StructArray 字段包含有效的数组值时，请勿在同一值中将空子字段数组与有效的子字段数组混合使用。</td></tr>
-<tr><td>元素级空值</td><td>在 Milvus 3.0.6 及更高版本中支持。标量、向量或<code translate="no">ARRAY</code> 子字段可允许其单个 Struct 元素为空值：标量或向量子字段上设置<code translate="no">nullable=True</code> ，<code translate="no">ARRAY</code> 子字段上设置<code translate="no">element_nullable=True</code> 。行级<code translate="no">nullable</code> 设置仍来自 StructArray 父对象；在子字段上设置<code translate="no">nullable=True</code> 仅启用元素级空值，而非行级空值。</td></tr>
-<tr><td>Struct 元素为空</td><td>Struct元素本身不能为空，例如<code translate="no">[null, {...}]</code> 。请将该元素的子字段值设置为空。</td></tr>
-<tr><td>省略的子字段</td><td>从 Milvus 3.0.6 开始，您可以从 Struct 元素中省略一个允许为空的子字段，Milvus 会为其存储 null 值。不允许为空的子字段必须出现在每个 Struct 元素中。在早期版本中，每个 Struct 元素都必须提供所有子字段。</td></tr>
-<tr><td>动态添加 StructArray 字段</td><td>受下文可用性声明的约束。</td></tr>
-<tr><td>动态添加的空值要求</td><td>添加到现有 Collection 中的 StructArray 字段必须为可空，因为现有实体对于该新字段尚无值。</td></tr>
-<tr><td>动态添加后的现有实体</td><td>现有实体对于已添加的 StructArray 字段将返回 `<code translate="no">null</code> `。</td></tr>
-<tr><td>动态添加子字段</td><td>Milvus 3.0.6及更高版本支持此功能。新增子字段必须使用<code translate="no">nullable=True</code> 创建；新增的<code translate="no">ARRAY</code> 子字段还会将内层数组中的空值标记为<code translate="no">element_nullable=True</code> 。现有实体在其每个Struct元素中的新子字段上返回null，而StructArray字段为null的实体仍保持null状态。</td></tr>
+<tr><td>Nullable StructArray field</td><td>Subject to the availability statement below, set <code translate="no">nullable=True</code> on the StructArray parent; do not configure Struct subfields as nullable independently.</td></tr>
+<tr><td>NULL value in Python</td><td>Use <code translate="no">None</code> to insert a null StructArray value in Python. Do not use <code translate="no">Null</code> or <code translate="no">null</code>.</td></tr>
+<tr><td>Null scope</td><td>NULL applies to the whole StructArray field. For example, <code translate="no">chunks=None</code> is valid only when <code translate="no">chunks</code> is nullable.</td></tr>
+<tr><td>Partially null StructArray value</td><td>When a StructArray field contains a valid array value, do not mix null subfield arrays with valid subfield arrays in the same value.</td></tr>
+<tr><td>Element-level null</td><td>Supported in Milvus 3.0.6 and later. A scalar, vector, or <code translate="no">ARRAY</code> subfield can allow a null value in individual Struct elements: <code translate="no">nullable=True</code> on a scalar or vector subfield, <code translate="no">element_nullable=True</code> on an <code translate="no">ARRAY</code> subfield. The row-level <code translate="no">nullable</code> setting still comes from the StructArray parent; setting <code translate="no">nullable=True</code> on a subfield enables element-level null, not row-level null.</td></tr>
+<tr><td>Null Struct element</td><td>A Struct element itself cannot be null, such as <code translate="no">[null, {...}]</code>. Set the subfield values of the element to null instead.</td></tr>
+<tr><td>Omitted subfields</td><td>Starting in Milvus 3.0.6, you can omit an element-nullable subfield from a Struct element, and Milvus stores null for it. A subfield that is not element-nullable must be present in every Struct element. In earlier versions, every Struct element must provide every subfield.</td></tr>
+<tr><td>Dynamic add StructArray field</td><td>Subject to the availability statement below.</td></tr>
+<tr><td>Nullable requirement for dynamic add</td><td>A StructArray field added to an existing collection must be nullable because existing entities have no value for the new field.</td></tr>
+<tr><td>Existing entities after dynamic add</td><td>Existing entities return <code translate="no">null</code> for the added StructArray field.</td></tr>
+<tr><td>Dynamic add subfield</td><td>Supported in Milvus 3.0.6 and later. An added subfield must be created with <code translate="no">nullable=True</code>; an added <code translate="no">ARRAY</code> subfield additionally takes <code translate="no">element_nullable=True</code> for null values inside the inner array. Existing entities return null for the new subfield in each of their Struct elements, and entities whose StructArray field is null stay null.</td></tr>
 </tbody>
 </table>
-<p>Milvus 3.0.0 及后续版本在独立部署和分布式部署中均支持可为空的 StructArray 字段、可为空的向量数组以及动态添加 StructArray 字段。较早版本的 Milvus 不支持这些功能。</p>
-<p>Milvus 3.0.6 及后续版本还支持元素级空值、标量型 `<code translate="no">ARRAY</code> ` 子字段，以及对现有 `StructArray` 字段添加或删除子字段。这些功能需要 Storage V2 支持，且在外部 Collection 中不可用。</p>
-<p>在 Zilliz Cloud 中，这些功能可在运行 Milvus 3.0.0 或更高版本的按需集群上使用。服务集群不支持这些功能。</p>
-<p>有关可为空的 StructArray 字段的插入示例，请参阅《<a href="/docs/zh/insert-data-into-structarray-fields.md">向 StructArray 字段插入数据</a>》。</p>
-<h2 id="Insert-limits" class="common-anchor-header">插入限制<button data-href="#Insert-limits" class="anchor-icon" translate="no">
+<p>Milvus 3.0.0 and later releases support nullable StructArray fields, nullable vector arrays, and dynamic StructArray field addition in both Standalone and Distributed deployments. Earlier Milvus versions do not support these capabilities.</p>
+<p>Milvus 3.0.6 and later releases additionally support element-level null values, scalar <code translate="no">ARRAY</code> subfields, and adding or dropping subfields of an existing StructArray field. These capabilities require Storage V2 and are not available in external collections.</p>
+<p>In Zilliz Cloud, these capabilities are available on On-Demand Clusters running Milvus 3.0.0 or later. Serving Clusters do not support them.</p>
+<p>For insert examples with nullable StructArray fields, see <a href="/docs/zh/insert-data-into-structarray-fields.md">Insert Data into StructArray Fields</a>.</p>
+<h2 id="Insert-limits" class="common-anchor-header">Insert limits<button data-href="#Insert-limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -182,21 +183,21 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>StructArray 插入有效负载受以下限制：</p>
+    </button></h2><p>StructArray insert payloads have the following limits:</p>
 <table>
 <thead>
-<tr><th>限制</th><th>详细信息</th></tr>
+<tr><th>Limit</th><th>Details</th></tr>
 </thead>
 <tbody>
-<tr><td>有效载荷形状</td><td>将 StructArray 字段作为 Struct 对象的数组进行插入，例如<code translate="no">chunks: [{&quot;text&quot;: &quot;...&quot;, &quot;emb&quot;: [...]}]</code> 。</td></tr>
-<tr><td>子字段名称</td><td>在每个 Struct 对象内部，请使用子字段名称（例如<code translate="no">text</code> 和<code translate="no">emb</code> ），而不是路径（例如<code translate="no">chunks[text]</code> ）。</td></tr>
-<tr><td>Schema对齐</td><td>每个 Struct 元素必须符合 Struct Schema。从 Milvus 3.0.6 开始，Struct 元素中的可为空子字段可以省略，或将其设置为<code translate="no">null</code> 。</td></tr>
-<tr><td>容量</td><td>一个实体中的 Struct 元素数量不得超过<code translate="no">max_capacity</code> 。</td></tr>
-<tr><td>向量维度</td><td>向量值必须与为其向量子字段配置的<code translate="no">dim</code> 相匹配。</td></tr>
-<tr><td>搜索模式的重复</td><td>如果您同时需要 EmbeddingList 搜索和元素级搜索，请将向量写入两个独立的向量子字段中。</td></tr>
+<tr><td>Payload shape</td><td>Insert the StructArray field as an array of Struct objects, such as <code translate="no">chunks: [{&quot;text&quot;: &quot;...&quot;, &quot;emb&quot;: [...]}]</code>.</td></tr>
+<tr><td>Subfield names</td><td>Inside each Struct object, use subfield names such as <code translate="no">text</code> and <code translate="no">emb</code>, not paths such as <code translate="no">chunks[text]</code>.</td></tr>
+<tr><td>Schema alignment</td><td>Each Struct element must match the Struct schema. Starting in Milvus 3.0.6, an element-nullable subfield can be omitted or set to <code translate="no">null</code> in a Struct element.</td></tr>
+<tr><td>Capacity</td><td>The number of Struct elements in one entity must not exceed <code translate="no">max_capacity</code>.</td></tr>
+<tr><td>Vector dimensions</td><td>Vector values must match the <code translate="no">dim</code> configured for their vector subfields.</td></tr>
+<tr><td>Search-mode duplication</td><td>If you need both EmbeddingList search and element-level search, write vectors to two separate vector subfields.</td></tr>
 </tbody>
 </table>
-<h2 id="Index-and-metric-limits" class="common-anchor-header">索引和度量限制<button data-href="#Index-and-metric-limits" class="anchor-icon" translate="no">
+<h2 id="Index-and-metric-limits" class="common-anchor-header">Index and metric limits<button data-href="#Index-and-metric-limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -211,21 +212,21 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>StructArray 向量子字段可针对 EmbeddingList 搜索或元素级搜索进行索引。同一个向量子字段不能同时使用这两种度量族，因为每个向量字段或向量子字段仅接受一种索引。这些搜索模式使用以下度量族：</p>
+    </button></h2><p>A StructArray vector subfield can be indexed for either EmbeddingList search or element-level search. The same vector subfield cannot use both metric families because each vector field or vector subfield accepts only one index. The search modes use the following metric families:</p>
 <table>
 <thead>
-<tr><th>搜索模式</th><th>度量族</th><th>结果级别</th></tr>
+<tr><th>Search mode</th><th>Metric family</th><th>Result level</th></tr>
 </thead>
 <tbody>
-<tr><td>EmbeddingList 搜索</td><td><code translate="no">MAX_SIM</code>、<code translate="no">MAX_SIM_COSINE</code> 、<code translate="no">MAX_SIM_IP</code> 、<code translate="no">MAX_SIM_L2</code> 或二进制<code translate="no">MAX_SIM_*</code> 度量</td><td>实体级结果。</td></tr>
-<tr><td>元素级搜索</td><td>常规向量指标，例如<code translate="no">L2</code> 、<code translate="no">IP</code> 、<code translate="no">COSINE</code> 、<code translate="no">HAMMING</code> 或<code translate="no">JACCARD</code></td><td>可包含匹配元素偏移量的元素级结果。</td></tr>
+<tr><td>EmbeddingList search</td><td><code translate="no">MAX_SIM</code>, <code translate="no">MAX_SIM_COSINE</code>, <code translate="no">MAX_SIM_IP</code>, <code translate="no">MAX_SIM_L2</code>, or binary <code translate="no">MAX_SIM_*</code> metrics</td><td>Entity-level results.</td></tr>
+<tr><td>Element-level search</td><td>Regular vector metrics such as <code translate="no">L2</code>, <code translate="no">IP</code>, <code translate="no">COSINE</code>, <code translate="no">HAMMING</code>, or <code translate="no">JACCARD</code></td><td>Element-level results that can include the matched element offset.</td></tr>
 </tbody>
 </table>
-<p>当需要同时使用这两种模式时，请使用单独的向量字段。例如，使用<code translate="no">chunks[emb_list_vector]</code> 进行 EmbeddingList 搜索，使用<code translate="no">chunks[emb]</code> 进行元素级搜索。</p>
-<p>StructArray 向量子字段计入 Collection 级限制<code translate="no">proxy.maxVectorFieldNum</code> 的向量字段数量，该限制默认值为 10。如果某个 StructArray 字段的向量子字段是 Collection 中唯一的向量字段，则该字段有效；当删除此类字段会导致 Collection 中没有向量字段时，系统将拒绝删除该字段。 请确保向量字段和向量子字段的总数在目标版本和服务层级的限制范围内。</p>
-<p>从 Milvus 3.0.6 开始，元素可为空的向量子字段仅支持使用常规向量指标进行元素级搜索。<code translate="no">MAX_SIM*</code> 指标、EmbeddingList 索引以及 EmbeddingList 搜索在元素可为空的向量子字段上将被拒绝，且<code translate="no">AUTOINDEX</code> 不会为其选择<code translate="no">MAX_SIM*</code> 指标。 空向量不参与搜索。标量索引不支持在允许元素为空的子字段或标量<code translate="no">ARRAY</code> 子字段上使用。</p>
-<p>有关受支持的索引类型和度量类型的矩阵，请参阅《<a href="/docs/zh/index-structarray-fields.md">StructArray 字段的索引》</a>。</p>
-<h2 id="Search-limits" class="common-anchor-header">搜索限制<button data-href="#Search-limits" class="anchor-icon" translate="no">
+<p>Use separate vector subfields when both modes are required. For example, use <code translate="no">chunks[emb_list_vector]</code> for EmbeddingList search and <code translate="no">chunks[emb]</code> for element-level search.</p>
+<p>StructArray vector subfields count as vector fields toward the collection-level limit <code translate="no">proxy.maxVectorFieldNum</code>, which defaults to 10. A StructArray field whose vector subfields are the collection’s only vector fields is valid, and dropping such a field is rejected when it would leave the collection without a vector field. Keep the total number of vector fields and vector subfields within the limits of your target version and service tier.</p>
+<p>Starting in Milvus 3.0.6, an element-nullable vector subfield supports only element-level search with regular vector metrics. <code translate="no">MAX_SIM*</code> metrics, EmbeddingList indexes, and EmbeddingList search are rejected on element-nullable vector subfields, and <code translate="no">AUTOINDEX</code> does not select a <code translate="no">MAX_SIM*</code> metric for them. Null vectors do not participate in search. Scalar indexes are not supported on element-nullable subfields or on scalar <code translate="no">ARRAY</code> subfields.</p>
+<p>For the supported index-type and metric-type matrix, see <a href="/docs/zh/index-structarray-fields.md">Index StructArray Fields</a>.</p>
+<h2 id="Search-limits" class="common-anchor-header">Search limits<button data-href="#Search-limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -240,21 +241,21 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>StructArray 的搜索行为存在以下限制：</p>
+    </button></h2><p>StructArray search behavior has the following limits:</p>
 <table>
 <thead>
-<tr><th>搜索行为</th><th>支持与限制</th></tr>
+<tr><th>Search behavior</th><th>Support and limits</th></tr>
 </thead>
 <tbody>
-<tr><td>基本 EmbeddingList 搜索</td><td>支持基于<code translate="no">MAX_SIM*</code> 度量进行索引的StructArray向量。返回实体级别的结果。</td></tr>
-<tr><td>基本元素级搜索</td><td>支持在采用常规向量度量作为索引的 StructArray 向量子字段上进行搜索。可返回匹配元素的偏移量。</td></tr>
-<tr><td>范围搜索</td><td>根据搜索模式以及目标版本对索引/度量的支持情况而定。关于元素级 StructArray 请求中混合搜索范围的行为，请查阅您的目标版本。</td></tr>
-<tr><td>分组搜索</td><td>元素级分组搜索可返回偏移量。针对元素级 StructArray 请求的混合搜索分组行为受版本限制。</td></tr>
-<tr><td>混合搜索</td><td>混合搜索请求仅在目标版本支持该搜索组合时，才可包含 StructArray 向量子场请求。每个请求仍遵循已建立索引的向量子场所属的度量家族。</td></tr>
-<tr><td>偏移量输出</td><td>元素级搜索结果支持偏移量。EmbeddingList 搜索返回实体级结果，且不使用元素偏移量作为主要结果单位。</td></tr>
+<tr><td>Basic EmbeddingList search</td><td>Supported on StructArray vector subfields indexed with <code translate="no">MAX_SIM*</code> metrics. Returns entity-level results.</td></tr>
+<tr><td>Basic element-level search</td><td>Supported on StructArray vector subfields indexed with regular vector metrics. Can return matched element offsets.</td></tr>
+<tr><td>Range search</td><td>Supported according to the search mode and index/metric support of the target version. For hybrid search range behavior on element-level StructArray requests, check your target version.</td></tr>
+<tr><td>Grouping search</td><td>Element-level grouping search can return offsets. Hybrid search group-by behavior for element-level StructArray requests is version-gated.</td></tr>
+<tr><td>Hybrid search</td><td>A hybrid search request can include StructArray vector subfield requests only where the target version supports that search combination. Each request still follows the metric family of the indexed vector subfield.</td></tr>
+<tr><td>Offset output</td><td>Offset is available for element-level search results. EmbeddingList search returns entity-level results and does not use element offsets as the primary result unit.</td></tr>
 </tbody>
 </table>
-<h2 id="Filter-and-operator-limits" class="common-anchor-header">过滤器和操作符限制<button data-href="#Filter-and-operator-limits" class="anchor-icon" translate="no">
+<h2 id="Filter-and-operator-limits" class="common-anchor-header">Filter and operator limits<button data-href="#Filter-and-operator-limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -269,25 +270,25 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>StructArray 的标量过滤由 StructArray 操作符处理，例如 `<code translate="no">element_filter</code> ` 和 `<code translate="no">MATCH_*</code> ` 系列。详细的谓词支持矩阵请参见<a href="/docs/zh/struct-array-operators.md">StructArray 操作符部分</a>。</p>
-<p>总体而言：</p>
+    </button></h2><p>StructArray scalar filtering is handled by StructArray operators, such as <code translate="no">element_filter</code> and the <code translate="no">MATCH_*</code> family. The detailed predicate support matrix belongs in <a href="/docs/zh/struct-array-operators.md">StructArray Operators</a>.</p>
+<p>At a high level:</p>
 <ul>
-<li><p>仅在 StructArray 操作符内部使用 `<code translate="no">$[subfield]</code> `。</p></li>
-<li><p>行级过滤表达式也可以直接引用 StructArray 路径：<code translate="no">chunks[0][section]</code> 用于单个元素位置，<code translate="no">array_length(chunks)</code> 用于元素计数，<code translate="no">array_contains(chunks[section], ...)</code> 用于跨元素的子字段值，<code translate="no">chunks is null</code> 用于可为空的 StructArray 字段。</p></li>
-<li><p>请使用标量子字段作为标量谓词的输入。</p></li>
-<li><p>请勿将向量字段用作<code translate="no">$[...]</code> 标量谓词的输入。</p></li>
+<li><p>Use <code translate="no">$[subfield]</code> only inside StructArray operators.</p></li>
+<li><p>Row-level filter expressions can also reference StructArray paths directly: <code translate="no">chunks[0][section]</code> for one element position, <code translate="no">array_length(chunks)</code> for the element count, <code translate="no">array_contains(chunks[section], ...)</code> for subfield values across elements, and <code translate="no">chunks is null</code> on a nullable StructArray field.</p></li>
+<li><p>Use scalar subfields for scalar predicates.</p></li>
+<li><p>Do not use vector subfields as <code translate="no">$[...]</code> scalar predicate inputs.</p></li>
 </ul>
 <ul>
-<li>StructArray 元素级谓词不支持 JSON 路径语法、JSON 函数、文本匹配函数、几何/GIS 函数以及 Timestamptz 表达式。从 Milvus 3.0.6 开始，在<code translate="no">$[subfield]</code> 上，<code translate="no">array_contains</code> 、<code translate="no">array_contains_any</code> 、<code translate="no">array_contains_all</code> 和<code translate="no">array_length</code> 适用于标量<code translate="no">ARRAY</code> 子字段，而<code translate="no">$[subfield] is null</code> /<code translate="no">is not null</code> 适用于所有子字段类型。</li>
+<li>JSON path syntax, JSON functions, text match functions, Geometry / GIS functions, and Timestamptz expressions are not supported for StructArray element-level predicates. Starting in Milvus 3.0.6, <code translate="no">array_contains</code>, <code translate="no">array_contains_any</code>, <code translate="no">array_contains_all</code>, and <code translate="no">array_length</code> are supported on <code translate="no">$[subfield]</code> for scalar <code translate="no">ARRAY</code> subfields, and <code translate="no">$[subfield] is null</code> / <code translate="no">is not null</code> is supported for every subfield type.</li>
 </ul>
 <ul>
-<li>从 Milvus 3.0.6 开始，Struct 元素中的子字段值为 null 时，该元素的谓词结果为未知而非 false。<code translate="no">element_filter</code> 仅保留谓词为 true 的元素，而<code translate="no">MATCH_*</code> 将未知元素计为未匹配。详情请参阅<a href="/docs/zh/struct-array-operators.md">StructArray 运算符</a>。</li>
+<li>Starting in Milvus 3.0.6, a null subfield value in a Struct element makes the element predicate unknown rather than false. <code translate="no">element_filter</code> keeps only elements whose predicate is true, and <code translate="no">MATCH_*</code> counts an unknown element as a miss. For details, see <a href="/docs/zh/struct-array-operators.md">StructArray Operators</a>.</li>
 </ul>
 <ul>
-<li>建议使用显式的布尔比较（如 `<code translate="no">$[has_code] == true</code> `），而非直接使用布尔表达式。</li>
+<li>Prefer explicit boolean comparisons such as <code translate="no">$[has_code] == true</code> instead of bare boolean expressions.</li>
 </ul>
 <p><a id="Import-limits"></a></p>
-<h2 id="Import-and-storage-limits" class="common-anchor-header">导入和存储限制<button data-href="#Import-and-storage-limits" class="anchor-icon" translate="no">
+<h2 id="Import-and-storage-limits" class="common-anchor-header">Import and storage limits<button data-href="#Import-and-storage-limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -304,17 +305,17 @@ summary: >-
       </svg>
     </button></h2><table>
 <thead>
-<tr><th>限制</th><th>详细信息</th></tr>
+<tr><th>Limit</th><th>Details</th></tr>
 </thead>
 <tbody>
-<tr><td>源文件格式</td><td>JSON、JSONL、CSV 和 Parquet 文件可以包含 StructArray 字段。NumPy 文件为每个顶级字段仅包含一个文件，且无法提供 StructArray 数据；对于包含 StructArray 字段的 Collection，请使用 JSON、CSV 或 Parquet 文件。有关文件形状的信息，请参阅<a href="/docs/zh/prepare-source-data.md#StructArray-fields-in-source-files">“准备源数据”</a>。</td></tr>
-<tr><td>存储格式</td><td><code translate="no">ARRAY</code> 允许元素为空的子字段以及标量<code translate="no">ARRAY</code> 子字段需要使用Storage V2。对于使用这些子字段的Collection，Storage V1无法正常处理：创建Collection和插入数据时看似成功，但在刷新时数据会失败，这属于不受支持的状态。 当<code translate="no">common.storage.enableGrowingSourceFlush</code> 设置为<code translate="no">true</code> 时，Storage V3会拒绝使用元素可为空子字段或标量 子字段的请求。</td></tr>
-<tr><td>External Collections</td><td>外部 Collection 不支持元素可为空的子字段和标量<code translate="no">ARRAY</code> 子字段。</td></tr>
-<tr><td>备份和快照导入</td><td>对于包含元素可为空子字段或标量<code translate="no">ARRAY</code> 子字段的 Collection，将拒绝二进制日志导入（例如备份还原）和快照源导入。</td></tr>
-<tr><td>降级</td><td>包含元素可为空子字段或标量<code translate="no">ARRAY</code> 子字段的Collections无法在Milvus 3.0.6之前的版本上运行。在旧版本上重放写入前日志会导致系统崩溃。重新升级至Milvus 3.0.6或更高版本可恢复数据。</td></tr>
+<tr><td>Source file formats</td><td>JSON, JSONL, CSV, and Parquet files can carry StructArray fields. NumPy files hold one file per top-level field and cannot provide StructArray data; use JSON, CSV, or Parquet files for collections that have a StructArray field. For file shapes, see <a href="/docs/zh/prepare-source-data.md#StructArray-fields-in-source-files">Prepare Source Data</a>.</td></tr>
+<tr><td>Storage format</td><td>Element-nullable subfields and scalar <code translate="no">ARRAY</code> subfields require Storage V2. Storage V1 cannot be reached for collections that use these subfields: creating the collection and inserting data can appear to succeed, but the data fails at flush, which is not a supported state. Storage V3 with <code translate="no">common.storage.enableGrowingSourceFlush</code> set to <code translate="no">true</code> rejects requests that use element-nullable subfields or scalar <code translate="no">ARRAY</code> subfields.</td></tr>
+<tr><td>External collections</td><td>Element-nullable subfields and scalar <code translate="no">ARRAY</code> subfields are not supported in external collections.</td></tr>
+<tr><td>Backup and snapshot import</td><td>Binlog import, such as a backup restore, and snapshot-source import are rejected for collections that have element-nullable subfields or scalar <code translate="no">ARRAY</code> subfields.</td></tr>
+<tr><td>Downgrade</td><td>Collections that have element-nullable subfields or scalar <code translate="no">ARRAY</code> subfields cannot run on a release earlier than Milvus 3.0.6. Replaying the write-ahead log on the older release panics. Re-upgrading to Milvus 3.0.6 or later recovers the data.</td></tr>
 </tbody>
 </table>
-<h2 id="Related-pages" class="common-anchor-header">相关页面<button data-href="#Related-pages" class="anchor-icon" translate="no">
+<h2 id="Related-pages" class="common-anchor-header">Related pages<button data-href="#Related-pages" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -330,8 +331,8 @@ summary: >-
         ></path>
       </svg>
     </button></h2><ol>
-<li><p>要创建 StructArray 字段，请参阅《<a href="/docs/zh/create-structarray-field.md">创建 StructArray 字段》</a>。</p></li>
-<li><p>要插入数据，请参阅《<a href="/docs/zh/insert-data-into-structarray-fields.md">将数据插入 StructArray 字段</a>》。</p></li>
-<li><p>要创建向量和标量索引，请参阅《为<a href="/docs/zh/index-structarray-fields.md">StructArray 字段建立索引</a>》。</p></li>
-<li><p>要查看 StructArray 过滤器语法，请参阅《<a href="/docs/zh/struct-array-operators.md">StructArray 操作符</a>》。</p></li>
+<li><p>To create a StructArray field, read <a href="/docs/zh/create-structarray-field.md">Create a StructArray Field</a>.</p></li>
+<li><p>To insert data, read <a href="/docs/zh/insert-data-into-structarray-fields.md">Insert Data into StructArray Fields</a>.</p></li>
+<li><p>To create vector and scalar indexes, read <a href="/docs/zh/index-structarray-fields.md">Index StructArray Fields</a>.</p></li>
+<li><p>To review StructArray filter syntax, read <a href="/docs/zh/struct-array-operators.md">StructArray Operators</a>.</p></li>
 </ol>

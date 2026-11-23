@@ -1,9 +1,11 @@
 ---
 id: standard-tokenizer.md
-title: 標準トークナイザー
-summary: Milvus の標準のトークナイザーは、連続する Unicode 文字や数字をトークンにまとめ、それ以外の文字で分割します。
+title: Standard Tokenizer
+summary: >-
+  The standard tokenizer in Milvus groups consecutive Unicode letters and
+  numeric characters into tokens, splitting at other characters.
 ---
-<h1 id="Standard-Tokenizer" class="common-anchor-header">標準トークナイザー<button data-href="#Standard-Tokenizer" class="anchor-icon" translate="no">
+<h1 id="Standard-Tokenizer" class="common-anchor-header">Standard Tokenizer<button data-href="#Standard-Tokenizer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,8 +20,8 @@ summary: Milvus の標準のトークナイザーは、連続する Unicode 文�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Milvusの<code translate="no">standard</code> トークナイザーは、連続するUnicode文字および数字をトークンにグループ化し、それ以外の文字で分割します。</p>
-<h2 id="Tokenization-rules" class="common-anchor-header">トークン化ルール<button data-href="#Tokenization-rules" class="anchor-icon" translate="no">
+    </button></h1><p>The <code translate="no">standard</code> tokenizer in Milvus groups consecutive Unicode letters and numeric characters into tokens, splitting at other characters.</p>
+<h2 id="Tokenization-rules" class="common-anchor-header">Tokenization rules<button data-href="#Tokenization-rules" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -34,28 +36,28 @@ summary: Milvus の標準のトークナイザーは、連続する Unicode 文�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">standard</code> トークナイザーは、以下のセットに属する連続する文字を同じトークン内に保持します：</p>
+    </button></h2><p>The <code translate="no">standard</code> tokenizer keeps consecutive characters that belong to the following sets in the same token:</p>
 <ul>
-<li><strong>ASCII 文字：</strong>アルファベット<code translate="no">A-Z</code> および<code translate="no">a-z</code> 、ならびに数字<code translate="no">0-9</code> 。</li>
-<li><strong>非ASCII文字：</strong>Unicodeの<code translate="no">Alphabetic</code> プロパティを持つ文字、または数値の一般カテゴリ<code translate="no">Nd</code> 、<code translate="no">Nl</code> 、<code translate="no">No</code> のいずれかに属する文字。</li>
+<li><strong>ASCII characters:</strong> letters <code translate="no">A-Z</code> and <code translate="no">a-z</code>, and digits <code translate="no">0-9</code>.</li>
+<li><strong>Non-ASCII characters:</strong> characters with the Unicode <code translate="no">Alphabetic</code> property or one of the numeric general categories <code translate="no">Nd</code>, <code translate="no">Nl</code>, or <code translate="no">No</code>.</li>
 </ul>
 <table>
 <thead>
-<tr><th>Unicodeプロパティまたはカテゴリ</th><th>意味</th><th>トークンに保持される文字の例</th></tr>
+<tr><th>Unicode property or category</th><th>Meaning</th><th>Examples of characters retained in tokens</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">Alphabetic</code></td><td>漢字や日本語の仮名を含む、さまざまな文字体系の文字、および一部の結合記号</td><td><code translate="no">中文测试</code>,<code translate="no">カタカナ</code></td></tr>
-<tr><td><code translate="no">Nd</code> (<code translate="no">Decimal_Number</code>)</td><td>10進数の数字</td><td><code translate="no">٣</code></td></tr>
-<tr><td><code translate="no">Nl</code> (<code translate="no">Letter_Number</code>)</td><td>文字のような数値文字</td><td><code translate="no">Ⅷ</code></td></tr>
-<tr><td><code translate="no">No</code> (<code translate="no">Other_Number</code>)</td><td>丸で囲まれた数字、上付き文字、分数などのその他の数値文字</td><td><code translate="no">①²¾</code></td></tr>
+<tr><td><code translate="no">Alphabetic</code></td><td>Letters across writing systems, including Chinese characters and Japanese kana, and some combining marks</td><td><code translate="no">中文测试</code>, <code translate="no">カタカナ</code></td></tr>
+<tr><td><code translate="no">Nd</code> (<code translate="no">Decimal_Number</code>)</td><td>Decimal digits</td><td><code translate="no">٣</code></td></tr>
+<tr><td><code translate="no">Nl</code> (<code translate="no">Letter_Number</code>)</td><td>Letter-like numeric characters</td><td><code translate="no">Ⅷ</code></td></tr>
+<tr><td><code translate="no">No</code> (<code translate="no">Other_Number</code>)</td><td>Other numeric characters, such as circled numbers, superscripts, and fractions</td><td><code translate="no">①²¾</code></td></tr>
 </tbody>
 </table>
-<p>これらのセットに含まれない文字はトークンを区切り、破棄されます。これには、空白、句読点、アンダースコア (<code translate="no">_</code>)、ハイフン (<code translate="no">-</code>)、アポストロフィ (<code translate="no">'</code>)、および<code translate="no">+</code> 、<code translate="no">$</code> 、<code translate="no">😀</code> などの記号が含まれます。連続する区切り文字は、空のトークンを生成しません。</p>
-<p>文字の分類はRustの <a href="https://doc.rust-lang.org/std/primitive.char.html#method.is_alphanumeric"><code translate="no">char::is_alphanumeric()</code></a>に従います。プロパティの定義については、<a href="https://www.unicode.org/reports/tr44/">Unicode標準付属書#44を</a>参照してください。Unicode 17.0の完全な文字リストは <a href="https://www.unicode.org/Public/17.0.0/ucd/DerivedCoreProperties.txt"><code translate="no">DerivedCoreProperties.txt</code></a><code translate="no">Alphabetic</code> および <a href="https://www.unicode.org/Public/17.0.0/ucd/extracted/DerivedGeneralCategory.txt"><code translate="no">DerivedGeneralCategory.txt</code></a><code translate="no">Nd</code> 用、<code translate="no">Nl</code> 用、および<code translate="no">No</code> 用として利用可能です。文字の包含関係は、デプロイされたバージョンで使用されるUnicodeデータに依存します。</p>
-<p>以下の例では、フィルタを適用しない<code translate="no">{&quot;tokenizer&quot;: &quot;standard&quot;}</code> を使用しています。トークナイザーは大文字と小文字を区別し、連続した中国語のテキストを個々の単語に分割しません。</p>
+<p>Characters outside these sets separate tokens and are discarded. These include whitespace, punctuation, underscores (<code translate="no">_</code>), hyphens (<code translate="no">-</code>), apostrophes (<code translate="no">'</code>), and symbols such as <code translate="no">+</code>, <code translate="no">$</code>, and <code translate="no">😀</code>. Consecutive separators do not produce empty tokens.</p>
+<p>Character classification follows Rust’s <a href="https://doc.rust-lang.org/std/primitive.char.html#method.is_alphanumeric"><code translate="no">char::is_alphanumeric()</code></a>. For property definitions, see <a href="https://www.unicode.org/reports/tr44/">Unicode Standard Annex #44</a>. The complete Unicode 17.0 character lists are available in <a href="https://www.unicode.org/Public/17.0.0/ucd/DerivedCoreProperties.txt"><code translate="no">DerivedCoreProperties.txt</code></a> for <code translate="no">Alphabetic</code> and <a href="https://www.unicode.org/Public/17.0.0/ucd/extracted/DerivedGeneralCategory.txt"><code translate="no">DerivedGeneralCategory.txt</code></a> for <code translate="no">Nd</code>, <code translate="no">Nl</code>, and <code translate="no">No</code>. Character membership depends on the Unicode data used by the deployed version.</p>
+<p>The following examples use <code translate="no">{&quot;tokenizer&quot;: &quot;standard&quot;}</code> with no filters. The tokenizer preserves letter case and does not segment continuous Chinese text into individual words.</p>
 <table>
 <thead>
-<tr><th>入力</th><th>出力トークン</th></tr>
+<tr><th>Input</th><th>Output tokens</th></tr>
 </thead>
 <tbody>
 <tr><td><code translate="no">foo_bar-can't😀123</code></td><td><code translate="no">[&quot;foo&quot;, &quot;bar&quot;, &quot;can&quot;, &quot;t&quot;, &quot;123&quot;]</code></td></tr>
@@ -64,7 +66,7 @@ summary: Milvus の標準のトークナイザーは、連続する Unicode 文�
 <tr><td><code translate="no">Hello,World!</code></td><td><code translate="no">[&quot;Hello&quot;, &quot;World&quot;]</code></td></tr>
 </tbody>
 </table>
-<h2 id="Configuration" class="common-anchor-header">設定<button data-href="#Configuration" class="anchor-icon" translate="no">
+<h2 id="Configuration" class="common-anchor-header">Configuration<button data-href="#Configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -79,16 +81,16 @@ summary: Milvus の標準のトークナイザーは、連続する Unicode 文�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">standard</code> トークナイザーを使用してアナライザーを設定するには、<code translate="no">analyzer_params</code> 内で<code translate="no">tokenizer</code> を<code translate="no">standard</code> に設定します。</p>
+    </button></h2><p>To configure an analyzer using the <code translate="no">standard</code> tokenizer, set <code translate="no">tokenizer</code> to <code translate="no">standard</code> in <code translate="no">analyzer_params</code>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>,
@@ -126,16 +128,16 @@ analyzerParams=<span class="hljs-string">&#x27;{
   &quot;tokenizer&quot;: &quot;standard&quot;
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">standard</code> トークナイザーは、1つ以上のフィルターと組み合わせて使用できます。たとえば、次のコードは、<code translate="no">standard</code> トークナイザーと<code translate="no">lowercase</code> フィルターを使用するアナライザーを定義しています。</p>
+<p>The <code translate="no">standard</code> tokenizer can work in conjunction with one or more filters. For example, the following code defines an analyzer that uses the <code translate="no">standard</code> tokenizer and <code translate="no">lowercase</code> filter:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>,
@@ -184,10 +186,10 @@ analyzerParams=<span class="hljs-string">&#x27;{
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>より簡単な設定を行うには、 <a href="/docs/ja/standard-analyzer.md"><code translate="no">standard</code></a><a href="/docs/ja/standard-analyzer.md">アナライザ</a>を使用することもできます。これは、<code translate="no">standard</code> トークナイザと <a href="/docs/ja/lowercase-filter.md"><code translate="no">lowercase</code></a><a href="/docs/ja/lowercase-filter.md"> フィルターを</a>組み合わせたアナライザーを使用することもできます。</p>
+<p>For simpler setup, you may choose to use the <a href="/docs/ja/standard-analyzer.md"><code translate="no">standard</code></a> <a href="/docs/ja/standard-analyzer.md">analyzer</a>, which combines the <code translate="no">standard</code> tokenizer with the <a href="/docs/ja/lowercase-filter.md"><code translate="no">lowercase</code></a><a href="/docs/ja/lowercase-filter.md"> filter</a>.</p>
 </div>
-<p><code translate="no">analyzer_params</code> を定義した後、コレクションスキーマを定義する際に、それらを<code translate="no">VARCHAR</code> フィールドに適用できます。これにより、Milvusはそのフィールド内のテキストを指定されたアナライザーを使用して処理し、効率的なトークン化とフィルタリングを行うことができます。詳細については、<a href="/docs/ja/analyzer-overview.md#Example-use">「使用例」</a>を参照してください。</p>
-<h2 id="Examples" class="common-anchor-header">例<button data-href="#Examples" class="anchor-icon" translate="no">
+<p>After defining <code translate="no">analyzer_params</code>, you can apply them to a <code translate="no">VARCHAR</code> field when defining a collection schema. This allows Milvus to process the text in that field using the specified analyzer for efficient tokenization and filtering. For details, refer to <a href="/docs/ja/analyzer-overview.md#Example-use">Example use</a>.</p>
+<h2 id="Examples" class="common-anchor-header">Examples<button data-href="#Examples" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -202,8 +204,8 @@ analyzerParams=<span class="hljs-string">&#x27;{
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>アナライザの設定をコレクションスキーマに適用する前に、<code translate="no">run_analyzer</code> メソッドを使用してその動作を確認してください。</p>
-<h3 id="Analyzer-configuration" class="common-anchor-header">アナライザの設定<button data-href="#Analyzer-configuration" class="anchor-icon" translate="no">
+    </button></h2><p>Before applying the analyzer configuration to your collection schema, verify its behavior using the <code translate="no">run_analyzer</code> method.</p>
+<h3 id="Analyzer-configuration" class="common-anchor-header">Analyzer configuration<button data-href="#Analyzer-configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -219,14 +221,14 @@ analyzerParams=<span class="hljs-string">&#x27;{
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>,
@@ -275,7 +277,7 @@ analyzerParams=<span class="hljs-string">&#x27;{
   ]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Verification-using-runanalyzer" class="common-anchor-header">以下の方法による検証<code translate="no">run_analyzer</code><button data-href="#Verification-using-runanalyzer" class="anchor-icon" translate="no">
+<h3 id="Verification-using-runanalyzer" class="common-anchor-header">Verification using <code translate="no">run_analyzer</code><button data-href="#Verification-using-runanalyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -291,14 +293,14 @@ analyzerParams=<span class="hljs-string">&#x27;{
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> (
     MilvusClient,
@@ -462,7 +464,7 @@ curl --request POST \
     &quot;analyzerParams&quot;: &quot;{\&quot;tokenizer\&quot;: \&quot;standard\&quot;, \&quot;filter\&quot;: [\&quot;lowercase\&quot;]}&quot;
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Expected-output" class="common-anchor-header">期待される出力<button data-href="#Expected-output" class="anchor-icon" translate="no">
+<h3 id="Expected-output" class="common-anchor-header">Expected output<button data-href="#Expected-output" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"

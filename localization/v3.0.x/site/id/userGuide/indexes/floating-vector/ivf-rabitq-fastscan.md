@@ -2,9 +2,8 @@
 id: ivf-rabitq-fastscan.md
 title: IVF_RABITQ_FASTSCANCompatible with Milvus 3.0.x
 summary: >-
-  IVF_RABITQ_FASTSCAN menggabungkan IVF, kuantisasi biner RaBitQ, dan pemindaian
-  batch SIMD untuk menghadirkan pencarian vektor yang hemat memori dan
-  berkapasitas tinggi.
+  IVF_RABITQ_FASTSCAN combines IVF, RaBitQ binary quantization, and SIMD batch
+  scanning to provide memory-efficient, high-throughput vector search.
 beta: Milvus 3.0.x
 ---
 <h1 id="IVFRABITQFASTSCAN" class="common-anchor-header">IVF_RABITQ_FASTSCAN<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#IVFRABITQFASTSCAN" class="anchor-icon" translate="no">
@@ -22,9 +21,9 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p><code translate="no">IVF_RABITQ_FASTSCAN</code> menggabungkan pemisahan IVF, kuantisasi biner RaBitQ, dan pemrosesan batch FastScan. Algoritma ini menyimpan kode RaBitQ satu bit untuk vektor basis data dan memproses kode-kode tersebut dalam blok-blok yang ramah SIMD yang terdiri dari 32 vektor basis data. Hal ini menjadikannya pilihan yang tepat untuk beban kerja dengan throughput tinggi dan keterbatasan memori yang dapat menerima hasil yang mendekati nilai sebenarnya.</p>
-<p>Pilih <code translate="no">IVF_RABITQ_FASTSCAN</code> daripada <a href="/docs/id/ivf-rabitq.md">IVF_RABITQ</a> ketika pencarian memindai banyak kandidat dan throughput menjadi tujuan utama. Biaya penyiapan per kueri FastScan dibebankan secara merata ke seluruh blok kode yang dikemas, sehingga biasanya lebih menguntungkan untuk kumpulan data besar atau daftar IVF yang panjang. Untuk koleksi kecil atau pencarian yang memeriksa sedikit kandidat, gunakan <code translate="no">IVF_RABITQ</code> sebagai gantinya. Alat ini juga mendukung kuantisasi kueri yang dapat dikonfigurasi, lebih banyak jenis penyempurnaan, dan iterator.</p>
-<h2 id="How-it-works" class="common-anchor-header">Cara kerjanya<button data-href="#How-it-works" class="anchor-icon" translate="no">
+    </button></h1><p><code translate="no">IVF_RABITQ_FASTSCAN</code> combines IVF partitioning, RaBitQ binary quantization, and FastScan batch processing. It stores one-bit RaBitQ codes for database vectors and processes the codes in SIMD-friendly blocks of 32 database vectors. This makes it a good choice for high-throughput, memory-constrained workloads that can accept approximate results.</p>
+<p>Choose <code translate="no">IVF_RABITQ_FASTSCAN</code> over <a href="/docs/id/ivf-rabitq.md">IVF_RABITQ</a> when searches scan many candidates and throughput is the primary goal. FastScan’s per-query setup cost is amortized across packed code blocks, so it is typically more beneficial for large datasets or long IVF lists. For small collections or searches that inspect few candidates, use <code translate="no">IVF_RABITQ</code> instead. It also supports configurable query quantization, more refinement types, and iterators.</p>
+<h2 id="How-it-works" class="common-anchor-header">How it works<button data-href="#How-it-works" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -39,16 +38,16 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">IVF_RABITQ_FASTSCAN</code> menggunakan tahapan-tahapan berikut:</p>
+    </button></h2><p><code translate="no">IVF_RABITQ_FASTSCAN</code> uses the following stages:</p>
 <ol>
-<li><strong>Partisi IVF</strong>: IVF mengelompokkan vektor ke dalam kluster " <code translate="no">nlist</code> " dan mencari kluster terdekat yang di <code translate="no">nprobe</code>.</li>
-<li><strong>Pengkodean RaBitQ</strong>: Setiap residu vektor dikodekan sebagai kode RaBitQ satu bit per dimensi.</li>
-<li><strong>FastScan</strong>: Indeks mengemas kode untuk pemrosesan batch SIMD yang ramah cache. Indeks ini mengevaluasi 32 vektor basis data dalam setiap batch.</li>
-<li><strong>Penyempurnaan opsional</strong>: Saat diaktifkan, penyempurna FP32 akan menilai ulang kandidat sebelum Milvus mengembalikan hasil akhir.</li>
+<li><strong>IVF partitioning</strong>: IVF groups vectors into <code translate="no">nlist</code> clusters and searches the <code translate="no">nprobe</code> closest clusters.</li>
+<li><strong>RaBitQ encoding</strong>: Each vector residual is encoded as a one-bit-per-dimension RaBitQ code.</li>
+<li><strong>FastScan</strong>: The index packs codes for cache-friendly, SIMD batch processing. It evaluates 32 database vectors in each batch.</li>
+<li><strong>Optional refinement</strong>: When enabled, an FP32 refiner re-scores candidates before Milvus returns the final results.</li>
 </ol>
-<p>Indeks Faiss yang mendasarinya adalah <code translate="no">IndexIVFRaBitQFastScan</code>. Knowhere membungkusnya dengan transformasi rotasi acak dan secara opsional menambahkan penyempurna FP32.</p>
-<p>FastScan melakukan pekerjaan persiapan per-kueri, seperti membangun dan mengkuantisasi tabel pencarian terkait kueri, sebelum memindai blok kode yang dikemas. Lakukan pengujian kinerja baik pada <code translate="no">IVF_RABITQ</code> maupun <code translate="no">IVF_RABITQ_FASTSCAN</code> dengan data dan parameter pencarian Anda.</p>
-<h2 id="Build-index" class="common-anchor-header">Membuat indeks<button data-href="#Build-index" class="anchor-icon" translate="no">
+<p>The underlying Faiss index is <code translate="no">IndexIVFRaBitQFastScan</code>. Knowhere wraps it with a random rotation transform and optionally adds an FP32 refiner.</p>
+<p>FastScan performs per-query setup work, such as building and quantizing query-related lookup tables, before scanning packed code blocks. Benchmark both <code translate="no">IVF_RABITQ</code> and <code translate="no">IVF_RABITQ_FASTSCAN</code> with your data and search parameters.</p>
+<h2 id="Build-index" class="common-anchor-header">Build index<button data-href="#Build-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -63,7 +62,7 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Untuk membuat indeks <code translate="no">IVF_RABITQ_FASTSCAN</code> pada bidang vektor di Milvus, gunakan metode <code translate="no">add_index()</code>, dengan menentukan <code translate="no">index_type</code>, <code translate="no">metric_type</code>, dan parameter tambahan untuk indeks tersebut.</p>
+    </button></h2><p>To build an <code translate="no">IVF_RABITQ_FASTSCAN</code> index on a vector field in Milvus, use the <code translate="no">add_index()</code> method, specifying the <code translate="no">index_type</code>, <code translate="no">metric_type</code>, and additional parameters for the index.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 <span class="hljs-comment"># Prepare index building params</span>
@@ -81,14 +80,14 @@ index_params.add_index(
 <span class="highlighted-comment-line">    } <span class="hljs-comment"># Index building params</span></span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>Dalam konfigurasi ini:</p>
+<p>In this configuration:</p>
 <ul>
-<li><p><code translate="no">index_type</code>: Jenis indeks yang akan dibuat. Dalam contoh ini, tetapkan nilainya ke ` <code translate="no">IVF_RABITQ_FASTSCAN</code>`.</p></li>
-<li><p><code translate="no">metric_type</code>: Metode yang digunakan untuk menghitung jarak antar vektor. Nilai yang didukung meliputi <code translate="no">COSINE</code>, <code translate="no">L2</code>, dan <code translate="no">IP</code>. Untuk detailnya, lihat <a href="/docs/id/metric.md">Jenis Metrik</a>.</p></li>
-<li><p><code translate="no">params</code>: Opsi konfigurasi tambahan untuk membangun indeks. Untuk detailnya, lihat <a href="/docs/id/ivf-rabitq-fastscan.md#Index-building-params">Parameter Pembuatan Indeks</a>.</p></li>
+<li><p><code translate="no">index_type</code>: The type of index to be built. In this example, set the value to <code translate="no">IVF_RABITQ_FASTSCAN</code>.</p></li>
+<li><p><code translate="no">metric_type</code>: The method used to calculate the distance between vectors. Supported values include <code translate="no">COSINE</code>, <code translate="no">L2</code>, and <code translate="no">IP</code>. For details, refer to <a href="/docs/id/metric.md">Metric Types</a>.</p></li>
+<li><p><code translate="no">params</code>: Additional configuration options for building the index. For details, refer to <a href="/docs/id/ivf-rabitq-fastscan.md#Index-building-params">Index building params</a>.</p></li>
 </ul>
-<p>Setelah parameter indeks dikonfigurasi, Anda dapat membuat indeks dengan menggunakan metode ` <code translate="no">create_index()</code> ` secara langsung atau dengan meneruskan parameter indeks ke metode ` <code translate="no">create_collection</code> `. Untuk detailnya, lihat <a href="/docs/id/create-collection.md">Buat Koleksi</a>.</p>
-<h2 id="Search-on-index" class="common-anchor-header">Pencarian pada indeks<button data-href="#Search-on-index" class="anchor-icon" translate="no">
+<p>Once the index parameters are configured, you can create the index by using the <code translate="no">create_index()</code> method directly or passing the index params in the <code translate="no">create_collection</code> method. For details, refer to <a href="/docs/id/create-collection.md">Create Collection</a>.</p>
+<h2 id="Search-on-index" class="common-anchor-header">Search on index<button data-href="#Search-on-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -103,8 +102,8 @@ index_params.add_index(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Setelah indeks dibangun dan entitas dimasukkan, Anda dapat melakukan pencarian kesamaan pada indeks tersebut.</p>
-<p>Atur ` <code translate="no">nprobe</code> ` untuk mengontrol berapa banyak kluster IVF yang akan dicari. Jika indeks dibangun dengan penyempurnaan, gunakan ` <code translate="no">refine_k</code> ` untuk mengontrol kumpulan kandidat yang diteruskan ke penyempurna FP32.</p>
+    </button></h2><p>Once the index is built and entities are inserted, you can perform similarity searches on the index.</p>
+<p>Set <code translate="no">nprobe</code> to control how many IVF clusters are searched. If the index was built with refinement, use <code translate="no">refine_k</code> to control the candidate pool passed to the FP32 refiner.</p>
 <pre><code translate="no" class="language-python">client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>) <span class="hljs-comment"># Replace with your Milvus server address</span>
 
 search_params = {
@@ -122,14 +121,14 @@ res = client.search(
 <span class="highlighted-wrapper-line">    search_params=search_params</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>Dalam konfigurasi ini:</p>
+<p>In this configuration:</p>
 <ul>
-<li><code translate="no">params</code>: Opsi konfigurasi tambahan untuk pencarian pada indeks. Untuk detailnya, lihat " <a href="/docs/id/ivf-rabitq-fastscan.md#Index-specific-search-params">Parameter Pencarian Khusus Indeks</a>".</li>
+<li><code translate="no">params</code>: Additional configuration options for searching on the index. For details, refer to <a href="/docs/id/ivf-rabitq-fastscan.md#Index-specific-search-params">Index-specific search params</a>.</li>
 </ul>
 <div class="alert note">
-<p>Berbeda dengan ` <code translate="no">IVF_RABITQ</code>`, ` <code translate="no">IVF_RABITQ_FASTSCAN</code> ` tidak menerima parameter pencarian ` <code translate="no">rbq_bits_query</code> `. FastScan selalu menggunakan kuantisasi kueri 8-bit secara internal, jadi abaikan ` <code translate="no">rbq_bits_query</code> ` atau atur ke ` <code translate="no">0</code>`; nilai yang lebih besar akan ditolak.</p>
+<p>Unlike <code translate="no">IVF_RABITQ</code>, <code translate="no">IVF_RABITQ_FASTSCAN</code> does not accept the <code translate="no">rbq_bits_query</code> search parameter. FastScan always uses 8-bit query quantization internally, so omit <code translate="no">rbq_bits_query</code> or set it to <code translate="no">0</code>; larger values are rejected.</p>
 </div>
-<h2 id="Index-params" class="common-anchor-header">Parameter Indeks<button data-href="#Index-params" class="anchor-icon" translate="no">
+<h2 id="Index-params" class="common-anchor-header">Index params<button data-href="#Index-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -144,8 +143,8 @@ res = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Bagian ini memberikan gambaran umum tentang parameter yang digunakan untuk membuat indeks dan melakukan pencarian pada indeks tersebut.</p>
-<h3 id="Index-building-params" class="common-anchor-header">Parameter pembuatan indeks<button data-href="#Index-building-params" class="anchor-icon" translate="no">
+    </button></h2><p>This section provides an overview of the parameters used for building an index and performing searches on the index.</p>
+<h3 id="Index-building-params" class="common-anchor-header">Index building params<button data-href="#Index-building-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -160,37 +159,37 @@ res = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Tabel berikut mencantumkan parameter yang dapat dikonfigurasi di <code translate="no">params</code> saat <a href="/docs/id/ivf-rabitq-fastscan.md#Build-index">membangun indeks</a>.</p>
+    </button></h3><p>The following table lists the parameters that can be configured in <code translate="no">params</code> when <a href="/docs/id/ivf-rabitq-fastscan.md#Build-index">building an index</a>.</p>
 <table>
    <tr>
      <th></th>
      <th><p>Parameter</p></th>
-     <th><p>Deskripsi</p></th>
-     <th><p>Rentang Nilai</p></th>
-     <th><p>Saran Penyesuaian</p></th>
+     <th><p>Description</p></th>
+     <th><p>Value Range</p></th>
+     <th><p>Tuning Suggestion</p></th>
    </tr>
    <tr>
      <td><p>IVF</p></td>
      <td><p><code translate="no">nlist</code></p></td>
-     <td><p>Jumlah kluster yang akan dibuat menggunakan algoritma k-means selama proses pembuatan indeks. Setiap kluster, yang diwakili oleh sebuah pusat kluster (centroid), menyimpan daftar vektor. Meningkatkan nilai parameter ini akan mengurangi jumlah vektor dalam setiap kluster, sehingga menghasilkan partisi yang lebih kecil dan lebih terfokus.</p></td>
-     <td><p><strong>Tipe</strong>: Bilangan Bulat<br><strong>Rentang</strong>: [1, 65536]<br><strong>Nilai default</strong>: <code translate="no">128</code></p></td>
-     <td><p>Nilai <code translate="no">nlist</code> yang lebih besar meningkatkan recall dengan menciptakan kluster yang lebih terperinci, tetapi memperpanjang waktu pembuatan indeks. Optimalkan berdasarkan ukuran dataset dan sumber daya yang tersedia. Dalam kebanyakan kasus, kami merekomendasikan Anda menetapkan nilai dalam rentang ini: [32, 4096].</p></td>
+     <td><p>The number of clusters to create using the k-means algorithm during index building. Each cluster, represented by a centroid, stores a list of vectors. Increasing this parameter reduces the number of vectors in each cluster, creating smaller, more focused partitions.</p></td>
+     <td><p><strong>Type</strong>: Integer<br><strong>Range</strong>: [1, 65536]<br><strong>Default value</strong>: <code translate="no">128</code></p></td>
+     <td><p>Larger <code translate="no">nlist</code> values improve recall by creating more refined clusters but increase index building time. Optimize based on dataset size and available resources. In most cases, we recommend you set a value within this range: [32, 4096].</p></td>
    </tr>
    <tr>
      <td rowspan="2"><p>RaBitQ</p></td>
      <td><p><code translate="no">refine</code></p></td>
-     <td><p>Mengaktifkan proses penyempurnaan dan menyimpan data yang telah disempurnakan. <code translate="no">IVF_RABITQ_FASTSCAN</code> hanya mendukung penyempurnaan FP32.</p></td>
-     <td><p><strong>Tipe</strong>: Boolean<br><strong>Rentang</strong>: [<code translate="no">true</code>, <code translate="no">false</code>]<br><strong>Nilai default</strong>: <code translate="no">false</code></p></td>
-     <td><p>Atur ke <code translate="no">true</code> jika tingkat recall 0,9+ diperlukan. Mengaktifkan penyempurnaan meningkatkan akurasi tetapi meningkatkan kebutuhan penyimpanan dan waktu pembuatan indeks.</p></td>
+     <td><p>Enables the refine process and stores the refined data. <code translate="no">IVF_RABITQ_FASTSCAN</code> supports FP32 refinement only.</p></td>
+     <td><p><strong>Type</strong>: Boolean<br><strong>Range</strong>: [<code translate="no">true</code>, <code translate="no">false</code>]<br><strong>Default value</strong>: <code translate="no">false</code></p></td>
+     <td><p>Set to <code translate="no">true</code> if a 0.9+ recall rate is needed. Enabling refinement improves accuracy but increases storage requirements and index building time.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">refine_type</code></p></td>
-     <td><p>Menentukan representasi data yang digunakan untuk penyempurnaan saat <code translate="no">refine</code> diaktifkan. Diperlukan hanya jika <code translate="no">refine</code> adalah <code translate="no">true</code>.</p></td>
-     <td><p><strong>Tipe</strong>: String<br><strong>Rentang</strong>: [<code translate="no">FP32</code>, <code translate="no">FLAT</code>]<br><strong>Nilai default</strong>: Tidak ada</p></td>
-     <td><p><code translate="no">IVF_RABITQ_FASTSCAN</code> hanya mendukung penyempurnaan FP32, dan <code translate="no">FLAT</code> identik dengan <code translate="no">FP32</code>. Pencocokan nilai tidak membedakan huruf besar-kecil.</p></td>
+     <td><p>Defines the data representation used for refining when <code translate="no">refine</code> is enabled. Required only when <code translate="no">refine</code> is <code translate="no">true</code>.</p></td>
+     <td><p><strong>Type</strong>: String<br><strong>Range</strong>: [<code translate="no">FP32</code>, <code translate="no">FLAT</code>]<br><strong>Default value</strong>: None</p></td>
+     <td><p><code translate="no">IVF_RABITQ_FASTSCAN</code> supports FP32 refinement only, and <code translate="no">FLAT</code> is identical to <code translate="no">FP32</code>. Value matching is case-insensitive.</p></td>
    </tr>
 </table>
-<h3 id="Index-specific-search-params" class="common-anchor-header">Parameter pencarian khusus indeks<button data-href="#Index-specific-search-params" class="anchor-icon" translate="no">
+<h3 id="Index-specific-search-params" class="common-anchor-header">Index-specific search params<button data-href="#Index-specific-search-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -205,37 +204,37 @@ res = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Tabel berikut mencantumkan parameter yang dapat dikonfigurasi di <code translate="no">search_params.params</code> saat <a href="/docs/id/ivf-rabitq-fastscan.md#Search-on-index">melakukan pencarian pada indeks</a>.</p>
+    </button></h3><p>The following table lists the parameters that can be configured in <code translate="no">search_params.params</code> when <a href="/docs/id/ivf-rabitq-fastscan.md#Search-on-index">searching on the index</a>.</p>
 <table>
    <tr>
      <th></th>
      <th><p>Parameter</p></th>
-     <th><p>Deskripsi</p></th>
-     <th><p>Rentang Nilai</p></th>
-     <th><p>Saran Penyesuaian</p></th>
+     <th><p>Description</p></th>
+     <th><p>Value Range</p></th>
+     <th><p>Tuning Suggestion</p></th>
    </tr>
    <tr>
      <td><p>IVF</p></td>
      <td><p><code translate="no">nprobe</code></p></td>
-     <td><p>Jumlah kluster yang akan dicari untuk kandidat. Nilai yang lebih tinggi memungkinkan pencarian pada lebih banyak kluster, sehingga meningkatkan recall dengan memperluas cakupan pencarian, namun dengan konsekuensi peningkatan latensi kueri.</p></td>
-     <td><p><strong>Tipe</strong>: Bilangan bulat<br><strong>Rentang</strong>: [1, <em>nlist</em>]<br><strong>Nilai default</strong>: <code translate="no">8</code></p></td>
-     <td><p>Meningkatkan nilai ini meningkatkan recall tetapi dapat memperlambat pencarian. Atur ` <code translate="no">nprobe</code> ` secara proporsional dengan ` <code translate="no">nlist</code> ` untuk menyeimbangkan kecepatan dan akurasi. Dalam kebanyakan kasus, kami merekomendasikan Anda untuk mengatur nilai dalam rentang ini: [1, <em>nlist</em>].</p></td>
+     <td><p>The number of clusters to search for candidates. Higher values allow more clusters to be searched, improving recall by expanding the search scope but at the cost of increased query latency.</p></td>
+     <td><p><strong>Type</strong>: Integer<br><strong>Range</strong>: [1, <em>nlist</em>]<br><strong>Default value</strong>: <code translate="no">8</code></p></td>
+     <td><p>Increasing this value improves recall but may slow down the search. Set <code translate="no">nprobe</code> proportionally to <code translate="no">nlist</code> to balance speed and accuracy. In most cases, we recommend you set a value within this range: [1, <em>nlist</em>].</p></td>
    </tr>
    <tr>
      <td rowspan="2"><p>RaBitQ</p></td>
      <td><p><code translate="no">refine_k</code></p></td>
-     <td><p>Proses penyempurnaan menggunakan kuantisasi berkualitas lebih tinggi untuk memilih jumlah tetangga terdekat yang diperlukan dari kumpulan kandidat yang <code translate="no">refine_k</code> kali lebih besar, yang dipilih menggunakan IVF_RABITQ_FASTSCAN. Tidak berpengaruh jika penyempurnaan dinonaktifkan.</p></td>
-     <td><p><strong>Tipe</strong>: Float<br><strong>Rentang</strong>: [1, <em>float_max</em>)<br><strong>Nilai default</strong>: <code translate="no">1</code></p></td>
-     <td><p>Nilai ` <code translate="no">refine_k</code> ` yang lebih tinggi akan menurunkan QPS tetapi meningkatkan tingkat recall. Mulailah dengan ` <code translate="no">1</code> ` dan uji nilai-nilai ` <code translate="no">2</code>`, ` <code translate="no">3</code>`, ` <code translate="no">4</code>`, dan ` <code translate="no">5</code> ` untuk menemukan keseimbangan optimal antara QPS dan recall untuk dataset Anda.</p></td>
+     <td><p>The refining process uses higher quality quantization to pick the needed number of nearest neighbors from a <code translate="no">refine_k</code> times larger pool of candidates chosen using IVF_RABITQ_FASTSCAN. Has no effect if refinement is disabled.</p></td>
+     <td><p><strong>Type</strong>: Float<br><strong>Range</strong>: [1, <em>float_max</em>)<br><strong>Default value</strong>: <code translate="no">1</code></p></td>
+     <td><p>Higher <code translate="no">refine_k</code> values decrease QPS but increase recall rate. Start with <code translate="no">1</code> and test values <code translate="no">2</code>, <code translate="no">3</code>, <code translate="no">4</code>, and <code translate="no">5</code> to find the optimal trade-off between QPS and recall for your dataset.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">rbq_bits_query</code></p></td>
-     <td><p>Menentukan apakah kuantisasi skalar tambahan pada vektor kueri diterapkan. <strong>Tidak didukung pada <code translate="no">IVF_RABITQ_FASTSCAN</code></strong>: indeks selalu menggunakan kuantisasi kueri 8-bit secara internal. Abaikan parameter ini atau atur ke <code translate="no">0</code>; nilai yang lebih besar dari <code translate="no">0</code> akan ditolak.</p></td>
-     <td><p><strong>Tipe</strong>: Bilangan bulat<br><strong>Rentang</strong>: [0, 0]<br><strong>Nilai default</strong>: <code translate="no">0</code></p></td>
-     <td><p>Biarkan tidak diatur. Untuk kuantisasi kueri yang dapat dikonfigurasi, gunakan <a href="/docs/id/ivf-rabitq.md">IVF_RABITQ</a> sebagai gantinya.</p></td>
+     <td><p>Sets whether additional scalar quantization of a query vector is applied. <strong>Not supported on <code translate="no">IVF_RABITQ_FASTSCAN</code></strong>: the index always uses 8-bit query quantization internally. Omit this parameter or set it to <code translate="no">0</code>; values greater than <code translate="no">0</code> are rejected.</p></td>
+     <td><p><strong>Type</strong>: Integer<br><strong>Range</strong>: [0, 0]<br><strong>Default value</strong>: <code translate="no">0</code></p></td>
+     <td><p>Leave it unset. For configurable query quantization, use <a href="/docs/id/ivf-rabitq.md">IVF_RABITQ</a> instead.</p></td>
    </tr>
 </table>
-<h2 id="Limitations" class="common-anchor-header">Batasan<button data-href="#Limitations" class="anchor-icon" translate="no">
+<h2 id="Limitations" class="common-anchor-header">Limitations<button data-href="#Limitations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -251,10 +250,10 @@ res = client.search(
         ></path>
       </svg>
     </button></h2><ul>
-<li>FastScan menggunakan pengkodean basis data RaBitQ 1-bit tetap dan kuantisasi kueri 8-bit. Pengaturan " <code translate="no">rbq_bits_query</code> " harus diabaikan atau disetel ke " <code translate="no">0</code>".</li>
-<li>Hanya penyempurnaan FP32 (setara dengan <code translate="no">FLAT</code>) yang didukung.</li>
-<li>Iterator tidak didukung.</li>
-<li>Ini adalah indeks CPU. Indeks ini tidak berjalan di GPU.</li>
-<li>Kinerja aktual bergantung pada dukungan SIMD CPU, dimensi vektor, <code translate="no">nlist</code>, <code translate="no">nprobe</code>, dan distribusi data. Lakukan pengujian kinerja dengan beban kerja Anda sebelum menerapkannya ke produksi.</li>
+<li>FastScan uses a fixed 1-bit RaBitQ database encoding and 8-bit query quantization. <code translate="no">rbq_bits_query</code> must be omitted or set to <code translate="no">0</code>.</li>
+<li>Only FP32 (equivalently <code translate="no">FLAT</code>) refinement is supported.</li>
+<li>Iterators are not supported.</li>
+<li>This is a CPU index. It does not run on GPU.</li>
+<li>Actual performance depends on CPU SIMD support, vector dimension, <code translate="no">nlist</code>, <code translate="no">nprobe</code>, and data distribution. Benchmark it with your workload before deploying it to production.</li>
 </ul>
-<p>Untuk varian RaBitQ non-FastScan dan opsi penyempurnaan tambahannya, lihat <a href="/docs/id/ivf-rabitq.md">IVF_RABITQ</a>.</p>
+<p>For the non-FastScan RaBitQ variant and its additional refinement options, see <a href="/docs/id/ivf-rabitq.md">IVF_RABITQ</a>.</p>

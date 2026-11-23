@@ -1,11 +1,12 @@
 ---
 id: basic-operators.md
-title: 基本運算子
+title: Basic Operators
 summary: >-
-  使用比較運算子、範圍運算子、算術運算子、邏輯運算子及 NULL 運算子來篩選實體。自 Milvus 3.0.3 起，IS NULL 和 IS NOT
-  NULL 亦支援一般向量欄位。
+  Use comparison, range, arithmetic, logical, and NULL operators to filter
+  entities. Starting in Milvus 3.0.3, IS NULL and IS NOT NULL also support
+  ordinary vector fields.
 ---
-<h1 id="Basic-Operators" class="common-anchor-header">基本運算子<button data-href="#Basic-Operators" class="anchor-icon" translate="no">
+<h1 id="Basic-Operators" class="common-anchor-header">Basic Operators<button data-href="#Basic-Operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,12 +21,11 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Milvus 提供比較運算子、範圍運算子、算術運算子、邏輯運算子及 NULL 運算子，用於篩選實體。每個運算子皆支援特定的欄位類型。</p>
+    </button></h1><p>Milvus provides comparison, range, arithmetic, logical, and NULL operators for filtering entities. Each operator supports specific field types.</p>
 <div class="alert note">
-<p>篩選表達式左側的字面量可以是集合欄位名稱（例如下文範例中的<code translate="no">status</code> 、<code translate="no">color</code> 等），或是 StructArray 子欄位在特定元素索引處的名稱（例如<code translate="no">filter = 'struct[0][subfield] &gt; 10'</code> ）。</p>
-<p>有關 StructArray 欄位中標量篩選的詳細資訊，請參閱《<a href="/docs/zh-hant/struct-array-operators.md">StructArray 運算子</a>》。</p>
+<p>The left operand can be a collection field, such as <code translate="no">status</code>, or a StructArray subfield at a specific element index, such as <code translate="no">struct[0][subfield] &gt; 10</code>. See <a href="/docs/zh-hant/struct-array-operators.md">StructArray Operators</a>.</p>
 </div>
-<h2 id="Comparison-operators" class="common-anchor-header">比較運算子<button data-href="#Comparison-operators" class="anchor-icon" translate="no">
+<h2 id="Comparison-operators" class="common-anchor-header">Comparison operators<button data-href="#Comparison-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -40,8 +40,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>比較運算子用於根據相等、不等或大小來篩選資料。它們適用於數值和文字欄位。</p>
-<h3 id="Supported-comparison-operators" class="common-anchor-header">支援的比較運算子<button data-href="#Supported-comparison-operators" class="anchor-icon" translate="no">
+    </button></h2><p>Comparison operators are used to filter data based on equality, inequality, or size. They are applicable to numeric and text fields.</p>
+<h3 id="Supported-comparison-operators" class="common-anchor-header">Supported comparison operators<button data-href="#Supported-comparison-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -57,14 +57,14 @@ summary: >-
         ></path>
       </svg>
     </button></h3><ul>
-<li><p><code translate="no">==</code> (等於)</p></li>
-<li><p><code translate="no">!=</code> (不等於)</p></li>
-<li><p><code translate="no">&gt;</code> (大於)</p></li>
-<li><p><code translate="no">&lt;</code> (小於)</p></li>
-<li><p><code translate="no">&gt;=</code> (大於或等於)</p></li>
-<li><p><code translate="no">&lt;=</code> (小於或等於)</p></li>
+<li><p><code translate="no">==</code> (Equal to)</p></li>
+<li><p><code translate="no">!=</code> (Not equal to)</p></li>
+<li><p><code translate="no">&gt;</code> (Greater than)</p></li>
+<li><p><code translate="no">&lt;</code> (Less than)</p></li>
+<li><p><code translate="no">&gt;=</code> (Greater than or equal to)</p></li>
+<li><p><code translate="no">&lt;=</code> (Less than or equal to)</p></li>
 </ul>
-<h3 id="Example-1-Filtering-with-equal-to-" class="common-anchor-header">範例 1：使用「等於」進行篩選 (<code translate="no">==</code>)<button data-href="#Example-1-Filtering-with-equal-to-" class="anchor-icon" translate="no">
+<h3 id="Example-1-Filtering-with-equal-to-" class="common-anchor-header">Example 1: Filtering with equal to (<code translate="no">==</code>)<button data-href="#Example-1-Filtering-with-equal-to-" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -79,16 +79,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>假設您有一個名為<code translate="no">status</code> 的欄位，且您想找出所有<code translate="no">status</code> 為「active」的實體。您可以使用等於運算子<code translate="no">==</code> ：</p>
+    </button></h3><p>Assume you have a field named <code translate="no">status</code> and you want to find all entities where <code translate="no">status</code> is "active". You can use the equality operator <code translate="no">==</code>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;status == &quot;active&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -106,7 +106,7 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;status == &quot;active&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-2-Filtering-with-not-equal-to-" class="common-anchor-header">範例 2：使用「不等於」進行篩選 (<code translate="no">!=</code>)<button data-href="#Example-2-Filtering-with-not-equal-to-" class="anchor-icon" translate="no">
+<h3 id="Example-2-Filtering-with-not-equal-to-" class="common-anchor-header">Example 2: Filtering with not equal to (<code translate="no">!=</code>)<button data-href="#Example-2-Filtering-with-not-equal-to-" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -121,16 +121,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>要找出<code translate="no">status</code> 並非「inactive」的實體：</p>
+    </button></h3><p>To find entities where <code translate="no">status</code> is not "inactive":</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;status != &quot;inactive&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -148,7 +148,7 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;status != &quot;inactive&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-3-Filtering-with-greater-than-" class="common-anchor-header">範例 3：使用「大於」條件進行篩選（<code translate="no">&gt;</code> ）<button data-href="#Example-3-Filtering-with-greater-than-" class="anchor-icon" translate="no">
+<h3 id="Example-3-Filtering-with-greater-than-" class="common-anchor-header">Example 3: Filtering with greater than (<code translate="no">&gt;</code>)<button data-href="#Example-3-Filtering-with-greater-than-" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -163,16 +163,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>若要找出所有<code translate="no">age</code> 大於 30 的實體：</p>
+    </button></h3><p>If you want to find all entities with an <code translate="no">age</code> greater than 30:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;age &gt; 30&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -190,7 +190,7 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;age &gt; 30&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-4-Filtering-with-less-than" class="common-anchor-header">範例 4：使用「小於」進行篩選<button data-href="#Example-4-Filtering-with-less-than" class="anchor-icon" translate="no">
+<h3 id="Example-4-Filtering-with-less-than" class="common-anchor-header">Example 4: Filtering with less than<button data-href="#Example-4-Filtering-with-less-than" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -205,16 +205,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>若要找出<code translate="no">price</code> 小於 100 的實體：</p>
+    </button></h3><p>To find entities where <code translate="no">price</code> is less than 100:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;price &lt; 100&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -232,7 +232,7 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;price &lt; 100&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-5-Filtering-with-greater-than-or-equal-to-" class="common-anchor-header">範例 5：使用「大於或等於」進行篩選 (<code translate="no">&gt;=</code>)<button data-href="#Example-5-Filtering-with-greater-than-or-equal-to-" class="anchor-icon" translate="no">
+<h3 id="Example-5-Filtering-with-greater-than-or-equal-to-" class="common-anchor-header">Example 5: Filtering with greater than or equal to (<code translate="no">&gt;=</code>)<button data-href="#Example-5-Filtering-with-greater-than-or-equal-to-" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -247,16 +247,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>若要找出所有<code translate="no">rating</code> 大於或等於 4 的實體：</p>
+    </button></h3><p>If you want to find all entities with <code translate="no">rating</code> greater than or equal to 4:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;rating &gt;= 4&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -274,7 +274,7 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;rating &gt;= 4&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-6-Filtering-with-less-than-or-equal-to" class="common-anchor-header">範例 6：使用「小於或等於」進行篩選<button data-href="#Example-6-Filtering-with-less-than-or-equal-to" class="anchor-icon" translate="no">
+<h3 id="Example-6-Filtering-with-less-than-or-equal-to" class="common-anchor-header">Example 6: Filtering with less than or equal to<button data-href="#Example-6-Filtering-with-less-than-or-equal-to" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -289,16 +289,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>若要找出<code translate="no">discount</code> 小於或等於 10% 的實體：</p>
+    </button></h3><p>To find entities with <code translate="no">discount</code> less than or equal to 10%:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;discount &lt;= 10&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -316,7 +316,7 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;discount &lt;= 10&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Range-operators" class="common-anchor-header">範圍運算子<button data-href="#Range-operators" class="anchor-icon" translate="no">
+<h2 id="Range-operators" class="common-anchor-header">Range operators<button data-href="#Range-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -331,17 +331,17 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>範圍運算子可協助根據特定值集篩選資料。Milvus 支援使用<code translate="no">IN</code> 進行集合成員資格檢查。</p>
-<p>若要找出所有<code translate="no">color</code> 為「red」、「green」或「blue」的實體：</p>
+    </button></h2><p>Range operators help filter data based on a specific set of values. Milvus supports <code translate="no">IN</code> for set membership checks.</p>
+<p>If you want to find all entities where the <code translate="no">color</code> is either "red", "green", or "blue":</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;color in [&quot;red&quot;, &quot;green&quot;, &quot;blue&quot;]&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -359,8 +359,7 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;color in [&quot;red&quot;, &quot;green&quot;, &quot;blue&quot;]&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>當您需要檢查實體是否屬於一組特定值時，此功能非常實用。</p>
-<h2 id="Pattern-matching-operators" class="common-anchor-header">模式匹配運算子<button data-href="#Pattern-matching-operators" class="anchor-icon" translate="no">
+<h2 id="Pattern-matching-operators" class="common-anchor-header">Pattern matching operators<button data-href="#Pattern-matching-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -375,22 +374,22 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>模式匹配運算子可協助根據萬用字元模式或正規表達式篩選字串值。</p>
+    </button></h2><p>Pattern matching operators help filter string values based on wildcard patterns or regular expressions.</p>
 <ul>
-<li><p><code translate="no">LIKE</code>: 用於根據字串值匹配簡單的萬用字元模式。例如，<code translate="no">name LIKE &quot;Prod%&quot;</code> 會匹配以<code translate="no">Prod</code> 開頭的值。</p></li>
-<li><p><code translate="no">=~</code>: 用於將字串值與 RE2 正規表達式進行比對。例如，<code translate="no">code =~ &quot;E[0-9]{4}&quot;</code> 會比對包含錯誤代碼的值，例如<code translate="no">E1001</code> 。</p></li>
-<li><p><code translate="no">!~</code>: 用於排除與 RE2 正規表達式相符的字串值。這等同於<code translate="no">NOT (field =~ &quot;pattern&quot;)</code> 。</p></li>
+<li><p><code translate="no">LIKE</code>: Used to match simple wildcard patterns on string values. For example, <code translate="no">name LIKE &quot;Prod%&quot;</code> matches values that start with <code translate="no">Prod</code>.</p></li>
+<li><p><code translate="no">=~</code>: Used to match a string value with an RE2 regular expression. For example, <code translate="no">code =~ &quot;E[0-9]{4}&quot;</code> matches values that contain an error code such as <code translate="no">E1001</code>.</p></li>
+<li><p><code translate="no">!~</code>: Used to exclude string values that match an RE2 regular expression. This is equivalent to <code translate="no">NOT (field =~ &quot;pattern&quot;)</code>.</p></li>
 </ul>
-<p>若要找出以<code translate="no">Prod</code> 開頭且符合<code translate="no">name</code> 的實體：</p>
+<p>To find entities where <code translate="no">name</code> starts with <code translate="no">Prod</code>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;name LIKE &quot;Prod%&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -408,16 +407,16 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;name LIKE &quot;Prod%&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>若要找出其<code translate="no">code</code> 包含錯誤代碼（例如<code translate="no">E1001</code> ）的實體：</p>
+<p>To find entities whose <code translate="no">code</code> contains an error code such as <code translate="no">E1001</code>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;code =~ &quot;E[0-9]{4}&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -435,16 +434,16 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;code =~ &quot;E[0-9]{4}&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>若要排除<code translate="no">message</code> 以<code translate="no">DEBUG</code> 開頭的實體：</p>
+<p>To exclude entities whose <code translate="no">message</code> starts with <code translate="no">DEBUG</code>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;message !~ &quot;^DEBUG&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -462,8 +461,8 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;message !~ &quot;^DEBUG&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>有關如何在<code translate="no">LIKE</code> 與正規表達式之間進行選擇、支援的欄位類型、正規表達式語法、轉義規則及效能等詳細資訊，請參閱<a href="/docs/zh-hant/pattern-matching.md">《模式匹配</a>》。Milvus 亦允許您針對<code translate="no">VARCHAR</code> 欄位或 JSON 字串路徑建立<code translate="no">NGRAM</code> 索引，以加速符合條件的模式匹配篩選器。詳細資訊請參閱<a href="/docs/zh-hant/ngram.md">《NGRAM》</a>。</p>
-<h2 id="Arithmetic-operators" class="common-anchor-header">算術運算子<button data-href="#Arithmetic-operators" class="anchor-icon" translate="no">
+<p>For syntax, escaping, field support, and acceleration options such as <code translate="no">NGRAM</code>, see <a href="/docs/zh-hant/pattern-matching.md">Pattern Matching</a>.</p>
+<h2 id="Arithmetic-operators" class="common-anchor-header">Arithmetic operators<button data-href="#Arithmetic-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -478,8 +477,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>算術運算子可讓您根據涉及數值欄位的計算來建立條件。</p>
-<h3 id="Supported-arithmetic-operators" class="common-anchor-header">支援的算術運算子<button data-href="#Supported-arithmetic-operators" class="anchor-icon" translate="no">
+    </button></h2><p>Arithmetic operators allow you to create conditions based on calculations involving numeric fields.</p>
+<h3 id="Supported-arithmetic-operators" class="common-anchor-header">Supported arithmetic operators<button data-href="#Supported-arithmetic-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -495,14 +494,14 @@ summary: >-
         ></path>
       </svg>
     </button></h3><ul>
-<li><p><code translate="no">+</code> (加法)</p></li>
-<li><p><code translate="no">-</code> (減法)</p></li>
-<li><p><code translate="no">*</code> (乘法)</p></li>
-<li><p><code translate="no">/</code> (除法)</p></li>
-<li><p><code translate="no">%</code> (取模)</p></li>
-<li><p><code translate="no">**</code> (冪運算)</p></li>
+<li><p><code translate="no">+</code> (Addition)</p></li>
+<li><p><code translate="no">-</code> (Subtraction)</p></li>
+<li><p><code translate="no">*</code> (Multiplication)</p></li>
+<li><p><code translate="no">/</code> (Division)</p></li>
+<li><p><code translate="no">%</code> (Modulus)</p></li>
+<li><p><code translate="no">**</code> (Exponentiation)</p></li>
 </ul>
-<h3 id="Example-1-Using-modulus-" class="common-anchor-header">範例 1：使用模運算 (<code translate="no">%</code>)<button data-href="#Example-1-Using-modulus-" class="anchor-icon" translate="no">
+<h3 id="Example-1-Using-modulus-" class="common-anchor-header">Example 1: Using modulus (<code translate="no">%</code>)<button data-href="#Example-1-Using-modulus-" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -517,16 +516,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>要找出<code translate="no">id</code> 為偶數（即能被 2 整除）的實體：</p>
+    </button></h3><p>To find entities where the <code translate="no">id</code> is an even number (i.e., divisible by 2):</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;id % 2 == 0&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -544,7 +543,7 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;id % 2 == 0&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-2-Using-exponentiation-" class="common-anchor-header">範例 2：使用冪運算 (<code translate="no">**</code>)<button data-href="#Example-2-Using-exponentiation-" class="anchor-icon" translate="no">
+<h3 id="Example-2-Using-exponentiation-" class="common-anchor-header">Example 2: Using exponentiation (<code translate="no">**</code>)<button data-href="#Example-2-Using-exponentiation-" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -559,16 +558,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>要找出<code translate="no">price</code> 提升至 2 次方後大於 1000 的實體：</p>
+    </button></h3><p>To find entities where <code translate="no">price</code> raised to the power of 2 is greater than 1000:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;price ** 2 &gt; 1000&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -587,9 +586,9 @@ summary: >-
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;price ** 2 &gt; 1000&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>算術運算子僅支援涉及<strong>單一欄位與常數的</strong>運算式。目前不支援將兩個欄位進行算術運算的運算式（例如<code translate="no">price * quantity &gt; 100</code> ），此類運算式將返回錯誤。若需根據由多個欄位計算得出的衍生值進行篩選，請考慮在插入資料時，將預先計算好的值儲存為獨立的標量欄位。</p>
+<p>Arithmetic operators only support expressions involving a <strong>single field and a constant</strong>. Expressions that combine two fields arithmetically — such as <code translate="no">price * quantity &gt; 100</code> — are not currently supported and will return an error. If you need to filter on a derived value computed from multiple fields, consider storing the pre-computed value as a separate scalar field at insert time.</p>
 </div>
-<h2 id="Bitwise-operators" class="common-anchor-header">位元運算子<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.0+</span><button data-href="#Bitwise-operators" class="anchor-icon" translate="no">
+<h2 id="Bitwise-operators" class="common-anchor-header">Bitwise operators<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.0+</span><button data-href="#Bitwise-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -604,9 +603,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>當整數欄位編碼了多個標誌（例如權限、功能標誌或狀態位元）時，位元運算子便十分實用。您可以在篩選表達式中使用這些運算子，以檢查、組合或比較整數值中的個別位元。</p>
-<p>對於標量欄位，位元運算子適用於整數欄位類型，例如<code translate="no">INT8</code> 、<code translate="no">INT16</code> 、<code translate="no">INT32</code> 以及<code translate="no">INT64</code> 。</p>
-<h3 id="Supported-bitwise-operators" class="common-anchor-header">受支援的位元運算子<button data-href="#Supported-bitwise-operators" class="anchor-icon" translate="no">
+    </button></h2><p>Bitwise operators are useful when an integer field encodes multiple flags, such as permissions, feature flags, or status bits. You can use these operators in filter expressions to check, combine, or compare individual bits in an integer value.</p>
+<p>For scalar fields, bitwise operators apply to integer field types, such as <code translate="no">INT8</code>, <code translate="no">INT16</code>, <code translate="no">INT32</code>, and <code translate="no">INT64</code>.</p>
+<h3 id="Supported-bitwise-operators" class="common-anchor-header">Supported bitwise operators<button data-href="#Supported-bitwise-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -623,15 +622,15 @@ summary: >-
       </svg>
     </button></h3><table>
 <thead>
-<tr><th>運算子</th><th>名稱</th><th>典型用途</th></tr>
+<tr><th>Operator</th><th>Name</th><th>Typical use</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">&amp;</code></td><td>位元與 (AND)</td><td>檢查特定位元是否已設定。</td></tr>
-<tr><td><code translate="no">|</code></td><td>位元或</td><td>在比較前將位元進行組合。</td></tr>
-<tr><td><code translate="no">^</code></td><td>位元異或</td><td>比較兩個值之間的位元差異。</td></tr>
+<tr><td><code translate="no">&amp;</code></td><td>Bitwise AND</td><td>Check whether specific bits are set.</td></tr>
+<tr><td><code translate="no">|</code></td><td>Bitwise OR</td><td>Combine bits before comparison.</td></tr>
+<tr><td><code translate="no">^</code></td><td>Bitwise XOR</td><td>Compare bit differences between two values.</td></tr>
 </tbody>
 </table>
-<h3 id="Example-Filtering-by-permission-bits" class="common-anchor-header">範例：根據權限位元進行篩選<button data-href="#Example-Filtering-by-permission-bits" class="anchor-icon" translate="no">
+<h3 id="Example-Filtering-by-permission-bits" class="common-anchor-header">Example: Filtering by permission bits<button data-href="#Example-Filtering-by-permission-bits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -646,10 +645,10 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>假設您有一個名為 `<code translate="no">permissions</code>` 的整數欄位，且該整數中的每個位元代表一個權限標誌：</p>
+    </button></h3><p>Assume you have an integer field named <code translate="no">permissions</code>, and each bit in the integer represents a permission flag:</p>
 <table>
 <thead>
-<tr><th>權限標誌</th><th>位元值</th></tr>
+<tr><th>Permission flag</th><th>Bit value</th></tr>
 </thead>
 <tbody>
 <tr><td><code translate="no">READ</code></td><td><code translate="no">1</code></td></tr>
@@ -658,17 +657,17 @@ summary: >-
 <tr><td><code translate="no">ADMIN</code></td><td><code translate="no">8</code></td></tr>
 </tbody>
 </table>
-<p>例如，<code translate="no">permissions = 5</code> 表示<code translate="no">READ</code> 和<code translate="no">SHARE</code> 位元已設定，因為<code translate="no">5 = 1 + 4</code> 。</p>
-<p>若要找出<code translate="no">SHARE</code> 位元被設定的實體，請使用位元與運算 (<code translate="no">&amp;</code>)：</p>
+<p>For example, <code translate="no">permissions = 5</code> means that the <code translate="no">READ</code> and <code translate="no">SHARE</code> bits are set, because <code translate="no">5 = 1 + 4</code>.</p>
+<p>To find entities where the <code translate="no">SHARE</code> bit is set, use bitwise AND (<code translate="no">&amp;</code>):</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&quot;(permissions &amp; 4) == 4&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -686,16 +685,16 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;(permissions &amp; 4) == 4&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">|</code>若要找出設定「<code translate="no">WRITE</code> 」位元後會產生「<code translate="no">READ + WRITE + SHARE</code> 」權限集的實體，請使用位元與 ( )：</p>
+<p>To find entities where setting the <code translate="no">WRITE</code> bit produces the <code translate="no">READ + WRITE + SHARE</code> permission set, use bitwise OR (<code translate="no">|</code>):</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&quot;(permissions | 2) == 7&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -713,16 +712,16 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;(permissions | 2) == 7&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>若要找出其權限位元與 `<code translate="no">READ + WRITE + SHARE</code> ` 僅在 `<code translate="no">WRITE</code> ` 位元上有所不同的實體，請使用位元異或 (<code translate="no">^</code>)：</p>
+<p>To find entities whose permission bits differ from <code translate="no">READ + WRITE + SHARE</code> by only the <code translate="no">WRITE</code> bit, use bitwise XOR (<code translate="no">^</code>):</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&quot;(permissions ^ 7) == 2&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -741,9 +740,9 @@ summary: >-
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;(permissions ^ 7) == 2&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>在比較結果（例如<code translate="no">(permissions &amp; 4) == 4</code> ）之前，請務必將位元運算用括號包起來。Milvus 在篩選表達式中支援<code translate="no">&amp;</code> 、<code translate="no">|</code> 以及<code translate="no">^</code> 。位元非（<code translate="no">~</code> ）與位移運算子（<code translate="no">&lt;&lt;</code> 和<code translate="no">&gt;&gt;</code> ）則不被支援。</p>
+<p>Always wrap the bitwise operation in parentheses before comparing the result, such as <code translate="no">(permissions &amp; 4) == 4</code>. Milvus supports <code translate="no">&amp;</code>, <code translate="no">|</code>, and <code translate="no">^</code> in filter expressions. Bitwise NOT (<code translate="no">~</code>) and shift operators (<code translate="no">&lt;&lt;</code> and <code translate="no">&gt;&gt;</code>) are not supported.</p>
 </div>
-<h2 id="Logical-operators" class="common-anchor-header">邏輯運算子<button data-href="#Logical-operators" class="anchor-icon" translate="no">
+<h2 id="Logical-operators" class="common-anchor-header">Logical operators<button data-href="#Logical-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -758,8 +757,11 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>邏輯運算子用於將多個條件組合成更複雜的篩選表達式。這些運算子包括<code translate="no">AND</code> 、<code translate="no">OR</code> 以及<code translate="no">NOT</code> 。</p>
-<h3 id="Supported-logical-operators" class="common-anchor-header">受支援的邏輯運算子<button data-href="#Supported-logical-operators" class="anchor-icon" translate="no">
+    </button></h2><p>Logical operators are used to combine multiple conditions into a more complex filter expression. These include <code translate="no">AND</code>, <code translate="no">OR</code>, and <code translate="no">NOT</code>.</p>
+<div class="alert note">
+<p>Each condition can use its own eligible index or scan path; one index type need not serve the entire expression. See <a href="/docs/zh-hant/scalar_index.md">Scalar Index</a>.</p>
+</div>
+<h3 id="Supported-logical-operators" class="common-anchor-header">Supported logical operators<button data-href="#Supported-logical-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -775,11 +777,11 @@ summary: >-
         ></path>
       </svg>
     </button></h3><ul>
-<li><p><code translate="no">AND</code>: 將多個條件組合在一起，且所有條件都必須為真。</p></li>
-<li><p><code translate="no">OR</code>: 將多個條件組合，其中至少有一個必須為真。</p></li>
-<li><p><code translate="no">NOT</code>: 否定一個條件。</p></li>
+<li><p><code translate="no">AND</code>: Combines multiple conditions that must all be true.</p></li>
+<li><p><code translate="no">OR</code>: Combines conditions where at least one must be true.</p></li>
+<li><p><code translate="no">NOT</code>: Negates a condition.</p></li>
 </ul>
-<h3 id="Example-1-Using-AND-to-combine-conditions" class="common-anchor-header">範例 1：使用<code translate="no">AND</code> 組合條件<button data-href="#Example-1-Using-AND-to-combine-conditions" class="anchor-icon" translate="no">
+<h3 id="Example-1-Using-AND-to-combine-conditions" class="common-anchor-header">Example 1: Using <code translate="no">AND</code> to combine conditions<button data-href="#Example-1-Using-AND-to-combine-conditions" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -794,16 +796,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>要找出所有<code translate="no">price</code> 大於 100 且<code translate="no">stock</code> 大於 50 的產品：</p>
+    </button></h3><p>To find all products where <code translate="no">price</code> is greater than 100 and <code translate="no">stock</code> is greater than 50:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;price &gt; 100 AND stock &gt; 50&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -821,7 +823,7 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;price &gt; 100 AND stock &gt; 50&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-2-Using-OR-to-combine-conditions" class="common-anchor-header">範例 2：使用<code translate="no">OR</code> 組合條件<button data-href="#Example-2-Using-OR-to-combine-conditions" class="anchor-icon" translate="no">
+<h3 id="Example-2-Using-OR-to-combine-conditions" class="common-anchor-header">Example 2: Using <code translate="no">OR</code> to combine conditions<button data-href="#Example-2-Using-OR-to-combine-conditions" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -836,16 +838,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>要找出所有<code translate="no">color</code> 為「red」或「blue」的商品：</p>
+    </button></h3><p>To find all products where <code translate="no">color</code> is either “red” or "blue":</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;color == &quot;red&quot; OR color == &quot;blue&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -863,7 +865,7 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;color == &quot;red&quot; OR color == &quot;blue&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-3-Using-NOT-to-exclude-a-condition" class="common-anchor-header">範例 3：使用 `<code translate="no">NOT</code> ` 排除某個條件<button data-href="#Example-3-Using-NOT-to-exclude-a-condition" class="anchor-icon" translate="no">
+<h3 id="Example-3-Using-NOT-to-exclude-a-condition" class="common-anchor-header">Example 3: Using <code translate="no">NOT</code> to exclude a condition<button data-href="#Example-3-Using-NOT-to-exclude-a-condition" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -878,16 +880,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>要找出所有<code translate="no">color</code> 並非「green」的產品：</p>
+    </button></h3><p>To find all products where <code translate="no">color</code> is not "green":</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;NOT color == &quot;green&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -905,7 +907,7 @@ summary: >-
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;NOT color == &quot;green&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="IS-NULL-and-IS-NOT-NULL-operators" class="common-anchor-header">IS NULL 與 IS NOT NULL 運算子<button data-href="#IS-NULL-and-IS-NOT-NULL-operators" class="anchor-icon" translate="no">
+<h2 id="IS-NULL-and-IS-NOT-NULL-operators" class="common-anchor-header">IS NULL and IS NOT NULL operators<button data-href="#IS-NULL-and-IS-NOT-NULL-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -920,20 +922,20 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>使用 `<code translate="no">IS NULL</code> ` 和 `<code translate="no">IS NOT NULL</code> ` 來查找字段值缺失或可用的實體。例如，您可以查找沒有類別的產品，或是其嵌入資料已準備好供搜尋的實體。這兩種運算子皆適用於受支援的標量和向量字段，且具有相同的含義：</p>
+    </button></h2><p>Use <code translate="no">IS NULL</code> and <code translate="no">IS NOT NULL</code> to find entities with missing or available field values. For example, you can find products without a category or entities whose embeddings are ready for search. Both operators work on supported scalar and vector fields, with the same meaning:</p>
 <table>
 <thead>
-<tr><th>運算子</th><th>匹配條件</th></tr>
+<tr><th>Operator</th><th>Matches</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">&lt;field&gt; IS NULL</code></td><td>指定欄位為 NULL 值的實體</td></tr>
-<tr><td><code translate="no">&lt;field&gt; IS NOT NULL</code></td><td>指定欄位值為非 NULL 的實體</td></tr>
+<tr><td><code translate="no">&lt;field&gt; IS NULL</code></td><td>Entities whose specified field has a NULL value</td></tr>
+<tr><td><code translate="no">&lt;field&gt; IS NOT NULL</code></td><td>Entities whose specified field has a non-NULL value</td></tr>
 </tbody>
 </table>
-<p>受支援的標量欄位包括布林型、數值型、<code translate="no">VARCHAR</code> 、<code translate="no">JSON</code> 以及<code translate="no">ARRAY</code> 欄位。這些運算子不支援<a href="/docs/zh-hant/text.md">TEXT 欄位</a>。</p>
-<p>自 Milvus 3.0.3 起，這些運算子亦支援一般向量欄位：<code translate="no">FLOAT_VECTOR</code> 、<code translate="no">BINARY_VECTOR</code> 、<code translate="no">FLOAT16_VECTOR</code> 、<code translate="no">BFLOAT16_VECTOR</code> 、<code translate="no">SPARSE_FLOAT_VECTOR</code> 以及<code translate="no">INT8_VECTOR</code> 。</p>
-<p>這些運算子不區分大小寫：<code translate="no">IS NULL</code> 與<code translate="no">is null</code> 效果相同，<code translate="no">IS NOT NULL</code> 與<code translate="no">is not null</code> 亦然。</p>
-<h3 id="Example-Find-entities-with-missing-or-available-values" class="common-anchor-header">範例：查找值缺失或可用的實體<button data-href="#Example-Find-entities-with-missing-or-available-values" class="anchor-icon" translate="no">
+<p>Supported scalar fields include Boolean, numeric, <code translate="no">VARCHAR</code>, <code translate="no">JSON</code>, and <code translate="no">ARRAY</code> fields. These operators do not support <a href="/docs/zh-hant/text.md">TEXT fields</a>.</p>
+<p>Starting in Milvus 3.0.3, the operators also support ordinary vector fields: <code translate="no">FLOAT_VECTOR</code>, <code translate="no">BINARY_VECTOR</code>, <code translate="no">FLOAT16_VECTOR</code>, <code translate="no">BFLOAT16_VECTOR</code>, <code translate="no">SPARSE_FLOAT_VECTOR</code>, and <code translate="no">INT8_VECTOR</code>.</p>
+<p>The operators are case-insensitive: <code translate="no">IS NULL</code> and <code translate="no">is null</code> are equivalent, as are <code translate="no">IS NOT NULL</code> and <code translate="no">is not null</code>.</p>
+<h3 id="Example-Find-entities-with-missing-or-available-values" class="common-anchor-header">Example: Find entities with missing or available values<button data-href="#Example-Find-entities-with-missing-or-available-values" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -948,7 +950,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>假設一個名為<code translate="no">products</code> 的集合已建立索引並載入。該集合具有一個名為<code translate="no">id</code> 的<code translate="no">INT64</code> 主鍵、一個名為<code translate="no">category</code> 的可為空<code translate="no">VARCHAR</code> 欄位，以及一個名為<code translate="no">embedding</code> 的可為空三維<code translate="no">FLOAT_VECTOR</code> 欄位。它已包含以下實體：</p>
+    </button></h3><p>Assume a collection named <code translate="no">products</code> is indexed and loaded on Milvus 3.0.3 or later. The collection has an <code translate="no">INT64</code> primary key named <code translate="no">id</code>, a nullable <code translate="no">VARCHAR</code> field named <code translate="no">category</code>, and a nullable, three-dimensional <code translate="no">FLOAT_VECTOR</code> field named <code translate="no">embedding</code>. It already contains the following entities:</p>
 <table>
 <thead>
 <tr><th><code translate="no">id</code></th><th><code translate="no">category</code></th><th><code translate="no">embedding</code></th></tr>
@@ -959,17 +961,17 @@ summary: >-
 <tr><td><code translate="no">3</code></td><td><code translate="no">&quot;book&quot;</code></td><td>NULL</td></tr>
 </tbody>
 </table>
-<p>此處省略集合的建立與資料插入步驟。有關這些步驟，請參閱《<a href="/docs/zh-hant/nullable-and-default.md">可為空欄位</a>》。</p>
-<p>若要找出仍需進行嵌入的實體，請查詢 `<code translate="no">embedding IS NULL</code>`。請根據您的伺服器調整連線設定。</p>
+<p>Collection creation and data insertion are omitted. For those steps, see <a href="/docs/zh-hant/nullable-and-default.md">Nullable Fields</a>.</p>
+<p>To find entities that still need an embedding, query for <code translate="no">embedding IS NULL</code>. Adjust the connection settings for your server.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -1132,23 +1134,23 @@ QueryResp results = <span class="hljs-keyword">await</span> client.QueryAsync(<s
     &quot;limit&quot;: 10
   }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>在同一查詢中替換<code translate="no">filter</code> ，即可檢查特定欄位或組合多個條件：</p>
+<p>Replace the <code translate="no">filter</code> in the same query to check either field or combine conditions:</p>
 <table>
 <thead>
-<tr><th>篩選表達式</th><th>匹配 ID</th><th>用途</th></tr>
+<tr><th>Filter expression</th><th>Matching IDs</th><th>Purpose</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">category IS NULL</code></td><td><code translate="no">2</code></td><td>尋找沒有類別的實體</td></tr>
-<tr><td><code translate="no">category IS NOT NULL</code></td><td><code translate="no">1</code>,<code translate="no">3</code></td><td>尋找具有類別的實體</td></tr>
-<tr><td><code translate="no">embedding IS NULL</code></td><td><code translate="no">3</code></td><td>尋找沒有嵌入內容的實體</td></tr>
-<tr><td><code translate="no">embedding IS NOT NULL</code></td><td><code translate="no">1</code>,<code translate="no">2</code></td><td>尋找具有嵌入的實體</td></tr>
-<tr><td><code translate="no">category IS NOT NULL AND embedding IS NOT NULL</code></td><td><code translate="no">1</code></td><td>搜尋同時具備兩項值的實體</td></tr>
+<tr><td><code translate="no">category IS NULL</code></td><td><code translate="no">2</code></td><td>Find entities without a category</td></tr>
+<tr><td><code translate="no">category IS NOT NULL</code></td><td><code translate="no">1</code>, <code translate="no">3</code></td><td>Find entities with a category</td></tr>
+<tr><td><code translate="no">embedding IS NULL</code></td><td><code translate="no">3</code></td><td>Find entities without an embedding</td></tr>
+<tr><td><code translate="no">embedding IS NOT NULL</code></td><td><code translate="no">1</code>, <code translate="no">2</code></td><td>Find entities with an embedding</td></tr>
+<tr><td><code translate="no">category IS NOT NULL AND embedding IS NOT NULL</code></td><td><code translate="no">1</code></td><td>Find entities with both values</td></tr>
 </tbody>
 </table>
 <p><a id="Regular-scalar-fields-with-null-values"></a>
 <a id="JSON-fields-with-null-values"></a>
 <a id="ARRAY-fields-with-null-values"></a></p>
-<h3 id="How-field-values-are-treated" class="common-anchor-header">欄位值的處理方式<button data-href="#How-field-values-are-treated" class="anchor-icon" translate="no">
+<h3 id="How-field-values-are-treated" class="common-anchor-header">How field values are treated<button data-href="#How-field-values-are-treated" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1163,20 +1165,23 @@ QueryResp results = <span class="hljs-keyword">await</span> client.QueryAsync(<s
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>運算子會檢查儲存的欄位值。對於沒有預設值的可為空欄位，若在插入時省略該欄位或明確將其設定為 NULL，則會儲存 NULL。已設定的預設值可能會改變實際儲存的內容。詳細資訊請參閱《<a href="/docs/zh-hant/default-values.md">可為空欄位與預設值</a>》。</p>
+    </button></h3><p>The operators check the stored field value. For a nullable field without a default value, omitting the field during insertion or explicitly setting it to NULL stores NULL. A configured default value can change what is stored. For details, see <a href="/docs/zh-hant/nullable-and-default.md">Nullable Fields</a> and <a href="/docs/zh-hant/default-values.md">Default Values</a>.</p>
 <table>
 <thead>
-<tr><th>欄位類型</th><th>NULL 行為</th></tr>
+<tr><th>Field type</th><th>NULL behavior</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">VARCHAR</code></td><td>空字串<code translate="no">&quot;&quot;</code> 屬於非 NULL 值。</td></tr>
-<tr><td><code translate="no">JSON</code></td><td>整個欄位的 NULL 值會與<code translate="no">IS NULL</code> 相符。例如<code translate="no">{&quot;category&quot;: null}</code> 這樣的 JSON 物件即使其內部某個值為 NULL，仍屬非 NULL 值。</td></tr>
-<tr><td><code translate="no">ARRAY</code></td><td>整個欄位的 NULL 值會與<code translate="no">IS NULL</code> 相符。個別元素不能為 NULL，且<code translate="no">IS NULL</code> /<code translate="no">IS NOT NULL</code> 不支援如<code translate="no">tags[0]</code> 這類的陣列元素存取。請參閱「<a href="/docs/zh-hant/array_data_type.md">陣列欄位</a>」。</td></tr>
-<tr><td>一般向量類型</td><td>NULL 表示向量值不存在。其分量皆為零的向量不被視為 NULL。</td></tr>
+<tr><td><code translate="no">VARCHAR</code></td><td>An empty string <code translate="no">&quot;&quot;</code> is a non-NULL value.</td></tr>
+<tr><td><code translate="no">JSON</code></td><td>A NULL value for the entire field matches <code translate="no">IS NULL</code>. A JSON object such as <code translate="no">{&quot;category&quot;: null}</code> is non-NULL, even though a value inside it is NULL.</td></tr>
+<tr><td><code translate="no">ARRAY</code></td><td>A NULL value for the entire field matches <code translate="no">IS NULL</code>. Individual elements cannot be NULL, and <code translate="no">IS NULL</code> / <code translate="no">IS NOT NULL</code> do not support array element access such as <code translate="no">tags[0]</code>. See <a href="/docs/zh-hant/array_data_type.md">Array Field</a>.</td></tr>
+<tr><td>Ordinary vector types</td><td>NULL means the vector value is absent. A vector whose components are zero is not NULL.</td></tr>
 </tbody>
 </table>
-<p>對於以<code translate="no">nullable=False</code> 定義且受支援的欄位，<code translate="no">IS NULL</code> 將不匹配任何實體，而<code translate="no">IS NOT NULL</code> 則會匹配所有可見實體。篩選器中的其他條件仍會生效。</p>
-<h3 id="Use-NULL-filters-in-vector-search" class="common-anchor-header">在向量搜尋中使用 NULL 篩選器<button data-href="#Use-NULL-filters-in-vector-search" class="anchor-icon" translate="no">
+<p>For a supported field defined with <code translate="no">nullable=False</code>, <code translate="no">IS NULL</code> matches no entities and <code translate="no">IS NOT NULL</code> matches all visible entities. Other conditions in the filter still apply.</p>
+<div class="alert note">
+<p>Scalar NULL filters use validity information from an eligible index or field data; they do not require a particular scalar index type. A non-nullable field can produce a constant result.</p>
+</div>
+<h3 id="Use-NULL-filters-in-vector-search" class="common-anchor-header">Use NULL filters in vector search<button data-href="#Use-NULL-filters-in-vector-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1191,21 +1196,20 @@ QueryResp results = <span class="hljs-keyword">await</span> client.QueryAsync(<s
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>搜尋篩選器中可使用相同的運算子，但實體若要參與相似度搜尋，其被搜尋的欄位中也必須包含向量。</p>
-<p>以上述範例資料為例，考慮使用<code translate="no">anns_field=&quot;embedding&quot;</code> 進行搜尋：</p>
+    </button></h3><p>The same operators can be used in search filters, but an entity also needs a vector in the field being searched to participate in similarity search.</p>
+<p>Using the example data above, consider a search with <code translate="no">anns_field=&quot;embedding&quot;</code>:</p>
 <table>
 <thead>
-<tr><th>篩選表達式</th><th>符合相似度搜尋資格的實體</th><th>原因</th></tr>
+<tr><th>Filter expression</th><th>Entities eligible for similarity search</th><th>Reason</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">category IS NULL</code></td><td><code translate="no">2</code></td><td>實體<code translate="no">2</code> 沒有類別，但擁有<code translate="no">embedding</code> 向量。</td></tr>
-<tr><td><code translate="no">embedding IS NULL</code></td><td>無</td><td>實體<code translate="no">3</code> 符合篩選條件，但沒有<code translate="no">embedding</code> 向量可用來與查詢向量進行比對。</td></tr>
-<tr><td><code translate="no">embedding IS NOT NULL</code></td><td><code translate="no">1</code>,<code translate="no">2</code></td><td>兩個實體皆具備<code translate="no">embedding</code> 向量。</td></tr>
+<tr><td><code translate="no">category IS NULL</code></td><td><code translate="no">2</code></td><td>Entity <code translate="no">2</code> has no category, but has an <code translate="no">embedding</code> vector.</td></tr>
+<tr><td><code translate="no">embedding IS NULL</code></td><td>None</td><td>Entity <code translate="no">3</code> matches the filter, but has no <code translate="no">embedding</code> vector to compare with the query vector.</td></tr>
+<tr><td><code translate="no">embedding IS NOT NULL</code></td><td><code translate="no">1</code>, <code translate="no">2</code></td><td>Both entities have an <code translate="no">embedding</code> vector.</td></tr>
 </tbody>
 </table>
-<p>這三個篩選條件均有效。若使用<code translate="no">embedding</code> 搭配<code translate="no">embedding IS NULL</code> 進行搜尋，將不會有搜尋結果，因為沒有任何實體能同時滿足這兩項要求。若要擷取缺少嵌入向量的實體，請如上所述使用<code translate="no">query()</code> 。</p>
-<p>向量搜尋會自動跳過其搜尋向量欄位為 NULL 的實體，因此<code translate="no">embedding IS NOT NULL</code> 並不會進一步縮小<code translate="no">embedding</code> 搜尋的候選範圍。排名、其他篩選條件以及搜尋限制仍會決定最終回傳哪些候選結果。</p>
-<h2 id="Tips-on-using-basic-operators-with-JSON-and-ARRAY-fields" class="common-anchor-header">關於在 JSON 和 ARRAY 欄位中使用基本運算子的提示<button data-href="#Tips-on-using-basic-operators-with-JSON-and-ARRAY-fields" class="anchor-icon" translate="no">
+<p>To retrieve missing embeddings, use <code translate="no">query()</code>; a search on <code translate="no">embedding</code> with <code translate="no">embedding IS NULL</code> is valid but returns no hits. Vector search already skips NULL embeddings, so <code translate="no">embedding IS NOT NULL</code> does not further narrow candidates. Ranking, other filters, and the search limit still determine the returned hits.</p>
+<h2 id="Tips-on-using-basic-operators-with-JSON-and-ARRAY-fields" class="common-anchor-header">Tips on using basic operators with JSON and ARRAY fields<button data-href="#Tips-on-using-basic-operators-with-JSON-and-ARRAY-fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1220,17 +1224,16 @@ QueryResp results = <span class="hljs-keyword">await</span> client.QueryAsync(<s
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>雖然 Milvus 中的基本運算子用途廣泛且可套用至標量欄位，但它們也能有效應用於 JSON 和 ARRAY 欄位中的鍵與索引。</p>
-<p>例如，若您有一個名為 `<code translate="no">product</code> ` 的欄位，其中包含多個鍵，例如 `<code translate="no">price</code>`、`<code translate="no">model</code>` 及 `<code translate="no">tags</code>`，請務必直接引用該鍵：</p>
+    </button></h2><p>Reference a JSON key or ARRAY element directly in the expression. For example, to filter the <code translate="no">price</code> key in a JSON field named <code translate="no">product</code>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;product[&quot;price&quot;] &gt; 1000&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -1248,16 +1251,16 @@ QueryResp results = <span class="hljs-keyword">await</span> client.QueryAsync(<s
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;product[&quot;price&quot;] &gt; 1000&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>若要找出記錄的溫度陣列中，第一個溫度超過特定數值的記錄，請使用：</p>
+<p>To find records where the first temperature in an array of recorded temperatures exceeds a certain value, use:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;history_temperatures[0] &gt; 30&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -1275,7 +1278,8 @@ QueryResp results = <span class="hljs-keyword">await</span> client.QueryAsync(<s
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;history_temperatures[0] &gt; 30&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Conclusion" class="common-anchor-header">結論<button data-href="#Conclusion" class="anchor-icon" translate="no">
+<p><a id="Conclusion"></a></p>
+<h2 id="FAQ" class="common-anchor-header">FAQ<button data-href="#FAQ" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1290,22 +1294,6 @@ QueryResp results = <span class="hljs-keyword">await</span> client.QueryAsync(<s
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus 提供一系列基本運算子，讓您能靈活地篩選和查詢資料。透過結合比較運算子、範圍運算子、算術運算子及邏輯運算子，您可以建立強大的篩選表達式，藉此縮小搜尋結果範圍，並高效地擷取所需資料。</p>
-<h2 id="FAQ" class="common-anchor-header">常見問題<button data-href="#FAQ" class="anchor-icon" translate="no">
-      <svg translate="no"
-        aria-hidden="true"
-        focusable="false"
-        height="20"
-        version="1.1"
-        viewBox="0 0 16 16"
-        width="16"
-      >
-        <path
-          fill="#0092E4"
-          fill-rule="evenodd"
-          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
-        ></path>
-      </svg>
-    </button></h2><p><strong>篩選條件中的匹配值清單長度是否有上限（例如：filter=’color in ["red", "green", “blue”]’）？若清單過長該如何處理？</strong></p>
-<p>Milvus 並未對篩選條件中的匹配值清單長度設限。然而，過長的清單可能會顯著影響查詢效能。
-若您的篩選條件包含冗長的匹配值清單，或含有眾多元素的複雜表達式，我們建議使用<a href="/docs/zh-hant/filtering-templating.md">「篩選模板</a>」來提升查詢效能。</p>
+    </button></h2><p><strong>Is there a limit to the length of the match value list in filter conditions (e.g., filter=’color in ["red", "green", “blue”]')? What should I do if the list is too long?</strong></p>
+<p>Milvus does not impose a length limit on the match value list in filter conditions. However, an excessively long list can significantly impact query performance.
+If your filter condition includes a long list of match values or a complex expression with many elements, we recommend using <a href="/docs/zh-hant/filtering-templating.md">Filter Templating</a> to improve query performance.</p>

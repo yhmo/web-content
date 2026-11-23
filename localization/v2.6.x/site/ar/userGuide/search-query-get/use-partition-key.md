@@ -1,14 +1,15 @@
 ---
 id: use-partition-key.md
-title: استخدام مفتاح التقسيم
+title: Use Partition Key
 summary: >-
-  «مفتاح التقسيم» هو حل لتحسين عملية البحث يعتمد على الأقسام. ومن خلال تعيين حقل
-  عددي محدد باعتباره «مفتاح التقسيم» وتحديد شروط التصفية بناءً على «مفتاح
-  التقسيم» أثناء عملية البحث، يمكن تضييق نطاق البحث ليقتصر على عدة أقسام، مما
-  يؤدي إلى تحسين كفاءة البحث. ستقدم هذه المقالة شرحًا لكيفية استخدام «مفتاح
-  التقسيم» والاعتبارات ذات الصلة.
+  The Partition Key is a search optimization solution based on partitions. By
+  designating a specific scalar field as the Partition Key and specifying
+  filtering conditions based on the Partition Key during the search, the search
+  scope can be narrowed down to several partitions, thereby improving search
+  efficiency. This article will introduce how to use the Partition Key and
+  related considerations.
 ---
-<h1 id="Use-Partition-Key" class="common-anchor-header">استخدام مفتاح التقسيم<button data-href="#Use-Partition-Key" class="anchor-icon" translate="no">
+<h1 id="Use-Partition-Key" class="common-anchor-header">Use Partition Key<button data-href="#Use-Partition-Key" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -23,8 +24,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>مفتاح التقسيم هو حل لتحسين البحث يعتمد على الأقسام. من خلال تعيين حقل عددي محدد كمفتاح التقسيم وتحديد شروط التصفية بناءً على مفتاح التقسيم أثناء البحث، يمكن تضييق نطاق البحث ليقتصر على عدة أقسام، مما يؤدي إلى تحسين كفاءة البحث. ستقدم هذه المقالة شرحًا لكيفية استخدام مفتاح التقسيم والاعتبارات ذات الصلة.</p>
-<h2 id="Overview" class="common-anchor-header">نظرة عامة<button data-href="#Overview" class="anchor-icon" translate="no">
+    </button></h1><p>The Partition Key is a search optimization solution based on partitions. By designating a specific scalar field as the Partition Key and specifying filtering conditions based on the Partition Key during the search, the search scope can be narrowed down to several partitions, thereby improving search efficiency. This article will introduce how to use the Partition Key and related considerations.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -39,26 +40,26 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>في Milvus، يمكنك استخدام الأقسام لتنفيذ فصل البيانات وتحسين أداء البحث عن طريق تقييد نطاق البحث على أقسام محددة. إذا اخترت إدارة الأقسام يدويًّا، فيمكنك إنشاء ما يصل إلى 1,024 قسمًا في المجموعة، وإدراج الكيانات في هذه الأقسام بناءً على قاعدة محددة، بحيث يمكنك تضييق نطاق البحث عن طريق تقييد عمليات البحث ضمن عدد محدد من الأقسام.</p>
-<p>يقدم Milvus «مفتاح التقسيم» (Partition Key) لتمكينك من إعادة استخدام الأقسام في فصل البيانات للتغلب على الحد الأقصى لعدد الأقسام التي يمكنك إنشاؤها في مجموعة. عند إنشاء مجموعة، يمكنك استخدام حقل قياسي كمفتاح التقسيم. وبمجرد أن تصبح المجموعة جاهزة، يقوم Milvus بإنشاء العدد المحدد من الأقسام داخل المجموعة. عند استلام كيان تم إدراجه، يحسب Milvus قيمة التجزئة (hash) باستخدام قيمة مفتاح التقسيم (Partition Key) للكيان، ويُجري عملية القسمة على (modulo) استنادًا إلى قيمة التجزئة وخاصية "القسم المستهدف" ( <code translate="no">partitions_num</code> ) للمجموعة للحصول على معرّف القسم المستهدف، ثم يخزن الكيان في القسم المستهدف.</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="/docs/v2.6.x/assets/partition-vs-partition-key.png" alt="Partition Vs Partition Key" class="doc-image" id="partition-vs-partition-key" /> 
-   <span>القسم مقابل مفتاح التقسيم</span>
-  
- </span></p>
-<p>يوضح الشكل التالي كيفية معالجة Milvus لطلبات البحث في مجموعة سواء كانت ميزة مفتاح التقسيم (Partition Key) ممكّنة أم لا.</p>
+    </button></h2><p>In Milvus, you can use partitions to implement data segregation and improve search performance by restricting the search scope to specific partitions. If you choose to manage partitions manually, you can create a maximum of 1,024 partitions in a collection, and insert entities into these partitions based on a specific rule so that you can narrow the search scope by restricting searches within a specific number of partitions.</p>
+<p>Milvus introduces the Partition Key for you to reuse partitions in data segregation to overcome the limit on the number of partitions you can create in a collection. When creating a collection, you can use a scalar field as the Partition Key. Once the collection is ready, Milvus creates the specified number of partitions inside the collection. Upon receiving an inserted entity, Milvus calculates a hash value using the Partition Key value of the entity, executes a modulo operation based on the hash value and the <code translate="no">partitions_num</code> property of the collection to obtain the target partition ID, and stores the entity in the target partition.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/partition-vs-partition-key.png" alt="Partition Vs Partition Key" class="doc-image" id="partition-vs-partition-key" />
+    <span>Partition Vs Partition Key</span>
+  </span>
+</p>
+<p>The following figure illustrates how Milvus processes the search requests in a collection with or without the Partition Key feature enabled.</p>
 <ul>
-<li><p>إذا تم تعطيل Partition Key، يبحث Milvus عن الكيانات الأكثر تشابهًا مع متجه الاستعلام داخل المجموعة. يمكنك تضييق نطاق البحث إذا كنت تعرف القسم الذي يحتوي على النتائج الأكثر صلة.</p></li>
-<li><p>إذا تم تمكين مفتاح القسم، يحدد Milvus نطاق البحث بناءً على قيمة مفتاح القسم المحددة في مرشح البحث ويقوم بمسح الكيانات الموجودة داخل الأقسام المطابقة فقط.</p></li>
+<li><p>If the Partition Key is disabled, Milvus searches for entities that are the most similar to the query vector within the collection. You can narrow the search scope if you know which partition contains the most relevant results.</p></li>
+<li><p>If the Partition Key is enabled, Milvus determines the search scope based on the Partition Key value specified in a search filter and scans only the entities within the partitions that match.</p></li>
 </ul>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="/docs/v2.6.x/assets/with-and-without-partition-key.png" alt="With And Without Partition Key" class="doc-image" id="with-and-without-partition-key" /> 
-   <span>مع «مفتاح التقسيم» وبدونه</span>
-  
- </span></p>
-<h2 id="Use-Partition-Key" class="common-anchor-header">استخدام مفتاح التقسيم<button data-href="#Use-Partition-Key" class="anchor-icon" translate="no">
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/with-and-without-partition-key.png" alt="With And Without Partition Key" class="doc-image" id="with-and-without-partition-key" />
+    <span>With And Without Partition Key</span>
+  </span>
+</p>
+<h2 id="Use-Partition-Key" class="common-anchor-header">Use Partition Key<button data-href="#Use-Partition-Key" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -73,14 +74,14 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>لاستخدام مفتاح التقسيم، عليك</p>
+    </button></h2><p>To use the Partition Key, you need to</p>
 <ul>
-<li><p><a href="/docs/ar/v2.6.x/use-partition-key.md#Set-Partition-Key">تعيين مفتاح التقسيم</a>،</p></li>
-<li><p><a href="/docs/ar/v2.6.x/use-partition-key.md#Set-Partition-Numbers">تحديد عدد الأقسام المراد إنشاؤها</a> (اختياري)،</p></li>
-<li><p><a href="/docs/ar/v2.6.x/use-partition-key.md#Create-Filtering-Condition">إنشاء شرط تصفية بناءً على مفتاح التقسيم</a>، و</p></li>
-<li><p><a href="/docs/ar/v2.6.x/use-partition-key.md#Index-Partition-Key">فهرسة مفتاح التقسيم</a> (موصى به).</p></li>
+<li><p><a href="/docs/ar/v2.6.x/use-partition-key.md#Set-Partition-Key">Set the Partition Key</a>,</p></li>
+<li><p><a href="/docs/ar/v2.6.x/use-partition-key.md#Set-Partition-Numbers">Set the number of partitions to create</a> (Optional),</p></li>
+<li><p><a href="/docs/ar/v2.6.x/use-partition-key.md#Create-Filtering-Condition">Create a filtering condition based on the Partition Key</a>, and</p></li>
+<li><p><a href="/docs/ar/v2.6.x/use-partition-key.md#Index-Partition-Key">Index the Partition Key</a> (Recommended).</p></li>
 </ul>
-<h3 id="Set-Partition-Key" class="common-anchor-header">تعيين مفتاح التقسيم<button data-href="#Set-Partition-Key" class="anchor-icon" translate="no">
+<h3 id="Set-Partition-Key" class="common-anchor-header">Set Partition Key<button data-href="#Set-Partition-Key" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -95,16 +96,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>لتعيين حقل قياسي كمفتاح التقسيم، تحتاج إلى تعيين السمة " <code translate="no">is_partition_key</code> " (القيمة الثابتة) إلى " <code translate="no">true</code> " (قيمة ثابتة) عند إضافة الحقل القياسي.</p>
+    </button></h3><p>To designate a scalar field as the Partition Key, you need to set its <code translate="no">is_partition_key</code> attribute to <code translate="no">true</code> when you add the scalar field.</p>
 <div class="alert note">
-<p>عند تعيين حقل قياسي كمفتاح التقسيم، لا يمكن أن تكون قيم الحقل فارغة أو خالية.</p>
+<p>When you set a scalar field as the Partition Key, the field values cannot be empty or null.</p>
 </div>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> (
     MilvusClient, DataType
@@ -250,7 +251,7 @@ schema.WithField(entity.NewField().
         ]
     }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Set-Partition-Numbers" class="common-anchor-header">تعيين أرقام الأقسام<button data-href="#Set-Partition-Numbers" class="anchor-icon" translate="no">
+<h3 id="Set-Partition-Numbers" class="common-anchor-header">Set Partition Numbers<button data-href="#Set-Partition-Numbers" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -265,14 +266,14 @@ schema.WithField(entity.NewField().
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>عند تعيين حقل قياسي في مجموعة كمفتاح التقسيم، يقوم Milvus تلقائيًا بإنشاء 16 قسمًا في المجموعة. عند استلام كيان، يختار Milvus قسمًا بناءً على قيمة مفتاح التقسيم لهذا الكيان ويخزن الكيان في القسم، مما يؤدي إلى احتواء بعض الأقسام أو جميعها على كيانات ذات قيم مختلفة لمفتاح التقسيم.</p>
-<p>يمكنك أيضًا تحديد عدد الأقسام المراد إنشاؤها مع المجموعة. وهذا صالح فقط إذا كان لديك حقل عددي مخصص كمفتاح التقسيم.</p>
+    </button></h3><p>When you designate a scalar field in a collection as the Partition Key, Milvus automatically creates 16 partitions in the collection. Upon receiving an entity, Milvus chooses a partition based on the Partition Key value of this entity and stores the entity in the partition, resulting in some or all partitions holding entities with different Partition Key values.</p>
+<p>You can also determine the number of partitions to create along with the collection. This is valid only if you have a scalar field designated as the Partition Key.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.create_collection(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,
@@ -321,7 +322,7 @@ curl --request POST \
     \&quot;params\&quot;: <span class="hljs-variable">$params</span>
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Create-Filtering-Condition" class="common-anchor-header">إنشاء شرط تصفية<button data-href="#Create-Filtering-Condition" class="anchor-icon" translate="no">
+<h3 id="Create-Filtering-Condition" class="common-anchor-header">Create Filtering Condition<button data-href="#Create-Filtering-Condition" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -336,15 +337,15 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>عند إجراء عمليات بحث ANN في مجموعة تم تمكين ميزة مفتاح التقسيم فيها، يجب تضمين تعبير تصفية يتضمن مفتاح التقسيم في طلب البحث. في تعبير التصفية، يمكنك تقييد قيمة مفتاح التقسيم ضمن نطاق محدد بحيث يقصر Milvus نطاق البحث على الأقسام المقابلة.</p>
-<p>عند إجراء عمليات الحذف، يُنصح بتضمين تعبير تصفية يحدد مفتاح تقسيم واحد لتحقيق حذف أكثر كفاءة. يحد هذا النهج عملية الحذف إلى قسم معين، مما يقلل من تضخيم الكتابة أثناء الضغط ويحافظ على الموارد المخصصة للضغط والفهرسة.</p>
-<p>توضح الأمثلة التالية التصفية المستندة إلى مفتاح التقسيم بناءً على قيمة محددة لمفتاح التقسيم ومجموعة من قيم مفتاح التقسيم.</p>
+    </button></h3><p>When conducting ANN searches in a collection with the Partition Key feature enabled, you need to include a filtering expression involving the Partition Key in the search request. In the filtering expression, you can restrict the Partition Key value within a specific range so that Milvus restricts the search scope within the corresponding partitions.</p>
+<p>When performing delete operations, It is advisable to include a filter expression that specifies a single partition key to achieve more efficient deletion. This approach limits the delete operation to a particular partition, reducing write amplification during compaction and conserving resources for compaction and indexing.</p>
+<p>The following examples demonstrate Partition-Key-based filtering based on a specific Partition Key value and a set of Partition Key values.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Filter based on a single partition key value, or</span>
 <span class="hljs-built_in">filter</span>=<span class="hljs-string">&#x27;partition_key == &quot;x&quot; &amp;&amp; &lt;other conditions&gt;&#x27;</span>
@@ -377,9 +378,9 @@ filter = <span class="hljs-string">&quot;partition_key in [&#x27;x&#x27;, &#x27;
 <span class="hljs-built_in">export</span> filter=<span class="hljs-string">&#x27;partition_key in [&quot;x&quot;, &quot;y&quot;, &quot;z&quot;] &amp;&amp; &lt;other conditions&gt;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>يجب استبدال <code translate="no">partition_key</code> باسم الحقل المحدد كمفتاح القسم.</p>
+<p>You have to replace <code translate="no">partition_key</code> with the name of the field that is designated as the partition key.</p>
 </div>
-<h3 id="Index-Partition-Key" class="common-anchor-header">مفتاح تقسيم الفهرس<button data-href="#Index-Partition-Key" class="anchor-icon" translate="no">
+<h3 id="Index-Partition-Key" class="common-anchor-header">Index Partition Key<button data-href="#Index-Partition-Key" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -394,22 +395,22 @@ filter = <span class="hljs-string">&quot;partition_key in [&#x27;x&#x27;, &#x27;
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>نوصي بإنشاء فهرس قياسي على حقل مفتاح التقسيم.</p>
-<p>يقوم مفتاح التقسيم بتضييق نطاق البحث ليقتصر على الأقسام التي قد تحتوي على قيم مفتاح التقسيم المطابقة. ومع ذلك، عادةً ما يحتوي كل قسم على كيانات ذات قيم مفتاح تقسيم مختلفة عديدة، لذا لا يزال Milvus يقوم بتقييم التصفية القائمة على مفتاح التقسيم مقابل كل كيان في الأقسام التي يبحث فيها. بدون وجود فهرس سكالاري على الحقل، يكون هذا التقييم عبارة عن مسح كامل لقيم الحقل، وهو ما قد يستهلك نسبة كبيرة من زمن استجابة البحث في المجموعات الكبيرة. أما مع وجود فهرس سكالاري، فيقوم Milvus بالبحث عن الكيانات المطابقة في الفهرس بدلاً من ذلك.</p>
-<p>يحدث هذا التقييم بغض النظر عن نوع الفهرس المتجهي. يمكن لـ Milvus تضمين قيم مفتاح التقسيم في فهارس متجهة من عائلة HNSW بحيث لا يجتاز البحث المُصفى بمفتاح التقسيم سوى الفهارس الفرعية ذات الصلة، لكن هذا التحسين يضيق نطاق اجتياز الفهرس المتجه — ولا يلغي تقييم المرشح. لا يوجد اختصار مكافئ لعمليات البحث التي تُصفى بناءً على الحقول القياسية وحدها. في كلتا الحالتين، فإن الفهرس القياسي لحقل مفتاح التقسيم هو ما يحافظ على سرعة التقييم.</p>
-<p>اختر نوع الفهرس بناءً على حقل مفتاح التقسيم:</p>
+    </button></h3><p>We recommend that you create a scalar index on the Partition Key field.</p>
+<p>The Partition Key narrows a search down to the partitions that may hold the matching Partition Key values. However, each partition usually holds entities with many different Partition Key values, so Milvus still evaluates the Partition-Key-based filter against every entity in the partitions it searches. Without a scalar index on the field, that evaluation is a full scan of the field values, which can take up a large share of search latency on large collections. With a scalar index, Milvus looks up the matching entities in the index instead.</p>
+<p>This evaluation happens regardless of the vector index type. Milvus can embed Partition Key values into HNSW-family vector indexes so that a Partition-Key-filtered search traverses only the relevant sub-indexes, but that optimization narrows the vector traversal — it does not remove the filter evaluation. Searches that filter on scalar fields alone have no equivalent shortcut. In both cases, a scalar index on the Partition Key field is what keeps the evaluation fast.</p>
+<p>Choose the index type based on the Partition Key field:</p>
 <ul>
-<li><p>يناسب<a href="/docs/ar/v2.6.x/inverted.md">النوع «INVERTED»</a> معظم حقول مفتاح التقسيم، لأن المرشحات القائمة على مفتاح التقسيم تستخدم شروط « <code translate="no">==</code> » و« <code translate="no">in</code> ».</p></li>
-<li><p>يناسب<a href="/docs/ar/v2.6.x/bitmap.md">نوع BITMAP</a> الحقول التي تحتوي على عدد قليل من القيم المتميزة. كإرشاد عام، استخدمه فقط عندما يحتوي الحقل على أقل من 500 قيمة متميزة.</p></li>
-<li><p>يُعد<a href="/docs/ar/v2.6.x/stl-sort.md">STL_SORT</a> بديلاً للحقول الرقمية وحقول " <code translate="no">VARCHAR</code> ".</p></li>
+<li><p><a href="/docs/ar/v2.6.x/inverted.md">INVERTED</a> suits most Partition Key fields, because Partition-Key-based filters use <code translate="no">==</code> and <code translate="no">in</code> conditions.</p></li>
+<li><p><a href="/docs/ar/v2.6.x/bitmap.md">BITMAP</a> suits fields with few distinct values. As a general guideline, use it only when the field holds fewer than 500 distinct values.</p></li>
+<li><p><a href="/docs/ar/v2.6.x/stl-sort.md">STL_SORT</a> is an alternative for numeric and <code translate="no">VARCHAR</code> fields.</p></li>
 </ul>
-<p>تضيف الأمثلة التالية فهرسًا من نوع « <code translate="no">INVERTED</code> » على حقل «Partition Key» إلى معلمات الفهرس الخاصة بالمجموعة، إلى جانب الفهرس الموجود على حقل المتجه.</p>
+<p>The following examples add an <code translate="no">INVERTED</code> index on the Partition Key field to the index parameters of the collection, alongside the index on the vector field.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">index_params = client.prepare_index_params()
 
@@ -507,8 +508,8 @@ curl --request POST \
     \&quot;indexParams\&quot;: <span class="hljs-variable">$indexParams</span>
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>قم بتمرير معلمات الفهرس هذه عند إنشاء المجموعة، أو قم بإنشاء الفهرس على مجموعة موجودة. لمزيد من التفاصيل، راجع <a href="/docs/ar/v2.6.x/create-collection.md">إنشاء مجموعة</a>.</p>
-<h2 id="Use-Partition-Key-Isolation" class="common-anchor-header">استخدام عزل مفتاح التقسيم<button data-href="#Use-Partition-Key-Isolation" class="anchor-icon" translate="no">
+<p>Pass these index parameters when you create the collection, or create the index on an existing collection. For details, refer to <a href="/docs/ar/v2.6.x/create-collection.md">Create Collection</a>.</p>
+<h2 id="Use-Partition-Key-Isolation" class="common-anchor-header">Use Partition Key Isolation<button data-href="#Use-Partition-Key-Isolation" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -523,20 +524,20 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>في سيناريو الاستخدام المتعدد، يمكنك تعيين الحقل القياسي المرتبط بهويات المستأجرين كمفتاح التقسيم وإنشاء مرشح بناءً على قيمة محددة في هذا الحقل القياسي. لتحسين أداء البحث بشكل أكبر في سيناريوهات مماثلة، يقدم Milvus ميزة عزل مفتاح التقسيم.</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="/docs/v2.6.x/assets/partition-key-isolation.png" alt="Partition Key Isolation" class="doc-image" id="partition-key-isolation" /> 
-   <span>عزل مفتاح التقسيم</span>
-  
- </span></p>
-<p>كما هو موضح في الشكل أعلاه، يقوم Milvus بتجميع الكيانات بناءً على قيمة مفتاح التقسيم وإنشاء فهرس منفصل لكل مجموعة من هذه المجموعات. عند تلقي طلب بحث، يحدد Milvus موقع الفهرس استنادًا إلى قيمة مفتاح التقسيم المحددة في شرط التصفية ويقصر نطاق البحث على الكيانات المضمنة في الفهرس، مما يؤدي إلى تجنب مسح الكيانات غير ذات الصلة أثناء البحث وتحسين أداء البحث بشكل كبير.</p>
-<p>بمجرد تمكين "عزل مفتاح التقسيم"، يجب عليك تضمين قيمة محددة واحدة فقط في عامل التصفية القائم على مفتاح التقسيم حتى يتمكن Milvus من تقييد نطاق البحث ضمن الكيانات المتضمنة في الفهرس التي تتطابق مع هذه القيمة.</p>
+    </button></h2><p>In the multi-tenancy scenario, you can designate the scalar field related to tenant identities as the partition key and create a filter based on a specific value in this scalar field. To further improve search performance in similar scenarios, Milvus introduces the Partition Key Isolation feature.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/partition-key-isolation.png" alt="Partition Key Isolation" class="doc-image" id="partition-key-isolation" />
+    <span>Partition Key Isolation</span>
+  </span>
+</p>
+<p>As shown in the above figure, Milvus groups entities based on the Partition Key value and creates a separate index for each of these groups. Upon receiving a search request, Milvus locates the index based on the Partition Key value specified in the filtering condition and restricts the search scope within the entities included in the index, thus avoiding scanning irrelevant entities during the search and greatly enhancing the search performance.</p>
+<p>Once you have enabled Partition Key Isolation, you must include only one specific value in the Partition-key-based filter so that Milvus can restrict the search scope within the entities included in the index that match.</p>
 <div class="alert note">
-<p>حاليًّا، تنطبق ميزة عزل مفتاح التقسيم فقط على عمليات البحث التي تم تعيين نوع الفهرس فيها على HNSW.</p>
+<p>Currently, the Partition-Key Isolation feature applies only to searches with the index type set to HNSW.</p>
 </div>
-<p>لا تحل ميزة عزل مفتاح التقسيم محل الفهرس القياسي في حقل مفتاح التقسيم. تحدد قيمة مفتاح التقسيم في عامل التصفية الفهرس الفرعي المطابق، لكن Milvus لا يزال يقوم بتقييم عامل التصفية نفسه لتحديد الكيانات المطابقة، لذا نوصي <a href="/docs/ar/v2.6.x/use-partition-key.md#Index-Partition-Key">بفهرسة مفتاح التقسيم</a> أيضًا.</p>
-<h3 id="Enable-Partition-Key-Isolation" class="common-anchor-header">تمكين عزل مفتاح القسم<button data-href="#Enable-Partition-Key-Isolation" class="anchor-icon" translate="no">
+<p>Partition Key Isolation does not replace the scalar index on the Partition Key field. The Partition Key value in the filter locates the matching sub-index, but Milvus still evaluates the filter itself to identify the matching entities, so we recommend that you also <a href="/docs/ar/v2.6.x/use-partition-key.md#Index-Partition-Key">index the Partition Key</a>.</p>
+<h3 id="Enable-Partition-Key-Isolation" class="common-anchor-header">Enable Partition Key Isolation<button data-href="#Enable-Partition-Key-Isolation" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -551,13 +552,13 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>توضح أمثلة الكود التالية كيفية تمكين عزل مفتاح القسم.</p>
+    </button></h3><p>The following code examples demonstrate how to enable Partition Key Isolation.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.create_collection(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,
@@ -610,4 +611,4 @@ curl --request POST \
     \&quot;params\&quot;: <span class="hljs-variable">$params</span>
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>بمجرد تمكين عزل مفتاح التقسيم، لا يزال بإمكانك تعيين مفتاح التقسيم وعدد الأقسام كما هو موضح في <a href="/docs/ar/v2.6.x/use-partition-key.md#Set-Partition-Numbers">«تعيين أرقام الأقسام</a>». لاحظ أن عامل التصفية المستند إلى مفتاح التقسيم يجب أن يتضمن قيمة مفتاح تقسيم محددة فقط.</p>
+<p>Once you have enabled Partition Key Isolation, you can still set the Partition Key and number of partitions as described in <a href="/docs/ar/v2.6.x/use-partition-key.md#Set-Partition-Numbers">Set Partition Numbers</a>. Note that the Partition-Key-based filter should include only a specific Partition Key value.</p>

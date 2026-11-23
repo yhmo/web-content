@@ -2,8 +2,8 @@
 id: get-and-scalar-query.md
 title: Query
 summary: >-
-  Milvus에서 Query, Get 및 QueryIterator를 사용하여 엔티티를 검색하고, 메타데이터를 필터링하며, 쿼리 결과를
-  정렬하고, 스칼라 값을 집계할 수 있습니다.
+  Use Query, Get, and QueryIterator to retrieve entities, filter metadata, sort
+  query results, and aggregate scalar values in Milvus.
 ---
 <h1 id="Query" class="common-anchor-header">Query<button data-href="#Query" class="anchor-icon" translate="no">
       <svg translate="no"

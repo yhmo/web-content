@@ -2,9 +2,9 @@
 id: configure_metastore.md
 related_key: configure
 group: system_configuration.md
-summary: Milvusのメタストアの設定方法について説明します。
+summary: Learn how to configure metastore for Milvus.
 ---
-<h1 id="metastore-related-Configurations" class="common-anchor-header">メタストア関連設定<button data-href="#metastore-related-Configurations" class="anchor-icon" translate="no">
+<h1 id="metastore-related-Configurations" class="common-anchor-header">metastore-related Configurations<button data-href="#metastore-related-Configurations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,13 +37,13 @@ summary: Milvusのメタストアの設定方法について説明します。
     </button></h2><table id="metastore.type">
   <thead>
     <tr>
-      <th class="width80">説明</th>
-      <th class="width20">デフォルト値</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        デフォルト値：etcd、有効な値：[etcd, tikv］      </td>
+      <td>        Default value: etcd, Valid values: [etcd, tikv]      </td>
       <td>etcd</td>
     </tr>
   </tbody>
@@ -66,13 +66,13 @@ summary: Milvusのメタストアの設定方法について説明します。
     </button></h2><table id="metastore.snapshot.ttl">
   <thead>
     <tr>
-      <th class="width80">説明</th>
-      <th class="width20">デフォルト値</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        スナップショットttl（秒      </td>
+      <td>        snapshot ttl in seconds      </td>
       <td>86400</td>
     </tr>
   </tbody>
@@ -95,13 +95,13 @@ summary: Milvusのメタストアの設定方法について説明します。
     </button></h2><table id="metastore.snapshot.reserveTime">
   <thead>
     <tr>
-      <th class="width80">説明</th>
-      <th class="width20">デフォルト値</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        スナップショット予約時間（秒      </td>
+      <td>        snapshot reserve time in seconds      </td>
       <td>3600</td>
     </tr>
   </tbody>

@@ -1,15 +1,14 @@
 ---
 id: number.md
-title: Booleano e Numérico
+title: Boolean & Number
 summary: >-
-  Um campo booleano ou numérico é um campo escalar que armazena valores
-  booleanos ou numéricos. Estes valores podem ser um de dois valores possíveis
-  ou números inteiros (inteiros) e números decimais (números de ponto
-  flutuante). São normalmente utilizados para representar quantidades, medições
-  ou quaisquer dados que necessitem de ser processados de forma lógica ou
-  matemática.
+  A boolean or number field is a scalar field that stores boolean or numeric
+  values. These values can be one of two possible values or whole numbers
+  (integers) and decimal numbers (floating-point numbers). They are typically
+  used to represent quantities, measurements, or any data that needs to be
+  logically or mathematically processed.
 ---
-<h1 id="Boolean--Number" class="common-anchor-header">Booleano e Numérico<button data-href="#Boolean--Number" class="anchor-icon" translate="no">
+<h1 id="Boolean--Number" class="common-anchor-header">Boolean & Number<button data-href="#Boolean--Number" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -24,27 +23,27 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Um campo booleano ou numérico é um campo escalar que armazena valores booleanos ou numéricos. Estes valores podem ser um de dois valores possíveis ou números inteiros (<strong>inteiros</strong>) e números decimais (<strong>números de ponto flutuante</strong>). São normalmente utilizados para representar quantidades, medições ou quaisquer dados que necessitem de ser processados de forma lógica ou matemática.</p>
-<p>A tabela abaixo descreve os tipos de dados dos campos numéricos disponíveis nos clusters Milvus.</p>
+    </button></h1><p>A boolean or number field is a scalar field that stores boolean or numeric values. These values can be one of two possible values or whole numbers (<strong>integers</strong>) and decimal numbers (<strong>floating-point numbers</strong>). They are typically used to represent quantities, measurements, or any data that needs to be logically or mathematically processed.</p>
+<p>The table below describes the data types of number fields available in Milvus clusters.</p>
 <table>
 <thead>
-<tr><th>Tipo de campo</th><th>Descrição</th></tr>
+<tr><th>Field Type</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">BOOL</code></td><td>Tipo booleano para armazenar « <code translate="no">true</code> » ou « <code translate="no">false</code> », adequado para descrever estados binários.</td></tr>
-<tr><td><code translate="no">INT8</code></td><td>Inteiro de 8 bits, adequado para armazenar dados inteiros de intervalo reduzido.</td></tr>
-<tr><td><code translate="no">INT16</code></td><td>Inteiro de 16 bits, para dados inteiros de intervalo médio.</td></tr>
-<tr><td><code translate="no">INT32</code></td><td>Inteiro de 32 bits, ideal para o armazenamento geral de dados inteiros, como quantidades de produtos ou IDs de utilizador.</td></tr>
-<tr><td><code translate="no">INT64</code></td><td>Inteiro de 64 bits, adequado para armazenar dados de grande amplitude, como carimbos de data/hora ou identificadores.</td></tr>
-<tr><td><code translate="no">FLOAT</code></td><td>Número de ponto flutuante de 32 bits, para dados que requerem precisão geral, tais como classificações ou temperatura.</td></tr>
-<tr><td><code translate="no">DOUBLE</code></td><td>Número de ponto flutuante de dupla precisão de 64 bits, para dados de alta precisão, como informações financeiras ou cálculos científicos.</td></tr>
+<tr><td><code translate="no">BOOL</code></td><td>Boolean type for storing <code translate="no">true</code> or <code translate="no">false</code>, suitable for describing binary states.</td></tr>
+<tr><td><code translate="no">INT8</code></td><td>8-bit integer, suitable for storing small-range integer data.</td></tr>
+<tr><td><code translate="no">INT16</code></td><td>16-bit integer, for medium-range integer data.</td></tr>
+<tr><td><code translate="no">INT32</code></td><td>32-bit integer, ideal for general integer data storage like product quantities or user IDs.</td></tr>
+<tr><td><code translate="no">INT64</code></td><td>64-bit integer, suitable for storing large-range data like timestamps or identifiers.</td></tr>
+<tr><td><code translate="no">FLOAT</code></td><td>32-bit floating-point number, for data requiring general precision, such as ratings or temperature.</td></tr>
+<tr><td><code translate="no">DOUBLE</code></td><td>64-bit double-precision floating-point number, for high-precision data like financial information or scientific calculations.</td></tr>
 </tbody>
 </table>
-<p>Para declarar um campo booleano, basta definir ` <code translate="no">datatype</code> ` como ` <code translate="no">BOOL</code>`. Para declarar um campo numérico, basta definir-lo como um dos tipos de dados numéricos disponíveis. Por exemplo, ` <code translate="no">DataType.INT64</code> ` para um campo inteiro ou ` <code translate="no">DataType.FLOAT</code> ` para um campo de ponto flutuante.</p>
+<p>To declare a boolean field, simply set <code translate="no">datatype</code> to <code translate="no">BOOL</code>. To declare a number field, simply set that to one of the available numeric data types. For example, <code translate="no">DataType.INT64</code> for an integer field or <code translate="no">DataType.FLOAT</code> for a floating-point field.</p>
 <div class="alert note">
-<p>O Milvus suporta valores nulos e valores por predefinição para campos booleanos e numéricos. Para ativar estas funcionalidades, defina <code translate="no">nullable</code> como <code translate="no">True</code> e <code translate="no">default_value</code> como um valor numérico. Para mais detalhes, consulte <a href="/docs/pt/nullable-and-default.md">«Nullable &amp; Default</a>».</p>
+<p>Milvus supports null values and default values for boolean and number fields. To enable these features, set <code translate="no">nullable</code> to <code translate="no">True</code> and <code translate="no">default_value</code> to a numeric value. For details, refer to <a href="/docs/pt/nullable-and-default.md">Nullable & Default</a>.</p>
 </div>
-<h2 id="Add-boolean-and-number-fields" class="common-anchor-header">Adicionar campos booleanos e numéricos<button data-href="#Add-boolean-and-number-fields" class="anchor-icon" translate="no">
+<h2 id="Add-boolean-and-number-fields" class="common-anchor-header">Add boolean and number fields<button data-href="#Add-boolean-and-number-fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -59,24 +58,24 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Para armazenar dados booleanos ou numéricos, defina os tipos de campos correspondentes no esquema da sua coleção. Segue-se um exemplo de um esquema de coleção com dois campos numéricos:</p>
+    </button></h2><p>To store boolean or numeric data, define corresponding types of fields in your collection schema. Below is an example of a collection schema with two number fields:</p>
 <ul>
-<li><p><code translate="no">age</code>: armazena dados inteiros, permite valores nulos e tem um valor por defeito de <code translate="no">18</code>.</p></li>
-<li><p><code translate="no">broken</code>: armazena dados booleanos, permite valores nulos, mas não tem um valor por defeito.</p></li>
-<li><p><code translate="no">price</code>: armazena dados de tipo float, permite valores nulos, mas não tem um valor por defeito.</p></li>
+<li><p><code translate="no">age</code>: stores integer data, allows null values, and has a default value of <code translate="no">18</code>.</p></li>
+<li><p><code translate="no">broken</code>: stores boolean data, allows null values, but does not have a default value.</p></li>
+<li><p><code translate="no">price</code>: stores float data, allows null values, but does not have a default value.</p></li>
 </ul>
 <div class="alert note">
-<p>Se definir « <code translate="no">enable_dynamic_field=True</code> » ao definir o esquema, o Milvus permite-lhe inserir campos escalares que não tenham sido definidos previamente. No entanto, isto pode aumentar a complexidade das consultas e da gestão, podendo afetar o desempenho. Para mais informações, consulte <a href="/docs/pt/enable-dynamic-field.md">«Campo dinâmico</a>».</p>
+<p>If you set <code translate="no">enable_dynamic_field=True</code> when defining the schema, Milvus allows you to insert scalar fields that were not defined in advance. However, this may increase the complexity of queries and management, potentially impacting performance. For more information, refer to <a href="/docs/pt/enable-dynamic-field.md">Dynamic Field</a>.</p>
 </div>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Import necessary libraries</span>
 <span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
@@ -348,7 +347,7 @@ schema.Fields.Add(FieldSchema.CreateFloatVector(<span class="hljs-string">&quot;
     ]
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Set-index-params" class="common-anchor-header">Definir parâmetros de indexação<button data-href="#Set-index-params" class="anchor-icon" translate="no">
+<h2 id="Set-index-params" class="common-anchor-header">Set index params<button data-href="#Set-index-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -363,17 +362,17 @@ schema.Fields.Add(FieldSchema.CreateFloatVector(<span class="hljs-string">&quot;
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>A indexação ajuda a melhorar o desempenho das pesquisas e das consultas. Nos clusters do Milvus, a indexação é obrigatória para campos vetoriais, mas opcional para campos escalares.</p>
-<p>O exemplo seguinte cria índices no campo vetorial <code translate="no">embedding</code> e no campo escalar <code translate="no">age</code>, ambos utilizando o tipo de índice « <code translate="no">AUTOINDEX</code> ». Com este tipo, o Milvus seleciona automaticamente o índice mais adequado com base no tipo de dados. Para mais detalhes, consulte <a href="/docs/pt/index-explained.md">«Explicação do Índice</a>».</p>
+    </button></h2><p>Indexing helps improve search and query performance. In Milvus clusters, indexing is mandatory for vector fields but optional for scalar fields.</p>
+<p>The following example creates indexes on the vector field <code translate="no">embedding</code> and the scalar field <code translate="no">age</code>, both using the <code translate="no">AUTOINDEX</code> index type. With this type, Milvus automatically selects the most suitable index based on the data type. For details, refer to <a href="/docs/pt/index-explained.md">Index Explained</a>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Set index params</span>
 
@@ -481,7 +480,7 @@ indexOption2 := milvusclient.NewCreateIndexOption(<span class="hljs-string">&quo
         }
     ]&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Create-collection" class="common-anchor-header">Criar coleção<button data-href="#Create-collection" class="anchor-icon" translate="no">
+<h2 id="Create-collection" class="common-anchor-header">Create collection<button data-href="#Create-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -496,16 +495,16 @@ indexOption2 := milvusclient.NewCreateIndexOption(<span class="hljs-string">&quo
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Depois de definidos o esquema e os índices, crie uma coleção que inclua campos numéricos.</p>
+    </button></h2><p>Once the schema and indexes are defined, create a collection that includes number fields.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Create Collection</span>
 client.create_collection(
@@ -599,7 +598,7 @@ client
     \&quot;indexParams\&quot;: <span class="hljs-variable">$indexParams</span>
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Insert-data" class="common-anchor-header">Inserir dados<button data-href="#Insert-data" class="anchor-icon" translate="no">
+<h2 id="Insert-data" class="common-anchor-header">Insert data<button data-href="#Insert-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -614,16 +613,16 @@ client
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Após criar a coleção, insira entidades que correspondam ao esquema.</p>
+    </button></h2><p>After creating the collection, insert entities that match the schema.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Sample data</span>
 data = [
@@ -800,7 +799,7 @@ milvus::InsertResponse response;
     &quot;collectionName&quot;: &quot;my_collection&quot;
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Query-with-filter-expressions" class="common-anchor-header">Consultar com expressões de filtro<button data-href="#Query-with-filter-expressions" class="anchor-icon" translate="no">
+<h2 id="Query-with-filter-expressions" class="common-anchor-header">Query with filter expressions<button data-href="#Query-with-filter-expressions" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -815,17 +814,17 @@ milvus::InsertResponse response;
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Após inserir as entidades, utilize o método ` <code translate="no">query</code> ` para recuperar as entidades que correspondam às expressões de filtro especificadas.</p>
-<p>Para recuperar entidades em que o valor de « <code translate="no">age</code> » seja superior a 30:</p>
+    </button></h2><p>After inserting entities, use the <code translate="no">query</code> method to retrieve entities that match the specified filter expressions.</p>
+<p>To retrieve entities where the <code translate="no">age</code> is greater than 30:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;age &gt; 30&#x27;</span>
 
@@ -962,16 +961,16 @@ Console.WriteLine(res);
 
 <span class="hljs-comment">## {&quot;code&quot;:0,&quot;cost&quot;:0,&quot;data&quot;:[{&quot;age&quot;:30,&quot;pk&quot;:2,&quot;price&quot;:149.5},{&quot;age&quot;:35,&quot;pk&quot;:3,&quot;price&quot;:199.99}]}</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Para recuperar entidades em que o valor de « <code translate="no">price</code> » seja nulo:</p>
+<p>To retrieve entities where the <code translate="no">price</code> is null:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;price is null&#x27;</span>
 
@@ -1105,16 +1104,16 @@ curl --request POST \
   &quot;outputFields&quot;: [&quot;age&quot;, &quot;price&quot;, &quot;pk&quot;]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Para recuperar entidades em que o parâmetro « <code translate="no">age</code> » tenha o valor « <code translate="no">18</code> », utilize a expressão abaixo. Como o valor predefinido de « <code translate="no">age</code> » é « <code translate="no">18</code> », o resultado esperado deve incluir entidades com « <code translate="no">age</code> » explicitamente definido como « <code translate="no">18</code> » ou com « <code translate="no">age</code> » definido como nulo.</p>
+<p>To retrieve entities where <code translate="no">age</code> has the value <code translate="no">18</code>, use the following expression below. As the default value of <code translate="no">age</code> is <code translate="no">18</code>, the expected result should include entities with <code translate="no">age</code> explicitly set to <code translate="no">18</code> or with <code translate="no">age</code> set to null.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;age == 18&#x27;</span>
 
@@ -1251,7 +1250,7 @@ curl --request POST \
   &quot;outputFields&quot;: [&quot;age&quot;, &quot;price&quot;, &quot;pk&quot;]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Vector-search-with-filter-expressions" class="common-anchor-header">Pesquisa de vetores com expressões de filtro<button data-href="#Vector-search-with-filter-expressions" class="anchor-icon" translate="no">
+<h2 id="Vector-search-with-filter-expressions" class="common-anchor-header">Vector search with filter expressions<button data-href="#Vector-search-with-filter-expressions" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1266,16 +1265,16 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Para além da filtragem básica de campos numéricos, é possível combinar pesquisas de similaridade de vetores com filtros de campos numéricos. Por exemplo, o código seguinte mostra como adicionar um filtro de campo numérico a uma pesquisa de vetores:</p>
+    </button></h2><p>In addition to basic number field filtering, you can combine vector similarity searches with number field filters. For example, the following code shows how to add a number field filter to a vector search:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&quot;25 &lt;= age &lt;= 35&quot;</span>
 
@@ -1455,4 +1454,4 @@ Console.WriteLine(searchResp);
 
 <span class="hljs-comment">## {&quot;code&quot;:0,&quot;cost&quot;:0,&quot;data&quot;:[{&quot;age&quot;:35,&quot;distance&quot;:-0.19054288,&quot;id&quot;:3,&quot;price&quot;:199.99},{&quot;age&quot;:30,&quot;distance&quot;:-0.20163085,&quot;id&quot;:2,&quot;price&quot;:149.5},{&quot;age&quot;:25,&quot;distance&quot;:-0.2364331,&quot;id&quot;:1,&quot;price&quot;:99.99}]}</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Neste exemplo, definimos primeiro um vetor de consulta e adicionamos uma condição de filtro <code translate="no">25 &lt;= age &lt;= 35</code> durante a pesquisa. Isto garante que os resultados da pesquisa não só sejam semelhantes ao vetor de consulta, como também correspondam à faixa etária especificada. Para mais informações, consulte <a href="/docs/pt/boolean.md">Explicação</a> sobre <a href="/docs/pt/boolean.md">filtragem</a>.</p>
+<p>In this example, we first define a query vector and add a filter condition <code translate="no">25 &lt;= age &lt;= 35</code> during the search. This ensures that the search results are not only similar to the query vector but also meet the specified age range. For more information, refer to <a href="/docs/pt/boolean.md">Filtering Explained</a>.</p>

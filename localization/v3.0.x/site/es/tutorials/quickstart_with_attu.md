@@ -1,12 +1,11 @@
 ---
 id: quickstart_with_attu.md
 summary: >-
-  Utiliza Attu Desktop y Python para crear una colección en Milvus, introducir
-  representaciones de texto e inspeccionar los resultados de la búsqueda
-  vectorial.
-title: 'Guía de inicio rápido con Attu: la interfaz de usuario web de Milvus'
+  Use Attu Desktop and Python to create a Milvus collection, insert text
+  embeddings, and inspect vector-search results.
+title: Quick Start with Attu - the Web UI of Milvus
 ---
-<h1 id="Quick-Start-with-Attu---the-Web-UI-of-Milvus" class="common-anchor-header">Guía de inicio rápido con Attu: la interfaz de usuario web de Milvus<button data-href="#Quick-Start-with-Attu---the-Web-UI-of-Milvus" class="anchor-icon" translate="no">
+<h1 id="Quick-Start-with-Attu---the-Web-UI-of-Milvus" class="common-anchor-header">Quick Start with Attu - the Web UI of Milvus<button data-href="#Quick-Start-with-Attu---the-Web-UI-of-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -21,7 +20,7 @@ title: 'Guía de inicio rápido con Attu: la interfaz de usuario web de Milvus'
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><h2 id="1-Introduction" class="common-anchor-header">1. Introducción<button data-href="#1-Introduction" class="anchor-icon" translate="no">
+    </button></h1><h2 id="1-Introduction" class="common-anchor-header">1. Introduction<button data-href="#1-Introduction" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -36,9 +35,9 @@ title: 'Guía de inicio rápido con Attu: la interfaz de usuario web de Milvus'
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><a href="https://github.com/zilliztech/attu">Attu</a> es una herramienta de administración para Milvus. Cuenta con una interfaz gráfica de usuario (GUI) intuitiva que te permite interactuar fácilmente con tus bases de datos. Con solo unos clics, puedes visualizar el estado de tu clúster, gestionar metadatos, realizar consultas de datos y mucho más.</p>
+    </button></h2><p><a href="https://github.com/zilliztech/attu">Attu</a> is an administration tool for Milvus. It features an intuitive graphical user interface (GUI), allowing you to easily interact with your databases. With just a few clicks, you can visualize your cluster status, manage metadata, perform data queries, and much more.</p>
 <hr>
-<h2 id="Prerequisites" class="common-anchor-header">Requisitos previos<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -53,16 +52,16 @@ title: 'Guía de inicio rápido con Attu: la interfaz de usuario web de Milvus'
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Antes de empezar, prepara lo siguiente:</p>
+    </button></h2><p>Before starting, prepare the following:</p>
 <ul>
-<li>Un servidor Milvus en funcionamiento al que puedan acceder tanto Attu como tu entorno de Python. Este tutorial utiliza Milvus Standalone, disponible en <code translate="no">http://localhost:19530</code>, y no un archivo local de Milvus Lite <code translate="no">.db</code>.</li>
-<li>Una versión de Attu compatible con su servidor. Attu 3.0 es compatible con Milvus 2.6.0 y versiones posteriores, incluido Milvus 3.x; consulte la <a href="https://github.com/zilliztech/attu#compatibility">tabla de compatibilidad</a> para servidores más antiguos.</li>
-<li>Un entorno de Python con una versión de PyMilvus compatible con tu servidor. Consulta <a href="/docs/es/install-pymilvus.md">«Instalar el SDK de Python de Milvus</a> » y <a href="/docs/es/release_notes.md">las «Notas de la versión</a>». Para la versión del SDK utilizada en esta rama de documentación, instala las dependencias «model extra» y «progress-bar»:</li>
+<li>A running Milvus server that both Attu and your Python environment can reach. This tutorial uses Milvus Standalone at <code translate="no">http://localhost:19530</code>, not a local Milvus Lite <code translate="no">.db</code> file.</li>
+<li>An Attu release compatible with your server. Attu 3.0 supports Milvus 2.6.0 and later, including Milvus 3.x; use the <a href="https://github.com/zilliztech/attu#compatibility">compatibility table</a> for older servers.</li>
+<li>A Python environment with a PyMilvus version compatible with your server. See <a href="/docs/es/install-pymilvus.md">Install Milvus Python SDK</a> and <a href="/docs/es/release_notes.md">Release Notes</a>. For the SDK version used in this documentation branch, install the model extra and progress-bar dependency:</li>
 </ul>
 <pre><code translate="no" class="language-bash">python3 -m pip install <span class="hljs-string">&quot;pymilvus[model]==3.0.2&quot;</span> tqdm
 <button class="copy-code-btn"></button></code></pre>
-<p>Los pasos de preparación de datos también utilizan <code translate="no">wget</code> y <code translate="no">unzip</code>. La función de incrustación descarga su modelo la primera vez que se utiliza, por lo que debe permitir el acceso a la red al servidor del modelo o preparar la caché del modelo con antelación. Las capturas de pantalla ilustran el flujo de trabajo; las etiquetas y los diseños pueden variar entre las distintas versiones de Attu.</p>
-<h2 id="2-Install-Desktop-Application" class="common-anchor-header">2. Instalar la aplicación de escritorio<button data-href="#2-Install-Desktop-Application" class="anchor-icon" translate="no">
+<p>The data-preparation steps also use <code translate="no">wget</code> and <code translate="no">unzip</code>. The embedding function downloads its model on first use, so allow network access to the model host or prepare the model cache in advance. Screenshots illustrate the workflow; labels and layouts can differ between Attu releases.</p>
+<h2 id="2-Install-Desktop-Application" class="common-anchor-header">2. Install Desktop Application<button data-href="#2-Install-Desktop-Application" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -77,8 +76,8 @@ title: 'Guía de inicio rápido con Attu: la interfaz de usuario web de Milvus'
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Descarga la versión de escritorio de Attu visitando la <a href="https://github.com/zilliztech/attu/releases">página de versiones de Attu en GitHub</a>. Selecciona la versión adecuada para tu sistema operativo y sigue los pasos de instalación.</p>
-<h3 id="Note-for-macOS-M-series-chip" class="common-anchor-header">Nota para macOS (chip de la serie M):<button data-href="#Note-for-macOS-M-series-chip" class="anchor-icon" translate="no">
+    </button></h2><p>Download the desktop version of Attu by visiting the <a href="https://github.com/zilliztech/attu/releases">Attu GitHub Releases page</a>. Select the appropriate version for your operating system and follow the installation steps.</p>
+<h3 id="Note-for-macOS-M-series-chip" class="common-anchor-header">Note for macOS (M series chip):<button data-href="#Note-for-macOS-M-series-chip" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -93,14 +92,14 @@ title: 'Guía de inicio rápido con Attu: la interfaz de usuario web de Milvus'
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Si te aparece el siguiente error:</p>
+    </button></h3><p>If you encounter the error:</p>
 <pre><code translate="no">attu.app <span class="hljs-keyword">is</span> damaged <span class="hljs-keyword">and</span> cannot be opened.
 <button class="copy-code-btn"></button></code></pre>
-<p>Ejecuta el siguiente comando en la terminal para solucionar este problema:</p>
+<p>Run the following command in terminal to bypass this issue:</p>
 <pre><code translate="no"><span class="hljs-built_in">sudo</span> xattr -rd com.apple.quarantine /Applications/attu.app
 <button class="copy-code-btn"></button></code></pre>
 <hr>
-<h2 id="3-Connect-to-Milvus" class="common-anchor-header">3. Conéctate a Milvus<button data-href="#3-Connect-to-Milvus" class="anchor-icon" translate="no">
+<h2 id="3-Connect-to-Milvus" class="common-anchor-header">3. Connect to Milvus<button data-href="#3-Connect-to-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -115,25 +114,25 @@ title: 'Guía de inicio rápido con Attu: la interfaz de usuario web de Milvus'
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Attu admite la conexión tanto a <strong>Milvus Standalone</strong> como a <strong>Zilliz Cloud</strong>, lo que ofrece flexibilidad para trabajar con bases de datos locales o alojadas en la nube.</p>
-<p>Para utilizar Milvus Standalone de forma local:</p>
+    </button></h2><p>Attu supports connecting to both <strong>Milvus Standalone</strong> and <strong>Zilliz Cloud</strong>, providing flexibility to work with local or cloud-hosted databases.</p>
+<p>To use Milvus Standalone locally:</p>
 <ol>
-<li>Inicia Milvus Standalone siguiendo la <a href="https://milvus.io/docs/install_standalone-docker.md">guía de instalación de Milvus</a>.</li>
-<li>Abre Attu e introduce la información de conexión:
+<li>Start Milvus Standalone by following the <a href="https://milvus.io/docs/install_standalone-docker.md">Milvus installation guide</a>.</li>
+<li>Open Attu and enter the connection information:
 <ul>
-<li>Dirección de Milvus: la URI de tu servidor de Milvus Standalone, p. ej., http://localhost:19530</li>
-<li>Otros ajustes opcionales: puedes configurarlos según tus ajustes de Milvus o dejarlos tal y como vienen por defecto.</li>
+<li>Milvus Address: Your Milvus Standalone server URI, e.g. http://localhost:19530</li>
+<li>Other optional settings: You can set them depending on your Milvus configurations or just leave them as default.</li>
 </ul></li>
-<li>Haz clic en «Conectar» para acceder a tu base de datos.</li>
+<li>Click Connect to access your database.</li>
 </ol>
 <blockquote>
-<p>También puedes conectarte al Milvus totalmente gestionado en <a href="https://zilliz.com/cloud">Zilliz Cloud</a>. Solo tienes que configurar « <code translate="no">Milvus Address</code> » y « <code translate="no">token</code> » con el <a href="https://docs.zilliz.com/docs/on-zilliz-cloud-console#cluster-details">punto de conexión público y la clave API</a> de tu instancia de Zilliz Cloud.</p>
+<p>You can also connect the fully managed Milvus on <a href="https://zilliz.com/cloud">Zilliz Cloud</a>. Simply set the <code translate="no">Milvus Address</code> and <code translate="no">token</code> to the <a href="https://docs.zilliz.com/docs/on-zilliz-cloud-console#cluster-details">Public Endpoint and API key</a> of your Zilliz Cloud instance.</p>
 </blockquote>
 <p align="center">
   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/attu_login_page.png" alt="Attu Login Page" width="80%">
 </p>
 <hr>
-<h2 id="4-Prepare-Data-Create-Collection-and-Insert-Data" class="common-anchor-header">4. Preparar los datos, crear una colección e insertar datos<button data-href="#4-Prepare-Data-Create-Collection-and-Insert-Data" class="anchor-icon" translate="no">
+<h2 id="4-Prepare-Data-Create-Collection-and-Insert-Data" class="common-anchor-header">4. Prepare Data, Create Collection, and Insert Data<button data-href="#4-Prepare-Data-Create-Collection-and-Insert-Data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -148,7 +147,7 @@ title: 'Guía de inicio rápido con Attu: la interfaz de usuario web de Milvus'
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="41-Prepare-the-Data" class="common-anchor-header">4.1 Preparar los datos<button data-href="#41-Prepare-the-Data" class="anchor-icon" translate="no">
+    </button></h2><h3 id="41-Prepare-the-Data" class="common-anchor-header">4.1 Prepare the Data<button data-href="#41-Prepare-the-Data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -163,11 +162,11 @@ title: 'Guía de inicio rápido con Attu: la interfaz de usuario web de Milvus'
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Utilizamos las páginas de preguntas frecuentes de un <a href="https://github.com/milvus-io/milvus-docs/releases/download/v2.4.6-preview/milvus_docs_2.4.x_en.zip">archivo</a> fijo <a href="https://github.com/milvus-io/milvus-docs/releases/download/v2.4.6-preview/milvus_docs_2.4.x_en.zip">de la documentación de Milvus 2.4.x</a> como texto de ejemplo. El archivo es un conjunto de datos de recuperación, no la versión del servidor ni del SDK que se debe instalar.</p>
-<h4 id="Download-and-Extract-Data" class="common-anchor-header">Descargar y extraer los datos:</h4><pre><code translate="no" class="language-bash">wget https://github.com/milvus-io/milvus-docs/releases/download/v2.4.6-preview/milvus_docs_2.4.x_en.zip
+    </button></h3><p>We use the FAQ pages from a fixed <a href="https://github.com/milvus-io/milvus-docs/releases/download/v2.4.6-preview/milvus_docs_2.4.x_en.zip">Milvus Documentation 2.4.x archive</a> as sample text. The archive is a retrieval dataset, not the server or SDK version to install.</p>
+<h4 id="Download-and-Extract-Data" class="common-anchor-header">Download and Extract Data:</h4><pre><code translate="no" class="language-bash">wget https://github.com/milvus-io/milvus-docs/releases/download/v2.4.6-preview/milvus_docs_2.4.x_en.zip
 unzip -q milvus_docs_2.4.x_en.zip -d milvus_docs
 <button class="copy-code-btn"></button></code></pre>
-<h4 id="Process-Markdown-Files" class="common-anchor-header">Procesar los archivos Markdown:</h4><pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> glob <span class="hljs-keyword">import</span> glob
+<h4 id="Process-Markdown-Files" class="common-anchor-header">Process Markdown Files:</h4><pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> glob <span class="hljs-keyword">import</span> glob
 
 text_lines = []
 <span class="hljs-keyword">for</span> file_path <span class="hljs-keyword">in</span> glob(<span class="hljs-string">&quot;milvus_docs/en/faq/*.md&quot;</span>, recursive=<span class="hljs-literal">True</span>):
@@ -179,7 +178,7 @@ text_lines = []
     <span class="hljs-keyword">raise</span> RuntimeError(<span class="hljs-string">&quot;No FAQ files found. Check the extracted milvus_docs/en/faq directory.&quot;</span>)
 <button class="copy-code-btn"></button></code></pre>
 <hr>
-<h3 id="42-Generate-Embeddings" class="common-anchor-header">4.2 Generar representaciones<button data-href="#42-Generate-Embeddings" class="anchor-icon" translate="no">
+<h3 id="42-Generate-Embeddings" class="common-anchor-header">4.2 Generate Embeddings<button data-href="#42-Generate-Embeddings" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -194,7 +193,7 @@ text_lines = []
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Define un modelo de incrustación para generar incrustaciones de texto utilizando <code translate="no">milvus_model</code>. Utilizamos el modelo <code translate="no">DefaultEmbeddingFunction</code> como ejemplo, que es un modelo de incrustación ligero y preentrenado.</p>
+    </button></h3><p>Define a embedding model to generate text embeddings using the <code translate="no">milvus_model</code>. We use the <code translate="no">DefaultEmbeddingFunction</code> model as an example, which is a pre-trained and lightweight embedding model.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> model <span class="hljs-keyword">as</span> milvus_model
 
 embedding_model = milvus_model.DefaultEmbeddingFunction()
@@ -205,12 +204,12 @@ embedding_dim = <span class="hljs-built_in">len</span>(test_embedding)
 <span class="hljs-built_in">print</span>(embedding_dim)
 <span class="hljs-built_in">print</span>(test_embedding[:<span class="hljs-number">10</span>])
 <button class="copy-code-btn"></button></code></pre>
-<h4 id="Output" class="common-anchor-header">Resultado:</h4><pre><code translate="no">768
+<h4 id="Output" class="common-anchor-header">Output:</h4><pre><code translate="no">768
 [-0.04836066  0.07163023 -0.01130064 -0.03789345 -0.03320649 -0.01318448
  -0.03041712 -0.02269499 -0.02317863 -0.00426028]
 <button class="copy-code-btn"></button></code></pre>
 <hr>
-<h3 id="43-Create-Collection" class="common-anchor-header">4.3 Crear una colección<button data-href="#43-Create-Collection" class="anchor-icon" translate="no">
+<h3 id="43-Create-Collection" class="common-anchor-header">4.3 Create Collection<button data-href="#43-Create-Collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -225,7 +224,7 @@ embedding_dim = <span class="hljs-built_in">len</span>(test_embedding)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Conecta Python al mismo punto de conexión de Milvus y a la misma base de datos que seleccionaste en Attu. Si la autenticación está habilitada, configura las credenciales correspondientes en ambos clientes. Crea una colección:</p>
+    </button></h3><p>Connect Python to the same Milvus endpoint and database you selected in Attu. If authentication is enabled, configure the corresponding credentials in both clients. Create a collection:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 <span class="hljs-comment"># Connect to Milvus Standalone</span>
@@ -247,7 +246,7 @@ client.create_collection(
 )
 <button class="copy-code-btn"></button></code></pre>
 <hr>
-<h3 id="44-Insert-Data" class="common-anchor-header">4.4 Insertar datos<button data-href="#44-Insert-Data" class="anchor-icon" translate="no">
+<h3 id="44-Insert-Data" class="common-anchor-header">4.4 Insert Data<button data-href="#44-Insert-Data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -262,7 +261,7 @@ client.create_collection(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Recorre las líneas de texto, crea incrustaciones e inserta los datos en Milvus:</p>
+    </button></h3><p>Iterate through the text lines, create embeddings, and insert the data into Milvus:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> tqdm <span class="hljs-keyword">import</span> tqdm
 
 data = []
@@ -274,7 +273,7 @@ doc_embeddings = embedding_model.encode_documents(text_lines)
 client.insert(collection_name=collection_name, data=data)
 <button class="copy-code-btn"></button></code></pre>
 <hr>
-<h3 id="45-Visualize-Data-and-Schema" class="common-anchor-header">4.5 Visualizar datos y esquema<button data-href="#45-Visualize-Data-and-Schema" class="anchor-icon" translate="no">
+<h3 id="45-Visualize-Data-and-Schema" class="common-anchor-header">4.5 Visualize Data and Schema<button data-href="#45-Visualize-Data-and-Schema" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -289,13 +288,13 @@ client.insert(collection_name=collection_name, data=data)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>En Attu, actualiza la lista de colecciones y abre <code translate="no">attu_tutorial</code>. El esquema de configuración rápida incluye una clave primaria « <code translate="no">id</code> » y un campo « <code translate="no">vector</code> » cuya dimensión es « <code translate="no">embedding_dim</code> », con una métrica « <code translate="no">Inner Product (IP)</code> ». Los valores de « <code translate="no">text</code> » se almacenan en el campo dinámico. Consulte <a href="/docs/es/create-collection.md">«Crear colección</a> y <a href="/docs/es/enable-dynamic-field.md">campo dinámico»</a> para conocer las opciones explícitas del esquema. El recuento de entidades depende del texto de muestra extraído, por lo que debe utilizar el recuento de filas insertadas en lugar del número que aparece en las capturas de pantalla.</p>
-<p>Además, podemos ver los datos insertados, incluidos el ID, las representaciones vectoriales y los campos dinámicos que almacenan metadatos como el contenido de texto. La interfaz permite filtrar y realizar consultas basadas en condiciones especificadas o en campos dinámicos.</p>
+    </button></h3><p>In Attu, refresh the collection list and open <code translate="no">attu_tutorial</code>. The quick-setup schema includes an <code translate="no">id</code> primary key and a <code translate="no">vector</code> field whose dimension is <code translate="no">embedding_dim</code>, with an <code translate="no">Inner Product (IP)</code> metric. The <code translate="no">text</code> values are stored in the dynamic field. See <a href="/docs/es/create-collection.md">Create Collection</a> and <a href="/docs/es/enable-dynamic-field.md">Dynamic Field</a> for explicit schema options. The entity count depends on the extracted sample text, so use your inserted row count rather than the number in the screenshots.</p>
+<p>Additionally, we can view the inserted data, including ID, vector embeddings, and dynamic fields storing metadata such as text content. The interface supports filtering and querying based on specified conditions or dynamic fields.</p>
 <p align="center">
   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/attu_after_data_insertion_1.png" alt="Schema View" width="45%" />
   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/attu_after_data_insertion_2.png" alt="Data View" width="45%" />
 </p>
-<h2 id="5-Visualizing-Search-Results-and-Relationships" class="common-anchor-header">5. Visualización de los resultados de búsqueda y las relaciones<button data-href="#5-Visualizing-Search-Results-and-Relationships" class="anchor-icon" translate="no">
+<h2 id="5-Visualizing-Search-Results-and-Relationships" class="common-anchor-header">5. Visualizing Search Results and Relationships<button data-href="#5-Visualizing-Search-Results-and-Relationships" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -310,8 +309,8 @@ client.insert(collection_name=collection_name, data=data)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Attu ofrece una potente interfaz para visualizar y explorar las relaciones entre los datos. Para examinar los puntos de datos insertados y sus relaciones de similitud, sigue estos pasos:</p>
-<h3 id="51-Perform-a-Search" class="common-anchor-header">5.1 <strong>Realizar una búsqueda</strong><button data-href="#51-Perform-a-Search" class="anchor-icon" translate="no">
+    </button></h2><p>Attu provides a powerful interface for visualizing and exploring data relationships. To examine the inserted data points and their similarity relationships, follow these steps:</p>
+<h3 id="51-Perform-a-Search" class="common-anchor-header">5.1 <strong>Perform a Search</strong><button data-href="#51-Perform-a-Search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -326,17 +325,17 @@ client.insert(collection_name=collection_name, data=data)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Accede a la pestaña <strong>«Búsqueda vectorial</strong> » en Attu.</p>
+    </button></h3><p>Navigate to the <strong>Vector Search</strong> tab in Attu.</p>
 <ol>
-<li>Haz clic en el botón <strong>«Generar datos aleatorios</strong> » para crear consultas de prueba.</li>
-<li>Haz clic en <strong>«Buscar»</strong> para obtener resultados basados en los datos generados.</li>
+<li>Click on the <strong>Generate Random Data</strong> button to create test queries.</li>
+<li>Click <strong>Search</strong> to retrieve results based on the generated data.</li>
 </ol>
-<p>Los resultados se muestran en una tabla, en la que se indican los ID, las puntuaciones de similitud y los campos dinámicos de cada entidad coincidente. Los vectores aleatorios sirven para probar el flujo de trabajo de búsqueda, no la relevancia semántica. Para realizar una consulta de texto significativa, codifícala con la misma función « <code translate="no">embedding_model.encode_queries()</code> » utilizada para esta colección y, a continuación, realiza la búsqueda con ese vector. Consulta <a href="/docs/es/single-vector-search.md">«Búsqueda con un solo vector»</a> para ver un ejemplo en Python.</p>
+<p>The results are displayed in a table, showing IDs, similarity scores, and dynamic fields for each matching entity. Random vectors test the search workflow, not semantic relevance. For a meaningful text query, encode it with the same <code translate="no">embedding_model.encode_queries()</code> function used for this collection, then search with that vector. See <a href="/docs/es/single-vector-search.md">Single-Vector Search</a> for a Python example.</p>
 <p align="center">
   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/attu_searched_table.png" alt="Search Results Table" width="80%">
 </p>
 <hr>
-<h3 id="52-Explore-Data-Relationships" class="common-anchor-header">5.2 <strong>Explorar las relaciones entre los datos</strong><button data-href="#52-Explore-Data-Relationships" class="anchor-icon" translate="no">
+<h3 id="52-Explore-Data-Relationships" class="common-anchor-header">5.2 <strong>Explore Data Relationships</strong><button data-href="#52-Explore-Data-Relationships" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -351,16 +350,16 @@ client.insert(collection_name=collection_name, data=data)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Haga clic en el botón <strong>«Explorar»</strong> del panel de resultados para visualizar las relaciones entre el vector de consulta y los resultados de la búsqueda en una <strong>estructura similar a un grafo de conocimiento</strong>.</p>
+    </button></h3><p>Click the <strong>Explore</strong> button in the results panel to visualize the relationships between the query vector and the search results in a <strong>knowledge graph-like structure</strong>.</p>
 <ul>
-<li>El <strong>nodo central</strong> representa el vector de búsqueda.</li>
-<li>Los <strong>nodos conectados</strong> representan los resultados de la búsqueda; al hacer clic en ellos se mostrará la información detallada del nodo correspondiente.</li>
+<li>The <strong>central node</strong> represents the search vector.</li>
+<li>The <strong>connected nodes</strong> represent the search results, clicking them will display the detailed information of the corresponding node.</li>
 </ul>
 <p align="center">
   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/attu_searched_graph.png" alt="Knowledge Graph Visualization" width="80%">
 </p>
 <hr>
-<h3 id="53-Expand-the-Graph" class="common-anchor-header">5.3 <strong>Ampliar el gráfico</strong><button data-href="#53-Expand-the-Graph" class="anchor-icon" translate="no">
+<h3 id="53-Expand-the-Graph" class="common-anchor-header">5.3 <strong>Expand the Graph</strong><button data-href="#53-Expand-the-Graph" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -375,13 +374,13 @@ client.insert(collection_name=collection_name, data=data)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Haz doble clic en cualquier nodo de resultado para expandir sus conexiones. Esta acción revela relaciones adicionales entre el nodo seleccionado y otros puntos de datos de la colección, creando un <strong>gráfico de conocimiento más amplio e interconectado</strong>.</p>
-<p>Esta vista ampliada permite explorar más a fondo cómo se relacionan los puntos de datos, basándose en la similitud vectorial.</p>
+    </button></h3><p>Double-click on any result node to expand its connections. This action reveals additional relationships between the selected node and other data points in the collection, creating a <strong>larger, interconnected knowledge graph</strong>.</p>
+<p>This expanded view allows for deeper exploration of how data points are related, based on vector similarity.</p>
 <p align="center">
   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/attu_expanded_searched_graph.png" alt="Expanded Knowledge Graph" width="80%">
 </p>
 <hr>
-<h2 id="6-Conclusion" class="common-anchor-header">6. Conclusión<button data-href="#6-Conclusion" class="anchor-icon" translate="no">
+<h2 id="6-Conclusion" class="common-anchor-header">6. Conclusion<button data-href="#6-Conclusion" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -396,6 +395,6 @@ client.insert(collection_name=collection_name, data=data)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Attu simplifica la gestión y la visualización de los datos vectoriales almacenados en Milvus. Desde la inserción de datos hasta la ejecución de consultas y la exploración interactiva, ofrece una interfaz intuitiva para gestionar tareas complejas de búsqueda vectorial. Con características como la compatibilidad con esquemas dinámicos, visualizaciones gráficas de búsqueda y filtros de consulta flexibles, Attu permite a los usuarios analizar conjuntos de datos a gran escala de forma eficaz.</p>
-<p>Al aprovechar las herramientas de exploración visual de Attu, los usuarios pueden comprender mejor sus datos, identificar relaciones ocultas y tomar decisiones basadas en los datos. ¡Empieza hoy mismo a explorar tus propios conjuntos de datos con Attu y Milvus!</p>
+    </button></h2><p>Attu simplifies the management and visualization of vector data stored in Milvus. From data insertion to query execution and interactive exploration, it provides an intuitive interface for handling complex vector search tasks. With features like dynamic schema support, graphical search visualizations, and flexible query filters, Attu empowers users to analyze large-scale datasets effectively.</p>
+<p>By leveraging Attu’s visual exploration tools, users can better understand their data, identify hidden relationships, and make data-driven decisions. Start exploring your own datasets today with Attu and Milvus!</p>
 <hr>

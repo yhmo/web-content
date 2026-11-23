@@ -1,7 +1,9 @@
 ---
 id: set-collection-ttl.md
 title: Set Collection TTL
-summary: 設定集合層級或實體層級的 TTL 政策，以自動讓過期資料失效。
+summary: >-
+  Configure collection-level or entity-level TTL policies to expire stale data
+  automatically.
 ---
 <h1 id="Set-Collection-TTL" class="common-anchor-header">Set Collection TTL<button data-href="#Set-Collection-TTL" class="anchor-icon" translate="no">
       <svg translate="no"

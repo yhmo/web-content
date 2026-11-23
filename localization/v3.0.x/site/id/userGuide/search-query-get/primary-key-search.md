@@ -1,14 +1,14 @@
 ---
 id: primary-key-search.md
-title: Pencarian Kunci UtamaCompatible with Milvus 2.6.9+
+title: Primary-Key SearchCompatible with Milvus 2.6.9+
 summary: >-
-  Saat melakukan pencarian kesamaan, Anda selalu diminta untuk memberikan satu
-  atau lebih vektor kueri, meskipun vektor-vektor kueri tersebut sudah ada dalam
-  kumpulan target. Untuk menghindari pengambilan vektor sebelum pencarian, Anda
-  dapat menggunakan kunci utama sebagai gantinya.
+  When conducting similarity searches, you are always asked to provide one or
+  more query vectors, even if the query vectors are already present in the
+  target collection. To avoid retrieving vectors before the search, you can use
+  primary keys instead.
 beta: Milvus 2.6.9+
 ---
-<h1 id="Primary-Key-Search" class="common-anchor-header">Pencarian Kunci Utama<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.9+</span><button data-href="#Primary-Key-Search" class="anchor-icon" translate="no">
+<h1 id="Primary-Key-Search" class="common-anchor-header">Primary-Key Search<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.9+</span><button data-href="#Primary-Key-Search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -23,8 +23,8 @@ beta: Milvus 2.6.9+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Saat melakukan pencarian kesamaan, Anda selalu diminta untuk menyediakan satu atau lebih vektor kueri, meskipun vektor-vektor kueri tersebut sudah ada di dalam koleksi target. Untuk menghindari pengambilan vektor sebelum pencarian, Anda dapat menggunakan kunci utama sebagai gantinya.</p>
-<h2 id="Overview" class="common-anchor-header">Gambaran Umum<button data-href="#Overview" class="anchor-icon" translate="no">
+    </button></h1><p>When conducting similarity searches, you are always asked to provide one or more query vectors, even if the query vectors are already present in the target collection. To avoid retrieving vectors before the search, you can use primary keys instead.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -39,11 +39,11 @@ beta: Milvus 2.6.9+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Di platform e-commerce, pengguna dapat memasukkan kata kunci untuk mengambil produk yang cocok dengannya. Setelah pengguna melihat halaman detail produk, platform juga akan menampilkan daftar produk serupa di bagian bawah halaman bagi pengguna yang ingin membandingkannya.</p>
-<p>Rekomendasi tersebut diurutkan berdasarkan kemiripannya dengan kata kunci atau produk yang sedang dilihat. Untuk mencapai hal ini, pengembang platform perlu mengambil representasi vektor dari kata kunci atau produk yang sedang dilihat dari Milvus sebelum pencarian kemiripan sebenarnya dilakukan, yang meningkatkan jumlah round-trip antara platform dan Milvus serta mengakibatkan transmisi sejumlah besar nilai floating-point berdimensi tinggi melalui jaringan.</p>
-<p>Untuk menyederhanakan logika interaksi antara aplikasi Anda dan Milvus, mengurangi jumlah perjalanan bolak-balik, dan menghindari pengiriman sejumlah besar nilai floating-point berdimensi tinggi melalui jaringan, pertimbangkan untuk menggunakan pencarian berdasarkan kunci utama.</p>
-<p>Dalam pencarian kunci utama, Anda tidak perlu menyediakan vektor kueri apa pun. Sebagai gantinya, Anda diminta untuk menyediakan kunci utama (<code translate="no">ids</code>) dari entitas yang berisi vektor kueri tersebut.</p>
-<h2 id="Limits--restrictions" class="common-anchor-header">Batasan &amp; pembatasan<button data-href="#Limits--restrictions" class="anchor-icon" translate="no">
+    </button></h2><p>On e-commerce platforms, users can enter a keyword to retrieve products that match it. Once the user views a product detail page, the platform will also display a list of similar products at the bottom of the page for users who want to compare them.</p>
+<p>The recommendations are sorted by their similarity to the keyword or the current product. To achieve this, platform developers need to retrieve the vector representation of the keyword or the current product from Milvus before the actual similarity search, which increases the round-trip between the platform and Milvus and results in a large number of high-dimensional floats being transmitted across the network.</p>
+<p>To simplify the interaction logic between your applications and Milvus, reduce the number of round-trips, and avoid transmitting large amounts of high-dimensional floating-point values across the network, consider using primary key searches.</p>
+<p>In a primary key search, you do not need to provide any query vectors. Instead, you are asked to provide the primary keys (<code translate="no">ids</code>) of the entities that contain the query vectors.</p>
+<h2 id="Limits--restrictions" class="common-anchor-header">Limits & restrictions<button data-href="#Limits--restrictions" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -59,14 +59,14 @@ beta: Milvus 2.6.9+
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>Pencarian menggunakan kunci utama berlaku untuk semua tipe data vektor, kecuali bidang vektor langka yang diturunkan dari bidang VarChar, seperti dalam fungsi BM25.</p></li>
-<li><p>Anda dapat menggunakan kunci utama sebagai pengganti vektor kueri dalam pencarian yang difilter, rentang, dan pengelompokan, dengan opsi paginasi diaktifkan. Namun, fitur ini tidak berlaku untuk pencarian hibrida dan iterator pencarian.</p></li>
-<li><p>Untuk pencarian kesamaan yang melibatkan daftar embedding, Anda tetap perlu mengambil vektor kueri, menyusunnya menjadi daftar embedding, dan menjalankan pencarian.</p></li>
-<li><p>Anda tidak dapat menggunakan kunci utama sebagai pengganti vektor kueri dalam API RESTful.</p></li>
-<li><p>Untuk kunci utama yang tidak ada atau yang formatnya salah, Milvus akan menampilkan pesan kesalahan.</p></li>
-<li><p>Kunci utama dan vektor kueri saling eksklusif. Menyertakan keduanya juga akan mengakibatkan kesalahan.</p></li>
+<li><p>Searches using primary keys apply to all vector data types, except sparse vector fields derived from VarChar fields, as in BM25 functions.</p></li>
+<li><p>You can use primary keys instead of query vectors in filtered, range, and grouping searches, optionally with pagination enabled. However, this feature does not apply to hybrid searches and search iterators.</p></li>
+<li><p>For similarity searches involving embedding lists, you still need to retrieve the query vectors, arrange them into embedding lists, and run the searches.</p></li>
+<li><p>You cannot use primary keys instead of query vectors in RESTful APIs.</p></li>
+<li><p>For any nonexistent primary keys or those in an incorrect format, Milvus will prompt errors.</p></li>
+<li><p>Primary keys and query vectors are mutually exclusive. Providing both also results in errors.</p></li>
 </ul>
-<h2 id="Examples" class="common-anchor-header">Contoh<button data-href="#Examples" class="anchor-icon" translate="no">
+<h2 id="Examples" class="common-anchor-header">Examples<button data-href="#Examples" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -81,11 +81,11 @@ beta: Milvus 2.6.9+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Contoh-contoh berikut mengasumsikan bahwa semua ID Int64 yang disediakan tersedia di koleksi tujuan.</p>
+    </button></h2><p>The following examples assume that all provided Int64 IDs are available in the target collection.</p>
 <div class="alert note">
-<p>Kunci utama tidak digunakan untuk penyaringan; kunci tersebut hanya digunakan untuk pengambilan vektor.</p>
+<p>The primary keys are not used for filtering; they are used only for vector retrieval.</p>
 </div>
-<h3 id="Example-1-Basic-primary-key-search" class="common-anchor-header">Contoh 1: Pencarian kunci utama dasar<button data-href="#Example-1-Basic-primary-key-search" class="anchor-icon" translate="no">
+<h3 id="Example-1-Basic-primary-key-search" class="common-anchor-header">Example 1: Basic primary-key search<button data-href="#Example-1-Basic-primary-key-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -100,14 +100,14 @@ beta: Milvus 2.6.9+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Untuk melakukan pencarian kunci utama dasar, cukup ganti vektor kueri dengan kunci utama.</p>
+    </button></h3><p>To conduct a basic primary-key search, simply replace the query vectors with primary keys.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
- <a href="#cpp">   C++</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+    <a href="#cpp">C++</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -242,7 +242,7 @@ milvus::SearchResponse searchResponse;
     }
 }
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-2-Filtered-search-using-primary-keys" class="common-anchor-header">Contoh 2: Pencarian dengan penyaringan menggunakan kunci utama<button data-href="#Example-2-Filtered-search-using-primary-keys" class="anchor-icon" translate="no">
+<h3 id="Example-2-Filtered-search-using-primary-keys" class="common-anchor-header">Example 2: Filtered search using primary keys<button data-href="#Example-2-Filtered-search-using-primary-keys" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -257,14 +257,14 @@ milvus::SearchResponse searchResponse;
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Contoh berikut mengasumsikan bahwa color dan likes adalah dua kolom yang didefinisikan dalam skema pada koleksi target.</p>
+    </button></h3><p>The following example assumes that color and likes are two schema-defined fields in the target collection.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
- <a href="#cpp">   C++</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+    <a href="#cpp">C++</a>
 </div>
 <pre><code translate="no" class="language-python">res = client.search(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,
@@ -359,7 +359,7 @@ milvus::SearchResponse searchResponse;
     }
 }
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-3-Range-search-using-primary-keys" class="common-anchor-header">Contoh 3: Pencarian rentang menggunakan kunci utama<button data-href="#Example-3-Range-search-using-primary-keys" class="anchor-icon" translate="no">
+<h3 id="Example-3-Range-search-using-primary-keys" class="common-anchor-header">Example 3: Range search using primary keys<button data-href="#Example-3-Range-search-using-primary-keys" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -375,12 +375,12 @@ milvus::SearchResponse searchResponse;
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
- <a href="#cpp">   C++</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+    <a href="#cpp">C++</a>
 </div>
 <pre><code translate="no" class="language-python">res = client.search(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,
@@ -486,7 +486,7 @@ milvus::SearchResponse searchResponse;
     }
 }
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-4-Grouping-search-using-primary-keys" class="common-anchor-header">Contoh 4: Pencarian pengelompokan menggunakan kunci utama<button data-href="#Example-4-Grouping-search-using-primary-keys" class="anchor-icon" translate="no">
+<h3 id="Example-4-Grouping-search-using-primary-keys" class="common-anchor-header">Example 4: Grouping search using primary keys<button data-href="#Example-4-Grouping-search-using-primary-keys" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -501,14 +501,14 @@ milvus::SearchResponse searchResponse;
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Contoh berikut mengasumsikan bahwa ` <code translate="no">docId</code> ` adalah bidang yang didefinisikan dalam skema pada koleksi target.</p>
+    </button></h3><p>The following example assumes <code translate="no">docId</code> is a schema-defined fields in the target collection.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
- <a href="#cpp">   C++</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+    <a href="#cpp">C++</a>
 </div>
 <pre><code translate="no" class="language-python">res = client.search(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,

@@ -2,8 +2,10 @@
 id: insert-data-into-structarray-fields.md
 title: Insert Data into StructArray Fields
 summary: >-
-  當每個實體包含一個有序的結構化元素清單時，請將資料插入 StructArray 欄位中。在插入載荷中，StructArray
-  欄位以物件陣列的形式呈現。每個物件代表一個 Struct 元素，並使用集合架構中定義的 Struct 子欄位名稱。
+  Insert data into a StructArray field when each entity contains an ordered list
+  of structured elements. In the insert payload, a StructArray field is
+  represented as an array of objects. Each object represents one Struct element
+  and uses the Struct subfield names defined in the collection schema.
 ---
 <h1 id="Insert-Data-into-StructArray-Fields" class="common-anchor-header">Insert Data into StructArray Fields<button data-href="#Insert-Data-into-StructArray-Fields" class="anchor-icon" translate="no">
       <svg translate="no"

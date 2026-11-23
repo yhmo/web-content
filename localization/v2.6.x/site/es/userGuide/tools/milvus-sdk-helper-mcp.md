@@ -1,9 +1,9 @@
 ---
 id: milvus-sdk-helper-mcp.md
-title: Guía del ayudante de código Milvus SDK
-summary: '⚡️ ¡Configure una vez, aumente la eficiencia para siempre!'
+title: Milvus SDK Code Helper Guide
+summary: '⚡️ Configure once, boost efficiency forever!'
 ---
-<h1 id="Milvus-SDK-Code-Helper-Guide" class="common-anchor-header">Guía del ayudante de código Milvus SDK<button data-href="#Milvus-SDK-Code-Helper-Guide" class="anchor-icon" translate="no">
+<h1 id="Milvus-SDK-Code-Helper-Guide" class="common-anchor-header">Milvus SDK Code Helper Guide<button data-href="#Milvus-SDK-Code-Helper-Guide" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,7 +18,7 @@ summary: '⚡️ ¡Configure una vez, aumente la eficiencia para siempre!'
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><h1 id="Overview" class="common-anchor-header">Visión general<button data-href="#Overview" class="anchor-icon" translate="no">
+    </button></h1><h1 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -33,11 +33,11 @@ summary: '⚡️ ¡Configure una vez, aumente la eficiencia para siempre!'
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>⚡️ ¡Configure una vez, aumente la eficiencia para siempre!</p>
-<p>¿Sigue frustrado por los resultados obsoletos de LLM? ¿Cansado de que LLM muestre contenido obsoleto incluso después de actualizar las versiones? Pruebe este mcp para resolver de una vez por todas el problema del desfase de información al desarrollar código relacionado con Milvus.</p>
-<p>El Ayudante de Código SDK oficial de Milvus está ahora en línea - simplemente encuentre el IDE AI correspondiente, configúrelo una vez y deje que AI escriba por usted el código Milvus <strong>recomendado oficialmente</strong>. ¡Despídase por completo de los frameworks obsoletos!</p>
-<p>➡️ Salta ahora: <a href="#Quickstart">Inicio rápido</a></p>
-<h1 id="Effect-display" class="common-anchor-header">Visualización de efectos<button data-href="#Effect-display" class="anchor-icon" translate="no">
+    </button></h1><p>⚡️ Configure once, boost efficiency forever!</p>
+<p>Still frustrated by outdated results from LLM? Tired of LLM outputting obsolete content even after versions are updated? Try this mcp to solve the information lag issue when developing Milvus-related code once and for all!</p>
+<p>Milvus official SDK Code Helper is now online — just find the corresponding AI IDE, configure it once, and let AI write <strong>officially recommended</strong> Milvus code for you. Say goodbye to outdated frameworks completely!</p>
+<p>➡️ Jump now: <a href="#Quickstart">QuickStart</a></p>
+<h1 id="Effect-display" class="common-anchor-header">Effect display<button data-href="#Effect-display" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -52,22 +52,22 @@ summary: '⚡️ ¡Configure una vez, aumente la eficiencia para siempre!'
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>La siguiente figura compara los efectos de generar código con y sin el ayudante de código Milvus SDK. Si no se utiliza el ayudante de código Milvus SDK, el código escrito sigue el antiguo enfoque ORM SDK, que ya no se recomienda. A continuación se muestra una comparación de capturas de pantalla de código con y sin el ayudante de código MCP:</p>
+    </button></h1><p>The following figure compares the effects of generating code with and without the Milvus SDK code helper. If the Milvus SDK code helper is not used, the code written follows the old ORM SDK approach, which is no longer recommended. The following is a comparison of code screenshots with and without the Code Helper MCP:</p>
 <table>
    <tr>
-     <th><p>Ayudante de código MCP <strong>activado</strong></p></th>
-     <th><p>Ayudante de código MCP <strong>desactivado</strong></p></th>
+     <th><p>MCP code helper <strong>enabled</strong></p></th>
+     <th><p>MCP code helper <strong>disabled</strong></p></th>
    </tr>
    <tr>
      <td><p><img translate="no" width="400" src="/docs/v2.6.x/assets/code-helper-enabled.png" alt="Code Helper Enabled" /></p></td>
      <td><p><img translate="no" width="400"src="/docs/v2.6.x/assets/code-helper-disabled.png" alt="Code Helper Disabled" /></p></td>
    </tr>
    <tr>
-     <td><p>Utilice la última interfaz MilvusClient recomendada oficialmente para crear una colección</p></td>
-     <td><p>No se recomienda crear una colección utilizando la antigua interfaz ORM.</p></td>
+     <td><p>Use the officially recommended latest MilvusClient interface to create a Collection</p></td>
+     <td><p>Creating a Collection using the old ORM interface is not recommended.</p></td>
    </tr>
 </table>
-<h1 id="Quickstart" class="common-anchor-header">Inicio rápido<button data-href="#Quickstart" class="anchor-icon" translate="no">
+<h1 id="Quickstart" class="common-anchor-header">Quickstart<button data-href="#Quickstart" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -82,7 +82,7 @@ summary: '⚡️ ¡Configure una vez, aumente la eficiencia para siempre!'
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Encuentre su IDE AI, configúrelo con un solo clic, y desbloquee un viaje de codificación sin preocupaciones.</p>
+    </button></h1><p>Find your AI IDE, configure it with one click, and unlock a worry-free coding journey.</p>
 <h2 id="Cursor" class="common-anchor-header">Cursor<button data-href="#Cursor" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -98,12 +98,14 @@ summary: '⚡️ ¡Configure una vez, aumente la eficiencia para siempre!'
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Vaya a: <code translate="no">Settings</code> -&gt; <code translate="no">Cursor Settings</code> -&gt; <code translate="no">Tools &amp; Intergrations</code> -&gt; <code translate="no">Add new global MCP server</code></p>
+    </button></h2><p>Go to: <code translate="no">Settings</code> -> <code translate="no">Cursor Settings</code> -> <code translate="no">Tools &amp; Intergrations</code> -> <code translate="no">Add new global MCP server</code></p>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="/docs/v2.6.x/assets/cursor-mcp-settings.png" alt="Cursor Mcp Settings" class="doc-image" id="cursor-mcp-settings" />
-   </span> <span class="img-wrapper"> <span>Cursor Mcp Configuración</span> </span></p>
-<p>El enfoque recomendado es pegar la siguiente configuración en tu archivo Cursor <code translate="no">~/.cursor/mcp.json</code>. También puede instalar un proyecto específico creando <code translate="no">.cursor/mcp.json</code> en su carpeta de proyecto. Vea <a href="https://docs.cursor.com/context/model-context-protocol">los documentos de Cursor M</a> CP para más información.</p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/cursor-mcp-settings.png" alt="Cursor Mcp Settings" class="doc-image" id="cursor-mcp-settings" />
+    <span>Cursor Mcp Settings</span>
+  </span>
+</p>
+<p>Pasting the following configuration into your Cursor <code translate="no">~/.cursor/mcp.json</code> file is the recommended approach. You may also install a specific project by creating <code translate="no">.cursor/mcp.json</code> in your project folder. See <a href="https://docs.cursor.com/context/model-context-protocol">Cursor MCP docs</a> for more info.</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
   <span class="hljs-attr">&quot;mcpServers&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
     <span class="hljs-attr">&quot;sdk-code-helper&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
@@ -115,7 +117,7 @@ summary: '⚡️ ¡Configure una vez, aumente la eficiencia para siempre!'
   <span class="hljs-punctuation">}</span>
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Claude-Desktop" class="common-anchor-header">Escritorio Claude<button data-href="#Claude-Desktop" class="anchor-icon" translate="no">
+<h2 id="Claude-Desktop" class="common-anchor-header">Claude Desktop<button data-href="#Claude-Desktop" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -130,7 +132,7 @@ summary: '⚡️ ¡Configure una vez, aumente la eficiencia para siempre!'
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Agregue a su configuración Claude Desktop:</p>
+    </button></h2><p>Add to your Claude Desktop configuration:</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
   <span class="hljs-attr">&quot;mcpServers&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
     <span class="hljs-attr">&quot;sdk-code-helper&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
@@ -157,7 +159,7 @@ summary: '⚡️ ¡Configure una vez, aumente la eficiencia para siempre!'
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Claude Code soporta añadir servidores MCP directamente a través de la configuración JSON, incluyendo servidores del tipo URL remota. Utilice el siguiente comando para añadir la configuración a Claude Code:</p>
+    </button></h2><p>Claude Code supports adding MCP servers directly through JSON configuration, including servers of the remote URL type. Use following command to add configuration to Claude Code:</p>
 <pre><code translate="no" class="language-sql">claude mcp <span class="hljs-keyword">add</span><span class="hljs-operator">-</span>json sdk<span class="hljs-operator">-</span>code<span class="hljs-operator">-</span>helper <span class="hljs-comment">--json &#x27;{</span>
   &quot;url&quot;: &quot;https://sdk.milvus.io/mcp/&quot;,
   &quot;headers&quot;: {
@@ -180,7 +182,7 @@ summary: '⚡️ ¡Configure una vez, aumente la eficiencia para siempre!'
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Windsurf soporta configuración MCP a través de un archivo JSON. Añada la siguiente configuración a su configuración MCP Windsurf:</p>
+    </button></h2><p>Windsurf supports MCP configuration through a JSON file. Add the following configuration to your Windsurf MCP settings:</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
   <span class="hljs-attr">&quot;mcpServers&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
     <span class="hljs-attr">&quot;sdk-code-helper&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
@@ -192,7 +194,7 @@ summary: '⚡️ ¡Configure una vez, aumente la eficiencia para siempre!'
   <span class="hljs-punctuation">}</span>
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="VS-Code" class="common-anchor-header">Código VS<button data-href="#VS-Code" class="anchor-icon" translate="no">
+<h2 id="VS-Code" class="common-anchor-header">VS Code<button data-href="#VS-Code" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -207,7 +209,7 @@ summary: '⚡️ ¡Configure una vez, aumente la eficiencia para siempre!'
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>El servidor MCP CodeIndexer puede utilizarse con VS Code a través de extensiones compatibles con MCP. Añada la siguiente configuración a los ajustes MCP de VS Code:</p>
+    </button></h2><p>The CodeIndexer MCP server can be used with VS Code through MCP-compatible extensions. Add the following configuration to your VS Code MCP settings:</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
   <span class="hljs-attr">&quot;mcpServers&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
     <span class="hljs-attr">&quot;sdk-code-helper&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
@@ -234,22 +236,24 @@ summary: '⚡️ ¡Configure una vez, aumente la eficiencia para siempre!'
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Cherry Studio permite la configuración visual del servidor MCP a través de su interfaz de configuración. Aunque no admite directamente la configuración manual de JSON, puede agregar un nuevo servidor a través de la interfaz gráfica de usuario:</p>
+    </button></h2><p>Cherry Studio allows for visual MCP server configuration through its settings interface. While it doesn’t directly support manual JSON configuration, you can add a new server via the GUI:</p>
 <ol>
-<li><p>Vaya a Configuración → Servidores MCP → Agregar servidor.</p></li>
-<li><p>Rellene los detalles del servidor:</p>
+<li><p>Navigate to Settings → MCP Servers → Add Server.</p></li>
+<li><p>Fill in the server details:</p>
 <ul>
-<li><p>Nombre: <code translate="no">sdk code helper</code></p></li>
-<li><p>Tipo: <code translate="no">Streamable HTTP</code></p></li>
+<li><p>Name: <code translate="no">sdk code helper</code></p></li>
+<li><p>Type: <code translate="no">Streamable HTTP</code></p></li>
 <li><p>URL: <code translate="no">https://sdk.milvus.io/mcp/</code></p></li>
-<li><p>Cabeceras: <code translate="no">&quot;Accept&quot;: &quot;text/event-stream&quot;</code></p></li>
+<li><p>Headers: <code translate="no">&quot;Accept&quot;: &quot;text/event-stream&quot;</code></p></li>
 </ul></li>
-<li><p>Guarde la configuración para activar el servidor.</p></li>
+<li><p>Save the configuration to activate the server.</p></li>
 </ol>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="/docs/v2.6.x/assets/cherry-studio-mcp-settings.png" alt="Cherry Studio Mcp Settings" class="doc-image" id="cherry-studio-mcp-settings" />
-   </span> <span class="img-wrapper"> <span>Configuración Mcp de Cherry Studio</span> </span></p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/cherry-studio-mcp-settings.png" alt="Cherry Studio Mcp Settings" class="doc-image" id="cherry-studio-mcp-settings" />
+    <span>Cherry Studio Mcp Settings</span>
+  </span>
+</p>
 <h2 id="Cline" class="common-anchor-header">Cline<button data-href="#Cline" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -265,11 +269,11 @@ summary: '⚡️ ¡Configure una vez, aumente la eficiencia para siempre!'
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Cline utiliza un archivo de configuración JSON para administrar los servidores MCP. Para integrar la configuración del servidor MCP proporcionada:</p>
+    </button></h2><p>Cline uses a JSON configuration file to manage MCP servers. To integrate the provided MCP server configuration:</p>
 <ol>
-<li><p>Abra Cline y haga clic en el icono Servidores MCP en la barra de navegación superior.</p></li>
-<li><p>Selecciona la pestaña Instalado y, a continuación, haz clic en Configuración avanzada de MCP.</p></li>
-<li><p>En el archivo <code translate="no">cline_mcp_settings.json</code>, añada la siguiente configuración:</p></li>
+<li><p>Open Cline and click on the MCP Servers icon in the top navigation bar.</p></li>
+<li><p>Select the Installed tab, then click Advanced MCP Settings.</p></li>
+<li><p>In the <code translate="no">cline_mcp_settings.json</code> file, add the following configuration:</p></li>
 </ol>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
   <span class="hljs-attr">&quot;mcpServers&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
@@ -282,7 +286,7 @@ summary: '⚡️ ¡Configure una vez, aumente la eficiencia para siempre!'
   <span class="hljs-punctuation">}</span>
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Augment" class="common-anchor-header">Aumentar<button data-href="#Augment" class="anchor-icon" translate="no">
+<h2 id="Augment" class="common-anchor-header">Augment<button data-href="#Augment" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -298,10 +302,10 @@ summary: '⚡️ ¡Configure una vez, aumente la eficiencia para siempre!'
         ></path>
       </svg>
     </button></h2><ol>
-<li><p>Pulse Cmd/Ctrl Mayús P o vaya al menú hamburguesa del panel Aumento</p></li>
-<li><p>Seleccione Editar configuración</p></li>
-<li><p>En Avanzado, haga clic en Editar en settings.json</p></li>
-<li><p>Añada la configuración del servidor a la matriz <code translate="no">mcpServers</code> en el objeto <code translate="no">augment.advanced</code>:</p></li>
+<li><p>Press Cmd/Ctrl Shift P or go to the hamburger menu in the Augment panel</p></li>
+<li><p>Select Edit Settings</p></li>
+<li><p>Under Advanced, click Edit in settings.json</p></li>
+<li><p>Add the server configuration to the <code translate="no">mcpServers</code> array in the <code translate="no">augment.advanced</code> object:</p></li>
 </ol>
 <pre><code translate="no" class="language-markdown">{
   &quot;mcpServers&quot;: {
@@ -329,10 +333,10 @@ summary: '⚡️ ¡Configure una vez, aumente la eficiencia para siempre!'
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Gemini CLI requiere configuración manual a través de un archivo JSON:</p>
+    </button></h2><p>Gemini CLI requires manual configuration through a JSON file:</p>
 <ol>
-<li><p>Cree o edite el archivo <code translate="no">~/.gemini/settings.json</code>.</p></li>
-<li><p>Añada la siguiente configuración:</p></li>
+<li><p>Create or edit the <code translate="no">~/.gemini/settings.json</code> file.</p></li>
+<li><p>Add the following configuration:</p></li>
 </ol>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
   <span class="hljs-attr">&quot;mcpServers&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
@@ -346,9 +350,9 @@ summary: '⚡️ ¡Configure una vez, aumente la eficiencia para siempre!'
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
 <ol>
-<li>Guarde el archivo y reinicie Gemini CLI para aplicar los cambios.</li>
+<li>Save the file and restart Gemini CLI to apply the changes.</li>
 </ol>
-<h2 id="Roo-Code" class="common-anchor-header">Código Roo<button data-href="#Roo-Code" class="anchor-icon" translate="no">
+<h2 id="Roo-Code" class="common-anchor-header">Roo Code<button data-href="#Roo-Code" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -363,11 +367,11 @@ summary: '⚡️ ¡Configure una vez, aumente la eficiencia para siempre!'
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Código Roo</p>
-<p>Roo Code utiliza un archivo de configuración JSON para los servidores MCP:</p>
+    </button></h2><p>Roo Code</p>
+<p>Roo Code utilizes a JSON configuration file for MCP servers:</p>
 <ol>
-<li><p>Abra Roo Code y vaya a Settings → MCP Servers → Edit Global Config.</p></li>
-<li><p>En el archivo <code translate="no">mcp_settings.json</code>, añada la siguiente configuración:</p></li>
+<li><p>Open Roo Code and navigate to Settings → MCP Servers → Edit Global Config.</p></li>
+<li><p>In the <code translate="no">mcp_settings.json</code> file, add the following configuration:</p></li>
 </ol>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
   <span class="hljs-attr">&quot;mcpServers&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
@@ -381,5 +385,5 @@ summary: '⚡️ ¡Configure una vez, aumente la eficiencia para siempre!'
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
 <ol>
-<li>Guarde el archivo para activar el servidor.</li>
+<li>Save the file to activate the server.</li>
 </ol>

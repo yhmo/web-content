@@ -2,12 +2,12 @@
 id: phrase-match.md
 title: Phrase MatchCompatible with Milvus 2.5.17+
 summary: >-
-  Фразовый поиск позволяет находить документы, содержащие термины вашего запроса
-  в виде точной фразы. По умолчанию слова должны встречаться в том же порядке и
-  непосредственно рядом друг с другом. Например, запрос «робототехника машинное
-  обучение» найдет такие фрагменты текста, как «…типичные модели робототехники
-  машинного обучения…», где слова «робототехника», «машинное» и «обучение» идут
-  подряд, без других слов между ними.
+  Phrase match lets you search for documents containing your query terms as an
+  exact phrase. By default, the words must appear in the same order and directly
+  adjacent to one another. For example, a query for "robotics machine learning"
+  matches text like "…typical robotics machine learning models…", where the
+  words "robotics", "machine", and "learning" appear in sequence with no other
+  words between them.
 beta: Milvus 2.5.17+
 ---
 <h1 id="Phrase-Match" class="common-anchor-header">Phrase Match<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.5.17+</span><button data-href="#Phrase-Match" class="anchor-icon" translate="no">

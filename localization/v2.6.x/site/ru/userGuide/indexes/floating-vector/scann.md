@@ -2,11 +2,10 @@
 id: scann.md
 title: SCANN
 summary: >-
-  Созданный на основе библиотеки ScaNN от Google, индекс SCANN в Milvus
-  предназначен для решения масштабных задач поиска по векторному сходству,
-  обеспечивая баланс между скоростью и точностью даже на больших массивах
-  данных, которые традиционно представляют сложность для большинства поисковых
-  алгоритмов.
+  Powered by the ScaNN library from Google, the SCANN index in Milvus is
+  designed to address scaling vector similarity search challenges, striking a
+  balance between speed and accuracy, even on large datasets that would
+  traditionally pose challenges for most search algorithms.
 ---
 <h1 id="SCANN" class="common-anchor-header">SCANN<button data-href="#SCANN" class="anchor-icon" translate="no">
       <svg translate="no"
@@ -23,8 +22,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Созданный на основе библиотеки <a href="https://github.com/google-research/google-research/blob/master/scann%2FREADME.md">ScaNN</a> от Google, индекс <code translate="no">SCANN</code> в Milvus предназначен для решения задач поиска векторного сходства, обеспечивая баланс между скоростью и точностью, даже на больших наборах данных, которые традиционно представляют трудности для большинства поисковых алгоритмов.</p>
-<h2 id="Overview" class="common-anchor-header">Обзор<button data-href="#Overview" class="anchor-icon" translate="no">
+    </button></h1><p>Powered by the <a href="https://github.com/google-research/google-research/blob/master/scann%2FREADME.md">ScaNN</a> library from Google, the <code translate="no">SCANN</code> index in Milvus is designed to address scaling vector similarity search challenges, striking a balance between speed and accuracy, even on large datasets that would traditionally pose challenges for most search algorithms.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -39,23 +38,25 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>ScaNN создан для решения одной из самых сложных задач векторного поиска: эффективного нахождения наиболее релевантных векторов в высокоразмерных пространствах даже при увеличении объема и сложности массивов данных. Его архитектура разбивает процесс векторного поиска на отдельные этапы:</p>
+    </button></h2><p>ScaNN is built to solve one of the biggest challenges in vector search: efficiently finding the most relevant vectors in high-dimensional spaces, even as datasets grow larger and more complex. Its architecture breaks down the vector search process into distinct stages:</p>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="/docs/v2.6.x/assets/scann.png" alt="Scann" class="doc-image" id="scann" />
-   </span> <span class="img-wrapper"> <span>Scann</span> </span></p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/scann.png" alt="Scann" class="doc-image" id="scann" />
+    <span>Scann</span>
+  </span>
+</p>
 <ol>
-<li><p><strong>Разбиение на разделы</strong>: Разбивает набор данных на кластеры. Этот метод сужает пространство поиска, фокусируясь только на релевантных подмножествах данных вместо сканирования всего набора данных, что экономит время и вычислительные ресурсы. ScaNN часто использует алгоритмы кластеризации, такие как <a href="https://zilliz.com/blog/k-means-clustering">k-means</a>, для определения кластеров, что позволяет более эффективно выполнять поиск по сходству.</p></li>
-<li><p><strong>Квантование</strong>: После разбиения ScaNN применяет процесс квантования, известный как <a href="https://arxiv.org/abs/1908.10396">анизотропное векторное квантование</a>. Традиционное квантование направлено на минимизацию общего расстояния между исходным и сжатым векторами, что не является идеальным для таких задач, как <a href="https://papers.nips.cc/paper/5329-asymmetric-lsh-alsh-for-sublinear-time-maximum-inner-product-search-mips.pdf">поиск по максимальному внутреннему продукту (MIPS)</a>, где сходство определяется внутренним произведением векторов, а не прямым расстоянием. Вместо этого при анизотропном квантовании приоритет отдается сохранению параллельных компонент между векторами, или частей, наиболее важных для вычисления точного внутреннего произведения. Такой подход позволяет ScaNN поддерживать высокую точность MIPS за счет тщательного выравнивания сжатых векторов с запросом, что обеспечивает более быстрый и точный поиск сходства.</p></li>
-<li><p><strong>Повторное ранжирование</strong>: Этап повторного ранжирования - это заключительный этап, на котором ScaNN точно настраивает результаты поиска, полученные на этапах разбиения и квантования. При повторном ранжировании к лучшим векторам-кандидатам применяются точные вычисления внутреннего произведения, что обеспечивает высокую точность конечных результатов. Повторное ранжирование крайне важно для высокоскоростных рекомендательных систем или приложений поиска изображений, где первоначальная фильтрация и кластеризация служат грубым слоем, а заключительный этап обеспечивает возврат пользователю только наиболее релевантных результатов.</p></li>
+<li><p><strong>Partitioning</strong>: Divides the dataset into clusters. This method narrows the search space by focusing only on relevant data subsets instead of scanning the entire dataset, saving time and processing resources. ScaNN often uses clustering algorithms, such as <a href="https://zilliz.com/blog/k-means-clustering">k-means</a>, to identify clusters, which allows it to perform similarity searches more efficiently.</p></li>
+<li><p><strong>Quantization</strong>: ScaNN applies a quantization process known as <a href="https://arxiv.org/abs/1908.10396">anisotropic vector quantization</a> after partitioning. Traditional quantization focuses on minimizing the overall distance between original and compressed vectors, which isn’t ideal for tasks like <a href="https://papers.nips.cc/paper/5329-asymmetric-lsh-alsh-for-sublinear-time-maximum-inner-product-search-mips.pdf">Maximum Inner Product Search (MIPS)</a>, where similarity is determined by the inner product of vectors rather than direct distance. Anisotropic quantization instead prioritizes preserving parallel components between vectors, or the parts most important for calculating accurate inner products. This approach allows ScaNN to maintain high MIPS accuracy by carefully aligning compressed vectors with the query, enabling faster, more precise similarity searches.</p></li>
+<li><p><strong>Re-ranking</strong>: The re-ranking phase is the final step, where ScaNN fine-tunes the search results from the partitioning and quantization stages. This re-ranking applies precise inner product calculations to the top candidate vectors, ensuring the final results are highly accurate. Re-ranking is crucial in high-speed recommendation engines or image search applications where the initial filtering and clustering serve as a coarse layer, and the final stage ensures that only the most relevant results are returned to the user.</p></li>
 </ol>
-<p>Производительность <code translate="no">SCANN</code> регулируется двумя ключевыми параметрами, которые позволяют точно настроить баланс между скоростью и точностью:</p>
+<p>The performance of <code translate="no">SCANN</code> is controlled by two key parameters that let you fine-tune the balance between speed and accuracy:</p>
 <ul>
-<li><p><code translate="no">with_raw_data</code>: Контролирует, хранятся ли исходные векторные данные наряду с квантованными представлениями. Включение этого параметра повышает точность при повторном ранжировании, но увеличивает требования к хранению.</p></li>
-<li><p><code translate="no">reorder_k</code>: Определяет, сколько кандидатов будет уточнено на этапе окончательного переранжирования. Более высокие значения повышают точность, но увеличивают задержку поиска.</p></li>
+<li><p><code translate="no">with_raw_data</code>: Controls whether original vector data is stored alongside quantized representations. Enabling this parameter improves accuracy during re-ranking but increases storage requirements.</p></li>
+<li><p><code translate="no">reorder_k</code>: Determines how many candidates are refined during the final re-ranking phase. Higher values improve accuracy but increase search latency.</p></li>
 </ul>
-<p>Подробное руководство по оптимизации этих параметров для конкретного случая использования см. в разделе <a href="/docs/ru/scann.md#Index-params">Параметры индекса</a>.</p>
-<h2 id="Build-index" class="common-anchor-header">Построение индекса<button data-href="#Build-index" class="anchor-icon" translate="no">
+<p>For detailed guidance on optimizing these parameters for your specific use case, refer to <a href="/docs/ru/v2.6.x/scann.md#Index-params">Index params</a>.</p>
+<h2 id="Build-index" class="common-anchor-header">Build index<button data-href="#Build-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -70,7 +71,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Чтобы построить индекс <code translate="no">SCANN</code> по векторному полю в Milvus, используйте метод <code translate="no">add_index()</code>, указав <code translate="no">index_type</code>, <code translate="no">metric_type</code> и дополнительные параметры для индекса.</p>
+    </button></h2><p>To build a <code translate="no">SCANN</code> index on a vector field in Milvus, use the <code translate="no">add_index()</code> method, specifying the <code translate="no">index_type</code>, <code translate="no">metric_type</code>, and additional parameters for the index.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 <span class="hljs-comment"># Prepare index building params</span>
@@ -86,18 +87,18 @@ index_params.add_index(
     } <span class="hljs-comment"># Index building params</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>В данной конфигурации:</p>
+<p>In this configuration:</p>
 <ul>
-<li><p><code translate="no">index_type</code>: Тип индекса, который будет построен. В этом примере задайте значение <code translate="no">SCANN</code>.</p></li>
-<li><p><code translate="no">metric_type</code>: Метод, используемый для вычисления расстояния между векторами. Поддерживаются следующие значения: <code translate="no">COSINE</code>, <code translate="no">L2</code> и <code translate="no">IP</code>. Подробнее см. в разделе <a href="/docs/ru/metric.md">Типы метрик</a>.</p></li>
-<li><p><code translate="no">params</code>: Дополнительные параметры конфигурации для построения индекса.</p>
+<li><p><code translate="no">index_type</code>: The type of index to be built. In this example, set the value to <code translate="no">SCANN</code>.</p></li>
+<li><p><code translate="no">metric_type</code>: The method used to calculate the distance between vectors. Supported values include <code translate="no">COSINE</code>, <code translate="no">L2</code>, and <code translate="no">IP</code>. For details, refer to <a href="/docs/ru/v2.6.x/metric.md">Metric Types</a>.</p></li>
+<li><p><code translate="no">params</code>: Additional configuration options for building the index.</p>
 <ul>
-<li><code translate="no">with_raw_data</code>: Хранить ли исходные векторные данные вместе с квантованным представлением.</li>
+<li><code translate="no">with_raw_data</code>: Whether to store the original vector data alongside the quantized representation.</li>
 </ul>
-<p>Чтобы узнать больше о параметрах построения, доступных для индекса <code translate="no">SCANN</code>, обратитесь к разделу <a href="/docs/ru/scann.md#Index-building-params">Параметры построения индекса</a>.</p></li>
+<p>To learn more building parameters available for the <code translate="no">SCANN</code> index, refer to <a href="/docs/ru/v2.6.x/scann.md#Index-building-params">Index building params</a>.</p></li>
 </ul>
-<p>После того как параметры индекса настроены, вы можете создать индекс, используя метод <code translate="no">create_index()</code> напрямую или передавая параметры индекса в метод <code translate="no">create_collection</code>. Подробности см. в разделе <a href="/docs/ru/create-collection.md">Создание коллекции</a>.</p>
-<h2 id="Search-on-index" class="common-anchor-header">Поиск по индексу<button data-href="#Search-on-index" class="anchor-icon" translate="no">
+<p>Once the index parameters are configured, you can create the index by using the <code translate="no">create_index()</code> method directly or passing the index params in the <code translate="no">create_collection</code> method. For details, refer to <a href="/docs/ru/v2.6.x/create-collection.md">Create Collection</a>.</p>
+<h2 id="Search-on-index" class="common-anchor-header">Search on index<button data-href="#Search-on-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -112,7 +113,7 @@ index_params.add_index(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>После того как индекс создан и сущности вставлены, можно выполнять поиск по сходству в индексе.</p>
+    </button></h2><p>Once the index is built and entities are inserted, you can perform similarity searches on the index.</p>
 <pre><code translate="no" class="language-python">search_params = {
     <span class="hljs-string">&quot;params&quot;</span>: {
         <span class="hljs-string">&quot;reorder_k&quot;</span>: <span class="hljs-number">10</span>, <span class="hljs-comment"># Number of candidates to refine</span>
@@ -128,16 +129,16 @@ res = MilvusClient.search(
     search_params=search_params
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>В этой конфигурации:</p>
+<p>In this configuration:</p>
 <ul>
-<li><p><code translate="no">params</code>: Дополнительные параметры конфигурации для поиска по индексу.</p>
+<li><p><code translate="no">params</code>: Additional configuration options for searching on the index.</p>
 <ul>
-<li><code translate="no">reorder_k</code>: : Количество кандидатов для уточнения на этапе повторного ранжирования.</li>
-<li><code translate="no">nprobe</code>: Количество кластеров для поиска.</li>
+<li><code translate="no">reorder_k</code>: Number of candidates to refine during the re-ranking phase.</li>
+<li><code translate="no">nprobe</code>: Number of clusters to search for.</li>
 </ul>
-<p>Чтобы узнать больше параметров поиска, доступных для индекса <code translate="no">SCANN</code>, обратитесь к разделу <a href="/docs/ru/scann.md#Index-specific-search-params">Параметры поиска по индексу</a>.</p></li>
+<p>To learn more search parameters available for the <code translate="no">SCANN</code> index, refer to <a href="/docs/ru/v2.6.x/scann.md#Index-specific-search-params">Index-specific search params</a>.</p></li>
 </ul>
-<h2 id="Index-params" class="common-anchor-header">Параметры индекса<button data-href="#Index-params" class="anchor-icon" translate="no">
+<h2 id="Index-params" class="common-anchor-header">Index params<button data-href="#Index-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -152,8 +153,8 @@ res = MilvusClient.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>В этом разделе представлен обзор параметров, используемых для построения индекса и выполнения поиска по нему.</p>
-<h3 id="Index-building-params" class="common-anchor-header">Параметры построения индекса<button data-href="#Index-building-params" class="anchor-icon" translate="no">
+    </button></h2><p>This section provides an overview of the parameters used for building an index and performing searches on the index.</p>
+<h3 id="Index-building-params" class="common-anchor-header">Index building params<button data-href="#Index-building-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -168,28 +169,28 @@ res = MilvusClient.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>В следующей таблице перечислены параметры, которые могут быть настроены в <code translate="no">params</code> при <a href="/docs/ru/scann.md#Build-index">построении индекса</a>.</p>
+    </button></h3><p>The following table lists the parameters that can be configured in <code translate="no">params</code> when <a href="/docs/ru/v2.6.x/scann.md#Build-index">building an index</a>.</p>
 <table>
    <tr>
-     <th><p>Параметр</p></th>
-     <th><p>Описание</p></th>
-     <th><p>Диапазон значений</p></th>
-     <th><p>Предложение по настройке</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Description</p></th>
+     <th><p>Value Range</p></th>
+     <th><p>Tuning Suggestion</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">nlist</code></p></td>
-     <td><p>Количество единиц кластера</p></td>
+     <td><p>Number of cluster units</p></td>
      <td><p>[1, 65536]</p></td>
-     <td><p>Больший <em>nlist</em> повышает эффективность обрезки и обычно ускоряет грубый поиск, но разделы могут стать слишком маленькими, что может снизить запоминаемость; меньший <em>nlist</em> сканирует большие кластеры, улучшая запоминаемость, но замедляя поиск.</p></td>
+     <td><p>A higher <em>nlist</em> increases pruning efficiency and typically speeds up coarse search, but partitions can get too small, which may reduce recall; a lower <em>nlist</em> scans larger clusters, improving recall but slowing search.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">with_raw_data</code></p></td>
-     <td><p>Хранить ли исходные векторные данные вместе с квантованным представлением. Если эта опция включена, это позволяет производить более точные расчеты сходства на этапе повторного ранжирования, используя исходные векторы вместо квантованных приближений.</p></td>
-     <td><p><strong>Тип</strong>: Булево</p><p><strong>Диапазон</strong>: <code translate="no">true</code>, <code translate="no">false</code></p><p><strong>Значение по умолчанию</strong>: <code translate="no">true</code></p></td>
-     <td><p>Установите значение <code translate="no">true</code> для <strong>повышения точности поиска</strong> и в тех случаях, когда место в памяти не является первостепенной задачей. Оригинальные векторные данные обеспечивают более точные расчеты сходства при повторном ранжировании.</p><p>Установите значение <code translate="no">false</code>, чтобы <strong>уменьшить накладные расходы на хранение</strong> и использование памяти, особенно для больших наборов данных. Однако это может привести к некоторому снижению точности поиска, поскольку на этапе повторного ранжирования будут использоваться квантованные векторы.</p><p><strong>Рекомендуется</strong>: Использовать <code translate="no">true</code> для производственных приложений, где точность очень важна.</p></td>
+     <td><p>Whether to store the original vector data alongside the quantized representation. When enabled, this allows for more accurate similarity calculations during the re-ranking phase by using the original vectors instead of quantized approximations.</p></td>
+     <td><p><strong>Type</strong>: Boolean</p><p><strong>Range</strong>: <code translate="no">true</code>, <code translate="no">false</code></p><p><strong>Default value</strong>: <code translate="no">true</code></p></td>
+     <td><p>Set to <code translate="no">true</code> for <strong>higher search accuracy</strong> and when storage space is not a primary concern. The original vector data enables more precise similarity calculations during re-ranking.</p><p>Set to <code translate="no">false</code> to <strong>reduce storage overhead</strong> and memory usage, especially for large datasets. However, this may result in slightly lower search accuracy as the re-ranking phase will use quantized vectors.</p><p><strong>Recommended</strong>: Use <code translate="no">true</code> for production applications where accuracy is critical.</p></td>
    </tr>
 </table>
-<h3 id="Index-specific-search-params" class="common-anchor-header">Параметры поиска, специфичные для индекса<button data-href="#Index-specific-search-params" class="anchor-icon" translate="no">
+<h3 id="Index-specific-search-params" class="common-anchor-header">Index-specific search params<button data-href="#Index-specific-search-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -204,24 +205,24 @@ res = MilvusClient.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>В следующей таблице перечислены параметры, которые могут быть настроены в <code translate="no">search_params.params</code> при <a href="/docs/ru/scann.md#Search-on-index">поиске по индексу</a>.</p>
+    </button></h3><p>The following table lists the parameters that can be configured in <code translate="no">search_params.params</code> when <a href="/docs/ru/v2.6.x/scann.md#Search-on-index">searching on the index</a>.</p>
 <table>
    <tr>
-     <th><p>Параметр</p></th>
-     <th><p>Описание</p></th>
-     <th><p>Диапазон значений</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Description</p></th>
+     <th><p>Value Range</p></th>
      <th><p>Tuning Suggestion</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">reorder_k</code></p></td>
-     <td><p>Управляет количеством векторов-кандидатов, которые уточняются на этапе повторного ранжирования. Этот параметр определяет, сколько лучших кандидатов из начальных этапов разбиения и квантования будут повторно оценены с использованием более точных расчетов сходства.</p></td>
-     <td><p><strong>Тип</strong>: Целое число</p><p><strong>Диапазон</strong>: [1, <em>int_max</em>].</p><p><strong>Значение по умолчанию</strong>: Нет</p></td>
-     <td><p>Большее значение <code translate="no">reorder_k</code> обычно приводит к <strong>повышению точности поиска</strong>, поскольку на этапе окончательного уточнения рассматривается больше кандидатов. Однако это также <strong>увеличивает время поиска</strong> из-за дополнительных вычислений.</p><p>Рассматривайте возможность увеличения <code translate="no">reorder_k</code>, когда достижение высокого отзыва является критически важным, а скорость поиска менее важна. Хорошей отправной точкой является 2-5-кратное увеличение желаемого <code translate="no">limit</code> (количество возвращаемых результатов TopK).</p><p>Рассмотрите возможность уменьшения <code translate="no">reorder_k</code>, чтобы отдать предпочтение более быстрому поиску, особенно в сценариях, где небольшое снижение точности допустимо.</p><p>В большинстве случаев мы рекомендуем устанавливать значение в этом диапазоне:<em>[limit</em>, <em>limit</em> * 5].</p></td>
+     <td><p>Controls the number of candidate vectors that are refined during the re-ranking phase. This parameter determines how many top candidates from the initial partitioning and quantization stages are re-evaluated using more precise similarity calculations.</p></td>
+     <td><p><strong>Type</strong>: Integer</p><p><strong>Range</strong>: [1, <em>int_max</em>]</p><p><strong>Default value</strong>: None</p></td>
+     <td><p>A larger <code translate="no">reorder_k</code> generally leads to <strong>higher search accuracy</strong> as more candidates are considered during the final refinement phase. However, this also <strong>increases search time</strong> due to additional computation.</p><p>Consider increasing <code translate="no">reorder_k</code> when achieving high recall is critical and search speed is less of a concern. A good starting point is 2-5x your desired <code translate="no">limit</code> (TopK results to return).</p><p>Consider decreasing <code translate="no">reorder_k</code> to prioritize faster searches, especially in scenarios where a slight reduction in accuracy is acceptable.</p><p>In most cases, we recommend you set a value within this range: [<em>limit</em>, <em>limit</em> * 5].</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">nprobe</code></p></td>
-     <td><p>Количество кластеров для поиска кандидатов.</p></td>
-     <td><p><strong>Тип</strong>: Целое число</p><p><strong>Диапазон</strong>: [1, <em>nlist</em>].</p><p><strong>Значение по умолчанию</strong>: <code translate="no">8</code></p></td>
-     <td><p>Большие значения позволяют искать больше кластеров, что улучшает запоминание благодаря расширению области поиска, но ценой увеличения задержки запроса.</p><p>Установите значение <code translate="no">nprobe</code> пропорционально значению <code translate="no">nlist</code>, чтобы сбалансировать скорость и точность.</p><p>В большинстве случаев мы рекомендуем устанавливать значение в этом диапазоне: [1, nlist].</p></td>
+     <td><p>The number of clusters to search for candidates.</p></td>
+     <td><p><strong>Type</strong>: Integer</p><p><strong>Range</strong>: [1, <em>nlist</em>]</p><p><strong>Default value</strong>: <code translate="no">8</code></p></td>
+     <td><p>Higher values allow more clusters to be searched, improving recall by expanding the search scope but at the cost of increased query latency.</p><p>Set <code translate="no">nprobe</code> proportionally to <code translate="no">nlist</code> to balance speed and accuracy.</p><p>In most cases, we recommend you set a value within this range: [1, nlist].</p></td>
    </tr>
 </table>

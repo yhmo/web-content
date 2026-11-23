@@ -2,9 +2,9 @@
 id: configure_trace.md
 related_key: configure
 group: system_configuration.md
-summary: 了解如何為 Milvus 設定追蹤。
+summary: Learn how to configure trace for Milvus.
 ---
-<h1 id="trace-related-Configurations" class="common-anchor-header">追蹤相關組態<button data-href="#trace-related-Configurations" class="anchor-icon" translate="no">
+<h1 id="trace-related-Configurations" class="common-anchor-header">trace-related Configurations<button data-href="#trace-related-Configurations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,16 +37,16 @@ summary: 了解如何為 Milvus 設定追蹤。
     </button></h2><table id="trace.exporter">
   <thead>
     <tr>
-      <th class="width80">說明</th>
-      <th class="width20">預設值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-        <li>trace 出口商類型，預設為 stdout、</li>      
-        <li>可選值：['noop','stdout','jaeger','otlp']。</li>      </td>
-      <td>無</td>
+        <li>trace exporter type, default is stdout,</li>      
+        <li>optional values: ['noop','stdout', 'jaeger', 'otlp']</li>      </td>
+      <td>noop</td>
     </tr>
   </tbody>
 </table>
@@ -68,16 +68,16 @@ summary: 了解如何為 Milvus 設定追蹤。
     </button></h2><table id="trace.sampleFraction">
   <thead>
     <tr>
-      <th class="width80">說明</th>
-      <th class="width20">預設值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-        <li>以 traceID 為基礎的取樣器的分數、</li>      
-        <li>可選值：[0, 1]</li>      
-        <li>&gt;= 1 的分數會一直取樣。&lt; 0 的分數會被視為零。</li>      </td>
+        <li>fraction of traceID based sampler,</li>      
+        <li>optional values: [0, 1]</li>      
+        <li>Fractions >= 1 will always sample. Fractions < 0 are treated as zero.</li>      </td>
       <td>0</td>
     </tr>
   </tbody>
@@ -100,13 +100,13 @@ summary: 了解如何為 Milvus 設定追蹤。
     </button></h2><table id="trace.jaeger.url">
   <thead>
     <tr>
-      <th class="width80">說明</th>
-      <th class="width20">預設值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        當出口商為 jaeger 時，應設定 jaeger 的 URL   </td>
+      <td>        when exporter is jaeger should set the jaeger's URL      </td>
       <td></td>
     </tr>
   </tbody>
@@ -129,13 +129,13 @@ summary: 了解如何為 Milvus 設定追蹤。
     </button></h2><table id="trace.otlp.endpoint">
   <thead>
     <tr>
-      <th class="width80">說明</th>
-      <th class="width20">預設值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        範例："127.0.0.1:4317 「用於 grpc，」127.0.0.1:4318 "用於 http    </td>
+      <td>        example: "127.0.0.1:4317" for grpc, "127.0.0.1:4318" for http      </td>
       <td></td>
     </tr>
   </tbody>
@@ -158,13 +158,13 @@ summary: 了解如何為 Milvus 設定追蹤。
     </button></h2><table id="trace.otlp.method">
   <thead>
     <tr>
-      <th class="width80">說明</th>
-      <th class="width20">預設值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        otlp 匯出方法，可接受的值：["grpc"、"http"]，預設使用「grpc      </td>
+      <td>        otlp export method, acceptable values: ["grpc", "http"],  using "grpc" by default      </td>
       <td></td>
     </tr>
   </tbody>
@@ -187,13 +187,13 @@ summary: 了解如何為 Milvus 設定追蹤。
     </button></h2><table id="trace.initTimeoutSeconds">
   <thead>
     <tr>
-      <th class="width80">說明</th>
-      <th class="width20">預設值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        segcore 初始化超時（秒），防止 otlp grpc 永遠擱置      </td>
+      <td>        segcore initialization timeout in seconds, preventing otlp grpc hangs forever      </td>
       <td>10</td>
     </tr>
   </tbody>

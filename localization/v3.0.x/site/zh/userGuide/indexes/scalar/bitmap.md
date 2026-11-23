@@ -1,7 +1,9 @@
 ---
 id: bitmap.md
 title: BITMAP
-summary: 位图索引是一种高效的索引技术，旨在提高低基数标量字段的查询性能。基数是指字段中不同值的数量。不同元素较少的字段被视为低基数字段。
+summary: >-
+  Use BITMAP for low-cardinality scalar filtering. Check supported filters,
+  field restrictions, and index creation.
 ---
 <h1 id="BITMAP" class="common-anchor-header">BITMAP<button data-href="#BITMAP" class="anchor-icon" translate="no">
       <svg translate="no"
@@ -18,9 +20,8 @@ summary: 位图索引是一种高效的索引技术，旨在提高低基数标�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>位图索引是一种高效的索引技术，旨在提高低基数标量字段的查询性能。基数是指字段中不同值的数量。不同元素较少的字段被视为低基数字段。</p>
-<p>该索引类型通过将字段值表示为紧凑的二进制格式，并对它们执行高效的位运算，从而有助于缩短标量查询的检索时间。与其他类型的索引相比，在处理低基数字段时，位图索引通常具有更高的空间利用率，且查询速度更快。</p>
-<h2 id="Overview" class="common-anchor-header">概述<button data-href="#Overview" class="anchor-icon" translate="no">
+    </button></h1><p><code translate="no">BITMAP</code> accelerates scalar filtering on fields with few distinct values, such as status codes and categories. Cardinality is the number of distinct values in a field. This page describes supported filters, field restrictions, and index creation.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -35,26 +36,10 @@ summary: 位图索引是一种高效的索引技术，旨在提高低基数标�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><strong>“位图”（Bitmap）</strong> <strong>一词由“位”</strong>（<strong>Bit）</strong> <strong>和“映射”（Map）</strong>两个词组合而成。位是计算机中数据的最小单位，只能存储<strong>0</strong>或<strong>1</strong> 其中一个值。在此语境下，“映射”是指根据应将何种值分配给 0 和 1 来转换和组织数据的过程。</p>
-<p>位图索引由两个主要组成部分构成：位图和键。键代表索引字段中的唯一值。每个唯一值都对应一个位图。这些位图的长度等于Collection中的记录数。 位图中的每个位对应Collection中的一条记录。如果某条记录中索引字段的值与键匹配，则对应的位被设为<strong>1</strong>；否则，设为<strong>0</strong>。</p>
-<p>假设有一个包含<strong>“Category”</strong>和<strong>“Public”</strong>字段的文档Collection。我们希望检索属于<strong>“Tech”</strong>类别且对<strong>“Public”</strong>开放的文档。在这种情况下，位图索引的键就是<strong>“Tech”</strong>和<strong>“Public”</strong>。</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/bitmap.png" alt="Bitmap" class="doc-image" id="bitmap" /> 
-   <span>位图</span>
-  
- </span></p>
-<p>如图所示<strong>，Category</strong>和<strong>Public</strong>的位图索引分别为：</p>
-<ul>
-<li><p><strong>Tech</strong>：[1, 0, 1, 0, 0]，这表明只有第 1 和第 3 个文档属于<strong>Tech</strong>类别。</p></li>
-<li><p><strong>Public</strong>：[1, 0, 0, 1, 0]，这表明只有第 1 个和第 4 个文档对<strong>公众</strong>开放。</p></li>
-</ul>
-<p>为了查找同时满足这两个条件的文档，我们对这两个位图执行位与（AND）运算：</p>
-<ul>
-<li><strong>Tech</strong>且<strong>Public</strong>：[1, 0, 0, 0, 0]</li>
-</ul>
-<p>生成的位图 [1, 0, 0, 0, 0] 表明只有第一份文档（<strong>ID</strong> <strong>1</strong>）同时满足这两个条件。通过使用位图索引和高效的位运算，我们可以快速缩小搜索范围，从而无需扫描整个数据集。</p>
-<h2 id="Create-a-bitmap-index" class="common-anchor-header">创建位图索引<button data-href="#Create-a-bitmap-index" class="anchor-icon" translate="no">
+    </button></h2><!-- Preserve the published #Limits link and the filter link used by related pages. These anchors are not headings. -->
+<a id="Limits"></a>
+<a id="Queries-accelerated-by-BITMAP"></a>
+<h3 id="Index-targets-and-filters" class="common-anchor-header">Index targets and filters<button data-href="#Index-targets-and-filters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -69,16 +54,115 @@ summary: 位图索引是一种高效的索引技术，旨在提高低基数标�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>要在 Milvus 中创建位图索引，请使用 `<code translate="no">create_index()</code> ` 方法，并将 `<code translate="no">index_type</code> ` 参数设置为 `<code translate="no">&quot;BITMAP&quot;</code>`。</p>
+    </button></h3><p>To create a <code translate="no">BITMAP</code> index explicitly, choose a non-primary-key target from the table below. Each row pairs a supported target with the filters the index can help evaluate:</p>
+<table>
+<thead>
+<tr><th>Index target</th><th>Filters that can use the index</th></tr>
+</thead>
+<tbody>
+<tr><td><code translate="no">BOOL</code> field</td><td>Equality (<code translate="no">==</code>, <code translate="no">!=</code>) and membership (<code translate="no">in</code>, <code translate="no">not in</code>).</td></tr>
+<tr><td>Integer field (<code translate="no">INT8</code>, <code translate="no">INT16</code>, <code translate="no">INT32</code>, <code translate="no">INT64</code>)</td><td>Equality, membership, and ranges (<code translate="no">&lt;</code>, <code translate="no">&lt;=</code>, <code translate="no">&gt;</code>, <code translate="no">&gt;=</code>).</td></tr>
+<tr><td><code translate="no">VARCHAR</code> field</td><td>Equality, membership, ranges, and <a href="/docs/zh/pattern-matching.md">LIKE or regex patterns</a>. Pattern evaluation can visit many distinct indexed strings.</td></tr>
+<tr><td>Ordinary <code translate="no">ARRAY</code> field with <code translate="no">BOOL</code>, <code translate="no">INT8</code>, <code translate="no">INT16</code>, <code translate="no">INT32</code>, <code translate="no">INT64</code>, or <code translate="no">VARCHAR</code> elements</td><td><code translate="no">ARRAY_CONTAINS</code>, <code translate="no">ARRAY_CONTAINS_ANY</code>, <code translate="no">ARRAY_CONTAINS_ALL</code>. See <a href="/docs/zh/array_data_type.md#Array-index-support">Array index support</a>.</td></tr>
+<tr><td>JSON path cast to <code translate="no">BOOL</code> or <code translate="no">VARCHAR</code></td><td>Filters for the corresponding Boolean or string values above, subject to the <a href="/docs/zh/json-indexing.md#Index-requirements">JSON index requirements</a>.</td></tr>
+</tbody>
+</table>
+<div class="alert note">
+<blockquote>
+<p>Scalar indexes, including <code translate="no">AUTOINDEX</code>, do not support recursive ARRAY fields or arrays with nullable elements. See <a href="/docs/zh/array_data_type.md#Array-index-support">Array index support</a> for ordinary-array filters and <a href="/docs/zh/index-structarray-fields.md#Create-scalar-indexes">Index StructArray Fields</a> for subfield rules.</p>
+</blockquote>
+</div>
+<p>For ARRAY targets, <code translate="no">BITMAP</code> serves element-containment filters, not whole-array equality, element access by position, or array length. See <a href="/docs/zh/array_data_type.md#Array-index-support">Array index support</a>.</p>
+<p>For automatic selection beyond these explicit targets, see <a href="/docs/zh/scalar_index.md#AUTOINDEX-behavior">AUTOINDEX behavior</a>.</p>
+<div class="alert note">
+<blockquote>
+<p>These are index capabilities, not limits on valid filter expressions. See <a href="/docs/zh/scalar_index.md#Filter-execution">Scalar Index</a> for shared lookup constraints. For <code translate="no">AND</code>, <code translate="no">OR</code>, <code translate="no">NOT</code>, and NULL tests (<code translate="no">IS NULL</code>, <code translate="no">IS NOT NULL</code>), see <a href="/docs/zh/basic-operators.md">Basic Operators</a>.</p>
+</blockquote>
+</div>
+<h3 id="Memory-considerations" class="common-anchor-header">Memory considerations<button data-href="#Memory-considerations" class="anchor-icon" translate="no">
+      <svg translate="no"
+        aria-hidden="true"
+        focusable="false"
+        height="20"
+        version="1.1"
+        viewBox="0 0 16 16"
+        width="16"
+      >
+        <path
+          fill="#0092E4"
+          fill-rule="evenodd"
+          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+        ></path>
+      </svg>
+    </button></h3><p>Memory and query costs depend on the number of distinct values and their distribution. Compare indexes with representative filters rather than treating a fixed cardinality as a universal performance cutoff.</p>
+<p>For dense bitmaps, a rough estimate in bytes is <code translate="no">(D + 1) * N / 8</code>, where <code translate="no">N</code> is the number of entities and <code translate="no">D</code> the number of distinct values. This includes one bitmap per distinct value and one for validity. Value storage and other overhead add to the estimate; an optional offset cache adds approximately <code translate="no">8 * N</code> bytes on a 64-bit system. Compressed bitmap representations can have substantially different memory use.</p>
+<p>These rough estimates cover loaded index memory with memory mapping disabled. Calculate them per segment, then sum across loaded segments and replicas.</p>
+<div class="alert note">
+<blockquote>
+<p>Allow extra memory for loaded field data, vector indexes, collection and index overhead, and temporary allocations. Validate with representative data and queries; arrays, JSON, older index formats, and memory mapping require separate measurement.</p>
+</blockquote>
+</div>
+<h3 id="How-BITMAP-works" class="common-anchor-header">How BITMAP works<button data-href="#How-BITMAP-works" class="anchor-icon" translate="no">
+      <svg translate="no"
+        aria-hidden="true"
+        focusable="false"
+        height="20"
+        version="1.1"
+        viewBox="0 0 16 16"
+        width="16"
+      >
+        <path
+          fill="#0092E4"
+          fill-rule="evenodd"
+          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+        ></path>
+      </svg>
+    </button></h3><p><details>
+<summary><strong>View a bitmap filtering example</strong></summary></p>
+<p>A bitmap index associates each distinct field value with a bitmap. Each bit corresponds to an entity: <strong>1</strong> means the entity has that value, and <strong>0</strong> means it does not.</p>
+<p>For example, to find public documents in the <strong>Tech</strong> category, combine the bitmaps for <strong>Category = Tech</strong> and <strong>Public = true</strong>:</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/bitmap.png" alt="Bitmap" class="doc-image" id="bitmap" />
+    <span>Bitmap</span>
+  </span>
+</p>
+<p>As shown in the figure, the bitmap indexes for <strong>Category</strong> and <strong>Public</strong> are:</p>
+<ul>
+<li><p><strong>Tech</strong>: [1, 0, 1, 0, 0], which shows that only the 1st and 3rd documents fall into the <strong>Tech</strong> category.</p></li>
+<li><p><strong>Public</strong>: [1, 0, 0, 1, 0], which shows that only the 1st and 4th documents are open to the <strong>Public</strong>.</p></li>
+</ul>
+<p>To find the documents that match both criteria, we perform a bitwise AND operation on these two bitmaps:</p>
+<ul>
+<li><strong>Tech</strong> AND <strong>Public</strong>: [1, 0, 0, 0, 0]</li>
+</ul>
+<p>Only the first document (<strong>ID 1</strong>) satisfies both criteria.</p>
+<p></details></p>
+<h2 id="Create-a-bitmap-index" class="common-anchor-header">Create a bitmap index<button data-href="#Create-a-bitmap-index" class="anchor-icon" translate="no">
+      <svg translate="no"
+        aria-hidden="true"
+        focusable="false"
+        height="20"
+        version="1.1"
+        viewBox="0 0 16 16"
+        width="16"
+      >
+        <path
+          fill="#0092E4"
+          fill-rule="evenodd"
+          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+        ></path>
+      </svg>
+    </button></h2><p>To create a bitmap index in Milvus, use the <code translate="no">create_index()</code> method and set the <code translate="no">index_type</code> parameter to <code translate="no">&quot;BITMAP&quot;</code>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -237,9 +321,8 @@ curl --request POST \
 <span class="hljs-comment">#     &quot;data&quot;: {}</span>
 <span class="hljs-comment"># }</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>在此示例中，我们针对<code translate="no">my_collection</code> Collection的<code translate="no">category</code> 字段创建了一个位图索引。通过<code translate="no">add_index()</code> 方法指定字段名、索引类型和索引名称。</p>
-<p>创建位图索引后，您可以在查询操作中使用<code translate="no">filter</code> 参数，根据已建立索引的字段执行标量过滤。这使您能够利用位图索引高效地缩小搜索结果范围。有关更多信息，请参阅《<a href="/docs/zh/boolean.md">过滤原理说明</a>》。</p>
-<h2 id="Drop-an-index" class="common-anchor-header">删除索引<button data-href="#Drop-an-index" class="anchor-icon" translate="no">
+<p>This creates an index on <code translate="no">my_collection.category</code>. Use the field in a query or search <code translate="no">filter</code>; see <a href="/docs/zh/boolean.md">Filtering Explained</a>.</p>
+<h2 id="Drop-an-index" class="common-anchor-header">Drop an index<button data-href="#Drop-an-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -254,22 +337,21 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>使用<code translate="no">drop_index()</code> 方法从 Collection 中删除现有索引。</p>
+    </button></h2><p>Use the <code translate="no">drop_index()</code> method to remove an existing index from a collection.</p>
 <div class="alert note">
-<ul>
-<li><p>在<strong>v2.6.3</strong>及更早版本中，在删除标量索引之前，必须先释放 Collection。</p></li>
-<li><p>从<strong>v2.6.4</strong>及更高版本开始，一旦不再需要标量索引，即可直接删除，无需先释放 Collection。</p></li>
-</ul>
+<blockquote>
+<p>For release requirements when dropping a scalar index, see <a href="/docs/zh/scalar_index.md#Drop-index-compatibility">Scalar Index</a>.</p>
+</blockquote>
 </div>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.drop_index(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,   <span class="hljs-comment"># Name of the collection</span>
@@ -381,37 +463,3 @@ curl --request POST \
 <span class="hljs-comment">#     &quot;data&quot;: {}</span>
 <span class="hljs-comment"># }</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Limits" class="common-anchor-header">限制<button data-href="#Limits" class="anchor-icon" translate="no">
-      <svg translate="no"
-        aria-hidden="true"
-        focusable="false"
-        height="20"
-        version="1.1"
-        viewBox="0 0 16 16"
-        width="16"
-      >
-        <path
-          fill="#0092E4"
-          fill-rule="evenodd"
-          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
-        ></path>
-      </svg>
-    </button></h2><ul>
-<li><p>仅支持非主键的标量字段使用位图索引。</p></li>
-<li><p>该字段的数据类型必须是以下之一：</p>
-<ul>
-<li><p><code translate="no">BOOL</code>,<code translate="no">INT8</code>,<code translate="no">INT16</code>,<code translate="no">INT32</code>,<code translate="no">INT64</code>,<code translate="no">VARCHAR</code></p></li>
-<li><p><code translate="no">ARRAY</code> （元素必须是以下类型之一：<code translate="no">BOOL</code> 、<code translate="no">INT8</code> 、<code translate="no">INT16</code> 、<code translate="no">INT32</code> 、<code translate="no">INT64</code> 、<code translate="no">VARCHAR</code> ）</p></li>
-</ul></li>
-<li><p>位图索引不支持以下数据类型：</p>
-<ul>
-<li><p><code translate="no">FLOAT</code>,<code translate="no">DOUBLE</code> ：浮点类型与位图索引的二进制特性不兼容。</p></li>
-<li><p><code translate="no">JSON</code>：JSON 数据类型具有复杂的结构，无法通过位图索引进行高效表示。</p></li>
-</ul></li>
-<li><p>位图索引不适用于高基数字段（即具有大量不同值的字段）。</p>
-<ul>
-<li><p>作为一般准则，当字段的基数小于 500 时，位图索引最为有效。</p></li>
-<li><p>当基数超过此阈值时，位图索引的性能优势会减弱，且存储开销会变得很大。</p></li>
-<li><p>对于高Cardinal数字段，请根据您的具体用例和查询要求，考虑使用其他索引技术，例如倒排索引。</p></li>
-</ul></li>
-</ul>

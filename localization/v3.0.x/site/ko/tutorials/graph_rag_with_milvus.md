@@ -1,9 +1,9 @@
 ---
 id: graph_rag_with_milvus.md
-summary: Milvus를 활용한 그래프 RAG
-title: Milvus를 활용한 그래프 RAG
+summary: Graph RAG with Milvus
+title: Graph RAG with Milvus
 ---
-<h1 id="Graph-RAG-with-Milvus" class="common-anchor-header">Milvus를 활용한 그래프 RAG<button data-href="#Graph-RAG-with-Milvus" class="anchor-icon" translate="no">
+<h1 id="Graph-RAG-with-Milvus" class="common-anchor-header">Graph RAG with Milvus<button data-href="#Graph-RAG-with-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -24,16 +24,16 @@ title: Milvus를 활용한 그래프 RAG
 <a href="https://github.com/milvus-io/bootcamp/blob/master/tutorials/quickstart/graph_rag_with_milvus.ipynb" target="_blank">
 <img translate="no" src="https://img.shields.io/badge/View%20on%20GitHub-555555?style=flat&logo=github&logoColor=white" alt="GitHub Repository"/>
 </a></p>
-<p>대규모 언어 모델의 광범위한 적용은 응답의 정확성과 관련성을 높이는 것의 중요성을 부각시킵니다. 검색 강화 생성(RAG)은 외부 지식 기반을 활용하여 모델을 강화함으로써 더 많은 문맥 정보를 제공하고, 환각 현상이나 지식 부족과 같은 문제를 완화합니다. 그러나 단순한 RAG 패러다임에만 의존하는 것은 한계가 있으며, 특히 복잡한 엔티티 관계나 다단계 질문을 다룰 때 모델이 정확한 답변을 제공하는 데 어려움을 겪는 경우가 많습니다.</p>
-<p>RAG 시스템에 지식 그래프(KG)를 도입하면 새로운 해결책을 제시할 수 있습니다. KG는 엔티티와 그 관계를 구조화된 방식으로 제시하여 더 정밀한 검색 정보를 제공하고, RAG가 복잡한 질문-답변 작업을 더 잘 처리할 수 있도록 돕습니다. KG-RAG는 아직 초기 단계에 있으며, KG에서 엔티티와 관계를 효과적으로 검색하는 방법이나 벡터 유사도 검색을 그래프 구조와 통합하는 방법에 대해서는 아직 합의가 이루어지지 않았습니다.</p>
-<p>이 노트북에서는 이러한 시나리오의 성능을 크게 향상시킬 수 있는 간단하면서도 강력한 접근 방식을 소개합니다. 이는 다중 검색 후 재순위를 매기는 간단한 RAG 패러다임이지만, 논리적으로 그래프 RAG를 구현하여 다중 홉 질문을 처리하는 데 있어 최첨단 성능을 달성합니다. 이 접근 방식이 어떻게 구현되는지 살펴보겠습니다.</p>
+<p>The widespread application of large language models highlights the importance of improving the accuracy and relevance of their responses. Retrieval-Augmented Generation (RAG) enhances models with external knowledge bases, providing more contextual information and mitigating issues like hallucination and insufficient knowledge. However, relying solely on simple RAG paradigms has its limitations, especially when dealing with complex entity relationships and multi-hop questions, where the model often struggles to provide accurate answers.</p>
+<p>Introducing knowledge graphs (KGs) into the RAG system offers a new solution. KGs present entities and their relationships in a structured way, providing more precise retrieval information and helping RAG to better handle complex question-answering tasks. KG-RAG is still in its early stages, and there is no consensus on how to effectively retrieve entities and relationships from KGs or how to integrate vector similarity search with graph structures.</p>
+<p>In this notebook, we introduce a simple yet powerful approach to greatly improve the performance of this scenario. It is a simple RAG paradigm with multi-way retrieval and then reranking, but it implements Graph RAG logically, and achieves state-of-the-art performance in handling multi-hop questions. Let’s see how it is implemented.</p>
 <p>
   <span class="img-wrapper">
     <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/graph_rag_with_milvus_1.png" alt="" class="doc-image" id="" />
     <span></span>
   </span>
 </p>
-<h2 id="Prerequisites" class="common-anchor-header">필수 조건<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -48,18 +48,18 @@ title: Milvus를 활용한 그래프 RAG
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>이 노트북을 실행하기 전에 다음 종속성이 설치되어 있는지 확인하십시오:</p>
+    </button></h2><p>Before running this notebook, make sure you have the following dependencies installed:</p>
 <pre><code translate="no" class="language-python">$ pip install --upgrade --quiet pymilvus numpy scipy langchain langchain-core langchain-openai tqdm
 <button class="copy-code-btn"></button></code></pre>
 <blockquote>
-<p>Google Colab을 사용하는 경우, 방금 설치한 종속성을 활성화하려면 <strong>런타임을 다시 시작해야</strong> 할 수 있습니다(화면 상단의 “Runtime” 메뉴를 클릭하고 드롭다운 메뉴에서 “Restart session”을 선택하세요).</p>
+<p>If you are using Google Colab, to enable dependencies just installed, you may need to <strong>restart the runtime</strong> (click on the “Runtime” menu at the top of the screen, and select “Restart session” from the dropdown menu).</p>
 </blockquote>
-<p>OpenAI의 모델을 사용할 것입니다. <a href="https://platform.openai.com/docs/quickstart">API 키</a> <code translate="no">OPENAI_API_KEY</code> 를 환경 변수로 설정해 두어야 합니다.</p>
+<p>We will use the models from OpenAI. You should prepare the <a href="https://platform.openai.com/docs/quickstart">api key</a> <code translate="no">OPENAI_API_KEY</code> as an environment variable.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> os
 
 os.environ[<span class="hljs-string">&quot;OPENAI_API_KEY&quot;</span>] = <span class="hljs-string">&quot;sk-***********&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>필요한 라이브러리와 종속성을 임포트합니다.</p>
+<p>Import the necessary libraries and dependencies.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
 
 <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict
@@ -71,7 +71,7 @@ os.environ[<span class="hljs-string">&quot;OPENAI_API_KEY&quot;</span>] = <span 
 <span class="hljs-keyword">from</span> langchain_openai <span class="hljs-keyword">import</span> ChatOpenAI, OpenAIEmbeddings
 <span class="hljs-keyword">from</span> tqdm <span class="hljs-keyword">import</span> tqdm
 <button class="copy-code-btn"></button></code></pre>
-<p>Milvus 클라이언트, LLM 및 임베딩 모델의 인스턴스를 초기화합니다.</p>
+<p>Initialize the instance of Milvus client, the LLM, and the embedding model.</p>
 <pre><code translate="no" class="language-python">milvus_client = MilvusClient(uri=<span class="hljs-string">&quot;./milvus.db&quot;</span>)
 
 llm = ChatOpenAI(
@@ -81,14 +81,14 @@ llm = ChatOpenAI(
 embedding_model = OpenAIEmbeddings(model=<span class="hljs-string">&quot;text-embedding-3-small&quot;</span>)
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>MilvusClient의 인자(args)에 대해서는:</p>
+<p>For the args in MilvusClient:</p>
 <ul>
-<li><code translate="no">uri</code> 를 로컬 파일(예:<code translate="no">./milvus.db</code>)로 설정하는 것이 가장 편리한 방법입니다. 이렇게 하면 <a href="https://milvus.io/docs/milvus_lite.md">Milvus Lite가</a> 자동으로 이 파일에 모든 데이터를 저장하기 때문입니다.</li>
-<li>대규모 데이터를 보유한 경우, <a href="https://milvus.io/docs/quickstart.md">Docker 또는 Kubernetes에서</a> 더 높은 성능을 발휘하는 Milvus 서버를 설정할 수 있습니다. 이 설정에서는 <code translate="no">uri</code> 대신 서버 URI(예:<code translate="no">http://localhost:19530</code>)를 사용하십시오.</li>
-<li>Milvus 전용 완전 관리형 클라우드 서비스인 <a href="https://zilliz.com/cloud">Zilliz Cloud를</a> 사용하려면, Zilliz Cloud의 <a href="https://docs.zilliz.com/docs/on-zilliz-cloud-console#free-cluster-details">공개 엔드포인트(Public Endpoint) 및 API 키</a> 에 해당하는 <code translate="no">uri</code> 와 <code translate="no">token</code> 를 조정하십시오.</li>
+<li>Setting the <code translate="no">uri</code> as a local file, e.g.<code translate="no">./milvus.db</code>, is the most convenient method, as it automatically utilizes <a href="https://milvus.io/docs/milvus_lite.md">Milvus Lite</a> to store all data in this file.</li>
+<li>If you have large scale of data, you can set up a more performant Milvus server on <a href="https://milvus.io/docs/quickstart.md">docker or kubernetes</a>. In this setup, please use the server uri, e.g.<code translate="no">http://localhost:19530</code>, as your <code translate="no">uri</code>.</li>
+<li>If you want to use <a href="https://zilliz.com/cloud">Zilliz Cloud</a>, the fully managed cloud service for Milvus, adjust the <code translate="no">uri</code> and <code translate="no">token</code>, which correspond to the <a href="https://docs.zilliz.com/docs/on-zilliz-cloud-console#free-cluster-details">Public Endpoint and Api key</a> in Zilliz Cloud.</li>
 </ul>
 </div>
-<h2 id="Offline-Data-Loading" class="common-anchor-header">오프라인 데이터 로딩<button data-href="#Offline-Data-Loading" class="anchor-icon" translate="no">
+<h2 id="Offline-Data-Loading" class="common-anchor-header">Offline Data Loading<button data-href="#Offline-Data-Loading" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -103,7 +103,7 @@ embedding_model = OpenAIEmbeddings(model=<span class="hljs-string">&quot;text-em
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Data-Preparation" class="common-anchor-header">데이터 준비<button data-href="#Data-Preparation" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Data-Preparation" class="common-anchor-header">Data Preparation<button data-href="#Data-Preparation" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -118,8 +118,8 @@ embedding_model = OpenAIEmbeddings(model=<span class="hljs-string">&quot;text-em
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>예시로 베르누이 가문과 오일러 간의 관계를 소개하는 나노 데이터셋을 사용해 보겠습니다. 이 나노 데이터셋에는 4개의 문장과 이에 대응하는 트리플 세트가 포함되어 있으며, 각 트리플은 주어, 술어, 목적어로 구성됩니다.
-실제로는 사용자 정의 코퍼스에서 트리플을 추출하기 위해 어떤 방식이든 사용할 수 있습니다.</p>
+    </button></h3><p>We will use a nano dataset which introduce the relationship between Bernoulli family and Euler to demonstrate as an example. The nano dataset contains 4 passages and a set of corresponding triplets, where each triplet contains a subject, a predicate, and an object.
+In practice, you can use any approach to extract the triplets from your own custom corpus.</p>
 <pre><code translate="no" class="language-python">nano_dataset = [
     {
         <span class="hljs-string">&quot;passage&quot;</span>: <span class="hljs-string">&quot;Jakob Bernoulli (1654–1705): Jakob was one of the earliest members of the Bernoulli family to gain prominence in mathematics. He made significant contributions to calculus, particularly in the development of the theory of probability. He is known for the Bernoulli numbers and the Bernoulli theorem, a precursor to the law of large numbers. He was the older brother of Johann Bernoulli, another influential mathematician, and the two had a complex relationship that involved both collaboration and rivalry.&quot;</span>,
@@ -181,12 +181,12 @@ embedding_model = OpenAIEmbeddings(model=<span class="hljs-string">&quot;text-em
     },
 ]
 <button class="copy-code-btn"></button></code></pre>
-<p>엔티티와 관계는 다음과 같이 구성합니다:</p>
+<p>We construct the entities and relations as follows:</p>
 <ul>
-<li>엔티티는 트리플릿 내의 주어 또는 목적어이므로, 트리플릿에서 직접 추출합니다.</li>
-<li>여기서는 주어, 술어, 목적어를 공백으로 구분하여 직접 연결함으로써 관계 개념을 구성합니다.</li>
+<li>The entity is the subject or object in the triplet, so we directly extract them from the triplets.</li>
+<li>Here we construct the concept of relationship by directly concatenating the subject, predicate, and object with a space in between.</li>
 </ul>
-<p>또한 나중에 사용할 수 있도록 엔티티 ID를 관계 ID에 매핑하는 딕셔너리와, 관계 ID를 문단 ID에 매핑하는 또 다른 딕셔너리를 준비합니다.</p>
+<p>We also prepare a dict to map entity id to relation id, and another dict to map relation id to passage id for later use.</p>
 <pre><code translate="no" class="language-python">entityid_2_relationids = defaultdict(<span class="hljs-built_in">list</span>)
 relationid_2_passageids = defaultdict(<span class="hljs-built_in">list</span>)
 
@@ -212,7 +212,7 @@ passages = []
             )
         relationid_2_passageids[relations.index(relation)].append(passage_id)
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Data-Insertion" class="common-anchor-header">데이터 삽입<button data-href="#Data-Insertion" class="anchor-icon" translate="no">
+<h3 id="Data-Insertion" class="common-anchor-header">Data Insertion<button data-href="#Data-Insertion" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -227,7 +227,7 @@ passages = []
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>엔티티, 관계, 문장을 위한 Milvus 컬렉션을 생성합니다. 엔티티 컬렉션과 관계 컬렉션은 본 방법에서 그래프 구축을 위한 주요 컬렉션으로 사용되는 반면, 문장 컬렉션은 단순한 RAG 검색 비교 또는 보조 목적으로 사용됩니다.</p>
+    </button></h3><p>Create Milvus collections for entity, relation, and passage. The entity collection and relation collection are used as the major collections for graph construction in our method, while the passage collection is used as the naive RAG retrieval comparison or auxiliary purpose.</p>
 <pre><code translate="no" class="language-python">embedding_dim = <span class="hljs-built_in">len</span>(embedding_model.embed_query(<span class="hljs-string">&quot;foo&quot;</span>))
 
 
@@ -248,7 +248,7 @@ create_milvus_collection(entity_col_name)
 create_milvus_collection(relation_col_name)
 create_milvus_collection(passage_col_name)
 <button class="copy-code-btn"></button></code></pre>
-<p>엔티티, 관계, 패시지 컬렉션을 포함한 Milvus 컬렉션에 메타데이터 정보와 함께 데이터를 삽입합니다. 메타데이터 정보에는 패시지 ID와 인접한 엔티티 또는 관계 ID가 포함됩니다.</p>
+<p>Insert the data with their metadata information into Milvus collections, including entity, relation, and passage collections. The metadata information includes the passage id and the adjacency entity or relation id.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">milvus_insert</span>(<span class="hljs-params">
     collection_name: <span class="hljs-built_in">str</span>,
     text_list: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">str</span>],
@@ -292,7 +292,7 @@ milvus_insert(
 Inserting: 100%|███████████████████████████████████| 1/1 [00:00&lt;00:00,  1.39it/s]
 Inserting: 100%|███████████████████████████████████| 1/1 [00:00&lt;00:00,  2.28it/s]
 </code></pre>
-<h2 id="Online-Querying" class="common-anchor-header">온라인 쿼리<button data-href="#Online-Querying" class="anchor-icon" translate="no">
+<h2 id="Online-Querying" class="common-anchor-header">Online Querying<button data-href="#Online-Querying" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -307,7 +307,7 @@ Inserting: 100%|█████████████████████�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Similarity-Retrieval" class="common-anchor-header">유사도 검색<button data-href="#Similarity-Retrieval" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Similarity-Retrieval" class="common-anchor-header">Similarity Retrieval<button data-href="#Similarity-Retrieval" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -322,9 +322,9 @@ Inserting: 100%|█████████████████████�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Milvus에서 입력 쿼리를 기반으로 상위 K개 유사 엔티티 및 관계를 검색합니다.</p>
-<p>엔티티 검색을 수행할 때는 먼저 NER(명명된 엔티티 인식)과 같은 특정 방법을 사용하여 쿼리 텍스트에서 쿼리 엔티티를 추출해야 합니다. 간편성을 위해 여기서는 NER 결과를 미리 준비해 두었습니다. 쿼리를 사용자 정의 질문으로 변경하려면 해당 쿼리 NER 목록을 수정해야 합니다.
-실제로는 다른 모델이나 접근 방식을 사용하여 쿼리에서 엔티티를 추출할 수도 있습니다.</p>
+    </button></h3><p>We retrieve the topK similar entities and relations based on the input query from Milvus.</p>
+<p>When performing the entity retrieving, we should first extract the query entities from the query text using some specific method like NER (Named-entity recognition). For simplicity, we prepare the NER results here. If you want to change the query as your custom question, you have to change the corresponding query NER list.
+In practice, you can use any other model or approach to extract the entities from the query.</p>
 <pre><code translate="no" class="language-python">query = <span class="hljs-string">&quot;What contribution did the son of Euler&#x27;s teacher make?&quot;</span>
 
 query_ner_list = [<span class="hljs-string">&quot;Euler&quot;</span>]
@@ -352,7 +352,7 @@ relation_search_res = milvus_client.search(
     output_fields=[<span class="hljs-string">&quot;id&quot;</span>],
 )[<span class="hljs-number">0</span>]
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Expand-Subgraph" class="common-anchor-header">서브그래프 확장<button data-href="#Expand-Subgraph" class="anchor-icon" translate="no">
+<h3 id="Expand-Subgraph" class="common-anchor-header">Expand Subgraph<button data-href="#Expand-Subgraph" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -367,14 +367,14 @@ relation_search_res = milvus_client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>검색된 엔티티와 관계를 사용하여 서브그래프를 확장하고 후보 관계를 도출한 다음, 두 방향에서 이를 병합합니다. 다음은 서브그래프 확장 과정의 흐름도입니다:
+    </button></h3><p>We use the retrieved entities and relations to expand the subgraph and obtain the candidate relationships, and then merge them from the two ways. Here is a flow chart of the subgraph expansion process:
 
   <span class="img-wrapper">
     <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/graph_rag_with_milvus_2.png" alt="" class="doc-image" id="" />
     <span></span>
   </span>
 </p>
-<p>여기서 인접 행렬을 구성하고 행렬 곱셈을 사용하여 몇 차수 이내의 인접 매핑 정보를 계산합니다. 이러한 방식으로, 어떤 차수의 확장 정보라도 신속하게 얻을 수 있습니다.</p>
+<p>Here we construct an adjacency matrix and use matrix multiplication to calculate the adjacency mapping information within a few degrees. In this way, we can quickly obtain information of any degree of expansion.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Construct the adjacency matrix of entities and relations where the value of the adjacency matrix is 1 if an entity is related to a relation, otherwise 0.</span>
 entity_relation_adj = np.zeros((<span class="hljs-built_in">len</span>(entities), <span class="hljs-built_in">len</span>(relations)))
 <span class="hljs-keyword">for</span> entity_id, entity <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(entities):
@@ -401,7 +401,7 @@ relation_adj_target_degree = relation_adj_1_degree
 
 entity_relation_adj_target_degree = entity_adj_target_degree @ entity_relation_adj
 <button class="copy-code-btn"></button></code></pre>
-<p>목표 확장도 행렬의 값을 활용하면, 검색된 엔티티와 관계로부터 해당 확장도를 쉽게 확장하여 서브그래프의 모든 관계를 도출할 수 있습니다.</p>
+<p>By taking the value from the target degree expansion matrix, we can easily expand the corresponding degree from the retrieved entity and relations to obtain all relations of the subgraph.</p>
 <pre><code translate="no" class="language-python">expanded_relations_from_relation = <span class="hljs-built_in">set</span>()
 expanded_relations_from_entity = <span class="hljs-built_in">set</span>()
 <span class="hljs-comment"># You can set the similarity threshold here to guarantee the quality of the retrieved ones.</span>
@@ -439,8 +439,8 @@ relation_candidate_texts = [
     relations[relation_id] <span class="hljs-keyword">for</span> relation_id <span class="hljs-keyword">in</span> relation_candidate_ids
 ]
 <button class="copy-code-btn"></button></code></pre>
-<p>서브그래프를 확장하여 후보 관계를 확보했으며, 다음 단계에서 LLM을 통해 이를 재순위화할 것입니다.</p>
-<h3 id="LLM-reranking" class="common-anchor-header">LLM 재순위 지정<button data-href="#LLM-reranking" class="anchor-icon" translate="no">
+<p>We have get the candidate relationships by expanding the subgraph, which will be reranked by LLM in the next step.</p>
+<h3 id="LLM-reranking" class="common-anchor-header">LLM reranking<button data-href="#LLM-reranking" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -455,7 +455,7 @@ relation_candidate_texts = [
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>이 단계에서는 LLM의 강력한 자기 주의(self-attention) 메커니즘을 활용하여 후보 관계 집합을 추가로 필터링하고 정제합니다. 쿼리와 후보 관계 집합을 프롬프트에 통합한 원샷(one-shot) 프롬프트를 사용하며, LLM이 쿼리 응답에 도움이 될 수 있는 잠재적 관계를 선택하도록 지시합니다. 일부 쿼리는 복잡할 수 있으므로, LLM이 응답에서 자신의 사고 과정을 명확히 설명할 수 있도록 ‘Chain-of-Thought’ 접근 방식을 채택합니다. 편리한 파싱을 위해 LLM의 응답 형식을 JSON으로 규정합니다.</p>
+    </button></h3><p>In this stage, we deploy the powerful self-attention mechanism of LLM to further filter and refine the candidate set of relationships. We employ a one-shot prompt, incorporating the query and the candidate set of relationships into the prompt, and instruct LLM to select potential relationships that could assist in answering the query. Given that some queries may be complex, we adopt the Chain-of-Thought approach, allowing LLM to articulate its thought process in its response. We stipulate that LLM’s response is in json format for convenient parsing.</p>
 <pre><code translate="no" class="language-python">query_prompt_one_shot_input = <span class="hljs-string">&quot;&quot;&quot;I will provide you with a list of relationship descriptions. Your task is to select 3 relationships that may be useful to answer the given question. Please return a JSON object containing your thought process and a list of the selected relationships in order of their relevance.
 
 Question:
@@ -526,7 +526,7 @@ rerank_relation_ids = rerank_relations(
     relation_candidate_ids=relation_candidate_ids,
 )
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Get-Final-Results" class="common-anchor-header">최종 결과 얻기<button data-href="#Get-Final-Results" class="anchor-icon" translate="no">
+<h3 id="Get-Final-Results" class="common-anchor-header">Get Final Results<button data-href="#Get-Final-Results" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -541,7 +541,7 @@ rerank_relation_ids = rerank_relations(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>재순위화된 관계로부터 최종 검색된 문단을 얻을 수 있습니다.</p>
+    </button></h3><p>We can get final retrieved passages from the reranked relationships.</p>
 <pre><code translate="no" class="language-python">final_top_k = <span class="hljs-number">2</span>
 
 final_passages = []
@@ -553,7 +553,7 @@ final_passage_ids = []
             final_passages.append(passages[passage_id])
 passages_from_our_method = final_passages[:final_top_k]
 <button class="copy-code-btn"></button></code></pre>
-<p>이 결과를 쿼리 임베딩을 기반으로 문장 모음에서 직접 상위 K개 문장을 추출하는 단순한 RAG 방식과 비교할 수 있습니다.</p>
+<p>We can compare the results with the naive RAG method, which retrieves the topK passages based on the query embedding directly from the passage collection.</p>
 <pre><code translate="no" class="language-python">naive_passage_res = milvus_client.search(
     collection_name=passage_col_name,
     data=[query_embedding],
@@ -604,5 +604,5 @@ Answer from naive RAG: I don't know. The retrieved context does not provide info
 
 Answer from our method: The son of Euler's teacher, Daniel Bernoulli, made major contributions to fluid dynamics, probability, and statistics. He is most famous for Bernoulli’s principle, which describes the behavior of fluid flow and is fundamental to the understanding of aerodynamics.
 </code></pre>
-<p>보시다시피, 단순 RAG 방식으로 검색된 문장들에서는 정답 문장이 누락되어 잘못된 답변이 도출되었습니다.
-반면, 본 방법론으로 검색된 문장들은 정확하며, 이를 통해 질문에 대한 정확한 답변을 얻을 수 있습니다.</p>
+<p>As we can see, the retrieved passages from the naive RAG missed a ground-truth passage, which led to a wrong answer.
+The retrieved passages from our method are correct, and it helps to get an accurate answer to the question.</p>

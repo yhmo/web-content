@@ -1,10 +1,12 @@
 ---
 id: single-instance-backup-and-restore.md
-summary: 本主題詳細說明如何在同一個 Milvus 實例中備份一個集合，並從備份中還原該集合
-title: 單一實例中的備份與還原Compatible with Milvus Backup 0.5.x
+summary: >-
+  This topic details the process of backing up a collection and restoring it
+  from the backup within the same Milvus instance
+title: Backup and Restore in One InstanceCompatible with Milvus Backup 0.5.x
 beta: Milvus Backup 0.5.x
 ---
-<h1 id="Backup-and-Restore-in-One-Instance" class="common-anchor-header">單一實例中的備份與還原<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus Backup 0.5.x</span><button data-href="#Backup-and-Restore-in-One-Instance" class="anchor-icon" translate="no">
+<h1 id="Backup-and-Restore-in-One-Instance" class="common-anchor-header">Backup and Restore in One Instance<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus Backup 0.5.x</span><button data-href="#Backup-and-Restore-in-One-Instance" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -19,11 +21,11 @@ beta: Milvus Backup 0.5.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>有關當前工作流程，請參閱<a href="/docs/zh-hant/milvus_backup_0_6_cli.md">CLI 指南</a>或<a href="/docs/zh-hant/milvus_backup_upgrade.md">從 0.5.x 版本升級</a>。請查閱<a href="/docs/zh-hant/milvus_backup_overview.md#Compatibility-matrix">相容性對照表</a>，以確認受支援的 Milvus 伺服器版本。</p>
-<p>本主題詳細說明如何在同一個 Milvus 實例中備份集合，並從備份中還原
-該集合。</p>
-<p>關於在 Milvus 3.0.1 或更新版本上執行 0.6.0 快照工作流程的資訊，請參閱<a href="/docs/zh-hant/snapshot-backup-and-restore.md">《單一實例中的快照備份與還原》</a>。</p>
-<h2 id="Overview" class="common-anchor-header">概述<button data-href="#Overview" class="anchor-icon" translate="no">
+    </button></h1><p>For current workflows, see the <a href="/docs/zh-hant/milvus_backup_0_6_cli.md">CLI guide</a> or <a href="/docs/zh-hant/milvus_backup_upgrade.md">upgrade from 0.5.x</a>. Check the <a href="/docs/zh-hant/milvus_backup_overview.md#Compatibility-matrix">compatibility matrix</a> for supported Milvus server versions.</p>
+<p>This topic details the process of backing up a collection and restoring
+it from the backup within the same Milvus instance.</p>
+<p>For the 0.6.0 snapshot workflow on Milvus 3.0.1 or later, see <a href="/docs/zh-hant/snapshot-backup-and-restore.md">Snapshot Backup and Restore in One Instance</a>.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -38,22 +40,22 @@ beta: Milvus Backup 0.5.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>下圖說明了在
-單一 Milvus 實例內的備份與還原流程。</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/single-instance-backup-and-restore.png" alt="single-instance-backup-and-restore.png" class="doc-image" id="single-instance-backup-and-restore.png" /> 
-   <span>single-instance-backup-and-restore.png</span>
-  
- </span></p>
-<p>假設我們有一個 Milvus 實例<code translate="no">milvus_A</code> ，並使用名為
-<code translate="no">bucket_A</code> 的儲存桶來儲存資料。在此範例中，我們的目標是完成
-以下任務：</p>
+    </button></h2><p>The diagram below illustrates the backup and restore process within a
+single Milvus instance.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/single-instance-backup-and-restore.png" alt="single-instance-backup-and-restore.png" class="doc-image" id="single-instance-backup-and-restore.png" />
+    <span>single-instance-backup-and-restore.png</span>
+  </span>
+</p>
+<p>Assume we have a Milvus instance, <code translate="no">milvus_A</code>, using a bucket named
+<code translate="no">bucket_A</code> for data storage. In this example, our goal is to complete the
+following tasks:</p>
 <ol>
-<li><p>為<code translate="no">bucket_A</code> 中的集合 coll 建立備份（<code translate="no">my_backup</code> ）。</p></li>
-<li><p>從備份還原資料，並將還原後的集合命名為<code translate="no">coll_bak</code> 。</p></li>
+<li><p>Create a backup (<code translate="no">my_backup</code>) for collection coll in <code translate="no">bucket_A</code>.</p></li>
+<li><p>Restore from the backup and name the restored collection <code translate="no">coll_bak</code>.</p></li>
 </ol>
-<h2 id="Prerequisites" class="common-anchor-header">先決條件<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -69,12 +71,12 @@ beta: Milvus Backup 0.5.x
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>請參照<a href="/docs/zh-hant/milvus_backup_cli.md#Obtain-Milvus-Backup">0.5.x CLI 指南</a>安裝<strong>Milvus Backup 0.5.16</strong>。</p></li>
-<li><p>熟悉 Milvus 物件儲存設定的配置方法。
-詳細資訊請參閱「<a href="https://milvus.io/docs/deploy_s3.md">物件
-儲存</a>」。</p></li>
+<li><p>Install <strong>Milvus Backup 0.5.16</strong> using the <a href="/docs/zh-hant/milvus_backup_cli.md#Obtain-Milvus-Backup">0.5.x CLI guide</a>.</p></li>
+<li><p>Familiarize yourself with configuring Milvus object storage settings.
+For details, refer to <a href="https://milvus.io/docs/deploy_s3.md">Object
+Storage</a>.</p></li>
 </ul>
-<h2 id="Back-up-the-collection" class="common-anchor-header">備份集合<button data-href="#Back-up-the-collection" class="anchor-icon" translate="no">
+<h2 id="Back-up-the-collection" class="common-anchor-header">Back up the collection<button data-href="#Back-up-the-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -89,7 +91,7 @@ beta: Milvus Backup 0.5.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Step-1-Prepare-configuration" class="common-anchor-header">步驟 1：準備設定<button data-href="#Step-1-Prepare-configuration" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Step-1-Prepare-configuration" class="common-anchor-header">Step 1: Prepare configuration<button data-href="#Step-1-Prepare-configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -104,20 +106,20 @@ beta: Milvus Backup 0.5.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>前往 milvus-backup 專案的目錄，並建立一個
-名為<code translate="no">configs</code> 的目錄：</p>
+    </button></h3><p>Go to the directory of the milvus-backup project and create a directory
+named <code translate="no">configs</code>:</p>
 <pre><code translate="no" class="language-shell">mkdir -p configs
 <button class="copy-code-btn"></button></code></pre>
-<p>下載備份配置檔 backup.yaml：</p>
+<p>Download the backup config file backup.yaml:</p>
 <pre><code translate="no" class="language-shell">wget -O configs/backup.yaml https://raw.githubusercontent.com/zilliztech/milvus-backup/v0.5.16/configs/backup.yaml
 <button class="copy-code-btn"></button></code></pre>
-<p>檔案結構如下所示：</p>
+<p>The file structure looks like this:</p>
 <pre><code translate="no">├── configs
 │   └── backup.yaml
 ├── milvus-backup
 └── README.md
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Step-2-Edit-configuration-file" class="common-anchor-header">步驟 2：編輯設定檔<button data-href="#Step-2-Edit-configuration-file" class="anchor-icon" translate="no">
+<h3 id="Step-2-Edit-configuration-file" class="common-anchor-header">Step 2: Edit configuration file<button data-href="#Step-2-Edit-configuration-file" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -132,9 +134,9 @@ beta: Milvus Backup 0.5.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>下方的 YAML 範例顯示了在下載的 v1 檔案中需編輯的欄位。其餘必填設定請保留。 將 `<code translate="no">milvus.address</code> ` 和 `<code translate="no">milvus.port</code> ` 指向要備份或還原的實例。將 `<code translate="no">minio.backupAddress</code>`、`<code translate="no">minio.backupPort</code>` 及 `<code translate="no">minio.backupStorageType</code> ` 設定為備份目的地，並將 `<code translate="no">backup.gcPause.address</code> ` 設定為來源 Milvus 管理端點（預設埠號為 9091）。請將所有範例中的網址、儲存桶名稱、路徑及憑證，替換為您的部署設定。</p>
-<p>修改 backup.yaml 檔案，為
-<code translate="no">milvus_A</code> 設定適當的配置。以下為儲存配置範例：</p>
+    </button></h3><p>The YAML below shows fields to edit in the downloaded v1 file. Keep the other required settings. Point <code translate="no">milvus.address</code> and <code translate="no">milvus.port</code> to the instance being backed up or restored. Set <code translate="no">minio.backupAddress</code>, <code translate="no">minio.backupPort</code>, and <code translate="no">minio.backupStorageType</code> to the backup destination, and <code translate="no">backup.gcPause.address</code> to the source Milvus management endpoint (port 9091 by default). Replace all example addresses, bucket names, paths, and credentials with your deployment settings.</p>
+<p>Modify the backup.yaml file to set the appropriate configurations for
+<code translate="no">milvus_A</code>. Below is the sample storage configuration:</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-comment"># Related configuration of minio, which is responsible for data persistence for Milvus.</span>
 <span class="hljs-attr">minio:</span>
   <span class="hljs-comment"># cloudProvider: &quot;minio&quot; # deprecated use storageType instead</span>
@@ -158,7 +160,7 @@ beta: Milvus Backup 0.5.x
   <span class="hljs-attr">backupBucketName:</span> <span class="hljs-string">&quot;bucket_A&quot;</span> <span class="hljs-comment"># Bucket name to store backup data. Backup data will store to backupBucketName/backupRootPath</span>
   <span class="hljs-attr">backupRootPath:</span> <span class="hljs-string">&quot;backup&quot;</span> <span class="hljs-comment"># Rootpath to store backup data. Backup data will store to backupBucketName/backupRootPath</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Step-3-Create-backup" class="common-anchor-header">步驟 3：建立備份<button data-href="#Step-3-Create-backup" class="anchor-icon" translate="no">
+<h3 id="Step-3-Create-backup" class="common-anchor-header">Step 3: Create backup<button data-href="#Step-3-Create-backup" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -173,12 +175,12 @@ beta: Milvus Backup 0.5.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>儲存 backup.yaml 後，建立名為<code translate="no">my_backup</code> 的備份：</p>
+    </button></h3><p>Once backup.yaml is saved, create a backup named <code translate="no">my_backup</code>:</p>
 <pre><code translate="no" class="language-shell">./milvus-backup create -c coll -n my_backup --config configs/backup.yaml
 <button class="copy-code-btn"></button></code></pre>
-<p>此指令會在<code translate="no">milvus_A</code> 的物件
-儲存中建立名為<code translate="no">bucket_A/backup/my_backup</code> 的備份。</p>
-<h2 id="Restore-from-the-backup-within-milvusA" class="common-anchor-header">在 milvus_A 內從備份還原<button data-href="#Restore-from-the-backup-within-milvusA" class="anchor-icon" translate="no">
+<p>This command creates the backup <code translate="no">bucket_A/backup/my_backup</code> in the object
+storage of <code translate="no">milvus_A</code>.</p>
+<h2 id="Restore-from-the-backup-within-milvusA" class="common-anchor-header">Restore from the backup within milvus_A<button data-href="#Restore-from-the-backup-within-milvusA" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -193,11 +195,11 @@ beta: Milvus Backup 0.5.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>建立備份後，您可以使用以下指令
-從備份還原：</p>
+    </button></h2><p>Once the backup is created, you can restore from it using the command
+below:</p>
 <pre><code translate="no" class="language-shell">./milvus-backup restore -c coll -n my_backup -s _bak --config configs/backup.yaml
 <button class="copy-code-btn"></button></code></pre>
-<p>此命令會從備份還原資料，並在<code translate="no">milvus_A</code> 中建立一個名為
-coll_bak 的新集合，使用該實例所設定的儲存根目錄<code translate="no">bucket_A/files</code> 。</p>
-<p>在 Backup 0.5.16 版本中，已廢棄的<code translate="no">-c</code> 選項會在套用<code translate="no">_bak</code> 之前，從備份中選取集合名稱。0.6.0 版本的替代選項<code translate="no">--filter</code> 則改為使用目標名稱；請參閱「<a href="/docs/zh-hant/milvus_backup_upgrade.md#Update-CLI-commands">更新 CLI 指令</a>」。</p>
-<p>還原後，請確認<code translate="no">coll_bak</code> 是否存在，如有需要請建立適當的向量索引，並將其實體數量、代表性值及搜尋結果與備份前擷取的基準值進行比對。僅憑命令執行成功並不能驗證資料的完整性。</p>
+<p>This command restores from the backup and creates a new collection named
+coll_bak in <code translate="no">milvus_A</code>, using the instance’s configured storage root <code translate="no">bucket_A/files</code>.</p>
+<p>In Backup 0.5.16, the deprecated <code translate="no">-c</code> option selects the collection name in the backup, before <code translate="no">_bak</code> is applied. The 0.6.0 <code translate="no">--filter</code> replacement uses the target name instead; see <a href="/docs/zh-hant/milvus_backup_upgrade.md#Update-CLI-commands">Update CLI commands</a>.</p>
+<p>After restoring, confirm that <code translate="no">coll_bak</code> exists, create an appropriate vector index if needed, and compare its entity count, representative values, and search results against a baseline captured before backup. A successful command alone does not verify the data.</p>

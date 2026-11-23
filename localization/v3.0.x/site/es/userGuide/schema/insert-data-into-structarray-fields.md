@@ -2,11 +2,10 @@
 id: insert-data-into-structarray-fields.md
 title: Insert Data into StructArray Fields
 summary: >-
-  Inserta datos en un campo StructArray cuando cada entidad contenga una lista
-  ordenada de elementos estructurados. En la carga útil de inserción, un campo
-  StructArray se representa como una matriz de objetos. Cada objeto representa
-  un elemento Struct y utiliza los nombres de los subcampos Struct definidos en
-  el esquema de la colección.
+  Insert data into a StructArray field when each entity contains an ordered list
+  of structured elements. In the insert payload, a StructArray field is
+  represented as an array of objects. Each object represents one Struct element
+  and uses the Struct subfield names defined in the collection schema.
 ---
 <h1 id="Insert-Data-into-StructArray-Fields" class="common-anchor-header">Insert Data into StructArray Fields<button data-href="#Insert-Data-into-StructArray-Fields" class="anchor-icon" translate="no">
       <svg translate="no"

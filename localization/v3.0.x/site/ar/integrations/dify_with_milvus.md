@@ -1,11 +1,11 @@
 ---
 id: dify_with_milvus.md
 summary: >-
-  في هذا الدرس التعليمي، سنوضح لك كيفية نشر Dify باستخدام Milvus، من أجل تمكين
-  الاسترجاع الفعال ومحرك RAG.
-title: نشر Dify باستخدام Milvus
+  In this tutorial, we will show you how to deploy Dify with Milvus, to enable
+  efficient retrieval and RAG engine.
+title: Deploying Dify with Milvus
 ---
-<h1 id="Deploying-Dify-with-Milvus" class="common-anchor-header">نشر Dify باستخدام Milvus<button data-href="#Deploying-Dify-with-Milvus" class="anchor-icon" translate="no">
+<h1 id="Deploying-Dify-with-Milvus" class="common-anchor-header">Deploying Dify with Milvus<button data-href="#Deploying-Dify-with-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,12 +20,12 @@ title: نشر Dify باستخدام Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p><a href="https://dify.ai/">Dify</a> هي منصة مفتوحة المصدر مصممة لتبسيط عملية بناء تطبيقات الذكاء الاصطناعي من خلال الجمع بين خدمة الخلفية كخدمة (Backend-as-a-Service) و LLMOps. وهي تدعم نماذج اللغة الكبيرة (LLMs) السائدة، وتوفر واجهة سهلة الاستخدام لتنسيق المطالبات، ومحركات RAG عالية الجودة، وإطار عمل مرن لوكلاء الذكاء الاصطناعي. بفضل سير العمل الذي يعتمد على الكود المحدود (low-code) والواجهات سهلة الاستخدام وواجهات برمجة التطبيقات (APIs)، تتيح Dify لكل من المطورين والمستخدمين غير التقنيين التركيز على إنشاء حلول ذكاء اصطناعي مبتكرة وقابلة للتطبيق في العالم الواقعي دون الحاجة إلى التعامل مع التعقيدات.</p>
-<p>في هذا الدليل التعليمي، سنوضح لك كيفية نشر Dify مع Milvus، لتمكين الاسترجاع الفعال ومحرك RAG.</p>
+    </button></h1><p><a href="https://dify.ai/">Dify</a> is an open-source platform designed to simplify building AI applications by combining Backend-as-a-Service with LLMOps. It supports mainstream LLMs, offers an intuitive prompt orchestration interface, high-quality RAG engines, and a flexible AI agent framework. With low-code workflows, easy-to-use interfaces, and APIs, Dify enables both developers and non-technical users to focus on creating innovative, real-world AI solutions without dealing with complexity.</p>
+<p>In this tutorial, we will show you how to deploy Dify with Milvus, to enable efficient retrieval and RAG engine.</p>
 <div class="alert note">
-<p>تستند هذه الوثائق بشكل أساسي إلى <a href="https://docs.dify.ai/">الوثائق</a> الرسمية <a href="https://docs.dify.ai/">لـ Dify</a>. إذا وجدت أي محتوى قديم أو غير متسق، يرجى إعطاء الأولوية للوثائق الرسمية ولا تتردد في إبلاغنا بالمشكلة.</p>
+<p>This documentation is primarily based on the official <a href="https://docs.dify.ai/">Dify documentation</a>. If you find any outdated or inconsistent content, please prioritize the official documentation and feel free to raise an issue for us.</p>
 </div>
-<h2 id="Prerequisites" class="common-anchor-header">المتطلبات الأساسية<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -40,7 +40,7 @@ title: نشر Dify باستخدام Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Clone-the-Repository" class="common-anchor-header">نسخ المستودع<button data-href="#Clone-the-Repository" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Clone-the-Repository" class="common-anchor-header">Clone the Repository<button data-href="#Clone-the-Repository" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -55,10 +55,10 @@ title: نشر Dify باستخدام Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>انسخ شفرة مصدر Dify إلى جهازك المحلي:</p>
+    </button></h3><p>Clone the Dify source code to your local machine:</p>
 <pre><code translate="no" class="language-shell">git clone https://github.com/langgenius/dify.git
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Prepare-Environment-Configuration" class="common-anchor-header">تحضير تكوين البيئة<button data-href="#Prepare-Environment-Configuration" class="anchor-icon" translate="no">
+<h3 id="Prepare-Environment-Configuration" class="common-anchor-header">Prepare Environment Configuration<button data-href="#Prepare-Environment-Configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -73,13 +73,13 @@ title: نشر Dify باستخدام Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>انتقل إلى دليل Docker الموجود في كود مصدر Dify</p>
+    </button></h3><p>Navigate to the Docker directory in the Dify source code</p>
 <pre><code translate="no" class="language-shell">cd dify/docker
 <button class="copy-code-btn"></button></code></pre>
-<p>انسخ ملف تكوين البيئة</p>
+<p>Copy the environment configuration file</p>
 <pre><code translate="no" class="language-shell">cp .env.example .env
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Deployment-Options" class="common-anchor-header">خيارات النشر<button data-href="#Deployment-Options" class="anchor-icon" translate="no">
+<h2 id="Deployment-Options" class="common-anchor-header">Deployment Options<button data-href="#Deployment-Options" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -94,8 +94,8 @@ title: نشر Dify باستخدام Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يمكنك نشر Dify باستخدام Milvus من خلال طريقتين مختلفتين. اختر الطريقة التي تناسب احتياجاتك بشكل أفضل:</p>
-<h2 id="Option-1-Using-Milvus-with-Docker" class="common-anchor-header">الخيار 1: استخدام Milvus مع Docker<button data-href="#Option-1-Using-Milvus-with-Docker" class="anchor-icon" translate="no">
+    </button></h2><p>You can deploy Dify with Milvus using two different approaches. Choose the one that best fits your needs:</p>
+<h2 id="Option-1-Using-Milvus-with-Docker" class="common-anchor-header">Option 1: Using Milvus with Docker<button data-href="#Option-1-Using-Milvus-with-Docker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -110,8 +110,8 @@ title: نشر Dify باستخدام Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يعمل هذا الخيار على تشغيل حاويات Milvus جنبًا إلى جنب مع Dify على جهازك المحلي باستخدام Docker Compose.</p>
-<h3 id="Configure-Environment-Variables" class="common-anchor-header">تكوين متغيرات البيئة<button data-href="#Configure-Environment-Variables" class="anchor-icon" translate="no">
+    </button></h2><p>This option runs Milvus containers alongside Dify on your local machine using Docker Compose.</p>
+<h3 id="Configure-Environment-Variables" class="common-anchor-header">Configure Environment Variables<button data-href="#Configure-Environment-Variables" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -126,18 +126,18 @@ title: نشر Dify باستخدام Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>قم بتحرير ملف <code translate="no">.env</code> باستخدام إعدادات Milvus التالية:</p>
+    </button></h3><p>Edit the <code translate="no">.env</code> file with the following Milvus configuration:</p>
 <pre><code translate="no"><span class="hljs-attr">VECTOR_STORE</span>=milvus
 <span class="hljs-attr">MILVUS_URI</span>=http://host.docker.internal:<span class="hljs-number">19530</span>
 <span class="hljs-attr">MILVUS_TOKEN</span>=root:Milvus
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
 <ul>
-<li>يستخدم ملف <code translate="no">MILVUS_URI</code> <code translate="no">host.docker.internal:19530</code> ، مما يسمح لحاويات Docker بالوصول إلى Milvus الذي يعمل على الجهاز المضيف عبر الشبكة الداخلية لـ Docker.</li>
-<li>يتيح تكوين Docker Compose الخاص بـ Dify المصادقة عبر Milvus بشكل افتراضي. اضبط <code translate="no">MILVUS_TOKEN</code> على <code translate="no">username:password</code> ؛ حيث يستخدم <code translate="no">root:Milvus</code> بيانات الاعتماد الأولية. إذا قمت بتغيير بيانات الاعتماد، فاستبدل هذه القيمة وفقًا لذلك.</li>
+<li>The <code translate="no">MILVUS_URI</code> uses <code translate="no">host.docker.internal:19530</code> which allows Docker containers to access Milvus running on the host machine through Docker’s internal network.</li>
+<li>Dify’s Docker Compose configuration enables Milvus authentication by default. Set <code translate="no">MILVUS_TOKEN</code> to <code translate="no">username:password</code>; <code translate="no">root:Milvus</code> uses the initial credentials. If you have changed the credentials, replace this value accordingly.</li>
 </ul>
 </div>
-<h3 id="Start-the-Docker-Containers" class="common-anchor-header">ابدأ تشغيل حاويات Docker<button data-href="#Start-the-Docker-Containers" class="anchor-icon" translate="no">
+<h3 id="Start-the-Docker-Containers" class="common-anchor-header">Start the Docker Containers<button data-href="#Start-the-Docker-Containers" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -152,11 +152,11 @@ title: نشر Dify باستخدام Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>ابدأ تشغيل الحاويات باستخدام ملف تعريف <code translate="no">milvus</code> لتضمين خدمات Milvus:</p>
+    </button></h3><p>Start the containers with the <code translate="no">milvus</code> profile to include Milvus services:</p>
 <pre><code translate="no" class="language-shell">docker compose --profile milvus up -d
 <button class="copy-code-btn"></button></code></pre>
-<p>سيؤدي هذا الأمر إلى تشغيل خدمة Dify جنبًا إلى جنب مع حاويات <code translate="no">milvus-standalone</code> و <code translate="no">etcd</code> و <code translate="no">minio</code>.</p>
-<h2 id="Option-2-Using-Zilliz-Cloud" class="common-anchor-header">الخيار 2: استخدام Zilliz Cloud<button data-href="#Option-2-Using-Zilliz-Cloud" class="anchor-icon" translate="no">
+<p>This command will start the Dify service along with the <code translate="no">milvus-standalone</code>, <code translate="no">etcd</code>, and <code translate="no">minio</code> containers.</p>
+<h2 id="Option-2-Using-Zilliz-Cloud" class="common-anchor-header">Option 2: Using Zilliz Cloud<button data-href="#Option-2-Using-Zilliz-Cloud" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -171,8 +171,8 @@ title: نشر Dify باستخدام Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يربط هذا الخيار Dify بخدمة Milvus مُدارة على Zilliz Cloud.</p>
-<h3 id="Configure-Environment-Variables" class="common-anchor-header">تكوين متغيرات البيئة<button data-href="#Configure-Environment-Variables" class="anchor-icon" translate="no">
+    </button></h2><p>This option connects Dify to a managed Milvus service on Zilliz Cloud.</p>
+<h3 id="Configure-Environment-Variables" class="common-anchor-header">Configure Environment Variables<button data-href="#Configure-Environment-Variables" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -187,18 +187,18 @@ title: نشر Dify باستخدام Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>قم بتحرير ملف <code translate="no">.env</code> بإدخال تفاصيل اتصالك بـ Zilliz Cloud:</p>
+    </button></h3><p>Edit the <code translate="no">.env</code> file with your Zilliz Cloud connection details:</p>
 <pre><code translate="no"><span class="hljs-attr">VECTOR_STORE</span>=milvus
 <span class="hljs-attr">MILVUS_URI</span>=YOUR_ZILLIZ_CLOUD_ENDPOINT
 <span class="hljs-attr">MILVUS_TOKEN</span>=YOUR_ZILLIZ_CLOUD_API_KEY
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
 <ul>
-<li>استبدل <code translate="no">YOUR_ZILLIZ_CLOUD_ENDPOINT</code> <a href="https://docs.zilliz.com/docs/on-zilliz-cloud-console#free-cluster-details">بنقطة النهاية العامة</a> الخاصة بك من Zilliz Cloud.</li>
-<li>استبدل <code translate="no">YOUR_ZILLIZ_CLOUD_API_KEY</code> <a href="https://docs.zilliz.com/docs/on-zilliz-cloud-console#free-cluster-details">بمفتاح API</a> الخاص بك من Zilliz Cloud.</li>
+<li>Replace <code translate="no">YOUR_ZILLIZ_CLOUD_ENDPOINT</code> with your <a href="https://docs.zilliz.com/docs/on-zilliz-cloud-console#free-cluster-details">Public Endpoint</a> from Zilliz Cloud.</li>
+<li>Replace <code translate="no">YOUR_ZILLIZ_CLOUD_API_KEY</code> with your <a href="https://docs.zilliz.com/docs/on-zilliz-cloud-console#free-cluster-details">API key</a> from Zilliz Cloud.</li>
 </ul>
 </div>
-<h3 id="Start-the-Docker-Containers" class="common-anchor-header">بدء تشغيل حاويات Docker<button data-href="#Start-the-Docker-Containers" class="anchor-icon" translate="no">
+<h3 id="Start-the-Docker-Containers" class="common-anchor-header">Start the Docker Containers<button data-href="#Start-the-Docker-Containers" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -213,10 +213,10 @@ title: نشر Dify باستخدام Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>قم بتشغيل حاويات Dify فقط بدون ملف تعريف Milvus:</p>
+    </button></h3><p>Start only the Dify containers without the Milvus profile:</p>
 <pre><code translate="no" class="language-shell">docker compose up -d
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Accessing-Dify" class="common-anchor-header">الوصول إلى Dify<button data-href="#Accessing-Dify" class="anchor-icon" translate="no">
+<h2 id="Accessing-Dify" class="common-anchor-header">Accessing Dify<button data-href="#Accessing-Dify" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -231,7 +231,7 @@ title: نشر Dify باستخدام Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Log-in-to-Dify" class="common-anchor-header">تسجيل الدخول إلى Dify<button data-href="#Log-in-to-Dify" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Log-in-to-Dify" class="common-anchor-header">Log in to Dify<button data-href="#Log-in-to-Dify" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -246,7 +246,7 @@ title: نشر Dify باستخدام Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>افتح متصفحك وانتقل إلى صفحة تثبيت Dify، ويمكنك هنا إعداد حساب المسؤول الخاص بك:
-<code translate="no">http://localhost/install</code> ،
-ثم قم بتسجيل الدخول إلى الصفحة الرئيسية لـ Dify لمواصلة الاستخدام.</p>
-<p>للمزيد من الاستخدام والإرشادات، يرجى الرجوع إلى <a href="https://docs.dify.ai/">وثائق Dify</a>.</p>
+    </button></h3><p>Open your browser and go to the Dify installation page, and you can set your admin account here:
+<code translate="no">http://localhost/install</code> ,
+And then log in the main Dify page for further usage.</p>
+<p>For further usage and guidance, please refer to the <a href="https://docs.dify.ai/">Dify documentation</a>.</p>

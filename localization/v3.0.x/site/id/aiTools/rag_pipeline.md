@@ -1,7 +1,7 @@
 ---
 id: rag_pipeline.md
-title: 'Cepat: Pipa Milvus RAG'
-summary: Aturan untuk asisten pengkodean AI untuk membangun pipeline RAG dengan Milvus.
+title: 'Prompt: Milvus RAG Pipeline'
+summary: Rules for AI coding assistants to build RAG pipelines with Milvus.
 ---
 <h1 id="RAG-Pipeline" class="common-anchor-header">RAG Pipeline<button data-href="#RAG-Pipeline" class="anchor-icon" translate="no">
       <svg translate="no"
@@ -18,8 +18,8 @@ summary: Aturan untuk asisten pengkodean AI untuk membangun pipeline RAG dengan 
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Aturan ujung ke ujung untuk membangun pipeline RAG dengan Milvus, termasuk ingestion, chunking, embedding, pengambilan hibrida dengan BM25, dan pembaruan dokumen dengan upsert. Salin perintah lengkap di bawah ini ke dalam alat AI Anda untuk menerapkan aturan-aturan ini secara otomatis. Untuk ikhtisar semua petunjuk, lihat <a href="/docs/id/milvus_for_agents.md">Petunjuk AI</a>.</p>
-<h2 id="How-to-use-this-prompt" class="common-anchor-header">Cara menggunakan prompt ini<button data-href="#How-to-use-this-prompt" class="anchor-icon" translate="no">
+    </button></h1><p>End-to-end rules for building RAG pipelines with Milvus, including ingestion, chunking, embedding, hybrid retrieval with BM25, and document updates with upsert. Copy the full prompt below into your AI tool to apply these rules automatically. For an overview of all prompts, see <a href="/docs/id/milvus_for_agents.md">AI Prompts</a>.</p>
+<h2 id="How-to-use-this-prompt" class="common-anchor-header">How to use this prompt<button data-href="#How-to-use-this-prompt" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -35,12 +35,12 @@ summary: Aturan untuk asisten pengkodean AI untuk membangun pipeline RAG dengan 
         ></path>
       </svg>
     </button></h2><ol>
-<li><strong>Salin</strong> perintah lengkap dari bagian Perintah <a href="#full-prompt">lengkap</a> di bawah ini.</li>
-<li><strong>Simpan</strong> di lokasi yang diharapkan oleh alat AI Anda - lihat <a href="/docs/id/milvus_for_agents.md">tabel lingkungan</a> untuk detail penempatan.</li>
-<li>Asisten AI Anda akan secara otomatis menerapkan aturan ini saat membuat atau meninjau kode Milvus.</li>
+<li><strong>Copy</strong> the full prompt from the <a href="#full-prompt">Full prompt</a> section below.</li>
+<li><strong>Save</strong> it to the location your AI tool expects — see the <a href="/docs/id/milvus_for_agents.md">environment table</a> for placement details.</li>
+<li>Your AI assistant will automatically apply these rules when generating or reviewing Milvus code.</li>
 </ol>
-<p>Untuk pengguna <strong>kursor</strong>: salin perintah dari bagian Perintah <a href="#full-prompt">lengkap</a> dan simpan di bawah <code translate="no">.cursor/rules/</code> dalam proyek Anda.</p>
-<h2 id="Full-prompt" class="common-anchor-header">Perintah lengkap<button data-href="#Full-prompt" class="anchor-icon" translate="no">
+<p>For <strong>Cursor</strong> users: copy the prompt from the <a href="#full-prompt">Full prompt</a> section and save it under <code translate="no">.cursor/rules/</code> in your project.</p>
+<h2 id="Full-prompt" class="common-anchor-header">Full prompt<button data-href="#Full-prompt" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"

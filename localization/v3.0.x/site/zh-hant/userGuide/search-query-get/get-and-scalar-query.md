@@ -1,7 +1,9 @@
 ---
 id: get-and-scalar-query.md
 title: Query
-summary: 在 Milvus 中，可使用 Query、Get 和 QueryIterator 來擷取實體、篩選元資料、對查詢結果進行排序，以及彙總標量值。
+summary: >-
+  Use Query, Get, and QueryIterator to retrieve entities, filter metadata, sort
+  query results, and aggregate scalar values in Milvus.
 ---
 <h1 id="Query" class="common-anchor-header">Query<button data-href="#Query" class="anchor-icon" translate="no">
       <svg translate="no"

@@ -1,15 +1,16 @@
 ---
 id: weighted-ranker.md
-title: مُصنِّف مرجح
+title: Weighted Ranker
 summary: >-
-  يقوم «Weighted Ranker» بدمج نتائج مسارات البحث المتعددة وترتيبها حسب الأولوية
-  بطريقة ذكية، من خلال تخصيص أوزان أهمية مختلفة لكل منها. وعلى غرار الطريقة التي
-  يوازن بها الطاهي الماهر بين المكونات المتعددة لإعداد الطبق المثالي، يوازن
-  «Weighted Ranker» بين نتائج البحث المختلفة لتقديم النتائج المجمعة الأكثر صلة.
-  ويُعد هذا النهج مثاليًا عند البحث عبر حقول متجهة متعددة أو طرق بحث متنوعة، حيث
-  ينبغي أن تسهم حقول معينة في الترتيب النهائي بشكل أكبر من غيرها.
+  Weighted Ranker intelligently combines and prioritizes results from multiple
+  search paths by assigning different importance weights to each. Similar to how
+  a skilled chef balances multiple ingredients to create the perfect dish,
+  Weighted Ranker balances different search results to deliver the most relevant
+  combined outcomes. This approach is ideal when searching across multiple
+  vector fields or modalities where certain fields should contribute more
+  significantly to the final ranking than others.
 ---
-<h1 id="Weighted-Ranker" class="common-anchor-header">مُصنِّف مرجح<button data-href="#Weighted-Ranker" class="anchor-icon" translate="no">
+<h1 id="Weighted-Ranker" class="common-anchor-header">Weighted Ranker<button data-href="#Weighted-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -24,8 +25,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>يقوم "Weighted Ranker" بدمج نتائج مسارات البحث المتعددة وترتيبها حسب الأولوية بطريقة ذكية، وذلك من خلال تعيين أوزان أهمية مختلفة لكل منها. وعلى غرار الطريقة التي يوازن بها الطاهي الماهر بين المكونات المتعددة لإعداد الطبق المثالي، يوازن "الترتيب المرجح" بين نتائج البحث المختلفة لتقديم النتائج المجمعة الأكثر صلة. ويُعد هذا النهج مثاليًا عند البحث عبر حقول متجهة متعددة أو طرق بحث متعددة، حيث ينبغي أن تسهم حقول معينة بشكل أكبر في الترتيب النهائي مقارنةً بغيرها.</p>
-<h2 id="When-to-use-Weighted-Ranker" class="common-anchor-header">متى تستخدم "الترتيب المرجح"<button data-href="#When-to-use-Weighted-Ranker" class="anchor-icon" translate="no">
+    </button></h1><p>Weighted Ranker intelligently combines and prioritizes results from multiple search paths by assigning different importance weights to each. Similar to how a skilled chef balances multiple ingredients to create the perfect dish, Weighted Ranker balances different search results to deliver the most relevant combined outcomes. This approach is ideal when searching across multiple vector fields or modalities where certain fields should contribute more significantly to the final ranking than others.</p>
+<h2 id="When-to-use-Weighted-Ranker" class="common-anchor-header">When to use Weighted Ranker<button data-href="#When-to-use-Weighted-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -40,31 +41,31 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>تم تصميم «مُصنِّف الترجيح» خصيصًا لسيناريوهات البحث المختلطة التي تحتاج فيها إلى دمج النتائج من مسارات بحث متجهة متعددة. وهو فعال بشكل خاص في الحالات التالية:</p>
+    </button></h2><p>Weighted Ranker is specifically designed for hybrid search scenarios where you need to combine results from multiple vector search paths. It’s particularly effective for:</p>
 <table>
    <tr>
-     <th><p>حالة الاستخدام</p></th>
-     <th><p>مثال</p></th>
-     <th><p>لماذا يعمل Weighted Ranker بشكل جيد</p></th>
+     <th><p>Use Case</p></th>
+     <th><p>Example</p></th>
+     <th><p>Why Weighted Ranker Works Well</p></th>
    </tr>
    <tr>
-     <td><p>البحث في التجارة الإلكترونية</p></td>
-     <td><p>البحث عن المنتجات الذي يجمع بين تشابه الصور والوصف النصي</p></td>
-     <td><p>يتيح لتجار التجزئة إعطاء الأولوية للتشابه البصري في منتجات الموضة مع التركيز على الأوصاف النصية للمنتجات التقنية</p></td>
+     <td><p>E-commerce search</p></td>
+     <td><p>Product search combining image similarity and text description</p></td>
+     <td><p>Allows retailers to prioritize visual similarity for fashion items while emphasizing text descriptions for technical products</p></td>
    </tr>
    <tr>
-     <td><p>البحث عن المحتوى الإعلامي</p></td>
-     <td><p>استرجاع مقاطع الفيديو باستخدام كل من السمات المرئية والنصوص الصوتية</p></td>
-     <td><p>يحقق التوازن بين أهمية المحتوى المرئي والحوار المنطوق بناءً على نية الاستعلام</p></td>
+     <td><p>Media content search</p></td>
+     <td><p>Video retrieval using both visual features and audio transcripts</p></td>
+     <td><p>Balances the importance of visual content versus spoken dialogue based on query intent</p></td>
    </tr>
    <tr>
-     <td><p>استرجاع المستندات</p></td>
-     <td><p>البحث عن المستندات المؤسسية باستخدام تضمينات متعددة لأقسام مختلفة</p></td>
-     <td><p>يعطي وزنًا أكبر لعمليات التضمين الخاصة بالعنوان والملخص مع الاستمرار في أخذ عمليات التضمين للنص الكامل في الاعتبار</p></td>
+     <td><p>Document retrieval</p></td>
+     <td><p>Enterprise document search with multiple embeddings for different sections</p></td>
+     <td><p>Gives higher weight to title and abstract embeddings while still considering full-text embeddings</p></td>
    </tr>
 </table>
-<p>إذا كان تطبيق البحث المختلط الخاص بك يتطلب الجمع بين مسارات بحث متعددة مع التحكم في أهميتها النسبية، فإن Weighted Ranker هو خيارك المثالي.</p>
-<h2 id="Mechanism-of-Weighted-Ranker" class="common-anchor-header">آلية عمل Weighted Ranker<button data-href="#Mechanism-of-Weighted-Ranker" class="anchor-icon" translate="no">
+<p>If your hybrid search application requires combining multiple search paths while controlling their relative importance, Weighted Ranker is your ideal choice.</p>
+<h2 id="Mechanism-of-Weighted-Ranker" class="common-anchor-header">Mechanism of Weighted Ranker<button data-href="#Mechanism-of-Weighted-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -79,20 +80,20 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يتمثل سير العمل الرئيسي لاستراتيجية WeightedRanker فيما يلي:</p>
+    </button></h2><p>The main workflow of the WeightedRanker strategy is as follows:</p>
 <ol>
-<li><p><strong>جمع درجات البحث</strong>: جمع النتائج والدرجات من كل مسار من مسارات البحث المتجه (score_1، score_2).</p></li>
-<li><p><strong>توحيد الدرجات</strong>: قد يستخدم كل بحث مقاييس تشابه مختلفة، مما يؤدي إلى توزيعات متنوعة للدرجات. على سبيل المثال، قد يؤدي استخدام "المنتج الداخلي" (IP) كنوع من أنواع التشابه إلى درجات تتراوح بين [−∞،+∞]، بينما يؤدي استخدام "المسافة الأوقليدية" (L2) إلى درجات تتراوح بين [0،+∞]. نظرًا لأن نطاقات الدرجات من عمليات البحث المختلفة تختلف ولا يمكن مقارنتها مباشرةً، فمن الضروري تطبيع الدرجات من كل مسار بحث. عادةً، تُطبق دالة « <code translate="no">arctan</code> » لتحويل الدرجات إلى نطاق بين [0، 1] (score_1_normalized، score_2_normalized). تشير الدرجات الأقرب إلى 1 إلى تشابه أعلى.</p></li>
-<li><p><strong>تعيين الأوزان</strong>: استنادًا إلى الأهمية المخصصة لمجالات المتجهات المختلفة، يتم تخصيص أوزان (<strong>wi</strong>) للنتائج المعيارية (score_1_normalized، score_2_normalized). يجب أن تتراوح أوزان كل مسار بين [0،1]. الدرجات المرجحة الناتجة هي score_1_weighted و score_2_weighted.</p></li>
-<li><p><strong>دمج الدرجات</strong>: يتم ترتيب الدرجات المرجحة (score_1_weighted، score_2_weighted) من الأعلى إلى الأدنى لإنتاج مجموعة نهائية من الدرجات (score_final).</p></li>
+<li><p><strong>Collect Search Scores</strong>: Gather the results and scores from each path of vector search (score_1, score_2).</p></li>
+<li><p><strong>Score Normalization</strong>: Each search may use different similarity metrics, resulting in varied score distributions. For instance, using Inner Product (IP) as a similarity type could result in scores ranging from [−∞,+∞], while using Euclidean distance (L2) results in scores ranging from [0,+∞]. Because the score ranges from different searches vary and cannot be directly compared, it is necessary to normalize the scores from each path of search. Typically, <code translate="no">arctan</code> function is applied to transform the scores into a range between [0, 1] (score_1_normalized, score_2_normalized). Scores closer to 1 indicate higher similarity.</p></li>
+<li><p><strong>Assign Weights</strong>: Based on the importance assigned to different vector fields, weights (<strong>wi</strong>) are allocated to the normalized scores (score_1_normalized, score_2_normalized). The weights of each path should range between [0,1]. The resulting weighted scores are score_1_weighted and score_2_weighted.</p></li>
+<li><p><strong>Merge Scores</strong>: The weighted scores (score_1_weighted, score_2_weighted) are ranked from highest to lowest to produce a final set of scores (score_final).</p></li>
 </ol>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/weighted-ranker.png" alt="Weighted Ranker" class="doc-image" id="weighted-ranker" /> 
-   <span>مرتب مرجح</span>
-  
- </span></p>
-<h2 id="Example-of-Weighted-Ranker" class="common-anchor-header">مثال على «المصنف المرجح»<button data-href="#Example-of-Weighted-Ranker" class="anchor-icon" translate="no">
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/weighted-ranker.png" alt="Weighted Ranker" class="doc-image" id="weighted-ranker" />
+    <span>Weighted Ranker</span>
+  </span>
+</p>
+<h2 id="Example-of-Weighted-Ranker" class="common-anchor-header">Example of Weighted Ranker<button data-href="#Example-of-Weighted-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -107,13 +108,13 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يوضح هذا المثال عملية بحث هجينة متعددة الوسائط (topK=5) تشمل الصور والنصوص، ويوضح كيف تعيد استراتيجية WeightedRanker ترتيب نتائج بحثين باستخدام الشبكة العصبية الاصطناعية (ANN).</p>
+    </button></h2><p>This example demonstrates a multimodal Hybrid Search (topK=5) involving images and text and illustrates how the WeightedRanker strategy reranks the results from two ANN searches.</p>
 <ul>
-<li><p>نتائج البحث باستخدام الشبكة العصبية الاصطناعية (ANN) على الصور (topK=5):</p>
+<li><p>Results of ANN search on images （topK=5)：</p>
 <p><table>
 <tr>
-<th><p><strong>المعرف</strong></p></th>
-<th><p><strong>النتيجة (الصورة)</strong></p></th>
+<th><p><strong>ID</strong></p></th>
+<th><p><strong>Score (image)</strong></p></th>
 </tr>
 <tr>
 <td><p>101</p></td>
@@ -136,11 +137,11 @@ summary: >-
 <td><p>0.8</p></td>
 </tr>
 </table></p></li>
-<li><p>نتائج البحث باستخدام الشبكة العصبية الاصطناعية (ANN) على النصوص (topK=5):</p>
+<li><p>Results of ANN search on texts （topK=5)：</p>
 <p><table>
 <tr>
-<th><p><strong>رقم التعريف</strong></p></th>
-<th><p><strong>النتيجة (النص)</strong></p></th>
+<th><p><strong>ID</strong></p></th>
+<th><p><strong>Score (text)</strong></p></th>
 </tr>
 <tr>
 <td><p>198</p></td>
@@ -163,63 +164,63 @@ summary: >-
 <td><p>0.78</p></td>
 </tr>
 </table></p></li>
-<li><p>استخدم WeightedRanker لتعيين أوزان لنتائج البحث عن الصور والنصوص. لنفترض أن الوزن الخاص بالبحث عن الصور باستخدام الشبكة العصبية الاصطناعية (ANN) هو 0.6، وأن الوزن الخاص بالبحث عن النصوص هو 0.4.</p>
+<li><p>Use WeightedRanker assign weights to image and text search results. Suppose the weight for the image ANN search is 0.6 and the weight for the text search is 0.4.</p>
 <p><table>
 <tr>
-<th><p><strong>المعرف</strong></p></th>
-<th><p><strong>النتيجة (الصورة)</strong></p></th>
-<th><p><strong>النتيجة (النص)</strong></p></th>
-<th><p><strong>النتيجة المرجحة</strong></p></th>
+<th><p><strong>ID</strong></p></th>
+<th><p><strong>Score (image)</strong></p></th>
+<th><p><strong>Score (text)</strong></p></th>
+<th><p><strong>Weighted Score</strong></p></th>
 </tr>
 <tr>
 <td><p>101</p></td>
 <td><p>0.92</p></td>
 <td><p>0.87</p></td>
-<td><p>0.6 × 0.92 + 0.4 × 0.87 = 0.90</p></td>
+<td><p>0.6×0.92+0.4×0.87=0.90</p></td>
 </tr>
 <tr>
 <td><p>203</p></td>
 <td><p>0.88</p></td>
-<td><p>غير متوفر</p></td>
-<td><p>0.6 × 0.88 + 0.4 × 0 = 0.528</p></td>
+<td><p>N/A</p></td>
+<td><p>0.6×0.88+0.4×0=0.528</p></td>
 </tr>
 <tr>
 <td><p>150</p></td>
 <td><p>0.85</p></td>
-<td><p>غير متوفر</p></td>
-<td><p>0.6 × 0.85 + 0.4 × 0 = 0.51</p></td>
+<td><p>N/A</p></td>
+<td><p>0.6×0.85+0.4×0=0.51</p></td>
 </tr>
 <tr>
 <td><p>198</p></td>
 <td><p>0.83</p></td>
 <td><p>0.91</p></td>
-<td><p>0.6 × 0.83 + 0.4 × 0.91 = 0.86</p></td>
+<td><p>0.6×0.83+0.4×0.91=0.86</p></td>
 </tr>
 <tr>
 <td><p>175</p></td>
 <td><p>0.80</p></td>
 <td><p>0.82</p></td>
-<td><p>0.6 × 0.80 + 0.4 × 0.82 = 0.81</p></td>
+<td><p>0.6×0.80+0.4×0.82=0.81</p></td>
 </tr>
 <tr>
 <td><p>110</p></td>
-<td><p>غير موجود في الصورة</p></td>
+<td><p>Not in Image</p></td>
 <td><p>0.85</p></td>
-<td><p>0.6 × 0 + 0.4 × 0.85 = 0.34</p></td>
+<td><p>0.6×0+0.4×0.85=0.34</p></td>
 </tr>
 <tr>
 <td><p>250</p></td>
-<td><p>غير موجود في الصورة</p></td>
+<td><p>Not in Image</p></td>
 <td><p>0.78</p></td>
 <td><p>0.6×0+0.4×0.78=0.312</p></td>
 </tr>
 </table></p></li>
-<li><p>النتائج النهائية بعد إعادة الترتيب (topK=5):</p>
+<li><p>The final results after reranking（topK=5)：</p>
 <p><table>
 <tr>
-<th><p><strong>الترتيب</strong></p></th>
-<th><p><strong>المعرف</strong></p></th>
-<th><p><strong>النتيجة النهائية</strong></p></th>
+<th><p><strong>Rank</strong></p></th>
+<th><p><strong>ID</strong></p></th>
+<th><p><strong>Final Score</strong></p></th>
 </tr>
 <tr>
 <td><p>1</p></td>
@@ -248,7 +249,7 @@ summary: >-
 </tr>
 </table></p></li>
 </ul>
-<h2 id="Usage-of-Weighted-Ranker" class="common-anchor-header">استخدام أداة الترتيب المرجح<button data-href="#Usage-of-Weighted-Ranker" class="anchor-icon" translate="no">
+<h2 id="Usage-of-Weighted-Ranker" class="common-anchor-header">Usage of Weighted Ranker<button data-href="#Usage-of-Weighted-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -263,8 +264,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>عند استخدام استراتيجية WeightedRanker، من الضروري إدخال قيم الترجيح. يجب أن يتوافق عدد قيم الترجيح المراد إدخالها مع عدد طلبات البحث الأساسية لشبكة ANN في البحث الهجين. يجب أن تقع قيم الترجيح المدخلة في النطاق [0,1]، حيث تشير القيم الأقرب إلى 1 إلى أهمية أكبر.</p>
-<h3 id="Create-a-Weighted-Ranker" class="common-anchor-header">إنشاء «الترتيب المرجح»<button data-href="#Create-a-Weighted-Ranker" class="anchor-icon" translate="no">
+    </button></h2><p>When using the WeightedRanker strategy, it is necessary to input weight values. The number of weight values to input should correspond to the number of basic ANN search requests in the Hybrid Search. The input weight values should fall in the range of [0,1], with values closer to 1 indicating greater importance.</p>
+<h3 id="Create-a-Weighted-Ranker" class="common-anchor-header">Create a Weighted Ranker<button data-href="#Create-a-Weighted-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -279,19 +280,19 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>على سبيل المثال، لنفترض وجود طلبين أساسيين للبحث باستخدام الشبكة العصبية الاصطناعية (ANN) في البحث الهجين: البحث النصي والبحث عن الصور. إذا اعتُبر البحث النصي أكثر أهمية، فيجب تعيين وزن أكبر له.</p>
+    </button></h3><p>For example, suppose there are two basic ANN search requests in a Hybrid Search: text search and image search. If the text search is considered more important, it should be assigned a greater weight.</p>
 <div class="alert note">
-<p>يتيح لك Milvus 2.6.x والإصدارات الأحدث تكوين استراتيجيات إعادة الترتيب مباشرةً عبر واجهة برمجة تطبيقات إعادة الترتيب ( <code translate="no">Function</code> ). إذا كنت تستخدم إصدارًا أقدم (قبل الإصدار 2.6.0)، فراجع وثائق <a href="https://milvus.io/docs/v2.5.x/reranking.md#Usage-of-WeightedRanker">إعادة الترتيب</a> للحصول على إرشادات الإعداد.</p>
+<p>Milvus 2.6.x and later let you configure reranking strategies directly via the <code translate="no">Function</code> API. If you’re using an earlier release (before v2.6.0), refer to the <a href="https://milvus.io/docs/v2.5.x/reranking.md#Usage-of-WeightedRanker">Reranking</a> documentation for setup instructions.</p>
 </div>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> Function, FunctionType
 
@@ -381,49 +382,49 @@ rerank-&gt;<span class="hljs-built_in">AddParam</span>(<span class="hljs-string"
 <button class="copy-code-btn"></button></code></pre>
 <table>
    <tr>
-     <th><p>المعلمة</p></th>
-     <th><p>مطلوب؟</p></th>
-     <th><p>الوصف</p></th>
-     <th><p>القيمة/المثال</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Required?</p></th>
+     <th><p>Description</p></th>
+     <th><p>Value/Example</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">name</code></p></td>
-     <td><p>نعم</p></td>
-     <td><p>المعرف الفريد لهذه الوظيفة</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Unique identifier for this Function</p></td>
      <td><p><code translate="no">"weight"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">input_field_names</code></p></td>
-     <td><p>نعم</p></td>
-     <td><p>قائمة الحقول المتجهة التي سيتم تطبيق الدالة عليها (يجب أن تكون فارغة في حالة "الترتيب المرجح")</p></td>
+     <td><p>Yes</p></td>
+     <td><p>List of vector fields to apply the function to (must be empty for Weighted Ranker)</p></td>
      <td><p>[]</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">function_type</code></p></td>
-     <td><p>نعم</p></td>
-     <td><p>نوع الدالة المراد استدعاؤها؛ استخدم " <code translate="no">RERANK</code> " لتحديد استراتيجية إعادة الترتيب</p></td>
+     <td><p>Yes</p></td>
+     <td><p>The type of Function to invoke; use <code translate="no">RERANK</code> to specify a reranking strategy</p></td>
      <td><p><code translate="no">FunctionType.RERANK</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.reranker</code></p></td>
-     <td><p>نعم</p></td>
-     <td><p>يحدد طريقة إعادة الترتيب المطلوب استخدامها.</p><p>يجب ضبطه على <code translate="no">weighted</code> لاستخدام Weighted Ranker.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Specifies the reranking method to use.</p><p>Must be set to <code translate="no">weighted</code> to use Weighted Ranker.</p></td>
      <td><p><code translate="no">"weighted"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.weights</code></p></td>
-     <td><p>نعم</p></td>
-     <td><p>مصفوفة من الأوزان المقابلة لكل مسار بحث؛ القيم ∈ [0,1].</p><p>للحصول على التفاصيل، راجع <a href="/docs/ar/weighted-ranker.md#Mechanism-of-Weighted-Ranker">آلية "Weighted Ranker"</a>.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Array of weights corresponding to each search path; values ∈ [0,1].</p><p>For details, refer to <a href="/docs/ar/weighted-ranker.md#Mechanism-of-Weighted-Ranker">Mechanism of Weighted Ranker</a>.</p></td>
      <td><p><code translate="no">[0.1, 0.9]</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.norm_score</code></p></td>
-     <td><p>لا</p></td>
-     <td><p>ما إذا كان سيتم تطبيع الدرجات الأولية (باستخدام arctan) قبل الترجيح.</p><p>للحصول على التفاصيل، راجع <a href="/docs/ar/weighted-ranker.md#Mechanism-of-Weighted-Ranker">آلية الترتيب المرجح</a>.</p></td>
+     <td><p>No</p></td>
+     <td><p>Whether to normalize raw scores (using arctan) before weighting.</p><p>For details, refer to <a href="/docs/ar/weighted-ranker.md#Mechanism-of-Weighted-Ranker">Mechanism of Weighted Ranker</a>.</p></td>
      <td><p><code translate="no">True</code></p></td>
    </tr>
 </table>
-<h3 id="Apply-to-hybrid-search" class="common-anchor-header">التطبيق على البحث الهجين<button data-href="#Apply-to-hybrid-search" class="anchor-icon" translate="no">
+<h3 id="Apply-to-hybrid-search" class="common-anchor-header">Apply to hybrid search<button data-href="#Apply-to-hybrid-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -438,16 +439,16 @@ rerank-&gt;<span class="hljs-built_in">AddParam</span>(<span class="hljs-string"
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>تم تصميم «الترتيب المرجح» خصيصًا لعمليات البحث الهجينة التي تجمع بين حقول متجهة متعددة. عند إجراء البحث الهجين، يجب تحديد الأوزان لكل مسار بحث:</p>
+    </button></h3><p>Weighted Ranker is designed specifically for hybrid search operations that combine multiple vector fields. When performing hybrid search, you must specify the weights for each search path:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, AnnSearchRequest
 
@@ -706,4 +707,4 @@ curl --request POST \
     \&quot;outputFields\&quot;: [\&quot;product_name\&quot;, \&quot;price\&quot;, \&quot;category\&quot;]
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>لمزيد من المعلومات حول البحث الهجين، راجع <a href="/docs/ar/multi-vector-search.md">البحث الهجين متعدد المتجهات</a>.</p>
+<p>For more information on hybrid search, refer to <a href="/docs/ar/multi-vector-search.md">Multi-Vector Hybrid Search</a>.</p>

@@ -2,8 +2,8 @@
 id: set-collection-ttl.md
 title: Set Collection TTL
 summary: >-
-  Configurez des règles de durée de vie (TTL) au niveau des collections ou des
-  entités afin que les données obsolètes soient automatiquement supprimées.
+  Configure collection-level or entity-level TTL policies to expire stale data
+  automatically.
 ---
 <h1 id="Set-Collection-TTL" class="common-anchor-header">Set Collection TTL<button data-href="#Set-Collection-TTL" class="anchor-icon" translate="no">
       <svg translate="no"

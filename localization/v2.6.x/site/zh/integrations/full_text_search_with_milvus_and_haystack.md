@@ -1,7 +1,9 @@
 ---
 id: full_text_search_with_milvus_and_haystack.md
-summary: 本教程演示如何使用 HayStack 和 Milvus 在应用程序中实现全文和混合搜索。
-title: 使用 Milvus 和 HayStack 进行全文检索
+summary: >-
+  This tutorial demonstrates how to implement full-text and hybrid search in
+  your application using Haystack and Milvus.
+title: Full-text search with Milvus and Haystack
 ---
 <p><a href="https://colab.research.google.com/github/milvus-io/bootcamp/blob/master/integration/haystack/full_text_search_with_milvus_and_haystack.ipynb" target="_parent">
 <img translate="no" src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
@@ -9,7 +11,7 @@ title: 使用 Milvus 和 HayStack 进行全文检索
 <a href="https://github.com/milvus-io/bootcamp/blob/master/integration/haystack/full_text_search_with_milvus_and_haystack.ipynb" target="_blank">
 <img translate="no" src="https://img.shields.io/badge/View%20on%20GitHub-555555?style=flat&logo=github&logoColor=white" alt="GitHub Repository"/>
 </a></p>
-<h1 id="Full-text-search-with-Milvus-and-Haystack" class="common-anchor-header">使用 Milvus 和 HayStack 进行全文检索<button data-href="#Full-text-search-with-Milvus-and-Haystack" class="anchor-icon" translate="no">
+<h1 id="Full-text-search-with-Milvus-and-Haystack" class="common-anchor-header">Full-text search with Milvus and Haystack<button data-href="#Full-text-search-with-Milvus-and-Haystack" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -24,18 +26,18 @@ title: 使用 Milvus 和 HayStack 进行全文检索
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p><a href="https://milvus.io/docs/full-text-search.md#Full-Text-Search">全文搜索</a>是一种通过匹配文本中特定关键词或短语来检索文档的传统方法。它根据术语频率等因素计算出的相关性分数对结果进行排序。语义搜索更善于理解含义和上下文，而全文搜索则擅长精确的关键词匹配，因此是语义搜索的有益补充。BM25 算法被广泛用于全文搜索的排序，并在检索增强生成（RAG）中发挥着关键作用。</p>
-<p><a href="https://milvus.io/blog/introduce-milvus-2-5-full-text-search-powerful-metadata-filtering-and-more.md">Milvus 2.5</a>引入了使用 BM25 的本地全文搜索功能。这种方法将文本转换为代表 BM25 分数的稀疏向量。您只需输入原始文本，Milvus 就会自动生成并存储稀疏向量，无需手动生成稀疏嵌入。</p>
-<p><a href="https://haystack.deepset.ai/">HayStack</a>现在支持 Milvus 的这一功能，从而可以轻松地将全文搜索添加到 RAG 应用程序中。您可以将全文搜索与密集向量语义搜索结合起来，采用混合方法，从语义理解和关键词匹配精度中获益。这种组合提高了搜索的准确性，为用户提供了更好的搜索结果。</p>
-<p>本教程演示了如何使用 HayStack 和 Milvus 在应用程序中实现全文和混合搜索。</p>
-<p>要使用 Milvus 向量存储，请指定你的 Milvus 服务器<code translate="no">URI</code> （也可选择使用<code translate="no">TOKEN</code> ）。要启动 Milvus 服务器，可以按照<a href="https://milvus.io/docs/install-overview.md">Milvus 安装指南</a>设置 Milvus 服务器，或者直接免费<a href="https://docs.zilliz.com/docs/register-with-zilliz-cloud">试用 Zilliz Cloud</a>（全面管理 Milvus）。</p>
+    </button></h1><p><a href="https://milvus.io/docs/full-text-search.md#Full-Text-Search">Full-text search</a> is a traditional method for retrieving documents by matching specific keywords or phrases in the text. It ranks results based on relevance scores calculated from factors like term frequency. While semantic search is better at understanding meaning and context, full-text search excels at precise keyword matching, making it a useful complement to semantic search. The BM25 algorithm is widely used for ranking in full-text search and plays a key role in Retrieval-Augmented Generation (RAG).</p>
+<p><a href="https://milvus.io/blog/introduce-milvus-2-5-full-text-search-powerful-metadata-filtering-and-more.md">Milvus 2.5</a> introduces native full-text search capabilities using BM25. This approach converts text into sparse vectors that represent BM25 scores. You can simply input raw text and Milvus will automatically generate and store the sparse vectors, with no manual sparse embedding generation required.</p>
+<p><a href="https://haystack.deepset.ai/">Haystack</a> now supports this Milvus feature, making it easy to add full-text search to RAG applications. You can combine full-text search with dense vector semantic search for a hybrid approach that benefits from both semantic understanding and keyword matching precision. This combination improves search accuracy and delivers better results to users.</p>
+<p>This tutorial demonstrates how to implement full-text and hybrid search in your application using Haystack and Milvus.</p>
+<p>To use the Milvus vector store, specify your Milvus server <code translate="no">URI</code> (and optionally with the <code translate="no">TOKEN</code>). To start a Milvus server, you can set up a Milvus server by following the <a href="https://milvus.io/docs/install-overview.md">Milvus installation guide</a> or simply <a href="https://docs.zilliz.com/docs/register-with-zilliz-cloud">trying Zilliz Cloud</a>(fully managed Milvus) for free.</p>
 <div class="alert note">
 <ul>
-<li>目前，Milvus Standalone、Milvus Distributed 和 Zilliz Cloud 均提供全文搜索功能，但 Milvus Lite 尚不支持该功能（该功能计划在未来实施）。如需了解更多信息，请访问 support@zilliz.com。</li>
-<li>在继续本教程之前，请确保您已基本了解<a href="https://milvus.io/docs/full-text-search.md#Full-Text-Search">全文检索</a>和 HayStack Milvus 集成的<a href="https://github.com/milvus-io/milvus-haystack/blob/main/README.md">基本用法</a>。</li>
+<li>Full-text search is currently available in Milvus Standalone, Milvus Distributed, and Zilliz Cloud, though not yet supported in Milvus Lite (which has this feature planned for future implementation). Reach out support@zilliz.com for more information.</li>
+<li>Before proceeding with this tutorial, ensure you have a basic understanding of <a href="https://milvus.io/docs/full-text-search.md#Full-Text-Search">full-text search</a> and the <a href="https://github.com/milvus-io/milvus-haystack/blob/main/README.md">basic usage</a> of Haystack Milvus integration.</li>
 </ul>
 </div>
-<h2 id="Prerequisites" class="common-anchor-header">先决条件<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -50,18 +52,33 @@ title: 使用 Milvus 和 HayStack 进行全文检索
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>在运行本笔记本之前，请确保已安装以下依赖项：</p>
+    </button></h2><p>Before running this notebook, make sure you have the following dependencies installed:</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">pip install --upgrade --quiet pymilvus milvus-haystack</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>如果使用的是 Google Colab，要启用刚刚安装的依赖项，可能需要<strong>重启运行时</strong>（点击屏幕上方的 "运行时 "菜单，从下拉菜单中选择 "重启会话"）。</p>
+<p>If you are using Google Colab, to enable dependencies just installed, you may need to <strong>restart the runtime</strong> (click on the “Runtime” menu at the top of the screen, and select “Restart session” from the dropdown menu).</p>
 </div>
-<p>我们将使用 OpenAI 的模型。您应将<a href="https://platform.openai.com/docs/quickstart">api key</a> <code translate="no">OPENAI_API_KEY</code> 作为环境变量。</p>
+<p>We will use the models from OpenAI. You should prepare the <a href="https://platform.openai.com/docs/quickstart">api key</a> <code translate="no">OPENAI_API_KEY</code> as an environment variable.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> os
 
 os.environ[<span class="hljs-string">&quot;OPENAI_API_KEY&quot;</span>] = <span class="hljs-string">&quot;sk-***********&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Prepare-the-data" class="common-anchor-header">准备数据</h3><p>在本笔记本中导入必要的软件包。然后准备一些示例文档。</p>
+<h3 id="Prepare-the-data" class="common-anchor-header">Prepare the data<button data-href="#Prepare-the-data" class="anchor-icon" translate="no">
+      <svg translate="no"
+        aria-hidden="true"
+        focusable="false"
+        height="20"
+        version="1.1"
+        viewBox="0 0 16 16"
+        width="16"
+      >
+        <path
+          fill="#0092E4"
+          fill-rule="evenodd"
+          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+        ></path>
+      </svg>
+    </button></h3><p>Import the necessary packages in this notebook. Then prepare some sample documents.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> haystack <span class="hljs-keyword">import</span> Pipeline
 <span class="hljs-keyword">from</span> haystack.components.embedders <span class="hljs-keyword">import</span> OpenAIDocumentEmbedder, OpenAITextEmbedder
 <span class="hljs-keyword">from</span> haystack.components.writers <span class="hljs-keyword">import</span> DocumentWriter
@@ -83,8 +100,8 @@ documents = [
     Document(content=<span class="hljs-string">&quot;Charlie likes white dogs&quot;</span>, meta={<span class="hljs-string">&quot;category&quot;</span>: <span class="hljs-string">&quot;pets&quot;</span>}),
 ]
 <button class="copy-code-btn"></button></code></pre>
-<p>将全文检索集成到 RAG 系统中，可以在语义搜索和基于关键字的精确、可预测检索之间取得平衡。您也可以选择只使用全文检索，但建议将全文检索与语义搜索结合起来，以获得更好的搜索结果。在此，我们将展示单独的全文搜索和混合搜索。</p>
-<h2 id="BM25-search-without-embedding" class="common-anchor-header">不使用 Embeddings 的 BM25 搜索<button data-href="#BM25-search-without-embedding" class="anchor-icon" translate="no">
+<p>Integrating full-text search into a RAG system balances semantic search with precise and predictable keyword-based retrieval. You can also choose to only use full text search though it’s recommended to combine full text search with semantic search for better search results. Here for demonstration purpose we will show full text search alone and hybrid search.</p>
+<h2 id="BM25-search-without-embedding" class="common-anchor-header">BM25 search without embedding<button data-href="#BM25-search-without-embedding" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -99,7 +116,22 @@ documents = [
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Create-the-indexing-Pipeline" class="common-anchor-header">创建索引管道</h3><p>对于全文搜索，Milvus MilvusDocumentStore 接受一个<code translate="no">builtin_function</code> 参数。通过这个参数，你可以传入<code translate="no">BM25BuiltInFunction</code> 的一个实例，它在 Milvus 服务器端实现了 BM25 算法。将<code translate="no">builtin_function</code> 指定为 BM25 函数实例。例如</p>
+    </button></h2><h3 id="Create-the-indexing-Pipeline" class="common-anchor-header">Create the indexing Pipeline<button data-href="#Create-the-indexing-Pipeline" class="anchor-icon" translate="no">
+      <svg translate="no"
+        aria-hidden="true"
+        focusable="false"
+        height="20"
+        version="1.1"
+        viewBox="0 0 16 16"
+        width="16"
+      >
+        <path
+          fill="#0092E4"
+          fill-rule="evenodd"
+          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+        ></path>
+      </svg>
+    </button></h3><p>For full-text search Milvus MilvusDocumentStore accepts a <code translate="no">builtin_function</code> parameter. Through this parameter, you can pass in an instance of the <code translate="no">BM25BuiltInFunction</code>, which implements the BM25 algorithm on the Milvus server side. Set the <code translate="no">builtin_function</code> specified as the BM25 function instance. For example:</p>
 <pre><code translate="no" class="language-python">connection_args = {<span class="hljs-string">&quot;uri&quot;</span>: <span class="hljs-string">&quot;http://localhost:19530&quot;</span>}
 <span class="hljs-comment"># connection_args = {&quot;uri&quot;: YOUR_ZILLIZ_CLOUD_URI, &quot;token&quot;: Secret.from_env_var(&quot;ZILLIZ_CLOUD_API_KEY&quot;)}</span>
 
@@ -117,12 +149,12 @@ document_store = MilvusDocumentStore(
     drop_old=<span class="hljs-literal">True</span>,  <span class="hljs-comment"># Drop the old collection if it exists and recreate it.</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>对于 connection_args：</p>
+<p>For the connection_args:</p>
 <ul>
-<li>你可以在<a href="https://milvus.io/docs/quickstart.md">docker 或 kubernetes</a> 上设置性能更强的 Milvus 服务器。在此设置中，请使用服务器地址，如<code translate="no">http://localhost:19530</code> ，作为您的<code translate="no">uri</code> 。</li>
-<li>如果你想使用<a href="https://zilliz.com/cloud">Zilliz Cloud</a>（Milvus 的全托管云服务），请调整<code translate="no">uri</code> 和<code translate="no">token</code> ，它们与 Zilliz Cloud 中的<a href="https://docs.zilliz.com/docs/on-zilliz-cloud-console#free-cluster-details">公共端点和 Api 密钥</a>相对应。</li>
+<li>You can set up a more performant Milvus server on <a href="https://milvus.io/docs/quickstart.md">docker or kubernetes</a>. In this setup, please use the server address, e.g.<code translate="no">http://localhost:19530</code>, as your <code translate="no">uri</code>.</li>
+<li>If you want to use <a href="https://zilliz.com/cloud">Zilliz Cloud</a>, the fully managed cloud service for Milvus, adjust the <code translate="no">uri</code> and <code translate="no">token</code>, which correspond to the <a href="https://docs.zilliz.com/docs/on-zilliz-cloud-console#free-cluster-details">Public Endpoint and Api key</a> in Zilliz Cloud.</li>
 </ul>
-<p>建立索引管道，将文档写入 Milvus 文档存储。</p>
+<p>Build an indexing pipeline to write documents into the Milvus document store.</p>
 <pre><code translate="no" class="language-python">writer = DocumentWriter(document_store=document_store, policy=DuplicatePolicy.NONE)
 
 indexing_pipeline = Pipeline()
@@ -131,21 +163,7 @@ indexing_pipeline.run({<span class="hljs-string">&quot;writer&quot;</span>: {<sp
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no">{'writer': {'documents_written': 3}}
 </code></pre>
-<h3 id="Create-the-retrieval-pipeline" class="common-anchor-header">创建检索管道</h3><p>创建一个检索管道，使用<code translate="no">MilvusSparseEmbeddingRetriever</code> 从 Milvus 文档存储中检索文档，该管道是<code translate="no">document_store</code> 的一个包装器。</p>
-<pre><code translate="no" class="language-python">retrieval_pipeline = Pipeline()
-retrieval_pipeline.add_component(
-    <span class="hljs-string">&quot;retriever&quot;</span>, MilvusSparseEmbeddingRetriever(document_store=document_store)
-)
-
-question = <span class="hljs-string">&quot;Who likes swimming?&quot;</span>
-
-retrieval_results = retrieval_pipeline.run({<span class="hljs-string">&quot;retriever&quot;</span>: {<span class="hljs-string">&quot;query_text&quot;</span>: question}})
-
-retrieval_results[<span class="hljs-string">&quot;retriever&quot;</span>][<span class="hljs-string">&quot;documents&quot;</span>][<span class="hljs-number">0</span>]
-<button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no">Document(id=bd334348dd2087c785e99b5a0009f33d9b8b8198736f6415df5d92602d81fd3e, content: 'Bob likes swimming', meta: {'category': 'sport'}, score: 1.2039074897766113)
-</code></pre>
-<h2 id="Hybrid-Search-with-semantic-search-and-full-text-search" class="common-anchor-header">使用语义搜索和全文搜索的混合搜索<button data-href="#Hybrid-Search-with-semantic-search-and-full-text-search" class="anchor-icon" translate="no">
+<h3 id="Create-the-retrieval-pipeline" class="common-anchor-header">Create the retrieval pipeline<button data-href="#Create-the-retrieval-pipeline" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -160,7 +178,51 @@ retrieval_results[<span class="hljs-string">&quot;retriever&quot;</span>][<span 
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Create-the-indexing-Pipeline" class="common-anchor-header">创建索引管道</h3><p>在混合搜索中，我们使用 BM25 函数来执行全文搜索，并指定密集向量场<code translate="no">vector</code> ，来执行语义搜索。</p>
+    </button></h3><p>Create a retrieval pipeline that retrieves documents from the Milvus document store using <code translate="no">MilvusSparseEmbeddingRetriever</code>, which is a wrapper around <code translate="no">document_store</code>.</p>
+<pre><code translate="no" class="language-python">retrieval_pipeline = Pipeline()
+retrieval_pipeline.add_component(
+    <span class="hljs-string">&quot;retriever&quot;</span>, MilvusSparseEmbeddingRetriever(document_store=document_store)
+)
+
+question = <span class="hljs-string">&quot;Who likes swimming?&quot;</span>
+
+retrieval_results = retrieval_pipeline.run({<span class="hljs-string">&quot;retriever&quot;</span>: {<span class="hljs-string">&quot;query_text&quot;</span>: question}})
+
+retrieval_results[<span class="hljs-string">&quot;retriever&quot;</span>][<span class="hljs-string">&quot;documents&quot;</span>][<span class="hljs-number">0</span>]
+<button class="copy-code-btn"></button></code></pre>
+<pre><code translate="no">Document(id=bd334348dd2087c785e99b5a0009f33d9b8b8198736f6415df5d92602d81fd3e, content: 'Bob likes swimming', meta: {'category': 'sport'}, score: 1.2039074897766113)
+</code></pre>
+<h2 id="Hybrid-Search-with-semantic-search-and-full-text-search" class="common-anchor-header">Hybrid Search with semantic search and full-text search<button data-href="#Hybrid-Search-with-semantic-search-and-full-text-search" class="anchor-icon" translate="no">
+      <svg translate="no"
+        aria-hidden="true"
+        focusable="false"
+        height="20"
+        version="1.1"
+        viewBox="0 0 16 16"
+        width="16"
+      >
+        <path
+          fill="#0092E4"
+          fill-rule="evenodd"
+          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+        ></path>
+      </svg>
+    </button></h2><h3 id="Create-the-indexing-Pipeline" class="common-anchor-header">Create the indexing Pipeline<button data-href="#Create-the-indexing-Pipeline" class="anchor-icon" translate="no">
+      <svg translate="no"
+        aria-hidden="true"
+        focusable="false"
+        height="20"
+        version="1.1"
+        viewBox="0 0 16 16"
+        width="16"
+      >
+        <path
+          fill="#0092E4"
+          fill-rule="evenodd"
+          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+        ></path>
+      </svg>
+    </button></h3><p>In the hybrid search, we use the BM25 function to perform full-text search, and specify the dense vector field <code translate="no">vector</code>, to perform semantic search.</p>
 <pre><code translate="no" class="language-python">document_store = MilvusDocumentStore(
     connection_args=connection_args,
     vector_field=<span class="hljs-string">&quot;vector&quot;</span>,  <span class="hljs-comment"># The dense vector field.</span>
@@ -176,7 +238,7 @@ retrieval_results[<span class="hljs-string">&quot;retriever&quot;</span>][<span 
     drop_old=<span class="hljs-literal">True</span>,  <span class="hljs-comment"># Drop the old collection and recreate it.</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>创建索引管道，将文档转换为 Embeddings。然后将文档写入 Milvus 文档存储区。</p>
+<p>Create an indexing pipeline that converts the documents into embeddings. The documents are then written to the Milvus document store.</p>
 <pre><code translate="no" class="language-python">writer = DocumentWriter(document_store=document_store, policy=DuplicatePolicy.NONE)
 
 indexing_pipeline = Pipeline()
@@ -192,7 +254,22 @@ indexing_pipeline.run({<span class="hljs-string">&quot;dense_doc_embedder&quot;<
 
 Number of documents: 3
 </code></pre>
-<h3 id="Create-the-retrieval-pipeline" class="common-anchor-header">创建检索管道</h3><p>创建一个检索管道，使用<code translate="no">MilvusHybridRetriever</code> 从 Milvus 文档存储区检索文档，其中包含<code translate="no">document_store</code> 并接收有关混合搜索的参数。</p>
+<h3 id="Create-the-retrieval-pipeline" class="common-anchor-header">Create the retrieval pipeline<button data-href="#Create-the-retrieval-pipeline" class="anchor-icon" translate="no">
+      <svg translate="no"
+        aria-hidden="true"
+        focusable="false"
+        height="20"
+        version="1.1"
+        viewBox="0 0 16 16"
+        width="16"
+      >
+        <path
+          fill="#0092E4"
+          fill-rule="evenodd"
+          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+        ></path>
+      </svg>
+    </button></h3><p>Create a retrieval pipeline that retrieves documents from the Milvus document store using <code translate="no">MilvusHybridRetriever</code>, which contains the <code translate="no">document_store</code> and receives parameters about hybrid search.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># from pymilvus import WeightedRanker</span>
 retrieval_pipeline = Pipeline()
 retrieval_pipeline.add_component(<span class="hljs-string">&quot;dense_text_embedder&quot;</span>, OpenAITextEmbedder())
@@ -214,8 +291,8 @@ retrieval_pipeline.connect(<span class="hljs-string">&quot;dense_text_embedder.e
 🛤️ Connections
   - dense_text_embedder.embedding -&gt; retriever.query_embedding (List[float])
 </code></pre>
-<p>在使用<code translate="no">MilvusHybridRetriever</code> 执行混合搜索时，我们可以选择性地设置 topK 和 Reranker 参数。它会自动处理向量嵌入和内置函数，最后使用 Reranker 来完善结果。搜索过程的底层实现细节对用户是隐藏的。</p>
-<p>有关混合搜索的更多信息，请参阅<a href="https://milvus.io/docs/multi-vector-search.md#Hybrid-Search">混合搜索介绍</a>。</p>
+<p>When performing hybrid search using <code translate="no">MilvusHybridRetriever</code>, we can optionally set the topK and reranker parameters. It will automatically handle the vector embeddings and built-in functions and finally use a reranker to refine the results. The underlying implementation details of the searching process are hidden from the user.</p>
+<p>For more information about hybrid search, you can refer to the <a href="https://milvus.io/docs/multi-vector-search.md#Hybrid-Search">Hybrid Search introduction</a>.</p>
 <pre><code translate="no" class="language-python">question = <span class="hljs-string">&quot;Who likes swimming?&quot;</span>
 
 retrieval_results = retrieval_pipeline.run(
@@ -229,7 +306,7 @@ retrieval_results[<span class="hljs-string">&quot;retriever&quot;</span>][<span 
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no">Document(id=bd334348dd2087c785e99b5a0009f33d9b8b8198736f6415df5d92602d81fd3e, content: 'Bob likes swimming', meta: {'category': 'sport'}, score: 0.032786883413791656, embedding: vector of size 1536)
 </code></pre>
-<h2 id="Customize-analyzer" class="common-anchor-header">自定义分析器<button data-href="#Customize-analyzer" class="anchor-icon" translate="no">
+<h2 id="Customize-analyzer" class="common-anchor-header">Customize analyzer<button data-href="#Customize-analyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -244,9 +321,9 @@ retrieval_results[<span class="hljs-string">&quot;retriever&quot;</span>][<span 
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>分析器是全文搜索中必不可少的工具，它能将句子分解为词块，并执行词性分析，如词干分析和停止词删除。分析器通常针对特定语言。您可以参考<a href="https://milvus.io/docs/analyzer-overview.md#Analyzer-Overview">本指南</a>，了解有关 Milvus 分析器的更多信息。</p>
-<p>Milvus 支持两种类型的分析器：<strong>内置分析器</strong>和<strong>自定义分析器</strong>。默认情况下，<code translate="no">BM25BuiltInFunction</code> 将使用<a href="https://milvus.io/docs/standard-analyzer.md">标准的内置分析器</a>，这是最基本的分析器，会用标点符号标记文本。</p>
-<p>如果想使用其他分析器或自定义分析器，可以在<code translate="no">BM25BuiltInFunction</code> 初始化时传递<code translate="no">analyzer_params</code> 参数。</p>
+    </button></h2><p>Analyzers are essential in full-text search by breaking the sentence into tokens and performing lexical analysis like stemming and stop word removal. Analyzers are usually language-specific. You can refer to <a href="https://milvus.io/docs/analyzer-overview.md#Analyzer-Overview">this guide</a> to learn more about analyzers in Milvus.</p>
+<p>Milvus supports two types of analyzers: <strong>Built-in Analyzers</strong> and <strong>Custom Analyzers</strong>. By default, the <code translate="no">BM25BuiltInFunction</code> will use the <a href="https://milvus.io/docs/standard-analyzer.md">standard built-in analyzer</a>, which is the most basic analyzer that tokenizes the text with punctuation.</p>
+<p>If you want to use a different analyzer or customize the analyzer, you can pass in the <code translate="no">analyzer_params</code> parameter in the <code translate="no">BM25BuiltInFunction</code> initialization.</p>
 <pre><code translate="no" class="language-python">analyzer_params_custom = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>,
     <span class="hljs-string">&quot;filter&quot;</span>: [
@@ -291,13 +368,13 @@ indexing_pipeline.run({<span class="hljs-string">&quot;dense_doc_embedder&quot;<
    'usage': {'prompt_tokens': 11, 'total_tokens': 11}}},
  'writer': {'documents_written': 3}}
 </code></pre>
-<p>我们可以看看 Milvus Collections 的 Schema，确保定制的分析器设置正确。</p>
+<p>We can take a look at the schema of the Milvus collection and make sure the customized analyzer is set up correctly.</p>
 <pre><code translate="no" class="language-python">document_store.col.schema
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no">{'auto_id': False, 'description': '', 'fields': [{'name': 'text', 'description': '', 'type': &lt;DataType.VARCHAR: 21&gt;, 'params': {'max_length': 65535, 'enable_match': True, 'enable_analyzer': True, 'analyzer_params': {'tokenizer': 'standard', 'filter': ['lowercase', {'type': 'length', 'max': 40}, {'type': 'stop', 'stop_words': ['of', 'to']}]}}}, {'name': 'id', 'description': '', 'type': &lt;DataType.VARCHAR: 21&gt;, 'params': {'max_length': 65535}, 'is_primary': True, 'auto_id': False}, {'name': 'vector', 'description': '', 'type': &lt;DataType.FLOAT_VECTOR: 101&gt;, 'params': {'dim': 1536}}, {'name': 'sparse_vector', 'description': '', 'type': &lt;DataType.SPARSE_FLOAT_VECTOR: 104&gt;, 'is_function_output': True}], 'enable_dynamic_field': True, 'functions': [{'name': 'bm25_function_7b6e15a4', 'description': '', 'type': &lt;FunctionType.BM25: 1&gt;, 'input_field_names': ['text'], 'output_field_names': ['sparse_vector'], 'params': {}}]}
 </code></pre>
-<p>更多概念详情，如<code translate="no">analyzer</code>,<code translate="no">tokenizer</code>,<code translate="no">filter</code>,<code translate="no">enable_match</code>,<code translate="no">analyzer_params</code> ，请参阅<a href="https://milvus.io/docs/analyzer-overview.md">分析器文档</a>。</p>
-<h2 id="Using-Hybrid-Search-in-RAG-pipeline" class="common-anchor-header">在 RAG 管道中使用混合搜索<button data-href="#Using-Hybrid-Search-in-RAG-pipeline" class="anchor-icon" translate="no">
+<p>For more concept details, e.g., <code translate="no">analyzer</code>, <code translate="no">tokenizer</code>, <code translate="no">filter</code>, <code translate="no">enable_match</code>, <code translate="no">analyzer_params</code>, please refer to the <a href="https://milvus.io/docs/analyzer-overview.md">analyzer documentation</a>.</p>
+<h2 id="Using-Hybrid-Search-in-RAG-pipeline" class="common-anchor-header">Using Hybrid Search in RAG pipeline<button data-href="#Using-Hybrid-Search-in-RAG-pipeline" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -312,16 +389,16 @@ indexing_pipeline.run({<span class="hljs-string">&quot;dense_doc_embedder&quot;<
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>我们已经学习了如何在 HayStack 和 Milvus 中使用基本的 BM25 内置函数，并准备了一个加载的<code translate="no">document_store</code> 。下面我们来介绍使用混合搜索的优化 RAG 实现。</p>
+    </button></h2><p>We have learned how to use the basic BM25 build-in function in Haystack and Milvus and prepared a loaded <code translate="no">document_store</code>. Let’s introduce an optimized RAG implementation with hybrid search.</p>
 <p>
   <span class="img-wrapper">
     <img translate="no" src="https://github.com/milvus-io/bootcamp/blob/master/pics/advanced_rag/hybrid_and_rerank.png?raw=1" alt="" class="doc-image" id="" />
     <span></span>
   </span>
 </p>
-<p>此图显示了混合检索与 Rerankers 流程，结合了用于关键词匹配的 BM25 和用于语义检索的密集向量搜索。来自两种方法的结果会被合并、Rerankers 并传递给 LLM 以生成最终答案。</p>
-<p>混合搜索兼顾了精确性和语义理解，提高了各种查询的准确性和稳健性。它通过 BM25 全文检索和向量搜索检索候选内容，同时确保语义、上下文感知和精确检索。</p>
-<p>让我们尝试使用混合搜索优化 RAG 实现。</p>
+<p>This diagram shows the Hybrid Retrieve & Reranking process, combining BM25 for keyword matching and dense vector search for semantic retrieval. Results from both methods are merged, reranked, and passed to an LLM to generate the final answer.</p>
+<p>Hybrid search balances precision and semantic understanding, improving accuracy and robustness for diverse queries. It retrieves candidates with BM25 full-text search and vector search, ensuring both semantic, context-aware, and accurate retrieval.</p>
+<p>Let’s try an optimized RAG implementation with hybrid search.</p>
 <pre><code translate="no" class="language-python">prompt_template = <span class="hljs-string">&quot;&quot;&quot;Answer the following query based on the provided context. If the context does
                      not include an answer, reply with &#x27;I don&#x27;t know&#x27;.\n
                      Query: {{query}}
@@ -360,4 +437,4 @@ results = rag_pipeline.run(
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no">RAG answer: Bob likes swimming.
 </code></pre>
-<p>有关如何使用 Milvus-hayStack 的更多信息，请参阅<a href="https://github.com/milvus-io/milvus-haystack">Milvus-hayStack 官方资源库</a>。</p>
+<p>For more information about how to use milvus-haystack, please refer to the <a href="https://github.com/milvus-io/milvus-haystack">milvus-haystack offical repository</a>.</p>

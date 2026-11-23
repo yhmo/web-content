@@ -1,12 +1,16 @@
 ---
 id: binary-vector.md
-title: 二進位向量
+title: Binary Vector
 summary: >-
-  二進位向量是一種特殊的数据表示形式，它將傳統的高維浮點向量轉換為僅包含 0 和 1
-  的二進位向量。這種轉換不僅能壓縮向量的大小，還能降低儲存與運算成本，同時保留語義資訊。
-  當非關鍵特徵的精度並非必要時，二進位向量能有效維持原始浮點向量的大部分完整性與實用性。
+  Binary vectors are a special form of data representation that convert
+  traditional high-dimensional floating-point vectors into binary vectors
+  containing only 0s and 1s. This transformation not only compresses the size of
+  the vector but also reduces storage and computational costs while retaining
+  semantic information. When precision for non-critical features is not
+  essential, binary vectors can effectively maintain most of the integrity and
+  utility of the original floating-point vectors.
 ---
-<h1 id="Binary-Vector" class="common-anchor-header">二進位向量<button data-href="#Binary-Vector" class="anchor-icon" translate="no">
+<h1 id="Binary-Vector" class="common-anchor-header">Binary Vector<button data-href="#Binary-Vector" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -21,9 +25,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>二進位向量是一種特殊的数据表示形式，可將傳統的高維浮點向量轉換為僅包含 0 和 1 的二進位向量。此轉換不僅能壓縮向量的大小，還能降低儲存與運算成本，同時保留語義資訊。 當非關鍵特徵的精度並非必要時，二進位向量能有效維持原始浮點向量的大部分完整性與實用性。</p>
-<p>二進位向量具有廣泛的應用範圍，特別是在運算效率與儲存優化至關重要的情境中。在搜尋引擎或推薦系統等大型人工智慧系統中，對海量資料進行即時處理是關鍵所在。透過縮小向量大小，二進位向量有助於降低延遲與運算成本，同時不會顯著犧牲準確性。 此外，二進位向量在資源受限的環境（例如記憶體和處理能力有限的行動裝置及嵌入式系統）中也十分實用。透過使用二進位向量，即使在這些受限的環境中，也能實現複雜的人工智慧功能並維持高效能。</p>
-<h2 id="Overview" class="common-anchor-header">概述<button data-href="#Overview" class="anchor-icon" translate="no">
+    </button></h1><p>Binary vectors are a special form of data representation that convert traditional high-dimensional floating-point vectors into binary vectors containing only 0s and 1s. This transformation not only compresses the size of the vector but also reduces storage and computational costs while retaining semantic information. When precision for non-critical features is not essential, binary vectors can effectively maintain most of the integrity and utility of the original floating-point vectors.</p>
+<p>Binary vectors have a wide range of applications, particularly in situations where computational efficiency and storage optimization are crucial. In large-scale AI systems, such as search engines or recommendation systems, real-time processing of massive amounts of data is key. By reducing the size of the vectors, binary vectors help lower latency and computational costs without significantly sacrificing accuracy. Additionally, binary vectors are useful in resource-constrained environments, such as mobile devices and embedded systems, where memory and processing power are limited. Through the use of binary vectors, complex AI functions can be implemented in these restricted settings while maintaining high performance.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -38,33 +42,33 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>二進位向量是一種將複雜物件（如圖像、文字或音訊）編碼為固定長度二進位值的方法。在 Milvus 中，二進位向量通常以位元陣列或位元組陣列表示。例如，一個 8 維的二進位向量可表示為<code translate="no">[1, 0, 1, 1, 0, 0, 1, 0]</code> 。</p>
-<p>下圖展示了二進位向量如何表示關鍵字在文字內容中的出現情況。 在此範例中，使用一個 10 維二進位向量來表示兩段不同的文字（<strong>文字 1</strong> <strong>和文字 2</strong>），其中每個維度對應詞彙表中的一个單字：1 表示該單字出現在文字中，0 則表示未出現。</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/binary-vector.png" alt="Binary Vector" class="doc-image" id="binary-vector" /> 
-   <span>二進位向量</span>
-  
- </span></p>
-<p>二進位向量具有以下特徵：</p>
+    </button></h2><p>Binary vectors are a method of encoding complex objects (like images, text, or audio) into fixed-length binary values. In Milvus, binary vectors are typically represented as bit arrays or byte arrays. For example, an 8-dimensional binary vector can be represented as <code translate="no">[1, 0, 1, 1, 0, 0, 1, 0]</code>.</p>
+<p>The diagram below shows how binary vectors represent the presence of keywords in text content. In this example, a 10-dimensional binary vector is used to represent two different texts (<strong>Text 1</strong> and <strong>Text 2</strong>), where each dimension corresponds to a word in the vocabulary: 1 indicates the presence of the word in the text, while 0 indicates its absence.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/binary-vector.png" alt="Binary Vector" class="doc-image" id="binary-vector" />
+    <span>Binary Vector</span>
+  </span>
+</p>
+<p>Binary vectors have the following characteristics:</p>
 <ul>
-<li><p><strong>儲存效率高：</strong>每個維度僅需 1 位元，可大幅節省儲存空間。</p></li>
-<li><p><strong>快速運算：</strong>可透過異或（XOR）等位元運算，快速計算向量之間的相似度。</p></li>
-<li><p><strong>固定長度：</strong>無論原始文本長度為何，向量的長度均保持不變，使索引與檢索更為簡便。</p></li>
-<li><p><strong>簡單直觀：</strong>能直接反映關鍵字的出現與否，因此適用於某些專門的檢索任務。</p></li>
+<li><p><strong>Efficient Storage:</strong> Each dimension requires only 1 bit of storage, significantly reducing storage space.</p></li>
+<li><p><strong>Fast Computation:</strong> Similarity between vectors can be quickly calculated using bitwise operations like XOR.</p></li>
+<li><p><strong>Fixed Length:</strong> The length of the vector remains constant regardless of the original text length, making indexing and retrieval easier.</p></li>
+<li><p><strong>Simple and Intuitive:</strong> Directly reflects the presence of keywords, making it suitable for certain specialized retrieval tasks.</p></li>
 </ul>
-<p>二進位向量可透過多種方法生成。在文字處理中，可利用預先定義的詞彙表，根據單字的出現與否來設定對應的位元。在影像處理方面，感知雜湊演算法（如<a href="https://en.wikipedia.org/wiki/Perceptual_hashing">pHash</a>）可生成影像的二進位特徵。在機器學習應用中，可將模型輸出二進位化以獲得二進位向量表示。</p>
-<p>完成二進位向量化後，資料可儲存於 Milvus 中進行管理與向量檢索。下圖展示基本流程。</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/use-binary-vector.png" alt="Use Binary Vector" class="doc-image" id="use-binary-vector" /> 
-   <span>使用二進位向量</span>
-  
- </span></p>
+<p>Binary vectors can be generated through various methods. In text processing, predefined vocabularies can be used to set corresponding bits based on word presence. For image processing, perceptual hashing algorithms (like <a href="https://en.wikipedia.org/wiki/Perceptual_hashing">pHash</a>) can generate binary features of images. In machine learning applications, model outputs can be binarized to obtain binary vector representations.</p>
+<p>After binary vectorization, the data can be stored in Milvus for management and vector retrieval. The diagram below shows the basic process.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/use-binary-vector.png" alt="Use Binary Vector" class="doc-image" id="use-binary-vector" />
+    <span>Use Binary Vector</span>
+  </span>
+</p>
 <div class="alert note">
-<p>儘管二進位向量在特定情境下表現優異，但其表達能力存在局限，難以捕捉複雜的語義關係。因此，在實際應用中，二進位向量通常會與其他向量類型併用，以在效率與表達能力之間取得平衡。如需更多資訊，請參閱《<a href="/docs/zh-hant/dense-vector.md">密集向量</a>》與<a href="/docs/zh-hant/sparse_vector.md">《稀疏向量》</a>。</p>
+<p>Although binary vectors excel in specific scenarios, they have limitations in their expressive capability, making it difficult to capture complex semantic relationships. Therefore, in real-world scenarios, binary vectors are often used alongside other vector types to balance efficiency and expressiveness. For more information, refer to <a href="/docs/zh-hant/dense-vector.md">Dense Vector</a> and <a href="/docs/zh-hant/sparse_vector.md">Sparse Vector</a>.</p>
 </div>
-<h2 id="Use-binary-vectors" class="common-anchor-header">使用二進位向量<button data-href="#Use-binary-vectors" class="anchor-icon" translate="no">
+<h2 id="Use-binary-vectors" class="common-anchor-header">Use binary vectors<button data-href="#Use-binary-vectors" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -79,7 +83,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Add-vector-field" class="common-anchor-header">新增向量欄位<button data-href="#Add-vector-field" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Add-vector-field" class="common-anchor-header">Add vector field<button data-href="#Add-vector-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -94,20 +98,20 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>若要在 Milvus 中使用二進位向量，請在建立集合時，先定義一個用於儲存二進位向量的向量欄位。此流程包含：</p>
+    </button></h3><p>To use binary vectors in Milvus, first define a vector field for storing binary vectors when creating a collection. This process includes:</p>
 <ol>
-<li><p>將 `<code translate="no">datatype</code> ` 設定為受支援的二進位向量資料型別，即 `<code translate="no">BINARY_VECTOR</code>`。</p></li>
-<li><p>使用<code translate="no">dim</code> 參數指定向量的維度。請注意，<code translate="no">dim</code> 必須是 8 的倍數，因為二進位向量在插入時必須轉換為位元組陣列。 每 8 個布林值（0 或 1）將被封裝至 1 位元組中。例如，若<code translate="no">dim=128</code> ，則插入時需要一個 16 位元組的陣列。</p></li>
+<li><p>Setting <code translate="no">datatype</code> to the supported binary vector data type, i.e., <code translate="no">BINARY_VECTOR</code>.</p></li>
+<li><p>Specifying the vector’s dimensions using the <code translate="no">dim</code> parameter. Note that <code translate="no">dim</code> must be a multiple of 8 as binary vectors must be converted into a byte array when inserting. Every 8 boolean values (0 or 1) will be packed into 1 byte. For example, if <code translate="no">dim=128</code>, a 16-byte array is required for insertion.</p></li>
 </ol>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
 
@@ -291,8 +295,8 @@ schema-&gt;<span class="hljs-built_in">AddField</span>(milvus::<span class="hljs
     \&quot;enableDynamicField\&quot;: true
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>在此範例中，新增了一個名為<code translate="no">binary_vector</code> 的向量欄位，用於儲存二進位向量。此欄位的資料型別為<code translate="no">BINARY_VECTOR</code> ，維度為 128。</p>
-<h3 id="Set-index-params-for-vector-field" class="common-anchor-header">設定向量欄位的索引參數<button data-href="#Set-index-params-for-vector-field" class="anchor-icon" translate="no">
+<p>In this example, a vector field named <code translate="no">binary_vector</code> is added for storing binary vectors. The data type of this field is <code translate="no">BINARY_VECTOR</code>, with a dimension of 128.</p>
+<h3 id="Set-index-params-for-vector-field" class="common-anchor-header">Set index params for vector field<button data-href="#Set-index-params-for-vector-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -307,16 +311,16 @@ schema-&gt;<span class="hljs-built_in">AddField</span>(milvus::<span class="hljs
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>為加快搜尋速度，必須為二進位向量欄位建立索引。建立索引可顯著提升大規模向量資料的檢索效率。</p>
+    </button></h3><p>To speed up searches, an index must be created for the binary vector field. Indexing can significantly enhance the retrieval efficiency of large-scale vector data.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">index_params = client.prepare_index_params()
 
@@ -386,10 +390,10 @@ indexOption := milvusclient.NewCreateIndexOption(<span class="hljs-string">&quot
         }
     ]&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>在上方的範例中，針對<code translate="no">binary_vector</code> 欄位建立了一個名為<code translate="no">binary_vector_index</code> 的索引，並使用<code translate="no">AUTOINDEX</code> 索引類型。<code translate="no">metric_type</code> 設定為<code translate="no">HAMMING</code> ，表示採用漢明距離作為相似度測量標準。</p>
-<p>Milvus 提供多種索引類型，以提升向量搜尋體驗。AUTOINDEX 是一種專為降低向量搜尋學習門檻而設計的特殊索引類型。您可從眾多索引類型中進行選擇。詳細資訊請參閱《<a href="/docs/zh-hant/index-explained.md">索引說明</a>》。</p>
-<p>此外，Milvus 亦支援二進位向量的其他相似度度量。如需更多資訊，請參閱《<a href="/docs/zh-hant/metric.md">度量類型</a>》。</p>
-<h3 id="Create-collection" class="common-anchor-header">建立集合<button data-href="#Create-collection" class="anchor-icon" translate="no">
+<p>In the example above, an index named <code translate="no">binary_vector_index</code> is created for the <code translate="no">binary_vector</code> field, using the <code translate="no">AUTOINDEX</code> index type. The <code translate="no">metric_type</code> is set to <code translate="no">HAMMING</code>, indicating that Hamming distance is used for similarity measurement.</p>
+<p>Milvus provides various index types for a better vector search experience. AUTOINDEX is a special index type designed to smooth the learning curve of vector search. There are a lot of index types available for you to choose from. For details, refer to <a href="/docs/zh-hant/index-explained.md">Index Explained</a>.</p>
+<p>Additionally, Milvus supports other similarity metrics for binary vectors. For more information, refer to <a href="/docs/zh-hant/metric.md">Metric Types</a>.</p>
+<h3 id="Create-collection" class="common-anchor-header">Create collection<button data-href="#Create-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -404,16 +408,16 @@ indexOption := milvusclient.NewCreateIndexOption(<span class="hljs-string">&quot
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>完成二進位向量與索引設定後，請建立一個包含二進位向量的集合。以下範例使用 `<code translate="no">create_collection</code> ` 方法建立名為 `<code translate="no">my_collection</code>` 的集合。</p>
+    </button></h3><p>Once the binary vector and index settings are complete, create a collection that contains binary vectors. The example below uses the <code translate="no">create_collection</code> method to create a collection named <code translate="no">my_collection</code>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.create_collection(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,
@@ -502,7 +506,7 @@ client
     \&quot;indexParams\&quot;: <span class="hljs-variable">$indexParams</span>
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Insert-data" class="common-anchor-header">插入資料<button data-href="#Insert-data" class="anchor-icon" translate="no">
+<h3 id="Insert-data" class="common-anchor-header">Insert data<button data-href="#Insert-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -517,17 +521,17 @@ client
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>建立集合後，請使用 `<code translate="no">insert</code> ` 方法新增包含二進位向量的資料。請注意，二進位向量應以位元組陣列的形式提供，其中每個位元組代表 8 個布林值。</p>
-<p>例如，對於一個 128 維的二進位向量，需要一個 16 位元的字節陣列（因為 128 位元 ÷ 8 位元/字節 = 16 字節）。以下是插入資料的範例程式碼：</p>
+    </button></h3><p>After creating the collection, use the <code translate="no">insert</code> method to add data containing binary vectors. Note that binary vectors should be provided in the form of a byte array, where each byte represents 8 boolean values.</p>
+<p>For example, for a 128-dimensional binary vector, a 16-byte array is required (since 128 bits ÷ 8 bits/byte = 16 bytes). Below is an example code for inserting data:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">convert_bool_list_to_bytes</span>(<span class="hljs-params">bool_list</span>):
     <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(bool_list) % <span class="hljs-number">8</span> != <span class="hljs-number">0</span>:
@@ -688,7 +692,7 @@ curl --request POST \
     \&quot;collectionName\&quot;: \&quot;my_collection\&quot;
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Perform-similarity-search" class="common-anchor-header">執行相似度搜尋<button data-href="#Perform-similarity-search" class="anchor-icon" translate="no">
+<h3 id="Perform-similarity-search" class="common-anchor-header">Perform similarity search<button data-href="#Perform-similarity-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -703,17 +707,17 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>相似度搜尋是 Milvus 的核心功能之一，可讓您根據向量之間的距離，快速找出與查詢向量最相似的資料。若要使用二進位向量進行相似度搜尋，請先準備查詢向量與搜尋參數，然後呼叫 `<code translate="no">search</code> ` 方法。</p>
-<p>在搜尋操作過程中，二進位向量也必須以位元組陣列的形式提供。請確保查詢向量的維數與定義<code translate="no">dim</code> 時指定的維數相符，且每 8 個布林值會轉換為 1 位元組。</p>
+    </button></h3><p>Similarity search is one of the core features of Milvus, allowing you to quickly find data that is most similar to a query vector based on the distance between vectors. To perform a similarity search using binary vectors, prepare the query vector and search parameters, then call the <code translate="no">search</code> method.</p>
+<p>During search operations, binary vectors must also be provided in the form of a byte array. Ensure that the dimensionality of the query vector matches the dimension specified when defining <code translate="no">dim</code> and that every 8 boolean values are converted into 1 byte.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">search_params = {
     <span class="hljs-string">&quot;params&quot;</span>: {<span class="hljs-string">&quot;nprobe&quot;</span>: <span class="hljs-number">10</span>}
@@ -889,4 +893,4 @@ curl --request POST \
     \&quot;outputFields\&quot;: [\&quot;pk\&quot;]
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>有關相似度搜尋參數的更多資訊，請參閱《<a href="/docs/zh-hant/single-vector-search.md">基本人工神經網路搜尋</a>》。</p>
+<p>For more information on similarity search parameters, refer to <a href="/docs/zh-hant/single-vector-search.md">Basic ANN Search</a>.</p>

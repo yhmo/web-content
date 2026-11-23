@@ -2,10 +2,10 @@
 id: prerequisite-docker.md
 label: Standalone requirements
 related_key: Standalone
-summary: 了解安裝 Milvus Standalone 之前所需的準備工作。
-title: 安裝 Milvus 獨立執行版本的系統需求
+summary: Learn the necessary preparations before installing Milvus Standalone.
+title: Requirements for Installing Milvus Standalone
 ---
-<h1 id="Requirements-for-Installing-Milvus-Standalone" class="common-anchor-header">安裝 Milvus 獨立執行版本的系統需求<button data-href="#Requirements-for-Installing-Milvus-Standalone" class="anchor-icon" translate="no">
+<h1 id="Requirements-for-Installing-Milvus-Standalone" class="common-anchor-header">Requirements for Installing Milvus Standalone<button data-href="#Requirements-for-Installing-Milvus-Standalone" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,34 +20,8 @@ title: 安裝 Milvus 獨立執行版本的系統需求
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>在安裝 Milvus 獨立執行個體之前，請檢查您的硬體和軟體是否符合要求。</p>
-<h2 id="Hardware-requirements" class="common-anchor-header">硬體需求<button data-href="#Hardware-requirements" class="anchor-icon" translate="no">
-      <svg translate="no"
-        aria-hidden="true"
-        focusable="false"
-        height="20"
-        version="1.1"
-        viewBox="0 0 16 16"
-        width="16"
-      >
-        <path
-          fill="#0092E4"
-          fill-rule="evenodd"
-          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
-        ></path>
-      </svg>
-    </button></h2><table>
-<thead>
-<tr><th>元件</th><th>需求</th><th>建議</th><th>備註</th></tr>
-</thead>
-<tbody>
-<tr><td>CPU</td><td><ul><li>Intel 第二代 Core 處理器或更高規格</li><li>Apple Silicon</li></ul></td><td><ul><li>獨立模式：4 核心或以上</li><li>叢集模式：8 核心或以上</li></ul></td><td></td></tr>
-<tr><td>CPU 指令集</td><td><ul><li>SSE4.2</li><li>AVX</li><li>AVX2</li><li>AVX-512</li></ul></td><td><ul><li>SSE4.2</li><li>AVX</li><li>AVX2</li><li>AVX-512</li></ul></td><td>在 Milvus 中進行向量相似性搜尋與索引建置，需要 CPU 支援單一指令、多資料 (SIMD) 擴充集。請確保 CPU 至少支援下列 SIMD 擴充集之一。如需更多資訊，請參閱「<a href="https://en.wikipedia.org/wiki/Advanced_Vector_Extensions#CPUs_with_AVX">具備 AVX 的 CPU</a>」。</td></tr>
-<tr><td>記憶體</td><td><ul><li>獨立系統：8G</li><li>叢集：32G</li></ul></td><td><ul><li>獨立系統：16G</li><li>叢集：128G</li></ul></td><td>RAM 的大小取決於資料量。</td></tr>
-<tr><td>硬碟</td><td>SATA 3.0 SSD 或更高規格</td><td>NVMe SSD 或更高規格</td><td>硬碟容量取決於資料量。</td></tr>
-</tbody>
-</table>
-<h2 id="Software-requirements" class="common-anchor-header">軟體需求<button data-href="#Software-requirements" class="anchor-icon" translate="no">
+    </button></h1><p>Before installing a Milvus Standalone instance, check your hardware and software to see if they meet the requirements.</p>
+<h2 id="Hardware-requirements" class="common-anchor-header">Hardware requirements<button data-href="#Hardware-requirements" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -64,30 +38,56 @@ title: 安裝 Milvus 獨立執行版本的系統需求
       </svg>
     </button></h2><table>
 <thead>
-<tr><th>作業系統</th><th>軟體</th><th>備註</th></tr>
+<tr><th>Component</th><th>Requirement</th><th>Recommendation</th><th>Note</th></tr>
 </thead>
 <tbody>
-<tr><td>Docker Desktop 支援的 macOS 版本</td><td>Docker Desktop</td><td>請為 Docker 虛擬機器 (VM) 分配至少 8 GB 的記憶體，並根據上述硬體建議設定其 CPU 數量。<br/>如需更多資訊，請參閱《<a href="https://docs.docker.com/desktop/setup/install/mac-install/">在 Mac 上安裝 Docker Desktop</a>》。</td></tr>
-<tr><td>Linux 平台</td><td><ul><li>Docker 19.03 或更新版本</li><li>Docker Compose 外掛程式 V2 或更新版本（適用於 Compose 部署）</li></ul></td><td>如需更多資訊，請參閱《<a href="https://docs.docker.com/engine/install/">安裝 Docker Engine</a>》及《<a href="https://docs.docker.com/compose/install/">安裝 Docker Compose</a>》。</td></tr>
-<tr><td>已啟用 WSL 2 的 Windows</td><td>Docker Desktop</td><td>我們建議您將源碼及其他透過綁定掛載存入 Linux 容器的資料，儲存於 Linux 檔案系統中，而非 Windows 檔案系統。<br/>如需更多資訊，請參閱《<a href="https://docs.docker.com/desktop/features/wsl/">在採用 WSL 2 後端的 Windows 上安裝 Docker Desktop</a>》。</td></tr>
+<tr><td>CPU</td><td><ul><li>Intel 2nd Gen Core CPU or higher</li><li>Apple Silicon</li></ul></td><td><ul><li>Standalone: 4 core or more</li><li>Cluster: 8 core or more</li></ul></td><td></td></tr>
+<tr><td>CPU instruction set</td><td><ul><li>SSE4.2</li><li>AVX</li><li>AVX2</li><li>AVX-512</li></ul></td><td><ul><li>SSE4.2</li><li>AVX</li><li>AVX2</li><li>AVX-512</li></ul></td><td>Vector similarity search and index building within Milvus require CPU’s support of single instruction, multiple data (SIMD) extension sets. Ensure that the CPU supports at least one of the SIMD extensions listed. See <a href="https://en.wikipedia.org/wiki/Advanced_Vector_Extensions#CPUs_with_AVX">CPUs with AVX</a> for more information.</td></tr>
+<tr><td>RAM</td><td><ul><li>Standalone: 8G</li><li>Cluster: 32G</li></ul></td><td><ul><li>Standalone: 16G</li><li>Cluster: 128G</li></ul></td><td>The size of RAM depends on the data volume.</td></tr>
+<tr><td>Hard drive</td><td>SATA 3.0 SSD or higher</td><td>NVMe SSD or higher</td><td>The size of hard drive depends on the data volume.</td></tr>
 </tbody>
 </table>
-<p>Compose 指南使用<code translate="no">docker compose</code> ，而非舊版的<code translate="no">docker-compose</code> V1 指令。在遵循指南之前，請先驗證該外掛程式：</p>
+<h2 id="Software-requirements" class="common-anchor-header">Software requirements<button data-href="#Software-requirements" class="anchor-icon" translate="no">
+      <svg translate="no"
+        aria-hidden="true"
+        focusable="false"
+        height="20"
+        version="1.1"
+        viewBox="0 0 16 16"
+        width="16"
+      >
+        <path
+          fill="#0092E4"
+          fill-rule="evenodd"
+          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+        ></path>
+      </svg>
+    </button></h2><table>
+<thead>
+<tr><th>Operating system</th><th>Software</th><th>Note</th></tr>
+</thead>
+<tbody>
+<tr><td>macOS supported by Docker Desktop</td><td>Docker Desktop</td><td>Allocate at least 8 GB of memory to the Docker virtual machine (VM) and size its CPUs according to the hardware recommendations above. <br/>See <a href="https://docs.docker.com/desktop/setup/install/mac-install/">Install Docker Desktop on Mac</a> for more information.</td></tr>
+<tr><td>Linux platforms</td><td><ul><li>Docker 19.03 or later</li><li>Docker Compose plugin V2 or later (for Compose deployments)</li></ul></td><td>See <a href="https://docs.docker.com/engine/install/">Install Docker Engine</a> and <a href="https://docs.docker.com/compose/install/">Install Docker Compose</a> for more information.</td></tr>
+<tr><td>Windows with WSL 2 enabled</td><td>Docker Desktop</td><td>We recommend that you store source code and other data bind-mounted into Linux containers in the Linux file system instead of the Windows file system.<br/>See <a href="https://docs.docker.com/desktop/features/wsl/">Install Docker Desktop on Windows with WSL 2 backend</a> for more information.</td></tr>
+</tbody>
+</table>
+<p>The Compose guides use <code translate="no">docker compose</code>, not the legacy <code translate="no">docker-compose</code> V1 command. Verify the plugin before following them:</p>
 <pre><code translate="no" class="language-bash">docker compose version
 <button class="copy-code-btn"></button></code></pre>
-<p>安裝方式將決定依賴項的提供方式。請使用下載的腳本或 Compose 檔案中指定固定的映像檔版本：</p>
+<p>The installation method determines how dependencies are provided. Use the image versions pinned in the downloaded script or Compose file:</p>
 <table>
 <thead>
-<tr><th>元件</th><th>Docker 腳本</th><th>Docker Compose</th></tr>
+<tr><th>Component</th><th>Docker script</th><th>Docker Compose</th></tr>
 </thead>
 <tbody>
-<tr><td>etcd</td><td>嵌入 Milvus 容器中</td><td>獨立容器；請參閱<a href="#Additional-disk-requirements">額外的磁碟需求</a>。</td></tr>
-<tr><td>物件儲存</td><td>本機檔案系統；無 MinIO 容器</td><td>MinIO 容器，其映像檔已固定於 Compose 檔案中</td></tr>
-<tr><td>Woodpecker</td><td>與 Milvus 捆綁；採用本機檔案系統作為 WAL 後端</td><td>與 Milvus 捆綁；採用 MinIO／物件儲存作為 WAL 後端</td></tr>
-<tr><td>Pulsar</td><td>可選的外部服務；預設不會安裝</td><td>可選的外部服務；預設不安裝</td></tr>
+<tr><td>etcd</td><td>Embedded in the Milvus container</td><td>Separate container; see <a href="#Additional-disk-requirements">additional disk requirements</a>.</td></tr>
+<tr><td>Object storage</td><td>Local filesystem; no MinIO container</td><td>MinIO container with its image pinned in the Compose file</td></tr>
+<tr><td>Woodpecker</td><td>Bundled with Milvus; local-filesystem WAL backend</td><td>Bundled with Milvus; MinIO/object-storage WAL backend</td></tr>
+<tr><td>Pulsar</td><td>Optional external service; not installed by default</td><td>Optional external service; not installed by default</td></tr>
 </tbody>
 </table>
-<h3 id="Additional-disk-requirements" class="common-anchor-header">額外的磁碟需求<button data-href="#Additional-disk-requirements" class="anchor-icon" translate="no">
+<h3 id="Additional-disk-requirements" class="common-anchor-header">Additional disk requirements<button data-href="#Additional-disk-requirements" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -102,13 +102,13 @@ title: 安裝 Milvus 獨立執行版本的系統需求
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>磁碟效能對 etcd 至關重要。強烈建議您使用本機 NVMe SSD。磁碟回應速度過慢可能會導致叢集選舉頻繁發生，最終將導致 etcd 服務效能下降。</p>
-<p>若要測試您的磁碟是否符合資格，請使用<a href="https://github.com/axboe/fio">fio</a>。</p>
+    </button></h3><p>Disk performance is critical to etcd. It is highly recommended that you use local NVMe SSDs. Slower disk response may cause frequent cluster elections that will eventually degrade the etcd service.</p>
+<p>To test if your disk is qualified, use <a href="https://github.com/axboe/fio">fio</a>.</p>
 <pre><code translate="no" class="language-bash"><span class="hljs-built_in">mkdir</span> test-data
 fio --rw=write --ioengine=<span class="hljs-built_in">sync</span> --fdatasync=1 --directory=test-data --size=2200m --bs=2300 --name=mytest
 <button class="copy-code-btn"></button></code></pre>
-<p>理想情況下，專用於 etcd 的磁碟應達到超過 500 IOPS，且第 99 百分位 fsync 延遲應低於 10 毫秒。請參閱 etcd<a href="https://etcd.io/docs/v3.5/op-guide/hardware/#disks">文件</a>以了解更詳細的規格要求。</p>
-<h2 id="Whats-next" class="common-anchor-header">下一步<button data-href="#Whats-next" class="anchor-icon" translate="no">
+<p>Ideally, your disk dedicated to etcd should reach over 500  IOPS and below 10ms for the 99th percentile fsync latency. Read the etcd <a href="https://etcd.io/docs/v3.5/op-guide/hardware/#disks">Docs</a> for more detailed requirements.</p>
+<h2 id="Whats-next" class="common-anchor-header">What’s next<button data-href="#Whats-next" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -123,8 +123,8 @@ fio --rw=write --ioengine=<span class="hljs-built_in">sync</span> --fdatasync=1 
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>若您的硬體和軟體符合上述要求，您可以</p>
+    </button></h2><p>If your hardware and software meet the above requirements, you can</p>
 <ul>
-<li><a href="/docs/zh-hant/install_standalone-docker.md">在 Docker 中執行 Milvus</a></li>
-<li><a href="/docs/zh-hant/install_standalone-docker-compose.md">使用 Docker Compose 執行 Milvus</a></li>
+<li><a href="/docs/zh-hant/install_standalone-docker.md">Run Milvus in Docker</a></li>
+<li><a href="/docs/zh-hant/install_standalone-docker-compose.md">Run Milvus with Docker Compose</a></li>
 </ul>

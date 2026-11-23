@@ -1,9 +1,9 @@
 ---
 id: graph_rag_with_milvus.md
-summary: График RAG с использованием Milvus
-title: Графический RAG с использованием Milvus
+summary: Graph RAG with Milvus
+title: Graph RAG with Milvus
 ---
-<h1 id="Graph-RAG-with-Milvus" class="common-anchor-header">Графический RAG с использованием Milvus<button data-href="#Graph-RAG-with-Milvus" class="anchor-icon" translate="no">
+<h1 id="Graph-RAG-with-Milvus" class="common-anchor-header">Graph RAG with Milvus<button data-href="#Graph-RAG-with-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -24,16 +24,16 @@ title: Графический RAG с использованием Milvus
 <a href="https://github.com/milvus-io/bootcamp/blob/master/tutorials/quickstart/graph_rag_with_milvus.ipynb" target="_blank">
 <img translate="no" src="https://img.shields.io/badge/View%20on%20GitHub-555555?style=flat&logo=github&logoColor=white" alt="GitHub Repository"/>
 </a></p>
-<p>Широкое применение крупных языковых моделей подчеркивает важность повышения точности и релевантности их ответов. Генерация с расширением поиска (RAG) обогащает модели внешними базами знаний, предоставляя больше контекстуальной информации и смягчая такие проблемы, как галлюцинации и недостаток знаний. Однако использование исключительно простых парадигм RAG имеет свои ограничения, особенно при работе со сложными отношениями между сущностями и многоступенчатыми вопросами, когда модели зачастую сложно дать точные ответы.</p>
-<p>Внедрение графов знаний (KG) в систему RAG предлагает новое решение. Графы знаний представляют сущности и их отношения в структурированном виде, обеспечивая более точную информацию для поиска и помогая RAG лучше справляться со сложными задачами ответов на вопросы. KG-RAG все еще находится на ранних стадиях развития, и пока нет единого мнения о том, как эффективно извлекать сущности и связи из KGs или как интегрировать векторный поиск по схожести с графовыми структурами.</p>
-<p>В этом ноутбуке мы представляем простой, но мощный подход, позволяющий значительно улучшить производительность в данном сценарии. Это простая парадигма RAG с многосторонним поиском и последующим переранжированием, но она логически реализует Graph RAG и демонстрирует передовую производительность при обработке многошаговых вопросов. Давайте посмотрим, как это реализовано.</p>
+<p>The widespread application of large language models highlights the importance of improving the accuracy and relevance of their responses. Retrieval-Augmented Generation (RAG) enhances models with external knowledge bases, providing more contextual information and mitigating issues like hallucination and insufficient knowledge. However, relying solely on simple RAG paradigms has its limitations, especially when dealing with complex entity relationships and multi-hop questions, where the model often struggles to provide accurate answers.</p>
+<p>Introducing knowledge graphs (KGs) into the RAG system offers a new solution. KGs present entities and their relationships in a structured way, providing more precise retrieval information and helping RAG to better handle complex question-answering tasks. KG-RAG is still in its early stages, and there is no consensus on how to effectively retrieve entities and relationships from KGs or how to integrate vector similarity search with graph structures.</p>
+<p>In this notebook, we introduce a simple yet powerful approach to greatly improve the performance of this scenario. It is a simple RAG paradigm with multi-way retrieval and then reranking, but it implements Graph RAG logically, and achieves state-of-the-art performance in handling multi-hop questions. Let’s see how it is implemented.</p>
 <p>
   <span class="img-wrapper">
     <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/graph_rag_with_milvus_1.png" alt="" class="doc-image" id="" />
     <span></span>
   </span>
 </p>
-<h2 id="Prerequisites" class="common-anchor-header">Необходимые условия<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -48,18 +48,18 @@ title: Графический RAG с использованием Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Перед запуском этого ноутбука убедитесь, что у вас установлены следующие зависимости:</p>
+    </button></h2><p>Before running this notebook, make sure you have the following dependencies installed:</p>
 <pre><code translate="no" class="language-python">$ pip install --upgrade --quiet pymilvus numpy scipy langchain langchain-core langchain-openai tqdm
 <button class="copy-code-btn"></button></code></pre>
 <blockquote>
-<p>Если вы используете Google Colab, для активации только что установленных зависимостей может потребоваться <strong>перезапуск среды выполнения</strong> (щелкните меню «Runtime» в верхней части экрана и выберите «Restart session» в раскрывающемся меню).</p>
+<p>If you are using Google Colab, to enable dependencies just installed, you may need to <strong>restart the runtime</strong> (click on the “Runtime” menu at the top of the screen, and select “Restart session” from the dropdown menu).</p>
 </blockquote>
-<p>Мы будем использовать модели от OpenAI. Вам необходимо подготовить <a href="https://platform.openai.com/docs/quickstart">ключ API</a> <code translate="no">OPENAI_API_KEY</code> в качестве переменной среды.</p>
+<p>We will use the models from OpenAI. You should prepare the <a href="https://platform.openai.com/docs/quickstart">api key</a> <code translate="no">OPENAI_API_KEY</code> as an environment variable.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> os
 
 os.environ[<span class="hljs-string">&quot;OPENAI_API_KEY&quot;</span>] = <span class="hljs-string">&quot;sk-***********&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Импортируйте необходимые библиотеки и зависимости.</p>
+<p>Import the necessary libraries and dependencies.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
 
 <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict
@@ -71,7 +71,7 @@ os.environ[<span class="hljs-string">&quot;OPENAI_API_KEY&quot;</span>] = <span 
 <span class="hljs-keyword">from</span> langchain_openai <span class="hljs-keyword">import</span> ChatOpenAI, OpenAIEmbeddings
 <span class="hljs-keyword">from</span> tqdm <span class="hljs-keyword">import</span> tqdm
 <button class="copy-code-btn"></button></code></pre>
-<p>Инициализируйте экземпляр клиента Milvus, LLM и модель встраивания.</p>
+<p>Initialize the instance of Milvus client, the LLM, and the embedding model.</p>
 <pre><code translate="no" class="language-python">milvus_client = MilvusClient(uri=<span class="hljs-string">&quot;./milvus.db&quot;</span>)
 
 llm = ChatOpenAI(
@@ -81,14 +81,14 @@ llm = ChatOpenAI(
 embedding_model = OpenAIEmbeddings(model=<span class="hljs-string">&quot;text-embedding-3-small&quot;</span>)
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>Что касается аргументов в MilvusClient:</p>
+<p>For the args in MilvusClient:</p>
 <ul>
-<li>Наиболее удобным способом является указание <code translate="no">uri</code> в качестве локального файла, например<code translate="no">./milvus.db</code>, так как в этом случае <a href="https://milvus.io/docs/milvus_lite.md">Milvus Lite</a> автоматически использует этот файл для хранения всех данных.</li>
-<li>Если у вас большой объем данных, вы можете настроить более производительный сервер Milvus на <a href="https://milvus.io/docs/quickstart.md">Docker или Kubernetes</a>. В этой конфигурации в качестве <code translate="no">uri</code> используйте URI сервера, например<code translate="no">http://localhost:19530</code>.</li>
-<li>Если вы хотите использовать <a href="https://zilliz.com/cloud">Zilliz Cloud</a> — полностью управляемый облачный сервис для Milvus — настройте параметры <code translate="no">uri</code> и <code translate="no">token</code>, которые соответствуют <a href="https://docs.zilliz.com/docs/on-zilliz-cloud-console#free-cluster-details">публичному коневому пункту (Public Endpoint) и ключу API</a> в Zilliz Cloud.</li>
+<li>Setting the <code translate="no">uri</code> as a local file, e.g.<code translate="no">./milvus.db</code>, is the most convenient method, as it automatically utilizes <a href="https://milvus.io/docs/milvus_lite.md">Milvus Lite</a> to store all data in this file.</li>
+<li>If you have large scale of data, you can set up a more performant Milvus server on <a href="https://milvus.io/docs/quickstart.md">docker or kubernetes</a>. In this setup, please use the server uri, e.g.<code translate="no">http://localhost:19530</code>, as your <code translate="no">uri</code>.</li>
+<li>If you want to use <a href="https://zilliz.com/cloud">Zilliz Cloud</a>, the fully managed cloud service for Milvus, adjust the <code translate="no">uri</code> and <code translate="no">token</code>, which correspond to the <a href="https://docs.zilliz.com/docs/on-zilliz-cloud-console#free-cluster-details">Public Endpoint and Api key</a> in Zilliz Cloud.</li>
 </ul>
 </div>
-<h2 id="Offline-Data-Loading" class="common-anchor-header">Загрузка данных в автономном режиме<button data-href="#Offline-Data-Loading" class="anchor-icon" translate="no">
+<h2 id="Offline-Data-Loading" class="common-anchor-header">Offline Data Loading<button data-href="#Offline-Data-Loading" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -103,7 +103,7 @@ embedding_model = OpenAIEmbeddings(model=<span class="hljs-string">&quot;text-em
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Data-Preparation" class="common-anchor-header">Подготовка данных<button data-href="#Data-Preparation" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Data-Preparation" class="common-anchor-header">Data Preparation<button data-href="#Data-Preparation" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -118,8 +118,8 @@ embedding_model = OpenAIEmbeddings(model=<span class="hljs-string">&quot;text-em
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>В качестве примера мы будем использовать набор данных nano, демонстрирующий связь между семьёй Бернулли и Эйлером. Набор данных nano содержит 4 отрывка и набор соответствующих триплетов, где каждый триплет состоит из субъекта, предиката и объекта.
-На практике вы можете использовать любой подход для извлечения триплетов из вашего собственного корпуса.</p>
+    </button></h3><p>We will use a nano dataset which introduce the relationship between Bernoulli family and Euler to demonstrate as an example. The nano dataset contains 4 passages and a set of corresponding triplets, where each triplet contains a subject, a predicate, and an object.
+In practice, you can use any approach to extract the triplets from your own custom corpus.</p>
 <pre><code translate="no" class="language-python">nano_dataset = [
     {
         <span class="hljs-string">&quot;passage&quot;</span>: <span class="hljs-string">&quot;Jakob Bernoulli (1654–1705): Jakob was one of the earliest members of the Bernoulli family to gain prominence in mathematics. He made significant contributions to calculus, particularly in the development of the theory of probability. He is known for the Bernoulli numbers and the Bernoulli theorem, a precursor to the law of large numbers. He was the older brother of Johann Bernoulli, another influential mathematician, and the two had a complex relationship that involved both collaboration and rivalry.&quot;</span>,
@@ -181,12 +181,12 @@ embedding_model = OpenAIEmbeddings(model=<span class="hljs-string">&quot;text-em
     },
 ]
 <button class="copy-code-btn"></button></code></pre>
-<p>Мы выделяем сущности и отношения следующим образом:</p>
+<p>We construct the entities and relations as follows:</p>
 <ul>
-<li>Сущностью является субъект или объект в триплете, поэтому мы извлекаем их непосредственно из триплетов.</li>
-<li>Здесь мы формируем понятие отношения путем непосредственного соединения субъекта, предиката и объекта с пробелом между ними.</li>
+<li>The entity is the subject or object in the triplet, so we directly extract them from the triplets.</li>
+<li>Here we construct the concept of relationship by directly concatenating the subject, predicate, and object with a space in between.</li>
 </ul>
-<p>Мы также готовим словарь для сопоставления идентификаторов сущностей с идентификаторами отношений, а также другой словарь для сопоставления идентификаторов отношений с идентификаторами фрагментов текста для дальнейшего использования.</p>
+<p>We also prepare a dict to map entity id to relation id, and another dict to map relation id to passage id for later use.</p>
 <pre><code translate="no" class="language-python">entityid_2_relationids = defaultdict(<span class="hljs-built_in">list</span>)
 relationid_2_passageids = defaultdict(<span class="hljs-built_in">list</span>)
 
@@ -212,7 +212,7 @@ passages = []
             )
         relationid_2_passageids[relations.index(relation)].append(passage_id)
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Data-Insertion" class="common-anchor-header">Вставка данных<button data-href="#Data-Insertion" class="anchor-icon" translate="no">
+<h3 id="Data-Insertion" class="common-anchor-header">Data Insertion<button data-href="#Data-Insertion" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -227,7 +227,7 @@ passages = []
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Создаем коллекции Milvus для сущностей, отношений и фрагментов текста. Коллекции сущностей и отношений используются в нашем методе в качестве основных коллекций для построения графа, тогда как коллекция фрагментов текста используется для простого сравнения с поиском по RAG или в вспомогательных целях.</p>
+    </button></h3><p>Create Milvus collections for entity, relation, and passage. The entity collection and relation collection are used as the major collections for graph construction in our method, while the passage collection is used as the naive RAG retrieval comparison or auxiliary purpose.</p>
 <pre><code translate="no" class="language-python">embedding_dim = <span class="hljs-built_in">len</span>(embedding_model.embed_query(<span class="hljs-string">&quot;foo&quot;</span>))
 
 
@@ -248,7 +248,7 @@ create_milvus_collection(entity_col_name)
 create_milvus_collection(relation_col_name)
 create_milvus_collection(passage_col_name)
 <button class="copy-code-btn"></button></code></pre>
-<p>Вставляем данные вместе с метаданными в коллекции Milvus, включая коллекции сущностей, отношений и отрывков. Метаданные включают идентификатор отрывка и идентификатор соседней сущности или отношения.</p>
+<p>Insert the data with their metadata information into Milvus collections, including entity, relation, and passage collections. The metadata information includes the passage id and the adjacency entity or relation id.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">milvus_insert</span>(<span class="hljs-params">
     collection_name: <span class="hljs-built_in">str</span>,
     text_list: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">str</span>],
@@ -292,7 +292,7 @@ milvus_insert(
 Inserting: 100%|███████████████████████████████████| 1/1 [00:00&lt;00:00,  1.39it/s]
 Inserting: 100%|███████████████████████████████████| 1/1 [00:00&lt;00:00,  2.28it/s]
 </code></pre>
-<h2 id="Online-Querying" class="common-anchor-header">Онлайн-запросы<button data-href="#Online-Querying" class="anchor-icon" translate="no">
+<h2 id="Online-Querying" class="common-anchor-header">Online Querying<button data-href="#Online-Querying" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -307,7 +307,7 @@ Inserting: 100%|█████████████████████�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Similarity-Retrieval" class="common-anchor-header">Поиск по схожести<button data-href="#Similarity-Retrieval" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Similarity-Retrieval" class="common-anchor-header">Similarity Retrieval<button data-href="#Similarity-Retrieval" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -322,9 +322,9 @@ Inserting: 100%|█████████████████████�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Мы извлекаем из Milvus topK наиболее схожих сущностей и отношений на основе входного запроса.</p>
-<p>При поиске сущностей сначала необходимо извлечь сущности из текста запроса с помощью какого-либо конкретного метода, такого как NER (распознавание именованных сущностей). Для простоты здесь уже подготовлены результаты NER. Если вы хотите изменить запрос на свой собственный, вам нужно изменить соответствующий список сущностей NER.
-На практике вы можете использовать любую другую модель или подход для извлечения сущностей из запроса.</p>
+    </button></h3><p>We retrieve the topK similar entities and relations based on the input query from Milvus.</p>
+<p>When performing the entity retrieving, we should first extract the query entities from the query text using some specific method like NER (Named-entity recognition). For simplicity, we prepare the NER results here. If you want to change the query as your custom question, you have to change the corresponding query NER list.
+In practice, you can use any other model or approach to extract the entities from the query.</p>
 <pre><code translate="no" class="language-python">query = <span class="hljs-string">&quot;What contribution did the son of Euler&#x27;s teacher make?&quot;</span>
 
 query_ner_list = [<span class="hljs-string">&quot;Euler&quot;</span>]
@@ -352,7 +352,7 @@ relation_search_res = milvus_client.search(
     output_fields=[<span class="hljs-string">&quot;id&quot;</span>],
 )[<span class="hljs-number">0</span>]
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Expand-Subgraph" class="common-anchor-header">Расширение подграфа<button data-href="#Expand-Subgraph" class="anchor-icon" translate="no">
+<h3 id="Expand-Subgraph" class="common-anchor-header">Expand Subgraph<button data-href="#Expand-Subgraph" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -367,14 +367,14 @@ relation_search_res = milvus_client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Мы используем извлечённые сущности и отношения для расширения подграфа и получения возможных связей, а затем объединяем их, используя оба подхода. Ниже приведена блок-схема процесса расширения подграфа:
+    </button></h3><p>We use the retrieved entities and relations to expand the subgraph and obtain the candidate relationships, and then merge them from the two ways. Here is a flow chart of the subgraph expansion process:
 
   <span class="img-wrapper">
     <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/graph_rag_with_milvus_2.png" alt="" class="doc-image" id="" />
     <span></span>
   </span>
 </p>
-<p>Здесь мы строим матрицу смежности и используем умножение матриц для вычисления информации о сопоставлении смежности в пределах нескольких степеней. Таким образом, мы можем быстро получить информацию о любой степени расширения.</p>
+<p>Here we construct an adjacency matrix and use matrix multiplication to calculate the adjacency mapping information within a few degrees. In this way, we can quickly obtain information of any degree of expansion.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Construct the adjacency matrix of entities and relations where the value of the adjacency matrix is 1 if an entity is related to a relation, otherwise 0.</span>
 entity_relation_adj = np.zeros((<span class="hljs-built_in">len</span>(entities), <span class="hljs-built_in">len</span>(relations)))
 <span class="hljs-keyword">for</span> entity_id, entity <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(entities):
@@ -401,7 +401,7 @@ relation_adj_target_degree = relation_adj_1_degree
 
 entity_relation_adj_target_degree = entity_adj_target_degree @ entity_relation_adj
 <button class="copy-code-btn"></button></code></pre>
-<p>Взяв значение из матрицы расширения целевой степени, мы можем легко расширить соответствующую степень на основе извлеченных сущностей и отношений, чтобы получить все отношения подграфа.</p>
+<p>By taking the value from the target degree expansion matrix, we can easily expand the corresponding degree from the retrieved entity and relations to obtain all relations of the subgraph.</p>
 <pre><code translate="no" class="language-python">expanded_relations_from_relation = <span class="hljs-built_in">set</span>()
 expanded_relations_from_entity = <span class="hljs-built_in">set</span>()
 <span class="hljs-comment"># You can set the similarity threshold here to guarantee the quality of the retrieved ones.</span>
@@ -439,8 +439,8 @@ relation_candidate_texts = [
     relations[relation_id] <span class="hljs-keyword">for</span> relation_id <span class="hljs-keyword">in</span> relation_candidate_ids
 ]
 <button class="copy-code-btn"></button></code></pre>
-<p>Мы получили кандидаты на связи путем расширения подграфа, которые на следующем этапе будут переранжированы с помощью LLM.</p>
-<h3 id="LLM-reranking" class="common-anchor-header">Переранжирование с помощью LLM<button data-href="#LLM-reranking" class="anchor-icon" translate="no">
+<p>We have get the candidate relationships by expanding the subgraph, which will be reranked by LLM in the next step.</p>
+<h3 id="LLM-reranking" class="common-anchor-header">LLM reranking<button data-href="#LLM-reranking" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -455,7 +455,7 @@ relation_candidate_texts = [
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>На этом этапе мы используем мощный механизм самовнимания LLM для дальнейшей фильтрации и уточнения набора кандидатов в отношения. Мы применяем однократный промпт, включающий в себя запрос и набор кандидатов в отношения, и даем LLM указание выбрать потенциальные отношения, которые могут помочь в ответе на запрос. Учитывая, что некоторые запросы могут быть сложными, мы применяем подход «цепочки мыслей» (Chain-of-Thought), позволяющий LLM излагать свой мыслительный процесс в ответе. Мы оговариваем, что ответ LLM должен быть в формате JSON для удобства синтаксического анализа.</p>
+    </button></h3><p>In this stage, we deploy the powerful self-attention mechanism of LLM to further filter and refine the candidate set of relationships. We employ a one-shot prompt, incorporating the query and the candidate set of relationships into the prompt, and instruct LLM to select potential relationships that could assist in answering the query. Given that some queries may be complex, we adopt the Chain-of-Thought approach, allowing LLM to articulate its thought process in its response. We stipulate that LLM’s response is in json format for convenient parsing.</p>
 <pre><code translate="no" class="language-python">query_prompt_one_shot_input = <span class="hljs-string">&quot;&quot;&quot;I will provide you with a list of relationship descriptions. Your task is to select 3 relationships that may be useful to answer the given question. Please return a JSON object containing your thought process and a list of the selected relationships in order of their relevance.
 
 Question:
@@ -526,7 +526,7 @@ rerank_relation_ids = rerank_relations(
     relation_candidate_ids=relation_candidate_ids,
 )
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Get-Final-Results" class="common-anchor-header">Получение окончательных результатов<button data-href="#Get-Final-Results" class="anchor-icon" translate="no">
+<h3 id="Get-Final-Results" class="common-anchor-header">Get Final Results<button data-href="#Get-Final-Results" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -541,7 +541,7 @@ rerank_relation_ids = rerank_relations(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Из переранжированных связей мы можем получить окончательные найденные фрагменты текста.</p>
+    </button></h3><p>We can get final retrieved passages from the reranked relationships.</p>
 <pre><code translate="no" class="language-python">final_top_k = <span class="hljs-number">2</span>
 
 final_passages = []
@@ -553,7 +553,7 @@ final_passage_ids = []
             final_passages.append(passages[passage_id])
 passages_from_our_method = final_passages[:final_top_k]
 <button class="copy-code-btn"></button></code></pre>
-<p>Мы можем сравнить результаты с результатами простого метода RAG, который извлекает topK фрагментов на основе вложения запроса непосредственно из коллекции фрагментов.</p>
+<p>We can compare the results with the naive RAG method, which retrieves the topK passages based on the query embedding directly from the passage collection.</p>
 <pre><code translate="no" class="language-python">naive_passage_res = milvus_client.search(
     collection_name=passage_col_name,
     data=[query_embedding],
@@ -604,5 +604,5 @@ Answer from naive RAG: I don't know. The retrieved context does not provide info
 
 Answer from our method: The son of Euler's teacher, Daniel Bernoulli, made major contributions to fluid dynamics, probability, and statistics. He is most famous for Bernoulli’s principle, which describes the behavior of fluid flow and is fundamental to the understanding of aerodynamics.
 </code></pre>
-<p>Как видно, в отрывках, найденных с помощью простого метода RAG, отсутствовал отрывок, соответствующий эталонному ответу, что привело к неверному ответу.
-Отрывки, найденные с помощью нашего метода, являются правильными, и это помогает получить точный ответ на вопрос.</p>
+<p>As we can see, the retrieved passages from the naive RAG missed a ground-truth passage, which led to a wrong answer.
+The retrieved passages from our method are correct, and it helps to get an accurate answer to the question.</p>

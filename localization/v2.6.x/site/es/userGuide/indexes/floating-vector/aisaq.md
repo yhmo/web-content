@@ -2,11 +2,10 @@
 id: aisaq.md
 title: AISAQCompatible with Milvus 2.6.4+
 summary: >-
-  AISAQ es un índice vectorial basado en disco que amplía DISKANN para manejar
-  conjuntos de datos a escala de miles de millones sin sobrepasar los límites de
-  RAM. A diferencia de DISKANN, que mantiene los vectores comprimidos en
-  memoria, AISAQ almacena todos los datos en disco y ofrece dos modos para
-  equilibrar el rendimiento y los costes de almacenamiento.
+  AISAQ is a disk-based vector index that extends DISKANN to handle
+  billion-scale datasets without exceeding RAM limits. Unlike DISKANN, which
+  keeps compressed vectors in memory, AISAQ stores all data on disk—offering two
+  modes to balance performance and storage costs.
 beta: Milvus 2.6.4+
 ---
 <h1 id="AISAQ" class="common-anchor-header">AISAQ<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.4+</span><button data-href="#AISAQ" class="anchor-icon" translate="no">
@@ -24,10 +23,10 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>AISAQ es un índice vectorial basado en disco que amplía <a href="/docs/es/diskann.md">DISKANN</a> para manejar conjuntos de datos a escala de miles de millones con una huella DRAM mínima.</p>
-<p>A diferencia de DISKANN, que mantiene los vectores comprimidos en memoria, AISAQ está diseñado con una "arquitectura DRAM casi nula", lo que significa mantener todas las estructuras de datos en SSD.</p>
-<p>AISAQ permite ejecutar bases de datos a escala ultraelevada utilizando servidores estándar, al tiempo que ofrece modos de funcionamiento para equilibrar el rendimiento y los costes de almacenamiento.</p>
-<h2 id="How-AISAQ-works" class="common-anchor-header">Cómo funciona AISAQ<button data-href="#How-AISAQ-works" class="anchor-icon" translate="no">
+    </button></h1><p>AISAQ is a disk-based vector index that extends <a href="/docs/es/v2.6.x/diskann.md">DISKANN</a> to handle billion-scale datasets with a minimal DRAM footprint.</p>
+<p>Unlike DISKANN, which keeps compressed vectors in memory, AISAQ is designed with a “Near-Zero DRAM Architecture” which means holding all data structures on SSD.</p>
+<p>AISAQ enables running ultra-high scale databases using standard servers while offering operation modes to balance performance and storage costs.</p>
+<h2 id="How-AISAQ-works" class="common-anchor-header">How AISAQ works<button data-href="#How-AISAQ-works" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -42,12 +41,14 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>El diagrama anterior compara las disposiciones de almacenamiento de <strong>DISKANN</strong>, <strong>AISAQ-Performance</strong> y <strong>AISAQ-Scale</strong>, mostrando cómo se distribuyen los datos (vectores en bruto, listas de aristas y códigos PQ) entre la RAM y el disco.</p>
+    </button></h2><p>The diagram above compares the storage layouts of <strong>DISKANN</strong>, <strong>AISAQ-Performance</strong>, and <strong>AISAQ-Scale</strong>, showing how data (raw vectors, edge lists, and PQ codes) is distributed between RAM and disk.</p>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="/docs/v2.6.x/assets/aisaq-vs-diskann.png" alt="Aisaq Vs Diskann" class="doc-image" id="aisaq-vs-diskann" />
-   </span> <span class="img-wrapper"> <span>Aisaq vs Diskann</span> </span></p>
-<h3 id="Foundation-DISKANN-recap" class="common-anchor-header">Fundación: Resumen de DISKANN<button data-href="#Foundation-DISKANN-recap" class="anchor-icon" translate="no">
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/aisaq-vs-diskann.png" alt="Aisaq Vs Diskann" class="doc-image" id="aisaq-vs-diskann" />
+    <span>Aisaq Vs Diskann</span>
+  </span>
+</p>
+<h3 id="Foundation-DISKANN-recap" class="common-anchor-header">Foundation: DISKANN recap<button data-href="#Foundation-DISKANN-recap" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -62,17 +63,17 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>En DISKANN, los vectores en bruto y las listas de aristas se almacenan en disco, mientras que los vectores comprimidos PQ se guardan en memoria (DRAM).</p>
-<p>Cuando DISKANN llega a un nodo (por ejemplo, el <em>vector 0</em>):</p>
+    </button></h3><p>In DISKANN, the raw vectors and edge lists are stored on disk, while PQ-compressed vectors are kept in memory (DRAM).</p>
+<p>When DISKANN traverses to a node (e.g., <em>vector 0</em>):</p>
 <ul>
-<li><p>Carga el vector en bruto<strong>(raw_vector_0</strong>) y su lista de aristas<strong>(edgelist_0</strong>) desde el disco.</p></li>
-<li><p>La lista de aristas indica qué vecinos visitar a continuación (los nodos 2, 3 y 5 en este ejemplo).</p></li>
-<li><p>El vector en bruto se utiliza para calcular la distancia exacta al vector de consulta para la clasificación.</p></li>
-<li><p>Los datos PQ en memoria se utilizan para filtrar la distancia aproximada y guiar el siguiente recorrido.</p></li>
+<li><p>It loads the raw vector (<strong>raw_vector_0</strong>) and its edge list (<strong>edgelist_0</strong>) from disk.</p></li>
+<li><p>The edge list indicates which neighbors to visit next (nodes 2, 3, and 5 in this example).</p></li>
+<li><p>The raw vector is used to calculate the exact distance to the query vector for ranking.</p></li>
+<li><p>The PQ data in memory is used for approximate distance filtering to guide the next traversal.</p></li>
 </ul>
-<p>Dado que los datos PQ ya están almacenados en caché en la DRAM, cada visita a un nodo sólo requiere una E/S de disco, con lo que se consigue una alta velocidad de consulta con un uso moderado de la memoria.</p>
-<p>Para una explicación detallada de estos componentes y parámetros, consulte <a href="/docs/es/diskann.md">DISKANN</a>.</p>
-<h3 id="AISAQ-Operation-Modes" class="common-anchor-header">Modos de funcionamiento de AISAQ<button data-href="#AISAQ-Operation-Modes" class="anchor-icon" translate="no">
+<p>Because the PQ data is already cached in DRAM, each node visit requires only one disk I/O, achieving high query speed with moderate memory usage.</p>
+<p>For a detailed explanation of these components and parameters, refer to <a href="/docs/es/v2.6.x/diskann.md">DISKANN</a>.</p>
+<h3 id="AISAQ-Operation-Modes" class="common-anchor-header">AISAQ Operation Modes<button data-href="#AISAQ-Operation-Modes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -87,27 +88,27 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>AISAQ ofrece dos modos de funcionamiento para abordar dos casos de uso distintos:</p>
-<p>Modo de rendimiento: optimizado para aplicaciones que requieren baja latencia y alto rendimiento a escala, como la búsqueda semántica en línea.</p>
-<p>Modo de escala: optimizado para aplicaciones con restricciones de latencia más relajadas, como la búsqueda semántica RAG y fuera de línea, al tiempo que permite una expansión rentable de los conjuntos de datos a escala ultraalta.</p>
-<h4 id="AISAQ-performance-mode" class="common-anchor-header">Modo AISAQ-performance</h4><p><strong>El modo AISAQ-performance</strong> consigue una "huella DRAM casi nula" trasladando los datos PQ de la memoria al disco, al tiempo que mantiene unos IOPS bajos gracias a la colocación y redundancia de los datos.</p>
+    </button></h3><p>AISAQ offers two modes of operation to address two distinct use cases:</p>
+<p>Performance mode: optimized for applications that require low latency and high throughput at scale, such as online semantic search.</p>
+<p>Scale mode:  optimized for applications with more relaxed latency constraints, such as RAG and offline semantic search, while enabling cost-efficient expansion of datasets to ultra-high scale.</p>
+<h4 id="AISAQ-performance-mode" class="common-anchor-header">AISAQ-performance mode</h4><p><strong>AISAQ-performance</strong> achieves “Near-Zero DRAM footprint” by moving PQ data from memory to disk while maintaining low IOPS through data colocation and redundancy.</p>
 <ul>
-<li><p>El vector bruto de cada nodo, la lista de bordes y los datos PQ de sus vecinos se almacenan juntos en el disco.</p></li>
-<li><p>Esta disposición garantiza que visitar un nodo (por ejemplo, el vector 0) sólo requiera una única E/S de disco.</p></li>
-<li><p>Dado que los datos PQ se almacenan de forma redundante cerca de varios nodos, el tamaño del archivo de índice aumenta significativamente, consumiendo más espacio en disco.</p></li>
+<li><p>Each node’s raw vector, edge list, and its neighbors’ PQ data are stored together on disk.</p></li>
+<li><p>This layout ensures that visiting a node (e.g., vector 0) still requires only a single disk I/O.</p></li>
+<li><p>Since PQ data is redundantly stored near multiple nodes, the index file size increases significantly, consuming more disk space.</p></li>
 </ul>
-<h4 id="AISAQ-scale-mode" class="common-anchor-header">Modo AISAQ-scale</h4><p><strong>AISAQ-scale</strong> se centra en reducir el uso de espacio en disco al tiempo que satisface los requisitos de rendimiento de sus aplicaciones objetivo.</p>
-<p>En este modo</p>
+<h4 id="AISAQ-scale-mode" class="common-anchor-header">AISAQ-scale mode</h4><p><strong>AISAQ-scale</strong> focuses on reducing disk space usage while meeting the performance requirements of its target applications.</p>
+<p>In this mode:</p>
 <ul>
-<li><p>Los datos PQ se almacenan por separado en el disco, sin redundancia.</p></li>
-<li><p>Este diseño minimiza el tamaño del índice, pero conlleva más operaciones de E/S durante el recorrido del gráfico.</p></li>
-<li><p>Para mitigar la sobrecarga de IOPS, AISAQ introduce dos optimizaciones:</p>
+<li><p>PQ data is stored separately on disk, without redundancy.</p></li>
+<li><p>This design minimizes index size but leads to more I/O operations during graph traversal.</p></li>
+<li><p>To mitigate the IOPS overhead, AISAQ introduces two optimizations:</p>
 <ul>
-<li><p>Un algoritmo de reorganización que ordena los vectores PQ por prioridad para mejorar la localización de los datos.</p></li>
-<li><p>Una caché PQ en DRAM (pq_read_page_cache_size) que almacena en caché los datos PQ a los que se accede con frecuencia.</p></li>
+<li><p>A rearrange algorithm that sorts PQ vectors by priority to improve data locality.</p></li>
+<li><p>A PQ cache in DRAM (pq_read_page_cache_size) that caches frequently accessed PQ data.</p></li>
 </ul></li>
 </ul>
-<h2 id="Example-configuration" class="common-anchor-header">Ejemplo de configuración<button data-href="#Example-configuration" class="anchor-icon" translate="no">
+<h2 id="Example-configuration" class="common-anchor-header">Example configuration<button data-href="#Example-configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -141,7 +142,7 @@ beta: Milvus 2.6.4+
       <span class="hljs-attr">vectors_beamwidth:</span> <span class="hljs-number">1</span> <span class="hljs-comment"># Controls the degree of parallelism during search by determining the maximum number of parallel disk I/O requests to read groups of neighboring PQ vectors (ignored in performance mode)</span>
       <span class="hljs-attr">pq_read_page_cache_size:</span> <span class="hljs-number">5242880</span> <span class="hljs-string">(5MiB)</span> <span class="hljs-comment"># PQ read cache size in DRAM per search thread (bytes). It caches frequently accessed data pages containing PQ vectors (ignored in performance mode and applicable only when rearrange is true). The PQ read cache memory is reused across all AISAQ segments</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="AISAQ-parameters" class="common-anchor-header">Parámetros de AISAQ<button data-href="#AISAQ-parameters" class="anchor-icon" translate="no">
+<h2 id="AISAQ-parameters" class="common-anchor-header">AISAQ parameters<button data-href="#AISAQ-parameters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -156,8 +157,8 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>AISAQ hereda algunos parámetros de DISKANN - <code translate="no">max_degree</code>, <code translate="no">search_list_size</code>, y <code translate="no">pq_code_budget_gb_ratio</code>.</p>
-<h3 id="Index-building-params" class="common-anchor-header">Parámetros de creación de índices<button data-href="#Index-building-params" class="anchor-icon" translate="no">
+    </button></h2><p>AISAQ inherits some parameters from DISKANN - <code translate="no">max_degree</code>, <code translate="no">search_list_size</code>, and <code translate="no">pq_code_budget_gb_ratio</code>.</p>
+<h3 id="Index-building-params" class="common-anchor-header">Index-building params<button data-href="#Index-building-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -172,70 +173,70 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Estos parámetros influyen en cómo se construye el índice AISAQ. Su ajuste puede afectar al tamaño del índice, al tiempo de construcción y a la calidad de la búsqueda.</p>
+    </button></h3><p>These parameters influence how the AISAQ index is constructed. Adjusting them can affect the index size, build time, and search quality.</p>
 <table>
    <tr>
-     <th><p>Parámetro</p></th>
-     <th><p>Descripción</p></th>
-     <th><p>Rango de valores</p></th>
-     <th><p>Sugerencia de ajuste</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Description</p></th>
+     <th><p>Value Range</p></th>
+     <th><p>Tuning Suggestion</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">max_degree</code></p></td>
-     <td><p>Controla el número máximo de conexiones (aristas) que puede tener cada punto de datos en el gráfico Vamana.</p></td>
-     <td><p><strong>Tipo</strong>: Entero</p><p><strong>Rango</strong>: [1, 512]</p><p><strong>Valor por defecto</strong>: <code translate="no">56</code></p></td>
-     <td><p>Los valores más altos crean gráficos más densos, aumentando potencialmente la recuperación (encontrando resultados más relevantes) pero también incrementando el uso de memoria y el tiempo de construcción. En la mayoría de los casos, se recomienda establecer un valor dentro de este intervalo: [10, 100].</p></td>
+     <td><p>Controls the maximum number of connections (edges) each data point can have in the Vamana graph.</p></td>
+     <td><p><strong>Type</strong>: Integer</p><p><strong>Range</strong>: [1, 512]</p><p><strong>Default value</strong>: <code translate="no">56</code></p></td>
+     <td><p>Higher values create denser graphs, potentially increasing recall (finding more relevant results) but also increasing memory usage and build time. In most cases, we recommend you set a value within this range: [10, 100].</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">search_list_size</code></p></td>
-     <td><p>Durante la construcción del índice, este parámetro define el tamaño del grupo de candidatos utilizado cuando se buscan los vecinos más cercanos para cada nodo. Para cada nodo que se añade al grafo, el algoritmo mantiene una lista de los mejores candidatos search_list_size encontrados hasta el momento. La búsqueda de vecinos se detiene cuando esta lista ya no puede mejorarse. De esta lista final de candidatos, se seleccionan los nodos con mayor grado_máximo para formar las aristas finales.</p></td>
-     <td><p><strong>Tipo</strong>: Entero</p><p><strong>Rango</strong>: [1, 512]</p><p><strong>Valor por defecto</strong>: <code translate="no">100</code></p></td>
-     <td><p>Un tamaño mayor de search_list_size aumenta la probabilidad de encontrar los verdaderos vecinos más cercanos para cada nodo, lo que puede conducir a un gráfico de mayor calidad y un mejor rendimiento de búsqueda (recall). Sin embargo, esto tiene el coste de un tiempo de construcción del índice significativamente mayor. Debe establecerse siempre a un valor mayor o igual que max_degree.</p></td>
+     <td><p>During index construction, this parameter defines the size of the candidate pool used when searching for the nearest neighbors for each node. For every node being added to the graph, the algorithm maintains a list of the search_list_size best candidates found so far. The search for neighbors stops when this list can no longer be improved. From this final candidate pool, the top max_degree nodes are selected to form the final edges.</p></td>
+     <td><p><strong>Type</strong>: Integer</p><p><strong>Range</strong>: [1, 512]</p><p><strong>Default value</strong>: <code translate="no">100</code></p></td>
+     <td><p>A larger search_list_size increases the likelihood of finding the true nearest neighbors for each node, which can lead to a higher-quality graph and better search performance (recall). However, this comes at the cost of a significantly longer index build time. It should always be set to a value greater than or equal to max_degree.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">inline_pq</code></p></td>
-     <td><p>Número de vectores PQ almacenados en línea por nodo del índice (se leen cuando se accede al nodo, para reducir el IO)</p></td>
-     <td><p><strong>Tipo</strong>: Entero</p><p><strong>Rango</strong>: [0, <em>grado_máx</em>]</p><p><strong>Valor por defecto</strong>: <code translate="no">-1</code></p></td>
-     <td><p>Los valores más altos de <code translate="no">inline_pq</code> mejoran el rendimiento pero aumentan el espacio en disco.</p><p>Establezca <code translate="no">inline_pq</code>=0 para AISAQ en modo de escala.</p><p>Establezca <code translate="no">inline_pq</code>=-1 para rellenar automáticamente cualquier espacio no utilizado en el índice con vectores PQ para una mayor optimización de AISAQ en modo de escala.</p><p>Establezca <code translate="no">inline_pq</code><em>=grado_máx</em> para AISAQ en modo de rendimiento.</p><p><code translate="no">inline_pq</code> Los ajustes entre 0 y <em>max_degree</em> permiten un equilibrio ajustable entre rendimiento y consumo de espacio en disco.</p></td>
+     <td><p>Number of PQ vectors stored inline per Index node (read when node is accessed, to reduce IO)</p></td>
+     <td><p><strong>Type</strong>: Integer</p><p><strong>Range</strong>: [0, <em>max_degree</em>]</p><p><strong>Default value</strong>: <code translate="no">-1</code></p></td>
+     <td><p>Higher values of <code translate="no">inline_pq</code> improve performance but increase disk space.</p><p>Set <code translate="no">inline_pq</code>=0 for AISAQ in scale mode.</p><p>Set <code translate="no">inline_pq</code>=-1 to automatically fill any unused space in the index with PQ vectors for further optimization of AISAQ in scale mode.</p><p>Set <code translate="no">inline_pq</code>=<em>max_degree</em> for AISAQ in performance mode.</p><p><code translate="no">inline_pq</code> settings in between 0 and <em>max_degree</em> enable an adjustable balance between performance and disk-space consumption.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">rearrange</code></p></td>
-     <td><p>Reorganizar la estructura de datos de los vectores PQ para mejorar la localidad de los datos y reducir los accesos al disco durante la búsqueda (se ignora en el modo de rendimiento).</p></td>
-     <td><p><strong>Tipo</strong>: Booleano</p><p><strong>Rango</strong>: [true, false]</p><p><strong>Valor por defecto</strong>: <code translate="no">true</code></p></td>
-     <td><p>Cuando es true, reduce las IOs durante la búsqueda con un incremento menor en memoria y en el tiempo de construcción del índice.</p></td>
+     <td><p>Re-arrange the PQ vectors data structure to improve data locality and reduce disk accesses during search (ignored in performance mode).</p></td>
+     <td><p><strong>Type</strong>: Boolean</p><p><strong>Range</strong>: [true, false]</p><p><strong>Default value</strong>: <code translate="no">true</code></p></td>
+     <td><p>When true, reduces IOs during search with only minor increase in memory and in index build time.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">num_entry_points</code></p></td>
-     <td><p>Número de puntos de entrada candidatos para optimizar la selección del punto de entrada de la búsqueda.</p></td>
-     <td><p><strong>Tipo</strong>: Entero</p><p><strong>Rango</strong>: [0, 1000]</p><p><strong>Valor por defecto</strong>: <code translate="no">100</code></p></td>
-     <td><p>Valores altos pueden reducir el tiempo de búsqueda iniciando la búsqueda desde un punto de entrada más cercano.</p><p>Establezca valores más altos para segmentos grandes (por ejemplo, para vectores de 10M y superiores utilice el valor 1000).</p></td>
+     <td><p>Number of candidate entry points to optimize search entry-point selection.</p></td>
+     <td><p><strong>Type</strong>: Integer</p><p><strong>Range</strong>: [0, 1000]</p><p><strong>Default value</strong>: <code translate="no">100</code></p></td>
+     <td><p>High values may reduce the search time by starting the search from a closer entry point.</p><p>Set higher values for large segments (e.g. for 10M vectors and above use value of 1000).</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">pq_code_budget_gb_ratio</code></p></td>
-     <td><p>Controla el tamaño de los códigos PQ (representaciones comprimidas de los puntos de datos) en comparación con el tamaño de los datos sin comprimir.</p></td>
-     <td><p><strong>Tipo</strong>: Float</p><p><strong>Rango</strong>: (0.0, 0.25]</p><p><strong>Valor por defecto</strong>: <code translate="no">0.125</code></p></td>
-     <td><p>Una relación más alta conduce a resultados de búsqueda más precisos, almacenando efectivamente más información sobre los vectores originales, pero aumenta la complejidad computacional durante la búsqueda.</p><p>En la mayoría de los casos, se recomienda establecer un valor dentro de este rango: (0,0417, 0,25].</p></td>
+     <td><p>Controls the size of the PQ codes (compressed representations of data points) compared to the size of the uncompressed data.</p></td>
+     <td><p><strong>Type</strong>: Float</p><p><strong>Range</strong>: (0.0, 0.25]</p><p><strong>Default value</strong>: <code translate="no">0.125</code></p></td>
+     <td><p>A higher ratio leads to more accurate search results, effectively storing more information about the original vectors but increases computational complexity during search.</p><p>In most cases, we recommend you set a value within this range: (0.0417, 0.25].</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">disk_pq_code_budget_gb_ratio</code></p></td>
-     <td><p>Controla el tamaño de los códigos PQ de los vectores de alta precisión almacenados en el índice (utilizados para la reclasificación), en comparación con el tamaño de los datos sin comprimir.</p></td>
-     <td><p><strong>Tipo</strong>: Float</p><p><strong>Rango</strong>: [0, 0.25]</p><p><strong>Valor por defecto</strong>: <code translate="no">0.25</code></p></td>
-     <td><p>Con el valor por defecto de 0,25, los vectores se cuantizarán al 25% de su tamaño original (compresión 4×), reduciendo el espacio en disco con un impacto relativamente mínimo en la precisión.</p><p>Establezca el valor 0 para almacenar los vectores de precisión completa en el índice del disco para volver a clasificarlos. Un valor mayor ofrece una mayor tasa de recuperación, pero aumenta el uso de disco.</p></td>
+     <td><p>Controls the size of the PQ codes of the high precision vectors stored in the index (used for re-ranking), compared to the size of the uncompressed data.</p></td>
+     <td><p><strong>Type</strong>: Float</p><p><strong>Range</strong>: [0, 0.25]</p><p><strong>Default value</strong>: <code translate="no">0.25</code></p></td>
+     <td><p>With the default value of 0.25, vectors will be quantized to 25% of their original size (4× compression), reducing disk footprint with relatively minimal accuracy impact.</p><p>Set value of 0 to store full precision vectors in disk index for re-ranking. A larger value offers a higher recall rate but increases disk usage.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">pq_cache_size</code></p></td>
-     <td><p>Tamaño de la caché de vectores PQ en DRAM (bytes). La caché de vectores PQ se carga durante la carga del índice y se utiliza durante la búsqueda para reducir las IO (se ignora en el modo de rendimiento).</p></td>
-     <td><p><strong>Tipo</strong>: Entero</p><p><strong>Rango</strong>: [0, 1073741824]</p><p><strong>Valor por defecto</strong>: <code translate="no">0</code></p></td>
-     <td><p>Una caché más grande mejora el rendimiento de la consulta pero aumenta el uso de DRAM.</p></td>
+     <td><p>PQ vectors cache size in DRAM (bytes). The PQ vectors cache is loaded during Index load and used during search to reduce IOs (ignored in performance mode).</p></td>
+     <td><p><strong>Type</strong>: Integer</p><p><strong>Range</strong>: [0, 1073741824]</p><p><strong>Default value</strong>: <code translate="no">0</code></p></td>
+     <td><p>Larger cache improves query performance but increases DRAM usage.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">search_cache_budget_gb_ratio</code></p></td>
-     <td><p>Controla la cantidad de DRAM que se utilizará para almacenar en caché los nodos de índice a los que se accede con frecuencia.</p><p>Esta caché se carga durante la carga del índice y se utiliza durante la búsqueda para reducir las IOs.</p></td>
-     <td><p><strong>Tipo</strong>: Float</p><p><strong>Rango</strong>: [0.0, 0.3)</p><p><strong>Valor por defecto</strong>: <code translate="no">0</code></p></td>
-     <td><p>Un valor más alto asigna más memoria para el almacenamiento en caché, reduciendo los IOs de disco pero consumiendo más memoria del sistema. Un valor más bajo utiliza menos memoria para el almacenamiento en caché, aumentando potencialmente la necesidad de acceso al disco.</p></td>
+     <td><p>Controls the amount of DRAM to be used for caching frequently accessed index nodes</p><p>This cache is loaded during index load and used during search to reduce IOs.</p></td>
+     <td><p><strong>Type</strong>: Float</p><p><strong>Range</strong>: [0.0, 0.3)</p><p><strong>Default value</strong>: <code translate="no">0</code></p></td>
+     <td><p>A higher value allocates more memory for caching, reducing disk IOs but consuming more system memory. A lower value uses less memory for caching, potentially increasing the need for disk access.</p></td>
    </tr>
 </table>
-<h3 id="Index-search-params" class="common-anchor-header">Parámetros de búsqueda de índices<button data-href="#Index-search-params" class="anchor-icon" translate="no">
+<h3 id="Index-search-params" class="common-anchor-header">Index-search params<button data-href="#Index-search-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -250,36 +251,36 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Estos parámetros influyen en la forma en que AISAQ realiza las búsquedas. Su ajuste puede influir en la velocidad de búsqueda, la latencia y el uso de recursos.</p>
+    </button></h3><p>These parameters influence how AISAQ performs searches. Adjusting them can impact search speed, latency, and resource usage.</p>
 <table>
    <tr>
-     <th><p>Parámetro</p></th>
-     <th><p>Descripción</p></th>
-     <th><p>Rango de valores</p></th>
-     <th><p>Sugerencia de ajuste</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Description</p></th>
+     <th><p>Value Range</p></th>
+     <th><p>Tuning Suggestion</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">search_list</code></p></td>
-     <td><p>Durante una operación de búsqueda, este parámetro determina el tamaño del grupo de candidatos que el algoritmo mantiene mientras recorre el gráfico. Un valor mayor aumenta las posibilidades de encontrar a los verdaderos vecinos más cercanos (mayor recall), pero también aumenta la latencia de la búsqueda.</p></td>
-     <td><p><strong>Tipo</strong>: Entero</p><p><strong>Rango</strong>: [topk, int32_max]</p><p><strong>Valor por defecto</strong>: <code translate="no">16</code></p></td>
-     <td><p>Para un buen equilibrio entre rendimiento y precisión, se recomienda establecer este valor igual o ligeramente superior al número de resultados que se desea recuperar (top_k).</p></td>
+     <td><p>During a search operation, this parameter determines the size of the candidate pool that the algorithm maintains as it traverses the graph. A larger value increases the chances of finding the true nearest neighbors (higher recall) but also increases search latency.</p></td>
+     <td><p><strong>Type</strong>: Integer</p><p><strong>Range</strong>: [topk, int32_max]</p><p><strong>Default value</strong>: <code translate="no">16</code></p></td>
+     <td><p>For a good balance between performance and accuracy, it is recommended to set this value to be equal to or slightly larger than the number of results you want to retrieve (top_k).</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">beamwidth</code></p></td>
-     <td><p>Controla el grado de paralelismo durante la búsqueda determinando el número máximo de peticiones de E/S de disco paralelas para leer los nodos del índice.</p></td>
-     <td><p><strong>Tipo</strong>: Entero</p><p><strong>Rango</strong>: [1, 16]</p><p><strong>Valor por defecto</strong>: <code translate="no">8</code></p></td>
-     <td><p>Los valores más altos aumentan el paralelismo, lo que puede acelerar la búsqueda en sistemas con CPUs y SSDs potentes. Sin embargo, un valor demasiado alto puede provocar una excesiva contención de recursos.</p><p>En la mayoría de los casos, se recomienda establecer un valor de 2.</p></td>
+     <td><p>Controls the degree of parallelism during search by determining the maximum number of parallel disk I/O requests to read the index nodes.</p></td>
+     <td><p><strong>Type</strong>: Integer</p><p><strong>Range</strong>: [1, 16]</p><p><strong>Default value</strong>: <code translate="no">8</code></p></td>
+     <td><p>Higher values increase parallelism, which can speed up search on systems with powerful CPUs and SSDs. However, setting it too high might lead to excessive resource contention.</p><p>In most cases, we recommend you set a value of 2.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">vectors_beamwidth</code></p></td>
-     <td><p>Controla el grado de paralelismo durante la búsqueda determinando el número máximo de solicitudes de E/S de disco paralelas para leer grupos de vectores PQ vecinos (se ignora en el modo de rendimiento).</p></td>
-     <td><p><strong>Tipo</strong>: Entero</p><p><strong>Rango</strong>: [1, 4] debe ser &lt;= <em>beamwidth</em></p><p><strong>Valor por defecto</strong>: <code translate="no">1</code></p></td>
-     <td><p>Los valores más altos aumentan el paralelismo, lo que puede acelerar la búsqueda en sistemas con CPUs y SSDs potentes. Sin embargo, un valor demasiado alto puede provocar una excesiva contención de recursos, ya que cada grupo de vectores PQ vecino puede contener hasta vectores de grado_máximo.</p><p>En la mayoría de los casos, recomendamos establecer un valor de 1.</p></td>
+     <td><p>Controls the degree of parallelism during search by determining the maximum number of parallel disk I/O requests to read groups of neighboring PQ vectors (ignored in performance mode).</p></td>
+     <td><p><strong>Type</strong>: Integer</p><p><strong>Range</strong>: [1, 4] must be <= <em>beamwidth</em></p><p><strong>Default value</strong>: <code translate="no">1</code></p></td>
+     <td><p>Higher values increase parallelism, which can speed up search on systems with powerful CPUs and SSDs. However, setting it too high might lead to excessive resource contention, as each neighboring PQ vector group may contain up to max_degree vectors.</p><p>In most cases, we recommend you set a value of 1.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">pq_read_page_cache_size</code></p></td>
-     <td><p>Tamaño de caché de lectura PQ en DRAM por hilo de búsqueda (bytes). Almacena en caché las páginas de datos a las que se accede con frecuencia y que contienen vectores PQ (se ignora en el modo de rendimiento y sólo se aplica cuando rearrange es true).</p><p>La memoria caché de lectura PQ se reutiliza en todos los segmentos AISAQ.</p></td>
-     <td><p><strong>Tipo</strong>: Entero</p><p><strong>Rango</strong>: [0, 33554432]</p><p><strong>Valor por defecto</strong>: <code translate="no">5242880 (5MiB)</code></p></td>
-     <td><p>Una caché más grande mejora el rendimiento de la consulta pero aumenta el uso de DRAM.</p><p>Los valores recomendados oscilan entre 2 MiB para segmentos pequeños (1 M de vectores), 5 MiB para segmentos medianos (50 M de vectores) y 10 MiB para segmentos grandes (250 M de vectores).</p></td>
+     <td><p>PQ read cache size in DRAM per search thread (bytes). It caches frequently accessed data pages containing PQ vectors (ignored in performance mode and applicable only when rearrange is true).</p><p>The PQ read cache memory is reused across all AISAQ segments.</p></td>
+     <td><p><strong>Type</strong>: Integer</p><p><strong>Range</strong>: [0, 33554432]</p><p><strong>Default value</strong>: <code translate="no">5242880 (5MiB)</code></p></td>
+     <td><p>Larger cache improves query performance but increases DRAM usage.</p><p>Recommended values range from 2 MiB for small segments (1 M vectors), 5 MiB for medium segments (50 M vectors) and 10 MiB for large segments (250 M vectors).</p></td>
    </tr>
 </table>

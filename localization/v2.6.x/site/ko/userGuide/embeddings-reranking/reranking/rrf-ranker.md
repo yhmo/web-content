@@ -1,12 +1,15 @@
 ---
 id: rrf-ranker.md
-title: RRF 랭커
+title: RRF Ranker
 summary: >-
-  상호 순위 융합(RRF) 랭커는 Milvus 하이브리드 검색을 위한 재순위 지정 전략으로, 원시 유사도 점수 대신 순위 위치를 기준으로 여러
-  벡터 검색 경로의 결과를 균형 있게 조정합니다. 개별 선수들의 통계치보다는 선수들의 순위를 고려하는 스포츠 토너먼트와 마찬가지로, RRF
-  랭커는 각 항목이 서로 다른 검색 경로에서 차지하는 순위를 바탕으로 검색 결과를 통합하여 공정하고 균형 잡힌 최종 순위를 도출합니다.
+  Reciprocal Rank Fusion (RRF) Ranker is a reranking strategy for Milvus hybrid
+  search that balances results from multiple vector search paths based on their
+  ranking positions rather than their raw similarity scores. Like a sports
+  tournament that considers players' rankings rather than individual statistics,
+  RRF Ranker combines search results based on how highly each item ranks in
+  different search paths, creating a fair and balanced final ranking.
 ---
-<h1 id="RRF-Ranker" class="common-anchor-header">RRF 랭커<button data-href="#RRF-Ranker" class="anchor-icon" translate="no">
+<h1 id="RRF-Ranker" class="common-anchor-header">RRF Ranker<button data-href="#RRF-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -21,8 +24,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>상호 순위 융합(RRF) 랭커는 Milvus 하이브리드 검색을 위한 재순위 지정 전략으로, 원시 유사도 점수 대신 순위 위치를 기준으로 여러 벡터 검색 경로의 결과를 균형 있게 조정합니다. 개별 선수들의 통계치보다는 선수들의 순위를 고려하는 스포츠 토너먼트와 마찬가지로, RRF 랭커는 각 항목이 서로 다른 검색 경로에서 차지하는 순위를 바탕으로 검색 결과를 통합하여 공정하고 균형 잡힌 최종 순위를 도출합니다.</p>
-<h2 id="When-to-use-RRF-Ranker" class="common-anchor-header">RRF 랭커 사용 시점<button data-href="#When-to-use-RRF-Ranker" class="anchor-icon" translate="no">
+    </button></h1><p>Reciprocal Rank Fusion (RRF) Ranker is a reranking strategy for Milvus hybrid search that balances results from multiple vector search paths based on their ranking positions rather than their raw similarity scores. Like a sports tournament that considers players’ rankings rather than individual statistics, RRF Ranker combines search results based on how highly each item ranks in different search paths, creating a fair and balanced final ranking.</p>
+<h2 id="When-to-use-RRF-Ranker" class="common-anchor-header">When to use RRF Ranker<button data-href="#When-to-use-RRF-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,36 +40,37 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>RRF 랭커는 명시적인 중요도 가중치를 할당하지 않고 여러 벡터 검색 경로의 결과를 균형 있게 조정하고자 하는 하이브리드 검색 시나리오를 위해 특별히 설계되었습니다. 특히 다음과 같은 경우에 효과적입니다:</p>
+    </button></h2><p>RRF Ranker is specifically designed for hybrid search scenarios where you want to balance results from multiple vector search paths without assigning explicit importance weights. It’s particularly effective for:</p>
 <table>
    <tr>
-     <th><p>사용 사례</p></th>
-     <th><p>예시</p></th>
-     <th><p>RRF 랭커가 효과적인 이유</p></th>
+     <th><p>Use Case</p></th>
+     <th><p>Example</p></th>
+     <th><p>Why RRF Ranker Works Well</p></th>
    </tr>
    <tr>
-     <td><p>동등한 중요도를 가진 다중 모달 검색</p></td>
-     <td><p>두 모달리티가 동등하게 중요한 이미지-텍스트 검색</p></td>
-     <td><p>임의의 가중치 할당 없이 결과의 균형을 맞춥니다</p></td>
+     <td><p>Multimodal search with equal importance</p></td>
+     <td><p>Image-text search where both modalities matter equally</p></td>
+     <td><p>Balances results without requiring arbitrary weight assignments</p></td>
    </tr>
    <tr>
-     <td><p>앙상블 벡터 검색</p></td>
-     <td><p>서로 다른 임베딩 모델의 결과를 결합</p></td>
-     <td><p>특정 모델의 점수 분포를 편향 없이 민주적으로 통합하여 순위를 결정</p></td>
+     <td><p>Ensemble vector search</p></td>
+     <td><p>Combining results from different embedding models</p></td>
+     <td><p>Democratically merges rankings without favoring any particular model's scoring distribution</p></td>
    </tr>
    <tr>
-     <td><p>다국어 검색</p></td>
-     <td><p>여러 언어에 걸쳐 문서 검색</p></td>
-     <td><p>언어별 임베딩 특성에 관계없이 결과를 공정하게 순위를 매김</p></td>
+     <td><p>Cross-lingual search</p></td>
+     <td><p>Finding documents across multiple languages</p></td>
+     <td><p>Ranks results fairly regardless of language-specific embedding characteristics</p></td>
    </tr>
    <tr>
-     <td><p>전문가 추천</p></td>
-     <td><p>여러 전문가 시스템의 추천을 통합합니다</p></td>
-     <td><p>서로 다른 시스템이 비교 불가능한 점수 산정 방식을 사용할 때 합의된 순위를 생성합니다</p></td>
+     <td><p>Expert recommendations</p></td>
+     <td><p>Combining recommendations from multiple expert systems</p></td>
+     <td><p>Creates consensus rankings when different systems use incomparable scoring methods</p></td>
    </tr>
 </table>
-<p>명시적인 가중치를 부여하지 않고 여러 검색 경로를 균형 있게 조정해야 하는 하이브리드 검색 애플리케이션이라면, RRF Ranker가 이상적인 선택입니다.</p>
-<h2 id="Mechanism-of-RRF-Ranker" class="common-anchor-header">RRF Ranker의 작동 원리<button data-href="#Mechanism-of-RRF-Ranker" class="anchor-icon" translate="no">
+<p>If your hybrid search application requires balancing multiple search paths democratically without assigning explicit weights, RRF Ranker is your ideal choice.</p>
+<p>If some search paths are more reliable than others but their raw scores are not comparable, you can still fuse results by rank and give each path its own weight. For details, refer to <a href="/docs/ko/v2.6.x/rrf-ranker.md#Assign-weights-to-search-paths">Assign weights to search paths</a>. To combine the paths’ scores instead of their ranks, use <a href="/docs/ko/v2.6.x/weighted-ranker.md">Weighted Ranker</a>.</p>
+<h2 id="Mechanism-of-RRF-Ranker" class="common-anchor-header">Mechanism of RRF Ranker<button data-href="#Mechanism-of-RRF-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -81,20 +85,20 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>RRF Ranker 전략의 주요 워크플로는 다음과 같습니다:</p>
+    </button></h2><p>The main workflow of the RRFRanker strategy is as follows:</p>
 <ol>
-<li><p><strong>검색 순위 수집</strong>: 벡터 검색의 각 경로(rank_1, rank_2)에서 결과의 순위를 수집합니다.</p></li>
-<li><p><strong>순위 병합</strong>: 공식에 따라 각 경로(rank_rrf_1, rank_rrf_2)의 순위를 변환합니다.</p>
-<p>계산 공식에는 검색 결과의 수를 나타내는 <em>N이</em> 포함됩니다. <em>ranki</em>(<em>d</em>)는 <em>i번째</em> 검색기가 생성한 문서 <em>d의</em> 순위입니다. <em>k는</em> 일반적으로 60으로 설정되는 평활화 매개변수입니다.</p></li>
-<li><p><strong>순위 집계</strong>: 결합된 순위를 기반으로 검색 결과를 재순위 지정하여 최종 결과를 생성합니다.</p></li>
+<li><p><strong>Collect Search Rankings</strong>: Collect the rankings of results from each path of vector search (rank_1, rank_2).</p></li>
+<li><p><strong>Merge Rankings</strong>: Convert the rankings from each path (rank_rrf_1, rank_rrf_2) according to a formula.</p>
+<p>The calculation formula involves <em>N</em>, which represents the number of retrievals. <em>ranki</em>(<em>d</em>) is the ranking position of document <em>d</em>  generated by the <em>i(th)</em> retriever. <em>k</em> is a smoothing parameter typically set at 60.</p></li>
+<li><p><strong>Aggregate Rankings</strong>: Re-rank the search results based on the combined rankings to produce the final results.</p></li>
 </ol>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="/docs/v2.6.x/assets/rrf-ranker.png" alt="Rrf Ranker" class="doc-image" id="rrf-ranker" /> 
-   <span>RRF 랭커</span>
-  
- </span></p>
-<h2 id="Example-of-RRF-Ranker" class="common-anchor-header">RRF 랭커의 예<button data-href="#Example-of-RRF-Ranker" class="anchor-icon" translate="no">
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/rrf-ranker.png" alt="Rrf Ranker" class="doc-image" id="rrf-ranker" />
+    <span>Rrf Ranker</span>
+  </span>
+</p>
+<h2 id="Example-of-RRF-Ranker" class="common-anchor-header">Example of RRF Ranker<button data-href="#Example-of-RRF-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -109,13 +113,13 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>이 예제는 스파스-덴스 벡터에 대한 하이브리드 검색(topK=5)을 보여주고, RRFRanker 전략이 두 ANN 검색 결과를 어떻게 재순위화하는지 설명합니다.</p>
+    </button></h2><p>This example demonstrates a Hybrid Search (topK=5) on sparse-dense vectors and illustrates how the RRFRanker strategy reranks the results from two ANN searches.</p>
 <ul>
-<li><p>텍스트의 스파스 벡터에 대한 ANN 검색 결과 (topK=5):</p>
+<li><p>Results of ANN search on sparse vectors of texts （topK=5)：</p>
 <p><table>
 <tr>
 <th><p><strong>ID</strong></p></th>
-<th><p><strong>순위 (스파스)</strong></p></th>
+<th><p><strong>Rank (sparse)</strong></p></th>
 </tr>
 <tr>
 <td><p>101</p></td>
@@ -138,11 +142,11 @@ summary: >-
 <td><p>5</p></td>
 </tr>
 </table></p></li>
-<li><p>텍스트의 밀집 벡터에 대한 ANN 검색 결과 (topK=5):</p>
+<li><p>Results of ANN search on dense vectors of texts （topK=5)：</p>
 <p><table>
 <tr>
 <th><p><strong>ID</strong></p></th>
-<th><p><strong>순위 (밀집)</strong></p></th>
+<th><p><strong>Rank (dense)</strong></p></th>
 </tr>
 <tr>
 <td><p>198</p></td>
@@ -165,13 +169,13 @@ summary: >-
 <td><p>5</p></td>
 </tr>
 </table></p></li>
-<li><p>RRF를 사용하여 두 검색 결과 집합의 순위를 재배열하십시오. 평활화 매개변수 <code translate="no">k</code> 가 60으로 설정되어 있다고 가정하십시오.</p>
+<li><p>Use RRF to rearrange the rankings of the two sets of search results. Assume that the smoothing parameter <code translate="no">k</code> is set at 60.</p>
 <p><table>
 <tr>
 <th><p><strong>ID</strong></p></th>
-<th><p><strong>점수 (스파스)</strong></p></th>
-<th><p><strong>점수 (밀집)</strong></p></th>
-<th><p><strong>최종 점수</strong></p></th>
+<th><p><strong>Score (Sparse)</strong></p></th>
+<th><p><strong>Score (Dense)</strong></p></th>
+<th><p><strong>Final Score</strong></p></th>
 </tr>
 <tr>
 <td><p>101</p></td>
@@ -194,34 +198,34 @@ summary: >-
 <tr>
 <td><p>203</p></td>
 <td><p>2</p></td>
-<td><p>해당 없음</p></td>
+<td><p>N/A</p></td>
 <td><p>1/(60+2) = 0.01612903</p></td>
 </tr>
 <tr>
 <td><p>150</p></td>
 <td><p>3</p></td>
-<td><p>해당 없음</p></td>
+<td><p>N/A</p></td>
 <td><p>1/(60+3) = 0.01587302</p></td>
 </tr>
 <tr>
 <td><p>110</p></td>
-<td><p>해당 없음</p></td>
+<td><p>N/A</p></td>
 <td><p>3</p></td>
 <td><p>1/(60+3) = 0.01587302</p></td>
 </tr>
 <tr>
 <td><p>250</p></td>
-<td><p>해당 없음</p></td>
+<td><p>N/A</p></td>
 <td><p>5</p></td>
 <td><p>1/(60+5) = 0.01538462</p></td>
 </tr>
 </table></p></li>
-<li><p>재순위 지정 후 최종 결과（topK=5）：</p>
+<li><p>The final results after reranking（topK=5)：</p>
 <p><table>
 <tr>
-<th><p><strong>순위</strong></p></th>
+<th><p><strong>Rank</strong></p></th>
 <th><p><strong>ID</strong></p></th>
-<th><p><strong>최종 점수</strong></p></th>
+<th><p><strong>Final Score</strong></p></th>
 </tr>
 <tr>
 <td><p>1</p></td>
@@ -255,7 +259,7 @@ summary: >-
 </tr>
 </table></p></li>
 </ul>
-<h2 id="Usage-of-RRF-Ranker" class="common-anchor-header">RRF 랭커 사용법<button data-href="#Usage-of-RRF-Ranker" class="anchor-icon" translate="no">
+<h2 id="Usage-of-RRF-Ranker" class="common-anchor-header">Usage of RRF Ranker<button data-href="#Usage-of-RRF-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -270,8 +274,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>RRF 재순위 지정 전략을 사용할 때는 <code translate="no">k</code> 매개변수를 구성해야 합니다. 이는 전체 텍스트 검색과 벡터 검색 간의 상대적 가중치를 효과적으로 조정할 수 있는 평활화 매개변수입니다. 이 매개변수의 기본값은 60이며, (0, 16384) 범위 내에서 조정할 수 있습니다. 값은 부동 소수점 숫자여야 합니다. 권장 값은 [10, 100] 사이입니다. <code translate="no">k=60</code> 가 일반적인 선택이지만, 최적의 <code translate="no">k</code> 값은 특정 애플리케이션과 데이터셋에 따라 달라질 수 있습니다. 최상의 성능을 얻기 위해 구체적인 사용 사례에 따라 이 매개변수를 테스트하고 조정할 것을 권장합니다.</p>
-<h3 id="Create-an-RRF-Ranker" class="common-anchor-header">RRF 랭커 생성<button data-href="#Create-an-RRF-Ranker" class="anchor-icon" translate="no">
+    </button></h2><p>When using the RRF reranking strategy, you need to configure the parameter <code translate="no">k</code>. It is a smoothing parameter that can effectively alter the relative weights of full-text search versus vector search. The default value of this parameter is 60, and it can be adjusted within a range of (0, 16384). The value should be floating-point numbers. The recommended value is between [10, 100]. While <code translate="no">k=60</code> is a common choice, the optimal <code translate="no">k</code> value can vary depending on your specific applications and datasets. We recommend testing and adjusting this parameter based on your specific use case to achieve the best performance.</p>
+<h3 id="Create-an-RRF-Ranker" class="common-anchor-header">Create an RRF Ranker<button data-href="#Create-an-RRF-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -286,16 +290,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>컬렉션에 여러 벡터 필드가 설정된 후, 적절한 스무딩 매개변수를 사용하여 RRF 랭커를 생성하십시오:</p>
+    </button></h3><p>After your collection is set up with multiple vector fields, create an RRF Ranker with an appropriate smoothing parameter:</p>
 <div class="alert note">
-<p>Milvus 2.6.x 이상 버전에서는 <code translate="no">Function</code> API를 통해 재순위 지정 전략을 직접 구성할 수 있습니다. 이전 버전(v2.6.0 이전)을 사용하는 경우, 설정 방법에 대한 지침은 <a href="https://milvus.io/docs/v2.5.x/reranking.md#Usage-of-RRFRanker">재순위</a> 지정( <a href="https://milvus.io/docs/v2.5.x/reranking.md#Usage-of-RRFRanker">Reranking</a> ) 문서를 참조하십시오.</p>
+<p>Milvus 2.6.x and later let you configure reranking strategies directly via the <code translate="no">Function</code> API. If you’re using an earlier release (before v2.6.0), refer to the <a href="https://milvus.io/docs/v2.5.x/reranking.md#Usage-of-RRFRanker">Reranking</a> documentation for setup instructions.</p>
 </div>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> Function, FunctionType
 
@@ -338,43 +342,43 @@ CreateCollectionReq.<span class="hljs-type">Function</span> <span class="hljs-va
 <button class="copy-code-btn"></button></code></pre>
 <table>
    <tr>
-     <th><p>매개변수</p></th>
-     <th><p>필수?</p></th>
-     <th><p>설명</p></th>
-     <th><p>값/예시</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Required?</p></th>
+     <th><p>Description</p></th>
+     <th><p>Value/Example</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">name</code></p></td>
-     <td><p>예</p></td>
-     <td><p>이 함수의 고유 식별자</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Unique identifier for this Function</p></td>
      <td><p><code translate="no">"rrf"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">input_field_names</code></p></td>
-     <td><p>예</p></td>
-     <td><p>함수를 적용할 벡터 필드 목록 (RRF Ranker의 경우 비워야 함)</p></td>
+     <td><p>Yes</p></td>
+     <td><p>List of vector fields to apply the function to (must be empty for RRF Ranker)</p></td>
      <td><p>[]</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">function_type</code></p></td>
-     <td><p>예</p></td>
-     <td><p>호출할 함수의 유형; 재순위 지정 전략을 지정하려면 ` <code translate="no">RERANK</code> `을 사용하십시오</p></td>
+     <td><p>Yes</p></td>
+     <td><p>The type of Function to invoke; use <code translate="no">RERANK</code> to specify a reranking strategy</p></td>
      <td><p><code translate="no">FunctionType.RERANK</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.reranker</code></p></td>
-     <td><p>예</p></td>
-     <td><p>사용할 재순위 지정 방법을 지정합니다.</p><p>RRF Ranker를 사용하려면 반드시 <code translate="no">rrf</code> 로 설정해야 합니다.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Specifies the reranking method to use.</p><p>Must be set to <code translate="no">rrf</code> to use RRF Ranker.</p></td>
      <td><p><code translate="no">"rrf"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.k</code></p></td>
-     <td><p>아니요</p></td>
-     <td><p>문서 순위의 영향을 제어하는 평활화 매개변수입니다. <code translate="no">k</code> 값이 높을수록 상위 순위에 대한 민감도가 낮아집니다. 범위: (0, 16384); 기본값: <code translate="no">60</code>.</p><p>자세한 내용은 <a href="/docs/ko/v2.6.x/rrf-ranker.md#Mechanism-of-RRF-Ranker">RRF 랭커의 작동 원리를</a> 참조하십시오.</p></td>
+     <td><p>No</p></td>
+     <td><p>Smoothing parameter that controls the impact of document ranks; higher <code translate="no">k</code> reduces sensitivity to top ranks. Range: (0, 16384); default: <code translate="no">60</code>.</p><p>For details, refer to <a href="/docs/ko/v2.6.x/rrf-ranker.md#Mechanism-of-RRF-Ranker">Mechanism of RRF Ranker</a>.</p></td>
      <td><p><code translate="no">100</code></p></td>
    </tr>
 </table>
-<h3 id="Apply-to-hybrid-search" class="common-anchor-header">하이브리드 검색에 적용<button data-href="#Apply-to-hybrid-search" class="anchor-icon" translate="no">
+<h3 id="Assign-weights-to-search-paths" class="common-anchor-header">Assign weights to search paths<button data-href="#Assign-weights-to-search-paths" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -389,13 +393,150 @@ CreateCollectionReq.<span class="hljs-type">Function</span> <span class="hljs-va
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>RRF Ranker는 여러 벡터 필드를 결합하는 하이브리드 검색 작업을 위해 특별히 설계되었습니다. 하이브리드 검색에서 이를 사용하는 방법은 다음과 같습니다:</p>
+    </button></h3><p>Set <code translate="no">params.weights</code> to give each search path a different influence on the fused ranking. Each document’s score becomes <code translate="no">score(d) = Σ weights[i] / (k + rank_i(d))</code>. The value at position <em>i</em> applies to the <em>i</em>-th search request in your hybrid search call, in the order you pass the requests. Each weight must be from 0 to 1 inclusive, and you must provide exactly one weight per search request; otherwise, the request fails with a parameter error. Weights are not normalized and don’t need to sum to 1. A weight of <code translate="no">0</code> removes that path’s contribution to the score, but its results can still appear in the merged results. If you omit <code translate="no">weights</code>, every path has a weight of 1, which is classic RRF.</p>
+<div class="alert note">
+<p>Weighted RRF requires Milvus 2.6.23 or later. Earlier versions ignore the <code translate="no">weights</code> parameter without returning an error and rank results with classic RRF.</p>
+</div>
+<p>For example, apply weights <code translate="no">[0.3, 0.7]</code> to the <a href="/docs/ko/v2.6.x/rrf-ranker.md#Example-of-RRF-Ranker">sparse-dense example</a> above with <code translate="no">k</code> set to 60. The sparse request is passed first, so <code translate="no">0.3</code> applies to the sparse search and <code translate="no">0.7</code> to the dense search:</p>
+<table>
+   <tr>
+     <th><p><strong>ID</strong></p></th>
+     <th><p><strong>Rank (sparse)</strong></p></th>
+     <th><p><strong>Rank (dense)</strong></p></th>
+     <th><p><strong>Final Score</strong></p></th>
+   </tr>
+   <tr>
+     <td><p>101</p></td>
+     <td><p>1</p></td>
+     <td><p>2</p></td>
+     <td><p>0.3/(60+1)+0.7/(60+2) = 0.01620836</p></td>
+   </tr>
+   <tr>
+     <td><p>198</p></td>
+     <td><p>4</p></td>
+     <td><p>1</p></td>
+     <td><p>0.3/(60+4)+0.7/(60+1) = 0.01616291</p></td>
+   </tr>
+   <tr>
+     <td><p>175</p></td>
+     <td><p>5</p></td>
+     <td><p>4</p></td>
+     <td><p>0.3/(60+5)+0.7/(60+4) = 0.01555288</p></td>
+   </tr>
+   <tr>
+     <td><p>110</p></td>
+     <td><p>N/A</p></td>
+     <td><p>3</p></td>
+     <td><p>0.7/(60+3) = 0.01111111</p></td>
+   </tr>
+   <tr>
+     <td><p>250</p></td>
+     <td><p>N/A</p></td>
+     <td><p>5</p></td>
+     <td><p>0.7/(60+5) = 0.01076923</p></td>
+   </tr>
+   <tr>
+     <td><p>203</p></td>
+     <td><p>2</p></td>
+     <td><p>N/A</p></td>
+     <td><p>0.3/(60+2) = 0.00483871</p></td>
+   </tr>
+   <tr>
+     <td><p>150</p></td>
+     <td><p>3</p></td>
+     <td><p>N/A</p></td>
+     <td><p>0.3/(60+3) = 0.00476190</p></td>
+   </tr>
+</table>
+<p>With topK=5, IDs 110 and 250, which appear only in the dense results, replace IDs 203 and 150 in the final results.</p>
+<p>To create a weighted RRF Ranker, add <code translate="no">weights</code> to the ranker parameters, and then pass the ranker to your hybrid search as shown in <a href="/docs/ko/v2.6.x/rrf-ranker.md#Apply-to-hybrid-search">Apply to hybrid search</a>. For cURL, use the object as the <code translate="no">rerank</code> value of a hybrid search request; for a complete request, refer to <a href="/docs/ko/v2.6.x/multi-vector-search.md">Multi-Vector Hybrid Search</a>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
+<pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> Function, FunctionType
+
+ranker = Function(
+    name=<span class="hljs-string">&quot;rrf&quot;</span>,
+    input_field_names=[], <span class="hljs-comment"># Must be an empty list</span>
+    function_type=FunctionType.RERANK,
+    params={
+        <span class="hljs-string">&quot;reranker&quot;</span>: <span class="hljs-string">&quot;rrf&quot;</span>,
+        <span class="hljs-string">&quot;k&quot;</span>: <span class="hljs-number">100</span>,
+        <span class="hljs-string">&quot;weights&quot;</span>: [<span class="hljs-number">0.3</span>, <span class="hljs-number">0.7</span>]  <span class="hljs-comment"># One weight per search request, in request order</span>
+    }
+)
+<button class="copy-code-btn"></button></code></pre>
+<pre><code translate="no" class="language-java"><span class="hljs-keyword">import</span> io.milvus.common.clientenum.FunctionType;
+<span class="hljs-keyword">import</span> io.milvus.v2.service.collection.request.CreateCollectionReq;
+
+CreateCollectionReq.<span class="hljs-type">Function</span> <span class="hljs-variable">rerank</span> <span class="hljs-operator">=</span> CreateCollectionReq.Function.builder()
+        .name(<span class="hljs-string">&quot;rrf&quot;</span>)
+        .functionType(FunctionType.RERANK)
+        .param(<span class="hljs-string">&quot;reranker&quot;</span>, <span class="hljs-string">&quot;rrf&quot;</span>)
+        .param(<span class="hljs-string">&quot;k&quot;</span>, <span class="hljs-string">&quot;100&quot;</span>)
+        .param(<span class="hljs-string">&quot;weights&quot;</span>, <span class="hljs-string">&quot;[0.3, 0.7]&quot;</span>)
+        .build();
+<button class="copy-code-btn"></button></code></pre>
+<pre><code translate="no" class="language-javascript"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">FunctionType</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@zilliz/milvus2-sdk-node&quot;</span>;
+
+<span class="hljs-keyword">const</span> ranker = {
+  <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;rrf&quot;</span>,
+  <span class="hljs-attr">input_field_names</span>: [],
+  <span class="hljs-attr">type</span>: <span class="hljs-title class_">FunctionType</span>.<span class="hljs-property">RERANK</span>,
+  <span class="hljs-attr">params</span>: {
+    <span class="hljs-attr">reranker</span>: <span class="hljs-string">&quot;rrf&quot;</span>,
+    <span class="hljs-attr">k</span>: <span class="hljs-number">100</span>,
+    <span class="hljs-attr">weights</span>: [<span class="hljs-number">0.3</span>, <span class="hljs-number">0.7</span>],
+  },
+};
+<button class="copy-code-btn"></button></code></pre>
+<pre><code translate="no" class="language-go"><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;github.com/milvus-io/milvus/client/v2/entity&quot;</span>
+
+rerank := entity.NewFunction().
+    WithName(<span class="hljs-string">&quot;rrf&quot;</span>).
+    WithType(entity.FunctionTypeRerank).
+    WithParam(<span class="hljs-string">&quot;reranker&quot;</span>, <span class="hljs-string">&quot;rrf&quot;</span>).
+    WithParam(<span class="hljs-string">&quot;k&quot;</span>, <span class="hljs-number">100</span>).
+    WithParam(<span class="hljs-string">&quot;weights&quot;</span>, <span class="hljs-string">&quot;[0.3, 0.7]&quot;</span>)
+<span class="hljs-comment">// Pass it with milvusclient.NewHybridSearchOption(...).WithFunctionRerankers(rerank)</span>
+<button class="copy-code-btn"></button></code></pre>
+<pre><code translate="no" class="language-bash"><span class="hljs-string">&quot;rerank&quot;</span>: {
+    <span class="hljs-string">&quot;strategy&quot;</span>: <span class="hljs-string">&quot;rrf&quot;</span>,
+    <span class="hljs-string">&quot;params&quot;</span>: {
+        <span class="hljs-string">&quot;k&quot;</span>: 100,
+        <span class="hljs-string">&quot;weights&quot;</span>: [0.3, 0.7]
+    }
+}
+<button class="copy-code-btn"></button></code></pre>
+<div class="alert note">
+<p>Pass weights in the forms shown above. The SDKs’ RRF helper classes have no weights option, and weights added to them through a generic parameter method are ignored without an error.</p>
+</div>
+<h3 id="Apply-to-hybrid-search" class="common-anchor-header">Apply to hybrid search<button data-href="#Apply-to-hybrid-search" class="anchor-icon" translate="no">
+      <svg translate="no"
+        aria-hidden="true"
+        focusable="false"
+        height="20"
+        version="1.1"
+        viewBox="0 0 16 16"
+        width="16"
+      >
+        <path
+          fill="#0092E4"
+          fill-rule="evenodd"
+          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+        ></path>
+      </svg>
+    </button></h3><p>RRF Ranker is designed specifically for hybrid search operations that combine multiple vector fields. Here’s how to use it in a hybrid search:</p>
+<div class="multipleCode">
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, AnnSearchRequest, RRFRanker
 
@@ -511,4 +652,4 @@ searchRequests.add(AnnSearchReq.builder()
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>하이브리드 검색에 대한 자세한 내용은 <a href="/docs/ko/v2.6.x/multi-vector-search.md">다중 벡터 하이브리드 검색을</a> 참조하십시오.</p>
+<p>For more information on hybrid search, refer to <a href="/docs/ko/v2.6.x/multi-vector-search.md">Multi-Vector Hybrid Search</a>.</p>

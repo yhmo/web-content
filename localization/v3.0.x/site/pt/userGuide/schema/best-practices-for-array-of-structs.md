@@ -2,13 +2,12 @@
 id: best-practices-for-array-of-structs.md
 title: Data Model Design with an Array of StructsCompatible with Milvus 2.6.4+
 summary: >-
-  As aplicações modernas de IA, especialmente na Internet das Coisas (IoT) e na
-  condução autónoma, costumam processar eventos ricos e estruturados: uma
-  leitura de sensor com o seu registo temporal e representação vetorial, um
-  registo de diagnóstico com um código de erro e um excerto de áudio, ou um
-  segmento de viagem com localização, velocidade e contexto da cena. Isto exige
-  que a base de dados suporte nativamente a ingestão e a pesquisa de dados
-  aninhados.
+  Modern AI applications, especially in the Internet of Things (IoT) and
+  autonomous driving, typically reason over rich, structured events: a sensor
+  reading with its timestamp and vector embedding, a diagnostic log with an
+  error code and audio snippet, or a trip segment with location, speed, and
+  scene context. These require the database to natively support the ingestion
+  and search of nested data.
 beta: Milvus 2.6.4+
 ---
 <h1 id="Data-Model-Design-with-an-Array-of-Structs" class="common-anchor-header">Data Model Design with an Array of Structs<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.4+</span><button data-href="#Data-Model-Design-with-an-Array-of-Structs" class="anchor-icon" translate="no">

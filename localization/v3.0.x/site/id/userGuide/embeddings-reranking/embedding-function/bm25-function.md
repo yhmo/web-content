@@ -1,14 +1,13 @@
 ---
 id: bm25-function.md
-title: Fungsi BM25
+title: BM25 Function
 summary: >-
-  Fungsi BM25 memungkinkan pencarian teks lengkap dengan mengubah teks mentah
-  menjadi vektor jarang dan memberikan skor pada dokumen berdasarkan relevansi
-  leksikal. Fungsi ini menerapkan pencocokan berbasis istilah dan pembobotan
-  yang memperhitungkan frekuensi untuk mendukung pencarian yang efisien terhadap
-  dokumen teks yang sangat sesuai dengan istilah kueri.
+  The BM25 function enables full text search by transforming raw text into
+  sparse vectors and scoring documents based on lexical relevance. It applies
+  term-based matching and frequency-aware weighting to support efficient
+  retrieval of text documents that closely match query terms.
 ---
-<h1 id="BM25-Function" class="common-anchor-header">Fungsi BM25<button data-href="#BM25-Function" class="anchor-icon" translate="no">
+<h1 id="BM25-Function" class="common-anchor-header">BM25 Function<button data-href="#BM25-Function" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -23,9 +22,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p><strong>Fungsi BM25</strong> memungkinkan <a href="/docs/id/full-text-search.md">pencarian teks lengkap</a> dengan mengubah teks mentah menjadi <strong>vektor spars</strong> dan menilai dokumen berdasarkan relevansi leksikal. Fungsi ini menerapkan pencocokan berbasis istilah dan pembobotan yang mempertimbangkan frekuensi untuk mendukung pengambilan dokumen teks yang sangat sesuai dengan istilah kueri secara efisien.</p>
-<p>Sebagai fungsi teks lokal, fungsi BM25 berjalan di dalam Milvus dan tidak memerlukan inferensi model atau integrasi eksternal. Fungsi ini menyediakan mekanisme pengambilan yang deterministik dan transparan untuk skenario pencarian berbasis teks.</p>
-<h2 id="How-BM25-works" class="common-anchor-header">Cara Kerja BM25<button data-href="#How-BM25-works" class="anchor-icon" translate="no">
+    </button></h1><p>The <strong>BM25 function</strong> enables <a href="/docs/id/full-text-search.md">full text search</a> by transforming raw text into <strong>sparse vectors</strong> and scoring documents based on lexical relevance. It applies term-based matching and frequency-aware weighting to support efficient retrieval of text documents that closely match query terms.</p>
+<p>As a local text function, the BM25 function runs within Milvus and does not require model inference or external integrations. It provides a deterministic and transparent retrieval mechanism for text-based search scenarios.</p>
+<h2 id="How-BM25-works" class="common-anchor-header">How BM25 works<button data-href="#How-BM25-works" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -40,9 +39,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Algoritma <a href="https://en.wikipedia.org/wiki/Okapi_BM25">BM25</a> adalah algoritma penilaian relevansi berbasis istilah yang banyak digunakan dalam pengambilan teks lengkap. Di Milvus, BM25 diimplementasikan sebagai pipa pengambilan yang jarang yang mengubah teks menjadi representasi bobot istilah dan mengambil <em>K</em> dokumen teratas menggunakan indeks yang jarang terdistribusi.</p>
-<p>Alur kerja secara keseluruhan terdiri dari dua jalur simetris: <strong>pengambilan dokumen</strong> dan <strong>pemrosesan teks kueri</strong>, yang menggunakan logika analisis teks yang sama.</p>
-<h3 id="Document-ingestion-From-text-to-sparse-representation" class="common-anchor-header">Penerimaan dokumen: Dari teks ke representasi spars<button data-href="#Document-ingestion-From-text-to-sparse-representation" class="anchor-icon" translate="no">
+    </button></h2><p>The <a href="https://en.wikipedia.org/wiki/Okapi_BM25">BM25</a> algorithm is a term-based relevance scoring algorithm widely used in full text retrieval. In Milvus, BM25 is implemented as a sparse retrieval pipeline that converts text into term-weight representations and retrieves top <em>K</em> documents using distributed sparse indexes.</p>
+<p>The overall workflow consists of two symmetric paths: <strong>document ingestion</strong> and <strong>query text processing</strong>, which share the same text analysis logic.</p>
+<h3 id="Document-ingestion-From-text-to-sparse-representation" class="common-anchor-header">Document ingestion: From text to sparse representation<button data-href="#Document-ingestion-From-text-to-sparse-representation" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -57,28 +56,28 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Saat sebuah dokumen dimasukkan, teks mentahnya terlebih dahulu diproses oleh <strong><a href="/docs/id/analyzer-overview.md">penganalisis</a></strong>, yang memecah teks tersebut menjadi istilah-istilah individual.</p>
-<p>Misalnya, dokumen:</p>
+    </button></h3><p>When a document is inserted, its raw text is first processed by an <strong><a href="/docs/id/analyzer-overview.md">analyzer</a></strong>, which tokenizes the text into individual terms.</p>
+<p>For example, the document:</p>
 <pre><code translate="no" class="language-plaintext">&quot;We are loving Milvus!&quot;
 <button class="copy-code-btn"></button></code></pre>
-<p>dapat dianalisis menjadi istilah-istilah berikut:</p>
+<p>can be analyzed into the following terms:</p>
 <pre><code translate="no" class="language-plaintext">[&quot;we&quot;, &quot;love&quot;, &quot;milvus&quot;]
 <button class="copy-code-btn"></button></code></pre>
-<p>Setiap dokumen kemudian direpresentasikan sebagai representasi frekuensi istilah (TF), yang mencatat berapa kali setiap istilah muncul dalam dokumen. Contohnya:</p>
+<p>Each document is then represented as a term frequency (TF) representation, which records how many times each term appears in the document. For example:</p>
 <pre><code translate="no" class="language-plaintext">{
   &quot;we&quot;: 1,
   &quot;love&quot;: 1,
   &quot;milvus&quot;: 1
 }
 <button class="copy-code-btn"></button></code></pre>
-<p>Pada saat yang sama, Milvus memperbarui statistik tingkat korpus, termasuk:</p>
+<p>At the same time, Milvus updates corpus-level statistics, including:</p>
 <ul>
-<li><p>frekuensi dokumen (DF) dari setiap istilah</p></li>
-<li><p>panjang dokumen rata-rata</p></li>
-<li><p>daftar posting yang memetakan setiap istilah ke dokumen yang mengandungnya</p></li>
+<li><p>the document frequency (DF) of each term</p></li>
+<li><p>the average document length</p></li>
+<li><p>posting lists that map each term to the documents containing it</p></li>
 </ul>
-<p>Representasi TF dokumen dimasukkan ke dalam <strong>embedding spars</strong>, di mana posting istilah dibagi ke berbagai node untuk pencarian yang dapat diskalakan.</p>
-<h3 id="Query-text-process-Apply-IDF-weighting" class="common-anchor-header">Proses teks kueri: Menerapkan pembobotan IDF<button data-href="#Query-text-process-Apply-IDF-weighting" class="anchor-icon" translate="no">
+<p>The document’s TF representation is inserted into <strong>sparse embeddings</strong>, where term postings are partitioned across nodes for scalable retrieval.</p>
+<h3 id="Query-text-process-Apply-IDF-weighting" class="common-anchor-header">Query text process: Apply IDF weighting<button data-href="#Query-text-process-Apply-IDF-weighting" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -93,22 +92,22 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Saat kueri berbasis teks diajukan, kueri tersebut diproses oleh <strong>penganalisis yang sama</strong> yang digunakan selama <a href="/docs/id/bm25-function.md#Document-ingestion-From-text-to-sparse-representation">proses pengambilan dokumen</a>, sehingga memastikan segmentasi istilah yang konsisten.</p>
-<p>Misalnya, kueri:</p>
+    </button></h3><p>When a text-based query is issued, it is processed by the <strong>same analyzer</strong> used during <a href="/docs/id/bm25-function.md#Document-ingestion-From-text-to-sparse-representation">document ingestion</a>, ensuring consistent term segmentation.</p>
+<p>For example, the query:</p>
 <pre><code translate="no" class="language-plaintext">&quot;who loves Milvus?&quot;
 <button class="copy-code-btn"></button></code></pre>
-<p>dapat dianalisis menjadi:</p>
+<p>can be analyzed into:</p>
 <pre><code translate="no" class="language-plaintext">[&quot;who&quot;, &quot;love&quot;, &quot;milvus&quot;]
 <button class="copy-code-btn"></button></code></pre>
-<p>Untuk setiap istilah kueri, Milvus mencari <a href="https://en.wikipedia.org/wiki/Tf%E2%80%93idf">frekuensi dokumen terbalik</a> (IDF) dari statistik korpus. IDF mencerminkan seberapa informatif suatu istilah di seluruh kumpulan data: istilah yang lebih jarang mendapat bobot lebih tinggi, sedangkan istilah umum mendapat bobot lebih rendah.</p>
-<p>Secara konseptual, hal ini menghasilkan sekumpulan istilah kueri yang diberi bobot IDF, seperti:</p>
+<p>For each query term, Milvus looks up its <a href="https://en.wikipedia.org/wiki/Tf%E2%80%93idf">inverse document frequency</a> (IDF) from corpus statistics. IDF reflects how informative a term is across the entire dataset: rarer terms receive higher weights, while common terms receive lower weights.</p>
+<p>Conceptually, this produces a set of IDF-weighted query terms, such as:</p>
 <pre><code translate="no" class="language-plaintext">{
   &quot;who&quot;: 0.1,
   &quot;love&quot;: 0.5,
   &quot;milvus&quot;: 1.2
 }
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="BM25-scoring-and-top-K-retrieval" class="common-anchor-header">Penilaian BM25 dan pengambilan K teratas<button data-href="#BM25-scoring-and-top-K-retrieval" class="anchor-icon" translate="no">
+<h3 id="BM25-scoring-and-top-K-retrieval" class="common-anchor-header">BM25 scoring and top K retrieval<button data-href="#BM25-scoring-and-top-K-retrieval" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -123,27 +122,27 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>BM25 memeringkat dokumen dengan menghitung skor relevansi berdasarkan istilah kueri yang cocok. Penilaian dilakukan pada <strong>tingkat istilah</strong> dan diagregasi pada <strong>tingkat dokumen</strong>.</p>
-<p><strong>Penilaian tingkat istilah</strong></p>
-<p>Untuk setiap istilah kueri yang muncul dalam suatu dokumen, BM25 menghitung skor tingkat istilah:</p>
+    </button></h3><p>BM25 ranks documents by computing a relevance score based on matched query terms. Scoring is performed at the <strong>term level</strong> and aggregated at the <strong>document level</strong>.</p>
+<p><strong>Term-level scoring</strong></p>
+<p>For each query term that appears in a document, BM25 computes a term-level score:</p>
 <pre><code translate="no" class="language-plaintext">term_score =
   IDF(term) ×
   TF_boost(term, document, k1) ×
   length_normalization(document, b)
 <button class="copy-code-btn"></button></code></pre>
-<p>Di mana:</p>
+<p>Where:</p>
 <ul>
-<li><p><strong>IDF(istilah)</strong> mencerminkan seberapa jarang istilah tersebut muncul dalam koleksi</p></li>
-<li><p><strong>TF_boost(…, k1)</strong> meningkat seiring dengan frekuensi istilah tetapi mencapai titik jenuh saat frekuensi semakin tinggi</p></li>
-<li><p><strong>length_normalization(…, b)</strong> menyesuaikan skor berdasarkan panjang dokumen</p></li>
+<li><p><strong>IDF(term)</strong> reflects how rare the term is in the collection</p></li>
+<li><p><strong>TF_boost(…, k1)</strong> increases with term frequency but saturates as frequency grows</p></li>
+<li><p><strong>length_normalization(…, b)</strong> adjusts the score based on document length</p></li>
 </ul>
-<p><strong>Penilaian tingkat dokumen dan pencarian Top-K</strong></p>
-<p>Skor dokumen akhir adalah jumlah dari skor tingkat istilah untuk semua istilah kueri yang cocok:</p>
+<p><strong>Document-level scoring and Top-K retrieval</strong></p>
+<p>The final document score is the sum of term-level scores for all matched query terms:</p>
 <pre><code translate="no" class="language-plaintext">document_score =
   sum of term_score over all matched query terms
 <button class="copy-code-btn"></button></code></pre>
-<p>Dokumen diurutkan berdasarkan skor akhir mereka, dan dokumen dengan skor tertinggi Top-K dikembalikan.</p>
-<h2 id="Before-you-start" class="common-anchor-header">Sebelum Anda mulai<button data-href="#Before-you-start" class="anchor-icon" translate="no">
+<p>Documents are ranked by their final scores, and the top-K highest-scoring documents are returned.</p>
+<h2 id="Before-you-start" class="common-anchor-header">Before you start<button data-href="#Before-you-start" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -158,18 +157,18 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Sebelum menggunakan fungsi BM25, rencanakan skema koleksi Anda untuk memastikan skema tersebut mendukung pencarian teks lengkap leksikal:</p>
+    </button></h2><p>Before using the BM25 function, plan your collection schema to ensure it supports lexical full text search:</p>
 <ul>
-<li><p><strong>Sebuah bidang teks untuk konten mentah</strong></p>
-<p>Koleksi Anda harus menyertakan bidang " <code translate="no">VARCHAR</code> " untuk menyimpan teks mentah. Bidang ini merupakan sumber teks yang akan diproses untuk pencarian teks lengkap.</p></li>
-<li><p><strong>Penganalisis untuk bidang teks</strong></p>
-<p>Bidang teks harus memiliki penganalisis yang diaktifkan. Penganalisis menentukan bagaimana teks di-tokenisasi dan dinormalisasi sebelum relevansi leksikal dihitung oleh fungsi BM25.</p>
-<p>Secara default, Milvus menyediakan penganalisis bawaan yang menokenisasi teks berdasarkan spasi dan tanda baca. Jika aplikasi Anda memerlukan perilaku tokenisasi atau normalisasi khusus, Anda dapat menentukan penganalisis khusus. Lihat <a href="/docs/id/choose-the-right-analyzer-for-your-use-case.md">Memilih Penganalisis yang Tepat untuk Kasus Penggunaan Anda</a> untuk detailnya.</p></li>
-<li><p><strong>Vektor spars untuk keluaran BM25</strong></p>
-<p>Koleksi Anda harus menyertakan bidang " <code translate="no">SPARSE_FLOAT_VECTOR</code> " untuk menyimpan representasi spars yang dihasilkan oleh fungsi BM25. Bidang ini digunakan untuk pengindeksan dan pengambilan data selama pencarian teks lengkap.</p></li>
+<li><p><strong>A text field for raw content</strong></p>
+<p>Your collection must include a <code translate="no">VARCHAR</code> field to store raw text. This field is the source of text that will be processed for full text search.</p></li>
+<li><p><strong>An analyzer for the text field</strong></p>
+<p>The text field must have an analyzer enabled. The analyzer defines how text is tokenized and normalized before lexical relevance is computed by the BM25 function.</p>
+<p>By default, Milvus provides a built-in analyzer that tokenizes text based on whitespace and punctuation. If your application requires custom tokenization or normalization behavior, you can define a custom analyzer. See <a href="/docs/id/choose-the-right-analyzer-for-your-use-case.md">Choose the Right Analyzer for Your Use Case</a> for details.</p></li>
+<li><p><strong>A sparse vector for BM25 output</strong></p>
+<p>Your collection must include a <code translate="no">SPARSE_FLOAT_VECTOR</code> field to store the sparse representations generated by the BM25 function. This field is used for indexing and retrieval during full text search.</p></li>
 </ul>
-<p>Setelah pertimbangan tingkat skema ini diselesaikan, lanjutkan untuk membuat koleksi dan menggunakan fungsi BM25.</p>
-<h2 id="Step-1-Create-a-collection-with-a-BM25-function" class="common-anchor-header">Langkah 1: Buat koleksi dengan fungsi BM25<button data-href="#Step-1-Create-a-collection-with-a-BM25-function" class="anchor-icon" translate="no">
+<p>After these schema-level considerations are figured out, proceed to create the collection and use the BM25 function.</p>
+<h2 id="Step-1-Create-a-collection-with-a-BM25-function" class="common-anchor-header">Step 1: Create a collection with a BM25 function<button data-href="#Step-1-Create-a-collection-with-a-BM25-function" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -184,20 +183,20 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Untuk menggunakan fungsi BM25, Anda harus mendefinisikannya saat membuat koleksi. Fungsi ini menjadi bagian dari skema koleksi dan diterapkan secara otomatis selama penyisipan data dan pencarian.</p>
-<h4 id="Define-schema-fields" class="common-anchor-header">Tentukan bidang skema</h4><p>Skema koleksi Anda harus mencakup setidaknya tiga bidang wajib:</p>
+    </button></h2><p>To use the BM25 function, you must define it when creating the collection. The function becomes part of the collection schema and is applied automatically during data insertion and search.</p>
+<h4 id="Define-schema-fields" class="common-anchor-header">Define schema fields</h4><p>Your collection schema must include at least three required fields:</p>
 <ul>
-<li><p><strong>Bidang utama</strong>: Mengidentifikasi setiap entitas dalam koleksi secara unik.</p></li>
-<li><p><strong>Bidang teks</strong> (<code translate="no">VARCHAR</code>): Menyimpan dokumen teks mentah. Harus mengatur ` <code translate="no">enable_analyzer=True</code> ` agar Milvus dapat memproses teks untuk peringkat relevansi BM25. Secara default, Milvus menggunakan <a href="/docs/id/standard-analyzer.md"><code translate="no">standard</code></a><a href="/docs/id/standard-analyzer.md"> analizer</a> ini untuk analisis teks. Untuk mengonfigurasi analizer yang berbeda, lihat <a href="/docs/id/analyzer-overview.md">Ikhtisar Analizer</a>.</p></li>
-<li><p><strong>Bidang vektor jarang</strong> (<code translate="no">SPARSE_FLOAT_VECTOR</code>): Menyimpan embedding jarang yang dihasilkan secara otomatis oleh fungsi BM25.</p></li>
+<li><p><strong>Primary field</strong>: Uniquely identifies each entity in the collection.</p></li>
+<li><p><strong>Text field</strong> (<code translate="no">VARCHAR</code>): Stores raw text documents. Must set <code translate="no">enable_analyzer=True</code> so Milvus can process the text for BM25 relevance ranking. By default, Milvus uses the <a href="/docs/id/standard-analyzer.md"><code translate="no">standard</code></a><a href="/docs/id/standard-analyzer.md"> analyzer</a> for text analysis. To configure a different analyzer, refer to <a href="/docs/id/analyzer-overview.md">Analyzer Overview</a>.</p></li>
+<li><p><strong>Sparse vector field</strong> (<code translate="no">SPARSE_FLOAT_VECTOR</code>): Stores sparse embeddings automatically generated by the BM25 function.</p></li>
 </ul>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType, Function, FunctionType
 
@@ -347,15 +346,15 @@ schema-&gt;<span class="hljs-built_in">AddField</span>(milvus::<span class="hljs
         ]
     }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h4 id="Define-the-BM25-function" class="common-anchor-header">Tentukan fungsi BM25</h4><p>Fungsi BM25 mengubah teks yang telah ditokenisasi menjadi vektor spars yang mendukung penilaian BM25.</p>
-<p>Tentukan fungsi tersebut dan tambahkan ke skema Anda:</p>
+<h4 id="Define-the-BM25-function" class="common-anchor-header">Define the BM25 function</h4><p>The BM25 function converts tokenized text into sparse vectors that support BM25 scoring.</p>
+<p>Define the function and add it to your schema:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">bm25_function = Function(
     name=<span class="hljs-string">&quot;text_bm25_emb&quot;</span>, <span class="hljs-comment"># Function name</span>
@@ -442,14 +441,14 @@ schema-&gt;<span class="hljs-built_in">AddFunction</span>(function);
         ]
     }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h4 id="Configure-the-index" class="common-anchor-header">Konfigurasikan indeks</h4><p>Setelah mendefinisikan skema dengan bidang-bidang yang diperlukan dan fungsi bawaan, atur indeks untuk koleksi Anda.</p>
+<h4 id="Configure-the-index" class="common-anchor-header">Configure the index</h4><p>After defining the schema with necessary fields and the built-in function, set up the index for your collection.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">index_params = client.prepare_index_params()
 
@@ -528,14 +527,14 @@ index_params.<span class="hljs-built_in">AddExtraParam</span>(<span class="hljs-
         }
     ]&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h4 id="Create-the-collection" class="common-anchor-header">Buat koleksi</h4><p>Sekarang buat koleksi menggunakan skema dan parameter indeks yang telah didefinisikan:</p>
+<h4 id="Create-the-collection" class="common-anchor-header">Create the collection</h4><p>Now create the collection using the schema and index parameters defined:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.create_collection(
     collection_name=<span class="hljs-string">&#x27;my_collection&#x27;</span>,
@@ -626,8 +625,8 @@ curl --request POST \
     &quot;collectionName&quot;: &quot;my_collection&quot;
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Setelah koleksi dengan fungsi BM25 dibuat, Anda dapat memasukkan teks dan melakukan pencarian leksikal berdasarkan kueri teks.</p>
-<h2 id="Step-2-Insert-text-data-into-the-collection" class="common-anchor-header">Langkah 2: Masukkan data teks ke dalam koleksi<button data-href="#Step-2-Insert-text-data-into-the-collection" class="anchor-icon" translate="no">
+<p>Once the collection with a BM25 function is created, you can insert text and perform lexical searches based on text query.</p>
+<h2 id="Step-2-Insert-text-data-into-the-collection" class="common-anchor-header">Step 2: Insert text data into the collection<button data-href="#Step-2-Insert-text-data-into-the-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -642,14 +641,14 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Setelah menyiapkan koleksi dan indeks, Anda siap untuk memasukkan data teks. Dalam proses ini, Anda hanya perlu menyediakan teks mentah. Fungsi BM25 yang telah kita tentukan sebelumnya secara otomatis menghasilkan vektor spars untuk setiap entri teks.</p>
+    </button></h2><p>After setting up your collection and index, you’re ready to insert text data. In this process, you need only to provide the raw text. The BM25 function we defined earlier automatically generates the sparse vector for each text entry.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.insert(<span class="hljs-string">&#x27;my_collection&#x27;</span>, [
     {<span class="hljs-string">&#x27;text&#x27;</span>: <span class="hljs-string">&#x27;information retrieval is a field of study.&#x27;</span>},
@@ -737,7 +736,7 @@ milvus::InsertResponse response;
 }&#x27;</span>
 
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Step-3-Search-with-text-query" class="common-anchor-header">Langkah 3: Melakukan pencarian dengan kueri teks<button data-href="#Step-3-Search-with-text-query" class="anchor-icon" translate="no">
+<h2 id="Step-3-Search-with-text-query" class="common-anchor-header">Step 3: Search with text query<button data-href="#Step-3-Search-with-text-query" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -752,14 +751,14 @@ milvus::InsertResponse response;
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Setelah Anda memasukkan data ke dalam koleksi, Anda dapat melakukan pencarian teks lengkap menggunakan kueri teks mentah. Milvus secara otomatis mengubah kueri Anda menjadi vektor spars dan menentukan peringkat hasil pencarian yang cocok menggunakan algoritma BM25, lalu mengembalikan hasil topK (<code translate="no">limit</code>).</p>
+    </button></h2><p>Once you’ve inserted data into your collection, you can perform full text searches using raw text queries. Milvus automatically converts your query into a sparse vector and ranks the matched search results using the BM25 algorithm, and then returns the topK (<code translate="no">limit</code>) results.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">search_params = {
     <span class="hljs-string">&quot;metric_type&quot;</span>: <span class="hljs-string">&quot;BM25&quot;</span>,

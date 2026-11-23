@@ -1,7 +1,9 @@
 ---
 id: upsert-entities.md
 title: Upsert Entities
-summary: upsert 操作は、コレクション内のエンティティを挿入または更新するための便利な方法を提供します。
+summary: >-
+  The upsert operation provides a convenient way to insert or update entities in
+  a collection.
 ---
 <h1 id="Upsert-Entities" class="common-anchor-header">Upsert Entities<button data-href="#Upsert-Entities" class="anchor-icon" translate="no">
       <svg translate="no"

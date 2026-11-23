@@ -1,10 +1,14 @@
 ---
 id: geometry-operators.md
-title: 几何操作符Compatible with Milvus 2.6.4+
-summary: Milvus 支持对几何字段进行空间过滤的一系列操作符，这些操作符对于管理和分析几何数据至关重要。通过这些操作符，可以根据对象之间的几何关系检索实体。
+title: Geometry OperatorsCompatible with Milvus 2.6.4+
+summary: >-
+  Milvus supports a set of operators for spatial filtering on GEOMETRY fields,
+  which are essential for managing and analyzing geometric data. These operators
+  allow you to retrieve entities based on the geometric relationships between
+  objects.
 beta: Milvus 2.6.4+
 ---
-<h1 id="Geometry-Operators" class="common-anchor-header">几何操作符<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.4+</span><button data-href="#Geometry-Operators" class="anchor-icon" translate="no">
+<h1 id="Geometry-Operators" class="common-anchor-header">Geometry Operators<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.4+</span><button data-href="#Geometry-Operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -19,9 +23,9 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Milvus 支持对<code translate="no">GEOMETRY</code> 字段进行空间过滤的一系列操作符，这对于管理和分析几何数据至关重要。这些操作符允许您根据对象之间的几何关系检索实体。</p>
-<p>所有几何操作符都通过接收两个几何参数来操作：<a href="https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry">Collection</a>schema 中定义的<code translate="no">GEOMETRY</code> <a href="https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry">字段名</a>和以<a href="https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry">Well-Known Text</a>(WKT) 格式表示的目标几何对象。</p>
-<h2 id="Use-syntax" class="common-anchor-header">使用语法<button data-href="#Use-syntax" class="anchor-icon" translate="no">
+    </button></h1><p>Milvus supports a set of operators for spatial filtering on <code translate="no">GEOMETRY</code> fields, which are essential for managing and analyzing geometric data. These operators allow you to retrieve entities based on the geometric relationships between objects.</p>
+<p>All geometry operators function by taking two geometric arguments: the name of the <code translate="no">GEOMETRY</code> field defined in your collection schema and a target geometry object represented in <a href="https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry">Well-Known Text</a> (WKT) format.</p>
+<h2 id="Use-syntax" class="common-anchor-header">Use syntax<button data-href="#Use-syntax" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -36,20 +40,20 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>要对<code translate="no">GEOMETRY</code> 字段进行筛选，请在表达式中使用几何操作符：</p>
+    </button></h2><p>To filter on a <code translate="no">GEOMETRY</code> field, use a geometry operator in an expression:</p>
 <ul>
-<li><p>一般：<code translate="no">{operator}(geo_field, '{wkt}')</code></p></li>
-<li><p>基于距离：<code translate="no">ST_DWITHIN(geo_field, '{wkt}', distance)</code></p></li>
+<li><p>General: <code translate="no">{operator}(geo_field, '{wkt}')</code></p></li>
+<li><p>Distance-based: <code translate="no">ST_DWITHIN(geo_field, '{wkt}', distance)</code></p></li>
 </ul>
-<p>其中</p>
+<p>Where:</p>
 <ul>
-<li><p><code translate="no">operator</code> 是支持的几何操作符之一（如<code translate="no">ST_CONTAINS</code>,<code translate="no">ST_INTERSECTS</code> ）。操作符名称必须全部大写或小写。有关支持的操作符列表，请参阅<a href="/docs/zh/geometry-operators.md#Supported-geometry-operators">支持的几何图形操作符</a>。</p></li>
-<li><p><code translate="no">geo_field</code> 是<code translate="no">GEOMETRY</code> 字段的名称。</p></li>
-<li><p><code translate="no">'{wkt}'</code> 是要查询的几何体的 WKT 表示形式。</p></li>
-<li><p><code translate="no">distance</code> 是专门用于<code translate="no">ST_DWITHIN</code> 的阈值。</p></li>
+<li><p><code translate="no">operator</code> is one of the supported geometry operators (e.g., <code translate="no">ST_CONTAINS</code>, <code translate="no">ST_INTERSECTS</code>). Operator names must be all uppercase or all lowercase. For a list of supported operators, refer to <a href="/docs/zh/v2.6.x/geometry-operators.md#Supported-geometry-operators">Supported geometry operators</a>.</p></li>
+<li><p><code translate="no">geo_field</code> is the name of your <code translate="no">GEOMETRY</code> field.</p></li>
+<li><p><code translate="no">'{wkt}'</code> is the WKT representation of the geometry to query.</p></li>
+<li><p><code translate="no">distance</code> is the threshold specifically for <code translate="no">ST_DWITHIN</code>.</p></li>
 </ul>
-<p>要了解有关 Milvus 中<code translate="no">GEOMETRY</code> 字段的更多信息，请参阅<a href="/docs/zh/geometry-field.md">几何字段</a>。</p>
-<h2 id="Supported-geometry-operators" class="common-anchor-header">支持的几何操作符<button data-href="#Supported-geometry-operators" class="anchor-icon" translate="no">
+<p>To learn more about <code translate="no">GEOMETRY</code> fields in Milvus, refer to <a href="/docs/zh/v2.6.x/geometry-field.md">Geometry Field</a>.</p>
+<h2 id="Supported-geometry-operators" class="common-anchor-header">Supported geometry operators<button data-href="#Supported-geometry-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -64,58 +68,58 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>下表列出了 Milvus 中可用的几何操作符。</p>
+    </button></h2><p>The following table lists the geometry operators available in Milvus.</p>
 <div class="alert note">
-<p>操作符名称必须<strong>全部大写</strong>或<strong>全部小写</strong>。请勿在同一操作符名称中混合使用大小写。</p>
+<p>Operator names must be <strong>all uppercase</strong> or <strong>all lowercase</strong>. Do not mix cases within the same operator name.</p>
 </div>
 <table>
    <tr>
-     <th><p>操作符</p></th>
-     <th><p>说明</p></th>
-     <th><p>示例</p></th>
+     <th><p>Operator</p></th>
+     <th><p>Description</p></th>
+     <th><p>Example</p></th>
    </tr>
    <tr>
-     <td><p><code translate="no">ST_EQUALS(A, B)</code> /<code translate="no">st_equals(A, B)</code></p></td>
-     <td><p>如果两个几何图形在空间上完全相同，即具有相同的点集和尺寸，则返回 TRUE。</p></td>
-     <td><p>两个几何图形（A 和 B）在空间上是否完全相同？</p></td>
+     <td><p><code translate="no">ST_EQUALS(A, B)</code> / <code translate="no">st_equals(A, B)</code></p></td>
+     <td><p>Returns TRUE if two geometries are spatially identical, meaning they have the same set of points and dimension.</p></td>
+     <td><p>Are two geometries (A and B) exactly the same in space?</p></td>
    </tr>
    <tr>
-     <td><p><code translate="no">ST_CONTAINS(A, B)</code> /<code translate="no">st_contains(A, B)</code></p></td>
-     <td><p>如果几何体 A 完全包含几何体 B，且它们的内部至少有一个共同点，则返回 TRUE。</p></td>
-     <td><p>一个城市边界（A）是否包含一个特定的公园（B）？</p></td>
+     <td><p><code translate="no">ST_CONTAINS(A, B)</code> / <code translate="no">st_contains(A, B)</code></p></td>
+     <td><p>Returns TRUE if geometry A completely contains geometry B, with their interiors having at least one point in common.</p></td>
+     <td><p>Is a city boundary (A) containing a specific park (B)?</p></td>
    </tr>
    <tr>
-     <td><p><code translate="no">ST_CROSSES(A, B)</code> /<code translate="no">st_crosses(A, B)</code></p></td>
-     <td><p>如果几何体 A 和 B 部分相交但不完全包含对方，则返回 TRUE。</p></td>
-     <td><p>两条道路（A 和 B）是否交叉？</p></td>
+     <td><p><code translate="no">ST_CROSSES(A, B)</code> / <code translate="no">st_crosses(A, B)</code></p></td>
+     <td><p>Returns TRUE if geometries A and B partially intersect but do not fully contain each other.</p></td>
+     <td><p>Do two roads (A and B) cross at an intersection?</p></td>
    </tr>
    <tr>
-     <td><p><code translate="no">ST_INTERSECTS(A, B)</code> /<code translate="no">st_intersects(A, B)</code></p></td>
-     <td><p>如果几何图形 A 和 B 至少有一个公共点，则返回 TRUE。这是最通用、使用最广泛的空间查询。</p></td>
-     <td><p>搜索区域（A）是否与任何商店位置（B）相交？</p></td>
+     <td><p><code translate="no">ST_INTERSECTS(A, B)</code> / <code translate="no">st_intersects(A, B)</code></p></td>
+     <td><p>Returns TRUE if geometries A and B have at least one common point. This is the most general and widely used spatial query.</p></td>
+     <td><p>Does a search area (A) intersect with any of the store locations (B)?</p></td>
    </tr>
    <tr>
-     <td><p><code translate="no">ST_OVERLAPS(A, B)</code> /<code translate="no">st_overlaps(A, B)</code></p></td>
-     <td><p>如果几何图形 A 和 B 的尺寸相同、部分重叠且都不完全包含其他几何图形，则返回 TRUE。</p></td>
-     <td><p>两个地块（A 和 B）是否重叠？</p></td>
+     <td><p><code translate="no">ST_OVERLAPS(A, B)</code> / <code translate="no">st_overlaps(A, B)</code></p></td>
+     <td><p>Returns TRUE if geometries A and B are of the same dimension, partially overlap, and neither fully contains the other.</p></td>
+     <td><p>Do two land plots (A and B) overlap?</p></td>
    </tr>
    <tr>
-     <td><p><code translate="no">ST_TOUCHES(A, B)</code> /<code translate="no">st_touches(A, B)</code></p></td>
-     <td><p>如果几何图形 A 和 B 有共同的边界，但内部不相交，则返回 TRUE。</p></td>
-     <td><p>两个相邻的属性（A 和 B）有共同边界吗？</p></td>
+     <td><p><code translate="no">ST_TOUCHES(A, B)</code> / <code translate="no">st_touches(A, B)</code></p></td>
+     <td><p>Returns TRUE if geometries A and B share a common boundary but their interiors do not intersect.</p></td>
+     <td><p>Do two neighboring properties (A and B) share a border?</p></td>
    </tr>
    <tr>
-     <td><p><code translate="no">ST_WITHIN(A, B)</code> /<code translate="no">st_within(A, B)</code></p></td>
-     <td><p>如果几何体 A 完全包含在几何体 B 中，且它们的内部至少有一个共同点，则返回 TRUE。这是<code translate="no">ST_Contains(B, A)</code> 的逆运算。</p></td>
-     <td><p>特定兴趣点（A）是否在定义的搜索半径（B）内？</p></td>
+     <td><p><code translate="no">ST_WITHIN(A, B)</code> / <code translate="no">st_within(A, B)</code></p></td>
+     <td><p>Returns TRUE if geometry A is completely contained within geometry B, with their interiors having at least one point in common. It's the inverse of <code translate="no">ST_Contains(B, A)</code>.</p></td>
+     <td><p>Is a specific point of interest (A) within a defined search radius (B)?</p></td>
    </tr>
    <tr>
-     <td><p><code translate="no">ST_DWITHIN(A, B, distance)</code> /<code translate="no">st_dwithin(A, B, distance)</code></p></td>
-     <td><p>如果几何体 A 和几何体 B 之间的距离小于或等于指定距离，则返回 TRUE。</p><p><strong>注意</strong>：几何体 B 目前只支持点。距离单位为米。</p></td>
-     <td><p>查找距离特定点（B）5000 米以内的所有点。</p></td>
+     <td><p><code translate="no">ST_DWITHIN(A, B, distance)</code> / <code translate="no">st_dwithin(A, B, distance)</code></p></td>
+     <td><p>Returns TRUE if the distance between geometry A and geometry B is less than or equal to the specified distance.</p><p><strong>Note</strong>: Geometry B currently only supports points. The distance unit is meters.</p></td>
+     <td><p>Find all points within 5000 meters of a specific point (B).</p></td>
    </tr>
 </table>
-<h2 id="STEQUALS--stequals" class="common-anchor-header">ST_EQUALS / ST_equals<button data-href="#STEQUALS--stequals" class="anchor-icon" translate="no">
+<h2 id="STEQUALS--stequals" class="common-anchor-header">ST_EQUALS / st_equals<button data-href="#STEQUALS--stequals" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -130,9 +134,9 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>如果两个几何图形在空间上相同，即具有相同的点集和尺寸，则<code translate="no">ST_EQUALS</code> 操作符返回 TRUE。这对于验证两个存储的几何对象是否代表完全相同的位置和形状非常有用。</p>
-<p><strong>示例</strong></p>
-<p>假设您要检查存储的几何体（如点或多边形）是否与目标几何体完全相同。例如，您可以将存储的点与特定的兴趣点进行比较。</p>
+    </button></h2><p>The <code translate="no">ST_EQUALS</code> operator returns TRUE if two geometries are spatially identical, meaning they have the same set of points and dimension. This is useful for verifying if two stored geometry objects represent exactly the same location and shape.</p>
+<p><strong>Example</strong></p>
+<p>Suppose you want to check whether a stored geometry (such as a point or polygon) is exactly the same as a target geometry. For instance, you can compare a stored point to a specific point of interest.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># The filter expression to check if a geometry matches a specific point</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&quot;ST_EQUALS(geo_field, &#x27;POINT(10 20)&#x27;)&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -151,9 +155,9 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>如果第一个几何体完全包含第二个几何体，则<code translate="no">ST_CONTAINS</code> 操作符返回 TRUE。这对于查找多边形中的点或较大多边形中的较小多边形非常有用。</p>
-<p><strong>示例</strong></p>
-<p>想象一下，您有一个城市区域 Collections，并希望找到一个特定的兴趣点（如餐馆），该兴趣点位于给定区域的边界内。</p>
+    </button></h2><p>The <code translate="no">ST_CONTAINS</code> operator returns TRUE if the first geometry completely contains the second geometry. This is useful for finding points within a polygon, or smaller polygons within a larger one.</p>
+<p><strong>Example</strong></p>
+<p>Imagine you have a collection of city districts and want to find a specific point of interest, such as a restaurant, that falls within the boundaries of a given district.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># The filter expression to find geometries completely within a specific polygon.</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&quot;ST_CONTAINS(geo_field, &#x27;POLYGON ((0 0, 10 0, 10 10, 0 10, 0 0))&#x27;)&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -172,13 +176,13 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>如果两个几何图形的交点形成的几何图形的维度低于原始几何图形的维度，则<code translate="no">ST_CROSSES</code> 操作符返回<code translate="no">TRUE</code> 。这通常适用于与多边形或另一条直线相交的直线。</p>
-<p><strong>示例</strong></p>
-<p>您想查找所有穿越特定边界线（另一条线串）或进入保护区（多边形）的远足路径（线串）。</p>
+    </button></h2><p>The <code translate="no">ST_CROSSES</code> operator returns <code translate="no">TRUE</code> if the intersection of two geometries forms a geometry with a lower dimension than the original geometries. This typically applies to a line crossing a polygon or another line.</p>
+<p><strong>Example</strong></p>
+<p>You want to find all hiking trails (line strings) that cross a specific boundary line (another line string) or enter a protected area (polygon).</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># The filter expression to find geometries that cross a line string.</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&quot;ST_CROSSES(geo_field, &#x27;LINESTRING(5 0, 5 10)&#x27;)&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="STINTERSECTS--stintersects" class="common-anchor-header">ST_INTERSECTS / ST_intersects<button data-href="#STINTERSECTS--stintersects" class="anchor-icon" translate="no">
+<h2 id="STINTERSECTS--stintersects" class="common-anchor-header">ST_INTERSECTS / st_intersects<button data-href="#STINTERSECTS--stintersects" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -193,9 +197,9 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>如果两个几何图形的边界或内部有任何共同点，<code translate="no">ST_INTERSECTS</code> 操作符会返回<code translate="no">TRUE</code> 。这是一个通用操作符，用于检测任何形式的空间重叠。</p>
-<p><strong>示例</strong></p>
-<p>如果您有一个道路 Collections，并希望找到所有与代表拟建新道路的特定线串交叉或接触的道路，您可以使用<code translate="no">ST_INTERSECTS</code>.</p>
+    </button></h2><p>The <code translate="no">ST_INTERSECTS</code> operator returns <code translate="no">TRUE</code> if two geometries have any point of their boundaries or interiors in common. This is a general-purpose operator for detecting any form of spatial overlap.</p>
+<p><strong>Example</strong></p>
+<p>If you have a collection of roads and want to find all roads that cross or touch a specific line string representing a proposed new road, you can use <code translate="no">ST_INTERSECTS</code>.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># The filter expression to find geometries that intersect with a specific line string.</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&quot;ST_INTERSECTS(geo_field, &#x27;LINESTRING (1 1, 2 2)&#x27;)&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -214,13 +218,13 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>如果两个尺寸相同的几何图形有部分交集，即交集本身的尺寸与原始几何图形相同，但不等于其中任何一个，则<code translate="no">ST_OVERLAPS</code> 操作符返回<code translate="no">TRUE</code> 。</p>
-<p><strong>示例</strong></p>
-<p>您有一组重叠的销售区域，希望找到与新提议的销售区域部分重叠的所有区域。</p>
+    </button></h2><p>The <code translate="no">ST_OVERLAPS</code> operator returns <code translate="no">TRUE</code> if two geometries of the same dimension have a partial intersection, where the intersection itself has the same dimension as the original geometries, but is not equal to either of them.</p>
+<p><strong>Example</strong></p>
+<p>You have a set of overlapping sales regions and want to find all regions that partially overlap with a new proposed sales zone.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># The filter expression to find geometries that partially overlap with a polygon.</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&quot;ST_OVERLAPS(geo_field, &#x27;POLYGON((0 0, 0 10, 10 10, 10 0, 0 0))&#x27;)&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="STTOUCHES--sttouches" class="common-anchor-header">ST_TOUCHES / ST_TOUCHES<button data-href="#STTOUCHES--sttouches" class="anchor-icon" translate="no">
+<h2 id="STTOUCHES--sttouches" class="common-anchor-header">ST_TOUCHES / st_touches<button data-href="#STTOUCHES--sttouches" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -235,9 +239,9 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>如果两个几何图形的边界相接触，但内部不相交，<code translate="no">ST_TOUCHES</code> 操作符会返回<code translate="no">TRUE</code> 。这对检测相邻关系非常有用。</p>
-<p><strong>示例</strong></p>
-<p>如果您有一张地产地块地图，并希望找到所有与公共公园直接相邻且没有任何重叠的地块。</p>
+    </button></h2><p>The <code translate="no">ST_TOUCHES</code> operator returns <code translate="no">TRUE</code> if two geometries’ boundaries touch, but their interiors do not intersect. This is useful for detecting adjacencies.</p>
+<p><strong>Example</strong></p>
+<p>If you have a map of property parcels and want to find all parcels that are directly adjacent to a public park without any overlap.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># The filter expression to find geometries that only touch a line string at their boundaries.</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&quot;ST_TOUCHES(geo_field, &#x27;LINESTRING(0 0, 1 1)&#x27;)&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -256,14 +260,14 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>如果第一个几何图形完全位于第二个几何图形的内部或边界上，则<code translate="no">ST_WITHIN</code> 操作符返回<code translate="no">TRUE</code> 。它是<code translate="no">ST_CONTAINS</code> 的逆运算。</p>
-<p><strong>示例</strong></p>
-<p>您想查找完全位于一个较大的指定公园区域内的所有小型住宅区。</p>
+    </button></h2><p>The <code translate="no">ST_WITHIN</code> operator returns <code translate="no">TRUE</code> if the first geometry is completely within the interior or on the boundary of the second geometry. It is the inverse of <code translate="no">ST_CONTAINS</code>.</p>
+<p><strong>Example</strong></p>
+<p>You want to find all small residential areas that are located entirely within a larger designated park area.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># The filter expression to find geometries that are completely within a larger polygon.</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&quot;ST_WITHIN(geo_field, &#x27;POLYGON((110 38, 115 38, 115 42, 110 42, 110 38))&#x27;)&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>有关如何使用<code translate="no">GEOMETRY</code> 字段的更多信息，请参阅<a href="/docs/zh/geometry-field.md">几何字段</a>。</p>
-<h2 id="STDWITHIN--stdwithin" class="common-anchor-header">ST_DWITHIN / ST_D WITHIN<button data-href="#STDWITHIN--stdwithin" class="anchor-icon" translate="no">
+<p>For more information on how to use a <code translate="no">GEOMETRY</code> field, refer to <a href="/docs/zh/v2.6.x/geometry-field.md">Geometry Field</a>.</p>
+<h2 id="STDWITHIN--stdwithin" class="common-anchor-header">ST_DWITHIN / st_dwithin<button data-href="#STDWITHIN--stdwithin" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -278,9 +282,9 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>如果几何体 A 与几何体 B 之间的距离小于或等于指定值（以米为单位），<code translate="no">ST_DWITHIN</code> 操作符将返回<code translate="no">TRUE</code> 。目前，几何体 B 必须是一个点。</p>
-<p><strong>示例</strong></p>
-<p>假设您有一个商店位置 Collections，想要查找距离特定客户位置 5000 米以内的所有商店。</p>
+    </button></h2><p>The <code translate="no">ST_DWITHIN</code> operator returns <code translate="no">TRUE</code> if the distance between geometry A and geometry B is less than or equal to a specified value (in meters). Currently, geometry B must be a point.</p>
+<p><strong>Example</strong></p>
+<p>Suppose you have a collection of store locations and want to find all stores within 5,000 meters of a specific customer’s location.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Find all stores within 5000 meters of the point (120 30)</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&quot;ST_DWITHIN(geo_field, &#x27;POINT(120 30)&#x27;, 5000)&quot;</span>
 <button class="copy-code-btn"></button></code></pre>

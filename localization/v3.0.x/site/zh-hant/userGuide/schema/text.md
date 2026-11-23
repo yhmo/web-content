@@ -1,10 +1,12 @@
 ---
 id: text.md
-title: 文字欄位Compatible with Milvus 3.0.x
-summary: TEXT 是一種標量字段類型，用於在 Milvus 中儲存文件文本、段落及其他長篇文本內容。
+title: Text FieldCompatible with Milvus 3.0.x
+summary: >-
+  TEXT is a scalar field type for storing document text, passages, and other
+  long text content in Milvus.
 beta: Milvus 3.0.x
 ---
-<h1 id="Text-Field" class="common-anchor-header">文字欄位<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Text-Field" class="anchor-icon" translate="no">
+<h1 id="Text-Field" class="common-anchor-header">Text Field<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Text-Field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -19,23 +21,23 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>在 AI 搜尋應用中，向量搜尋可協助您找出語義相似的實體，但應用程式通常也需要每個匹配結果背後的原始來源文字。大型語言模型（LLM）或代理程式可將該文字作為上下文，用於閱讀、引用、摘要，或將結果納入提示字串中。</p>
-<p>Milvus 提供「<code translate="no">TEXT</code> 」標量欄位類型，可直接將長篇來源文字與實體一併儲存。典型值包括段落、長篇文件、文章正文、工單及日誌。與「<code translate="no">VARCHAR</code> 」不同，後者需要設定固定的「<code translate="no">max_length</code> 」，而「<code translate="no">TEXT</code> 」則無需在集合架構中設定最大位元組長度。</p>
-<p>要定義<code translate="no">TEXT</code> 欄位，請將<code translate="no">datatype</code> 設定為<code translate="no">DataType.TEXT</code> 。</p>
+    </button></h1><p>In AI search applications, vector search helps you find semantically similar entities, but the application often also needs the original source text behind each match. An LLM or agent can use that text as context to read, cite, summarize, or include the result in a prompt.</p>
+<p>Milvus provides the <code translate="no">TEXT</code> scalar field type for storing long source text directly with entities. Typical values include passages, long documents, article bodies, tickets, and logs. Unlike <code translate="no">VARCHAR</code>, which requires a fixed <code translate="no">max_length</code>, <code translate="no">TEXT</code> does not require you to set a maximum byte length in the collection schema.</p>
+<p>To define a <code translate="no">TEXT</code> field, set <code translate="no">datatype</code> to <code translate="no">DataType.TEXT</code>.</p>
 <div class="alert note">
-<p>此功能需要 Storage V3。有關啟用說明及相容性考量，請參閱<a href="/docs/zh-hant/storage-v3.md">Storage V3</a>。</p>
+<p>This feature requires Storage V3. For enablement instructions and compatibility considerations, see <a href="/docs/zh-hant/storage-v3.md">Storage V3</a>.</p>
 </div>
-<p><a href="/docs/zh-hant/configure_common.md#commonstorageuseLoonFFI"><code translate="no">common.storage.useLoonFFI</code></a> 預設值為 `<code translate="no">false</code>`，這表示 Storage V3 預設為停用狀態。在建立包含 `<code translate="no">TEXT</code> ` 欄位的集合之前，請將此參數設定為 `<code translate="no">true</code>`；否則，Milvus 將拒絕該集合架構。</p>
+<p><a href="/docs/zh-hant/configure_common.md#commonstorageuseLoonFFI"><code translate="no">common.storage.useLoonFFI</code></a> defaults to <code translate="no">false</code>, which means Storage V3 is disabled by default. Before creating a collection that contains a <code translate="no">TEXT</code> field, set this parameter to <code translate="no">true</code>; otherwise, Milvus rejects the collection schema.</p>
 <pre><code translate="no" class="language-python">schema.add_field(
     field_name=<span class="hljs-string">&quot;content&quot;</span>,
 <span class="highlighted-wrapper-line">    datatype=DataType.TEXT,</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>定義該欄位後，每個實體皆可在該欄位中包含字串值。您可像處理其他標量欄位一樣插入<code translate="no">TEXT</code> 值，並透過在<code translate="no">output_fields</code> 中列出該欄位，從查詢或搜尋結果中擷取這些值。</p>
+<p>After the field is defined, each entity can include a string value in that field. You insert <code translate="no">TEXT</code> values like other scalar fields and return them from query or search results by listing the field in <code translate="no">output_fields</code>.</p>
 <div class="alert note">
-<p><code translate="no">TEXT</code> 欄位支援 null 值。若要啟用此功能，請將 `<code translate="no">nullable</code> ` 設定為 `<code translate="no">True</code>`。詳細資訊請參閱「<a href="/docs/zh-hant/nullable-and-default.md">可為 null 的欄位</a>」。</p>
+<p><code translate="no">TEXT</code> fields support null values. To enable this feature, set <code translate="no">nullable</code> to <code translate="no">True</code>. For details, refer to <a href="/docs/zh-hant/nullable-and-default.md">Nullable Field</a>.</p>
 </div>
-<h2 id="Limits" class="common-anchor-header">限制<button data-href="#Limits" class="anchor-icon" translate="no">
+<h2 id="Limits" class="common-anchor-header">Limits<button data-href="#Limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -51,16 +53,16 @@ beta: Milvus 3.0.x
         ></path>
       </svg>
     </button></h2><ul>
-<li><code translate="no">TEXT</code> 欄位不能作為主欄位、分區鍵或叢集鍵。</li>
-<li><code translate="no">TEXT</code> 無法用作<code translate="no">ARRAY</code> 欄位的元素類型，包括<code translate="no">StructArray</code> 中的標量子欄位。</li>
-<li>在 Milvus 3.0.0 中，<code translate="no">TEXT</code> 欄位不支援預設值。</li>
-<li>在 Milvus 3.0.0 中，外部集合不支援 `<code translate="no">TEXT</code> ` 欄位。</li>
-<li>使用者無法在<code translate="no">TEXT</code> 欄位上建立標量索引。當<code translate="no">enable_match=True</code> 時，Milvus 會建立一個由系統管理的文字索引，用於文字比對。此內部索引並非使用者建立的標量索引。</li>
-<li>一般標量篩選運算子無法直接套用至 `<code translate="no">TEXT</code> ` 欄位。 這些包括比較運算子（例如<code translate="no">==</code> 和<code translate="no">!=</code> ）、範圍運算子（例如<code translate="no">&gt;</code> 、<code translate="no">&gt;=</code> 、<code translate="no">&lt;</code> 和<code translate="no">&lt;=</code> ），以及<code translate="no">IN</code> 、<code translate="no">LIKE</code> 、正規表達式運算子（<code translate="no">=~</code> 和<code translate="no">!~</code> ）和<code translate="no">IS NULL</code> 或<code translate="no">IS NOT NULL</code> 。若要根據已分析的術語進行篩選，請使用<code translate="no">enable_analyzer=True</code> 和<code translate="no">enable_match=True</code> 定義欄位，並使用<a href="/docs/zh-hant/keyword-match.md"><code translate="no">TEXT_MATCH</code> 或<code translate="no">TEXT_MATCH_FUZZY</code></a> 。對於依相關性排序的全文檢索，請使用 BM25。</li>
-<li>在 Milvus 3.0.0 中，若要使用以<code translate="no">TEXT</code> 欄位作為輸入的 BM25 或 MinHash 函式，必須在建立集合時即進行定義。即使現有集合為空，亦無法事後透過<code translate="no">add_function_field</code> 或<code translate="no">AlterCollectionSchema</code> 追加該函式，因為 Milvus 無法根據儲存的<code translate="no">TEXT</code> 值回填該函式的輸出結果。 若要將此類函數新增至現有集合，請使用「<code translate="no">VARCHAR</code> 」輸入欄位，或重新建立集合並將該函數納入其資料結構中。有關新增函數及其所產生向量欄位的詳細資訊，請參閱《<a href="/docs/zh-hant/add-fields-to-an-existing-collection.md#add-a-function-and-its-generated-vector-field--milvus-30x">變更集合資料結構</a>》。</li>
-<li>文字嵌入函數也必須在建立集合時一併定義。Milvus 3.0.0 不支援在執行階段新增這些函數。</li>
+<li>A <code translate="no">TEXT</code> field cannot be a primary field, partition key, or clustering key.</li>
+<li><code translate="no">TEXT</code> cannot be used as the element type of an <code translate="no">ARRAY</code> field, including a scalar subfield in a <code translate="no">StructArray</code>.</li>
+<li>In Milvus 3.0.0, <code translate="no">TEXT</code> fields do not support default values.</li>
+<li>In Milvus 3.0.0, <code translate="no">TEXT</code> fields are not supported in external collections.</li>
+<li>Users cannot create a scalar index on a <code translate="no">TEXT</code> field. When <code translate="no">enable_match=True</code>, Milvus builds a system-managed text index for text matching. This internal index is not a user-created scalar index.</li>
+<li>General scalar filter operators cannot be applied directly to a <code translate="no">TEXT</code> field. These include comparison operators such as <code translate="no">==</code> and <code translate="no">!=</code>, range operators such as <code translate="no">&gt;</code>, <code translate="no">&gt;=</code>, <code translate="no">&lt;</code>, and <code translate="no">&lt;=</code>, as well as <code translate="no">IN</code>, <code translate="no">LIKE</code>, regex operators (<code translate="no">=~</code> and <code translate="no">!~</code>), and <code translate="no">IS NULL</code> or <code translate="no">IS NOT NULL</code>. To filter by analyzed terms, define the field with <code translate="no">enable_analyzer=True</code> and <code translate="no">enable_match=True</code>, and use <a href="/docs/zh-hant/keyword-match.md"><code translate="no">TEXT_MATCH</code> or <code translate="no">TEXT_MATCH_FUZZY</code></a>. For relevance-ranked full-text retrieval, use BM25.</li>
+<li>In Milvus 3.0.0, a BM25 or MinHash Function that uses a <code translate="no">TEXT</code> field as input must be defined when the collection is created. It cannot be added later through <code translate="no">add_function_field</code> or <code translate="no">AlterCollectionSchema</code>, even if the existing collection is empty, because Milvus cannot backfill the Function output from stored <code translate="no">TEXT</code> values. To add such a Function to an existing collection, use a <code translate="no">VARCHAR</code> input field, or recreate the collection with the Function included in its schema. For details about adding a Function and its generated vector field, refer to <a href="/docs/zh-hant/add-fields-to-an-existing-collection.md#add-a-function-and-its-generated-vector-field--milvus-30x">Alter Collection Schema</a>.</li>
+<li>Text Embedding Functions also must be defined when the collection is created. Milvus 3.0.0 does not support adding them at runtime.</li>
 </ul>
-<h2 id="Choose-TEXT-or-VARCHAR" class="common-anchor-header">請選擇 TEXT 或 VARCHAR<button data-href="#Choose-TEXT-or-VARCHAR" class="anchor-icon" translate="no">
+<h2 id="Choose-TEXT-or-VARCHAR" class="common-anchor-header">Choose TEXT or VARCHAR<button data-href="#Choose-TEXT-or-VARCHAR" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -75,21 +77,21 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">TEXT</code> 和<code translate="no">VARCHAR</code> 皆用於儲存字串值，但它們支援不同的應用需求。請使用<code translate="no">VARCHAR</code> 來儲存用於識別、分類或篩選實體的簡短且範圍有限的元資料。請使用<code translate="no">TEXT</code> 來儲存較長的原始內容，以便為大型語言模型（LLM）或代理程式提供足夠的上下文，以進行閱讀、引用、摘要或建構提示詞。</p>
+    </button></h2><p><code translate="no">TEXT</code> and <code translate="no">VARCHAR</code> both store string values, but they support different application needs. Use <code translate="no">VARCHAR</code> for short, bounded metadata that identifies, categorizes, or filters entities. Use <code translate="no">TEXT</code> for longer source content that gives an LLM or agent enough context to read, cite, summarize, or build a prompt.</p>
 <table>
 <thead>
-<tr><th>適用情境</th><th><code translate="no">VARCHAR</code></th><th><code translate="no">TEXT</code></th></tr>
+<tr><th>Aspect</th><th><code translate="no">VARCHAR</code></th><th><code translate="no">TEXT</code></th></tr>
 </thead>
 <tbody>
-<tr><td>最適合</td><td>用於識別、分類或篩選實體的簡短元資料，例如<code translate="no">title</code> 、<code translate="no">tag</code> 、<code translate="no">category</code> 或<code translate="no">external_id</code> 。</td><td>用於大型語言模型（LLM）或代理工作流程的較長來源內容，例如<code translate="no">content</code> 、<code translate="no">passage</code> 、<code translate="no">article_body</code> 或<code translate="no">log_message</code> 。</td></tr>
-<tr><td>長度設定</td><td>必須使用<code translate="no">max_length</code> ，該設定定義了該欄位可儲存的最大位元組數。最大值為<code translate="no">65,535</code> 位元組。若值可能超過此限制，請使用<code translate="no">TEXT</code> 。</td><td>無需指定<code translate="no">max_length</code> ，因此資料結構無需為文字值設定固定的位元組限制。</td></tr>
-<tr><td>儲存行為</td><td>將每個值儲存於該欄位所設定的<code translate="no">max_length</code> 內。</td><td>對於較大的文字值，會使用自動儲存選取機制。詳細資訊請參閱《<a href="#how-milvus-stores-large-text-values">Milvus 如何儲存大型 TEXT 值</a>》。</td></tr>
-<tr><td>主要欄位支援</td><td>可用作主欄位。</td><td>無法用作主欄位。</td></tr>
-<tr><td>篩選</td><td>適用於需要出現在篩選表達式中的短字串元資料，例如<code translate="no">category == &quot;news&quot;</code> 或<code translate="no">tag in [&quot;ai&quot;, &quot;database&quot;]</code> 。</td><td>不支援一般的標量篩選運算子。請使用支援比對的文字運算子進行已分析術語篩選，或使用 BM25 進行依相關性排序的全文檢索。</td></tr>
+<tr><td>Best for</td><td>Short metadata used to identify, categorize, or filter entities, such as <code translate="no">title</code>, <code translate="no">tag</code>, <code translate="no">category</code>, or <code translate="no">external_id</code>.</td><td>Longer source content used by LLM or agent workflows, such as <code translate="no">content</code>, <code translate="no">passage</code>, <code translate="no">article_body</code>, or <code translate="no">log_message</code>.</td></tr>
+<tr><td>Length setting</td><td>Requires <code translate="no">max_length</code>, which defines the maximum number of bytes the field can store. The maximum value is <code translate="no">65,535</code> bytes. If a value may exceed this limit, use <code translate="no">TEXT</code>.</td><td>Does not require <code translate="no">max_length</code>, so the schema does not need a fixed byte limit for the text value.</td></tr>
+<tr><td>Storage behavior</td><td>Stores each value within the field’s configured <code translate="no">max_length</code>.</td><td>Uses automatic storage selection for larger text values. For details, see <a href="#how-milvus-stores-large-text-values">How Milvus stores large TEXT values</a>.</td></tr>
+<tr><td>Primary field support</td><td>Can be used as a primary field.</td><td>Cannot be used as a primary field.</td></tr>
+<tr><td>Filtering</td><td>Use for short string metadata that needs to appear in filter expressions, such as <code translate="no">category == &quot;news&quot;</code> or <code translate="no">tag in [&quot;ai&quot;, &quot;database&quot;]</code>.</td><td>Does not support general scalar filter operators. Use match-enabled text operators for analyzed-term filtering, or BM25 for relevance-ranked full-text retrieval.</td></tr>
 </tbody>
 </table>
-<p>有關<code translate="no">VARCHAR</code> 欄位的詳細資訊，請參閱<a href="/docs/zh-hant/string.md">VarChar 欄位</a>。</p>
-<h2 id="How-Milvus-stores-large-TEXT-values" class="common-anchor-header">Milvus 如何儲存大型 TEXT 值<button data-href="#How-Milvus-stores-large-TEXT-values" class="anchor-icon" translate="no">
+<p>For details about <code translate="no">VARCHAR</code> fields, refer to <a href="/docs/zh-hant/string.md">VarChar Field</a>.</p>
+<h2 id="How-Milvus-stores-large-TEXT-values" class="common-anchor-header">How Milvus stores large TEXT values<button data-href="#How-Milvus-stores-large-TEXT-values" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -105,23 +107,23 @@ beta: Milvus 3.0.x
         ></path>
       </svg>
     </button></h2><p><details></p>
-<p><summary>展開以了解運作原理</summary></p>
-<p>當您插入實體時，您為<code translate="no">TEXT</code> 欄位提供的字串即為<code translate="no">TEXT</code> 值。Milvus 會將該值的大小與<a href="/docs/zh-hant/configure_datanode.md#dataNodetextinlineThreshold">dataNode.text.inlineThreshold</a> 進行比較（預設值為<code translate="no">65,536</code> 位元組），然後從兩種內部儲存路徑中選擇其一。</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="/docs/v3.0.x/assets/text-large-storage-flow.png" alt="Large text storage" class="doc-image" id="large-text-storage" /> 
-   <span>大容量文字儲存</span>
-  
- </span></p>
+<p><summary>Expand to see how it works</summary></p>
+<p>When you insert an entity, the string you provide for a <code translate="no">TEXT</code> field is the <code translate="no">TEXT</code> value. Milvus compares the size of that value with <a href="/docs/zh-hant/configure_datanode.md#dataNodetextinlineThreshold">dataNode.text.inlineThreshold</a>, which is <code translate="no">65,536</code> bytes by default, and then chooses one of two internal storage paths.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v3.0.x/assets/text-large-storage-flow.png" alt="Large text storage" class="doc-image" id="large-text-storage" />
+    <span>Large text storage</span>
+  </span>
+</p>
 <ul>
-<li><strong>內聯儲存</strong>：若<code translate="no">TEXT</code> 值小於<code translate="no">dataNode.text.inlineThreshold</code> ，Milvus 會將原始文字值直接儲存於<code translate="no">TEXT</code> 欄位的 data 中。</li>
-<li><strong>LOB 儲存</strong>：若 `<code translate="no">TEXT</code> ` 的值大於或等於 `<code translate="no">dataNode.text.inlineThreshold</code>`，Milvus 會將該值視為大型物件，並將原始文字分別儲存於物件儲存空間（例如 MinIO）中。`<code translate="no">TEXT</code> ` 欄位資料則儲存指向該獨立儲存文字的內部參照。當在查詢或搜尋結果中請求 `<code translate="no">TEXT</code> ` 欄位時，Milvus 會使用該參照來擷取並回傳原始文字。</li>
+<li><strong>Inline storage</strong>: If a <code translate="no">TEXT</code> value is smaller than <code translate="no">dataNode.text.inlineThreshold</code>, Milvus stores the original text value directly in the <code translate="no">TEXT</code> field data.</li>
+<li><strong>LOB storage</strong>: If a <code translate="no">TEXT</code> value is greater than or equal to <code translate="no">dataNode.text.inlineThreshold</code>, Milvus treats the value as a large object and stores the original text separately in object storage, such as MinIO. The <code translate="no">TEXT</code> field data stores an internal reference to the separately stored text. When the <code translate="no">TEXT</code> field is requested in query or search results, Milvus uses the reference to retrieve and return the original text.</li>
 </ul>
-<p>此儲存選項屬內部機制。無論 Milvus 使用哪種儲存路徑，您對<code translate="no">TEXT</code> 欄位的插入、查詢及搜尋操作方式皆相同。若要調整閾值或相關的儲存、壓縮及垃圾回收行為，請參閱與<a href="/docs/zh-hant/configure_datanode.md">dataNode 相關的設定</a>以及<a href="/docs/zh-hant/configure_datacoord.md">與 dataCoord 相關的設定</a>。</p>
-<p>若您的部署使用物件儲存，大型的 `<code translate="no">TEXT</code> ` 值可能會以 Milvus 管理的物件形式，出現在如<code translate="no">lobs/...</code> 等路徑下。這些物件屬於實作細節，不應手動移動、複製或刪除。 在刪除實體、釋放分區或壓縮資料後，物件儲存的使用量可能僅會在 Milvus 垃圾回收於安全時窗結束後，移除未被引用的巨型物件資料時才會減少。</p>
+<p>This storage selection is internal. You insert, query, and search the <code translate="no">TEXT</code> field in the same way regardless of which storage path Milvus uses. To tune the threshold or related storage, compaction, and garbage-collection behavior, refer to <a href="/docs/zh-hant/configure_datanode.md">dataNode-related Configurations</a> and <a href="/docs/zh-hant/configure_datacoord.md">dataCoord-related Configurations</a>.</p>
+<p>If your deployment uses object storage, large <code translate="no">TEXT</code> values may appear as Milvus-managed objects under paths such as <code translate="no">lobs/...</code>. These objects are implementation details and should not be moved, copied, or deleted manually. After you delete entities, drop partitions, or compact data, object storage usage may decrease only after Milvus garbage collection removes unreferenced large-object data after its safety window.</p>
 <p></details></p>
-<p><code translate="no">TEXT</code> 的常見應用之一是搭配 BM25 進行全文檢索。在此模式下，<code translate="no">TEXT</code> 欄位儲存原始來源內容，而 BM25 會分析文字並產生稀疏向量，以針對基於關鍵字的匹配結果進行排序。搜尋結果隨後可返回匹配的<code translate="no">TEXT</code> 值，作為大型語言模型 (LLM) 或代理程式工作流程的上下文。 以下範例展示如何將「<code translate="no">TEXT</code> 」欄位用作 BM25 的輸入欄位。如需瞭解全文搜尋的概念與查詢選項，請參閱《<a href="/docs/zh-hant/full-text-search.md">全文搜尋》</a>。</p>
-<h2 id="Step-1-Create-a-collection-with-a-TEXT-field" class="common-anchor-header">步驟 1：建立包含 TEXT 欄位的集合<button data-href="#Step-1-Create-a-collection-with-a-TEXT-field" class="anchor-icon" translate="no">
+<p>A common use of <code translate="no">TEXT</code> is Full Text Search with BM25. In this pattern, the <code translate="no">TEXT</code> field stores the original source content, and BM25 analyzes the text and generates sparse vectors for ranking keyword-based matches. Search results can then return the matched <code translate="no">TEXT</code> value as context for LLM or agent workflows. The following example shows how to use a <code translate="no">TEXT</code> field as the input field for BM25. To learn about Full Text Search concepts and query options, refer to <a href="/docs/zh-hant/full-text-search.md">Full Text Search</a>.</p>
+<h2 id="Step-1-Create-a-collection-with-a-TEXT-field" class="common-anchor-header">Step 1: Create a collection with a TEXT field<button data-href="#Step-1-Create-a-collection-with-a-TEXT-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -136,8 +138,8 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>以下範例建立一個集合，其中包含用於來源內容的<code translate="no">TEXT</code> 欄位，以及用於 BM25 所產生稀疏向量的稀疏向量欄位。BM25 函式會將來自<code translate="no">content</code> 的分詞文字轉換為稀疏向量，並儲存於<code translate="no">sparse</code> 中。</p>
-<p>若要進行 BM25 全文檢索，輸入的<code translate="no">TEXT</code> 欄位必須設定為<code translate="no">enable_analyzer=True</code> 。</p>
+    </button></h2><p>The following example creates a collection with a <code translate="no">TEXT</code> field for source content and a sparse vector field for BM25-generated sparse vectors. The BM25 function converts the tokenized text from <code translate="no">content</code> into sparse vectors stored in <code translate="no">sparse</code>.</p>
+<p>For BM25 full text search, the input <code translate="no">TEXT</code> field must set <code translate="no">enable_analyzer=True</code>.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> DataType, Function, FunctionType, MilvusClient
 
 client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>)
@@ -163,7 +165,7 @@ schema.add_field(field_name=<span class="hljs-string">&quot;sparse&quot;</span>,
 <span class="highlighted-comment-line">)</span>
 <span class="highlighted-comment-line">schema.add_function(bm25_function)</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Step-2-Create-a-sparse-vector-index" class="common-anchor-header">步驟 2：建立稀疏向量索引<button data-href="#Step-2-Create-a-sparse-vector-index" class="anchor-icon" translate="no">
+<h2 id="Step-2-Create-a-sparse-vector-index" class="common-anchor-header">Step 2: Create a sparse vector index<button data-href="#Step-2-Create-a-sparse-vector-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -178,7 +180,7 @@ schema.add_field(field_name=<span class="hljs-string">&quot;sparse&quot;</span>,
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>針對由 BM25 函式所產生的稀疏向量欄位建立索引。度量類型必須設定為<code translate="no">BM25</code> 。</p>
+    </button></h2><p>Create an index on the sparse vector field generated by the BM25 function. The metric type must be set to <code translate="no">BM25</code>.</p>
 <pre><code translate="no" class="language-python">index_params = client.prepare_index_params()
 <span class="highlighted-comment-line">index_params.add_index(</span>
 <span class="highlighted-comment-line">    field_name=<span class="hljs-string">&quot;sparse&quot;</span>,</span>
@@ -197,7 +199,7 @@ client.create_collection(
     index_params=index_params,
 )
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Step-3-Insert-TEXT-data" class="common-anchor-header">步驟 3：插入 TEXT 資料<button data-href="#Step-3-Insert-TEXT-data" class="anchor-icon" translate="no">
+<h2 id="Step-3-Insert-TEXT-data" class="common-anchor-header">Step 3: Insert TEXT data<button data-href="#Step-3-Insert-TEXT-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -212,7 +214,7 @@ client.create_collection(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>請直接將文字插入<code translate="no">TEXT</code> 欄位中。請勿為<code translate="no">sparse</code> 欄位提供值。Milvus 會透過將 BM25 函式套用至<code translate="no">content</code> ，在內部自動產生稀疏向量。</p>
+    </button></h2><p>Insert text directly into the <code translate="no">TEXT</code> field. Do not provide values for the <code translate="no">sparse</code> field. Milvus generates the sparse vectors internally by applying the BM25 function to <code translate="no">content</code>.</p>
 <pre><code translate="no" class="language-python">data = [
     {
         <span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-number">1</span>,
@@ -231,7 +233,7 @@ client.create_collection(
 client.insert(collection_name=COLLECTION_NAME, data=data)
 client.load_collection(collection_name=COLLECTION_NAME)
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Step-4-Perform-BM25-full-text-search" class="common-anchor-header">步驟 4：執行 BM25 全文檢索<button data-href="#Step-4-Perform-BM25-full-text-search" class="anchor-icon" translate="no">
+<h2 id="Step-4-Perform-BM25-full-text-search" class="common-anchor-header">Step 4: Perform BM25 full text search<button data-href="#Step-4-Perform-BM25-full-text-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -246,7 +248,7 @@ client.load_collection(collection_name=COLLECTION_NAME)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>將原始查詢文字用作搜尋資料，並針對稀疏向量欄位進行搜尋。Milvus 會將查詢文字轉換為稀疏向量，透過 BM25 對比結果進行排序，並將請求的<code translate="no">TEXT</code> 欄位結果回傳至<code translate="no">output_fields</code> 。</p>
+    </button></h2><p>Use raw query text as the search data and search against the sparse vector field. Milvus converts the query text into a sparse vector, ranks matches with BM25, and returns the requested <code translate="no">TEXT</code> field in <code translate="no">output_fields</code>.</p>
 <pre><code translate="no" class="language-python">results = client.search(
     collection_name=COLLECTION_NAME,
 <span class="highlighted-comment-line">    data=[<span class="hljs-string">&quot;how does Milvus store source text for retrieval&quot;</span>],</span>
@@ -255,7 +257,7 @@ client.load_collection(collection_name=COLLECTION_NAME)
 <span class="highlighted-comment-line">    output_fields=[<span class="hljs-string">&quot;content&quot;</span>],</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Step-5-Read-the-returned-TEXT-values" class="common-anchor-header">步驟 5：讀取回傳的 TEXT 值<button data-href="#Step-5-Read-the-returned-TEXT-values" class="anchor-icon" translate="no">
+<h2 id="Step-5-Read-the-returned-TEXT-values" class="common-anchor-header">Step 5: Read the returned TEXT values<button data-href="#Step-5-Read-the-returned-TEXT-values" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -270,9 +272,9 @@ client.load_collection(collection_name=COLLECTION_NAME)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>每個搜尋結果均包含 BM25 分數及原始的<code translate="no">TEXT</code> 值。</p>
+    </button></h2><p>Each search hit includes the BM25 score and the original <code translate="no">TEXT</code> value.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">for</span> hit <span class="hljs-keyword">in</span> results[<span class="hljs-number">0</span>]:
     <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;id: <span class="hljs-subst">{hit[<span class="hljs-string">&#x27;id&#x27;</span>]}</span>, score: <span class="hljs-subst">{hit[<span class="hljs-string">&#x27;distance&#x27;</span>]}</span>&quot;</span>)
     <span class="hljs-built_in">print</span>(hit[<span class="hljs-string">&quot;entity&quot;</span>][<span class="hljs-string">&quot;content&quot;</span>])
 <button class="copy-code-btn"></button></code></pre>
-<p>有關 BM25 函式、稀疏向量索引以及全文搜尋查詢語法的更多資訊，請參閱《<a href="/docs/zh-hant/full-text-search.md">全文搜尋</a>》。</p>
+<p>For more information about BM25 functions, sparse vector indexes, and query syntax for full text search, refer to <a href="/docs/zh-hant/full-text-search.md">Full Text Search</a>.</p>

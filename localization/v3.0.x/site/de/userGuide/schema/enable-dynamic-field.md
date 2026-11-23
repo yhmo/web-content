@@ -2,11 +2,10 @@
 id: enable-dynamic-field.md
 title: Dynamic Field
 summary: >-
-  Mit Milvus können Sie Entitäten mit flexiblen, sich weiterentwickelnden
-  Strukturen über eine spezielle Funktion namens „dynamisches Feld“ einfügen.
-  Dieses Feld ist als verstecktes JSON-Feld mit dem Namen $meta implementiert,
-  das automatisch alle Felder in Ihren Daten speichert, die nicht explizit im
-  Sammlungsschema definiert sind.
+  Milvus allows you to insert entities with flexible, evolving structures
+  through a special feature called the dynamic field. This field is implemented
+  as a hidden JSON field named $meta, which automatically stores any fields in
+  your data that are not explicitly defined in the collection schema.
 ---
 <h1 id="Dynamic-Field" class="common-anchor-header">Dynamic Field<button data-href="#Dynamic-Field" class="anchor-icon" translate="no">
       <svg translate="no"

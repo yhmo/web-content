@@ -1,15 +1,12 @@
 ---
 id: milvus_backup_upgrade.md
 summary: >-
-  Actualizar Milvus Backup de la versión 0.5.x a la 0.6.x, actualizar la
-  configuración y los comandos, y comprobar que la copia de seguridad y la
-  restauración funcionan correctamente.
-title: >-
-  Actualización de Milvus Backup a la versión 0.6.xCompatible with Milvus Backup
-  0.6.x
+  Upgrade Milvus Backup from 0.5.x to 0.6.x, update configuration and commands,
+  and validate backup and restore.
+title: Upgrade Milvus Backup to 0.6.xCompatible with Milvus Backup 0.6.x
 beta: Milvus Backup 0.6.x
 ---
-<h1 id="Upgrade-Milvus-Backup-to-06x" class="common-anchor-header">Actualización de Milvus Backup a la versión 0.6.x<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus Backup 0.6.x</span><button data-href="#Upgrade-Milvus-Backup-to-06x" class="anchor-icon" translate="no">
+<h1 id="Upgrade-Milvus-Backup-to-06x" class="common-anchor-header">Upgrade Milvus Backup to 0.6.x<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus Backup 0.6.x</span><button data-href="#Upgrade-Milvus-Backup-to-06x" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -24,9 +21,9 @@ beta: Milvus Backup 0.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Utiliza esta guía para actualizar la <strong>herramienta Milvus Backup</strong> de la versión 0.5.x a la 0.6.x. El procedimiento que se describe a continuación utiliza la versión 0.6.0 como versión de destino validada. No actualiza tu servidor Milvus. Si vas a seguir con la versión 0.5.x, sigue utilizando la guía <a href="/docs/es/milvus_backup_cli.md">de la CLI</a> o <a href="/docs/es/milvus_backup_api.md">la API</a> de la <a href="/docs/es/milvus_backup_cli.md">versión 0.5.x</a>. Para una nueva instalación, utiliza la <a href="/docs/es/milvus_backup_0_6_cli.md">guía de la CLI</a>.</p>
-<p>Las configuraciones YAML de la versión 1 siguen cargándose mediante traducción automática. Sin embargo, en la versión 0.6.0 se rechazan los indicadores de la CLI obsoletos y el formato de copia de seguridad predeterminado cambia en Milvus 3.0. Revisa tanto la configuración como los comandos antes de modificar las tareas programadas o los servicios.</p>
-<h2 id="Check-the-starting-point" class="common-anchor-header">Comprueba el punto de partida<button data-href="#Check-the-starting-point" class="anchor-icon" translate="no">
+    </button></h1><p>Use this guide when upgrading the <strong>Milvus Backup tool</strong> from 0.5.x to 0.6.x. The procedure below uses 0.6.0 as the validated target version. It does not upgrade your Milvus server. If you are staying on 0.5.x, continue using the <a href="/docs/es/milvus_backup_cli.md">0.5.x CLI</a> or <a href="/docs/es/milvus_backup_api.md">API</a> guide. For a new installation, use the <a href="/docs/es/milvus_backup_0_6_cli.md">CLI guide</a>.</p>
+<p>V1 YAML configurations still load through automatic translation. However, deprecated CLI flags are rejected in 0.6.0, and the default backup format changes on Milvus 3.0. Review both configuration and commands before switching scheduled jobs or services.</p>
+<h2 id="Check-the-starting-point" class="common-anchor-header">Check the starting point<button data-href="#Check-the-starting-point" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -41,9 +38,9 @@ beta: Milvus Backup 0.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Anota tu versión de Backup, las versiones de origen y destino de Milvus, los archivos de configuración, las modificaciones de las variables de entorno, la ubicación de las copias de seguridad y los comandos utilizados por los scripts o los servicios de la API. Consulta la <a href="/docs/es/milvus_backup_overview.md#Compatibility-matrix">información de compatibilidad</a> para esas versiones del servidor.</p>
-<p>Conserva los directorios originales de binarios, configuración y copias de seguridad existentes mientras validás la nueva instalación. Descarga la versión 0.6.0 en un directorio independiente utilizando <a href="/docs/es/milvus_backup_0_6_cli.md#Obtain-Milvus-Backup">«Obtener Milvus Backup</a>». Todos los comandos que se indican a continuación se ejecutan desde ese directorio e invocan el binario 0.6.0. Coloca una copia de tu configuración de la v1 en <code translate="no">configs/backup-v1.yaml</code>.</p>
-<h2 id="Migrate-the-configuration" class="common-anchor-header">Migrar la configuración<button data-href="#Migrate-the-configuration" class="anchor-icon" translate="no">
+    </button></h2><p>Record your Backup version, Milvus source and target versions, configuration files, environment-variable overrides, backup location, and commands used by scripts or API services. Check the <a href="/docs/es/milvus_backup_overview.md#Compatibility-matrix">compatibility information</a> for those server versions.</p>
+<p>Keep the original binary, configuration, and existing backup directories while validating the new installation. Download 0.6.0 into a separate directory using <a href="/docs/es/milvus_backup_0_6_cli.md#Obtain-Milvus-Backup">Obtain Milvus Backup</a>. All commands below run from that directory and invoke the 0.6.0 binary. Place a copy of your v1 configuration at <code translate="no">configs/backup-v1.yaml</code>.</p>
+<h2 id="Migrate-the-configuration" class="common-anchor-header">Migrate the configuration<button data-href="#Migrate-the-configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -58,30 +55,30 @@ beta: Milvus Backup 0.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Una configuración de la v1 sigue cargándose en la versión 0.6.0. Milvus Backup la traduce a la v2 al iniciarse y muestra una advertencia. Para guardar la configuración traducida en un archivo independiente:</p>
+    </button></h2><p>A v1 configuration still loads in 0.6.0. Milvus Backup translates it to v2 at startup and prints a warning. To save the translated configuration in a separate file:</p>
 <pre><code translate="no" class="language-shell">./milvus-backup config migrate --config configs/backup-v1.yaml --output configs/backup-v2.yaml --strict
 ./milvus-backup config show --config configs/backup-v2.yaml
 ./milvus-backup check --config configs/backup-v2.yaml
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">--strict</code> rechaza una configuración migrada no válida. Sin <code translate="no">--output</code>, el comando escribe el YAML de la v2 en la salida estándar. Revisa y utiliza el nuevo archivo solo después de comprobar que los ajustes se han resuelto correctamente.</p>
+<p><code translate="no">--strict</code> rejects an invalid migrated configuration. Without <code translate="no">--output</code>, the command writes the v2 YAML to standard output. Review and use the new file only after checking its resolved settings.</p>
 <table>
 <thead>
-<tr><th>Configuración de la v1</th><th>Configuración de la v2</th></tr>
+<tr><th>v1 setting</th><th>v2 setting</th></tr>
 </thead>
 <tbody>
 <tr><td><code translate="no">milvus.address</code>, <code translate="no">milvus.port</code></td><td><code translate="no">milvus.grpc.address</code>, <code translate="no">milvus.grpc.port</code></td></tr>
-<tr><td>Almacenamiento de origen en <code translate="no">minio.*</code></td><td><code translate="no">milvus.storage.*</code></td></tr>
-<tr><td>Almacenamiento de copias de seguridad en <code translate="no">minio.backup*</code></td><td><code translate="no">backup.storage.*</code></td></tr>
-<tr><td>Credenciales de almacenamiento</td><td><code translate="no">milvus.storage.auth.*</code> / <code translate="no">backup.storage.auth.*</code>, con una <code translate="no">auth.type</code></td></tr>
+<tr><td>Source storage under <code translate="no">minio.*</code></td><td><code translate="no">milvus.storage.*</code></td></tr>
+<tr><td>Backup storage under <code translate="no">minio.backup*</code></td><td><code translate="no">backup.storage.*</code></td></tr>
+<tr><td>Storage credentials</td><td><code translate="no">milvus.storage.auth.*</code> / <code translate="no">backup.storage.auth.*</code>, with an explicit <code translate="no">auth.type</code></td></tr>
 <tr><td><code translate="no">minio.crossStorage</code></td><td><code translate="no">transfer.mode</code></td></tr>
 <tr><td><code translate="no">backup.gcPause.address</code></td><td><code translate="no">milvus.management.endpoint</code></td></tr>
 </tbody>
 </table>
-<p>Revisa las variables de entorno en el mismo cambio que el archivo de configuración. La v2 solo acepta las variables de entorno relacionadas con credenciales compatibles, como <code translate="no">MILVUS_STORAGE_AUTH_SECRET_ACCESS_KEY</code>. Los nombres antiguos de la v1 no se aplican a un archivo de la v2. Para ajustes que no sean de credenciales, como nombres de buckets y puntos finales, utiliza YAML o una anulación de clave de configuración:</p>
+<p>Review environment variables in the same change as the configuration file. V2 accepts only the supported credential-related environment variables, such as <code translate="no">MILVUS_STORAGE_AUTH_SECRET_ACCESS_KEY</code>. Old v1 names are not applied to a v2 file. For non-credential settings such as bucket names and endpoints, use YAML or a configuration-key override:</p>
 <pre><code translate="no" class="language-shell">./milvus-backup config show --config configs/backup-v2.yaml --set milvus.storage.bucketName=my-bucket
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">config migrate</code> informa de las variables de entorno afectadas sin copiar sus valores secretos en el archivo de salida. Consulte <a href="https://github.com/zilliztech/milvus-backup/blob/v0.6.0/docs/user_guide/env_variables.md">las variables de entorno compatibles con la v2</a>. <code translate="no">config show</code> sustituye al comando obsoleto <code translate="no">check config</code>.</p>
-<h2 id="Update-CLI-commands" class="common-anchor-header">Actualización de los comandos de la CLI<button data-href="#Update-CLI-commands" class="anchor-icon" translate="no">
+<p><code translate="no">config migrate</code> reports affected environment variables without copying their secret values into the output file. See <a href="https://github.com/zilliztech/milvus-backup/blob/v0.6.0/docs/user_guide/env_variables.md">supported v2 environment variables</a>. <code translate="no">config show</code> replaces the deprecated <code translate="no">check config</code> command.</p>
+<h2 id="Update-CLI-commands" class="common-anchor-header">Update CLI commands<button data-href="#Update-CLI-commands" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -96,31 +93,31 @@ beta: Milvus Backup 0.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Los indicadores obsoletos en la versión 0.5 se rechazan en la 0.6.0. Actualice los scripts antes de actualizar el binario.</p>
+    </button></h2><p>Flags deprecated in 0.5 are rejected in 0.6.0. Update scripts before upgrading the binary.</p>
 <table>
 <thead>
-<tr><th>Comando</th><th>Opción eliminada</th><th>Sustitución</th></tr>
+<tr><th>Command</th><th>Removed option</th><th>Replacement</th></tr>
 </thead>
 <tbody>
 <tr><td><code translate="no">create</code></td><td><code translate="no">--colls</code> / <code translate="no">-c</code>, <code translate="no">--databases</code> / <code translate="no">-d</code>, <code translate="no">--database_collections</code> / <code translate="no">-a</code></td><td><code translate="no">--filter</code></td></tr>
 <tr><td><code translate="no">create</code></td><td><code translate="no">--force</code> / <code translate="no">-f</code></td><td><code translate="no">--strategy skip_flush</code></td></tr>
 <tr><td><code translate="no">create</code></td><td><code translate="no">--meta_only</code></td><td><code translate="no">--strategy meta_only</code></td></tr>
-<tr><td><code translate="no">restore</code></td><td><code translate="no">--collections</code> / <code translate="no">-c</code>, <code translate="no">--databases</code> / <code translate="no">-d</code>, <code translate="no">--database_collections</code> / <code translate="no">-a</code></td><td><code translate="no">--filter</code>, utilizando nombres de destino</td></tr>
+<tr><td><code translate="no">restore</code></td><td><code translate="no">--collections</code> / <code translate="no">-c</code>, <code translate="no">--databases</code> / <code translate="no">-d</code>, <code translate="no">--database_collections</code> / <code translate="no">-a</code></td><td><code translate="no">--filter</code>, using target names</td></tr>
 <tr><td><code translate="no">restore</code></td><td><code translate="no">--restore_index</code></td><td><code translate="no">--rebuild_index</code></td></tr>
-<tr><td><code translate="no">get</code></td><td><code translate="no">--detail</code> / <code translate="no">-d</code></td><td>Elimina el indicador; <code translate="no">get</code> devuelve la información de la copia de seguridad</td></tr>
-<tr><td><code translate="no">list</code></td><td><code translate="no">--collection</code> / <code translate="no">-c</code></td><td>No hay ningún filtro de colección equivalente</td></tr>
+<tr><td><code translate="no">get</code></td><td><code translate="no">--detail</code> / <code translate="no">-d</code></td><td>Remove the flag; <code translate="no">get</code> returns the backup information</td></tr>
+<tr><td><code translate="no">list</code></td><td><code translate="no">--collection</code> / <code translate="no">-c</code></td><td>No equivalent collection filter</td></tr>
 </tbody>
 </table>
-<p>Por ejemplo, estos comandos de la versión 0.5.16 seleccionan el nombre de origen « <code translate="no">coll</code> »:</p>
+<p>For example, these 0.5.16 commands select the source name <code translate="no">coll</code>:</p>
 <pre><code translate="no" class="language-shell">./milvus-backup create -c coll -n my_backup
 ./milvus-backup restore -c coll -n my_backup -s _bak
 <button class="copy-code-btn"></button></code></pre>
-<p>Sus sustitutos de la versión 0.6.0 utilizan el nombre de destino para la restauración:</p>
+<p>Their 0.6.0 replacements use the target name for restore:</p>
 <pre><code translate="no" class="language-shell">./milvus-backup create --filter coll -n my_backup --config configs/backup-v2.yaml
 ./milvus-backup restore --filter coll_bak -n my_backup -s _bak --config configs/backup-v2.yaml
 <button class="copy-code-btn"></button></code></pre>
-<p>Un filtro de restauración que no coincida con nada puede finalizar correctamente sin crear una colección. Comprueba siempre la colección de destino y sus datos. La API HTTP sigue seleccionando los nombres de origen en la copia de seguridad mediante « <code translate="no">collection_names</code> »; consulta <a href="/docs/es/milvus_backup_0_6_api.md#Restore-data">la guía de la API HTTP</a>.</p>
-<h2 id="Choose-the-backup-behavior" class="common-anchor-header">Elige el comportamiento de la copia de seguridad<button data-href="#Choose-the-backup-behavior" class="anchor-icon" translate="no">
+<p>A restore filter that matches nothing can exit successfully without creating a collection. Always check the target collection and its data. The HTTP API’s <code translate="no">collection_names</code> still selects source names in the backup; see the <a href="/docs/es/milvus_backup_0_6_api.md#Restore-data">HTTP API guide</a>.</p>
+<h2 id="Choose-the-backup-behavior" class="common-anchor-header">Choose the backup behavior<button data-href="#Choose-the-backup-behavior" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -136,13 +133,13 @@ beta: Milvus Backup 0.6.x
         ></path>
       </svg>
     </button></h2><ul>
-<li>En los servidores Milvus 2.x compatibles, el formato « <code translate="no">auto</code> » utiliza el binlog. La actualización de la copia de seguridad no requiere pasar a Milvus 3.0.</li>
-<li>En Milvus 3.0, <code translate="no">auto</code> selecciona snapshot. La compatibilidad oficial con copias de seguridad y restauraciones comienza a partir de Milvus 3.0.1. Pasa <code translate="no">--format binlog</code> para mantener el comportamiento de binlog al crear una copia de seguridad.</li>
-<li>La compatibilidad con la configuración de la versión 1 no conserva los indicadores de comando eliminados ni anula el valor predeterminado del nuevo formato.</li>
-<li>Los ajustes predefinidos de propósito pueden establecer el formato y otras opciones. Por ejemplo, <code translate="no">--for archive</code> fuerza el uso del binlog incluso si también se proporciona <code translate="no">--format snapshot</code>. Revisa <a href="/docs/es/milvus_backup_0_6_cli.md#Choose-a-backup-format-or-purpose">las opciones de formato y propósito</a>.</li>
-<li>Las recopilaciones externas se omiten durante la copia de seguridad. Comprueba los metadatos de la copia de seguridad en lugar de dar por hecho que el éxito de la tarea garantiza que se hayan incluido todas las recopilaciones.</li>
+<li>On supported Milvus 2.x servers, the <code translate="no">auto</code> format uses binlog. Upgrading Backup does not require moving to Milvus 3.0.</li>
+<li>On Milvus 3.0, <code translate="no">auto</code> selects snapshot. Official backup and restore support starts at Milvus 3.0.1. Pass <code translate="no">--format binlog</code> to retain binlog behavior when creating a backup.</li>
+<li>V1 configuration compatibility does not preserve removed command flags or override the new format default.</li>
+<li>Purpose presets can set the format and other options. For example, <code translate="no">--for archive</code> forces binlog even if <code translate="no">--format snapshot</code> is also supplied. Review <a href="/docs/es/milvus_backup_0_6_cli.md#Choose-a-backup-format-or-purpose">format and purpose choices</a>.</li>
+<li>External collections are skipped during backup. Check the backup metadata rather than treating task success as proof that every collection was included.</li>
 </ul>
-<h2 id="Validate-before-switching-jobs" class="common-anchor-header">Valida antes de cambiar de trabajo<button data-href="#Validate-before-switching-jobs" class="anchor-icon" translate="no">
+<h2 id="Validate-before-switching-jobs" class="common-anchor-header">Validate before switching jobs<button data-href="#Validate-before-switching-jobs" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -157,16 +154,16 @@ beta: Milvus Backup 0.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>El siguiente ejemplo conserva el formato binlog y restaura en una nueva colección. Sustituya <code translate="no">coll</code> por una colección cuyo esquema, recuento, valores escalares y vectoriales, y resultados de búsqueda haya registrado. Utilice un nuevo nombre de copia de seguridad y asegúrese de que el nombre de destino <code translate="no">coll_upgrade_check</code> no exista.</p>
+    </button></h2><p>The following example keeps binlog format and restores into a new collection. Replace <code translate="no">coll</code> with a collection whose schema, count, scalar and vector values, and search results you have recorded. Use a new backup name and ensure the target name <code translate="no">coll_upgrade_check</code> does not exist.</p>
 <pre><code translate="no" class="language-shell">./milvus-backup check --config configs/backup-v2.yaml
 ./milvus-backup create --filter coll --format binlog -n upgrade_check --config configs/backup-v2.yaml
 ./milvus-backup get -n upgrade_check --config configs/backup-v2.yaml
 ./milvus-backup restore --filter coll_upgrade_check -n upgrade_check -s _upgrade_check --config configs/backup-v2.yaml
 <button class="copy-code-btn"></button></code></pre>
-<p>Confirma que la copia de seguridad incluya <code translate="no">coll</code> y que <code translate="no">coll_upgrade_check</code> exista tras la restauración. Crea su índice vectorial si es necesario, cárgalo y compara los datos restaurados y los resultados de búsqueda con la referencia registrada. Mantén los datos de origen sin cambios durante esta prueba.</p>
-<p>Pruebe también una copia de seguridad existente representativa antes de confiar en ella con la nueva herramienta. Para una copia de seguridad 0.5.16 denominada <code translate="no">legacy_backup</code> que contenga <code translate="no">coll</code>, utilice un nombre de destino distinto:</p>
+<p>Confirm that the backup lists <code translate="no">coll</code> and that <code translate="no">coll_upgrade_check</code> exists after restore. Create its vector index if needed, load it, and compare the restored data and search results with the recorded baseline. Keep the source data unchanged during this test.</p>
+<p>Also test a representative existing backup before relying on it with the new tool. For a 0.5.16 backup named <code translate="no">legacy_backup</code> containing <code translate="no">coll</code>, use a separate target name:</p>
 <pre><code translate="no" class="language-shell">./milvus-backup get -n legacy_backup --config configs/backup-v2.yaml
 ./milvus-backup restore --filter coll_legacy_check -n legacy_backup -s _legacy_check --config configs/backup-v2.yaml
 <button class="copy-code-btn"></button></code></pre>
-<p>Estas rutas de actualización se validaron con <strong>Milvus 2.6.11</strong>, la copia de seguridad <strong>0.5.16 → 0.6.0</strong> y copias de seguridad de binlog en MinIO. Tanto las copias de seguridad recién creadas como las existentes se restauraron con valores de entidad y resultados de búsqueda vectorial coincidentes. Esto no garantiza la compatibilidad con todas las copias de seguridad históricas ni con la restauración de Milvus 2.x a 3.0. Tampoco garantiza que la versión 0.5.x pueda leer copias de seguridad creadas por la versión 0.6.0.</p>
-<p>Una vez que la validación se haya realizado con éxito, actualice los trabajos para que utilicen conjuntamente el nuevo binario, la configuración comprobada, los ajustes de entorno y los indicadores de sustitución. Para implementaciones mediante API, inicie el nuevo servicio con la configuración comprobada y verifique la finalización de las tareas a través de la <a href="/docs/es/milvus_backup_0_6_api.md">API HTTP</a>. Para adoptar instantáneas en Milvus 3.0.1 o posterior, siga las instrucciones de <a href="/docs/es/snapshot-backup-and-restore.md">«Copia de seguridad y restauración de instantáneas en una sola instancia</a>».</p>
+<p>These upgrade paths were validated with <strong>Milvus 2.6.11</strong>, Backup <strong>0.5.16 → 0.6.0</strong>, and binlog backups in MinIO. Both newly created and existing backups restored with matching entity values and vector-search results. This does not establish compatibility for every historical backup or for Milvus 2.x-to-3.0 restoration. It also does not establish that 0.5.x can read backups created by 0.6.0.</p>
+<p>Once validation succeeds, update jobs to use the new binary, checked configuration, environment settings, and replacement flags together. For API deployments, start the new service with the checked configuration and verify task completion through the <a href="/docs/es/milvus_backup_0_6_api.md">HTTP API</a>. To adopt snapshots on Milvus 3.0.1 or later, follow <a href="/docs/es/snapshot-backup-and-restore.md">Snapshot Backup and Restore in One Instance</a>.</p>

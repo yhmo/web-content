@@ -1,11 +1,12 @@
 ---
 id: structarray-limits.md
-title: StructArray の制限事項
+title: StructArray Limits
 summary: >-
-  StructArray のサポート範囲には、スキーマ定義、挿入ペイロード、インデックス作成、検索モード、および StructArray
-  独自のフィルターが含まれます。本番環境で StructArray の動作を利用する前に、このページを制限事項のリファレンスとしてご活用ください。
+  StructArray support spans schema definition, insert payloads, indexing, search
+  modes, and StructArray-specific filters. Use this page as the limits reference
+  before you rely on StructArray behavior in production.
 ---
-<h1 id="StructArray-Limits" class="common-anchor-header">StructArray の制限事項<button data-href="#StructArray-Limits" class="anchor-icon" translate="no">
+<h1 id="StructArray-Limits" class="common-anchor-header">StructArray Limits<button data-href="#StructArray-Limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,9 +21,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>StructArray のサポート範囲は、スキーマ定義、挿入ペイロード、インデックス作成、検索モード、および StructArray 固有のフィルターに及びます。本番環境で StructArray の動作に依存する前に、このページを制限事項のリファレンスとしてご利用ください。</p>
-<p>StructArray の制限のほとんどは、StructArray スキーマモデル、ベクトルサブフィールドに選択した検索モード、およびコレクションが実行されている Milvus のバージョンのいずれかから生じます。</p>
-<h2 id="Limits-at-a-glance" class="common-anchor-header">制限事項の概要<button data-href="#Limits-at-a-glance" class="anchor-icon" translate="no">
+    </button></h1><p>StructArray support spans schema definition, insert payloads, indexing, search modes, and StructArray-specific filters. Use this page as the limits reference before you rely on StructArray behavior in production.</p>
+<p>Most StructArray limits come from one of three places: the StructArray schema model, the search mode you choose for vector subfields, and the Milvus version that your collection runs on.</p>
+<h2 id="Limits-at-a-glance" class="common-anchor-header">Limits at a glance<button data-href="#Limits-at-a-glance" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,26 +38,26 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>StructArrayの主な制限は以下の通りです：</p>
+    </button></h2><p>The main StructArray limits are:</p>
 <table>
 <thead>
-<tr><th>領域</th><th>制限</th></tr>
+<tr><th>Area</th><th>Limit</th></tr>
 </thead>
 <tbody>
-<tr><td>スキーマの形状</td><td>Structは、Arrayフィールドの要素型としてのみ使用できます。Structは、最上位のコレクションフィールドとしてはサポートされていません。</td></tr>
-<tr><td>サブフィールドのスキーマ</td><td>同じ StructArray フィールド内のすべての Struct 要素は、1 つの事前定義された Struct スキーマを共有します。</td></tr>
-<tr><td>ネストされたサブフィールド</td><td>Milvus 3.0.6 以降、Struct は 1 階層のネストを持つスカラー型の<code translate="no">ARRAY</code> サブフィールドを含むことができます。ネストされた<code translate="no">Struct</code> 、<code translate="no">ArrayOfStruct</code> 、および JSON サブフィールドは、どのバージョンでもサポートされていません。</td></tr>
-<tr><td>容量</td><td><code translate="no">max_capacity</code> は必須であり、1つのエンティティがStructArrayフィールドに格納できるStruct要素の数を制限します。</td></tr>
-<tr><td>サブフィールドの変更</td><td>Milvus 3.0.6 以降では、既存の StructArray フィールドに要素が null 許容のサブフィールドを追加したり、サブフィールドを削除したりできるようになりました。それ以前のバージョンでは、StructArray フィールド全体を削除して再追加する必要があります。</td></tr>
-<tr><td>サブフィールドのパス</td><td>インデックス、検索対象、出力フィールド、およびフィルターには、<code translate="no">chunks[emb]</code> のような<code translate="no">structArray[subfield]</code> のパスを使用してください。<code translate="no">chunks.emb</code> は使用しないでください。</td></tr>
-<tr><td>シェイプの挿入</td><td>StructArrayフィールドをオブジェクトの配列として挿入します。insertペイロード内ではパス構文を使用しないでください。</td></tr>
-<tr><td>ベクトルインデックス</td><td>ベクトルフィールドまたはベクトルサブフィールドは、1つのインデックスのみを受け付けます。EmbeddingList検索と要素レベルの検索には、それぞれ別のベクトルサブフィールドを使用してください。</td></tr>
-<tr><td>関数</td><td>StructArrayフィールド内のフィールドまたはサブフィールドでは、フィールド関数はサポートされていません。</td></tr>
-<tr><td>Null 許容フィールド</td><td>Null可能なStructArrayフィールドはバージョン制限があります。行レベルのNullはStructArrayフィールド全体に適用されます。Milvus 3.0.6以降では、サブフィールドにおいて個々のStruct要素内でNull値を許可できるようになりました：スカラーまたはベクトルサブフィールドでは<code translate="no">nullable=True</code> 、配列サブフィールドでは<code translate="no">element_nullable=True</code> 。Struct要素自体はNullにすることはできません。</td></tr>
-<tr><td>動的なフィールドの追加</td><td>既存のコレクションへの StructArray フィールドの追加はバージョン制限があり、追加するフィールドが null 許容である必要があります。</td></tr>
+<tr><td>Schema shape</td><td>A Struct can be used only as the element type of an Array field. Struct is not supported as a top-level collection field.</td></tr>
+<tr><td>Subfield schema</td><td>All Struct elements in the same StructArray field share one predefined Struct schema.</td></tr>
+<tr><td>Nested subfields</td><td>Starting in Milvus 3.0.6, a Struct can contain scalar <code translate="no">ARRAY</code> subfields with one nesting level. Nested <code translate="no">Struct</code>, <code translate="no">ArrayOfStruct</code>, and JSON subfields are not supported in any version.</td></tr>
+<tr><td>Capacity</td><td><code translate="no">max_capacity</code> is required and limits how many Struct elements one entity can store in the StructArray field.</td></tr>
+<tr><td>Subfield changes</td><td>Starting in Milvus 3.0.6, you can add an element-nullable subfield to an existing StructArray field or drop a subfield from it. Earlier versions require dropping and re-adding the whole StructArray field.</td></tr>
+<tr><td>Subfield path</td><td>Use <code translate="no">structArray[subfield]</code> paths, such as <code translate="no">chunks[emb]</code>, for indexes, search targets, output fields, and filters. Do not use <code translate="no">chunks.emb</code>.</td></tr>
+<tr><td>Insert shape</td><td>Insert a StructArray field as an array of objects. Do not use path syntax inside insert payloads.</td></tr>
+<tr><td>Vector indexes</td><td>A vector field or vector subfield accepts only one index. Use separate vector subfields for EmbeddingList search and element-level search.</td></tr>
+<tr><td>Functions</td><td>Field functions are not supported for fields or subfields inside a StructArray field.</td></tr>
+<tr><td>Nullable fields</td><td>Nullable StructArray fields are version-gated. Row-level null applies to the whole StructArray field. Starting in Milvus 3.0.6, a subfield can additionally allow a null value in an individual Struct element: <code translate="no">nullable=True</code> on a scalar or vector subfield, <code translate="no">element_nullable=True</code> on an array subfield. A Struct element itself cannot be null.</td></tr>
+<tr><td>Dynamic add field</td><td>Adding a StructArray field to an existing collection is version-gated and requires the added field to be nullable.</td></tr>
 </tbody>
 </table>
-<h2 id="Schema-limits" class="common-anchor-header">スキーマの制限<button data-href="#Schema-limits" class="anchor-icon" translate="no">
+<h2 id="Schema-limits" class="common-anchor-header">Schema limits<button data-href="#Schema-limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -71,25 +72,25 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>StructArray スキーマには、以下の制限があります：</p>
+    </button></h2><p>StructArray schemas have the following limits:</p>
 <table>
 <thead>
-<tr><th>制限</th><th>詳細</th></tr>
+<tr><th>Limit</th><th>Details</th></tr>
 </thead>
 <tbody>
-<tr><td>Structはトップレベルのフィールド型にはできません。</td><td>StructArrayフィールドを、`<code translate="no">datatype=DataType.ARRAY</code> `として、`<code translate="no">element_type=DataType.STRUCT</code> `および`<code translate="no">struct_schema</code>`を指定して作成します。</td></tr>
-<tr><td>すべての要素は 1 つのスキーマを共有します。</td><td>StructArray フィールド内のすべての Struct 要素は、同じサブフィールドリストおよびサブフィールドのデータ型に従います。</td></tr>
-<tr><td><code translate="no">max_capacity</code> は必須です。</td><td>1 つのエンティティに含まれる Struct 要素の数は、StructArray フィールドに設定された<code translate="no">max_capacity</code> を超えてはなりません。</td></tr>
-<tr><td>スカラーの<code translate="no">ARRAY</code> サブフィールドには、サブフィールドごとの<code translate="no">max_capacity</code> があります。</td><td>スカラーの<code translate="no">ARRAY</code> サブフィールドは、その内部配列に対して<code translate="no">max_capacity</code> を宣言しており、Milvusは、内部配列がそのサブフィールドの宣言された容量を超えるStruct要素を拒否します。サブフィールド間で値が一致している必要はありません。値は0より大きく、<code translate="no">proxy.maxArrayCapacity</code> （デフォルトは4096）を超えてはなりません。</td></tr>
-<tr><td>Milvus 3.0.6 以降では、サブフィールドの変更が可能です。</td><td>要素がnull可能なサブフィールドを追加するか、<code translate="no">chunks[lang]</code> のようにパス指定してサブフィールドを削除します。StructArrayフィールドの最後のサブフィールド、コレクションの最後のベクトルフィールド、または関数（Function）で使用されているサブフィールドは削除できません。以前のバージョンでは、StructArrayフィールドを削除し、更新されたスキーマで再度追加してください。</td></tr>
-<tr><td>ネストされた Struct はサポートされていません。</td><td>Structには、ネストされた<code translate="no">Struct</code> 、<code translate="no">ArrayOfStruct</code> 、またはJSONサブフィールドを含めることはできません。Milvus 3.0.6以降、Structには1階層のネストを持つスカラー型の<code translate="no">ARRAY</code> サブフィールドを含めることができます。<code translate="no">ARRAY</code> サブフィールドはベクトルを保持できません。</td></tr>
-<tr><td>StructArray 内での関数の使用はサポートされていません。</td><td>StructArrayのフィールドまたはそのサブフィールドに対して、フィールド関数を定義しないでください。</td></tr>
-<tr><td>StructArray フィールドでは、フィールドプロパティに制限があります。</td><td>Milvus 3.0.6 以降、StructArray フィールドまたはサブフィールドパスに対する `<code translate="no">alter_collection_field()</code> ` は、`<code translate="no">mmap.enabled</code>`、`<code translate="no">field.description</code>`、および `<code translate="no">warmup</code>` のみを受け入れます。`<code translate="no">max_capacity</code> ` や `<code translate="no">max_length</code>` などのその他のプロパティは拒否されます。</td></tr>
-<tr><td>サブフィールドではテキスト分析はサポートされていません。</td><td>Struct サブフィールドに対して<code translate="no">enable_match</code> または<code translate="no">enable_analyzer</code> を設定すると、その設定は拒否されます。テキストインデックスは、最上位フィールドに対してのみ構築されます。</td></tr>
+<tr><td>Struct is not a top-level field type.</td><td>Create a StructArray field as <code translate="no">datatype=DataType.ARRAY</code> with <code translate="no">element_type=DataType.STRUCT</code> and a <code translate="no">struct_schema</code>.</td></tr>
+<tr><td>All elements share one schema.</td><td>Every Struct element in a StructArray field follows the same subfield list and subfield data types.</td></tr>
+<tr><td><code translate="no">max_capacity</code> is required.</td><td>The number of Struct elements in one entity must not exceed the <code translate="no">max_capacity</code> configured for the StructArray field.</td></tr>
+<tr><td>Scalar <code translate="no">ARRAY</code> subfields have per-subfield <code translate="no">max_capacity</code>.</td><td>A scalar <code translate="no">ARRAY</code> subfield declares a <code translate="no">max_capacity</code> for its inner array, and Milvus rejects a Struct element whose inner array exceeds that subfield’s declared capacity. Values do not need to match across subfields. The value must be greater than 0 and must not exceed <code translate="no">proxy.maxArrayCapacity</code>, which defaults to 4096.</td></tr>
+<tr><td>Subfields can evolve in Milvus 3.0.6 and later.</td><td>Add an element-nullable subfield, or drop a subfield by its path, such as <code translate="no">chunks[lang]</code>. You cannot drop the last subfield of a StructArray field, the last vector field of the collection, or a subfield used by a Function. In earlier versions, drop the StructArray field and add it again with the updated schema.</td></tr>
+<tr><td>Nested Struct is not supported.</td><td>A Struct cannot contain nested <code translate="no">Struct</code>, <code translate="no">ArrayOfStruct</code>, or JSON subfields. Starting in Milvus 3.0.6, a Struct can contain scalar <code translate="no">ARRAY</code> subfields with one nesting level. An <code translate="no">ARRAY</code> subfield cannot hold vectors.</td></tr>
+<tr><td>Functions are not supported inside StructArray.</td><td>Do not define field functions for StructArray fields or their subfields.</td></tr>
+<tr><td>Field properties are limited on StructArray fields.</td><td>Starting in Milvus 3.0.6, <code translate="no">alter_collection_field()</code> on a StructArray field or on a subfield path accepts only <code translate="no">mmap.enabled</code>, <code translate="no">field.description</code>, and <code translate="no">warmup</code>. Other properties, such as <code translate="no">max_capacity</code> and <code translate="no">max_length</code>, are rejected.</td></tr>
+<tr><td>Text analysis is not supported on subfields.</td><td>Setting <code translate="no">enable_match</code> or <code translate="no">enable_analyzer</code> on a Struct subfield is rejected. Text indexes are built only for top-level fields.</td></tr>
 </tbody>
 </table>
-<p>スキーマ作成の例については、「<a href="/docs/ja/create-structarray-field.md">StructArray フィールドの作成」を</a>参照してください。</p>
-<h2 id="Supported-subfield-data-types" class="common-anchor-header">サポートされているサブフィールドのデータ型<button data-href="#Supported-subfield-data-types" class="anchor-icon" translate="no">
+<p>For schema creation examples, see <a href="/docs/ja/create-structarray-field.md">Create a StructArray Field</a>.</p>
+<h2 id="Supported-subfield-data-types" class="common-anchor-header">Supported subfield data types<button data-href="#Supported-subfield-data-types" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -104,32 +105,32 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>StructArray のサブフィールドは、物理的な配列形式のストレージにマッピングされます。次の表に、サポートされている物理型とサポートされていない物理型を示します。</p>
+    </button></h2><p>StructArray subfields map to physical array-style storage. The following table lists supported and unsupported physical types:</p>
 <table>
 <thead>
-<tr><th>Struct サブフィールドの物理型</th><th>サポート</th><th>備考</th></tr>
+<tr><th>Struct subfield physical type</th><th>Support</th><th>Notes</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">Array&lt;Bool&gt;</code></td><td>サポート対象</td><td>サブフィールドを `<code translate="no">DataType.BOOL</code>` として定義します。</td></tr>
-<tr><td><code translate="no">Array&lt;Int8/Int16/Int32/Int64&gt;</code></td><td>サポート対象</td><td>サブフィールドを<code translate="no">DataType.INT8</code> 、<code translate="no">DataType.INT16</code> 、<code translate="no">DataType.INT32</code> 、または<code translate="no">DataType.INT64</code> として定義します。</td></tr>
-<tr><td><code translate="no">Array&lt;Float/Double&gt;</code></td><td>サポート対象</td><td>サブフィールドを<code translate="no">DataType.FLOAT</code> または<code translate="no">DataType.DOUBLE</code> として定義します。</td></tr>
-<tr><td><code translate="no">Array&lt;VarChar&gt;</code></td><td>サポート対象サブフィールドを xml-ph-0000@deepl.internal または xml-ph-0001@deepl.internal として定義します。</td><td>サブフィールドを<code translate="no">DataType.VARCHAR</code> として定義し、<code translate="no">max_length</code> を設定します。</td></tr>
-<tr><td><code translate="no">ArrayOfVector&lt;FloatVector&gt;</code></td><td>サポートされています</td><td>サブフィールドを<code translate="no">DataType.FLOAT_VECTOR</code> として定義し、<code translate="no">dim</code> を設定します。サポート対象</td></tr>
-<tr><td><code translate="no">ArrayOfVector&lt;Float16Vector&gt;</code></td><td>サポート対象</td><td>サブフィールドを「<code translate="no">DataType.FLOAT16_VECTOR</code> 」として定義し、「<code translate="no">dim</code> 」に設定します。</td></tr>
-<tr><td><code translate="no">ArrayOfVector&lt;BFloat16Vector&gt;</code></td><td>サポート対象</td><td>サブフィールドを「<code translate="no">DataType.BFLOAT16_VECTOR</code> 」として定義し、「<code translate="no">dim</code> 」に設定します。</td></tr>
-<tr><td><code translate="no">ArrayOfVector&lt;Int8Vector&gt;</code></td><td>サポート対象</td><td>サブフィールドを「<code translate="no">DataType.INT8_VECTOR</code> 」として定義し、「<code translate="no">dim</code> 」に設定します。</td></tr>
-<tr><td><code translate="no">ArrayOfVector&lt;BinaryVector&gt;</code></td><td>サポート対象</td><td>サブフィールドを「<code translate="no">DataType.BINARY_VECTOR</code> 」として定義し、「<code translate="no">dim</code> 」に設定します。</td></tr>
-<tr><td><code translate="no">ArrayOfVector&lt;SparseFloatVector&gt;</code></td><td>サポートされていません</td><td>StructArray フィールドでは、スパースベクトルのサブフィールドはサポートされていません。</td></tr>
-<tr><td><code translate="no">Array&lt;String&gt;</code></td><td>サポートされていません</td><td>`<code translate="no">String</code>` ではなく、`<code translate="no">VARCHAR</code>` を使用してください。</td></tr>
-<tr><td><code translate="no">Array&lt;JSON&gt;</code></td><td>サポートされていません</td><td>StructArray フィールドでは、JSON サブフィールドはサポートされていません。</td></tr>
-<tr><td><code translate="no">Array&lt;Geometry&gt;</code></td><td>サポートされていません</td><td>StructArray フィールドでは、ジオメトリのサブフィールドおよび GIS 関数はサポートされていません。</td></tr>
-<tr><td><code translate="no">Array&lt;Text&gt;</code></td><td>サポートされていません</td><td>StructArray フィールドでは、Text サブフィールドはサポートされていません。</td></tr>
-<tr><td><code translate="no">Array&lt;Timestamptz&gt;</code></td><td>サポートされていません</td><td>StructArray フィールドでは、Timestamptz サブフィールドおよび時刻指定式はサポートされていません。</td></tr>
-<tr><td><code translate="no">Array&lt;Array&gt;</code></td><td>Milvus 3.0.6 以降でサポートされています</td><td>サブフィールドを、スカラーの `<code translate="no">element_type</code> ` と内部配列用の `<code translate="no">max_capacity</code> ` を持つ `<code translate="no">DataType.ARRAY</code> ` として定義します。これにより、各 Struct 要素が 1 つの内部配列を保持するようになります。サブフィールドの `<code translate="no">nullable=True</code> ` を設定して内部配列が null であることを許可し、`<code translate="no">element_nullable=True</code> ` を設定して内部の値が null であることを許可します。</td></tr>
-<tr><td><code translate="no">Array</code> <code translate="no">Array</code> 、 、 、ベクトル、 、または<code translate="no">Array</code> <code translate="no">Array</code> <code translate="no">Struct</code> <code translate="no">ArrayOfStruct</code></td><td>サポートされていません</td><td>構造体内の配列のネストは 1 レベルに制限されており、内部配列はベクトルを保持できず、ネストされた構造体や構造体の配列のサブフィールドはサポートされていません。</td></tr>
+<tr><td><code translate="no">Array&lt;Bool&gt;</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.BOOL</code>.</td></tr>
+<tr><td><code translate="no">Array&lt;Int8/Int16/Int32/Int64&gt;</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.INT8</code>, <code translate="no">DataType.INT16</code>, <code translate="no">DataType.INT32</code>, or <code translate="no">DataType.INT64</code>.</td></tr>
+<tr><td><code translate="no">Array&lt;Float/Double&gt;</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.FLOAT</code> or <code translate="no">DataType.DOUBLE</code>.</td></tr>
+<tr><td><code translate="no">Array&lt;VarChar&gt;</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.VARCHAR</code> and set <code translate="no">max_length</code>.</td></tr>
+<tr><td><code translate="no">ArrayOfVector&lt;FloatVector&gt;</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.FLOAT_VECTOR</code> and set <code translate="no">dim</code>.</td></tr>
+<tr><td><code translate="no">ArrayOfVector&lt;Float16Vector&gt;</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.FLOAT16_VECTOR</code> and set <code translate="no">dim</code>.</td></tr>
+<tr><td><code translate="no">ArrayOfVector&lt;BFloat16Vector&gt;</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.BFLOAT16_VECTOR</code> and set <code translate="no">dim</code>.</td></tr>
+<tr><td><code translate="no">ArrayOfVector&lt;Int8Vector&gt;</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.INT8_VECTOR</code> and set <code translate="no">dim</code>.</td></tr>
+<tr><td><code translate="no">ArrayOfVector&lt;BinaryVector&gt;</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.BINARY_VECTOR</code> and set <code translate="no">dim</code>.</td></tr>
+<tr><td><code translate="no">ArrayOfVector&lt;SparseFloatVector&gt;</code></td><td>Not supported</td><td>Sparse vector subfields are not supported in StructArray fields.</td></tr>
+<tr><td><code translate="no">Array&lt;String&gt;</code></td><td>Not supported</td><td>Use <code translate="no">VARCHAR</code>, not <code translate="no">String</code>.</td></tr>
+<tr><td><code translate="no">Array&lt;JSON&gt;</code></td><td>Not supported</td><td>JSON subfields are not supported in StructArray fields.</td></tr>
+<tr><td><code translate="no">Array&lt;Geometry&gt;</code></td><td>Not supported</td><td>Geometry subfields and GIS functions are not supported in StructArray fields.</td></tr>
+<tr><td><code translate="no">Array&lt;Text&gt;</code></td><td>Not supported</td><td>Text subfields are not supported in StructArray fields.</td></tr>
+<tr><td><code translate="no">Array&lt;Timestamptz&gt;</code></td><td>Not supported</td><td>Timestamptz subfields and time-specific expressions are not supported in StructArray fields.</td></tr>
+<tr><td><code translate="no">Array&lt;Array&gt;</code></td><td>Supported in Milvus 3.0.6 and later</td><td>Define the subfield as <code translate="no">DataType.ARRAY</code> with a scalar <code translate="no">element_type</code> and a <code translate="no">max_capacity</code> for the inner array. Each Struct element then holds one inner array. Set <code translate="no">nullable=True</code> on the subfield to allow a null inner array and <code translate="no">element_nullable=True</code> to allow null values inside it.</td></tr>
+<tr><td><code translate="no">Array</code> of <code translate="no">Array</code> of <code translate="no">Array</code>, <code translate="no">Array</code> of vectors, <code translate="no">Struct</code>, or <code translate="no">ArrayOfStruct</code></td><td>Not supported</td><td>Array nesting inside a Struct is limited to one level, the inner array cannot hold vectors, and nested Struct or Array-of-Struct subfields are not supported.</td></tr>
 </tbody>
 </table>
-<h2 id="Nullable-and-dynamic-schema-limits" class="common-anchor-header">Null 許容および動的スキーマの制限<button data-href="#Nullable-and-dynamic-schema-limits" class="anchor-icon" translate="no">
+<h2 id="Nullable-and-dynamic-schema-limits" class="common-anchor-header">Nullable and dynamic schema limits<button data-href="#Nullable-and-dynamic-schema-limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -144,30 +145,30 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>以下の表は、以下の利用可能性に関する記述に従い、Nullable StructArray の動作および動的な StructArray フィールドの追加について説明しています：</p>
+    </button></h2><p>The following table describes nullable StructArray behavior and dynamic StructArray field addition, subject to the availability statement below:</p>
 <table>
 <thead>
-<tr><th>機能</th><th>制限</th></tr>
+<tr><th>Capability</th><th>Limit</th></tr>
 </thead>
 <tbody>
-<tr><td>Null可能な StructArray フィールド</td><td>以下の可用性に関する注意事項に従い、StructArrayの親に対して<code translate="no">nullable=True</code> を設定してください。Structのサブフィールドを個別にNULL許容として設定しないでください。</td></tr>
-<tr><td>Python における NULL 値</td><td>PythonでStructArrayのNULL値を挿入するには、<code translate="no">None</code> を使用してください。<code translate="no">Null</code> や<code translate="no">null</code> は使用しないでください。</td></tr>
-<tr><td>NULLの適用範囲</td><td>NULLはStructArrayフィールド全体に適用されます。たとえば、<code translate="no">chunks=None</code> は、<code translate="no">chunks</code> がNULL可能である場合にのみ有効です。</td></tr>
-<tr><td>部分的にNullなStructArrayの値</td><td>StructArrayフィールドに有効な配列値が含まれている場合、同じ値内でNULLのサブフィールド配列と有効なサブフィールド配列を混在させないでください。</td></tr>
-<tr><td>要素レベルのNULL</td><td>Milvus 3.0.6以降でサポートされています。スカラー、ベクトル、または<code translate="no">ARRAY</code> のサブフィールドでは、個々のStruct要素でNULL値を許可できます。スカラーまたはベクトルのサブフィールドでは<code translate="no">nullable=True</code> 、<code translate="no">ARRAY</code> のサブフィールドでは<code translate="no">element_nullable=True</code> を指定します。行レベルの<code translate="no">nullable</code> 設定は引き続きStructArrayの親から継承されます。サブフィールドで<code translate="no">nullable=True</code> を設定しても、行レベルのNULLではなく、要素レベルのNULLが有効になります。</td></tr>
-<tr><td>Struct要素のnull</td><td><code translate="no">[null, {...}]</code> のように、Struct要素自体はnullにすることはできません。代わりに、その要素のサブフィールドの値をnullに設定してください。</td></tr>
-<tr><td>省略されたサブフィールド</td><td>Milvus 3.0.6 以降では、Struct 要素から要素レベルで null 許容のサブフィールドを省略することができ、Milvus はそのサブフィールドに対して null を格納します。要素レベルで null 許容ではないサブフィールドは、すべての Struct 要素に存在する必要があります。以前のバージョンでは、すべての Struct 要素がすべてのサブフィールドを指定する必要がありました。</td></tr>
-<tr><td>StructArrayフィールドの動的追加</td><td>以下の利用条件に従います。</td></tr>
-<tr><td>動的追加におけるNull可能要件</td><td>既存のコレクションに追加される StructArray フィールドは、既存のエンティティには新しいフィールドの値がないため、Nullable でなければなりません。</td></tr>
-<tr><td>動的追加後の既存のエンティティ</td><td>既存のエンティティは、追加されたStructArrayフィールドに対して<code translate="no">null</code> を返します。</td></tr>
-<tr><td>動的追加のサブフィールド</td><td>Milvus 3.0.6 以降でサポートされています。追加されるサブフィールドは `<code translate="no">nullable=True</code>` で作成する必要があります。また、追加される `<code translate="no">ARRAY</code> ` サブフィールドは、内部配列内の null 値に対して `<code translate="no">element_nullable=True</code> ` を返します。既存のエンティティは、各 `Struct` 要素内の新しいサブフィールドに対して null を返し、`StructArray` フィールドが null のエンティティは null のままとなります。</td></tr>
+<tr><td>Nullable StructArray field</td><td>Subject to the availability statement below, set <code translate="no">nullable=True</code> on the StructArray parent; do not configure Struct subfields as nullable independently.</td></tr>
+<tr><td>NULL value in Python</td><td>Use <code translate="no">None</code> to insert a null StructArray value in Python. Do not use <code translate="no">Null</code> or <code translate="no">null</code>.</td></tr>
+<tr><td>Null scope</td><td>NULL applies to the whole StructArray field. For example, <code translate="no">chunks=None</code> is valid only when <code translate="no">chunks</code> is nullable.</td></tr>
+<tr><td>Partially null StructArray value</td><td>When a StructArray field contains a valid array value, do not mix null subfield arrays with valid subfield arrays in the same value.</td></tr>
+<tr><td>Element-level null</td><td>Supported in Milvus 3.0.6 and later. A scalar, vector, or <code translate="no">ARRAY</code> subfield can allow a null value in individual Struct elements: <code translate="no">nullable=True</code> on a scalar or vector subfield, <code translate="no">element_nullable=True</code> on an <code translate="no">ARRAY</code> subfield. The row-level <code translate="no">nullable</code> setting still comes from the StructArray parent; setting <code translate="no">nullable=True</code> on a subfield enables element-level null, not row-level null.</td></tr>
+<tr><td>Null Struct element</td><td>A Struct element itself cannot be null, such as <code translate="no">[null, {...}]</code>. Set the subfield values of the element to null instead.</td></tr>
+<tr><td>Omitted subfields</td><td>Starting in Milvus 3.0.6, you can omit an element-nullable subfield from a Struct element, and Milvus stores null for it. A subfield that is not element-nullable must be present in every Struct element. In earlier versions, every Struct element must provide every subfield.</td></tr>
+<tr><td>Dynamic add StructArray field</td><td>Subject to the availability statement below.</td></tr>
+<tr><td>Nullable requirement for dynamic add</td><td>A StructArray field added to an existing collection must be nullable because existing entities have no value for the new field.</td></tr>
+<tr><td>Existing entities after dynamic add</td><td>Existing entities return <code translate="no">null</code> for the added StructArray field.</td></tr>
+<tr><td>Dynamic add subfield</td><td>Supported in Milvus 3.0.6 and later. An added subfield must be created with <code translate="no">nullable=True</code>; an added <code translate="no">ARRAY</code> subfield additionally takes <code translate="no">element_nullable=True</code> for null values inside the inner array. Existing entities return null for the new subfield in each of their Struct elements, and entities whose StructArray field is null stay null.</td></tr>
 </tbody>
 </table>
-<p>Milvus 3.0.0 以降のリリースでは、スタンドアロンおよび分散デプロイメントの両方で、Null 許容の StructArray フィールド、Null 許容のベクトル配列、および動的な StructArray フィールドの追加がサポートされています。以前のバージョンの Milvus では、これらの機能はサポートされていません。</p>
-<p>Milvus 3.0.6以降のリリースでは、さらに要素レベルのnull値、スカラー<code translate="no">ARRAY</code> サブフィールド、および既存のStructArrayフィールドのサブフィールドの追加や削除がサポートされています。これらの機能にはStorage V2が必要であり、外部コレクションでは利用できません。</p>
-<p>Zilliz Cloud では、Milvus 3.0.0 以降を実行しているオンデマンド・クラスタでこれらの機能を利用できます。サービング・クラスタではサポートされていません。</p>
-<p>NULL 許容の StructArray フィールドを使用した挿入の例については、「<a href="/docs/ja/insert-data-into-structarray-fields.md">StructArray フィールドへのデータの挿入</a>」を参照してください。</p>
-<h2 id="Insert-limits" class="common-anchor-header">挿入に関する制限<button data-href="#Insert-limits" class="anchor-icon" translate="no">
+<p>Milvus 3.0.0 and later releases support nullable StructArray fields, nullable vector arrays, and dynamic StructArray field addition in both Standalone and Distributed deployments. Earlier Milvus versions do not support these capabilities.</p>
+<p>Milvus 3.0.6 and later releases additionally support element-level null values, scalar <code translate="no">ARRAY</code> subfields, and adding or dropping subfields of an existing StructArray field. These capabilities require Storage V2 and are not available in external collections.</p>
+<p>In Zilliz Cloud, these capabilities are available on On-Demand Clusters running Milvus 3.0.0 or later. Serving Clusters do not support them.</p>
+<p>For insert examples with nullable StructArray fields, see <a href="/docs/ja/insert-data-into-structarray-fields.md">Insert Data into StructArray Fields</a>.</p>
+<h2 id="Insert-limits" class="common-anchor-header">Insert limits<button data-href="#Insert-limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -182,21 +183,21 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>StructArray の挿入ペイロードには、以下の制限があります。</p>
+    </button></h2><p>StructArray insert payloads have the following limits:</p>
 <table>
 <thead>
-<tr><th>制限</th><th>詳細</th></tr>
+<tr><th>Limit</th><th>Details</th></tr>
 </thead>
 <tbody>
-<tr><td>ペイロードの形状</td><td>StructArrayフィールドは、<code translate="no">chunks: [{&quot;text&quot;: &quot;...&quot;, &quot;emb&quot;: [...]}]</code> のようなStructオブジェクトの配列として挿入してください。</td></tr>
-<tr><td>サブフィールド名</td><td>各 Struct オブジェクト内では、<code translate="no">chunks[text]</code> のようなパスではなく、<code translate="no">text</code> や<code translate="no">emb</code> のようなサブフィールド名を使用してください。</td></tr>
-<tr><td>スキーマとの整合性</td><td>各 Struct 要素は、Struct スキーマと一致している必要があります。Milvus 3.0.6 以降、Struct 要素内の要素（null 許容）サブフィールドは、省略するか、<code translate="no">null</code> に設定することができます。</td></tr>
-<tr><td>容量</td><td>1つのエンティティに含まれるStruct要素の数は、<code translate="no">max_capacity</code> を超えてはなりません。</td></tr>
-<tr><td>ベクトルの次元</td><td>ベクトル値は、そのベクトルサブフィールドに対して設定された<code translate="no">dim</code> と一致している必要があります。</td></tr>
-<tr><td>検索モードの重複</td><td>EmbeddingList 検索と要素レベルの検索の両方が必要な場合は、ベクトルを 2 つの別々のベクトルサブフィールドに書き込んでください。</td></tr>
+<tr><td>Payload shape</td><td>Insert the StructArray field as an array of Struct objects, such as <code translate="no">chunks: [{&quot;text&quot;: &quot;...&quot;, &quot;emb&quot;: [...]}]</code>.</td></tr>
+<tr><td>Subfield names</td><td>Inside each Struct object, use subfield names such as <code translate="no">text</code> and <code translate="no">emb</code>, not paths such as <code translate="no">chunks[text]</code>.</td></tr>
+<tr><td>Schema alignment</td><td>Each Struct element must match the Struct schema. Starting in Milvus 3.0.6, an element-nullable subfield can be omitted or set to <code translate="no">null</code> in a Struct element.</td></tr>
+<tr><td>Capacity</td><td>The number of Struct elements in one entity must not exceed <code translate="no">max_capacity</code>.</td></tr>
+<tr><td>Vector dimensions</td><td>Vector values must match the <code translate="no">dim</code> configured for their vector subfields.</td></tr>
+<tr><td>Search-mode duplication</td><td>If you need both EmbeddingList search and element-level search, write vectors to two separate vector subfields.</td></tr>
 </tbody>
 </table>
-<h2 id="Index-and-metric-limits" class="common-anchor-header">インデックスおよびメトリックの制限<button data-href="#Index-and-metric-limits" class="anchor-icon" translate="no">
+<h2 id="Index-and-metric-limits" class="common-anchor-header">Index and metric limits<button data-href="#Index-and-metric-limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -211,21 +212,21 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>StructArrayのベクトルサブフィールドは、EmbeddingList検索または要素レベル検索のいずれかに対してインデックス付けできます。各ベクトルフィールドまたはベクトルサブフィールドは1つのインデックスのみを受け入れるため、同じベクトルサブフィールドで両方のメトリックファミリーを使用することはできません。検索モードでは、以下のメトリックファミリーが使用されます：</p>
+    </button></h2><p>A StructArray vector subfield can be indexed for either EmbeddingList search or element-level search. The same vector subfield cannot use both metric families because each vector field or vector subfield accepts only one index. The search modes use the following metric families:</p>
 <table>
 <thead>
-<tr><th>検索モード</th><th>メトリックファミリー</th><th>結果レベル</th></tr>
+<tr><th>Search mode</th><th>Metric family</th><th>Result level</th></tr>
 </thead>
 <tbody>
-<tr><td>EmbeddingList検索</td><td><code translate="no">MAX_SIM</code>、<code translate="no">MAX_SIM_COSINE</code> 、<code translate="no">MAX_SIM_IP</code> 、<code translate="no">MAX_SIM_L2</code> 、またはバイナリ<code translate="no">MAX_SIM_*</code> メトリック</td><td>エンティティレベルの結果。</td></tr>
-<tr><td>要素レベルの検索</td><td><code translate="no">L2</code> 、<code translate="no">IP</code> 、<code translate="no">COSINE</code> 、<code translate="no">HAMMING</code> などの通常のベクトルメトリクス、または<code translate="no">JACCARD</code></td><td>一致した要素のオフセットを含めることができる要素レベルの結果。</td></tr>
+<tr><td>EmbeddingList search</td><td><code translate="no">MAX_SIM</code>, <code translate="no">MAX_SIM_COSINE</code>, <code translate="no">MAX_SIM_IP</code>, <code translate="no">MAX_SIM_L2</code>, or binary <code translate="no">MAX_SIM_*</code> metrics</td><td>Entity-level results.</td></tr>
+<tr><td>Element-level search</td><td>Regular vector metrics such as <code translate="no">L2</code>, <code translate="no">IP</code>, <code translate="no">COSINE</code>, <code translate="no">HAMMING</code>, or <code translate="no">JACCARD</code></td><td>Element-level results that can include the matched element offset.</td></tr>
 </tbody>
 </table>
-<p>両方のモードが必要な場合は、別々のベクトルサブフィールドを使用してください。たとえば、EmbeddingList 検索には<code translate="no">chunks[emb_list_vector]</code> を、要素レベルの検索には<code translate="no">chunks[emb]</code> を使用します。</p>
-<p>StructArray のベクトルサブフィールドは、コレクションレベルの制限<code translate="no">proxy.maxVectorFieldNum</code> （デフォルトは 10）に対するベクトルフィールドとしてカウントされます。ベクトルサブフィールドがコレクション内の唯一のベクトルフィールドである StructArray フィールドは有効であり、そのようなフィールドを削除するとコレクションにベクトルフィールドがなくなるため、削除は拒否されます。 ベクトルフィールドおよびベクトルサブフィールドの総数は、対象のバージョンおよびサービスティアの制限範囲内に収めてください。</p>
-<p>Milvus 3.0.6 以降、要素が null 許容のベクトルサブフィールドは、通常のベクトルメトリックによる要素レベルの検索のみをサポートします。<code translate="no">MAX_SIM*</code> メトリック、EmbeddingList インデックス、および EmbeddingList 検索は、要素が null 許容のベクトルサブフィールドでは拒否され、<code translate="no">AUTOINDEX</code> はそれらに対して<code translate="no">MAX_SIM*</code> メトリックを選択しません。 Nullベクトルは検索の対象外となります。スカラーインデックスは、要素がNull可能であるサブフィールドや、スカラーの<code translate="no">ARRAY</code> サブフィールドではサポートされていません。</p>
-<p>サポートされているインデックス型およびメトリック型の組み合わせについては、「<a href="/docs/ja/index-structarray-fields.md">StructArray フィールドのインデックス</a>」を参照してください。</p>
-<h2 id="Search-limits" class="common-anchor-header">検索の制限<button data-href="#Search-limits" class="anchor-icon" translate="no">
+<p>Use separate vector subfields when both modes are required. For example, use <code translate="no">chunks[emb_list_vector]</code> for EmbeddingList search and <code translate="no">chunks[emb]</code> for element-level search.</p>
+<p>StructArray vector subfields count as vector fields toward the collection-level limit <code translate="no">proxy.maxVectorFieldNum</code>, which defaults to 10. A StructArray field whose vector subfields are the collection’s only vector fields is valid, and dropping such a field is rejected when it would leave the collection without a vector field. Keep the total number of vector fields and vector subfields within the limits of your target version and service tier.</p>
+<p>Starting in Milvus 3.0.6, an element-nullable vector subfield supports only element-level search with regular vector metrics. <code translate="no">MAX_SIM*</code> metrics, EmbeddingList indexes, and EmbeddingList search are rejected on element-nullable vector subfields, and <code translate="no">AUTOINDEX</code> does not select a <code translate="no">MAX_SIM*</code> metric for them. Null vectors do not participate in search. Scalar indexes are not supported on element-nullable subfields or on scalar <code translate="no">ARRAY</code> subfields.</p>
+<p>For the supported index-type and metric-type matrix, see <a href="/docs/ja/index-structarray-fields.md">Index StructArray Fields</a>.</p>
+<h2 id="Search-limits" class="common-anchor-header">Search limits<button data-href="#Search-limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -240,21 +241,21 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>StructArray の検索動作には、以下の制限があります。</p>
+    </button></h2><p>StructArray search behavior has the following limits:</p>
 <table>
 <thead>
-<tr><th>検索の動作</th><th>サポートと制限</th></tr>
+<tr><th>Search behavior</th><th>Support and limits</th></tr>
 </thead>
 <tbody>
-<tr><td>基本的な EmbeddingList 検索</td><td><code translate="no">MAX_SIM*</code> メトリクスでインデックス付けされたStructArrayベクトルサブフィールドでサポートされています。エンティティレベルの結果を返します。</td></tr>
-<tr><td>基本的な要素レベルの検索</td><td>通常のベクトルメトリクスでインデックス付けされたStructArrayベクトルサブフィールドでサポートされています。一致した要素のオフセットを返すことができます。</td></tr>
-<tr><td>範囲検索</td><td>検索モードおよびターゲットバージョンのインデックス／メトリック対応状況に応じてサポートされます。要素レベルのStructArrayリクエストにおけるハイブリッド検索範囲の挙動については、ターゲットバージョンを確認してください。</td></tr>
-<tr><td>グループ化検索</td><td>要素レベルのグループ化検索では、オフセットを返すことができます。要素レベルの StructArray リクエストにおけるハイブリッド検索のグループ化動作は、バージョンに依存します。</td></tr>
-<tr><td>ハイブリッド検索</td><td>ハイブリッド検索リクエストには、対象バージョンがその検索の組み合わせをサポートしている場合にのみ、StructArrayベクトルサブフィールドのリクエストを含めることができます。各リクエストは、引き続きインデックス化されたベクトルサブフィールドのメトリックファミリーに従います。</td></tr>
-<tr><td>オフセット出力</td><td>オフセットは、要素レベルの検索結果で利用可能です。EmbeddingList検索はエンティティレベルの結果を返し、主要な結果単位として要素オフセットを使用しません。</td></tr>
+<tr><td>Basic EmbeddingList search</td><td>Supported on StructArray vector subfields indexed with <code translate="no">MAX_SIM*</code> metrics. Returns entity-level results.</td></tr>
+<tr><td>Basic element-level search</td><td>Supported on StructArray vector subfields indexed with regular vector metrics. Can return matched element offsets.</td></tr>
+<tr><td>Range search</td><td>Supported according to the search mode and index/metric support of the target version. For hybrid search range behavior on element-level StructArray requests, check your target version.</td></tr>
+<tr><td>Grouping search</td><td>Element-level grouping search can return offsets. Hybrid search group-by behavior for element-level StructArray requests is version-gated.</td></tr>
+<tr><td>Hybrid search</td><td>A hybrid search request can include StructArray vector subfield requests only where the target version supports that search combination. Each request still follows the metric family of the indexed vector subfield.</td></tr>
+<tr><td>Offset output</td><td>Offset is available for element-level search results. EmbeddingList search returns entity-level results and does not use element offsets as the primary result unit.</td></tr>
 </tbody>
 </table>
-<h2 id="Filter-and-operator-limits" class="common-anchor-header">フィルタおよび演算子の制限<button data-href="#Filter-and-operator-limits" class="anchor-icon" translate="no">
+<h2 id="Filter-and-operator-limits" class="common-anchor-header">Filter and operator limits<button data-href="#Filter-and-operator-limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -269,25 +270,25 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>StructArrayのスカラーフィルタリングは、<code translate="no">element_filter</code> や<code translate="no">MATCH_*</code> ファミリーなどのStructArray演算子によって処理されます。詳細な述語サポートマトリックスについては、「<a href="/docs/ja/struct-array-operators.md">StructArray演算子</a>」を参照してください。</p>
-<p>大まかに言えば：</p>
+    </button></h2><p>StructArray scalar filtering is handled by StructArray operators, such as <code translate="no">element_filter</code> and the <code translate="no">MATCH_*</code> family. The detailed predicate support matrix belongs in <a href="/docs/ja/struct-array-operators.md">StructArray Operators</a>.</p>
+<p>At a high level:</p>
 <ul>
-<li><p><code translate="no">$[subfield]</code> は、StructArray演算子の内部でのみ使用してください。</p></li>
-<li><p>行レベルのフィルタ式では、StructArrayパスを直接参照することも可能です。具体的には、1つの要素の位置には<code translate="no">chunks[0][section]</code> 、要素数には<code translate="no">array_length(chunks)</code> 、要素間のサブフィールド値には<code translate="no">array_contains(chunks[section], ...)</code> 、NULL許容のStructArrayフィールドには<code translate="no">chunks is null</code> を使用します。</p></li>
-<li><p>スカラー述語にはスカラーサブフィールドを使用してください。</p></li>
-<li><p>ベクトルサブフィールドを<code translate="no">$[...]</code> のスカラー述語の入力として使用しないでください。</p></li>
+<li><p>Use <code translate="no">$[subfield]</code> only inside StructArray operators.</p></li>
+<li><p>Row-level filter expressions can also reference StructArray paths directly: <code translate="no">chunks[0][section]</code> for one element position, <code translate="no">array_length(chunks)</code> for the element count, <code translate="no">array_contains(chunks[section], ...)</code> for subfield values across elements, and <code translate="no">chunks is null</code> on a nullable StructArray field.</p></li>
+<li><p>Use scalar subfields for scalar predicates.</p></li>
+<li><p>Do not use vector subfields as <code translate="no">$[...]</code> scalar predicate inputs.</p></li>
 </ul>
 <ul>
-<li>JSON パス構文、JSON 関数、テキスト一致関数、Geometry / GIS 関数、および Timestamptz 式は、StructArray 要素レベルの述語ではサポートされていません。Milvus 3.0.6 以降、スカラー<code translate="no">ARRAY</code> サブフィールドに対して、<code translate="no">$[subfield]</code> 上で<code translate="no">array_contains</code> 、<code translate="no">array_contains_any</code> 、<code translate="no">array_contains_all</code> 、および<code translate="no">array_length</code> がサポートされ、すべてのサブフィールド型に対して<code translate="no">$[subfield] is null</code> /<code translate="no">is not null</code> がサポートされています。</li>
+<li>JSON path syntax, JSON functions, text match functions, Geometry / GIS functions, and Timestamptz expressions are not supported for StructArray element-level predicates. Starting in Milvus 3.0.6, <code translate="no">array_contains</code>, <code translate="no">array_contains_any</code>, <code translate="no">array_contains_all</code>, and <code translate="no">array_length</code> are supported on <code translate="no">$[subfield]</code> for scalar <code translate="no">ARRAY</code> subfields, and <code translate="no">$[subfield] is null</code> / <code translate="no">is not null</code> is supported for every subfield type.</li>
 </ul>
 <ul>
-<li>Milvus 3.0.6 以降、Struct 要素のサブフィールド値が null の場合、その要素の述語は false ではなく unknown となります。<code translate="no">element_filter</code> は述語が true の要素のみを保持し、<code translate="no">MATCH_*</code> は unknown の要素を miss としてカウントします。詳細については、<a href="/docs/ja/struct-array-operators.md">「StructArray 演算子</a>」を参照してください。</li>
+<li>Starting in Milvus 3.0.6, a null subfield value in a Struct element makes the element predicate unknown rather than false. <code translate="no">element_filter</code> keeps only elements whose predicate is true, and <code translate="no">MATCH_*</code> counts an unknown element as a miss. For details, see <a href="/docs/ja/struct-array-operators.md">StructArray Operators</a>.</li>
 </ul>
 <ul>
-<li>単純なブール式ではなく、<code translate="no">$[has_code] == true</code> のような明示的なブール比較を使用することを推奨します。</li>
+<li>Prefer explicit boolean comparisons such as <code translate="no">$[has_code] == true</code> instead of bare boolean expressions.</li>
 </ul>
 <p><a id="Import-limits"></a></p>
-<h2 id="Import-and-storage-limits" class="common-anchor-header">インポートおよび格納の制限<button data-href="#Import-and-storage-limits" class="anchor-icon" translate="no">
+<h2 id="Import-and-storage-limits" class="common-anchor-header">Import and storage limits<button data-href="#Import-and-storage-limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -304,17 +305,17 @@ summary: >-
       </svg>
     </button></h2><table>
 <thead>
-<tr><th>制限</th><th>詳細</th></tr>
+<tr><th>Limit</th><th>Details</th></tr>
 </thead>
 <tbody>
-<tr><td>ソースファイル形式</td><td>JSON、JSONL、CSV、および Parquet ファイルは、StructArray フィールドを含めることができます。NumPy ファイルは、トップレベルフィールドごとに 1 ファイルとなり、StructArray データを提供することはできません。StructArray フィールドを含むコレクションには、JSON、CSV、または Parquet ファイルを使用してください。ファイルの形状については、「<a href="/docs/ja/prepare-source-data.md#StructArray-fields-in-source-files">ソースデータの準備</a>」を参照してください。</td></tr>
-<tr><td>保存形式</td><td><code translate="no">ARRAY</code> 要素がnullになり得るサブフィールドおよびスカラーの<code translate="no">ARRAY</code> サブフィールドには、Storage V2が必要です。これらのサブフィールドを使用するコレクションでは、Storage V1にアクセスできません。コレクションの作成やデータの挿入は成功したように見える場合がありますが、データのフラッシュ時に失敗し、これはサポートされていない状態となります。<code translate="no">common.storage.enableGrowingSourceFlush</code> が<code translate="no">true</code> に設定されたStorage V3では、要素がnull許容のサブフィールドまたはスカラーの サブフィールドを使用するリクエストは拒否されます。</td></tr>
-<tr><td>外部コレクション</td><td><code translate="no">ARRAY</code> 外部コレクションでは、要素が null 許容のサブフィールドおよびスカラーの サブフィールドはサポートされていません。</td></tr>
-<tr><td>バックアップおよびスナップショットのインポート</td><td>バックアップの復元などのバイナリログのインポート、およびスナップショットソースからのインポートは、要素が null 許容のサブフィールドまたはスカラー<code translate="no">ARRAY</code> サブフィールドを持つコレクションでは拒否されます。</td></tr>
-<tr><td>ダウングレード</td><td>要素がNULL許容のサブフィールドまたはスカラー<code translate="no">ARRAY</code> サブフィールドを持つコレクションは、Milvus 3.0.6より前のリリースでは実行できません。古いリリースで書き込み先行ログ（Binlog）を再生しようとすると、パニックが発生します。Milvus 3.0.6以降に再アップグレードすることで、データは復旧します。</td></tr>
+<tr><td>Source file formats</td><td>JSON, JSONL, CSV, and Parquet files can carry StructArray fields. NumPy files hold one file per top-level field and cannot provide StructArray data; use JSON, CSV, or Parquet files for collections that have a StructArray field. For file shapes, see <a href="/docs/ja/prepare-source-data.md#StructArray-fields-in-source-files">Prepare Source Data</a>.</td></tr>
+<tr><td>Storage format</td><td>Element-nullable subfields and scalar <code translate="no">ARRAY</code> subfields require Storage V2. Storage V1 cannot be reached for collections that use these subfields: creating the collection and inserting data can appear to succeed, but the data fails at flush, which is not a supported state. Storage V3 with <code translate="no">common.storage.enableGrowingSourceFlush</code> set to <code translate="no">true</code> rejects requests that use element-nullable subfields or scalar <code translate="no">ARRAY</code> subfields.</td></tr>
+<tr><td>External collections</td><td>Element-nullable subfields and scalar <code translate="no">ARRAY</code> subfields are not supported in external collections.</td></tr>
+<tr><td>Backup and snapshot import</td><td>Binlog import, such as a backup restore, and snapshot-source import are rejected for collections that have element-nullable subfields or scalar <code translate="no">ARRAY</code> subfields.</td></tr>
+<tr><td>Downgrade</td><td>Collections that have element-nullable subfields or scalar <code translate="no">ARRAY</code> subfields cannot run on a release earlier than Milvus 3.0.6. Replaying the write-ahead log on the older release panics. Re-upgrading to Milvus 3.0.6 or later recovers the data.</td></tr>
 </tbody>
 </table>
-<h2 id="Related-pages" class="common-anchor-header">関連ページ<button data-href="#Related-pages" class="anchor-icon" translate="no">
+<h2 id="Related-pages" class="common-anchor-header">Related pages<button data-href="#Related-pages" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -330,8 +331,8 @@ summary: >-
         ></path>
       </svg>
     </button></h2><ol>
-<li><p>StructArrayフィールドを作成するには、「<a href="/docs/ja/create-structarray-field.md">StructArrayフィールドの作成</a>」を参照してください。</p></li>
-<li><p>データを挿入するには、「<a href="/docs/ja/insert-data-into-structarray-fields.md">StructArrayフィールドへのデータの挿入</a>」を参照してください。</p></li>
-<li><p>ベクトルおよびスカラーインデックスを作成するには、「<a href="/docs/ja/index-structarray-fields.md">StructArrayフィールドへのインデックス設定</a>」を参照してください。</p></li>
-<li><p>StructArray フィルターの構文を確認するには、「<a href="/docs/ja/struct-array-operators.md">StructArray 演算子</a>」を参照してください。</p></li>
+<li><p>To create a StructArray field, read <a href="/docs/ja/create-structarray-field.md">Create a StructArray Field</a>.</p></li>
+<li><p>To insert data, read <a href="/docs/ja/insert-data-into-structarray-fields.md">Insert Data into StructArray Fields</a>.</p></li>
+<li><p>To create vector and scalar indexes, read <a href="/docs/ja/index-structarray-fields.md">Index StructArray Fields</a>.</p></li>
+<li><p>To review StructArray filter syntax, read <a href="/docs/ja/struct-array-operators.md">StructArray Operators</a>.</p></li>
 </ol>

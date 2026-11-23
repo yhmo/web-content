@@ -1,15 +1,14 @@
 ---
 id: random-sampling.md
-title: Случайная выборкаCompatible with Milvus 2.6.x
+title: Random SamplingCompatible with Milvus 2.6.x
 summary: >-
-  При работе с большими наборами данных зачастую нет необходимости обрабатывать
-  все данные, чтобы получить необходимую информацию или протестировать логику
-  фильтрации. Случайная выборка решает эту проблему, позволяя работать со
-  статистически репрезентативной подвыборкой данных, что значительно сокращает
-  время выполнения запросов и снижает потребление ресурсов.
+  When working with large-scale datasets, you often don't need to process all
+  your data to gain insights or test filtering logic. Random sampling provides a
+  solution by allowing you to work with a statistically representative subset of
+  your data, significantly reducing query time and resource consumption.
 beta: Milvus 2.6.x
 ---
-<h1 id="Random-Sampling" class="common-anchor-header">Случайная выборка<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#Random-Sampling" class="anchor-icon" translate="no">
+<h1 id="Random-Sampling" class="common-anchor-header">Random Sampling<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#Random-Sampling" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -24,15 +23,15 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>При работе с большими наборами данных зачастую нет необходимости обрабатывать все данные для получения аналитических выводов или тестирования логики фильтрации. Случайная выборка решает эту проблему, позволяя работать со статистически репрезентативным подмножеством данных, что значительно сокращает время выполнения запросов и снижает потребление ресурсов.</p>
-<p>Случайная выборка осуществляется на уровне сегментов, что обеспечивает высокую производительность при сохранении случайности выборки в рамках распределения данных вашей коллекции.</p>
-<p><strong>Основные сценарии использования:</strong></p>
+    </button></h1><p>When working with large-scale datasets, you often don’t need to process all your data to gain insights or test filtering logic. Random sampling provides a solution by allowing you to work with a statistically representative subset of your data, significantly reducing query time and resource consumption.</p>
+<p>Random sampling operates at the segment level, ensuring efficient performance while maintaining the randomness of the sample across your collection’s data distribution.</p>
+<p><strong>Key use cases:</strong></p>
 <ul>
-<li><p><strong>Изучение данных</strong>: быстрый просмотр структуры и содержания коллекции с минимальным использованием ресурсов</p></li>
-<li><p><strong>Тестирование разработки</strong>: тестирование сложной логики фильтрации на управляемых выборках данных перед полномасштабным развертыванием</p></li>
-<li><p><strong>Оптимизация ресурсов</strong>: сокращение вычислительных затрат на исследовательские запросы и статистический анализ</p></li>
+<li><p><strong>Data exploration</strong>: Quickly preview collection structure and content with minimal resource usage</p></li>
+<li><p><strong>Development testing</strong>: Test complex filtering logic on manageable data samples before full deployment</p></li>
+<li><p><strong>Resource optimization</strong>: Reduce computational costs for exploratory queries and statistical analysis</p></li>
 </ul>
-<h2 id="Syntax" class="common-anchor-header">Синтаксис<button data-href="#Syntax" class="anchor-icon" translate="no">
+<h2 id="Syntax" class="common-anchor-header">Syntax<button data-href="#Syntax" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -48,14 +47,14 @@ beta: Milvus 2.6.x
         ></path>
       </svg>
     </button></h2><div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&quot;RANDOM_SAMPLE(sampling_factor)&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -74,16 +73,16 @@ beta: Milvus 2.6.x
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <span class="hljs-built_in">export</span> filterRandomSample=<span class="hljs-string">&#x27;RANDOM_SAMPLE(sampling_factor)&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>Параметры:</strong></p>
+<p><strong>Parameters:</strong></p>
 <ul>
-<li><code translate="no">sampling_factor</code>: Коэффициент выборки в диапазоне (0, 1), исключая границы. Например, <code translate="no">RANDOM_SAMPLE(0.001)</code> выбирает примерно 0,1% результатов.</li>
+<li><code translate="no">sampling_factor</code>: A sampling factor in the range (0, 1), excluding the boundaries. For example, <code translate="no">RANDOM_SAMPLE(0.001)</code> selects approximately 0.1% of the results.</li>
 </ul>
-<p><strong>Важные правила:</strong></p>
+<p><strong>Important rules:</strong></p>
 <ul>
-<li><p>В выражении не учитывается регистр (<code translate="no">RANDOM_SAMPLE</code> или <code translate="no">random_sample</code>)</p></li>
-<li><p>Коэффициент выборки должен находиться в диапазоне (0, 1), исключая границы</p></li>
+<li><p>The expression is case-insensitive (<code translate="no">RANDOM_SAMPLE</code> or <code translate="no">random_sample</code>)</p></li>
+<li><p>The sampling factor must be in the range (0, 1), excluding boundaries</p></li>
 </ul>
-<h2 id="Combine-with-other-filters" class="common-anchor-header">Комбинирование с другими фильтрами<button data-href="#Combine-with-other-filters" class="anchor-icon" translate="no">
+<h2 id="Combine-with-other-filters" class="common-anchor-header">Combine with other filters<button data-href="#Combine-with-other-filters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -98,16 +97,16 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Оператор случайной выборки необходимо комбинировать с другими выражениями фильтрации с помощью логического оператора <code translate="no">AND</code>. При комбинировании фильтров Milvus сначала применяет остальные условия, а затем выполняет случайную выборку по полученному набору результатов.</p>
+    </button></h2><p>The random sampling operator must be combined with other filtering expressions using logical <code translate="no">AND</code>. When combining filters, Milvus first applies the other conditions and then performs random sampling on the result set.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Correct: Filter first, then sample</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;color == &quot;red&quot; AND RANDOM_SAMPLE(0.001)&#x27;</span>
@@ -168,7 +167,7 @@ filter = <span class="hljs-string">&quot;color == \&quot;red\&quot; OR RANDOM_SA
 <span class="hljs-built_in">export</span> filterSampleIncorrect=<span class="hljs-string">&#x27;color == &quot;red&quot; OR RANDOM_SAMPLE(0.001)&#x27;</span>  <span class="hljs-comment"># ❌ Invalid logic</span>
 <span class="hljs-comment"># This would mean: &quot;Either red items OR sample everything&quot; - which is meaningless</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Examples" class="common-anchor-header">Примеры<button data-href="#Examples" class="anchor-icon" translate="no">
+<h2 id="Examples" class="common-anchor-header">Examples<button data-href="#Examples" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -183,7 +182,7 @@ filter = <span class="hljs-string">&quot;color == \&quot;red\&quot; OR RANDOM_SA
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Example-1-Data-exploration" class="common-anchor-header">Пример 1: Изучение данных<button data-href="#Example-1-Data-exploration" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Example-1-Data-exploration" class="common-anchor-header">Example 1: Data exploration<button data-href="#Example-1-Data-exploration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -198,16 +197,16 @@ filter = <span class="hljs-string">&quot;color == \&quot;red\&quot; OR RANDOM_SA
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Быстрый просмотр структуры вашей коллекции:</p>
+    </button></h3><p>Quickly preview your collection structure:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -378,7 +377,7 @@ curl --request POST \
   \&quot;limit\&quot;: 10
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-2-Combined-filtering-with-random-sampling" class="common-anchor-header">Пример 2: Комбинированная фильтрация со случайной выборкой<button data-href="#Example-2-Combined-filtering-with-random-sampling" class="anchor-icon" translate="no">
+<h3 id="Example-2-Combined-filtering-with-random-sampling" class="common-anchor-header">Example 2: Combined filtering with random sampling<button data-href="#Example-2-Combined-filtering-with-random-sampling" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -393,16 +392,16 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Протестируйте логику фильтрации на удобном для работы подмножестве:</p>
+    </button></h3><p>Test filtering logic on a manageable subset:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># First filter by category and price, then sample 0.5% of results</span>
 filter_expression = <span class="hljs-string">&#x27;category == &quot;electronics&quot; AND price &gt; 100 AND RANDOM_SAMPLE(0.005)&#x27;</span>
@@ -533,7 +532,7 @@ curl --request POST \
   \&quot;outputFields\&quot;: [\&quot;product_name\&quot;, \&quot;price\&quot;, \&quot;rating\&quot;]
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-3-Quick-analytics" class="common-anchor-header">Пример 3: Быстрая аналитика<button data-href="#Example-3-Quick-analytics" class="anchor-icon" translate="no">
+<h3 id="Example-3-Quick-analytics" class="common-anchor-header">Example 3: Quick analytics<button data-href="#Example-3-Quick-analytics" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -548,16 +547,16 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Проведите быстрый статистический анализ отфильтрованных данных:</p>
+    </button></h3><p>Perform rapid statistical analysis on filtered data:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Get insights from ~0.1% of premium customer data</span>
 filter_expression = <span class="hljs-string">&#x27;customer_tier == &quot;premium&quot; AND region == &quot;North America&quot; AND RANDOM_SAMPLE(0.001)&#x27;</span>
@@ -704,7 +703,7 @@ curl --request POST \
   \&quot;limit\&quot;: 10
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-4-Combined-with-vector-search" class="common-anchor-header">Пример 4: В сочетании с векторным поиском<button data-href="#Example-4-Combined-with-vector-search" class="anchor-icon" translate="no">
+<h3 id="Example-4-Combined-with-vector-search" class="common-anchor-header">Example 4: Combined with vector search<button data-href="#Example-4-Combined-with-vector-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -719,16 +718,16 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Использование случайной выборки в сценариях фильтрованного поиска:</p>
+    </button></h3><p>Use random sampling in filtered search scenarios:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Search for similar products within a sampled subset</span>
 search_results = client.search(
@@ -894,7 +893,7 @@ curl --request POST \
   &quot;outputFields&quot;: [&quot;title&quot;, &quot;author&quot;, &quot;price&quot;]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Best-practices" class="common-anchor-header">Рекомендации<button data-href="#Best-practices" class="anchor-icon" translate="no">
+<h2 id="Best-practices" class="common-anchor-header">Best practices<button data-href="#Best-practices" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -910,8 +909,8 @@ curl --request POST \
         ></path>
       </svg>
     </button></h2><ul>
-<li><p><strong>Начинайте с малого</strong>: для первоначального изучения используйте небольшие коэффициенты выборки (0,001–0,01)</p></li>
-<li><p><strong>Рабочий процесс разработки</strong>: используйте выборку на этапе разработки, удаляйте её при выполнении запросов в производственной среде</p></li>
-<li><p><strong>Статистическая достоверность</strong>: более крупные выборки обеспечивают более точные статистические представления</p></li>
-<li><p><strong>Тестирование производительности</strong>: отслеживайте производительность запросов и при необходимости корректируйте коэффициенты выборки</p></li>
+<li><p><strong>Start small</strong>: Begin with smaller sampling factors (0.001-0.01) for initial exploration</p></li>
+<li><p><strong>Development workflow</strong>: Use sampling during development, remove for production queries</p></li>
+<li><p><strong>Statistical validity</strong>: Larger samples provide more accurate statistical representations</p></li>
+<li><p><strong>Performance testing</strong>: Monitor query performance and adjust sampling factors as needed</p></li>
 </ul>

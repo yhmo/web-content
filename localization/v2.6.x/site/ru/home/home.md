@@ -3,19 +3,22 @@ id: home.md
 ---
 <div class="doc-h1-wrapper">
 <p><h1 class="title">
-Добро пожаловать в Milvus Docs!</h1></p>
+Welcome to Milvus Docs!
+</h1></p>
 <p><h2 class="sub-title">
-Здесь вы узнаете, что такое Milvus, а также как установить, использовать и развернуть Milvus для создания приложения в соответствии с потребностями вашего бизнеса.</h2></p>
+Here you will learn about what Milvus is, and how to install, use, and deploy Milvus to build an application according to your business need.
+</h2></p>
 </div>
 <div class="doc-home-promotion-wrapper">
   <div class="promotion-content">
-    <h2 class="promotion-title">Попробуйте управляемый Milvus бесплатно!</h2>
-    <p class="promotion-desc">Zilliz Cloud не требует особых усилий, работает на базе Milvus и в 10 раз быстрее.</p>
+    <h2 class="promotion-title">Try Managed Milvus For Free!</h2>
+    <p class="promotion-desc">Zilliz Cloud is hassle-free, powered by Milvus and 10x faster.</p>
   </div>
   <div class="cta-wrapper">
-   <a class="cta-global" href="https://cloud.zilliz.com/signup?utm_source=partner&utm_medium=referral&utm_campaign=2025-02-24_doc_home_milvus.io">Zilliz Cloud</a></div>
+    <a class="cta-global" href="https://cloud.zilliz.com/signup?utm_source=partner&utm_medium=referral&utm_campaign=2025-02-24_doc_home_milvus.io">Zilliz Cloud</a>
+  </div>
 </div>
-<h2 id="Get-Started" class="common-anchor-header">Начать<button data-href="#Get-Started" class="anchor-icon" translate="no">
+<h2 id="Get-Started" class="common-anchor-header">Get Started<button data-href="#Get-Started" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -32,23 +35,30 @@ id: home.md
       </svg>
     </button></h2><div class="card-wrapper">
 <div class="start_card_container">
-  
-   <a href="/docs/ru/install_standalone-docker.md"> <img translate="no" src="/docs/v2.6.x/assets/home_install.svg" alt="icon" />
-   </a> <a href="/docs/ru/install_standalone-docker.md"> <p class="link-btn">Установить Milvus</p> </a><p>Узнайте, как установить Milvus с помощью Docker Compose или на Kubernetes.</p>
+  <a href="/docs/ru/v2.6.x/install_standalone-docker.md">
+    <img translate="no" src="/docs/v2.6.x/assets/home_install.svg" alt="icon" />
+    <p class="link-btn">Install Milvus</p>
+  </a>
+  <p>Learn how to install Milvus using either Docker Compose or on Kubernetes.</p>
 </div>
 <div class="start_card_container">
-  
-   <a href="/docs/ru/quickstart.md"> <img translate="no" src="/docs/v2.6.x/assets/home_quick_start.svg" alt="icon" />
-   </a> <a href="/docs/ru/quickstart.md"> <p class="link-btn">Быстрый запуск</p> </a><p>Узнайте, как быстро запустить Milvus с помощью примеров кода.</p>
+  <a href="/docs/ru/v2.6.x/quickstart.md">
+    <img translate="no" src="/docs/v2.6.x/assets/home_quick_start.svg" alt="icon" />
+    <p class="link-btn">Quick Start</p>
+  </a>
+  <p>Learn how to quickly run Milvus with sample code.</p>
 </div>
 <div class="start_card_container">
-  
-   <a href="/bootcamp"> <img translate="no" src="/docs/v2.6.x/assets/home_bootcamp.svg" alt="icon" />
-   </a> <a href="/bootcamp"> <p class="link-btn">Bootcamp</p> </a><p>
-  Узнайте, как создавать приложения для поиска векторного сходства с помощью Milvus.  </p>
+  <a href="/bootcamp">
+    <img translate="no" src="/docs/v2.6.x/assets/home_bootcamp.svg" alt="icon" />
+    <p class="link-btn">Bootcamp</p>
+  </a>
+  <p>
+  Learn how to build vector similarity search applications with Milvus.
+  </p>
 </div>
 </div>
-<h2 id="Recommended-articles" class="common-anchor-header">Рекомендуемые статьи<button data-href="#Recommended-articles" class="anchor-icon" translate="no">
+<h2 id="Recommended-articles" class="common-anchor-header">Recommended articles<button data-href="#Recommended-articles" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -65,39 +75,39 @@ id: home.md
       </svg>
     </button></h2><div class="doc-home-recommend-section">
 <div class="recomment-item">
-  <p>Использование</p>
+  <p>Use</p>
 <ul>
-<li><a href="/docs/ru/manage-collections.md">Управление коллекциями</a></li>
-<li><a href="/docs/ru/insert-update-delete.md">Вставка, апсерт и удаление</a></li>
-<li><a href="/docs/ru/single-vector-search.md">Одновекторный поиск</a></li>
-<li><a href="/docs/ru/multi-vector-search.md">Гибридный поиск</a></li>
-<li><a href="/docs/ru/get-and-scalar-query.md">Получение и скалярный запрос</a></li>
-<li><a href="/docs/ru/milvus_for_agents.md">Milvus для агентов искусственного интеллекта</a></li>
+<li><a href="/docs/ru/v2.6.x/manage-collections.md">Manage Collections</a></li>
+<li><a href="/docs/ru/v2.6.x/insert-update-delete.md">Insert, Upsert, and Delete</a></li>
+<li><a href="/docs/ru/v2.6.x/single-vector-search.md">Single-Vector Search</a></li>
+<li><a href="/docs/ru/v2.6.x/multi-vector-search.md">Hybrid Search</a></li>
+<li><a href="/docs/ru/v2.6.x/get-and-scalar-query.md">Get & Scalar Query</a></li>
+<li><a href="/docs/ru/v2.6.x/milvus_for_agents.md">Milvus for AI Agents</a></li>
 </ul>
 </div>
 <div class="recomment-item">
-  <p>Развертывание</p>
+  <p>Deploy</p>
 <ul>
-<li><a href="/docs/ru/configure-docker.md">Настройка Milvus</a></li>
-<li><a href="/docs/ru/deploy_s3.md">Управление зависимостями</a></li>
-<li><a href="/docs/ru/eks.md">Развертывание в облаках</a></li>
-<li><a href="/docs/ru/scaleout.md">Масштабирование кластера Milvus</a></li>
-<li><a href="/docs/ru/monitor_overview.md">Мониторинг и оповещение</a></li>
+<li><a href="/docs/ru/v2.6.x/configure-docker.md">Configure Milvus</a></li>
+<li><a href="/docs/ru/v2.6.x/deploy_s3.md">Manage Dependencies</a></li>
+<li><a href="/docs/ru/v2.6.x/eks.md">Deploy on Clouds</a></li>
+<li><a href="/docs/ru/v2.6.x/scaleout.md">Scale a Milvus Cluster</a></li>
+<li><a href="/docs/ru/v2.6.x/monitor_overview.md">Monitor and Alert</a></li>
 </ul>
 </div>
 <div class="recomment-item">
-  <p>Изучите</p>
+  <p>Learn</p>
 <ul>
-<li><a href="/docs/ru/system_configuration.md">Конфигурация системы</a></li>
-<li><a href="/docs/ru/architecture_overview.md">Обзор архитектуры</a></li>
-<li><a href="/docs/ru/index-explained.md">Объяснение индекса</a></li>
-<li><a href="/docs/ru/metric.md">Метрики сходства</a></li>
-<li><a href="/docs/ru/glossary.md">Глоссарий</a></li>
+<li><a href="/docs/ru/v2.6.x/system_configuration.md">System Configuration</a></li>
+<li><a href="/docs/ru/v2.6.x/architecture_overview.md">Architecture Overview</a></li>
+<li><a href="/docs/ru/v2.6.x/index-explained.md">Index Explained</a></li>
+<li><a href="/docs/ru/v2.6.x/metric.md">Similarity Metrics</a></li>
+<li><a href="/docs/ru/v2.6.x/glossary.md">Glossary</a></li>
 </ul>
 </div>
 </div>
 <div class="doc-home-what-is-new">
-<h2 id="Whats-new-in-docs" class="common-anchor-header">Что нового в документации<button data-href="#Whats-new-in-docs" class="anchor-icon" translate="no">
+<h2 id="Whats-new-in-docs" class="common-anchor-header">What’s new in docs<button data-href="#Whats-new-in-docs" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -112,12 +122,12 @@ id: home.md
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><em>Март 2026 - Обновления Milvus 2.6.x</em></p>
+    </button></h2><p><em>March 2026 - Milvus 2.6.x updates</em></p>
 <ul>
-<li>Добавлен раздел <a href="/docs/ru/milvus_for_agents.md">Milvus for AI Agents</a> с руководствами по использованию.</li>
-<li>Добавлено руководство по использованию <a href="/docs/ru/google-gemini.md">функции встраивания Gemini</a>.</li>
-<li>Добавлено руководство по <a href="/docs/ru/primary-key-search.md">поиску по первичным ключам</a>.</li>
-<li>Добавлено руководство по использованию <a href="/docs/ru/text-highlighter.md">подсветки текста</a> в результатах поиска.</li>
-<li>Добавлены описания <a href="/docs/ru/geometry-field.md">поля geometry</a>, <a href="/docs/ru/timestamptz-field.md">поля timestamptz</a>, <a href="/docs/ru/tiered-storage-overview.md">многоуровневого хранилища</a> и <a href="/docs/ru/array-of-structs.md">массива структур</a>.</li>
+<li>Added <a href="/docs/ru/v2.6.x/milvus_for_agents.md">Milvus for AI Agents</a> section with prompt guides.</li>
+<li>Added guidance on how to use <a href="/docs/ru/v2.6.x/google-gemini.md">Gemini embedding function</a>.</li>
+<li>Added guidance on how to <a href="/docs/ru/v2.6.x/primary-key-search.md">search by primary keys</a>.</li>
+<li>Added guidance on how to use <a href="/docs/ru/v2.6.x/text-highlighter.md">text highlighter</a> in search results.</li>
+<li>Added descriptions of <a href="/docs/ru/v2.6.x/geometry-field.md">geometry field</a>, <a href="/docs/ru/v2.6.x/timestamptz-field.md">timestamptz field</a>, <a href="/docs/ru/v2.6.x/tiered-storage-overview.md">tiered storage</a>, and <a href="/docs/ru/v2.6.x/array-of-structs.md">array of structs</a>.</li>
 </ul>
 </div>

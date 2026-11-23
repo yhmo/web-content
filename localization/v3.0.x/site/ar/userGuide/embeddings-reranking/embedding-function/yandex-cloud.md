@@ -2,8 +2,8 @@
 id: yandex-cloud.md
 title: Yandex CloudCompatible with Milvus 2.6.x
 summary: >-
-  يشرح هذا الموضوع كيفية تكوين وظائف التضمين في Yandex Cloud واستخدامها في
-  Milvus.
+  This topic describes how to configure and use Yandex Cloud embedding functions
+  in Milvus.
 beta: Milvus 2.6.x
 ---
 <h1 id="Yandex-Cloud" class="common-anchor-header">Yandex Cloud<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#Yandex-Cloud" class="anchor-icon" translate="no">
@@ -21,8 +21,8 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>يصف هذا الموضوع كيفية تكوين واستخدام وظائف التضمين في Yandex Cloud في Milvus.</p>
-<h2 id="Choose-an-embedding-model" class="common-anchor-header">اختر نموذج التضمين<button data-href="#Choose-an-embedding-model" class="anchor-icon" translate="no">
+    </button></h1><p>This topic describes how to configure and use Yandex Cloud embedding functions in Milvus.</p>
+<h2 id="Choose-an-embedding-model" class="common-anchor-header">Choose an embedding model<button data-href="#Choose-an-embedding-model" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,9 +37,9 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يدعم Milvus نماذج تحويل النص إلى متجهات في Yandex Cloud AI Studio من خلال مزود <code translate="no">yc</code>. في معلمات الوظيفة، قم بتعيين " <code translate="no">model_name</code> " إلى عنوان URI لنموذج Yandex Cloud الذي يجب أن يستدعيه Milvus.</p>
-<p>على سبيل المثال، تستخدم Yandex Text Embeddings للمستندات عنوان URI للنموذج مثل <code translate="no">emb://&lt;folder_ID&gt;/text-search-doc/latest</code> وتُرجع متجهات ذات 256 بُعدًا. للاطلاع على عناوين URI للأبعاد المتاحة، راجع <a href="https://aistudio.yandex.ru/docs/en/ai-studio/concepts/embeddings">نماذج تحويل النص إلى متجهات</a>.</p>
-<h2 id="Configure-credentials" class="common-anchor-header">تكوين بيانات الاعتماد<button data-href="#Configure-credentials" class="anchor-icon" translate="no">
+    </button></h2><p>Milvus supports Yandex Cloud AI Studio text vectorization models through the <code translate="no">yc</code> provider. In the Function parameters, set <code translate="no">model_name</code> to the Yandex Cloud model URI that Milvus should call.</p>
+<p>For example, Yandex Text Embeddings for documents use a model URI such as <code translate="no">emb://&lt;folder_ID&gt;/text-search-doc/latest</code> and return 256-dimensional vectors. For available model URIs and dimensions, refer to <a href="https://aistudio.yandex.ru/docs/en/ai-studio/concepts/embeddings">Text vectorization models</a>.</p>
+<h2 id="Configure-credentials" class="common-anchor-header">Configure credentials<button data-href="#Configure-credentials" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -54,8 +54,8 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يجب أن يعرف Milvus مفتاح واجهة برمجة تطبيقات (API) Yandex Cloud الخاص بك قبل أن يتمكن من طلب التضمينات. يمكنك تكوين مفتاح واجهة برمجة التطبيقات (API) في <code translate="no">milvus.yaml</code> أو من خلال متغير بيئة.</p>
-<h3 id="Option-1-Configuration-file" class="common-anchor-header">الخيار 1: ملف التكوين<button data-href="#Option-1-Configuration-file" class="anchor-icon" translate="no">
+    </button></h2><p>Milvus must know your Yandex Cloud API key before it can request embeddings. You can configure the API key in <code translate="no">milvus.yaml</code> or through an environment variable.</p>
+<h3 id="Option-1-Configuration-file" class="common-anchor-header">Option 1: Configuration file<button data-href="#Option-1-Configuration-file" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -70,7 +70,7 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>قم بتخزين مفتاح واجهة برمجة التطبيقات (API) الخاص بك في <code translate="no">milvus.yaml</code> وقم بتوجيه مزود Yandex Cloud إلى تسمية بيانات الاعتماد.</p>
+    </button></h3><p>Store your API key in <code translate="no">milvus.yaml</code> and point the Yandex Cloud provider to the credential label.</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-comment"># milvus.yaml</span>
 <span class="hljs-attr">credential:</span>
   <span class="hljs-attr">yandex_apikey:</span>
@@ -83,7 +83,7 @@ beta: Milvus 2.6.x
         <span class="hljs-attr">credential:</span> <span class="hljs-string">yandex_apikey</span>
         <span class="hljs-comment"># url: https://llm.api.cloud.yandex.net/foundationModels/v1/textEmbedding</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Option-2-Environment-variable" class="common-anchor-header">الخيار 2: متغير البيئة<button data-href="#Option-2-Environment-variable" class="anchor-icon" translate="no">
+<h3 id="Option-2-Environment-variable" class="common-anchor-header">Option 2: Environment variable<button data-href="#Option-2-Environment-variable" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -98,20 +98,20 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>إذا لم يتم تكوين بيانات اعتماد مطابقة في <code translate="no">milvus.yaml</code> ، فيمكن لـ Milvus قراءة مفتاح واجهة برمجة تطبيقات Yandex Cloud من متغير البيئة التالي:</p>
+    </button></h3><p>If no matching credential is configured in <code translate="no">milvus.yaml</code>, Milvus can read the Yandex Cloud API key from the following environment variable:</p>
 <table>
    <tr>
-     <th><p>المتغير</p></th>
-     <th><p>مطلوب؟</p></th>
-     <th><p>الوصف</p></th>
+     <th><p>Variable</p></th>
+     <th><p>Required?</p></th>
+     <th><p>Description</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">MILVUS_YC_API_KEY</code></p></td>
-     <td><p>نعم</p></td>
-     <td><p>مفتاح واجهة برمجة تطبيقات Yandex Cloud الذي تستخدمه خدمة Milvus لاستدعاء Yandex Cloud AI Studio.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Yandex Cloud API key used by the Milvus service to call Yandex Cloud AI Studio.</p></td>
    </tr>
 </table>
-<h2 id="Use-embedding-function" class="common-anchor-header">استخدام وظيفة التضمين<button data-href="#Use-embedding-function" class="anchor-icon" translate="no">
+<h2 id="Use-embedding-function" class="common-anchor-header">Use embedding function<button data-href="#Use-embedding-function" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -126,7 +126,7 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>بمجرد تكوين بيانات الاعتماد، قم بتعريف مخطط يحتوي على حقل نصي للإدخال وحقل متجه للإخراج، ثم أضف وظيفة التضمين من Yandex Cloud إلى المخطط.</p>
+    </button></h2><p>Once credentials are configured, define a schema with an input text field and an output vector field, then add a Yandex Cloud embedding Function to the schema.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType, Function, FunctionType
 
 client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>)
@@ -151,7 +151,7 @@ text_embedding_function = Function(
 
 schema.add_function(text_embedding_function)
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Yandex-Cloud-specific-parameters" class="common-anchor-header">المعلمات الخاصة بـ Yandex Cloud<button data-href="#Yandex-Cloud-specific-parameters" class="anchor-icon" translate="no">
+<h3 id="Yandex-Cloud-specific-parameters" class="common-anchor-header">Yandex Cloud-specific parameters<button data-href="#Yandex-Cloud-specific-parameters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -168,37 +168,37 @@ schema.add_function(text_embedding_function)
       </svg>
     </button></h3><table>
    <tr>
-     <th><p>المعلمة</p></th>
-     <th><p>مطلوب؟</p></th>
-     <th><p>الوصف</p></th>
-     <th><p>القيمة / المثال</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Required?</p></th>
+     <th><p>Description</p></th>
+     <th><p>Value / Example</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">provider</code></p></td>
-     <td><p>نعم</p></td>
-     <td><p>مزود نموذج التضمين المراد استخدامه.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>The embedding model provider to use.</p></td>
      <td><p><code translate="no">"yc"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">model_name</code></p></td>
-     <td><p>نعم</p></td>
-     <td><p>URI نموذج Yandex Cloud المطلوب استدعاؤه.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>The Yandex Cloud model URI to call.</p></td>
      <td><p><code translate="no">"emb://&lt;folder_ID&gt;/text-search-doc/latest"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">credential</code></p></td>
-     <td><p>لا</p></td>
-     <td><p>تسمية بيانات الاعتماد المحددة في قسم المستوى الأعلى <code translate="no">credential:</code> في <code translate="no">milvus.yaml</code>.</p></td>
+     <td><p>No</p></td>
+     <td><p>The label of a credential defined in the top-level <code translate="no">credential:</code> section of <code translate="no">milvus.yaml</code>.</p></td>
      <td><p><code translate="no">"yandex_apikey"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">dim</code></p></td>
-     <td><p>لا</p></td>
-     <td><p>بعد متجه الإخراج. إذا تم تعيينه، يجب أن تتطابق القيمة مع بعد حقل متجه الإخراج.</p></td>
+     <td><p>No</p></td>
+     <td><p>The output vector dimension. If set, the value must match the dimension of the output vector field.</p></td>
      <td><p><code translate="no">"256"</code></p></td>
    </tr>
 </table>
-<h2 id="Next-steps" class="common-anchor-header">الخطوات التالية<button data-href="#Next-steps" class="anchor-icon" translate="no">
+<h2 id="Next-steps" class="common-anchor-header">Next steps<button data-href="#Next-steps" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -213,4 +213,4 @@ schema.add_function(text_embedding_function)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>بعد تكوين دالة التضمين، راجع <a href="/docs/ar/embedding-function-overview.md">«نظرة عامة</a> على <a href="/docs/ar/embedding-function-overview.md">دالة التضمين</a> » للحصول على إرشادات حول إنشاء الفهارس وإدراج البيانات وتشغيل البحث الدلالي.</p>
+    </button></h2><p>After configuring the embedding function, refer to <a href="/docs/ar/embedding-function-overview.md">Embedding Function Overview</a> for guidance on creating indexes, inserting data, and running semantic search.</p>

@@ -1,10 +1,12 @@
 ---
 id: roadmap.md
-title: Milvus 路線圖
+title: Milvus Roadmap
 related_key: Milvus roadmap
-summary: Milvus 是一個開放原始碼的向量資料庫，專為人工智能應用程式打造。以下是我們的發展路線圖。
+summary: >-
+  Milvus is an open-source vector database built to power AI applications. Here
+  is our roadmap to guide our development.
 ---
-<h1 id="Milvus-Roadmap" class="common-anchor-header">Milvus 路線圖<button data-href="#Milvus-Roadmap" class="anchor-icon" translate="no">
+<h1 id="Milvus-Roadmap" class="common-anchor-header">Milvus Roadmap<button data-href="#Milvus-Roadmap" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -19,7 +21,7 @@ summary: Milvus 是一個開放原始碼的向量資料庫，專為人工智能�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><h2 id="🌌-Toward-the-Next-Gen-Multimodal-Database-and-Data-Lake" class="common-anchor-header">邁向新一代多模式資料庫和資料湖<button data-href="#🌌-Toward-the-Next-Gen-Multimodal-Database-and-Data-Lake" class="anchor-icon" translate="no">
+    </button></h1><h2 id="🌌-Toward-the-Next-Gen-Multimodal-Database-and-Data-Lake" class="common-anchor-header">🌌 Toward the Next-Gen Multimodal Database and Data Lake<button data-href="#🌌-Toward-the-Next-Gen-Multimodal-Database-and-Data-Lake" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -34,11 +36,11 @@ summary: Milvus 是一個開放原始碼的向量資料庫，專為人工智能�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><strong>Milvus 產品路線圖</strong></p>
-<p>歡迎來到 Milvus 路線圖！</p>
-<p>我們正將 Milvus 帶入一個新時代 - 新世代多模式<strong>資料</strong>庫 - 涵蓋<strong>結構化資料到非結構化資料</strong>、<strong>即時擷取到離線分析</strong>、<strong>單一集群效能到全球資料湖架構</strong>。</p>
-<p>本路線圖概述<strong>Milvus v2.6（進行中）</strong>、<strong>Milvus v3.0（目標於 2026 年底）</strong>和<strong>Milvus v3.1（長期開發）</strong>的核心目標，以及<strong>Vector Lake（資料湖 / Loon）</strong>的演進計畫。</p>
-<h2 id="🧩-Milvus-v26-In-Progress" class="common-anchor-header">Milvus v2.6 (進行中)<button data-href="#🧩-Milvus-v26-In-Progress" class="anchor-icon" translate="no">
+    </button></h2><p><strong>Milvus Product Roadmap</strong></p>
+<p>Welcome to the Milvus Roadmap!</p>
+<p>We are ushering Milvus into a new era — the next-generation multimodal database — spanning <strong>structured to unstructured data</strong>, <strong>real-time retrieval to offline analytics</strong>, and <strong>single-cluster performance to a global data lake architecture</strong>.</p>
+<p>This roadmap outlines the core objectives for <strong>Milvus v2.6 (in progress)</strong>, <strong>Milvus v3.0 (targeted for late 2026)</strong>, and <strong>Milvus v3.1 (long-term development)</strong>, along with the evolution plan for <strong>Vector Lake (data lake / Loon)</strong>.</p>
+<h2 id="🧩-Milvus-v26-In-Progress" class="common-anchor-header">🧩 Milvus v2.6 (In Progress)<button data-href="#🧩-Milvus-v26-In-Progress" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -53,9 +55,9 @@ summary: Milvus 是一個開放原始碼的向量資料庫，專為人工智能�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><strong>時間表：2025 年中 - 2025 年底</strong></p>
-<p>重點：<strong>升級資料模型</strong>、<strong>重構串流架構</strong>、<strong>建立冷熱分層功能</strong>，以及推出<strong>Vector Lake 原型 (v0.1)</strong>。</p>
-<h3 id="🎯-Key-Highlights" class="common-anchor-header">主要亮點<button data-href="#🎯-Key-Highlights" class="anchor-icon" translate="no">
+    </button></h2><p><strong>Timeline: Mid-2025 – End of 2025</strong></p>
+<p>Focus: <strong>Upgrading the data model</strong>, <strong>refactoring the streaming architecture</strong>, <strong>building hot/cold tiering capabilities</strong>, and launching the <strong>Vector Lake Prototype (v0.1)</strong>.</p>
+<h3 id="🎯-Key-Highlights" class="common-anchor-header">🎯 Key Highlights<button data-href="#🎯-Key-Highlights" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -70,25 +72,25 @@ summary: Milvus 是一個開放原始碼的向量資料庫，專為人工智能�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><h4 id="🔹-Data-Model-Upgrade" class="common-anchor-header"><strong>資料模型升級</strong></h4><ul>
-<li><p>引入統一的<strong>Tensor / StructList</strong>資料類型，以支援多向量嵌入結構，使其能與<em>ColBERT</em>、<em>CoLQwen</em>、<em>視訊</em>和<em>多模態向量</em>相容。</p></li>
-<li><p>新增<strong>Geo Data</strong>支援，包括點、區域和空間索引 (基於<em>libspatial</em>)，以擴充 LBS 和 GIS 的使用案例。</p></li>
-<li><p>支援<strong>含時區</strong>資料類型的<strong>Timestamp</strong>。</p></li>
+    </button></h3><h4 id="🔹-Data-Model-Upgrade" class="common-anchor-header">🔹 <strong>Data Model Upgrade</strong></h4><ul>
+<li><p>Introduce a unified <strong>Tensor / StructList</strong> data type to support multi-vector embedding structures, enabling compatibility with <em>ColBERT</em>, <em>CoLQwen</em>, <em>video</em>, and <em>multimodal vectors</em>.</p></li>
+<li><p>Add <strong>Geo Data</strong> support, including points, regions, and spatial indexing (based on <em>libspatial</em>), to expand use cases in LBS and GIS.</p></li>
+<li><p>Support for <strong>Timestamp with Timezone</strong> data type.</p></li>
 </ul>
-<h4 id="🔹-StreamNode-Architecture-Refactor" class="common-anchor-header"><strong>StreamNode 架構重構</strong></h4><ul>
-<li><p>重寫串流擷取管道，以最佳化增量寫入與即時計算。</p></li>
-<li><p>大幅提升並發效能與穩定性，為統一即時與離線處理奠定基礎。</p></li>
-<li><p>引入新的訊息佇列引擎：<strong>Woodpecker</strong>。</p></li>
+<h4 id="🔹-StreamNode-Architecture-Refactor" class="common-anchor-header">🔹 <strong>StreamNode Architecture Refactor</strong></h4><ul>
+<li><p>Rewrite the streaming ingestion pipeline to optimize incremental writes and real-time computation.</p></li>
+<li><p>Significantly improve concurrency performance and stability, laying the foundation for unified real-time and offline processing.</p></li>
+<li><p>Introduce a new message queue engine: <strong>Woodpecker</strong>.</p></li>
 </ul>
-<h4 id="🔹-HotCold-Tiering--Storage-Architecture-StorageV2" class="common-anchor-header"><strong>🔹熱/冷分層與儲存架構 (StorageV2)</strong></h4><ul>
-<li><p>支援雙儲存格式：<strong>Parquet</strong>和<strong>Vortex</strong>，增強了並發性和記憶體效率。</p></li>
-<li><p>以自動冷熱資料分離和智慧型排程實施分層儲存。</p></li>
+<h4 id="🔹-HotCold-Tiering--Storage-Architecture-StorageV2" class="common-anchor-header">🔹 <strong>Hot/Cold Tiering & Storage Architecture (StorageV2)</strong></h4><ul>
+<li><p>Support dual storage formats: <strong>Parquet</strong> and <strong>Vortex</strong>, enhancing concurrency and memory efficiency.</p></li>
+<li><p>Implement tiered storage with automatic hot/cold data separation and intelligent scheduling.</p></li>
 </ul>
-<h4 id="🔹-Vector-Lake-Prototype-v01" class="common-anchor-header"><strong>向量湖原型 (v0.1)</strong></h4><ul>
-<li><p>透過 FFI 與<strong>Spark</strong>/<strong>DuckDB</strong>/<strong>DataFusion</strong>整合，實現離線模式演進和 KNN 查詢。</p></li>
-<li><p>提供多模式資料可視化和 Spark ETL 示範，建立基礎資料湖架構。</p></li>
+<h4 id="🔹-Vector-Lake-Prototype-v01" class="common-anchor-header">🔹 <strong>Vector Lake Prototype (v0.1)</strong></h4><ul>
+<li><p>Integrate with <strong>Spark</strong> / <strong>DuckDB</strong> / <strong>DataFusion</strong> via FFI, enabling offline schema evolution and KNN queries.</p></li>
+<li><p>Provide multimodal data visualization and a Spark ETL demo, establishing the foundational data lake architecture.</p></li>
 </ul>
-<h2 id="🌠-Milvus-v30-Targeted-for-Early-2026" class="common-anchor-header">Milvus v3.0（預定於 2026 年初推出）<button data-href="#🌠-Milvus-v30-Targeted-for-Early-2026" class="anchor-icon" translate="no">
+<h2 id="🌠-Milvus-v30-Targeted-for-Early-2026" class="common-anchor-header">🌠 Milvus v3.0 (Targeted for Early 2026)<button data-href="#🌠-Milvus-v30-Targeted-for-Early-2026" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -103,9 +105,9 @@ summary: Milvus 是一個開放原始碼的向量資料庫，專為人工智能�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><strong>時間線：2025 年底 - 2026 年初</strong></p>
-<p>重點：全面強化<strong>搜尋體驗</strong>、<strong>模式彈性</strong>和<strong>非結構化資料支援</strong>，同時推出<strong>Vector Lake (v0.2)</strong>。</p>
-<h3 id="🎯-Key-Highlights" class="common-anchor-header">主要亮點<button data-href="#🎯-Key-Highlights" class="anchor-icon" translate="no">
+    </button></h2><p><strong>Timeline: Late 2025 – Early 2026</strong></p>
+<p>Focus: Comprehensive enhancements to <strong>search experience</strong>, <strong>schema flexibility</strong>, and <strong>unstructured data support</strong>, along with the release of <strong>Vector Lake (v0.2)</strong>.</p>
+<h3 id="🎯-Key-Highlights" class="common-anchor-header">🎯 Key Highlights<button data-href="#🎯-Key-Highlights" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -120,36 +122,36 @@ summary: Milvus 是一個開放原始碼的向量資料庫，專為人工智能�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><h4 id="🔹-Search-Experience-Overhaul" class="common-anchor-header"><strong>🔹搜尋體驗徹底改變</strong></h4><ul>
-<li><p>引入<strong>More Like This (MLT)</strong>類似性搜尋，支援包含位置或負面範例的搜尋。</p></li>
-<li><p>新增語意搜尋功能，例如<strong>高亮顯示</strong>和<strong>強化</strong>。</p></li>
-<li><p>支援<strong>自訂字典</strong>和<strong>同義詞表</strong>，在 Analyzer 層支援詞彙和語義規則定義。</p></li>
-<li><p>為查詢引入<strong>聚合</strong>功能。</p></li>
+    </button></h3><h4 id="🔹-Search-Experience-Overhaul" class="common-anchor-header">🔹 <strong>Search Experience Overhaul</strong></h4><ul>
+<li><p>Introduce <strong>More Like This (MLT)</strong> similarity search with support for searches with position or negative examples.</p></li>
+<li><p>Add semantic search capabilities such as <strong>highlighting</strong> and <strong>boosting</strong>.</p></li>
+<li><p>Support <strong>custom dictionaries</strong> and <strong>synonym tables</strong>, enabling lexical and semantic rule definitions at the Analyzer layer.</p></li>
+<li><p>Introduce <strong>aggregation</strong> capabilities for queries.</p></li>
 </ul>
-<h4 id="🔹-Multi-Tenancy--Resource-Management" class="common-anchor-header"><strong>多租戶與資源管理</strong></h4><ul>
-<li><p>啟用多租戶刪除、統計和冷/熱分層。</p></li>
-<li><p>改善資源隔離與排程策略，以支援單一叢集中的數百萬個資料表。</p></li>
+<h4 id="🔹-Multi-Tenancy--Resource-Management" class="common-anchor-header">🔹 <strong>Multi-Tenancy & Resource Management</strong></h4><ul>
+<li><p>Enable multi-tenant deletion, statistics, and hot/cold tiering.</p></li>
+<li><p>Improve resource isolation and scheduling strategies to support millions of tables in a single cluster.</p></li>
 </ul>
-<h4 id="🔹-Schema--Primary-Key-Enhancements" class="common-anchor-header"><strong>模式與主金鑰增強功能</strong></h4><ul>
-<li><p>實施<strong>全局主金鑰重複資料刪除 (Global PK Dedup)</strong>，以保證資料的一致性和唯一性。</p></li>
-<li><p>支援<strong>彈性的模式管理</strong>(新增/刪除欄位、備份填充)。</p></li>
-<li><p>允許向量欄位的<strong>NULL 值</strong>。</p></li>
+<h4 id="🔹-Schema--Primary-Key-Enhancements" class="common-anchor-header">🔹 <strong>Schema & Primary Key Enhancements</strong></h4><ul>
+<li><p>Implement <strong>Global Primary Key Deduplication (Global PK Dedup)</strong> to guarantee data consistency and uniqueness.</p></li>
+<li><p>Support <strong>flexible schema management</strong> (adding/dropping columns, backup fill).</p></li>
+<li><p>Allow <strong>NULL values</strong> in vector fields.</p></li>
 </ul>
-<h4 id="🔹-Expanded-Unstructured-Data-Types-BLOB--Text" class="common-anchor-header"><strong>擴充的非結構化資料類型 (BLOB / 文字)</strong></h4><ul>
-<li><p>引入<strong>BLOB 類型</strong>，為檔案、影像和視訊等二進位資料提供本機儲存和引用。</p></li>
-<li><p>引入<strong>TEXT 類型</strong>，提供增強的全文和基於內容的搜尋功能。</p></li>
+<h4 id="🔹-Expanded-Unstructured-Data-Types-BLOB--Text" class="common-anchor-header">🔹 <strong>Expanded Unstructured Data Types (BLOB / Text)</strong></h4><ul>
+<li><p>Introduce the <strong>BLOB type</strong>, which provides native storage and referencing for binary data such as files, images, and videos.</p></li>
+<li><p>Introduce <strong>TEXT type</strong>, which provides enhanced full-text and content-based search capabilities.</p></li>
 </ul>
-<h4 id="🔹-Enterprise-Grade-Capabilities" class="common-anchor-header"><strong>🔹企業級功能</strong></h4><ul>
-<li><p>支援<strong>以快照為基礎的備份與復原</strong>。</p></li>
-<li><p>提供<strong>端對端追蹤</strong>與<strong>稽核記錄</strong>。</p></li>
-<li><p>在多群集部署中執行<strong>主動備用高可用性 (HA)</strong>。</p></li>
+<h4 id="🔹-Enterprise-Grade-Capabilities" class="common-anchor-header">🔹 <strong>Enterprise-Grade Capabilities</strong></h4><ul>
+<li><p>Support <strong>Snapshot-based backup and recovery</strong>.</p></li>
+<li><p>Provide <strong>end-to-end tracing</strong> and <strong>audit logging</strong>.</p></li>
+<li><p>Implement <strong>Active-Standby High Availability (HA)</strong> across multi-cluster deployments.</p></li>
 </ul>
-<h4 id="🔹-Vector-Lake-v02" class="common-anchor-header"><strong>Vector Lake (v0.2)</strong></h4><ul>
-<li><p>支援<strong>TEXT / BLOB 儲存</strong>與<strong>多版本快照管理</strong>。</p></li>
-<li><p>整合 Spark 以執行離線索引、群集、重複資料刪除及降維工作。</p></li>
-<li><p>提供<strong>ChatPDF 冷查詢和離線基準演示</strong>。</p></li>
+<h4 id="🔹-Vector-Lake-v02" class="common-anchor-header">🔹 <strong>Vector Lake (v0.2)</strong></h4><ul>
+<li><p>Support <strong>TEXT / BLOB storage</strong> and <strong>multi-version snapshot management</strong>.</p></li>
+<li><p>Integrate Spark for offline indexing, clustering, deduplication, and dimensionality reduction tasks.</p></li>
+<li><p>Deliver <strong>ChatPDF cold-query and offline benchmark demos</strong>.</p></li>
 </ul>
-<h2 id="🪐-Milvus-v31-Long-Term-Vision" class="common-anchor-header">Milvus v3.1 (長期願景)<button data-href="#🪐-Milvus-v31-Long-Term-Vision" class="anchor-icon" translate="no">
+<h2 id="🪐-Milvus-v31-Long-Term-Vision" class="common-anchor-header">🪐 Milvus v3.1 (Long-Term Vision)<button data-href="#🪐-Milvus-v31-Long-Term-Vision" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -164,9 +166,9 @@ summary: Milvus 是一個開放原始碼的向量資料庫，專為人工智能�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><strong>時間線：2026 年中</strong></p>
-<p>重點：<strong>使用者定義函式 (UDF)</strong>、<strong>分散式運算整合</strong>、<strong>標量查詢最佳化</strong>、<strong>動態分片</strong>，以及正式釋出<strong>Vector Lake (v1.0)</strong>。</p>
-<h3 id="🎯-Key-Highlights" class="common-anchor-header">主要焦點<button data-href="#🎯-Key-Highlights" class="anchor-icon" translate="no">
+    </button></h2><p><strong>Timeline: Mid-2026</strong></p>
+<p>Focus: <strong>User-defined functions (UDF)</strong>, <strong>distributed computing integration</strong>, <strong>scalar query optimization</strong>, <strong>dynamic sharding</strong>, and the official release of <strong>Vector Lake (v1.0)</strong>.</p>
+<h3 id="🎯-Key-Highlights" class="common-anchor-header">🎯 Key Highlights<button data-href="#🎯-Key-Highlights" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -181,18 +183,18 @@ summary: Milvus 是一個開放原始碼的向量資料庫，專為人工智能�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><h4 id="🔹-UDF--Distributed-Computing-Ecosystem" class="common-anchor-header">🔹<strong>UDF 與分散式運算生態系統</strong></h4><ul>
-<li><p>支援<strong>使用者定義函式 (UDF)</strong>，允許開發人員將自訂邏輯注入擷取與計算工作流程。</p></li>
-<li><p>與<strong>Ray Dataset / Daft</strong>深度整合，以進行分散式 UDF 執行與多模式資料處理。</p></li>
+    </button></h3><h4 id="🔹-UDF--Distributed-Computing-Ecosystem" class="common-anchor-header">🔹 <strong>UDF & Distributed Computing Ecosystem</strong></h4><ul>
+<li><p>Support <strong>User-Defined Functions (UDFs)</strong>, allowing developers to inject custom logic into retrieval and computation workflows.</p></li>
+<li><p>Deep integration with <strong>Ray Dataset / Daft</strong> for distributed UDF execution and multimodal data processing.</p></li>
 </ul>
-<h4 id="🔹-Scalar-Query--Local-Format-Evolution" class="common-anchor-header"><strong>標量查詢與本地格式演進</strong></h4><ul>
-<li><p>最佳化標量欄位的篩選與聚合效能。</p></li>
-<li><p>增強表達式評估和索引加速執行。</p></li>
-<li><p>支援本機檔案格式的<strong>就地更新</strong>。</p></li>
+<h4 id="🔹-Scalar-Query--Local-Format-Evolution" class="common-anchor-header">🔹 <strong>Scalar Query & Local Format Evolution</strong></h4><ul>
+<li><p>Optimize filtering and aggregation performance for scalar fields.</p></li>
+<li><p>Enhance expression evaluation and index-accelerated execution.</p></li>
+<li><p>Support <strong>in-place updates</strong> for local file formats.</p></li>
 </ul>
-<h4 id="🔹-Advanced-Search-Capabilities" class="common-anchor-header"><strong>進階搜尋功能</strong></h4><ul>
-<li><p>新增下列功能：<strong>RankBy</strong>、<strong>OrderBy</strong>、<strong>Facet</strong> 及<strong>模糊匹配</strong>查詢。</p></li>
-<li><p>增強文字擷取，支援</p>
+<h4 id="🔹-Advanced-Search-Capabilities" class="common-anchor-header">🔹 <strong>Advanced Search Capabilities</strong></h4><ul>
+<li><p>Add the following features: <strong>RankBy</strong>, <strong>OrderBy</strong>, <strong>Facet</strong>, and <strong>Fuzzy match</strong> queries.</p></li>
+<li><p>Enhance text retrieval with support for:</p>
 <ul>
 <li><p><code translate="no">match_phrase_prefix</code></p></li>
 <li><p><code translate="no">Completion Suggester</code></p></li>
@@ -200,15 +202,15 @@ summary: Milvus 是一個開放原始碼的向量資料庫，專為人工智能�
 <li><p><code translate="no">Phrase Suggester</code></p></li>
 </ul></li>
 </ul>
-<h4 id="🔹-Dynamic-Sharding--Scalability" class="common-anchor-header"><strong>動態分片與擴充能力</strong></h4><ul>
-<li><p>啟用<strong>自動分片</strong>和<strong>負載平衡</strong>，實現無縫擴充。</p></li>
-<li><p>改善<strong>全局索引建置</strong>，確保<strong>分散式搜尋效能</strong>。</p></li>
+<h4 id="🔹-Dynamic-Sharding--Scalability" class="common-anchor-header">🔹 <strong>Dynamic Sharding & Scalability</strong></h4><ul>
+<li><p>Enable <strong>automatic shard splitting</strong> and <strong>load balancing</strong> for seamless scaling.</p></li>
+<li><p>Improve <strong>global index building</strong> and ensure <strong>distributed search performance</strong>.</p></li>
 </ul>
-<h4 id="🔹-Vector-Lake-V10" class="common-anchor-header"><strong>Vector Lake V1.0</strong></h4><ul>
-<li><p>與<strong>Ray / Daft / PyTorch</strong>深度整合，以支援分散式 UDF 和 Context Engineering 用例。</p></li>
-<li><p>提供<strong>RAG（Retrieval-Augmented Generation）演示</strong> <strong>，並從 Iceberg 表匯入</strong>。</p></li>
+<h4 id="🔹-Vector-Lake-V10" class="common-anchor-header">🔹 <strong>Vector Lake V1.0</strong></h4><ul>
+<li><p>Deep integration with <strong>Ray / Daft / PyTorch</strong> to support distributed UDFs and Context Engineering use cases.</p></li>
+<li><p>Provide <strong>RAG (Retrieval-Augmented Generation) demos</strong> <strong>and import from Iceberg tables</strong>.</p></li>
 </ul>
-<h2 id="🤝-Co-Building-the-Future-of-Milvus" class="common-anchor-header">共同打造 Milvus 的未來<button data-href="#🤝-Co-Building-the-Future-of-Milvus" class="anchor-icon" translate="no">
+<h2 id="🤝-Co-Building-the-Future-of-Milvus" class="common-anchor-header">🤝 Co-Building the Future of Milvus<button data-href="#🤝-Co-Building-the-Future-of-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -223,16 +225,16 @@ summary: Milvus 是一個開放原始碼的向量資料庫，專為人工智能�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus 是由全球開發人員社群驅動的開放原始碼專案。</p>
-<p>我們熱烈邀請所有社群成員協助塑造下一代的多模態資料庫：</p>
+    </button></h2><p>Milvus is an open-source project driven by a global community of developers.</p>
+<p>We warmly invite all community members to help shape the next-generation multimodal database:</p>
 <ul>
-<li><p><strong>分享回饋</strong>：提出新功能或最佳化構想</p></li>
-<li><p>🐛<strong>回報問題</strong>：透過 GitHub Issues 歸檔錯誤</p></li>
-<li><p>🔧<strong>貢獻程式碼</strong>：提交 PR 並協助建立核心功能</p>
+<li><p>💬 <strong>Share feedback</strong>: Propose new features or optimization ideas</p></li>
+<li><p>🐛 <strong>Report issues</strong>: File bugs via GitHub Issues</p></li>
+<li><p>🔧 <strong>Contribute code</strong>: Submit PRs and help build core features</p>
 <ul>
-<li><p><strong>拉取請求</strong>：直接貢獻至我們的<a href="https://github.com/milvus-io/milvus/pulls">程式碼庫</a>。無論是修正錯誤、新增功能或改善文件，我們都歡迎您的貢獻。</p></li>
-<li><p><strong>開發指南</strong>：查看我們的<a href="https://github.com/milvus-io/milvus/blob/82915a9630ab0ff40d7891b97c367ede5726ff7c/CONTRIBUTING.md">貢獻者指南</a>，瞭解有關代碼<a href="https://github.com/milvus-io/milvus/blob/82915a9630ab0ff40d7891b97c367ede5726ff7c/CONTRIBUTING.md">貢獻</a>的指引。</p></li>
+<li><p><strong>Pull requests</strong>: Contribute directly to our <a href="https://github.com/milvus-io/milvus/pulls">codebase</a>. Whether it’s fixing bugs, adding features, or improving documentation, your contributions are welcome.</p></li>
+<li><p><strong>Development guide</strong>: Check our <a href="https://github.com/milvus-io/milvus/blob/82915a9630ab0ff40d7891b97c367ede5726ff7c/CONTRIBUTING.md">Contributor’s Guide</a> for guidelines on code contributions.</p></li>
 </ul></li>
-<li><p>⭐<strong>傳播訊息</strong>：分享最佳實作與成功案例</p></li>
+<li><p>⭐ <strong>Spread the word</strong>: Share best practices and success stories</p></li>
 </ul>
-<p>👉<strong>GitHub:</strong> <a href="https://github.com/milvus-io/milvus">milvus-io/milvus</a></p>
+<p>👉 <strong>GitHub:</strong> <a href="https://github.com/milvus-io/milvus">milvus-io/milvus</a></p>

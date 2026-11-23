@@ -1,11 +1,11 @@
 ---
 id: delete-entities.md
-title: Eliminar entidades
+title: Delete Entities
 summary: >-
-  Puedes eliminar las entidades que ya no sean necesarias filtrándolas por
-  condiciones o por sus claves primarias.
+  You can delete the entities that are no longer needed by filtering conditions
+  or their primary keys.
 ---
-<h1 id="Delete-Entities" class="common-anchor-header">Eliminar entidades<button data-href="#Delete-Entities" class="anchor-icon" translate="no">
+<h1 id="Delete-Entities" class="common-anchor-header">Delete Entities<button data-href="#Delete-Entities" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,8 +20,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Puedes eliminar las entidades que ya no sean necesarias filtrando por condiciones o por sus claves primarias.</p>
-<h2 id="Delete-Entities-by-Filtering-Conditions" class="common-anchor-header">Eliminar entidades mediante condiciones de filtrado<button data-href="#Delete-Entities-by-Filtering-Conditions" class="anchor-icon" translate="no">
+    </button></h1><p>You can delete the entities that are no longer needed by filtering conditions or their primary keys.</p>
+<h2 id="Delete-Entities-by-Filtering-Conditions" class="common-anchor-header">Delete Entities by Filtering Conditions<button data-href="#Delete-Entities-by-Filtering-Conditions" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -36,13 +36,13 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Al eliminar de forma masiva varias entidades que comparten algunos atributos, puede utilizar expresiones de filtro. El código de ejemplo que se muestra a continuación utiliza el operador <strong>«in»</strong> para eliminar de forma masiva todas las entidades cuyo campo <strong>«color</strong> » tenga los valores <strong>«red</strong> » y <strong>«purple</strong>». También puede utilizar otros operadores para crear expresiones de filtro que se ajusten a sus necesidades. Para obtener más información sobre las expresiones de filtro, consulta la sección <a href="/docs/es/v2.6.x/boolean.md">«Explicación de los filtros</a>».</p>
+    </button></h2><p>When deleting multiple entities that share some attributes in a batch, you can use filter expressions. The example code below uses the <strong>in</strong> operator to bulk delete all Entities with their <strong>color</strong> field set to the values of <strong>red</strong> and <strong>purple</strong>. You can also use other operators to construct filter expressions that meet your requirements. For more information about filter expressions, please refer to <a href="/docs/es/v2.6.x/boolean.md">Filtering Explained</a>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -137,7 +137,7 @@ curl --request POST \
     &quot;filter&quot;: &quot;color in [\&quot;red_7025\&quot;, \&quot;purple_4976\&quot;]&quot;
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Delete-Entities-by-Primary-Keys" class="common-anchor-header">Eliminar entidades por claves primarias<button data-href="#Delete-Entities-by-Primary-Keys" class="anchor-icon" translate="no">
+<h2 id="Delete-Entities-by-Primary-Keys" class="common-anchor-header">Delete Entities by Primary Keys<button data-href="#Delete-Entities-by-Primary-Keys" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -152,13 +152,13 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>En la mayoría de los casos, una clave primaria identifica de forma única una entidad. Se pueden eliminar entidades especificando sus claves primarias en la solicitud de eliminación. El código de ejemplo que aparece a continuación muestra cómo eliminar dos entidades con las claves primarias <strong>18</strong> y <strong>19</strong>.</p>
+    </button></h2><p>In most cases, a primary key uniquely identifies an Entity. You can delete Entities by setting their primary keys in the delete request. The example code below demonstrates how to delete two entities with primary keys <strong>18</strong> and <strong>19</strong>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">res = client.delete(
     collection_name=<span class="hljs-string">&quot;quick_setup&quot;</span>,
@@ -215,7 +215,7 @@ curl --request POST \
 }&#x27;</span>
 <span class="hljs-comment">## {&quot;code&quot;:0,&quot;cost&quot;:0,&quot;data&quot;:{}}</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Delete-Entities-from-Partitions" class="common-anchor-header">Eliminar entidades de particiones<button data-href="#Delete-Entities-from-Partitions" class="anchor-icon" translate="no">
+<h2 id="Delete-Entities-from-Partitions" class="common-anchor-header">Delete Entities from Partitions<button data-href="#Delete-Entities-from-Partitions" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -230,13 +230,13 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>También puedes eliminar entidades almacenadas en particiones específicas. Los siguientes fragmentos de código dan por hecho que tienes una partición llamada <strong>PartitionA</strong> en tu colección.</p>
+    </button></h2><p>You can also delete entities stored in specific partitions. The following code snippets assume that you have a partition named <strong>PartitionA</strong> in your collection.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">res = client.delete(
     collection_name=<span class="hljs-string">&quot;quick_setup&quot;</span>,

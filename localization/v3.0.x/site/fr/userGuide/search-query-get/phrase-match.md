@@ -2,14 +2,12 @@
 id: phrase-match.md
 title: Phrase MatchCompatible with Milvus 2.5.17+
 summary: >-
-  La recherche par expression exacte vous permet de rechercher des documents
-  contenant les termes de votre requête sous forme d'expression exacte. Par
-  défaut, les mots doivent apparaître dans le même ordre et être directement
-  adjacents les uns aux autres. Par exemple, une requête sur « robotique
-  apprentissage automatique » correspond à un texte tel que « …modèles typiques
-  de robotique et d’apprentissage automatique… », où les mots « robotique », «
-  machine » et « apprentissage » apparaissent à la suite les uns des autres,
-  sans aucun autre mot entre eux.
+  Phrase match lets you search for documents containing your query terms as an
+  exact phrase. By default, the words must appear in the same order and directly
+  adjacent to one another. For example, a query for "robotics machine learning"
+  matches text like "…typical robotics machine learning models…", where the
+  words "robotics", "machine", and "learning" appear in sequence with no other
+  words between them.
 beta: Milvus 2.5.17+
 ---
 <h1 id="Phrase-Match" class="common-anchor-header">Phrase Match<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.5.17+</span><button data-href="#Phrase-Match" class="anchor-icon" translate="no">

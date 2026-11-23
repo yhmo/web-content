@@ -1,12 +1,12 @@
 ---
 id: streaming_service.md
-title: Servicio de streaming
+title: Streaming Service
 summary: >-
-  El Servicio de Streaming es un concepto para el módulo del sistema de
-  streaming interno de Milvus, construido alrededor del Registro de Escritura en
-  Cabecera (WAL) para soportar varias funciones relacionadas con el streaming.
+  The Streaming Service is a concept for Milvus internal streaming system
+  module, built around the Write-Ahead Log (WAL) to support various
+  streaming-related function.
 ---
-<h1 id="Streaming-Service" class="common-anchor-header">Servicio de streaming<button data-href="#Streaming-Service" class="anchor-icon" translate="no">
+<h1 id="Streaming-Service" class="common-anchor-header">Streaming Service<button data-href="#Streaming-Service" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -21,17 +21,19 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>El <strong>Servicio</strong> de Streaming es un concepto para el módulo del sistema de streaming interno de Milvus, construido alrededor del Registro de Escritura en Cabecera (WAL) para soportar varias funciones relacionadas con el streaming. Entre ellas se incluyen la ingesta/suscripción de datos de streaming, la recuperación ante fallos del estado del clúster, la conversión de datos de streaming en datos históricos y las consultas de datos crecientes. Desde el punto de vista arquitectónico, el servicio de streaming consta de tres componentes principales:</p>
+    </button></h1><p>The <strong>Streaming Service</strong> is a concept for Milvus internal streaming system module, built around the Write-Ahead Log (WAL) to support various streaming-related function. These include streaming data ingestion/subscription, fault recovery of cluster state, conversion of streaming data into historical data, and growing data queries. Architecturally, the Streaming Service is composed of three main components:</p>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/streaming_distributed_arch.png" alt="Streaming Distributed Arc" class="doc-image" id="streaming-distributed-arc" />
-   </span> <span class="img-wrapper"> <span>Arco distribuido de streaming</span> </span></p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/streaming_distributed_arch.png" alt="Streaming Distributed Arc" class="doc-image" id="streaming-distributed-arc" />
+    <span>Streaming Distributed Arc</span>
+  </span>
+</p>
 <ul>
-<li><p><strong>Coordinador de Streaming</strong>: Un componente lógico en el nodo coordinador. Utiliza Etcd para el descubrimiento de servicios con el fin de localizar los nodos de streaming disponibles y se encarga de vincular la WAL a los nodos de streaming correspondientes. También registra el servicio para exponer la topología de distribución de WAL, permitiendo a los clientes de streaming conocer el nodo de streaming apropiado para un WAL dado.</p></li>
-<li><p><strong>Clúster de nodos de streaming</strong>: Un clúster de nodos de trabajo de streaming responsable de todas las tareas de procesamiento de streaming, como la anexión de wal, la recuperación de estado, la consulta de datos en crecimiento.</p></li>
-<li><p><strong>Cliente de streaming</strong>: Un cliente Milvus desarrollado internamente que encapsula funcionalidades básicas como el descubrimiento de servicios y las comprobaciones de disponibilidad. Se utiliza para iniciar operaciones como la escritura de mensajes y la suscripción.</p></li>
+<li><p><strong>Streaming Coordinator</strong>: A logical component in the coordinator node. It uses Etcd for service discovery to locate available streaming nodes and is responsible for binding WAL to the corresponding streaming nodes. It also registers service to expose the WAL distribution topology, allowing streaming clients to know the appropriate streaming node for a given WAL.</p></li>
+<li><p><strong>Streaming Node Cluster</strong>: A cluster of streaming worker nodes responsible for all streaming-processing tasks, such as wal appending, state recovering, growing data querying.</p></li>
+<li><p><strong>Streaming Client</strong>: An internally developed Milvus client that encapsulates basic functionalities such as service discovery and readiness checks. It is used to initiate operations such as message writing and subscription.</p></li>
 </ul>
-<h2 id="Message" class="common-anchor-header">Mensaje<button data-href="#Message" class="anchor-icon" translate="no">
+<h2 id="Message" class="common-anchor-header">Message<button data-href="#Message" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -46,17 +48,19 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>El servicio de streaming es un sistema de streaming basado en registros, por lo que todas las operaciones de escritura en Milvus (como DML y DDL) se abstraen como <strong>mensajes</strong>.</p>
+    </button></h2><p>The Streaming Service is a log-driven streaming system, so all write operations in Milvus (such as DML and DDL) are abstracted as <strong>Messages</strong>.</p>
 <ul>
-<li><p>A cada Mensaje se le asigna un campo <strong>Timestamp Oracle (TSO)</strong> por el Servicio de Streaming, que indica el orden del mensaje en la WAL. El orden de los mensajes determina el orden de las operaciones de escritura en Milvus. Esto permite reconstruir el último estado del cluster a partir de los logs.</p></li>
-<li><p>Cada Mensaje pertenece a un <strong>VChannel</strong> (Canal Virtual) específico y mantiene ciertas propiedades invariantes dentro de ese canal para asegurar la consistencia de las operaciones. Por ejemplo, una operación Insert debe producirse siempre antes de una operación DropCollection en el mismo canal.</p></li>
+<li><p>Every Message is assigned a <strong>Timestamp Oracle (TSO)</strong> field by the Streaming Service, which indicates the message’s order in the WAL. The ordering of messages determines the order of write operations in Milvus. This makes it possible to reconstruct the latest cluster state from the logs.</p></li>
+<li><p>Each Message belongs to a specific <strong>VChannel</strong> (Virtual Channel) and maintains certain invariant properties within that channel to ensure operation consistency. For example, an Insert operation must always occur before a DropCollection operation on the same channel.</p></li>
 </ul>
-<p>El orden de los mensajes en Milvus puede parecerse al siguiente:</p>
+<p>The message order in Milvus may resemble the following:</p>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/message_order.png" alt="Message Order" class="doc-image" id="message-order" />
-   </span> <span class="img-wrapper"> <span>Orden de mensajes</span> </span></p>
-<h2 id="WAL-Component" class="common-anchor-header">Componente WAL<button data-href="#WAL-Component" class="anchor-icon" translate="no">
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/message_order.png" alt="Message Order" class="doc-image" id="message-order" />
+    <span>Message Order</span>
+  </span>
+</p>
+<h2 id="WAL-Component" class="common-anchor-header">WAL Component<button data-href="#WAL-Component" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -71,16 +75,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Para soportar la escalabilidad horizontal a gran escala, el WAL de Milvus no es un único archivo de registro, sino un compuesto de múltiples registros. Cada registro puede soportar independientemente la funcionalidad de streaming para múltiples VChannels. En un momento dado, un componente WAL puede operar <strong>exactamente en un nodo</strong> de streaming, esta restricción es prometida tanto por un mecanismo de cercado del almacenamiento wal subyacente como por el coordinador de streaming.</p>
-<p>Otras características del componente WAL son</p>
+    </button></h2><p>To support large-scale horizontal scalability, Milvus’s WAL is not a single log file, but a composite of multiple logs. Each log can independently support streaming functionality for multiple VChannels. At any given time, a WAL component is allowed to operate on <strong>exactly one streaming node</strong>, these constraint is promised by both a fencing mechanism of underlying wal storage and the streaming coordinator.</p>
+<p>Additional features of the WAL component include:</p>
 <ul>
-<li><p><strong>Gestión del ciclo de vida de los segmentos</strong>: Basándose en políticas como las condiciones de memoria, el tamaño del segmento o el tiempo de inactividad del segmento, la WAL gestiona el ciclo de vida de cada segmento.</p></li>
-<li><p><strong>Soporte básico de transacciones</strong>: Dado que cada mensaje tiene un límite de tamaño, el componente WAL admite el nivel de transacción simple para prometer escrituras atómicas en el nivel VChannel.</p></li>
-<li><p><strong>Escritura de registro remoto de alta concurrencia</strong>: Milvus admite colas de mensajes remotas de terceros como almacenamiento WAL. Para mitigar la latencia de ida y vuelta (RTT) entre el nodo de streaming y el almacenamiento WAL remoto para mejorar el rendimiento de escritura, el servicio de streaming admite escrituras de registro concurrentes. Mantiene el orden de los mensajes mediante sincronización TSO y TSO, y los mensajes de la WAL se leen en orden TSO.</p></li>
-<li><p><strong>Buffer de escritura anticipada</strong>: Después de escribir los mensajes en la WAL, se almacenan temporalmente en un búfer de escritura anticipada. Esto permite realizar lecturas de cola de los registros sin tener que recuperar los mensajes del almacenamiento WAL remoto.</p></li>
-<li><p><strong>Soporta múltiples almacenamientos WAL</strong>: Woodpecker, Pulsar, Kafka. Si utilizamos Woodpecker en modo disco cero, podemos eliminar la dependencia del almacenamiento WAL remoto.</p></li>
+<li><p><strong>Segment Lifecycle Management</strong>: Based on the policy such as memory conditions/ segment size/ segment idle time, the WAL manages the lifecycle of every segments.</p></li>
+<li><p><strong>Basic Transaction Support</strong>: Since each message has a size limit, the WAL component supports simple transaction-level to promise atomic writes at the VChannel level.</p></li>
+<li><p><strong>High-Concurrency Remote Log Writing</strong>: Milvus supports third-party remote message queues as WAL storage. For mitigating the round-trip latency (RTT) between streaming node and remote WAL storage to improve write throughput, the streaming service supports concurrent log writes. It maintains message order by TSO and TSO synchronization, and the messages in WAL are read in TSO order.</p></li>
+<li><p><strong>Write-Ahead Buffer</strong>: After messages are written to the WAL, they are temporarily stored in a Write-Ahead Buffer. This enables tail reads of logs without fetching messages from remote WAL storage.</p></li>
+<li><p><strong>Multiple WAL Storage supports</strong>: Woodpecker, Pulsar, Kafka. Use woodpecker with zero-disk mode, we can remove the remote WAL storage dependency.</p></li>
 </ul>
-<h2 id="Recovery-Storage" class="common-anchor-header">Almacenamiento de recuperación<button data-href="#Recovery-Storage" class="anchor-icon" translate="no">
+<h2 id="Recovery-Storage" class="common-anchor-header">Recovery Storage<button data-href="#Recovery-Storage" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -95,16 +99,18 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>El componente <strong>Recovery</strong> Storage siempre se ejecuta en el nodo de streaming en el que se encuentra el componente WAL correspondiente.</p>
+    </button></h2><p>The <strong>Recovery Storage</strong> component always runs on the streaming node that corresponding WAL component located.</p>
 <ul>
-<li><p>Es responsable de convertir los datos de streaming en datos históricos persistentes y almacenarlos en el almacenamiento de objetos.</p></li>
-<li><p>También gestiona la recuperación del estado en memoria para el componente WAL en el nodo de streaming.</p></li>
+<li><p>It is responsible for converting streaming data into persisted historical data and storing it in object storage.</p></li>
+<li><p>It also handles in-memory state recovery for the WAL component on the streaming node.</p></li>
 </ul>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/recovery_storage.png" alt="Recovery Storage" class="doc-image" id="recovery-storage" />
-   </span> <span class="img-wrapper"> <span>Almacenamiento de recuperación</span> </span></p>
-<h2 id="Query-Delegator" class="common-anchor-header">Delegador de consultas<button data-href="#Query-Delegator" class="anchor-icon" translate="no">
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/recovery_storage.png" alt="Recovery Storage" class="doc-image" id="recovery-storage" />
+    <span>Recovery Storage</span>
+  </span>
+</p>
+<h2 id="Query-Delegator" class="common-anchor-header">Query Delegator<button data-href="#Query-Delegator" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -119,10 +125,10 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>El <strong>Delegador de Consultas</strong> se ejecuta en cada nodo de streaming y es responsable de ejecutar <strong>consultas incrementales</strong> en un único fragmento. Genera planes de consulta, los envía a los nodos de consulta pertinentes y agrega los resultados.</p>
-<p>Además, el Delegador de consultas se encarga de transmitir <strong>las operaciones de eliminación</strong> a otros nodos de consulta.</p>
-<p>El Delegador de consultas siempre coexiste con el componente WAL en el mismo nodo de transmisión. Pero si la colección está configurada con multi-replica, entonces se desplegarán <strong>N-1</strong> Delegadores en los otros nodos de streaming.</p>
-<h2 id="WAL-Lifetime-and-Wait-for-Ready" class="common-anchor-header">Duración de la WAL y espera de disponibilidad<button data-href="#WAL-Lifetime-and-Wait-for-Ready" class="anchor-icon" translate="no">
+    </button></h2><p>The <strong>Query Delegator</strong> runs on each streaming node and is responsible for executing <strong>incremental queries</strong> on a single shard. It generates query plans, forwards them to the relevant Query Nodes, and aggregates the results.</p>
+<p>In addition, the Query Delegator is responsible for broadcasting <strong>Delete operations</strong> to other Query Nodes.</p>
+<p>The Query Delegator always coexists with the WAL component on the same streaming node. But if the collection is configured with multi-replica, then <strong>N-1</strong> Delegators will be deployed on the other streaming nodes.</p>
+<h2 id="WAL-Lifetime-and-Wait-for-Ready" class="common-anchor-header">WAL Lifetime and Wait for Ready<button data-href="#WAL-Lifetime-and-Wait-for-Ready" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -137,12 +143,14 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Al separar los nodos de computación del almacenamiento, Milvus puede transferir fácilmente WAL de un nodo de streaming a otro, consiguiendo una alta disponibilidad en el servicio de streaming.</p>
+    </button></h2><p>By separating computing nodes from storage, Milvus can easily transfer WAL from one streaming node to another, achieving high availability in streaming service.</p>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/wal_lifetime.png" alt="wal lifetime" class="doc-image" id="wal-lifetime" />
-   </span> <span class="img-wrapper"> <span>Tiempo de vida de la WAL</span> </span></p>
-<h2 id="Wait-for-Ready" class="common-anchor-header">Espera de disponibilidad<button data-href="#Wait-for-Ready" class="anchor-icon" translate="no">
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/wal_lifetime.png" alt="wal lifetime" class="doc-image" id="wal-lifetime" />
+    <span>wal lifetime</span>
+  </span>
+</p>
+<h2 id="Wait-for-Ready" class="common-anchor-header">Wait for Ready<button data-href="#Wait-for-Ready" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -157,8 +165,10 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Cuando la WAL va a trasladarse a un nuevo nodo de streaming, el cliente se encontrará con que el antiguo nodo de streaming rechaza algunas peticiones. Mientras tanto, la WAL será recuperada en el nuevo nodo de streaming, el cliente esperará a que la wal en el nuevo nodo de streaming esté lista para servir.</p>
+    </button></h2><p>When wal is going to move to new streaming node, the client will find that old streaming node reject some requests. Meanwhile, the WAL will be recovered at new streaming node, the client will wait for the wal on new streaming node ready to serve.</p>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/streaming_wait_for_ready.png" alt="wait for ready" class="doc-image" id="wait-for-ready" />
-   </span> <span class="img-wrapper"> <span>esperar a que esté listo</span> </span></p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/streaming_wait_for_ready.png" alt="wait for ready" class="doc-image" id="wait-for-ready" />
+    <span>wait for ready</span>
+  </span>
+</p>

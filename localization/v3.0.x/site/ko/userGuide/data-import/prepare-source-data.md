@@ -1,10 +1,12 @@
 ---
 id: prepare-source-data.md
 order: 0
-title: 소스 데이터 준비
-summary: 이 페이지에서는 컬렉션에 데이터를 일괄 삽입하기 전에 고려해야 할 사항에 대해 설명합니다.
+title: Prepare Source Data
+summary: >-
+  This page discusses something you should consider before you start
+  bulk-inserting data into your collection.
 ---
-<h1 id="Prepare-Source-Data" class="common-anchor-header">소스 데이터 준비<button data-href="#Prepare-Source-Data" class="anchor-icon" translate="no">
+<h1 id="Prepare-Source-Data" class="common-anchor-header">Prepare Source Data<button data-href="#Prepare-Source-Data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -19,8 +21,8 @@ summary: 이 페이지에서는 컬렉션에 데이터를 일괄 삽입하기 �
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>이 페이지에서는 컬렉션에 데이터를 일괄 삽입하기 전에 고려해야 할 사항에 대해 설명합니다.</p>
-<h2 id="Before-you-start" class="common-anchor-header">시작하기 전에<button data-href="#Before-you-start" class="anchor-icon" translate="no">
+    </button></h1><p>This page discusses something you should consider before you start bulk-inserting data into your collection.</p>
+<h2 id="Before-you-start" class="common-anchor-header">Before you start<button data-href="#Before-you-start" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -35,32 +37,32 @@ summary: 이 페이지에서는 컬렉션에 데이터를 일괄 삽입하기 �
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>대상 컬렉션에는 소스 데이터를 해당 스키마에 매핑해야 합니다. 아래 다이어그램은 허용되는 소스 데이터가 대상 컬렉션의 스키마에 어떻게 매핑되는지 보여줍니다.</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/map-data-to-schema.png" alt="Map data to schema" class="doc-image" id="map-data-to-schema" /> 
-   <span>데이터를 스키마에 매핑하기</span>
-  
- </span></p>
-<p>데이터를 면밀히 검토하고 그에 따라 대상 컬렉션의 스키마를 설계해야 합니다.</p>
-<p>위 다이어그램의 JSON 데이터를 예로 들면, 행 목록에는 두 개의 엔티티가 있으며 각 행은 여섯 개의 필드를 가지고 있습니다. 컬렉션 스키마에는 <strong>id</strong>, <strong>vector</strong>, <strong>scalar_1</strong>, <strong>scalar_2</strong> 등 네 가지 필드만 선택적으로 포함됩니다.</p>
-<p>스키마를 설계할 때 고려해야 할 두 가지 사항이 더 있습니다:</p>
+    </button></h2><p>The target collection requires mapping the source data to its schema. The diagram below shows how acceptable source data is mapped to the schema of a target collection.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/map-data-to-schema.png" alt="Map data to schema" class="doc-image" id="map-data-to-schema" />
+    <span>Map data to schema</span>
+  </span>
+</p>
+<p>You should carefully examine your data and design the schema of the target collection accordingly.</p>
+<p>Taking the JSON data in the above diagram as an example, there are two entities in the rows list, each row having six fields. The collection schema selectively includes four: <strong>id</strong>, <strong>vector</strong>, <strong>scalar_1</strong>, and <strong>scalar_2</strong>.</p>
+<p>There are two more things to consider when designing the schema:</p>
 <ul>
-<li><p><strong>AutoID 활성화 여부</strong></p>
-<p><strong>id</strong> 필드는 컬렉션의 기본 필드 역할을 합니다. 기본 필드의 값이 자동으로 증가하도록 하려면 스키마에서 <strong>AutoID를</strong> 활성화할 수 있습니다. 이 경우 소스 데이터의 각 행에서 <strong>id</strong> 필드를 제외해야 합니다.</p></li>
-<li><p><strong>동적 필드 활성화 여부</strong></p>
-<p>스키마에서 동적 필드를 허용하는 경우, 대상 컬렉션은 미리 정의된 스키마에 포함되지 않은 필드도 저장할 수 있습니다. <strong>$meta</strong> 필드는 동적 필드와 그 값을 키-값 쌍으로 저장하기 위한 예약된 JSON 필드입니다. 위 다이어그램에서 <strong>dynamic_field_1</strong> 및 <strong>dynamic_field_2</strong> 필드와 해당 값은 <strong>$meta</strong> 필드에 키-값 쌍으로 저장됩니다.</p></li>
+<li><p><strong>Whether to enable AutoID</strong></p>
+<p>The <strong>id</strong> field serves as the primary field of the collection. To make the primary field automatically increment, you can enable <strong>AutoID</strong> in the schema. In this case, you should exclude the <strong>id</strong> field from each row in the source data.</p></li>
+<li><p><strong>Whether to enable dynamic fields</strong></p>
+<p>The target collection can also store fields not included in its pre-defined schema if the schema enables dynamic fields. The <strong>$meta</strong> field is a reserved JSON field to hold dynamic fields and their values in key-value pairs. In the above diagram, the fields <strong>dynamic_field_1</strong> and <strong>dynamic_field_2</strong> and the values will be saved as key-value pairs in the <strong>$meta</strong> field.</p></li>
 </ul>
-<p>다음 코드는 위 다이어그램에 표시된 컬렉션에 대한 스키마를 설정하는 방법을 보여줍니다.</p>
+<p>The following code shows how to set up the schema for the collection illustrated in the above diagram.</p>
 <div class="language-python">
-<p>자세한 내용은 다음을 참조하십시오. <a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Collections/create_schema.md"><code translate="no">create_schema()</code></a> 및 <a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/CollectionSchema/add_field.md"><code translate="no">add_field()</code></a> SDK 참조 문서를 참조하십시오.</p>
+<p>To obtain more information, refer to <a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Collections/create_schema.md"><code translate="no">create_schema()</code></a> and <a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/CollectionSchema/add_field.md"><code translate="no">add_field()</code></a> in the SDK reference.</p>
 </div>
 <div class="language-java">
-<p>자세한 내용은 SDK 참조 문서의및 <a href="https://milvus.io/api-reference/java/v2.4.x/v2/CollectionSchema/CollectionSchema.md"><code translate="no">CollectionSchema</code></a> SDK 참조 문서를 참조하십시오.</p>
+<p>To obtain more information, refer to <a href="https://milvus.io/api-reference/java/v2.4.x/v2/CollectionSchema/CollectionSchema.md"><code translate="no">CollectionSchema</code></a> in the SDK reference.</p>
 </div>
 <div class="multipleCode">
- <a href="#python">Python 
- </a> <a href="#java"> Java</a>
+  <a href="#python">Python</a>
+  <a href="#java">Java</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
 
@@ -208,7 +210,7 @@ schema.verify()
     <span class="hljs-keyword">return</span> schema;
 }
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="StructArray-fields-in-source-files" class="common-anchor-header">소스 파일의 StructArray 필드<button data-href="#StructArray-fields-in-source-files" class="anchor-icon" translate="no">
+<h2 id="StructArray-fields-in-source-files" class="common-anchor-header">StructArray fields in source files<button data-href="#StructArray-fields-in-source-files" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -223,29 +225,29 @@ schema.verify()
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><a href="/docs/ko/array-of-structs.md">StructArray</a> 필드는 소스 파일 형식마다 다르게 처리됩니다. 임포트 리더는 다음 형상 중 하나를 기대합니다:</p>
+    </button></h2><p>A <a href="/docs/ko/array-of-structs.md">StructArray</a> field is carried differently by each source file format. The import reader expects one of the following shapes:</p>
 <table>
 <thead>
-<tr><th>형식</th><th>StructArray 필드 형상</th></tr>
+<tr><th>Format</th><th>StructArray field shape</th></tr>
 </thead>
 <tbody>
-<tr><td>JSON, JSONL</td><td>필드 값은 Struct 요소마다 하나씩, 하위 필드 이름을 키로 하는 객체 목록입니다: <code translate="no">&quot;chunks&quot;: [{&quot;text&quot;: &quot;...&quot;, &quot;section&quot;: &quot;index&quot;, &quot;emb&quot;: [0.1, 0.2]}, ...]</code>.</td></tr>
-<tr><td>CSV</td><td>셀에는 JSON 형식과 동일한 JSON 텍스트가 포함됩니다. 가져오기 작업에 대해 구성된 <code translate="no">nullkey</code> 또는 JSON <code translate="no">null</code> 는 null StructArray 값을 표시합니다.</td></tr>
-<tr><td>Parquet</td><td>StructArray 필드당 하나의 열이 있으며, 유형은 <code translate="no">list&lt;struct&lt;...&gt;&gt;</code> 이고, 하위 필드당 하나의 struct 자식 노드가 있습니다. 스칼라 하위 필드는 스칼라 자식 노드이고, 벡터 하위 필드는 <code translate="no">list&lt;float32&gt;</code> 와 같은 해당 요소 유형의 목록이며, 배열 하위 필드(Milvus 3.0.6 이상)는 <code translate="no">list&lt;T&gt;</code> 자식 노드입니다.</td></tr>
-<tr><td>NumPy</td><td>지원되지 않습니다. NumPy 파일은 최상위 필드당 하나의 파일을 저장하며, StructArray 필드를 표현할 수 없습니다. StructArray 필드가 포함된 컬렉션의 경우 JSON, CSV 또는 Parquet 파일을 사용하십시오.</td></tr>
+<tr><td>JSON, JSONL</td><td>The field value is a list of objects, one per Struct element, keyed by subfield name: <code translate="no">&quot;chunks&quot;: [{&quot;text&quot;: &quot;...&quot;, &quot;section&quot;: &quot;index&quot;, &quot;emb&quot;: [0.1, 0.2]}, ...]</code>.</td></tr>
+<tr><td>CSV</td><td>The cell holds the same JSON text as the JSON format. The <code translate="no">nullkey</code> configured for the import job or a JSON <code translate="no">null</code> marks a null StructArray value.</td></tr>
+<tr><td>Parquet</td><td>One column per StructArray field with the type <code translate="no">list&lt;struct&lt;...&gt;&gt;</code>, one struct child per subfield. A scalar subfield is a scalar child, a vector subfield is a list of its element type, such as <code translate="no">list&lt;float32&gt;</code>, and an array subfield (Milvus 3.0.6 and later) is a <code translate="no">list&lt;T&gt;</code> child.</td></tr>
+<tr><td>NumPy</td><td>Not supported. NumPy files hold one file per top-level field and have no representation for a StructArray field. Use JSON, CSV, or Parquet files for collections that have a StructArray field.</td></tr>
 </tbody>
 </table>
-<p>지원되는 모든 형식의 StructArray 값에는 다음 규칙이 적용됩니다:</p>
+<p>The following rules apply to StructArray values in all supported formats:</p>
 <ul>
-<li><p>각 Struct 요소 내부에서는 <code translate="no">chunks[text]</code> 와 같은 경로가 아닌 서브필드 이름을 사용해야 합니다. <code translate="no">chunks[text]</code> 와 같은 평면 열이나 키는 허용되지 않습니다.</p></li>
-<li><p><code translate="no">[null, {...}]</code> 과 같이 Struct 요소 자체가 null일 수는 없습니다. StructArray 필드가 null 허용형인 경우에만 전체 StructArray 값이 null일 수 있습니다. Milvus 3.0.6 이전 버전에서는 모든 Struct 요소가 모든 하위 필드를 제공해야 했습니다.</p></li>
-<li><p>생략된 하위 필드를 포함하여 컬렉션의 하위 필드가 아닌 키나 Parquet 자식 요소는 무시됩니다.</p></li>
-<li><p>Milvus 3.0.6부터, 요소가 null일 수 있는 하위 필드에 대한 키나 <code translate="no">null</code> 값이 누락된 경우, 해당 Struct 요소의 null 값으로 가져오기되므로, 하위 필드가 추가되기 전에 작성된 파일은 해당 필드 없이 가져오기됩니다. 다른 위치에서 ` <code translate="no">null</code> `가 있으면 가져오기가 실패합니다. 배열 하위 필드의 경우, ` <code translate="no">null</code> `는 null 내부 배열이며, 하위 필드가 허용하는 경우 내부 배열 내의 ` <code translate="no">null</code> `는 null 내부 값입니다.</p></li>
-<li><p>Milvus 3.0.6부터, 백업 복원 등의 바이너리 로그(binlog) 가져오기 및 스냅샷 소스 가져오기는 요소 null 허용 하위 필드나 스칼라 배열 하위 필드가 있는 컬렉션의 경우 거부됩니다.</p></li>
+<li><p>Use subfield names inside each Struct element, not paths such as <code translate="no">chunks[text]</code>. Flat columns or keys named <code translate="no">chunks[text]</code> are rejected.</p></li>
+<li><p>A Struct element itself cannot be null, such as <code translate="no">[null, {...}]</code>. A whole StructArray value can be null only when the StructArray field is nullable. Before Milvus 3.0.6, every Struct element must provide every subfield.</p></li>
+<li><p>Keys or Parquet children that are not subfields of the collection, including dropped subfields, are ignored.</p></li>
+<li><p>Starting in Milvus 3.0.6, a missing key or a <code translate="no">null</code> value for an element-nullable subfield imports as a null value for that Struct element, so files written before a subfield was added import without it. A <code translate="no">null</code> anywhere else fails the import. For an array subfield, <code translate="no">null</code> is a null inner array, and <code translate="no">null</code> inside the inner array is a null inner value when the subfield allows it.</p></li>
+<li><p>Starting in Milvus 3.0.6, binlog import, such as a backup restore, and snapshot-source import are rejected for collections that have element-nullable subfields or scalar array subfields.</p></li>
 </ul>
-<p>pymilvus <a href="#Set-up-BulkWriter">BulkWriter는</a> 요소 null 허용 하위 필드 및 null 허용 StructArray 값을 포함하여, 지원되는 모든 형식에서 위의 StructArray 형식을 지원합니다. 라이터의 ` <code translate="no">add_row()</code> ` 호출에서 동일한 행 형식을 사용하십시오.</p>
-<p>스키마 측면의 제한 사항에 대해서는 <a href="/docs/ko/structarray-limits.md#Import-and-storage-limits">StructArray 제한 사항을</a> 참조하십시오.</p>
-<h2 id="Set-up-BulkWriter" class="common-anchor-header">BulkWriter 설정<button data-href="#Set-up-BulkWriter" class="anchor-icon" translate="no">
+<p>pymilvus <a href="#Set-up-BulkWriter">BulkWriter</a> supports the StructArray shapes above in every supported format, including element-nullable subfields and nullable StructArray values. Use the same row shapes in the writer’s <code translate="no">add_row()</code> calls.</p>
+<p>For the schema-side limits, see <a href="/docs/ko/structarray-limits.md#Import-and-storage-limits">StructArray Limits</a>.</p>
+<h2 id="Set-up-BulkWriter" class="common-anchor-header">Set up BulkWriter<button data-href="#Set-up-BulkWriter" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -260,13 +262,13 @@ schema.verify()
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><strong>BulkWriter는</strong> 원시 데이터셋을 RESTful Import API를 통해 가져오기에 적합한 형식으로 변환하도록 설계된 도구입니다. 이 도구는 두 가지 유형의 라이터를 제공합니다:</p>
+    </button></h2><p><strong>BulkWriter</strong> is a tool designed to convert raw datasets into a format suitable for importing via the RESTful Import API. It offers two types of writers:</p>
 <ul>
-<li><strong>LocalBulkWriter</strong>: 지정된 데이터셋을 읽어와 사용하기 쉬운 형식으로 변환합니다.</li>
-<li><strong>RemoteBulkWriter</strong>: LocalBulkWriter와 동일한 작업을 수행하지만, 변환된 데이터 파일을 지정된 원격 오브젝트 스토리지 버킷으로 추가로 전송합니다.</li>
+<li><strong>LocalBulkWriter</strong>: Reads the designated dataset and transforms it into an easy-to-use format.</li>
+<li><strong>RemoteBulkWriter</strong>: Performs the same task as the LocalBulkWriter but additionally transfers the converted data files to a specified remote object storage bucket.</li>
 </ul>
-<p><strong>RemoteBulkWriter는</strong> 변환된 데이터 파일을 대상 오브젝트 스토리지 버킷으로 전송한다는 점에서 <strong>LocalBulkWriter와</strong> 다릅니다.</p>
-<h3 id="Set-up-LocalBulkWriter" class="common-anchor-header">LocalBulkWriter 설정<button data-href="#Set-up-LocalBulkWriter" class="anchor-icon" translate="no">
+<p><strong>RemoteBulkWriter</strong> differs from <strong>LocalBulkWriter</strong> in that <strong>RemoteBulkWriter</strong> transfers the converted data files to a target object storage bucket.</p>
+<h3 id="Set-up-LocalBulkWriter" class="common-anchor-header">Set up LocalBulkWriter<button data-href="#Set-up-LocalBulkWriter" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -281,10 +283,10 @@ schema.verify()
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><strong>LocalBulkWriter는</strong> 소스 데이터셋의 행을 순차적으로 추가하여 지정된 형식의 로컬 파일에 기록합니다.</p>
+    </button></h3><p>A <strong>LocalBulkWriter</strong> appends rows from the source dataset and commits them to a local file of the specified format.</p>
 <div class="multipleCode">
- <a href="#python">Python 
- </a> <a href="#java"> Java</a>
+  <a href="#python">Python</a>
+  <a href="#java">Java</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus.bulk_writer <span class="hljs-keyword">import</span> LocalBulkWriter, BulkFileType
 <span class="hljs-comment"># Use `from pymilvus import LocalBulkWriter, BulkFileType` </span>
@@ -311,26 +313,26 @@ writer = LocalBulkWriter(
 <span class="hljs-type">LocalBulkWriter</span> <span class="hljs-variable">localBulkWriter</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">LocalBulkWriter</span>(localBulkWriterParam);
 <button class="copy-code-btn"></button></code></pre>
 <div class="language-python">
-<p><strong>LocalBulkWriter</strong>를 생성할 때는 다음을 수행해야 합니다.</p>
+<p>When creating a <strong>LocalBulkWriter</strong>, you should:</p>
 <ul>
-<li><code translate="no">schema</code> 에서 생성된 스키마를 참조해야 합니다.</li>
-<li><code translate="no">local_path</code> 를 출력 디렉터리로 설정해야 합니다.</li>
-<li><code translate="no">file_type</code> 를 출력 파일 유형으로 설정해야 합니다.</li>
-<li>데이터셋에 레코드 수가 많은 경우, <code translate="no">segment_size</code> 를 적절한 값으로 설정하여 데이터를 분할하는 것이 좋습니다.</li>
+<li>Reference the created schema in <code translate="no">schema</code>.</li>
+<li>Set <code translate="no">local_path</code> to the output directory.</li>
+<li>Set <code translate="no">file_type</code> to the output file type.</li>
+<li>If your dataset contains a large number of records, you are advised to segment your data by setting <code translate="no">segment_size</code> to a proper value.</li>
 </ul>
-<p>매개 변수 설정에 대한 자세한 내용은 SDK 참조 문서의 <a href="https://milvus.io/api-reference/pymilvus/v2.4.x/DataImport/LocalBulkWriter/LocalBulkWriter.md">LocalBulkWriter를</a> 참조하십시오.</p>
+<p>For details on parameter settings, refer to <a href="https://milvus.io/api-reference/pymilvus/v2.4.x/DataImport/LocalBulkWriter/LocalBulkWriter.md">LocalBulkWriter</a> in the SDK reference.</p>
 </div>
 <div class="language-java">
-<p><strong>LocalBulkWriter</strong>를 생성할 때는 다음을 수행해야 합니다.</p>
+<p>When creating a <strong>LocalBulkWriter</strong>, you should:</p>
 <ul>
-<li><code translate="no">CollectionSchema()</code> 에서 생성된 스키마를 참조해야 합니다.</li>
-<li><code translate="no">withLocalPath()</code> 에서 출력 디렉터리를 설정하십시오.</li>
-<li><code translate="no">withFileType()</code> 에서 출력 파일 유형을 설정해야 합니다.</li>
-<li>데이터셋에 레코드 수가 많은 경우, ` <code translate="no">withChunkSize()</code> `를 적절한 값으로 설정하여 데이터를 분할하는 것이 좋습니다.</li>
+<li>Reference the created schema in <code translate="no">CollectionSchema()</code>.</li>
+<li>Set the output directory in <code translate="no">withLocalPath()</code>.</li>
+<li>Set the output file type in <code translate="no">withFileType()</code>.</li>
+<li>If your dataset contains a large number of records, you are advised to segment your data by setting <code translate="no">withChunkSize()</code> to a proper value.</li>
 </ul>
-<p>매개 변수 설정에 대한 자세한 내용은 SDK 참조의 LocalBulkWriter를 참조하십시오.</p>
+<p>For details on parameter settings, refer to LocalBulkWriter in the SDK reference.</p>
 </div>
-<h3 id="Set-up-RemoteBulkWriter" class="common-anchor-header">RemoteBulkWriter 설정<button data-href="#Set-up-RemoteBulkWriter" class="anchor-icon" translate="no">
+<h3 id="Set-up-RemoteBulkWriter" class="common-anchor-header">Set up RemoteBulkWriter<button data-href="#Set-up-RemoteBulkWriter" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -345,10 +347,10 @@ writer = LocalBulkWriter(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><strong>RemoteBulkWriter는</strong> 추가된 데이터를 로컬 파일에 커밋하는 대신 원격 버킷에 커밋합니다. 따라서 <strong>RemoteBulkWriter를</strong> 생성하기 전에 <strong>ConnectParam</strong> 객체를 설정해야 합니다.</p>
+    </button></h3><p>Instead of committing appended data to a local file, a <strong>RemoteBulkWriter</strong> commits them to a remote bucket. Therefore, you should set up a <strong>ConnectParam</strong> object before creating a <strong>RemoteBulkWriter</strong>.</p>
 <div class="multipleCode">
- <a href="#python">Python 
- </a> <a href="#java"> Java</a>
+  <a href="#python">Python</a>
+  <a href="#java">Java</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus.bulk_writer <span class="hljs-keyword">import</span> RemoteBulkWriter
 <span class="hljs-comment"># Use `from pymilvus import RemoteBulkWriter` </span>
@@ -397,10 +399,10 @@ writer = RemoteBulkWriter(
     <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RemoteBulkWriter</span>(bulkWriterParam);
 }
 <button class="copy-code-btn"></button></code></pre>
-<p>연결 매개변수가 준비되면 다음과 같이 <strong>RemoteBulkWriter에서</strong> 이를 참조할 수 있습니다:</p>
+<p>Once the connection parameters are ready, you can reference it in the <strong>RemoteBulkWriter</strong> as follows:</p>
 <div class="multipleCode">
- <a href="#python">Python 
- </a> <a href="#java"> Java</a>
+  <a href="#python">Python</a>
+  <a href="#java">Java</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus.bulk_writer <span class="hljs-keyword">import</span> BulkFileType
 <span class="hljs-comment"># Use `from pymilvus import BulkFileType` </span>
@@ -427,12 +429,12 @@ writer = RemoteBulkWriter(
 <span class="hljs-type">RemoteBulkWriter</span> <span class="hljs-variable">remoteBulkWriter</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RemoteBulkWriter</span>(remoteBulkWriterParam);
 <button class="copy-code-btn"></button></code></pre>
 <div class="language-python">
-<p><strong>RemoteBulkWriter</strong> 생성 매개변수는 <code translate="no">connect_param</code> 를 제외하고는 <strong>LocalBulkWriter의</strong> 매개변수와 거의 동일합니다. 매개변수 설정에 대한 자세한 내용은 SDK 참조 문서의 <a href="https://milvus.io/api-reference/pymilvus/v2.4.x/DataImport/RemoteBulkWriter/RemoteBulkWriter.md">RemoteBulkWriter</a> 및 <a href="https://milvus.io/api-reference/pymilvus/v2.4.x/DataImport/RemoteBulkWriter/S3ConnectParam.md">ConnectParam을</a> 참조하십시오.</p>
+<p>The parameters for creating a <strong>RemoteBulkWriter</strong> are barely the same as those for a <strong>LocalBulkWriter</strong>, except <code translate="no">connect_param</code>. For details on parameter settings, refer to <a href="https://milvus.io/api-reference/pymilvus/v2.4.x/DataImport/RemoteBulkWriter/RemoteBulkWriter.md">RemoteBulkWriter</a> and <a href="https://milvus.io/api-reference/pymilvus/v2.4.x/DataImport/RemoteBulkWriter/S3ConnectParam.md">ConnectParam</a> in the SDK reference.</p>
 </div>
 <div class="language-java">
-<p><strong>RemoteBulkWriter</strong> 생성 매개변수는 <code translate="no">StorageConnectParam</code> 을 제외하고는 <strong>LocalBulkWriter의</strong> 매개변수와 거의 동일합니다. 매개변수 설정에 대한 자세한 내용은 SDK 참조 문서의 RemoteBulkWriter 및 StorageConnectParam을 참조하십시오.</p>
+<p>The parameters for creating a <strong>RemoteBulkWriter</strong> are barely the same as those for a <strong>LocalBulkWriter</strong>, except <code translate="no">StorageConnectParam</code>. For details on parameter settings, refer to RemoteBulkWriter and StorageConnectParam in the SDK reference.</p>
 </div>
-<h2 id="Start-writing" class="common-anchor-header">쓰기 시작<button data-href="#Start-writing" class="anchor-icon" translate="no">
+<h2 id="Start-writing" class="common-anchor-header">Start writing<button data-href="#Start-writing" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -448,15 +450,15 @@ writer = RemoteBulkWriter(
         ></path>
       </svg>
     </button></h2><div class="language-python">
-<p><strong>BulkWriter에는</strong> 두 가지 메서드가 있습니다. ` <code translate="no">append_row()</code> `는 소스 데이터셋에서 행을 추가하고, ` <code translate="no">commit()</code> `는 추가된 행을 로컬 파일이나 원격 버킷에 커밋합니다.</p>
+<p>A <strong>BulkWriter</strong> has two methods: <code translate="no">append_row()</code> adds a row from a source dataset, and <code translate="no">commit()</code> commits added rows to a local file or a remote bucket.</p>
 </div>
 <div class="language-java">
-<p><strong>BulkWriter에는</strong> 두 가지 메서드가 있습니다. <code translate="no">appendRow()</code> 는 소스 데이터 세트에서 행을 추가하고, <code translate="no">commit()</code> 는 추가된 행을 로컬 파일이나 원격 버킷에 커밋합니다.</p>
+<p>A <strong>BulkWriter</strong> has two methods: <code translate="no">appendRow()</code> adds a row from a source dataset, and <code translate="no">commit()</code> commits added rows to a local file or a remote bucket.</p>
 </div>
-<p>시연을 위해 다음 코드는 무작위로 생성된 데이터를 끝에 추가합니다.</p>
+<p>For demonstration purposes, the following code appends randomly generated data.</p>
 <div class="multipleCode">
- <a href="#python">Python 
- </a> <a href="#java"> Java</a>
+  <a href="#python">Python</a>
+  <a href="#java">Java</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> random, string, json
 <span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
@@ -654,7 +656,7 @@ writer = RemoteBulkWriter(
     List&lt;List&lt;String&gt;&gt; batchFiles = uploadData();
 }
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Verify-the-results" class="common-anchor-header">결과 확인<button data-href="#Verify-the-results" class="anchor-icon" translate="no">
+<h2 id="Verify-the-results" class="common-anchor-header">Verify the results<button data-href="#Verify-the-results" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -670,14 +672,14 @@ writer = RemoteBulkWriter(
         ></path>
       </svg>
     </button></h2><div class="language-python">
-<p>결과를 확인하려면 라이터의 <code translate="no">batch_files</code> 속성을 출력하여 실제 출력 경로를 확인할 수 있습니다.</p>
+<p>To check the results, you can get the actual output path by printing the <code translate="no">batch_files</code> property of the writer.</p>
 </div>
 <div class="language-java">
-<p>결과를 확인하려면 라이터의 <code translate="no">getBatchFiles()</code> 메서드를 출력하여 실제 출력 경로를 확인할 수 있습니다.</p>
+<p>To check the results, you can get the actual output path by printing the <code translate="no">getBatchFiles()</code> method of the writer.</p>
 </div>
 <div class="multipleCode">
- <a href="#python">Python 
- </a> <a href="#java"> Java</a>
+  <a href="#python">Python</a>
+  <a href="#java">Java</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">print</span>(writer.batch_files)
 
@@ -698,8 +700,8 @@ remoteBulkWriter.getBatchFiles();
     e.printStackTrace();
 }
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>BulkWriter는</strong> UUID를 생성하고, 제공된 출력 디렉터리 내에서 해당 UUID를 사용하여 하위 폴더를 생성한 뒤, 생성된 모든 파일을 해당 하위 폴더에 저장합니다. 준비된 샘플 데이터를 다운로드하려면 <a href="https://assets.zilliz.com/bulk_writer.zip">여기를 클릭하십시오</a>.</p>
-<p>가능한 폴더 구조는 다음과 같습니다:</p>
+<p><strong>BulkWriter</strong> generates a UUID, creates a sub-folder using the UUID in the provided output directory, and places all generated files in the sub-folder. <a href="https://assets.zilliz.com/bulk_writer.zip">Click here</a> to download the prepared sample data.</p>
+<p>Possible folder structures are as follows:</p>
 <pre><code translate="no"><span class="hljs-comment"># JSON</span>
 ├── folder
 │   └── 45ae1139-1d87-4aff-85f5-0039111f9e6b

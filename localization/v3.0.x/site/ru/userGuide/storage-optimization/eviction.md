@@ -2,10 +2,9 @@
 id: eviction.md
 title: EvictionCompatible with Milvus 2.6.4+
 summary: >-
-  Функция Eviction управляет ресурсами кэша каждого узла QueryNode в Milvus.
-  Если эта функция включена, она автоматически удаляет кэшированные данные при
-  достижении пороговых значений ресурсов, обеспечивая стабильную
-  производительность и предотвращая истощение памяти или диска.
+  Eviction manages the cache resources of each QueryNode in Milvus. When
+  enabled, it automatically removes cached data once resource thresholds are
+  reached, ensuring stable performance and preventing memory or disk exhaustion.
 beta: Milvus 2.6.4+
 ---
 <h1 id="Eviction" class="common-anchor-header">Eviction<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.4+</span><button data-href="#Eviction" class="anchor-icon" translate="no">
@@ -23,12 +22,12 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Функция Eviction управляет ресурсами кэша каждого узла QueryNode в Milvus. Если эта функция включена, она автоматически удаляет кэшированные данные при достижении пороговых значений ресурсов, обеспечивая стабильную производительность и предотвращая истощение памяти или диска.</p>
-<p>При вытеснении используется политика <a href="https://en.wikipedia.org/wiki/Cache_replacement_policies">наименьшего использования (LRU)</a> для освобождения места в кэше. Метаданные всегда кэшируются и никогда не вытесняются, поскольку они важны для планирования запросов и обычно невелики.</p>
+    </button></h1><p>Eviction manages the cache resources of each QueryNode in Milvus. When enabled, it automatically removes cached data once resource thresholds are reached, ensuring stable performance and preventing memory or disk exhaustion.</p>
+<p>Eviction uses a <a href="https://en.wikipedia.org/wiki/Cache_replacement_policies">Least Recently Used (LRU)</a> policy to reclaim cache space. Metadata is always cached and never evicted, as it is essential for query planning and typically small.</p>
 <div class="alert note">
-<p>Вытеснение должно быть явно включено. Без настройки кэшированные данные будут накапливаться до тех пор, пока ресурсы не будут исчерпаны.</p>
+<p>Eviction must be explicitly enabled. Without configuration, cached data will continue to accumulate until resources are depleted.</p>
 </div>
-<h2 id="Eviction-types" class="common-anchor-header">Типы выселения<button data-href="#Eviction-types" class="anchor-icon" translate="no">
+<h2 id="Eviction-types" class="common-anchor-header">Eviction types<button data-href="#Eviction-types" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -43,48 +42,48 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus поддерживает два взаимодополняющих режима выселения<strong>(sync</strong> и <strong>async</strong>), которые работают вместе для оптимального управления ресурсами:</p>
+    </button></h2><p>Milvus supports two complementary eviction modes (<strong>sync</strong> and <strong>async</strong>) that work together for optimal resource management:</p>
 <table>
    <tr>
-     <th><p>Аспект</p></th>
+     <th><p>Aspect</p></th>
      <th><p>Sync Eviction</p></th>
-     <th><p>Асинхронное выселение</p></th>
+     <th><p>Async Eviction</p></th>
    </tr>
    <tr>
-     <td><p>Триггер</p></td>
-     <td><p>Возникает во время запроса или поиска, когда использование памяти или диска превышает внутренние лимиты.</p></td>
-     <td><p>Срабатывает в фоновом потоке, когда использование превышает верхний предел или когда кэшированные данные достигают своего времени жизни (TTL).</p></td>
+     <td><p>Trigger</p></td>
+     <td><p>Occurs during query or search when memory or disk usage exceeds internal limits.</p></td>
+     <td><p>Triggered by a background thread when usage exceeds the high watermark or when cached data reaches its time-to-live (TTL).</p></td>
    </tr>
    <tr>
-     <td><p>Поведение</p></td>
-     <td><p>Операции запроса или поиска временно приостанавливаются, пока QueryNode освобождает место в кэше. Вытеснение продолжается до тех пор, пока использование не опустится ниже нижнего предела или не наступит тайм-аут. Если таймаут достигнут, а данных недостаточно, запрос или поиск может завершиться неудачей.</p></td>
-     <td><p>Периодически запускается в фоновом режиме, проактивно вытесняя кэшированные данные, когда их использование превышает высокий водяной знак или когда срок действия данных истекает на основании TTL. Вытеснение продолжается до тех пор, пока использование не упадет ниже низкого уровня. Запросы не блокируются.</p></td>
+     <td><p>Behavior</p></td>
+     <td><p>Query or search operations pause temporarily while the QueryNode reclaims cache space. Eviction continues until usage drops below the low watermark or a timeout occurs. If timeout is reached and insufficient data can be reclaimed, the query or search may fail.</p></td>
+     <td><p>Runs periodically in the background, proactively evicting cached data when usage exceeds the high watermark or when data expires based on TTL. Eviction continues until usage drops below the low watermark. Queries are not blocked.</p></td>
    </tr>
    <tr>
-     <td><p>Лучше всего подходит для</p></td>
-     <td><p>Рабочие нагрузки, которые могут выдержать кратковременные скачки задержки или временные паузы во время пикового использования. Полезно, когда асинхронное выселение не может освободить место достаточно быстро.</p></td>
-     <td><p>Рабочие нагрузки, чувствительные к задержкам, которым требуется плавная и предсказуемая производительность запросов. Идеально подходит для проактивного управления ресурсами.</p></td>
+     <td><p>Best For</p></td>
+     <td><p>Workloads that can tolerate brief latency spikes or temporary pauses during peak usage. Useful when async eviction cannot reclaim space fast enough.</p></td>
+     <td><p>Latency-sensitive workloads that require smooth and predictable query performance. Ideal for proactive resource management.</p></td>
    </tr>
    <tr>
-     <td><p>Предостережения</p></td>
-     <td><p>Может вызывать короткие задержки запросов или таймауты, если доступно недостаточно данных для выселения.</p></td>
-     <td><p>Требуется правильная настройка высоких/низких водяных знаков и параметров TTL. Небольшие накладные расходы от фонового потока.</p></td>
+     <td><p>Cautions</p></td>
+     <td><p>Can cause short query delays or timeouts if insufficient evictable data is available.</p></td>
+     <td><p>Requires properly tuned high/low watermarks and TTL settings. Slight overhead from the background thread.</p></td>
    </tr>
    <tr>
-     <td><p>Конфигурация</p></td>
-     <td><p>Включено через <code translate="no">evictionEnabled: true</code></p></td>
-     <td><p>Включается через <code translate="no">backgroundEvictionEnabled: true</code> (одновременно требуется <code translate="no">evictionEnabled: true</code> ).</p></td>
+     <td><p>Configuration</p></td>
+     <td><p>Enabled via <code translate="no">evictionEnabled: true</code></p></td>
+     <td><p>Enabled via <code translate="no">backgroundEvictionEnabled: true</code> (requires <code translate="no">evictionEnabled: true</code> at the same time)</p></td>
    </tr>
 </table>
-<p><strong>Рекомендуемая настройка</strong>:</p>
+<p><strong>Recommended setup</strong>:</p>
 <ul>
-<li><p>Для достижения оптимального баланса можно включить оба режима выселения, если рабочая нагрузка получает преимущества от многоуровневого хранения и может выдержать задержки при получении данных, связанные с выселением.</p></li>
-<li><p>Для тестирования производительности или сценариев, критичных к задержкам, рассмотрите возможность полного отключения выселения, чтобы избежать накладных расходов на получение данных по сети после выселения.</p></li>
+<li><p>Both eviction modes can be enabled together for optimal balance, provided your workload benefits from Tiered Storage and can tolerate eviction-related fetch latency.</p></li>
+<li><p>For performance testing or latency-critical scenarios, consider disabling eviction entirely to avoid network fetch overhead after eviction.</p></li>
 </ul>
 <div class="alert note">
-<p>Для вытесняемых полей и индексов единица вытеснения соответствует гранулярности загрузки - скалярные/векторные поля вытесняются по чанкам, а скалярные/векторные индексы - по сегментам.</p>
+<p>For evictable fields and indexes, the eviction unit matches the loading granularity—scalar/vector fields are evicted by chunk, and scalar/vector indexes are evicted by segment.</p>
 </div>
-<h2 id="Enable-eviction" class="common-anchor-header">Включить вытеснение<button data-href="#Enable-eviction" class="anchor-icon" translate="no">
+<h2 id="Enable-eviction" class="common-anchor-header">Enable eviction<button data-href="#Enable-eviction" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -99,7 +98,7 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Настройте вытеснение в разделе <code translate="no">queryNode.segcore.tieredStorage</code> на странице <code translate="no">milvus.yaml</code>:</p>
+    </button></h2><p>Configure eviction under <code translate="no">queryNode.segcore.tieredStorage</code> in <code translate="no">milvus.yaml</code>:</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">queryNode:</span>
   <span class="hljs-attr">segcore:</span>
     <span class="hljs-attr">tieredStorage:</span>
@@ -108,28 +107,28 @@ beta: Milvus 2.6.4+
 <button class="copy-code-btn"></button></code></pre>
 <table>
    <tr>
-     <th><p>Параметр</p></th>
-     <th><p>Тип</p></th>
-     <th><p>Значения</p></th>
-     <th><p>Описание</p></th>
-     <th><p>Рекомендуемый вариант использования</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Type</p></th>
+     <th><p>Values</p></th>
+     <th><p>Description</p></th>
+     <th><p>Recommended use case</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">evictionEnabled</code></p></td>
      <td><p>bool</p></td>
      <td><p><code translate="no">true</code>/<code translate="no">false</code></p></td>
-     <td><p>Главный переключатель для стратегии выселения. По умолчанию <code translate="no">false</code>. Включает режим синхронного выселения.</p></td>
-     <td><p>В многоуровневом хранилище всегда устанавливается значение <code translate="no">true</code>.</p></td>
+     <td><p>Master switch for eviction strategy. Defaults to <code translate="no">false</code>. Enables sync eviction mode.</p></td>
+     <td><p>Always set to <code translate="no">true</code> in Tiered Storage.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">backgroundEvictionEnabled</code></p></td>
      <td><p>bool</p></td>
      <td><p><code translate="no">true</code>/<code translate="no">false</code></p></td>
-     <td><p>Запускать выселение асинхронно в фоновом режиме. Требуется <code translate="no">evictionEnabled: true</code>. По умолчанию установлено значение <code translate="no">false</code>.</p></td>
-     <td><p>Используйте <code translate="no">true</code> для более плавной работы запросов; это уменьшает частоту синхронного выселения.</p></td>
+     <td><p>Run eviction asynchronously in the background. Requires <code translate="no">evictionEnabled: true</code>. Defaults to <code translate="no">false</code>.</p></td>
+     <td><p>Use <code translate="no">true</code> for smoother query performance; it reduces sync eviction frequency.</p></td>
    </tr>
 </table>
-<h2 id="Configure-watermarks" class="common-anchor-header">Настройка водяных знаков<button data-href="#Configure-watermarks" class="anchor-icon" translate="no">
+<h2 id="Configure-watermarks" class="common-anchor-header">Configure watermarks<button data-href="#Configure-watermarks" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -144,15 +143,15 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Водяные знаки определяют, когда начинается и заканчивается вытеснение кэша для памяти и диска. Для каждого типа ресурсов есть два пороговых значения:</p>
+    </button></h2><p>Watermarks define when cache eviction begins and ends for both memory and disk. Each resource type has two thresholds:</p>
 <ul>
-<li><p><strong>Высокий водяной знак</strong>: Выселение начинается, когда использование превышает это значение.</p></li>
-<li><p><strong>Низкий водяной знак</strong>: Вытеснение продолжается до тех пор, пока использование не упадет ниже этого значения.</p></li>
+<li><p><strong>High watermark</strong>: Eviction starts when usage exceeds this value.</p></li>
+<li><p><strong>Low watermark</strong>: Eviction continues until usage falls below this value.</p></li>
 </ul>
 <div class="alert note">
-<p>Эта конфигурация вступает в силу, только если <a href="/docs/ru/eviction.md#Enable-eviction">выселение включено</a>.</p>
+<p>This configuration takes effect only when <a href="/docs/ru/eviction.md#Enable-eviction">eviction is enabled</a>.</p>
 </div>
-<p><strong>Пример YAML</strong>:</p>
+<p><strong>Example YAML</strong>:</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">queryNode:</span>
   <span class="hljs-attr">segcore:</span>
     <span class="hljs-attr">tieredStorage:</span>
@@ -166,47 +165,47 @@ beta: Milvus 2.6.4+
 <button class="copy-code-btn"></button></code></pre>
 <table>
    <tr>
-     <th><p>Параметр</p></th>
-     <th><p>Тип</p></th>
-     <th><p>Диапазон</p></th>
-     <th><p>Описание</p></th>
-     <th><p>Рекомендуемый вариант использования</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Type</p></th>
+     <th><p>Range</p></th>
+     <th><p>Description</p></th>
+     <th><p>Recommended use case</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">memoryLowWatermarkRatio</code></p></td>
      <td><p>float</p></td>
      <td><p>(0.0, 1.0]</p></td>
-     <td><p>Уровень использования памяти, при котором выселение прекращается.</p></td>
-     <td><p>Начните с <code translate="no">0.75</code>. Немного уменьшите, если память QueryNode ограничена.</p></td>
+     <td><p>Memory usage level where eviction stops.</p></td>
+     <td><p>Start at <code translate="no">0.75</code>. Lower slightly if QueryNode memory is limited.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">memoryHighWatermarkRatio</code></p></td>
      <td><p>float</p></td>
      <td><p>(0.0, 1.0]</p></td>
-     <td><p>Уровень использования памяти, при котором начинается асинхронное выселение.</p></td>
-     <td><p>Начало на <code translate="no">0.8</code>. Сохраняйте разумный промежуток от низкого водяного знака (например, 0,05-0,10), чтобы предотвратить частые срабатывания.</p></td>
+     <td><p>Memory usage level where async eviction starts.</p></td>
+     <td><p>Start at <code translate="no">0.8</code>. Keep a sensible gap from low watermark (e.g., 0.05–0.10) to prevent frequent triggers.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">diskLowWatermarkRatio</code></p></td>
      <td><p>float</p></td>
      <td><p>(0.0, 1.0]</p></td>
-     <td><p>Уровень использования диска, при котором выселение прекращается.</p></td>
-     <td><p>Начните с <code translate="no">0.75</code>. Отрегулируйте ниже, если дисковый ввод-вывод ограничен.</p></td>
+     <td><p>Disk usage level where eviction stops.</p></td>
+     <td><p>Start at <code translate="no">0.75</code>. Adjust lower if disk I/O is limited.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">diskHighWatermarkRatio</code></p></td>
      <td><p>float</p></td>
      <td><p>(0.0, 1.0]</p></td>
-     <td><p>Уровень использования диска, при котором начинается асинхронное выселение.</p></td>
-     <td><p>Начинается с <code translate="no">0.8</code>. Сохраняйте разумный промежуток от низкого уровня (например, 0,05-0,10), чтобы предотвратить частые срабатывания.</p></td>
+     <td><p>Disk usage level where async eviction starts.</p></td>
+     <td><p>Start at <code translate="no">0.8</code>. Keep a sensible gap from low watermark (e.g., 0.05–0.10) to prevent frequent triggers.</p></td>
    </tr>
 </table>
-<p><strong>Лучшие практики</strong>:</p>
+<p><strong>Best practices</strong>:</p>
 <ul>
-<li><p>Не устанавливайте высокие и низкие водяные знаки выше ~0.80, чтобы оставить запас для статического использования QueryNode и всплесков времени выполнения запросов.</p></li>
-<li><p>Избегайте больших промежутков между высокими и низкими водяными знаками; большие промежутки удлиняют каждый цикл выселения и могут увеличить задержку.</p></li>
+<li><p>Do not set high or low watermarks above ~0.80 to leave headroom for QueryNode static usage and query-time bursts.</p></li>
+<li><p>Avoid large gaps between high and low watermarks; big gaps prolong each eviction cycle and can add latency.</p></li>
 </ul>
-<h2 id="Configure-cache-TTL" class="common-anchor-header">Настройка TTL кэша<button data-href="#Configure-cache-TTL" class="anchor-icon" translate="no">
+<h2 id="Configure-cache-TTL" class="common-anchor-header">Configure cache TTL<button data-href="#Configure-cache-TTL" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -221,11 +220,11 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Функция<strong>Time-to-Live (TTL)</strong> автоматически удаляет кэшированные данные по истечении заданного времени, даже если пороговые значения ресурсов не достигнуты. Она работает вместе с LRU-вытеснением, чтобы предотвратить неограниченное занятие кэша устаревшими данными.</p>
+    </button></h2><p><strong>Cache Time-to-Live (TTL)</strong> automatically removes cached data after a set duration, even if resource thresholds are not reached. It works alongside LRU eviction to prevent stale data from occupying cache indefinitely.</p>
 <div class="alert note">
-<p>Для работы Cache TTL требуется <code translate="no">backgroundEvictionEnabled: true</code>, так как она выполняется в одном фоновом потоке.</p>
+<p>Cache TTL requires <code translate="no">backgroundEvictionEnabled: true</code>, as it runs on the same background thread.</p>
 </div>
-<p><strong>Пример YAML</strong>:</p>
+<p><strong>Example YAML</strong>:</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">queryNode:</span>
   <span class="hljs-attr">segcore:</span>
     <span class="hljs-attr">tieredStorage:</span>
@@ -237,17 +236,17 @@ beta: Milvus 2.6.4+
 <button class="copy-code-btn"></button></code></pre>
 <table>
    <tr>
-     <th><p>Параметр</p></th>
-     <th><p>Тип</p></th>
-     <th><p>Единица измерения</p></th>
-     <th><p>Описание</p></th>
-     <th><p>Рекомендуемый вариант использования</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Type</p></th>
+     <th><p>Unit</p></th>
+     <th><p>Description</p></th>
+     <th><p>Recommended use case</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">cacheTtl</code></p></td>
-     <td><p>целое число</p></td>
-     <td><p>секунды</p></td>
-     <td><p>Длительность до истечения срока действия кэшированных данных. Просроченные элементы удаляются в фоновом режиме.</p></td>
-     <td><p>Используйте короткий TTL (часы) для высокодинамичных данных; используйте длинный TTL (дни) для стабильных наборов данных. Установите 0, чтобы отключить истечение срока действия на основе времени.</p></td>
+     <td><p>integer</p></td>
+     <td><p>seconds</p></td>
+     <td><p>Duration before cached data expires. Expired items are removed in the background.</p></td>
+     <td><p>Use a short TTL (hours) for highly dynamic data; use a long TTL (days) for stable datasets. Set 0 to disable time-based expiration.</p></td>
    </tr>
 </table>

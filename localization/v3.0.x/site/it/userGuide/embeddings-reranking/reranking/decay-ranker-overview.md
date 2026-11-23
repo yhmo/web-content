@@ -1,15 +1,14 @@
 ---
 id: decay-ranker-overview.md
-title: Panoramica su Decay RankerCompatible with Milvus 2.6.x
+title: Decay Ranker OverviewCompatible with Milvus 2.6.x
 summary: >-
-  Nella ricerca vettoriale tradizionale, i risultati vengono ordinati
-  esclusivamente in base alla somiglianza vettoriale, ovvero al grado di
-  corrispondenza tra i vettori nello spazio matematico. Tuttavia, nelle
-  applicazioni del mondo reale, ciò che rende un contenuto veramente rilevante
-  spesso non dipende solo dalla somiglianza semantica.
+  In traditional vector search, results are ranked purely by vector
+  similarity—how closely vectors match in mathematical space. But in real-world
+  applications, what makes content truly relevant often depends on more than
+  just semantic similarity.
 beta: Milvus 2.6.x
 ---
-<h1 id="Decay-Ranker-Overview" class="common-anchor-header">Panoramica su Decay Ranker<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#Decay-Ranker-Overview" class="anchor-icon" translate="no">
+<h1 id="Decay-Ranker-Overview" class="common-anchor-header">Decay Ranker Overview<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#Decay-Ranker-Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -24,16 +23,16 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Nella ricerca vettoriale tradizionale, i risultati vengono classificati esclusivamente in base alla somiglianza vettoriale, ovvero al grado di corrispondenza tra i vettori nello spazio matematico. Tuttavia, nelle applicazioni del mondo reale, ciò che rende un contenuto veramente rilevante spesso dipende da fattori che vanno oltre la semplice somiglianza semantica.</p>
-<p>Si considerino questi scenari quotidiani:</p>
+    </button></h1><p>In traditional vector search, results are ranked purely by vector similarity—how closely vectors match in mathematical space. But in real-world applications, what makes content truly relevant often depends on more than just semantic similarity.</p>
+<p>Consider these everyday scenarios:</p>
 <ul>
-<li><p>Una ricerca di notizie in cui l’articolo di ieri dovrebbe apparire prima di un articolo simile pubblicato tre anni fa</p></li>
-<li><p>Un servizio di ricerca ristoranti che dà la priorità ai locali a 5 minuti di distanza rispetto a quelli che richiedono 30 minuti di auto</p></li>
-<li><p>Una piattaforma di e-commerce che mette in evidenza i prodotti di tendenza anche quando sono leggermente meno simili alla query di ricerca</p></li>
+<li><p>A news search where yesterday’s article should rank higher than a similar article from three years ago</p></li>
+<li><p>A restaurant finder that prioritizes venues 5 minutes away over those requiring a 30-minute drive</p></li>
+<li><p>An e-commerce platform that boosts trending products even when they’re slightly less similar to the search query</p></li>
 </ul>
-<p>Questi scenari condividono tutti un’esigenza comune: bilanciare la somiglianza vettoriale con altri fattori numerici come il tempo, la distanza o la popolarità.</p>
-<p>I "decay ranker" di Milvus rispondono a questa esigenza regolando i risultati di ricerca in base ai valori dei campi numerici. Consentono di bilanciare la somiglianza vettoriale con la "freschezza", la "vicinanza" o altre proprietà numeriche dei dati, creando esperienze di ricerca più intuitive e contestualmente rilevanti.</p>
-<h2 id="Usage-notes" class="common-anchor-header">Note sull’utilizzo<button data-href="#Usage-notes" class="anchor-icon" translate="no">
+<p>These scenarios all share a common need: balancing vector similarity with other numeric factors like time, distance, or popularity.</p>
+<p>Decay rankers in Milvus address this need by adjusting search rankings based on numeric field values. They allow you to balance vector similarity with “freshness,” “nearness,” or other numeric properties of your data, creating more intuitive and contextually relevant search experiences.</p>
+<h2 id="Usage-notes" class="common-anchor-header">Usage notes<button data-href="#Usage-notes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -49,17 +48,17 @@ beta: Milvus 2.6.x
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>Il ranking a decadimento non può essere utilizzato con le ricerche raggruppate.</p></li>
-<li><p>Il campo utilizzato per il ranking a decadimento deve essere numerico (<code translate="no">INT8</code>, <code translate="no">INT16</code>, <code translate="no">INT32</code>, <code translate="no">INT64</code>, <code translate="no">FLOAT</code> o <code translate="no">DOUBLE</code>).</p></li>
-<li><p>Ogni sistema di classificazione basato sul decadimento può utilizzare un solo campo numerico.</p></li>
-<li><p><strong>Coerenza delle unità di misura temporali</strong>: quando si utilizza la classificazione in base al decadimento temporale, le unità dei parametri <code translate="no">origin</code>, <code translate="no">scale</code> e <code translate="no">offset</code> devono corrispondere alle unità utilizzate nei dati della propria raccolta:</p>
+<li><p>Decay ranking cannot be used with grouping searches.</p></li>
+<li><p>The field used for decay ranking must be numeric (<code translate="no">INT8</code>, <code translate="no">INT16</code>, <code translate="no">INT32</code>, <code translate="no">INT64</code>, <code translate="no">FLOAT</code>, or <code translate="no">DOUBLE</code>).</p></li>
+<li><p>Each decay ranker can only use one numeric field.</p></li>
+<li><p><strong>Time unit consistency</strong>: When using time-based decay ranking, the units for <code translate="no">origin</code>, <code translate="no">scale</code>, and <code translate="no">offset</code> parameters must match the units used in your collection data:</p>
 <ul>
-<li><p>Se la collezione memorizza i timestamp in <strong>secondi</strong>, utilizzare i secondi per tutti i parametri</p></li>
-<li><p>Se la raccolta memorizza i timestamp in <strong>millisecondi</strong>, utilizzare i millisecondi per tutti i parametri</p></li>
-<li><p>Se la raccolta memorizza i timestamp in <strong>microsecondi</strong>, utilizzare i microsecondi per tutti i parametri</p></li>
+<li><p>If your collection stores timestamps in <strong>seconds</strong>, use seconds for all parameters</p></li>
+<li><p>If your collection stores timestamps in <strong>milliseconds</strong>, use milliseconds for all parameters</p></li>
+<li><p>If your collection stores timestamps in <strong>microseconds</strong>, use microseconds for all parameters</p></li>
 </ul></li>
 </ul>
-<h2 id="How-it-works" class="common-anchor-header">Come funziona<button data-href="#How-it-works" class="anchor-icon" translate="no">
+<h2 id="How-it-works" class="common-anchor-header">How it works<button data-href="#How-it-works" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -74,8 +73,8 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Il ranking a decadimento migliora la ricerca vettoriale tradizionale incorporando fattori numerici come il tempo o la distanza geografica nel processo di classificazione. L’intero processo segue queste fasi:</p>
-<h3 id="Stage-1-Calculate-normalized-similarity-scores" class="common-anchor-header">Fase 1: Calcolo dei punteggi di similarità normalizzati<button data-href="#Stage-1-Calculate-normalized-similarity-scores" class="anchor-icon" translate="no">
+    </button></h2><p>Decay ranking enhances traditional vector search by incorporating numeric factors like time or geo distance into the ranking process. The entire process follows these stages:</p>
+<h3 id="Stage-1-Calculate-normalized-similarity-scores" class="common-anchor-header">Stage 1: Calculate normalized similarity scores<button data-href="#Stage-1-Calculate-normalized-similarity-scores" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -90,15 +89,15 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>In primo luogo, Milvus calcola e normalizza i punteggi di similarità vettoriale per garantire un confronto coerente:</p>
+    </button></h3><p>First, Milvus calculates and normalizes vector similarity scores to ensure consistent comparison:</p>
 <ul>
-<li><p>Per le metriche di distanza <strong>L2</strong> e <strong>JACCARD</strong> (in cui valori più bassi indicano una maggiore somiglianza):</p>
+<li><p>For <strong>L2</strong> and <strong>JACCARD</strong> distance metrics (where lower values indicate higher similarity):</p>
 <pre><code translate="no" class="language-plaintext">normalized_score = 1.0 - (2 × arctan(score))/π
 <button class="copy-code-btn"></button></code></pre>
-<p>Questo trasforma le distanze in punteggi di similarità compresi tra 0 e 1, dove un valore più alto indica una maggiore similarità.</p></li>
-<li><p>Per le metriche <strong>IP</strong>, <strong>COSINE</strong> e <strong>BM25</strong> (in cui punteggi più alti indicano già corrispondenze migliori): i punteggi vengono utilizzati direttamente senza normalizzazione.</p></li>
+<p>This transforms distances into similarity scores between 0-1, where higher is better.</p></li>
+<li><p>For <strong>IP</strong>, <strong>COSINE</strong>, and <strong>BM25</strong> metrics (where higher scores already indicate better matches): Scores are used directly without normalization.</p></li>
 </ul>
-<h3 id="Stage-2-Calculate-decay-scores" class="common-anchor-header">Fase 2: Calcolo dei punteggi di decadimento<button data-href="#Stage-2-Calculate-decay-scores" class="anchor-icon" translate="no">
+<h3 id="Stage-2-Calculate-decay-scores" class="common-anchor-header">Stage 2: Calculate decay scores<button data-href="#Stage-2-Calculate-decay-scores" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -113,13 +112,13 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Successivamente, Milvus calcola un punteggio di decadimento basato sul valore numerico del campo (come il timestamp o la distanza) utilizzando il sistema di classificazione a decadimento selezionato:</p>
+    </button></h3><p>Next, Milvus calculates a decay score based on the numeric field value (like timestamp or distance) using your selected decay ranker:</p>
 <ul>
-<li><p>Ogni sistema di classificazione di decadimento trasforma i valori numerici grezzi in punteggi di rilevanza normalizzati compresi tra 0 e 1</p></li>
-<li><p>Il punteggio di decadimento rappresenta la rilevanza di un elemento in base alla sua “distanza” dal punto ideale</p></li>
+<li><p>Each decay ranker transforms raw numeric values into normalized relevance scores between 0-1</p></li>
+<li><p>The decay score represents how relevant an item is based on its “distance” from the ideal point</p></li>
 </ul>
-<p>La formula di calcolo specifica varia a seconda del tipo di sistema di classificazione a decadimento. Per i dettagli su come calcolare un punteggio di decadimento, consultare le pagine dedicate al <a href="/docs/it/gaussian-decay.md#Formula">decadimento gaussiano</a>, <a href="/docs/it/exponential-decay.md#Formula">al decadimento esponenziale</a> e <a href="/docs/it/linear-decay.md#Formula">al decadimento lineare</a>.</p>
-<h3 id="Stage-3-Compute-final-scores" class="common-anchor-header">Fase 3: Calcolo dei punteggi finali<button data-href="#Stage-3-Compute-final-scores" class="anchor-icon" translate="no">
+<p>The specific calculation formula varies depending on the decay ranker type. For details on how to calculate a decay score, refer to the dedicated pages for <a href="/docs/it/gaussian-decay.md#Formula">Gaussian Decay</a>, <a href="/docs/it/exponential-decay.md#Formula">Exponential Decay</a>, <a href="/docs/it/linear-decay.md#Formula">Linear Decay</a>.</p>
+<h3 id="Stage-3-Compute-final-scores" class="common-anchor-header">Stage 3: Compute final scores<button data-href="#Stage-3-Compute-final-scores" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -134,14 +133,14 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Infine, Milvus combina il punteggio di similarità normalizzato e il punteggio di decadimento per produrre il punteggio di classificazione finale:</p>
+    </button></h3><p>Finally, Milvus combines the normalized similarity score and decay score to produce the final ranking score:</p>
 <pre><code translate="no" class="language-plaintext">final_score = normalized_similarity_score × decay_score
 <button class="copy-code-btn"></button></code></pre>
-<p>Nei casi di ricerca ibrida (che combina più campi vettoriali), Milvus prende il punteggio di similarità normalizzato massimo tra le richieste di ricerca:</p>
+<p>In cases of hybrid search (combining multiple vector fields), Milvus takes the maximum normalized similarity score among search requests:</p>
 <pre><code translate="no" class="language-plaintext">final_score = max([normalized_score₁, normalized_score₂, ..., normalized_scoreₙ]) × decay_score
 <button class="copy-code-btn"></button></code></pre>
-<p>Ad esempio, se in una ricerca ibrida un articolo di ricerca ottiene un punteggio di 0,82 dalla somiglianza vettoriale e di 0,91 dal recupero testuale basato su BM25, Milvus utilizza 0,91 come punteggio di somiglianza di base prima di applicare il fattore di decadimento.</p>
-<h3 id="Decay-ranking-in-action" class="common-anchor-header">Il ranking con decadimento in azione<button data-href="#Decay-ranking-in-action" class="anchor-icon" translate="no">
+<p>For example, if a research paper scores 0.82 from vector similarity and 0.91 from BM25-based text retrieval in a hybrid search, Milvus uses 0.91 as the base similarity score before applying the decay factor.</p>
+<h3 id="Decay-ranking-in-action" class="common-anchor-header">Decay ranking in action<button data-href="#Decay-ranking-in-action" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -156,64 +155,64 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Vediamo come funziona il ranking con decadimento in uno scenario pratico: la ricerca di <strong>“articoli di ricerca sull’IA”</strong> con decadimento basato sul tempo:</p>
+    </button></h3><p>Let’s see decay ranking in a practical scenario—searching for <strong>“AI research papers”</strong> with time-based decay:</p>
 <div class="alert note">
-<p>In questo esempio, i punteggi di decadimento riflettono come la rilevanza diminuisca con il tempo: gli articoli più recenti ricevono punteggi più vicini a 1,0, mentre quelli più vecchi ricevono punteggi inferiori. Questi valori vengono calcolati utilizzando uno specifico sistema di classificazione a decadimento. Per i dettagli, consultare la sezione <a href="/docs/it/decay-ranker-overview.md#Choose-the-right-decay-ranker">“Scegliere il giusto sistema di classificazione a decadimento</a>”.</p>
+<p>In this example, decay scores reflect how relevance diminishes with time—newer papers receive scores closer to 1.0, older papers receive lower scores. These values are calculated using a specific decay ranker. For details, refer to <a href="/docs/it/decay-ranker-overview.md#Choose-the-right-decay-ranker">Choose the right decay ranker</a>.</p>
 </div>
 <table>
    <tr>
-     <th><p>Articolo</p></th>
-     <th><p>Vettore di similarità</p></th>
-     <th><p>Punteggio di somiglianza normalizzato</p></th>
-     <th><p>Data di pubblicazione</p></th>
-     <th><p>Punteggio di decadimento</p></th>
-     <th><p>Punteggio finale</p></th>
-     <th><p>Posizione finale</p></th>
+     <th><p>Paper</p></th>
+     <th><p>Vector Similarity</p></th>
+     <th><p>Normalized Similarity Score</p></th>
+     <th><p>Publication Date</p></th>
+     <th><p>Decay Score</p></th>
+     <th><p>Final Score</p></th>
+     <th><p>Final Rank</p></th>
    </tr>
    <tr>
-     <td><p>Articolo A</p></td>
-     <td><p>Alto</p></td>
-     <td><p>0,85 (<code translate="no">COSINE</code>)</p></td>
-     <td><p>2 settimane fa</p></td>
-     <td><p>0,80</p></td>
-     <td><p>0,68</p></td>
+     <td><p>Paper A</p></td>
+     <td><p>High</p></td>
+     <td><p>0.85 (<code translate="no">COSINE</code>)</p></td>
+     <td><p>2 weeks ago</p></td>
+     <td><p>0.80</p></td>
+     <td><p>0.68</p></td>
      <td>2</td>
    </tr>
    <tr>
-     <td><p>Prova B</p></td>
-     <td><p>Molto alto</p></td>
-     <td><p>0,92 (<code translate="no">COSINE</code>)</p></td>
-     <td><p>6 mesi fa</p></td>
-     <td><p>0,45</p></td>
-     <td><p>0,41</p></td>
+     <td><p>Paper B</p></td>
+     <td><p>Very High</p></td>
+     <td><p>0.92 (<code translate="no">COSINE</code>)</p></td>
+     <td><p>6 months ago</p></td>
+     <td><p>0.45</p></td>
+     <td><p>0.41</p></td>
      <td>4</td>
    </tr>
    <tr>
-     <td><p>Documento C</p></td>
-     <td><p>Medio</p></td>
-     <td><p>0,75 (<code translate="no">COSINE</code>)</p></td>
-     <td><p>1 giorno fa</p></td>
-     <td><p>0,98</p></td>
-     <td><p>0,74</p></td>
+     <td><p>Paper C</p></td>
+     <td><p>Medium</p></td>
+     <td><p>0.75 (<code translate="no">COSINE</code>)</p></td>
+     <td><p>1 day ago</p></td>
+     <td><p>0.98</p></td>
+     <td><p>0.74</p></td>
      <td>1</td>
    </tr>
    <tr>
-     <td><p>Documento D</p></td>
-     <td><p>Medio-alto</p></td>
-     <td><p>0,76 (<code translate="no">COSINE</code>)</p></td>
-     <td><p>3 settimane fa</p></td>
-     <td><p>0,70</p></td>
-     <td><p>0,53</p></td>
+     <td><p>Paper D</p></td>
+     <td><p>Medium-High</p></td>
+     <td><p>0.76 (<code translate="no">COSINE</code>)</p></td>
+     <td><p>3 weeks ago</p></td>
+     <td><p>0.70</p></td>
+     <td><p>0.53</p></td>
      <td>3</td>
    </tr>
 </table>
-<p>Senza il riordino per decadimento, l’articolo B si classificherebbe al primo posto in base alla sola somiglianza vettoriale (0,92). Tuttavia, applicando il riordino per decadimento:</p>
+<p>Without decay reranking, Paper B would rank highest based on pure vector similarity (0.92). However, with decay reranking applied:</p>
 <ul>
-<li><p>l'articolo C balza al primo posto nonostante la somiglianza media, poiché è molto recente (pubblicato ieri)</p></li>
-<li><p>L'articolo B scende al quarto posto nonostante l'eccellente somiglianza, poiché è relativamente vecchio</p></li>
-<li><p>L’articolo D utilizza la similarità COSINE, quindi il suo punteggio di 0,76 viene utilizzato direttamente prima di applicare il decadimento</p></li>
+<li><p>Paper C jumps to position #1 despite medium similarity because it’s very recent (published yesterday)</p></li>
+<li><p>Paper B drops to position #4 despite excellent similarity because it’s relatively old</p></li>
+<li><p>Paper D uses COSINE similarity, so its score of 0.76 is used directly before applying decay</p></li>
 </ul>
-<h2 id="Choose-the-right-decay-ranker" class="common-anchor-header">Scegli il giusto sistema di riclassificazione con decadimento<button data-href="#Choose-the-right-decay-ranker" class="anchor-icon" translate="no">
+<h2 id="Choose-the-right-decay-ranker" class="common-anchor-header">Choose the right decay ranker<button data-href="#Choose-the-right-decay-ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -228,40 +227,40 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus offre diversi sistemi di riclassificazione con decadimento: <code translate="no">gauss</code>, <code translate="no">exp</code>, <code translate="no">linear</code>, ciascuno progettato per casi d’uso specifici:</p>
+    </button></h2><p>Milvus offers distinct decay rankers - <code translate="no">gauss</code>, <code translate="no">exp</code>, <code translate="no">linear</code>, each designed for specific use cases:</p>
 <table>
    <tr>
-     <th><p>Ranker di decadimento</p></th>
-     <th><p>Caratteristiche</p></th>
-     <th><p>Casi d’uso ideali</p></th>
-     <th><p>Scenario di esempio</p></th>
+     <th><p>Decay Ranker</p></th>
+     <th><p>Characteristics</p></th>
+     <th><p>Ideal Use Cases</p></th>
+     <th><p>Example Scenario</p></th>
    </tr>
    <tr>
-     <td><p>Gaussiano (<code translate="no">gauss</code>)</p></td>
-     <td><p>Declino graduale e naturale che si estende moderatamente</p></td>
-     <td><ul><li><p>Ricerche generiche che richiedono risultati equilibrati</p></li><li><p>Applicazioni in cui gli utenti hanno una percezione intuitiva della distanza</p></li><li><p>Quando una distanza moderata non dovrebbe penalizzare eccessivamente i risultati</p></li></ul></td>
-     <td><p>In una ricerca di ristoranti, i locali di qualità situati a 3 km di distanza rimangono individuabili, sebbene siano classificati più in basso rispetto alle opzioni vicine</p></td>
+     <td><p>Gaussian (<code translate="no">gauss</code>)</p></td>
+     <td><p>Natural-feeling gradual decline that extends moderately</p></td>
+     <td><ul><li><p>General searches requiring balanced results</p></li><li><p>Applications where users have an intuitive sense of distance</p></li><li><p>When moderate distance shouldn't severely penalize results</p></li></ul></td>
+     <td><p>In a restaurant search, quality venues 3 km away remain discoverable, though ranked lower than nearby options</p></td>
    </tr>
    <tr>
-     <td><p>Esponenziale (<code translate="no">exp</code>)</p></td>
-     <td><p>Diminuisce rapidamente all’inizio ma mantiene una coda lunga</p></td>
-     <td><ul><li><p>Feed di notizie in cui l’attualità è fondamentale</p></li><li><p>Social media in cui i contenuti recenti dovrebbero prevalere</p></li><li><p>Quando la vicinanza è fortemente preferita, ma gli elementi distanti eccezionali dovrebbero rimanere visibili</p></li></ul></td>
-     <td><p>In un’app di notizie, le notizie di ieri hanno un posizionamento molto più alto rispetto ai contenuti di una settimana fa, ma gli articoli più vecchi altamente rilevanti possono comunque apparire</p></td>
+     <td><p>Exponential (<code translate="no">exp</code>)</p></td>
+     <td><p>Rapidly decreases at first but maintains a long tail</p></td>
+     <td><ul><li><p>News feeds where recency is critical</p></li><li><p>Social media where fresh content should dominate</p></li><li><p>When proximity is strongly preferred but exceptional distant items should remain visible</p></li></ul></td>
+     <td><p>In a news app, yesterday's stories rank much higher than week-old content, but highly relevant older articles can still appear</p></td>
    </tr>
    <tr>
-     <td><p>Lineare (<code translate="no">linear</code>)</p></td>
-     <td><p>Declino costante e prevedibile con un limite netto</p></td>
-     <td><ul><li><p>Applicazioni con limiti naturali</p></li><li><p>Servizi con limiti di distanza</p></li><li><p>Contenuti con date di scadenza o soglie ben definite</p></li></ul></td>
-     <td><p>In un motore di ricerca di eventi, gli eventi che si svolgono oltre una finestra temporale di due settimane nel futuro semplicemente non vengono visualizzati affatto</p></td>
+     <td><p>Linear (<code translate="no">linear</code>)</p></td>
+     <td><p>Consistent, predictable decline with a clear cutoff</p></td>
+     <td><ul><li><p>Applications with natural boundaries</p></li><li><p>Services with distance limits</p></li><li><p>Content with expiration dates or clear thresholds</p></li></ul></td>
+     <td><p>In an event finder, events beyond a two-week future window simply don't appear at all</p></td>
    </tr>
 </table>
-<p>Per informazioni dettagliate su come ciascun sistema di classificazione del decadimento calcoli i punteggi e sui modelli specifici di declino, consultare la documentazione dedicata:</p>
+<p>For detailed information about how each decay ranker calculates scores and specific decline patterns, refer to the dedicated documentation:</p>
 <ul>
-<li><p><a href="/docs/it/gaussian-decay.md">Decadimento gaussiano</a></p></li>
-<li><p><a href="/docs/it/exponential-decay.md">Decadimento esponenziale</a></p></li>
-<li><p><a href="/docs/it/linear-decay.md">Decadimento lineare</a></p></li>
+<li><p><a href="/docs/it/gaussian-decay.md">Gaussian Decay</a></p></li>
+<li><p><a href="/docs/it/exponential-decay.md">Exponential Decay</a></p></li>
+<li><p><a href="/docs/it/linear-decay.md">Linear Decay</a></p></li>
 </ul>
-<h2 id="Implementation-example" class="common-anchor-header">Esempio di implementazione<button data-href="#Implementation-example" class="anchor-icon" translate="no">
+<h2 id="Implementation-example" class="common-anchor-header">Implementation example<button data-href="#Implementation-example" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -276,11 +275,11 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>I ranker di decadimento possono essere applicati sia alle operazioni di ricerca vettoriale standard che a quelle ibride in Milvus. Di seguito sono riportati i frammenti di codice chiave per l’implementazione di questa funzionalità.</p>
+    </button></h2><p>Decay rankers can be applied to both standard vector search and hybrid search operations in Milvus. Below are the key code snippets for implementing this feature.</p>
 <div class="alert note">
-<p>Prima di utilizzare le funzioni di decadimento, è necessario creare una collezione con campi numerici appropriati (come timestamp, distanze, ecc.) che verranno utilizzati per i calcoli di decadimento. Per esempi completi e funzionanti, inclusi la configurazione della collezione, la definizione dello schema e l’inserimento dei dati, consultare <a href="/docs/it/tutorial-implement-a-time-based-ranking-in-milvus.md">il Tutorial: Implementare il ranking basato sul tempo in Milvus</a>.</p>
+<p>Before using decay functions, you must first create a collection with appropriate numeric fields (like timestamps, distances, etc.) that will be used for decay calculations. For complete working examples including collection setup, schema definition, and data insertion, refer to <a href="/docs/it/tutorial-implement-a-time-based-ranking-in-milvus.md">Tutorial: Implement Time-based Ranking in Milvus</a>.</p>
 </div>
-<h3 id="Create-a-decay-ranker" class="common-anchor-header">Creazione di un ranker a decadimento<button data-href="#Create-a-decay-ranker" class="anchor-icon" translate="no">
+<h3 id="Create-a-decay-ranker" class="common-anchor-header">Create a decay ranker<button data-href="#Create-a-decay-ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -295,16 +294,16 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Per implementare il ranking con decadimento, definire innanzitutto un oggetto ` <code translate="no">Function</code> ` con la configurazione appropriata:</p>
+    </button></h3><p>To implement decay ranking, first define a <code translate="no">Function</code> object with the appropriate configuration:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> Function, FunctionType
 <span class="hljs-keyword">import</span> datetime
@@ -408,71 +407,110 @@ rerank-&gt;<span class="hljs-built_in">SetDecay</span>(<span class="hljs-number"
     .WithOffset(<span class="hljs-number">24</span> * <span class="hljs-number">60</span> * <span class="hljs-number">60</span>)                    <span class="hljs-comment">// 1 day no-decay zone (must match collection data unit)</span>
     .WithDecay(<span class="hljs-number">0.5f</span>);                            <span class="hljs-comment">// Half score at scale distance</span>
 <button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
+<pre><code translate="no" class="language-bash"><span class="hljs-built_in">export</span> CLUSTER_ENDPOINT=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>
+<span class="hljs-built_in">export</span> TOKEN=<span class="hljs-string">&quot;root:Milvus&quot;</span>
+
+curl --request POST \
+--url <span class="hljs-string">&quot;<span class="hljs-variable">${CLUSTER_ENDPOINT}</span>/v2/vectordb/collections/create&quot;</span> \
+--header <span class="hljs-string">&quot;Authorization: Bearer <span class="hljs-variable">${TOKEN}</span>&quot;</span> \
+--header <span class="hljs-string">&quot;Content-Type: application/json&quot;</span> \
+--header <span class="hljs-string">&quot;Request-Timeout: 10&quot;</span> \
+-d <span class="hljs-string">&#x27;{
+    &quot;collectionName&quot;: &quot;your_collection&quot;,
+    &quot;schema&quot;: {
+        &quot;autoID&quot;: false,
+        &quot;enableDynamicField&quot;: false,
+        &quot;fields&quot;: [
+            {
+                &quot;fieldName&quot;: &quot;id&quot;,
+                &quot;dataType&quot;: &quot;Int64&quot;,
+                &quot;isPrimary&quot;: true
+            },
+            {
+                &quot;fieldName&quot;: &quot;document&quot;,
+                &quot;dataType&quot;: &quot;VarChar&quot;,
+                &quot;elementTypeParams&quot;: {
+                    &quot;max_length&quot;: 65535
+                }
+            },
+            {
+                &quot;fieldName&quot;: &quot;timestamp&quot;,
+                &quot;dataType&quot;: &quot;Int64&quot;
+            },
+            {
+                &quot;fieldName&quot;: &quot;vector_field&quot;,
+                &quot;dataType&quot;: &quot;FloatVector&quot;,
+                &quot;elementTypeParams&quot;: {
+                    &quot;dim&quot;: 768
+                }
+            }
+        ]
+    }
+}&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
 <table>
    <tr>
-     <th><p>Parametro</p></th>
-     <th><p>Obbligatorio?</p></th>
-     <th><p>Descrizione</p></th>
-     <th><p>Valore/Esempio</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Required?</p></th>
+     <th><p>Description</p></th>
+     <th><p>Value/Example</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">name</code></p></td>
-     <td><p>Sì</p></td>
-     <td><p>Identificatore della funzione da utilizzare durante l'esecuzione delle ricerche. Scegliere un nome descrittivo pertinente al proprio caso d'uso.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Identifier for your function used when executing searches. Choose a descriptive name relevant to your use case.</p></td>
      <td><p><code translate="no">"time_decay"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">input_field_names</code></p></td>
-     <td><p>Sì</p></td>
-     <td><p>Campo numerico per il calcolo del punteggio di decadimento. Determina quale attributo dei dati verrà utilizzato per calcolare il decadimento (ad esempio, timestamp per il decadimento basato sul tempo, coordinate per il decadimento basato sulla posizione). </p><p>Deve essere un campo della propria raccolta che contenga valori numerici pertinenti. Supporta i tipi INT8/16/32/64, FLOAT, DOUBLE.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Numeric field for decay score calculation. Determines which data attribute will be used for calculating decay (e.g., timestamps for time-based decay, coordinates for location-based decay). </p><p>Must be a field in your collection that contains relevant numeric values. Supports INT8/16/32/64, FLOAT, DOUBLE.</p></td>
      <td><p><code translate="no">["timestamp"]</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">function_type</code></p></td>
-     <td><p>Sì</p></td>
-     <td><p>Specifica il tipo di funzione che si sta creando.</p><p>Deve essere impostato su " <code translate="no">RERANK</code> " per tutti i sistemi di classificazione basati sul decadimento.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Specifies the type of function being created.</p><p>Must be set to <code translate="no">RERANK</code> for all decay rankers.</p></td>
      <td><p><code translate="no">FunctionType.RERANK</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.reranker</code></p></td>
-     <td><p>Sì</p></td>
-     <td><p>Specifica il metodo di riclassificazione da utilizzare.</p><p>Deve essere impostato su " <code translate="no">"decay"</code> " per abilitare la funzionalità di classificazione con decadimento.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Specifies the reranking method to use.</p><p>Must be set to <code translate="no">"decay"</code> to enable decay ranking functionality.</p></td>
      <td><p><code translate="no">"decay"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.function</code></p></td>
-     <td><p>Sì</p></td>
-     <td><p>Specifica quale sistema di classificazione a decadimento matematico applicare. Determina la forma della curva di declino della rilevanza.</p><p>Consultare la sezione <a href="/docs/it/decay-ranker-overview.md#Choose-the-right-decay-ranker">«Scegliere il modello di declino della rilevanza corretto»</a> per indicazioni sulla selezione della funzione appropriata.</p></td>
-     <td><p><code translate="no">"gauss"</code>, <code translate="no">"exp"</code> o <code translate="no">"linear"</code></p></td>
+     <td><p>Yes</p></td>
+     <td><p>Specifies which mathematical decay ranker to apply. Determines the curve shape of relevance decline.</p><p>See <a href="/docs/it/decay-ranker-overview.md#Choose-the-right-decay-ranker">Choose the right decay ranker</a> section for guidance on selecting the appropriate function.</p></td>
+     <td><p><code translate="no">"gauss"</code>, <code translate="no">"exp"</code>, or <code translate="no">"linear"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.origin</code></p></td>
-     <td><p>Sì</p></td>
-     <td><p>Punto di riferimento a partire dal quale viene calcolato il punteggio di decadimento. Gli elementi con questo valore ricevono il punteggio di rilevanza massimo.</p><p>Per il decadimento basato sul tempo, l’unità di tempo deve corrispondere ai dati della propria raccolta.</p></td>
-     <td><ul><li><p>Per i timestamp: ora corrente (ad es., <code translate="no">int(time.time())</code>)</p></li><li><p>Per la geolocalizzazione: le coordinate attuali dell’utente</p></li></ul></td>
+     <td><p>Yes</p></td>
+     <td><p>Reference point from which decay score is calculated. Items at this value receive maximum relevance scores.</p><p>For time-based decay, the time unit must match your collection data.</p></td>
+     <td><ul><li><p>For timestamps: current time (e.g., <code translate="no">int(time.time())</code>)</p></li><li><p>For geolocation: user's current coordinates</p></li></ul></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.scale</code></p></td>
-     <td><p>Sì</p></td>
-     <td><p>Distanza o tempo in cui la rilevanza scende al valore <code translate="no">decay</code>. Controlla la velocità con cui la rilevanza diminuisce.</p><p>Per il decadimento basato sul tempo, l'unità di misura del tempo deve corrispondere ai dati della raccolta.</p><p>Valori più elevati determinano un calo più graduale della rilevanza; valori più bassi determinano un calo più rapido.</p></td>
-     <td><ul><li><p>Per il tempo: periodo in secondi (ad es., <code translate="no">7 * 24 * 60 * 60</code> per 7 giorni)</p></li><li><p>Per la distanza: metri (ad es., <code translate="no">5000</code> per 5 km)</p></li></ul></td>
+     <td><p>Yes</p></td>
+     <td><p>Distance or time at which relevance drops to the <code translate="no">decay</code> value. Controls how quickly relevance declines.</p><p>For time-based decay, the time unit must match your collection data.</p><p>Larger values create a more gradual decline in relevance; smaller values create a steeper decline.</p></td>
+     <td><ul><li><p>For time: period in seconds (e.g., <code translate="no">7 * 24 * 60 * 60</code> for 7 days)</p></li><li><p>For distance: meters (e.g., <code translate="no">5000</code> for 5km)</p></li></ul></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.offset</code></p></td>
      <td><p>No</p></td>
-     <td><p>Crea una "zona senza decadimento" attorno all'<code translate="no">origin</code> e in cui gli elementi mantengono il punteggio pieno (punteggio di decadimento = 1,0).</p><p>Per il decadimento basato sul tempo, l’unità di misura del tempo deve corrispondere ai dati della tua raccolta.</p><p>Gli elementi all’interno di questo intervallo rispetto a <code translate="no">origin</code> mantengono la massima rilevanza.</p></td>
-     <td><ul><li><p>Per il tempo: periodo in secondi (ad es., <code translate="no">24 * 60 * 60</code> per 1 giorno)</p></li><li><p>Per la distanza: metri (ad es., <code translate="no">500</code> per 500 m)</p></li></ul></td>
+     <td><p>Creates a "no-decay zone" around the <code translate="no">origin</code> where items maintain full scores (decay score = 1.0).</p><p>For time-based decay, the time unit must match your collection data.</p><p>Items within this range of the <code translate="no">origin</code> maintain maximum relevance.</p></td>
+     <td><ul><li><p>For time: period in seconds (e.g., <code translate="no">24 * 60 * 60</code> for 1 day)</p></li><li><p>For distance: meters (e.g., <code translate="no">500</code> for 500m)</p></li></ul></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.decay</code></p></td>
      <td><p>No</p></td>
-     <td><p>Valore del punteggio alla distanza " <code translate="no">scale</code> ", che controlla la pendenza della curva. Valori più bassi creano curve di declino più ripide; valori più alti creano curve di declino più graduali.</p><p>Deve essere compreso tra 0 e 1.</p></td>
-     <td><p><code translate="no">0.5</code> (impostazione predefinita)</p></td>
+     <td><p>Score value at the <code translate="no">scale</code> distance, controls curve steepness. Lower values create steeper decline curves; higher values create more gradual decline curves.</p><p>Must be between 0 and 1.</p></td>
+     <td><p><code translate="no">0.5</code> (default)</p></td>
    </tr>
 </table>
-<h3 id="Apply-to-standard-vector-search" class="common-anchor-header">Applica alla ricerca vettoriale standard<button data-href="#Apply-to-standard-vector-search" class="anchor-icon" translate="no">
+<h3 id="Apply-to-standard-vector-search" class="common-anchor-header">Apply to standard vector search<button data-href="#Apply-to-standard-vector-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -487,16 +525,16 @@ rerank-&gt;<span class="hljs-built_in">SetDecay</span>(<span class="hljs-number"
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Dopo aver definito il proprio ranker di decadimento, è possibile applicarlo durante le operazioni di ricerca passandolo al parametro ` <code translate="no">ranker</code> `:</p>
+    </button></h3><p>After defining your decay ranker, you can apply it during search operations by passing it to the <code translate="no">ranker</code> parameter:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Use the decay function in standard vector search</span>
 results = milvus_client.search(
@@ -538,16 +576,18 @@ results = milvus_client.search(
 functionScore := entity.NewFunctionScore().AddFunction(rerank)
 
 resultSets, err := client.Search(ctx, milvusclient.NewSearchOption(
-    collection_name, <span class="hljs-comment">// collection name</span>
+    collectionName, <span class="hljs-comment">// collection name</span>
     <span class="hljs-number">10</span>,              <span class="hljs-comment">// limit</span>
-    []entity.Vector{your_query_vector}, <span class="hljs-comment">// query vector</span>
+    []entity.Vector{entity.FloatVector(yourQueryVector)}, <span class="hljs-comment">// query vector</span>
 ).WithANNSField(<span class="hljs-string">&quot;vector_field&quot;</span>).
     WithFunctionScore(functionScore).
     WithOutputFields(<span class="hljs-string">&quot;document&quot;</span>, <span class="hljs-string">&quot;timestamp&quot;</span>))
 <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
     fmt.Println(err.Error())
-    <span class="hljs-comment">// handle error</span>
+    <span class="hljs-keyword">return</span>
 }
+
+fmt.Println(resultSets)
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-rust"><span class="hljs-keyword">use</span> milvus::v2::prelude::*;
 
@@ -618,5 +658,47 @@ SearchResp results = <span class="hljs-keyword">await</span> client.SearchAsync(
     }
 });
 <button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
+<pre><code translate="no" class="language-bash"><span class="hljs-built_in">export</span> CLUSTER_ENDPOINT=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>
+<span class="hljs-built_in">export</span> TOKEN=<span class="hljs-string">&quot;root:Milvus&quot;</span>
+
+<span class="hljs-comment"># The ranker configuration is passed with the search request</span>
+<span class="hljs-built_in">export</span> rankerFunction=<span class="hljs-string">&#x27;{
+    &quot;name&quot;: &quot;time_decay&quot;,
+    &quot;type&quot;: &quot;Rerank&quot;,
+    &quot;inputFieldNames&quot;: [
+        &quot;timestamp&quot;
+    ],
+    &quot;outputFieldNames&quot;: [],
+    &quot;params&quot;: {
+        &quot;reranker&quot;: &quot;decay&quot;,
+        &quot;function&quot;: &quot;gauss&quot;,
+        &quot;origin&quot;: 1735689600,
+        &quot;scale&quot;: 604800,
+        &quot;offset&quot;: 86400,
+        &quot;decay&quot;: 0.5
+    }
+}&#x27;</span>
+
+<span class="hljs-comment"># A query vector matching the collection dimension</span>
+<span class="hljs-built_in">export</span> QUERY_VECTOR=$(jq -n <span class="hljs-string">&#x27;[range(768) | 0.01]&#x27;</span>)
+
+request=$(jq -n \
+--argjson vec <span class="hljs-string">&quot;<span class="hljs-variable">$QUERY_VECTOR</span>&quot;</span> \
+--argjson fn <span class="hljs-string">&quot;<span class="hljs-variable">$rankerFunction</span>&quot;</span> \
+<span class="hljs-string">&#x27;{
+    collectionName: &quot;your_collection&quot;,
+    data: [$vec],
+    annsField: &quot;vector_field&quot;,
+    limit: 10,
+    outputFields: [&quot;document&quot;, &quot;timestamp&quot;],
+    consistencyLevel: &quot;Strong&quot;,
+    functionScore: {functions: [$fn]}
+}&#x27;</span>)
+
+curl --request POST \
+--url <span class="hljs-string">&quot;<span class="hljs-variable">${CLUSTER_ENDPOINT}</span>/v2/vectordb/entities/search&quot;</span> \
+--header <span class="hljs-string">&quot;Authorization: Bearer <span class="hljs-variable">${TOKEN}</span>&quot;</span> \
+--header <span class="hljs-string">&quot;Content-Type: application/json&quot;</span> \
+--header <span class="hljs-string">&quot;Request-Timeout: 10&quot;</span> \
+-d <span class="hljs-string">&quot;<span class="hljs-variable">$request</span>&quot;</span>
 <button class="copy-code-btn"></button></code></pre>

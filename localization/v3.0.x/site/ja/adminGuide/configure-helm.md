@@ -2,10 +2,10 @@
 id: configure-helm.md
 label: Helm
 related_key: configure
-summary: MilvusをHelmチャートで設定する。
-title: HelmチャートでMilvusを設定する
+summary: Configure Milvus with Helm Charts.
+title: Configure Milvus with Helm Charts
 ---
-<h1 id="Configure-Milvus-with-Helm-Charts" class="common-anchor-header">HelmチャートでMilvusを設定する<button data-href="#Configure-Milvus-with-Helm-Charts" class="anchor-icon" translate="no">
+<h1 id="Configure-Milvus-with-Helm-Charts" class="common-anchor-header">Configure Milvus with Helm Charts<button data-href="#Configure-Milvus-with-Helm-Charts" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,10 +20,11 @@ title: HelmチャートでMilvusを設定する
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>このトピックでは、Helm Chartsを使用してMilvusコンポーネントおよびサードパーティの依存関係を設定する方法について説明します。</p>
+    </button></h1><p>This topic describes how to configure Milvus components and its third-party dependencies with Helm Charts.</p>
 <div class="alert note">
-現在のリリースでは、すべてのパラメータはMilvusの再起動後に有効になります。</div>
-<h2 id="Configure-Milvus-via-configuration-file" class="common-anchor-header">設定ファイルによるMilvusの設定<button data-href="#Configure-Milvus-via-configuration-file" class="anchor-icon" translate="no">
+In current release, all parameters take effect only after Milvus restarts.
+</div>
+<h2 id="Configure-Milvus-via-configuration-file" class="common-anchor-header">Configure Milvus via configuration file<button data-href="#Configure-Milvus-via-configuration-file" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -38,8 +39,8 @@ title: HelmチャートでMilvusを設定する
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>設定ファイル<code translate="no">values.yaml</code> を使用してMilvusを設定することができます。</p>
-<h3 id="Download-a-configuration-file" class="common-anchor-header">設定ファイルのダウンロード<button data-href="#Download-a-configuration-file" class="anchor-icon" translate="no">
+    </button></h2><p>You can configure Milvus with a configuration file <code translate="no">values.yaml</code>.</p>
+<h3 id="Download-a-configuration-file" class="common-anchor-header">Download a configuration file<button data-href="#Download-a-configuration-file" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -54,10 +55,10 @@ title: HelmチャートでMilvusを設定する
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">values.yaml</code> を直接<a href="https://raw.githubusercontent.com/zilliztech/milvus-helm/master/charts/milvus/values.yaml">ダウンロード</a>するか、以下のコマンドでダウンロードします。</p>
+    </button></h3><p><a href="https://raw.githubusercontent.com/zilliztech/milvus-helm/master/charts/milvus/values.yaml">Download</a> <code translate="no">values.yaml</code> directly or with the following command.</p>
 <pre><code translate="no"><span class="hljs-variable">$ </span>wget <span class="hljs-symbol">https:</span>/<span class="hljs-regexp">/raw.githubusercontent.com/milvus</span>-io/milvus-helm/master/charts/milvus/values.yaml
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Modify-the-configuration-file" class="common-anchor-header">設定ファイルの変更<button data-href="#Modify-the-configuration-file" class="anchor-icon" translate="no">
+<h3 id="Modify-the-configuration-file" class="common-anchor-header">Modify the configuration file<button data-href="#Modify-the-configuration-file" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -72,8 +73,8 @@ title: HelmチャートでMilvusを設定する
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">values.yaml</code> の対応するパラメータを調整することにより、アプリケーションのシナリオに合わせてMilvusインスタンスを設定します。</p>
-<p>具体的には、<code translate="no">values.yaml</code> の<code translate="no">extraConfigFiles</code> を検索し、以下のようにこのセクションに設定を記述します：</p>
+    </button></h3><p>Configure your Milvus instance to suit your application scenarios by adjusting corresponding parameters in <code translate="no">values.yaml</code>.</p>
+<p>Specifically, search for <code translate="no">extraConfigFiles</code> in <code translate="no">values.yaml</code> and put your configurations in this section as follows:</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-comment"># Extra configs for milvus.yaml</span>
 <span class="hljs-comment"># If set, this config will merge into milvus.yaml</span>
 <span class="hljs-comment"># Please follow the config structure in the milvus.yaml</span>
@@ -86,16 +87,17 @@ title: HelmチャートでMilvusを設定する
     #    queryNodes:
     #      gracefulTime: 10
 </span><button class="copy-code-btn"></button></code></pre>
-<p>各パラメータの詳細については、以下のリンクを参照してください。</p>
-<p>並べ替え</p>
+<p>Check the following links for more information about each parameter.</p>
+<p>Sorted by:</p>
 <div class="filter">
-<a href="#component">コンポーネントまたは依存関係</a> <a href="#purpose">構成の目的</a></div>
+<a href="#component">Components or dependencies</a> <a href="#purpose">Configuration purposes</a> 
+</div>
 <div class="filter-component table-wrapper">
 <table id="component">
 <thead>
   <tr>
-    <th>依存関係</th>
-    <th>コンポーネント</th>
+    <th>Dependencies</th>
+    <th>Components</th>
   </tr>
 </thead>
 <tbody>
@@ -103,32 +105,32 @@ title: HelmチャートでMilvusを設定する
     <td>
         <ul>
             <li><a href="/docs/ja/configure_etcd.md">etcd</a></li>
-            <li><a href="/docs/ja/configure_minio.md">MinIOまたはS3</a></li>
-            <li><a href="/docs/ja/configure_pulsar.md">パルサー</a></li>
+            <li><a href="/docs/ja/configure_minio.md">MinIO or S3</a></li>
+            <li><a href="/docs/ja/configure_pulsar.md">Pulsar</a></li>
             <li><a href="/docs/ja/configure_rocksmq.md">RocksMQ</a></li>
         </ul>
     </td>
     <td>
         <ul>
-            <li><a href="/docs/ja/configure_rootcoord.md">ルート・コーデック</a></li>
-            <li><a href="/docs/ja/configure_proxy.md">プロキシ</a></li>
-            <li><a href="/docs/ja/configure_querycoord.md">クエリコーデック</a></li>
-            <li><a href="/docs/ja/configure_querynode.md">クエリ・ノード</a></li>
-            <li><a href="/docs/ja/configure_indexnode.md">インデックスノード</a></li>
-            <li><a href="/docs/ja/configure_datacoord.md">データ・ノード</a></li>
-            <li><a href="/docs/ja/configure_datanode.md">データノード</a></li>
-            <li><a href="/docs/ja/configure_localstorage.md">ローカルストレージ</a></li>
-            <li><a href="/docs/ja/configure_log.md">ログ</a></li>
-            <li><a href="/docs/ja/configure_msgchannel.md">メッセージチャネル</a></li>
-            <li><a href="/docs/ja/configure_common.md">共通</a></li>
+            <li><a href="/docs/ja/configure_rootcoord.md">Root coord</a></li>
+            <li><a href="/docs/ja/configure_proxy.md">Proxy</a></li>
+            <li><a href="/docs/ja/configure_querycoord.md">Query coord</a></li>
+            <li><a href="/docs/ja/configure_querynode.md">Query node</a></li>
+            <li><a href="/docs/ja/configure_indexnode.md">Index node</a></li>
+            <li><a href="/docs/ja/configure_datacoord.md">Data coord</a></li>
+            <li><a href="/docs/ja/configure_datanode.md">Data node</a></li>
+            <li><a href="/docs/ja/configure_localstorage.md">Local storage</a></li>
+            <li><a href="/docs/ja/configure_log.md">Log</a></li>
+            <li><a href="/docs/ja/configure_msgchannel.md">Message channel</a></li>
+            <li><a href="/docs/ja/configure_common.md">Common</a></li>
             <li><a href="/docs/ja/configure_gpu.md">GPU</a></li>
             <li><a href="/docs/ja/configure_grpc.md">GRPC</a></li>
-            <li><a href="/docs/ja/configure_indexcoord.md">インデックス・コーダ</a></li>
-            <li><a href="/docs/ja/configure_metastore.md">メタストア</a></li>
-            <li><a href="/docs/ja/configure_mq.md">メッセージキュー</a></li>
+            <li><a href="/docs/ja/configure_indexcoord.md">Index coord</a></li>
+            <li><a href="/docs/ja/configure_metastore.md">Metastore</a></li>
+            <li><a href="/docs/ja/configure_mq.md">Message Queue</a></li>
             <li><a href="/docs/ja/configure_tikv.md">Tikv</a></li>
-            <li><a href="/docs/ja/configure_trace.md">トレース</a></li>
-            <li><a href="/docs/ja/configure_quotaandlimits.md">クォータと制限</a></li>
+            <li><a href="/docs/ja/configure_trace.md">Trace</a></li>
+            <li><a href="/docs/ja/configure_quotaandlimits.md">Quota and Limits</a></li>
         </ul>
     </td>
   </tr>
@@ -139,13 +141,13 @@ title: HelmチャートでMilvusを設定する
 <table id="purpose">
 <thead>
   <tr>
-    <th>目的</th>
-    <th>パラメータ</th>
+    <th>Purpose</th>
+    <th>Parameters</th>
   </tr>
 </thead>
 <tbody>
   <tr>
-    <td>パフォーマンス・チューニング</td>
+    <td>Performance tuning</td>
     <td>
         <ul>
             <li><a href="/docs/ja/configure_querynode.md#queryNodegracefulTime"><code translate="no">queryNode.gracefulTime</code></a></li>
@@ -160,7 +162,7 @@ title: HelmチャートでMilvusを設定する
     </td>
   </tr>
   <tr>
-    <td>データとメタ</td>
+    <td>Data and meta</td>
     <td>
         <ul>
             <li><a href="/docs/ja/configure_common.md#commonretentionDuration"><code translate="no">common.retentionDuration</code></a></li>
@@ -172,7 +174,7 @@ title: HelmチャートでMilvusを設定する
     </td>
   </tr>
   <tr>
-    <td>管理</td>
+    <td>Administration</td>
     <td>
         <ul>
             <li><a href="/docs/ja/configure_log.md#loglevel"><code translate="no">log.level</code></a></li>
@@ -184,7 +186,7 @@ title: HelmチャートでMilvusを設定する
     </td>
   </tr>
   <tr>
-    <td>クォータとリミット</td>
+    <td>Quota and Limits</td>
     <td>
         <ul>
             <li><a href="/docs/ja/configure_quotaandlimits.md#quotaAndLimitsddlenabled"><code translate="no">quotaAndLimits.ddl.enabled</code></a></li>
@@ -224,8 +226,8 @@ title: HelmチャートでMilvusを設定する
 </tbody>
 </table>
 </div>
-<p>その他、Kubernetesのインストールに特化したパラメータについては、<a href="https://github.com/milvus-io/milvus-helm/tree/master/charts/milvus#configuration">Milvus Helm Chart Configurationを</a>参照してください。</p>
-<h3 id="Start-Milvus" class="common-anchor-header">Milvusの起動<button data-href="#Start-Milvus" class="anchor-icon" translate="no">
+<p>For other parameters specifically to Kubernetes installation, See <a href="https://github.com/milvus-io/milvus-helm/tree/master/charts/milvus#configuration">Milvus Helm Chart Configuration</a>.</p>
+<h3 id="Start-Milvus" class="common-anchor-header">Start Milvus<button data-href="#Start-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -240,10 +242,10 @@ title: HelmチャートでMilvusを設定する
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>設定ファイルの修正が完了したら、そのファイルを使ってMilvusを起動します。</p>
+    </button></h3><p>Having finished modifying the configuration file, you can then start Milvus with the file.</p>
 <pre><code translate="no"><span class="hljs-meta prompt_">$ </span><span class="language-bash">helm upgrade my-release milvus/milvus -f values.yaml</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Configure-Milvus-via-command-line" class="common-anchor-header">コマンドラインによるMilvusの設定<button data-href="#Configure-Milvus-via-command-line" class="anchor-icon" translate="no">
+<h2 id="Configure-Milvus-via-command-line" class="common-anchor-header">Configure Milvus via command line<button data-href="#Configure-Milvus-via-command-line" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -258,8 +260,8 @@ title: HelmチャートでMilvusを設定する
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>また、HelmコマンドでMilvusの設定を直接アップグレードすることもできます。</p>
-<h3 id="Check-the-configurable-parameters" class="common-anchor-header">設定可能パラメータの確認<button data-href="#Check-the-configurable-parameters" class="anchor-icon" translate="no">
+    </button></h2><p>Alternatively, you can upgrade Milvus configurations directly with the Helm command.</p>
+<h3 id="Check-the-configurable-parameters" class="common-anchor-header">Check the configurable parameters<button data-href="#Check-the-configurable-parameters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -274,10 +276,10 @@ title: HelmチャートでMilvusを設定する
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>アップグレードの前に、Helmチャートで設定可能なパラメータを確認することができます。</p>
+    </button></h3><p>Before upgrade, you can check the configurable parameters with Helm charts.</p>
 <pre><code translate="no"><span class="hljs-meta prompt_">$ </span><span class="language-bash">helm show values milvus/milvus</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Start-Milvus" class="common-anchor-header">Milvusの起動<button data-href="#Start-Milvus" class="anchor-icon" translate="no">
+<h3 id="Start-Milvus" class="common-anchor-header">Start Milvus<button data-href="#Start-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -292,11 +294,11 @@ title: HelmチャートでMilvusを設定する
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>アップグレード用コマンドに<code translate="no">--values</code> または<code translate="no">--set</code> を追加して、Milvus を設定・起動します。</p>
+    </button></h3><p>Configure and start Milvus by adding <code translate="no">--values</code> or <code translate="no">--set</code> in the command for upgrade.</p>
 <pre><code translate="no"><span class="hljs-meta prompt_"># </span><span class="language-bash">For instance, upgrade the Milvus cluster with compaction disabled</span>
 <span class="hljs-meta prompt_">$ </span><span class="language-bash">helm upgrade my-release milvus/milvus --<span class="hljs-built_in">set</span> dataCoord.enableCompaction=<span class="hljs-literal">false</span></span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Whats-next" class="common-anchor-header">次のステップ<button data-href="#Whats-next" class="anchor-icon" translate="no">
+<h2 id="Whats-next" class="common-anchor-header">What’s next<button data-href="#Whats-next" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -312,13 +314,13 @@ title: HelmチャートでMilvusを設定する
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>Milvusのサービスを監視し、アラートを作成する方法を学びたい場合：</p>
+<li><p>If you want to learn how to monitor the Milvus services and create alerts:</p>
 <ul>
-<li><a href="/docs/ja/monitor.md">Kubernetes上のPrometheus OperatorでMilvusを監視するを</a>学ぶ</li>
-<li><a href="/docs/ja/visualize.md">GrafanaでMilvusのメトリクスを可視化するを</a>学ぶ。</li>
+<li>Learn <a href="/docs/ja/monitor.md">Monitor Milvus with Prometheus Operator on Kubernetes</a></li>
+<li>Learn <a href="/docs/ja/visualize.md">Visualize Milvus Metrics in Grafana</a>.</li>
 </ul></li>
-<li><p>リソースを割り当てる方法をお探しの場合：</p>
+<li><p>If you are looking for instructions on how to allocate resources:</p>
 <ul>
-<li><a href="/docs/ja/allocate.md#standalone">Kubernetesでリソースを割り当てる</a></li>
+<li><a href="/docs/ja/allocate.md#standalone">Allocate Resources on Kubernetes</a></li>
 </ul></li>
 </ul>

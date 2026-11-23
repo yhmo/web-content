@@ -1,9 +1,11 @@
 ---
 id: view-collections.md
-title: 查看 Collections
-summary: 您可以获取当前连接的数据库中所有 Collections 的名称列表，并查看特定 Collections 的详细信息。
+title: View Collections
+summary: >-
+  You can obtain the name list of all the collections in the currently connected
+  database, and check the details of a specific collection.
 ---
-<h1 id="View-Collections" class="common-anchor-header">查看 Collections<button data-href="#View-Collections" class="anchor-icon" translate="no">
+<h1 id="View-Collections" class="common-anchor-header">View Collections<button data-href="#View-Collections" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,7 +20,7 @@ summary: 您可以获取当前连接的数据库中所有 Collections 的名称�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>您可以获取当前连接的数据库中所有 Collections 的名称列表，并查看特定 Collections 的详细信息。</p>
+    </button></h1><p>You can obtain the name list of all the collections in the currently connected database, and check the details of a specific collection.</p>
 <h2 id="List-Collections" class="common-anchor-header">List Collections<button data-href="#List-Collections" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -34,13 +36,13 @@ summary: 您可以获取当前连接的数据库中所有 Collections 的名称�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>以下示例演示了如何获取当前连接的数据库中所有 Collections 的名称列表。</p>
+    </button></h2><p>The following example demonstrates how to obtain the name list of all collections in the currently connected database.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
 
@@ -114,13 +116,13 @@ fmt.Println(collectionNames)
 --header <span class="hljs-string">&quot;Request-Timeout: 10&quot;</span> \
 -d <span class="hljs-string">&#x27;{}&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>如果您已经创建了一个名为<code translate="no">quick_setup</code> 的 Collection，上述示例的结果应类似于以下内容。</p>
+<p>If you have already created a collection named <code translate="no">quick_setup</code>, the result of the above example should be similar to the following.</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">[</span><span class="hljs-string">&quot;quick_setup&quot;</span><span class="hljs-punctuation">]</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p><code translate="no">list_collections()</code> 该方法返回当前连接的数据库中所有 Collections 的名称，并不用于检查 Collections 是否存在。若要检查特定 Collections 是否存在，请改用 `<code translate="no">has_collection()</code> `（例如，`<code translate="no">client.has_collection(&quot;quick_setup&quot;)</code> ` 返回一个布尔值），或使用其他 SDK 中的等效方法。</p>
+<p><code translate="no">list_collections()</code> returns the names of all collections in the currently connected database and is not intended for existence checks. To check whether a specific collection exists, use <code translate="no">has_collection()</code> instead (e.g. <code translate="no">client.has_collection(&quot;quick_setup&quot;)</code> returns a boolean), or its equivalent in other SDKs.</p>
 </div>
-<h2 id="Describe-Collection" class="common-anchor-header">描述Collection<button data-href="#Describe-Collection" class="anchor-icon" translate="no">
+<h2 id="Describe-Collection" class="common-anchor-header">Describe Collection<button data-href="#Describe-Collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -135,13 +137,13 @@ fmt.Println(collectionNames)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>您还可以获取特定 Collection 的详细信息。以下示例假设您已经创建了一个名为 quick_setup 的 Collection。</p>
+    </button></h2><p>You can also obtain the details of a specific collection. The following example assumes that you have already created a collection named quick_setup.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">res = client.describe_collection(
     collection_name=<span class="hljs-string">&quot;quick_setup&quot;</span>
@@ -181,7 +183,7 @@ fmt.Println(collection)
     &quot;collectionName&quot;: &quot;quick_setup&quot;
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>上述示例的结果应与以下内容类似。</p>
+<p>The result of the above example should be similar to the following.</p>
 <pre><code translate="no" class="language-plaintext">{
     &#x27;collection_name&#x27;: &#x27;quick_setup&#x27;, 
     &#x27;auto_id&#x27;: False, 

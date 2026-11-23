@@ -2,7 +2,9 @@
 id: woodpecker.md
 title: Woodpecker
 related_key: Woodpecker
-summary: 了解 Woodpecker 如何在 Milvus 中作為預設訊息佇列（WAL）運作，以及如何以嵌入式或服務模式執行它。
+summary: >-
+  Learn how Woodpecker works as the default message queue (WAL) in Milvus, and
+  how to run it in embedded or service mode.
 ---
 <h1 id="Woodpecker" class="common-anchor-header">Woodpecker<button data-href="#Woodpecker" class="anchor-icon" translate="no">
       <svg translate="no"
@@ -19,8 +21,8 @@ summary: 了解 Woodpecker 如何在 Milvus 中作為預設訊息佇列（WAL）
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Woodpecker 是 Milvus 3.x 中的<strong>預設訊息佇列（預寫日誌，WAL）</strong>。它是一款專為物件儲存設計的雲原生 WAL，具備高吞吐量、低運作開銷及無縫擴展性。有關架構與效能測試的詳細資訊，請參閱<a href="/docs/zh-hant/woodpecker_architecture.md">Woodpecker</a>。</p>
-<h2 id="Overview" class="common-anchor-header">概述<button data-href="#Overview" class="anchor-icon" translate="no">
+    </button></h1><p>Woodpecker is the <strong>default message queue (write-ahead log, WAL)</strong> in Milvus 3.x. It is a cloud‑native WAL designed for object storage, offering high throughput, low operational overhead, and seamless scalability. For architecture and benchmark details, see <a href="/docs/zh-hant/woodpecker_architecture.md">Woodpecker</a>.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -36,11 +38,11 @@ summary: 了解 Woodpecker 如何在 Milvus 中作為預設訊息佇列（WAL）
         ></path>
       </svg>
     </button></h2><ul>
-<li>在 Milvus 3.x 中，Woodpecker 是<strong>預設的</strong>WAL／訊息佇列，作為記錄服務提供有序寫入與復原功能。無需外部訊息佇列服務（例如 Pulsar 或 Kafka）。</li>
-<li>Woodpecker 可以<strong>內嵌於</strong>Milvus/streaming 節點中運行（預設），或作為擁有獨立 Pod<strong>的專用服務</strong>運行（僅限分散式/叢集環境）。</li>
-<li>它支援三種<code translate="no">storage.type</code> 模式：物件儲存（<code translate="no">minio</code> ，預設）、本地檔案系統（<code translate="no">local</code> ）以及專用的<code translate="no">service</code> 。請參閱「<a href="#Deployment-modes">部署模式</a>」。</li>
+<li>In Milvus 3.x, Woodpecker is the <strong>default</strong> WAL/message queue, providing ordered writes and recovery as the logging service. No external message-queue service (such as Pulsar or Kafka) is required.</li>
+<li>Woodpecker can run <strong>embedded</strong> in the Milvus/streaming node (default), or as a <strong>dedicated service</strong> with its own pods (distributed/cluster only).</li>
+<li>It supports three <code translate="no">storage.type</code> modes: object storage (<code translate="no">minio</code>, the default), local file system (<code translate="no">local</code>), and the dedicated <code translate="no">service</code>. See <a href="#Deployment-modes">Deployment modes</a>.</li>
 </ul>
-<h2 id="Quick-start" class="common-anchor-header">快速入門<button data-href="#Quick-start" class="anchor-icon" translate="no">
+<h2 id="Quick-start" class="common-anchor-header">Quick start<button data-href="#Quick-start" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -55,12 +57,12 @@ summary: 了解 Woodpecker 如何在 Milvus 中作為預設訊息佇列（WAL）
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>若要啟用 Woodpecker，請將 MQ 類型設定為 Woodpecker：</p>
+    </button></h2><p>To enable Woodpecker, set the MQ type to Woodpecker:</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">mq:</span>
   <span class="hljs-attr">type:</span> <span class="hljs-string">woodpecker</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>注意：針對正在運行的叢集切換<code translate="no">mq.type</code> 屬於升級操作。請仔細遵循升級程序，並在切換至生產環境前，先於全新叢集進行驗證。</p>
-<h2 id="Configuration" class="common-anchor-header">設定<button data-href="#Configuration" class="anchor-icon" translate="no">
+<p>Note: Switching <code translate="no">mq.type</code> for a running cluster is an upgrade operation. Follow the upgrade procedure carefully and validate on a fresh cluster before switching production.</p>
+<h2 id="Configuration" class="common-anchor-header">Configuration<button data-href="#Configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -75,7 +77,7 @@ summary: 了解 Woodpecker 如何在 Milvus 中作為預設訊息佇列（WAL）
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>以下是完整的 Woodpecker 配置區塊（編輯<code translate="no">milvus.yaml</code> 或在<code translate="no">user.yaml</code> 中覆寫）：</p>
+    </button></h2><p>Below is the complete Woodpecker configuration block (edit <code translate="no">milvus.yaml</code> or override in <code translate="no">user.yaml</code>):</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-comment"># Related configuration of woodpecker, used to manage Milvus logs of recent mutation operations, output streaming log, and provide embedded log sequential read and write.</span>
 <span class="hljs-attr">woodpecker:</span>
   <span class="hljs-attr">meta:</span>
@@ -112,28 +114,28 @@ summary: 了解 Woodpecker 如何在 Milvus 中作為預設訊息佇列（WAL）
     <span class="hljs-attr">type:</span> <span class="hljs-string">minio</span> <span class="hljs-comment"># The Type of the storage provider. Valid values: [minio, local]</span>
     <span class="hljs-attr">rootPath:</span> <span class="hljs-string">/var/lib/milvus/woodpecker</span> <span class="hljs-comment"># The root path of the storage provider.</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>重點說明：</p>
+<p>Key notes:</p>
 <ul>
 <li><code translate="no">woodpecker.meta</code>
 <ul>
-<li><strong>type</strong>：目前僅支援<code translate="no">etcd</code> 。請沿用與 Milvus 相同的 etcd 來儲存輕量級元資料。</li>
-<li><strong>prefix</strong>：元資料的鍵前綴。預設值：<code translate="no">woodpecker</code> 。</li>
+<li><strong>type</strong>: Currently only <code translate="no">etcd</code> is supported. Reuse the same etcd as Milvus to store lightweight metadata.</li>
+<li><strong>prefix</strong>: The key prefix for metadata. Default: <code translate="no">woodpecker</code>.</li>
 </ul></li>
 <li><code translate="no">woodpecker.client</code>
 <ul>
-<li>控制客戶端端的區段追加／滾動／稽核行為，以平衡吞吐量與端到端延遲。</li>
+<li>Controls segment append/rolling/auditing behavior on the client side to balance throughput and end‑to‑end latency.</li>
 </ul></li>
 <li><code translate="no">woodpecker.logstore</code>
 <ul>
-<li>控制日誌區段的同步／刷新／壓縮／讀取政策。這些是調整吞吐量與延遲的主要控制項。</li>
+<li>Controls sync/flush/compaction/read policies for log segments. These are the primary knobs for throughput/latency tuning.</li>
 </ul></li>
 <li><code translate="no">woodpecker.storage</code>
 <ul>
-<li><strong>類型</strong>：<code translate="no">minio</code> 適用於 MinIO/S3 相容的物件儲存（MinIO/S3/GCS/OSS 等）；<code translate="no">local</code> 適用於本機/共用檔案系統。</li>
-<li><strong>rootPath</strong>：儲存後端的根路徑（僅適用於<code translate="no">local</code> ；若使用<code translate="no">minio</code> ，路徑則由儲存桶／前綴決定）。</li>
+<li><strong>type</strong>: <code translate="no">minio</code> for MinIO/S3‑compatible object storage (MinIO/S3/GCS/OSS, etc.); <code translate="no">local</code> for local/shared file systems.</li>
+<li><strong>rootPath</strong>: Root path for the storage backend (effective for <code translate="no">local</code>; with <code translate="no">minio</code>, paths are dictated by bucket/prefix).</li>
 </ul></li>
 </ul>
-<h2 id="Deployment-modes" class="common-anchor-header">部署模式<button data-href="#Deployment-modes" class="anchor-icon" translate="no">
+<h2 id="Deployment-modes" class="common-anchor-header">Deployment modes<button data-href="#Deployment-modes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -148,24 +150,24 @@ summary: 了解 Woodpecker 如何在 Milvus 中作為預設訊息佇列（WAL）
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Woodpecker 支援三種<code translate="no">storage.type</code> 模式：</p>
+    </button></h2><p>Woodpecker supports three <code translate="no">storage.type</code> modes:</p>
 <table>
 <thead>
-<tr><th><code translate="no">storage.type</code></th><th>Woodpecker 的運作方式</th><th>WAL 後端</th><th>Milvus 獨立模式</th><th>Milvus 分散式（叢集）</th></tr>
+<tr><th><code translate="no">storage.type</code></th><th>How Woodpecker runs</th><th>WAL backend</th><th>Milvus Standalone</th><th>Milvus Distributed (cluster)</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">minio</code> （預設）</td><td>嵌入於 Milvus/串流節點中</td><td>物件儲存（MinIO／S3 相容）</td><td>受支援</td><td>受支援</td></tr>
-<tr><td><code translate="no">local</code></td><td>內建於 Milvus/串流節點中</td><td>本機檔案系統</td><td>支援</td><td>有限（所有節點都需要共用檔案系統，例如 NFS）</td></tr>
-<tr><td><code translate="no">service</code></td><td><strong>專用的 Woodpecker 服務</strong>（擁有自己的 Pod）</td><td>物件儲存（MinIO／S3 相容）</td><td><strong>不支援</strong></td><td>受支援</td></tr>
+<tr><td><code translate="no">minio</code> (default)</td><td>Embedded in the Milvus/streaming node</td><td>Object storage (MinIO/S3‑compatible)</td><td>Supported</td><td>Supported</td></tr>
+<tr><td><code translate="no">local</code></td><td>Embedded in the Milvus/streaming node</td><td>Local file system</td><td>Supported</td><td>Limited (all nodes need a shared FS, e.g. NFS)</td></tr>
+<tr><td><code translate="no">service</code></td><td><strong>Dedicated Woodpecker service</strong> (its own pods)</td><td>Object storage (MinIO/S3‑compatible)</td><td><strong>Not supported</strong></td><td>Supported</td></tr>
 </tbody>
 </table>
-<p>備註：</p>
+<p>Notes:</p>
 <ul>
-<li>在<code translate="no">minio</code> 下，Woodpecker 與 Milvus 共用相同的物件儲存（MinIO/S3/GCS/OSS 等）。</li>
-<li>在「<code translate="no">local</code> 」模式下，單節點本機磁碟僅適用於「獨立模式」。若所有 Pod 皆可存取共用檔案系統（例如 NFS），則「叢集模式」亦可使用「<code translate="no">local</code> 」。</li>
-<li><strong><code translate="no">service</code> 此模式將 Woodpecker 作為獨立且可自主擴展的服務運行，僅適用於分散式／叢集部署。</strong>獨立部署則使用內嵌模式（<code translate="no">minio</code> 或<code translate="no">local</code> ）。</li>
+<li>With <code translate="no">minio</code>, Woodpecker shares the same object storage with Milvus (MinIO/S3/GCS/OSS, etc.).</li>
+<li>With <code translate="no">local</code>, a single‑node local disk is only suitable for Standalone. If all pods can access a shared file system (e.g., NFS), Cluster mode can also use <code translate="no">local</code>.</li>
+<li><strong><code translate="no">service</code> mode runs Woodpecker as a separate, independently scalable service and is only available for distributed/cluster deployments.</strong> Standalone deployments use the embedded modes (<code translate="no">minio</code> or <code translate="no">local</code>).</li>
 </ul>
-<h2 id="Object-storage-compatibility-for-storagetypeminio" class="common-anchor-header">物件儲存相容性<code translate="no">storage.type=minio</code><button data-href="#Object-storage-compatibility-for-storagetypeminio" class="anchor-icon" translate="no">
+<h2 id="Object-storage-compatibility-for-storagetypeminio" class="common-anchor-header">Object storage compatibility for <code translate="no">storage.type=minio</code><button data-href="#Object-storage-compatibility-for-storagetypeminio" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -180,30 +182,30 @@ summary: 了解 Woodpecker 如何在 Milvus 中作為預設訊息佇列（WAL）
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>以下對照表彙整了當 Woodpecker 配置為<code translate="no">storage.type=minio</code> 時，目前已知的物件儲存後端相容性。此資訊基於<a href="https://github.com/zilliztech/woodpecker/discussions/150">GitHub 討論串 #150</a>。</p>
+    </button></h2><p>The following matrix summarizes the currently known compatibility of object storage backends when Woodpecker is configured with <code translate="no">storage.type=minio</code>. This information is based on <a href="https://github.com/zilliztech/woodpecker/discussions/150">GitHub Discussion #150</a>.</p>
 <table>
 <thead>
-<tr><th>供應商／服務</th><th>狀態</th><th>備註</th></tr>
+<tr><th>Provider / service</th><th>Status</th><th>Notes</th></tr>
 </thead>
 <tbody>
-<tr><td>Azure Blob Storage</td><td>受支援</td><td>使用原生 Azure SDK。</td></tr>
-<tr><td>AWS S3</td><td>已支援</td><td>原生 S3，並完全支援條件寫入。</td></tr>
-<tr><td>MinIO (<code translate="no">&gt;= 2024-12</code>)</td><td>已支援</td><td>完整支援 S3 條件寫入功能。</td></tr>
-<tr><td>阿里雲 OSS</td><td>已支援</td><td>透過其 S3 相容介面提供支援。</td></tr>
-<tr><td>騰訊 COS</td><td>支援</td><td>透過其 S3 相容介面提供支援。</td></tr>
-<tr><td>Google Cloud Storage (GCS)</td><td>支援</td><td>透過 S3 互通模式支援。</td></tr>
-<tr><td>華為雲 OBS</td><td>不支援</td><td>缺乏所需的「條件寫入」語義。</td></tr>
-<tr><td>VAST Data</td><td>受支援</td><td>經社群驗證；僅適用於非版本化儲存桶。</td></tr>
-<tr><td>其他 S3 相容儲存服務</td><td>部分</td><td>取決於是否完全支援 S3 條件寫入語義。</td></tr>
+<tr><td>Azure Blob Storage</td><td>Supported</td><td>Uses the native Azure SDK.</td></tr>
+<tr><td>AWS S3</td><td>Supported</td><td>Native S3 with full Conditional Write support.</td></tr>
+<tr><td>MinIO (<code translate="no">&gt;= 2024-12</code>)</td><td>Supported</td><td>Full S3 Conditional Write support.</td></tr>
+<tr><td>Aliyun OSS</td><td>Supported</td><td>Supported through its S3-compatible interface.</td></tr>
+<tr><td>Tencent COS</td><td>Supported</td><td>Supported through its S3-compatible interface.</td></tr>
+<tr><td>Google Cloud Storage (GCS)</td><td>Supported</td><td>Supported through S3 interoperability mode.</td></tr>
+<tr><td>Huawei Cloud OBS</td><td>Unsupported</td><td>Lacks the required Conditional Write semantics.</td></tr>
+<tr><td>VAST Data</td><td>Supported</td><td>Verified by the community; works with non-versioned buckets only.</td></tr>
+<tr><td>Other S3-compatible storage</td><td>Partial</td><td>Depends on full support for S3 Conditional Write semantics.</td></tr>
 </tbody>
 </table>
-<p>備註：</p>
+<p>Notes:</p>
 <ul>
-<li>相容性取決於原生 SDK 的支援，或對 S3 條件寫入語義的支援。</li>
-<li>若您為 Woodpecker 自行架設 MinIO，請使用<code translate="no">RELEASE.2024-12-18T13-15-44Z</code> 或更新版本。</li>
-<li>此對照表反映<a href="https://github.com/zilliztech/woodpecker/discussions/150">當前的討論內容</a>，並可能隨著後端支援的進一步驗證而有所變動。</li>
+<li>Compatibility depends on native SDK support or support for S3 Conditional Write semantics.</li>
+<li>If you self-host MinIO for Woodpecker, use <code translate="no">RELEASE.2024-12-18T13-15-44Z</code> or later.</li>
+<li>This matrix reflects <a href="https://github.com/zilliztech/woodpecker/discussions/150">the current discussion</a> and may evolve as backend support is validated further.</li>
 </ul>
-<h2 id="Deployment-guides" class="common-anchor-header">部署指南<button data-href="#Deployment-guides" class="anchor-icon" translate="no">
+<h2 id="Deployment-guides" class="common-anchor-header">Deployment guides<button data-href="#Deployment-guides" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -218,7 +220,7 @@ summary: 了解 Woodpecker 如何在 Milvus 中作為預設訊息佇列（WAL）
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Enable-Woodpecker-for-a-Milvus-Cluster-on-Kubernetes-Milvus-Operator-storageminio" class="common-anchor-header">在 Kubernetes 上的 Milvus 叢集中啟用 Woodpecker（Milvus Operator，storage=minio）<button data-href="#Enable-Woodpecker-for-a-Milvus-Cluster-on-Kubernetes-Milvus-Operator-storageminio" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Enable-Woodpecker-for-a-Milvus-Cluster-on-Kubernetes-Milvus-Operator-storageminio" class="common-anchor-header">Enable Woodpecker for a Milvus Cluster on Kubernetes (Milvus Operator, storage=minio)<button data-href="#Enable-Woodpecker-for-a-Milvus-Cluster-on-Kubernetes-Milvus-Operator-storageminio" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -233,15 +235,15 @@ summary: 了解 Woodpecker 如何在 Milvus 中作為預設訊息佇列（WAL）
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>安裝<a href="/docs/zh-hant/install_cluster-milvusoperator.md">Milvus Operator</a> 後，請參照官方範例啟動已啟用 Woodpecker 的 Milvus 叢集：</p>
+    </button></h3><p>After installing the <a href="/docs/zh-hant/install_cluster-milvusoperator.md">Milvus Operator</a>, start a Milvus cluster with Woodpecker enabled using the official sample:</p>
 <pre><code translate="no" class="language-bash">kubectl apply -f https://raw.githubusercontent.com/zilliztech/milvus-operator/main/config/samples/milvus_cluster_woodpecker.yaml
 
 <button class="copy-code-btn"></button></code></pre>
-<p>此範例將 Woodpecker 設定為訊息佇列，並啟用串流節點。首次啟動時，拉取映像檔可能需要一些時間；請等待直到所有 Pod 都準備就緒：</p>
+<p>This sample configures Woodpecker as the message queue and enables the Streaming Node. The first startup may take time to pull images; wait until all pods are ready:</p>
 <pre><code translate="no" class="language-bash">kubectl get pods
 kubectl get milvus my-release -o yaml | grep -A2 status
 <button class="copy-code-btn"></button></code></pre>
-<p>準備就緒後，您應會看到類似以下的 Pod：</p>
+<p>When ready, you should see pods similar to:</p>
 <pre><code translate="no">NAME                                               READY   STATUS    RESTARTS   AGE
 my<span class="hljs-operator">-</span><span class="hljs-keyword">release</span><span class="hljs-operator">-</span>etcd<span class="hljs-number">-0</span>                                  <span class="hljs-number">1</span><span class="hljs-operator">/</span><span class="hljs-number">1</span>     <span class="hljs-keyword">Running</span>   <span class="hljs-number">0</span>          <span class="hljs-number">17</span>m
 my<span class="hljs-operator">-</span><span class="hljs-keyword">release</span><span class="hljs-operator">-</span>etcd<span class="hljs-number">-1</span>                                  <span class="hljs-number">1</span><span class="hljs-operator">/</span><span class="hljs-number">1</span>     <span class="hljs-keyword">Running</span>   <span class="hljs-number">0</span>          <span class="hljs-number">17</span>m
@@ -256,11 +258,11 @@ my<span class="hljs-operator">-</span><span class="hljs-keyword">release</span><
 my<span class="hljs-operator">-</span><span class="hljs-keyword">release</span><span class="hljs-operator">-</span>minio<span class="hljs-number">-2</span>                                 <span class="hljs-number">1</span><span class="hljs-operator">/</span><span class="hljs-number">1</span>     <span class="hljs-keyword">Running</span>   <span class="hljs-number">0</span>          <span class="hljs-number">17</span>m
 my<span class="hljs-operator">-</span><span class="hljs-keyword">release</span><span class="hljs-operator">-</span>minio<span class="hljs-number">-3</span>                                 <span class="hljs-number">1</span><span class="hljs-operator">/</span><span class="hljs-number">1</span>     <span class="hljs-keyword">Running</span>   <span class="hljs-number">0</span>          <span class="hljs-number">17</span>m
 <button class="copy-code-btn"></button></code></pre>
-<p>執行以下指令以解除安裝 Milvus 叢集。</p>
+<p>Run the following command to uninstall the Milvus cluster.</p>
 <pre><code translate="no" class="language-bash">kubectl delete milvus my-release
 <button class="copy-code-btn"></button></code></pre>
-<p>若需調整 Woodpecker 參數，請參照「<a href="#Configuration">配置</a>」章節中的設定說明。</p>
-<h3 id="Enable-Woodpecker-for-a-Milvus-Cluster-on-Kubernetes-Helm-Chart-storageminio" class="common-anchor-header">在 Kubernetes 上為 Milvus 叢集啟用 Woodpecker（Helm Chart，storage=minio）<button data-href="#Enable-Woodpecker-for-a-Milvus-Cluster-on-Kubernetes-Helm-Chart-storageminio" class="anchor-icon" translate="no">
+<p>If you need to adjust Woodpecker parameters, follow the settings described in <a href="#Configuration">Configuration</a>.</p>
+<h3 id="Enable-Woodpecker-for-a-Milvus-Cluster-on-Kubernetes-Helm-Chart-storageminio" class="common-anchor-header">Enable Woodpecker for a Milvus Cluster on Kubernetes (Helm Chart, storage=minio)<button data-href="#Enable-Woodpecker-for-a-Milvus-Cluster-on-Kubernetes-Helm-Chart-storageminio" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -275,9 +277,9 @@ my<span class="hljs-operator">-</span><span class="hljs-keyword">release</span><
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>首先，請依照《<a href="/docs/zh-hant/install_cluster-helm.md">使用 Helm 在 Kubernetes 上執行 Milvus</a>》中的說明，新增並更新 Milvus Helm 圖表。</p>
-<p>接著，請參照以下範例之一進行部署：</p>
-<p>– 叢集部署（建議設定：啟用 Woodpecker 與串流節點）：</p>
+    </button></h3><p>First add and update the Milvus Helm chart as described in <a href="/docs/zh-hant/install_cluster-helm.md">Run Milvus in Kubernetes with Helm</a>.</p>
+<p>Then deploy with one of the following examples:</p>
+<p>– Cluster deployment (recommended settings with Woodpecker and Streaming Node enabled):</p>
 <pre><code translate="no" class="language-bash">helm install my-release zilliztech/milvus \
   --<span class="hljs-built_in">set</span> image.all.tag=v3.0.5 \
   --<span class="hljs-built_in">set</span> pulsarv3.enabled=<span class="hljs-literal">false</span> \
@@ -285,7 +287,7 @@ my<span class="hljs-operator">-</span><span class="hljs-keyword">release</span><
   --<span class="hljs-built_in">set</span> streaming.enabled=<span class="hljs-literal">true</span> \
   --<span class="hljs-built_in">set</span> indexNode.enabled=<span class="hljs-literal">false</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>– 獨立部署（已啟用 Woodpecker）：</p>
+<p>– Standalone deployment (Woodpecker enabled):</p>
 <pre><code translate="no" class="language-bash">helm install my-release zilliztech/milvus \
   --<span class="hljs-built_in">set</span> image.all.tag=v3.0.5 \
   --<span class="hljs-built_in">set</span> cluster.enabled=<span class="hljs-literal">false</span> \
@@ -294,8 +296,8 @@ my<span class="hljs-operator">-</span><span class="hljs-keyword">release</span><
   --<span class="hljs-built_in">set</span> woodpecker.enabled=<span class="hljs-literal">true</span> \
   --<span class="hljs-built_in">set</span> streaming.enabled=<span class="hljs-literal">true</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>部署完成後，請依照文件說明進行埠轉發並建立連線。若要調整 Woodpecker 參數，請參照「<a href="#Configuration">設定</a>」章節中的說明進行設定。</p>
-<h3 id="Enable-Woodpecker-for-Milvus-Standalone-in-Docker-storagelocal" class="common-anchor-header">在 Docker 中的 Milvus 獨立執行模式下啟用 Woodpecker（storage=local）<button data-href="#Enable-Woodpecker-for-Milvus-Standalone-in-Docker-storagelocal" class="anchor-icon" translate="no">
+<p>After deployment, follow the docs to port‑forward and connect. To adjust Woodpecker parameters, follow the settings described in <a href="#Configuration">Configuration</a>.</p>
+<h3 id="Enable-Woodpecker-for-Milvus-Standalone-in-Docker-storagelocal" class="common-anchor-header">Enable Woodpecker for Milvus Standalone in Docker (storage=local)<button data-href="#Enable-Woodpecker-for-Milvus-Standalone-in-Docker-storagelocal" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -310,19 +312,19 @@ my<span class="hljs-operator">-</span><span class="hljs-keyword">release</span><
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>在 Milvus 3.x 中，Docker 獨立部署<strong>預設會使用</strong> <strong>Woodpecker，並以本機檔案系統</strong>作為其 WAL 後端 — 無需額外設定。請參照《<a href="/docs/zh-hant/install_standalone-docker.md">在 Docker 中執行 Milvus</a>》：</p>
+    </button></h3><p>In Milvus 3.x, the Docker standalone deployment uses Woodpecker with the <strong>local filesystem</strong> as its WAL backend <strong>by default</strong> — no extra configuration is required. Follow <a href="/docs/zh-hant/install_standalone-docker.md">Run Milvus in Docker</a>:</p>
 <pre><code translate="no" class="language-bash"><span class="hljs-built_in">mkdir</span> milvus-wp &amp;&amp; <span class="hljs-built_in">cd</span> milvus-wp
 curl -sfL https://raw.githubusercontent.com/milvus-io/milvus/master/scripts/standalone_embed.sh -o standalone_embed.sh
 bash standalone_embed.sh start
 <button class="copy-code-btn"></button></code></pre>
-<p>若要調整 Woodpecker，請在首次啟動後編輯生成的 `<code translate="no">user.yaml</code> ` 檔案，並執行 `<code translate="no">bash standalone_embed.sh restart</code> ` 以套用變更（執行 `<code translate="no">start</code> ` 會重新生成 `<code translate="no">user.yaml</code>` 檔案，因此請使用 `<code translate="no">restart</code>` 來套用編輯內容）：</p>
+<p>To tune Woodpecker, edit the generated <code translate="no">user.yaml</code> after the first start and run <code translate="no">bash standalone_embed.sh restart</code> to apply the changes (a fresh <code translate="no">start</code> regenerates <code translate="no">user.yaml</code>, so apply edits with <code translate="no">restart</code>):</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-comment"># user.yaml</span>
 <span class="hljs-attr">woodpecker:</span>
   <span class="hljs-attr">logstore:</span>
     <span class="hljs-attr">segmentSyncPolicy:</span>
       <span class="hljs-attr">maxFlushThreads:</span> <span class="hljs-number">16</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Enable-Woodpecker-for-Milvus-Standalone-with-Docker-Compose-storageminio" class="common-anchor-header">透過 Docker Compose 為 Milvus 獨立執行模式啟用 Woodpecker（storage=minio）<button data-href="#Enable-Woodpecker-for-Milvus-Standalone-with-Docker-Compose-storageminio" class="anchor-icon" translate="no">
+<h3 id="Enable-Woodpecker-for-Milvus-Standalone-with-Docker-Compose-storageminio" class="common-anchor-header">Enable Woodpecker for Milvus Standalone with Docker Compose (storage=minio)<button data-href="#Enable-Woodpecker-for-Milvus-Standalone-with-Docker-Compose-storageminio" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -337,7 +339,7 @@ bash standalone_embed.sh start
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>請參照《<a href="/docs/zh-hant/install_standalone-docker-compose.md">使用 Docker Compose 執行 Milvus</a>》。範例：</p>
+    </button></h3><p>Follow <a href="/docs/zh-hant/install_standalone-docker-compose.md">Run Milvus with Docker Compose</a>. Example:</p>
 <pre><code translate="no" class="language-bash"><span class="hljs-built_in">mkdir</span> milvus-wp-compose &amp;&amp; <span class="hljs-built_in">cd</span> milvus-wp-compose
 wget https://github.com/milvus-io/milvus/releases/download/v3.0.5/milvus-standalone-docker-compose.yaml -O docker-compose.yml
 <span class="hljs-comment"># By default, the Docker Compose standalone uses Woodpecker</span>
@@ -357,7 +359,7 @@ EOF&#x27;</span>
 <span class="hljs-comment"># Restart the container to apply the changes</span>
 docker restart milvus-standalone
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Enable-Woodpecker-service-mode-for-a-Milvus-Cluster-Helm" class="common-anchor-header">為 Milvus 叢集（Helm）啟用 Woodpecker 服務模式<button data-href="#Enable-Woodpecker-service-mode-for-a-Milvus-Cluster-Helm" class="anchor-icon" translate="no">
+<h3 id="Enable-Woodpecker-service-mode-for-a-Milvus-Cluster-Helm" class="common-anchor-header">Enable Woodpecker service mode for a Milvus Cluster (Helm)<button data-href="#Enable-Woodpecker-service-mode-for-a-Milvus-Cluster-Helm" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -373,9 +375,9 @@ docker restart milvus-standalone
         ></path>
       </svg>
     </button></h3><div class="alert note">
-<p>若要使用 Woodpecker 服務模式，建議搭配 Milvus 3.0.3 或更新版本，以及 Woodpecker v0.1.46 或更新版本。</p>
+<p>For Woodpecker service mode, we recommend using Milvus 3.0.3 or later with Woodpecker v0.1.46 or later.</p>
 </div>
-<p>Woodpecker<strong>服務模式是</strong> <strong>Milvus 3.0</strong>的一項功能。對於分散式／叢集部署，您可以透過設定 `<code translate="no">streaming.woodpecker.embedded=false</code>`，將 Woodpecker<strong>作為專用服務</strong>（獨立 Pod）運行，而非嵌入至串流節點中：</p>
+<p>Woodpecker <strong>service mode</strong> is a <strong>Milvus 3.0</strong> feature. For distributed/cluster deployments, you can run Woodpecker as a <strong>dedicated service</strong> (separate pods) instead of embedded in the streaming node by setting <code translate="no">streaming.woodpecker.embedded=false</code>:</p>
 <pre><code translate="no" class="language-bash">helm install my-release zilliztech/milvus \
   --<span class="hljs-built_in">set</span> image.all.tag=v3.0.5 \
   --<span class="hljs-built_in">set</span> woodpecker.enabled=<span class="hljs-literal">true</span> \
@@ -383,16 +385,16 @@ docker restart milvus-standalone
   --<span class="hljs-built_in">set</span> streaming.enabled=<span class="hljs-literal">true</span> \
   --<span class="hljs-built_in">set</span> streaming.woodpecker.embedded=<span class="hljs-literal">false</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>此設定會將 Woodpecker 部署為專用的 StatefulSet（<code translate="no">my-release-milvus-woodpecker</code> ，預設 4 個複本），並由無頭服務作為前端，透過<code translate="no">18080</code> （服務）、<code translate="no">17946</code> （閒聊）及<code translate="no">9091</code> （指標）這三個埠進行閒聊式叢集，並以 MinIO 作為其儲存後端。 該服務需要<strong>3</strong>個節點的法定人數；預設的<strong>4</strong>個複本既能維持法定人數，又能容忍單一節點故障，因此請勿將 `<code translate="no">woodpecker.replicaCount</code> ` 設定為低於 3。該叢集隨後將包含一個獨立的 `<code translate="no">woodpecker</code> ` Pod 集合：</p>
+<p>This deploys Woodpecker as a dedicated StatefulSet (<code translate="no">my-release-milvus-woodpecker</code>, 4 replicas by default) fronted by a headless service, gossip-clustered on ports <code translate="no">18080</code> (service), <code translate="no">17946</code> (gossip), and <code translate="no">9091</code> (metrics), with MinIO as its storage backend. The service needs a quorum of <strong>3</strong> nodes; the default of <strong>4</strong> replicas keeps the quorum while tolerating a single node failure, so do not set <code translate="no">woodpecker.replicaCount</code> below 3. The cluster then includes a separate <code translate="no">woodpecker</code> pod set:</p>
 <pre><code translate="no"><span class="hljs-keyword">my</span>-release-milvus-woodpecker-<span class="hljs-number">0</span>
 <span class="hljs-keyword">my</span>-release-milvus-woodpecker-<span class="hljs-number">1</span>
 <span class="hljs-keyword">my</span>-release-milvus-woodpecker-<span class="hljs-number">2</span>
 <span class="hljs-keyword">my</span>-release-milvus-woodpecker-<span class="hljs-number">3</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>Woodpecker 的<code translate="no">service</code> 模式僅適用於<strong>分散式／叢集部署</strong>— 獨立部署則會執行內嵌式 Woodpecker（<code translate="no">minio</code> 或<code translate="no">local</code> ）。Milvus Operator 目前尚不支援 Woodpecker 服務模式。</p>
+<p>Woodpecker <code translate="no">service</code> mode is for <strong>distributed/cluster</strong> deployments only — standalone deployments run Woodpecker embedded (<code translate="no">minio</code> or <code translate="no">local</code>). Milvus Operator does not yet support Woodpecker service mode.</p>
 </div>
-<h2 id="Throughput-tuning-tips" class="common-anchor-header">吞吐量調校要點<button data-href="#Throughput-tuning-tips" class="anchor-icon" translate="no">
+<h2 id="Throughput-tuning-tips" class="common-anchor-header">Throughput tuning tips<button data-href="#Throughput-tuning-tips" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -407,8 +409,8 @@ docker restart milvus-standalone
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Woodpecker<strong>在嵌入式</strong>模式與<strong>服務</strong>模式（Milvus 3.0 的新功能）下的吞吐量與延遲表現各不相同。以下指引將依模式分類說明。</p>
-<h3 id="Embedded-mode" class="common-anchor-header">嵌入式模式<button data-href="#Embedded-mode" class="anchor-icon" translate="no">
+    </button></h2><p>Woodpecker’s throughput and latency profile differs between <strong>embedded</strong> mode and <strong>service</strong> mode (a Milvus 3.0 feature). The guidance below is organized by mode.</p>
+<h3 id="Embedded-mode" class="common-anchor-header">Embedded mode<button data-href="#Embedded-mode" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -423,26 +425,26 @@ docker restart milvus-standalone
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>根據<a href="/docs/zh-hant/woodpecker_architecture.md">Woodpecker</a> 中的基準測試結果與後端限制，請從以下方面優化端到端的寫入吞吐量：</p>
+    </button></h3><p>Based on the benchmarks and backend limits in <a href="/docs/zh-hant/woodpecker_architecture.md">Woodpecker</a>, optimize end‑to‑end write throughput from the following aspects:</p>
 <ul>
-<li>儲存端
+<li>Storage‑side
 <ul>
-<li><strong>物件儲存（MinIO／S3 相容）</strong>：提高並發數並增大物件大小（避免使用微小物件）。注意網路與儲存桶的頻寬限制。單一 SSD 上的 MinIO 節點，本地頻寬通常上限約為 100 MB/s；單一 EC2 連線至 S3 則可達到 GB/s。</li>
-<li><strong>本機／共用檔案系統（本機）</strong>：優先選用 NVMe／高速硬碟。確保檔案系統能妥善處理小量寫入及 fsync 延遲。</li>
+<li><strong>Object storage (minio/S3‑compatible)</strong>: Increase concurrency and object size (avoid tiny objects). Watch network and bucket bandwidth limits. A single MinIO node on SSD often caps around 100 MB/s locally; a single EC2 to S3 can reach GB/s.</li>
+<li><strong>Local/shared file systems (local)</strong>: Prefer NVMe/fast disks. Ensure the FS handles small writes and fsync latency well.</li>
 </ul></li>
-<li>Woodpecker 調整參數
+<li>Woodpecker knobs
 <ul>
-<li>增加 `<code translate="no">logstore.segmentSyncPolicy.maxFlushSize</code> ` 和 `<code translate="no">maxFlushThreads</code> ` 參數值，以實現更大的寫入批次及更高的並行度。</li>
-<li>根據儲存媒體特性調整<code translate="no">maxInterval</code> （透過延長聚合時間，在延遲與吞吐量之間取得平衡）。</li>
-<li>對於物件儲存，可考慮增加<code translate="no">segmentRollingPolicy.maxSize</code> 以減少區段切換。</li>
+<li>Increase <code translate="no">logstore.segmentSyncPolicy.maxFlushSize</code> and <code translate="no">maxFlushThreads</code> for larger flushes and higher parallelism.</li>
+<li>Tune <code translate="no">maxInterval</code> according to media characteristics (trade latency for throughput with longer aggregation).</li>
+<li>For object storage, consider increasing <code translate="no">segmentRollingPolicy.maxSize</code> to reduce segment switches.</li>
 </ul></li>
-<li>客戶端／應用程式端
+<li>Client/application side
 <ul>
-<li>使用較大的批次大小，並增加並發寫入者／客戶端數量。</li>
-<li>控制刷新／索引建置的時機（在觸發前先進行批次彙總），以避免頻繁的小量寫入。</li>
+<li>Use larger batch sizes and more concurrent writers/clients.</li>
+<li>Control refresh/index build timing (batch up before triggering) to avoid frequent small writes.</li>
 </ul></li>
 </ul>
-<h3 id="Service-mode-Milvus-30+" class="common-anchor-header">服務模式（Milvus 3.0+）<button data-href="#Service-mode-Milvus-30+" class="anchor-icon" translate="no">
+<h3 id="Service-mode-Milvus-30+" class="common-anchor-header">Service mode (Milvus 3.0+)<button data-href="#Service-mode-Milvus-30+" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -457,8 +459,8 @@ docker restart milvus-standalone
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>服務模式在維持以物件儲存為後端的 WAL 高寫入吞吐量的同時，還增加了低延遲（請參閱「<a href="#Latency">延遲」</a>）。 上述儲存端與客戶端側的調校方法依然適用；此外，由於 Woodpecker 作為獨立服務運行，您可以透過增加複本（<code translate="no">woodpecker.replicaCount</code> ，預設為 4）來水平擴展寫入容量，且寫入操作可受益於單 RTT 法定人數複製，以及能避免經由中介伺服器轉發的拓撲感知讀取。</p>
-<p><strong>批次插入示範</strong>— 請使用以下指令測量寫入吞吐量：</p>
+    </button></h3><p>Service mode keeps the high write throughput of an object-storage-backed WAL while adding low latency (see <a href="#Latency">Latency</a>). The storage-side and client-side tuning above still applies; in addition, because Woodpecker runs as its own service, you scale write capacity horizontally by adding replicas (<code translate="no">woodpecker.replicaCount</code>, default 4), and writes benefit from one-RTT quorum replication and topology-aware reads that avoid broker forwarding.</p>
+<p><strong>Batch insert demo</strong> — use the following to measure write throughput:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 <span class="hljs-keyword">import</span> random
 <span class="hljs-keyword">import</span> time
@@ -501,7 +503,7 @@ batch_count = <span class="hljs-number">2000</span>
     data = []
     <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Inserted <span class="hljs-subst">{j}</span>th vectors endTime:<span class="hljs-subst">{time.time()}</span> costTime:<span class="hljs-subst">{time.time() - start_time}</span>&quot;</span>)
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Latency" class="common-anchor-header">延遲<button data-href="#Latency" class="anchor-icon" translate="no">
+<h2 id="Latency" class="common-anchor-header">Latency<button data-href="#Latency" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -516,7 +518,7 @@ batch_count = <span class="hljs-number">2000</span>
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Embedded-mode" class="common-anchor-header">嵌入式模式<button data-href="#Embedded-mode" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Embedded-mode" class="common-anchor-header">Embedded mode<button data-href="#Embedded-mode" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -531,9 +533,9 @@ batch_count = <span class="hljs-number">2000</span>
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Woodpecker 是一款專為物件儲存設計的雲原生 WAL，在吞吐量、成本與延遲之間取得權衡。輕量級的嵌入式模式優先考量成本與吞吐量的優化，因為多數情境僅需在特定時間內完成資料寫入，而非要求個別寫入請求具備低延遲。 因此，Woodpecker 採用批次寫入機制，針對本地檔案系統儲存後端，預設間隔為 10 毫秒；針對 MinIO 類型的儲存後端，預設間隔則為 200 毫秒。在寫入速度較慢的情況下，最大延遲等於間隔時間加上沖洗時間。</p>
-<p>請注意，批次插入不僅由時間間隔觸發，亦受批次大小影響，其預設值為 2MB。</p>
-<h3 id="Service-mode-Milvus-30+" class="common-anchor-header">服務模式（Milvus 3.0+）<button data-href="#Service-mode-Milvus-30+" class="anchor-icon" translate="no">
+    </button></h3><p>Woodpecker is a cloud-native WAL designed for object storage with trade-offs between throughput, cost, and latency. The lightweight embedded mode prioritizes cost and throughput optimization, as most scenarios only require data to be written within a certain time rather than demanding low latency for individual write requests. Therefore, Woodpecker employs batched writes, with default intervals of 10ms for local filesystem storage backends and 200ms for MinIO-like storage backends. During slow write operations, the maximum latency equals the interval time plus flush time.</p>
+<p>Note that batch insertion is triggered not only by time intervals but also by batch size, which defaults to 2MB.</p>
+<h3 id="Service-mode-Milvus-30+" class="common-anchor-header">Service mode (Milvus 3.0+)<button data-href="#Service-mode-Milvus-30+" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -548,17 +550,17 @@ batch_count = <span class="hljs-number">2000</span>
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>服務模式在保持低成本的同時，可實現<strong>毫秒級的寫入延遲</strong>——與傳統的三副本本地磁碟 WAL 處於同一量級。在典型的三副本跨可用區域（AZ）部署中，寫入延遲維持在毫秒範圍內。其實現方式如下：</p>
+    </button></h3><p>Service mode brings <strong>millisecond-level write latency</strong> — on the same order as a traditional three-replica local-disk WAL — while keeping cost low. In a typical three-replica, cross-AZ deployment, write latency stays in the millisecond range. It achieves this through:</p>
 <ul>
-<li><strong>單 RTT 法定數寫入</strong>— 由客戶端驅動的複製可在單次往返內完成法定數寫入，跨可用區域流量固定為兩個副本的資料量（相較於基於中介/領導節點的複製通常會產生額外約 1/3 的跨可用區域流量）。</li>
-<li><strong>拓撲感知單跳讀取</strong>— 每次讀取皆直接連線至最近的副本，而非透過中介節點轉發，從而避免了基於中介節點系統中隨機的跨可用區域讀取（約佔跨可用區域讀取流量的 2/3）。</li>
-<li><strong>區段滾動後立即上傳至物件儲存</strong>— 每個區段皆追蹤其完整生命週期，並在滾動後立即上傳至物件儲存，在維持低延遲的同時，將本地磁碟佔用空間與儲存成本控制在低水平。</li>
-<li><strong>無持續的節點間複製</strong>— 日誌持久化至充當共享儲存的物件儲存中，因此故障轉移時僅需重新上傳存活的副本（無需複製整個節點），擴展能力不受節點間複製頻寬限制，且大規模節點更換也不會引發複製風暴。</li>
+<li><strong>One-RTT quorum writes</strong> — client-driven replication completes a quorum write within a single round trip, with cross-AZ traffic fixed at two replicas’ worth of data (versus the extra ~1/3 cross-AZ traffic typical of broker/leader-based replication).</li>
+<li><strong>Topology-aware single-hop reads</strong> — each read goes directly to the nearest replica instead of being forwarded through a broker, avoiding the random cross-AZ reads (≈2/3 cross-AZ read traffic) of broker-based systems.</li>
+<li><strong>Immediate object-storage upload after segment rolling</strong> — each segment tracks its full lifecycle and uploads to object storage as soon as it rolls, keeping the local-disk footprint and storage cost low without trading away latency.</li>
+<li><strong>No continuous node-to-node replication</strong> — logs persist to object storage acting as shared storage, so failover only re-uploads surviving replicas (no whole-node copy), scaling is not bound by inter-node replication bandwidth, and large-scale node replacement causes no replication storms.</li>
 </ul>
-<p>在跨可用區域（AZ）部署中，相較於基於中介軟體的日誌系統，此服務模式還能節省約<strong>1/3 的寫入流量</strong>及<strong>2/3 的讀取</strong>流量。完整的設計與成本分析，請參閱《<a href="/docs/zh-hant/woodpecker_architecture.md">Woodpecker 架構</a>》。</p>
-<p>有關架構、部署模式（MemoryBuffer / QuorumBuffer）及效能的詳細資訊，請參閱《<a href="/docs/zh-hant/woodpecker_architecture.md">Woodpecker 架構</a>》。</p>
-<p>如需更多參數詳情，請參閱 Woodpecker<a href="https://github.com/zilliztech/woodpecker">GitHub 儲存庫</a>。</p>
-<h2 id="Milvus-and-Woodpecker-versions" class="common-anchor-header">Milvus 與 Woodpecker 版本<button data-href="#Milvus-and-Woodpecker-versions" class="anchor-icon" translate="no">
+<p>In cross-AZ deployments, service mode also saves roughly <strong>1/3 of write</strong> and <strong>2/3 of read</strong> cross-AZ network traffic compared with broker-based log systems. For the full design and cost analysis, see <a href="/docs/zh-hant/woodpecker_architecture.md">Woodpecker Architecture</a>.</p>
+<p>For details on architecture, deployment modes (MemoryBuffer / QuorumBuffer), and performance, see <a href="/docs/zh-hant/woodpecker_architecture.md">Woodpecker Architecture</a>.</p>
+<p>For more parameter details, refer to the Woodpecker <a href="https://github.com/zilliztech/woodpecker">GitHub repository</a>.</p>
+<h2 id="Milvus-and-Woodpecker-versions" class="common-anchor-header">Milvus and Woodpecker versions<button data-href="#Milvus-and-Woodpecker-versions" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -573,7 +575,7 @@ batch_count = <span class="hljs-number">2000</span>
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Embedded-mode-Milvus-26x" class="common-anchor-header">嵌入式模式（Milvus 2.6.x）<button data-href="#Embedded-mode-Milvus-26x" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Embedded-mode-Milvus-26x" class="common-anchor-header">Embedded mode (Milvus 2.6.x)<button data-href="#Embedded-mode-Milvus-26x" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -588,26 +590,26 @@ batch_count = <span class="hljs-number">2000</span>
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>在 Milvus 2.6.x 中，Woodpecker 內嵌於 Milvus 並包含在<strong>Milvus 映像中</strong>。下表記錄了各 Milvus 發行版所使用的 Woodpecker 函式庫；無需部署或升級獨立的 Woodpecker 伺服器映像。 請升級 Milvus 以更新內嵌的 Woodpecker 函式庫。每個版本範圍均包含兩個端點。</p>
+    </button></h3><p>In Milvus 2.6.x, Woodpecker runs embedded in Milvus and is included in the <strong>Milvus image</strong>. The table below records the Woodpecker library used by each Milvus release; there is no separate Woodpecker server image to deploy or upgrade. Upgrade Milvus to update the embedded Woodpecker library. Each version range includes both endpoints.</p>
 <table>
 <thead>
-<tr><th>Milvus 發行版</th><th>內嵌 Woodpecker 函式庫</th><th>依賴來源</th></tr>
+<tr><th>Milvus release(s)</th><th>Embedded Woodpecker library</th><th>Dependency source</th></tr>
 </thead>
 <tbody>
 <tr><td>v2.6.0</td><td><code translate="no">v0.1.3</code></td><td><a href="https://github.com/milvus-io/milvus/blob/v2.6.0/pkg/go.mod">go.mod</a></td></tr>
-<tr><td>v2.6.1–v2.6.2</td><td><code translate="no">v0.1.4</code></td><td><a href="https://github.com/milvus-io/milvus/blob/v2.6.1/pkg/go.mod">首次發佈</a>·<a href="https://github.com/milvus-io/milvus/blob/v2.6.2/pkg/go.mod">最新發佈</a></td></tr>
-<tr><td>v2.6.3–v2.6.5</td><td><code translate="no">v0.1.6</code></td><td><a href="https://github.com/milvus-io/milvus/blob/v2.6.3/pkg/go.mod">首次發行</a>·<a href="https://github.com/milvus-io/milvus/blob/v2.6.5/pkg/go.mod">最後發行</a></td></tr>
+<tr><td>v2.6.1–v2.6.2</td><td><code translate="no">v0.1.4</code></td><td><a href="https://github.com/milvus-io/milvus/blob/v2.6.1/pkg/go.mod">First release</a> · <a href="https://github.com/milvus-io/milvus/blob/v2.6.2/pkg/go.mod">Last release</a></td></tr>
+<tr><td>v2.6.3–v2.6.5</td><td><code translate="no">v0.1.6</code></td><td><a href="https://github.com/milvus-io/milvus/blob/v2.6.3/pkg/go.mod">First release</a> · <a href="https://github.com/milvus-io/milvus/blob/v2.6.5/pkg/go.mod">Last release</a></td></tr>
 <tr><td>v2.6.6</td><td><code translate="no">v0.1.11</code></td><td><a href="https://github.com/milvus-io/milvus/blob/v2.6.6/pkg/go.mod">go.mod</a></td></tr>
 <tr><td>v2.6.7</td><td><code translate="no">v0.1.12</code></td><td><a href="https://github.com/milvus-io/milvus/blob/v2.6.7/pkg/go.mod">go.mod</a></td></tr>
-<tr><td>v2.6.8–v2.6.12</td><td><code translate="no">v0.1.13</code></td><td><a href="https://github.com/milvus-io/milvus/blob/v2.6.8/pkg/go.mod">首次發布</a>·<a href="https://github.com/milvus-io/milvus/blob/v2.6.12/pkg/go.mod">最新發布</a></td></tr>
-<tr><td>v2.6.13–v2.6.15</td><td><code translate="no">v0.1.14-0.20260317120738-e47dc37481fd</code></td><td><a href="https://github.com/milvus-io/milvus/blob/v2.6.13/pkg/go.mod">首次發行</a>·<a href="https://github.com/milvus-io/milvus/blob/v2.6.15/pkg/go.mod">最後發行</a></td></tr>
-<tr><td>v2.6.16–v2.6.17</td><td><code translate="no">v0.1.14-0.20260427080535-9dc9b3189baa</code></td><td><a href="https://github.com/milvus-io/milvus/blob/v2.6.16/pkg/go.mod">首次發行</a>·<a href="https://github.com/milvus-io/milvus/blob/v2.6.17/pkg/go.mod">最後發行</a></td></tr>
-<tr><td>v2.6.18–v2.6.23</td><td><code translate="no">v0.1.14-0.20260519022627-fdf34b23e0d7</code></td><td><a href="https://github.com/milvus-io/milvus/blob/v2.6.18/pkg/go.mod">首次發布</a>·<a href="https://github.com/milvus-io/milvus/blob/v2.6.23/pkg/go.mod">最後發布</a></td></tr>
-<tr><td>v2.6.24–v2.6.25</td><td><code translate="no">v0.1.44</code></td><td><a href="https://github.com/milvus-io/milvus/blob/v2.6.24/pkg/go.mod">首次發布</a>·<a href="https://github.com/milvus-io/milvus/blob/v2.6.25/pkg/go.mod">最後發布</a></td></tr>
+<tr><td>v2.6.8–v2.6.12</td><td><code translate="no">v0.1.13</code></td><td><a href="https://github.com/milvus-io/milvus/blob/v2.6.8/pkg/go.mod">First release</a> · <a href="https://github.com/milvus-io/milvus/blob/v2.6.12/pkg/go.mod">Last release</a></td></tr>
+<tr><td>v2.6.13–v2.6.15</td><td><code translate="no">v0.1.14-0.20260317120738-e47dc37481fd</code></td><td><a href="https://github.com/milvus-io/milvus/blob/v2.6.13/pkg/go.mod">First release</a> · <a href="https://github.com/milvus-io/milvus/blob/v2.6.15/pkg/go.mod">Last release</a></td></tr>
+<tr><td>v2.6.16–v2.6.17</td><td><code translate="no">v0.1.14-0.20260427080535-9dc9b3189baa</code></td><td><a href="https://github.com/milvus-io/milvus/blob/v2.6.16/pkg/go.mod">First release</a> · <a href="https://github.com/milvus-io/milvus/blob/v2.6.17/pkg/go.mod">Last release</a></td></tr>
+<tr><td>v2.6.18–v2.6.23</td><td><code translate="no">v0.1.14-0.20260519022627-fdf34b23e0d7</code></td><td><a href="https://github.com/milvus-io/milvus/blob/v2.6.18/pkg/go.mod">First release</a> · <a href="https://github.com/milvus-io/milvus/blob/v2.6.23/pkg/go.mod">Last release</a></td></tr>
+<tr><td>v2.6.24–v2.6.25</td><td><code translate="no">v0.1.44</code></td><td><a href="https://github.com/milvus-io/milvus/blob/v2.6.24/pkg/go.mod">First release</a> · <a href="https://github.com/milvus-io/milvus/blob/v2.6.25/pkg/go.mod">Last release</a></td></tr>
 </tbody>
 </table>
-<p>諸如<code translate="no">v0.1.14-0.20260519022627-fdf34b23e0d7</code> 之類的版本號屬於 Go 語言的「偽版本號」，用以識別特定的 Woodpecker 提交。這些版本號會在嵌入式模式表格中完整保留，以便區分 Milvus 修補程式發行版之間的依賴項更新。</p>
-<h3 id="Service-mode-Milvus-30+" class="common-anchor-header">服務模式（Milvus 3.0+）<button data-href="#Service-mode-Milvus-30+" class="anchor-icon" translate="no">
+<p>Versions such as <code translate="no">v0.1.14-0.20260519022627-fdf34b23e0d7</code> are Go pseudo-versions that identify a specific Woodpecker commit. They are preserved in full in the embedded-mode table to distinguish the dependency updates between Milvus patch releases.</p>
+<h3 id="Service-mode-Milvus-30+" class="common-anchor-header">Service mode (Milvus 3.0+)<button data-href="#Service-mode-Milvus-30+" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -622,11 +624,11 @@ batch_count = <span class="hljs-number">2000</span>
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>自 Milvus 3.0 起，已支援 Woodpecker 服務模式。<strong>Woodpecker 客戶端函式庫</strong>已內建於 Milvus 映像中，而<strong>Woodpecker 伺服器映像</strong>則會另行發布並部署。請使用<code translate="no">woodpecker.image.tag</code> 來設定伺服器映像版本。</p>
-<p>客戶端與舊版伺服器版本向下相容。升級 Milvus 時，建議同時將 Woodpecker 服務映像升級至下表對應的版本，以確保客戶端與伺服器皆能獲得該版本的修正。伺服器欄位列出建議的搭配組合；該欄位並未指定最低相容的伺服器版本。</p>
+    </button></h3><p>Woodpecker service mode is supported starting with Milvus 3.0. The <strong>Woodpecker client library</strong> is bundled in the Milvus image, while the <strong>Woodpecker server image</strong> is released and deployed separately. Configure the server image version with <code translate="no">woodpecker.image.tag</code>.</p>
+<p>The client is backward compatible with older server versions. When upgrading Milvus, we recommend also upgrading the Woodpecker service image to the corresponding version below so that both the client and server receive the fixes for that version. The server column lists the recommended pairing; it does not specify a minimum compatible server version.</p>
 <table>
 <thead>
-<tr><th>Milvus 發行版</th><th>捆綁的 Woodpecker 客戶端</th><th>建議的 Woodpecker 伺服器映像標籤</th><th>客戶端依賴來源</th></tr>
+<tr><th>Milvus release</th><th>Bundled Woodpecker client</th><th>Recommended Woodpecker server image tag</th><th>Client dependency source</th></tr>
 </thead>
 <tbody>
 <tr><td>v3.0.0</td><td><code translate="no">v0.1.33</code></td><td><code translate="no">v0.1.33</code></td><td><a href="https://github.com/milvus-io/milvus/blob/v3.0.0/pkg/go.mod">go.mod</a></td></tr>
@@ -635,8 +637,8 @@ batch_count = <span class="hljs-number">2000</span>
 <tr><td>v3.0.3</td><td><code translate="no">v0.1.46</code></td><td><code translate="no">v0.1.46</code></td><td><a href="https://github.com/milvus-io/milvus/blob/v3.0.3/pkg/go.mod">go.mod</a></td></tr>
 </tbody>
 </table>
-<p>Milvus 3.x 亦支援嵌入式模式。在此模式下，內建的 Woodpecker 函式庫將使用「客戶端」欄位中列出的版本，且無需額外的伺服器映像檔。</p>
-<h3 id="Latest-releases-and-upgrade-recommendations" class="common-anchor-header">最新發行版與升級建議<button data-href="#Latest-releases-and-upgrade-recommendations" class="anchor-icon" translate="no">
+<p>Milvus 3.x also supports embedded mode. In that mode, the bundled Woodpecker library uses the version listed in the client column, and no separate server image is required.</p>
+<h3 id="Latest-releases-and-upgrade-recommendations" class="common-anchor-header">Latest releases and upgrade recommendations<button data-href="#Latest-releases-and-upgrade-recommendations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -651,16 +653,16 @@ batch_count = <span class="hljs-number">2000</span>
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>截至<strong>2026 年 10 月 12</strong> 日，2.6.x 及 3.x 系列的最新穩定版本如下：</p>
+    </button></h3><p>As of <strong>October 12, 2026</strong>, the latest stable releases in the 2.6.x and 3.x series are:</p>
 <table>
 <thead>
-<tr><th>Milvus 系列</th><th>最新的 Milvus 穩定版本</th><th>內建的 Woodpecker 函式庫／客戶端</th><th>建議的服務映像標籤</th></tr>
+<tr><th>Milvus series</th><th>Latest stable Milvus release</th><th>Bundled Woodpecker library/client</th><th>Recommended service image tag</th></tr>
 </thead>
 <tbody>
-<tr><td>2.6.x</td><td><a href="https://github.com/milvus-io/milvus/releases/tag/v2.6.25">v2.6.25</a></td><td><code translate="no">v0.1.44</code> (嵌入式)</td><td>不適用</td></tr>
+<tr><td>2.6.x</td><td><a href="https://github.com/milvus-io/milvus/releases/tag/v2.6.25">v2.6.25</a></td><td><code translate="no">v0.1.44</code> (embedded)</td><td>Not applicable</td></tr>
 <tr><td>3.x</td><td><a href="https://github.com/milvus-io/milvus/releases/tag/v3.0.3">v3.0.3</a></td><td><code translate="no">v0.1.46</code></td><td><code translate="no">v0.1.46</code></td></tr>
 </tbody>
 </table>
-<p>我們建議<strong>您</strong>升級至<strong>所選 Milvus 發行版本系列中的最新穩定修補版本，</strong>以取得最新修正程式，包括捆綁的 Woodpecker 函式庫更新。若要查看較新版本，請參閱<a href="https://github.com/milvus-io/milvus/releases">Milvus 發行清單及</a>目標版本的<code translate="no">pkg/go.mod</code><a href="https://github.com/milvus-io/milvus/releases">頁面</a>；上表所列為指定日期當下可用的發行版本。</p>
-<p>若採用<strong>Woodpecker 服務模式</strong>，我們建議<strong>使用 Milvus 3.0.3 或更新版本，並搭配 Woodpecker v0.1.46 或更新版本</strong>。在服務模式下升級 Milvus 時，請一併將獨立部署的 Woodpecker 伺服器映像檔更新至對應的建議版本。</p>
-<p>有關升級步驟，請參閱《<a href="/docs/zh-hant/upgrade_milvus_cluster-helm.md">使用 Helm 升級 Milvus 叢集</a>》、<a href="/docs/zh-hant/upgrade_milvus_cluster-operator.md">《使用 Milvus Operator 升級 Milvus 叢集</a>》或《<a href="/docs/zh-hant/upgrade_milvus_standalone-docker.md">使用 Docker Compose 升級 Milvus 獨立執行環境</a>》。</p>
+<p>We recommend upgrading to the <strong>latest stable patch release in your chosen Milvus release series</strong> to receive the latest fixes, including updates to the bundled Woodpecker library. For newer releases, check the <a href="https://github.com/milvus-io/milvus/releases">Milvus releases</a> and the target release’s <code translate="no">pkg/go.mod</code>; the tables above describe the releases available on the stated date.</p>
+<p>For <strong>Woodpecker service mode</strong>, we recommend <strong>Milvus 3.0.3 or later with Woodpecker v0.1.46 or later</strong>. When upgrading Milvus in service mode, also update the separately deployed Woodpecker server image to the corresponding recommended version.</p>
+<p>For upgrade procedures, see <a href="/docs/zh-hant/upgrade_milvus_cluster-helm.md">Upgrade Milvus Cluster with Helm</a>, <a href="/docs/zh-hant/upgrade_milvus_cluster-operator.md">Upgrade Milvus Cluster with Milvus Operator</a>, or <a href="/docs/zh-hant/upgrade_milvus_standalone-docker.md">Upgrade Milvus Standalone with Docker Compose</a>.</p>

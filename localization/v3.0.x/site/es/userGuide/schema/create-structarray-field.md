@@ -2,11 +2,11 @@
 id: create-structarray-field.md
 title: Create a StructArray Field
 summary: >-
-  Crea un campo StructArray cuando una entidad deba contener una lista ordenada
-  de elementos estructurados. Un campo StructArray es un campo Array cuyo tipo
-  de elemento es Struct. Cada elemento Struct sigue el mismo esquema y puede
-  contener subcampos escalares, subcampos vectoriales y, a partir de Milvus
-  3.0.6, subcampos de matrices escalares.
+  Create a StructArray field when one entity needs to contain an ordered list of
+  structured elements. A StructArray field is an Array field whose element type
+  is Struct. Each Struct element follows the same schema and can contain scalar
+  subfields, vector subfields, and, starting in Milvus 3.0.6, scalar array
+  subfields.
 ---
 <h1 id="Create-a-StructArray-Field" class="common-anchor-header">Create a StructArray Field<button data-href="#Create-a-StructArray-Field" class="anchor-icon" translate="no">
       <svg translate="no"

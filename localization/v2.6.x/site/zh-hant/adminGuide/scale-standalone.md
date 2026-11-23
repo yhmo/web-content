@@ -1,11 +1,13 @@
 ---
 id: scale-standalone.md
-title: 擴充 Milvus Standalone
+title: Scale Milvus Standalone
 summary: >-
-  Milvus Standalone 是單機伺服器部署。Milvus Standalone 的所有元件都包裝在單一 Docker
-  映像檔中，讓部署更方便。本主題描述如何擴充在此模式下執行的 Milvus 實例。
+  Milvus Standalone is a single-machine server deployment. All components of
+  Milvus Standalone are packed into a single Docker image, making deployment
+  convenient. This topic describes how to scale a Milvus instance running in
+  this mode.
 ---
-<h1 id="Scale-Milvus-Standalone" class="common-anchor-header">擴充 Milvus Standalone<button data-href="#Scale-Milvus-Standalone" class="anchor-icon" translate="no">
+<h1 id="Scale-Milvus-Standalone" class="common-anchor-header">Scale Milvus Standalone<button data-href="#Scale-Milvus-Standalone" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,8 +22,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Milvus Standalone 是單機伺服器部署。Milvus Standalone 的所有元件都包裝在單一<a href="/docs/zh-hant/install_standalone-docker.md">Docker 映像檔中</a>，讓部署更方便。本主題描述如何擴充在此模式下執行的 Milvus 實例。</p>
-<h2 id="Prerequsites" class="common-anchor-header">先決條件<button data-href="#Prerequsites" class="anchor-icon" translate="no">
+    </button></h1><p>Milvus Standalone is a single-machine server deployment. All components of Milvus Standalone are packed into a single <a href="/docs/zh-hant/v2.6.x/install_standalone-docker.md">Docker image</a>, making deployment convenient. This topic describes how to scale a Milvus instance running in this mode.</p>
+<h2 id="Prerequsites" class="common-anchor-header">Prerequsites<button data-href="#Prerequsites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -36,14 +38,14 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>使用<a href="/docs/zh-hant/install_standalone-docker.md">Docker</a>或<a href="/docs/zh-hant/install_standalone-docker-compose.md">Docker Compose</a> 部署 Milvus Standalone 時，部署腳本 (<code translate="no">standalone_embed.sh</code>) 或配置檔案 (<code translate="no">docker-compose.yml</code>) 會建立數個磁碟區，並將它們映射到主機目錄，以確保資料的持久性。</p>
-<p>若要擴充以這種方式部署的 Milvus 實例，您必須停止並移除現有的容器或容器堆疊，以更新的組態設定重新部署 Milvus Standalone，並重複使用主機上的持久化資料來啟動新實例。</p>
-<p>下表列出了主機和容器之間的卷對應。</p>
+    </button></h2><p>When deploying Milvus Standalone with <a href="/docs/zh-hant/v2.6.x/install_standalone-docker.md">Docker</a> or <a href="/docs/zh-hant/v2.6.x/install_standalone-docker-compose.md">Docker Compose</a>, the deployment script (<code translate="no">standalone_embed.sh</code>) or configuration file (<code translate="no">docker-compose.yml</code>) creates several volumes and maps them to host directories to ensure data persistence.</p>
+<p>To scale a Milvus instance deployed in this manner, you must stop and remove the existing container or container stack, redeploy Milvus Standalone with updated configuration settings, and reuse the persisted data on your host to launch a new instance.</p>
+<p>The following table lists the volume mapping between the host and containers.</p>
 <table>
    <tr>
-     <th><p>部署選項</p></th>
-     <th><p>主機路徑</p></th>
-     <th><p>容器路徑</p></th>
+     <th><p>Deployment option</p></th>
+     <th><p>Host path</p></th>
+     <th><p>Container path</p></th>
    </tr>
    <tr>
      <td rowspan="3"><p>Docker</p></td>
@@ -72,8 +74,8 @@ summary: >-
      <td><p><code translate="no">/var/lib/milvus</code></p></td>
    </tr>
 </table>
-<p>執行本指南中的程序之前，請確保您的資料持續存在於上述主機路徑中。</p>
-<h2 id="Scale-instances-deployed-using-Docker" class="common-anchor-header">擴充使用 Docker 部署的實體<button data-href="#Scale-instances-deployed-using-Docker" class="anchor-icon" translate="no">
+<p>Before running the procedures in this guide, ensure your data persists in the above host paths.</p>
+<h2 id="Scale-instances-deployed-using-Docker" class="common-anchor-header">Scale instances deployed using Docker<button data-href="#Scale-instances-deployed-using-Docker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -88,19 +90,19 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>要擴充目前正在執行的 Milvus 實例，您必須停止實例、移除容器，然後以新的設定和持久化資料重新部署實例。</p>
-<p>具體步驟如下：</p>
+    </button></h2><p>To scale a currently running Milvus instance, you must stop the instance, remove the container, and redeploy the instance with new settings and persisted data.</p>
+<p>The specific procedure is as follows:</p>
 <ol>
-<li><p>運行<code translate="no">docker stats milvus-standalone</code> 查看分配給 Milvus 實例的 CPU 和記憶體。輸出應該與下面相似：</p>
+<li><p>Run <code translate="no">docker stats milvus-standalone</code> to view the CPU and memory allocated to the Milvus instance. The output should be similar to the following:</p>
 <pre><code translate="no" class="language-bash">CONTAINER ID   NAME                CPU %     MEM USAGE / LIMIT     MEM %     NET I/O       BLOCK I/O         PIDS
 917da667f2ff   milvus-standalone   6.10%     171.8MiB / 3.886GiB   4.32%     1.57kB / 0B   1.01GB / 1.79MB   31
 <button class="copy-code-btn"></button></code></pre>
-<p>在命令輸出中，您可以找到 Milvus 實例的當前資源使用情況。</p></li>
-<li><p>停止並移除容器。</p>
+<p>In the command output, you can find the current resource usage of your Milvus instance.</p></li>
+<li><p>Stop and remove the container.</p>
 <pre><code translate="no" class="language-bash">$ docker stop milvus-standalone
 $ docker <span class="hljs-built_in">rm</span> milvus-standalone
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>找到<code translate="no">standalone_embed.sh</code> 指令碼檔案，找到<code translate="no">docker run</code> 指令，並加入資源限制。</p>
+<li><p>Locate the <code translate="no">standalone_embed.sh</code> script file, find the <code translate="no">docker run</code> command, and add the resource limits.</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-string">...</span>
     <span class="hljs-string">sudo</span> <span class="hljs-string">docker</span> <span class="hljs-string">run</span> <span class="hljs-string">-d</span> <span class="hljs-string">\</span>
         <span class="hljs-string">--name</span> <span class="hljs-string">milvus-standalone</span> <span class="hljs-string">\</span>
@@ -125,15 +127,15 @@ $ docker <span class="hljs-built_in">rm</span> milvus-standalone
         <span class="hljs-string">milvusdb/milvus:v2.5.11</span> <span class="hljs-string">\</span>
         <span class="hljs-string">milvus</span> <span class="hljs-string">run</span> <span class="hljs-string">standalone</span>  <span class="hljs-number">1</span><span class="hljs-string">&gt;</span> <span class="hljs-string">/dev/null</span>
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>確保持久化資料與<code translate="no">standalone_embed.sh</code> 指令碼在同一資料夾，並執行指令碼如下：</p>
+<li><p>Ensure the persisted data is in the same folder as the <code translate="no">standalone_embed.sh</code> script, and run the script as follows:</p>
 <pre><code translate="no" class="language-bash"><span class="hljs-built_in">sudo</span>  bash standalone_embed.sh start
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>執行<code translate="no">docker stats milvus-standalone</code> ，查看縮放後分配給 Milvus 實例的 CPU 和記憶體。輸出應與下列內容相似：</p>
+<li><p>Run <code translate="no">docker stats milvus-standalone</code> to view the CPU and memory allocated to the Milvus instance after scaling. The output should be similar to the following:</p>
 <pre><code translate="no" class="language-bash">CONTAINER ID   NAME                CPU %     MEM USAGE / LIMIT   MEM %     NET I/O       BLOCK I/O        PIDS
 7aea450f87ce   milvus-standalone   7.52%     210.9MiB / 4GiB     5.15%     1.05kB / 0B   610kB / 8.19kB   29
 <button class="copy-code-btn"></button></code></pre></li>
 </ol>
-<h2 id="Scale-instances-deployed-using-Docker-Compose" class="common-anchor-header">縮放使用 Docker Compose 部署的實例<button data-href="#Scale-instances-deployed-using-Docker-Compose" class="anchor-icon" translate="no">
+<h2 id="Scale-instances-deployed-using-Docker-Compose" class="common-anchor-header">Scale instances deployed using Docker Compose<button data-href="#Scale-instances-deployed-using-Docker-Compose" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -148,18 +150,18 @@ $ docker <span class="hljs-built_in">rm</span> milvus-standalone
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>要縮放目前正在執行的 Milvus 實例，您必須停止實例、移除容器堆疊，然後以新的設定和持久化資料重新部署實例。</p>
-<p>具體步驟如下：</p>
+    </button></h2><p>To scale a currently running Milvus instance, you must stop the instance, remove the container stack, and redeploy the instance with new settings and persisted data.</p>
+<p>The specific procedure is as follows:</p>
 <ol>
-<li><p>執行<code translate="no">docker stats milvus-standalone</code> ，查看分配給 Milvus 實例的 CPU 和記憶體。輸出應該與下面相似：</p>
+<li><p>Run <code translate="no">docker stats milvus-standalone</code> to view the CPU and memory allocated to the Milvus instance. The output should be similar to the following:</p>
 <pre><code translate="no" class="language-bash">CONTAINER ID   NAME                CPU %     MEM USAGE / LIMIT     MEM %     NET I/O       BLOCK I/O         PIDS
 917da667f2ff   milvus-standalone   6.10%     171.8MiB / 3.886GiB   4.32%     1.57kB / 0B   1.01GB / 1.79MB   31
 <button class="copy-code-btn"></button></code></pre>
-<p>在命令輸出中，您可以找到 Milvus 實例的當前資源使用情況。</p></li>
-<li><p>停止並移除容器堆疊。</p>
+<p>In the command output, you can find the current resource usage of your Milvus instance.</p></li>
+<li><p>Stop and remove the container stack.</p>
 <pre><code translate="no" class="language-bash">$ docker compose down
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>找到<code translate="no">docker-compose.yml</code> 配置文件，找到獨立部分，並添加資源限制。</p>
+<li><p>Locate the <code translate="no">docker-compose.yml</code> configuration file, find the standalone section, and add the resource limits.</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-string">...</span>
   <span class="hljs-attr">standalone:</span>
     <span class="hljs-attr">container_name:</span> <span class="hljs-string">milvus-standalone</span>
@@ -190,10 +192,10 @@ $ docker <span class="hljs-built_in">rm</span> milvus-standalone
       <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;etcd&quot;</span>
       <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;minio&quot;</span>
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>確保持久化資料可用，並執行<code translate="no">docker compose</code> ，如下所示：</p>
+<li><p>Ensure the persisted data is available, and run <code translate="no">docker compose</code> as follows:</p>
 <pre><code translate="no" class="language-bash">docker compose up -d
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>執行<code translate="no">docker stats milvus-standalone</code> ，查看縮放後分配給 Milvus 實例的 CPU 和記憶體。輸出應該與下列內容相似：</p>
+<li><p>Run <code translate="no">docker stats milvus-standalone</code> to view the CPU and memory allocated to the Milvus instance after scaling. The output should be similar to the following:</p>
 <pre><code translate="no" class="language-bash">CONTAINER ID   NAME                CPU %     MEM USAGE / LIMIT   MEM %     NET I/O       BLOCK I/O        PIDS
 7aea450f87ce   milvus-standalone   7.52%     210.9MiB / 4GiB     5.15%     1.05kB / 0B   610kB / 8.19kB   29
 <button class="copy-code-btn"></button></code></pre></li>

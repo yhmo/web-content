@@ -1,11 +1,11 @@
 ---
 id: alter-collection-field.md
-title: Изменение поля коллекции
+title: Alter Collection Field
 summary: >-
-  Вы можете изменить свойства поля коллекции, чтобы изменить ограничения
-  столбцов или обеспечить соблюдение более строгих правил целостности данных.
+  You can alter the properties of a collection field to change column
+  constraints or enforce stricter data integrity rules.
 ---
-<h1 id="Alter-Collection-Field" class="common-anchor-header">Изменение поля коллекции<button data-href="#Alter-Collection-Field" class="anchor-icon" translate="no">
+<h1 id="Alter-Collection-Field" class="common-anchor-header">Alter Collection Field<button data-href="#Alter-Collection-Field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,18 +20,18 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Вы можете изменить свойства поля коллекции, чтобы изменить ограничения столбцов или обеспечить соблюдение более строгих правил целостности данных.</p>
-<p>На этой странице рассматриваются изменения свойств полей, а не изменения структуры схемы, такие как добавление или удаление полей. Для добавления скалярных полей или удаления полей из существующей коллекции см. раздел <a href="/docs/ru/add-fields-to-an-existing-collection.md">«Изменение схемы коллекции</a>».</p>
+    </button></h1><p>You can alter the properties of a collection field to change column constraints or enforce stricter data integrity rules.</p>
+<p>This page covers field property changes, not schema-shape changes such as adding or dropping fields. To add scalar fields or drop fields from an existing collection, refer to <a href="/docs/ru/add-fields-to-an-existing-collection.md">Alter Collection Schema</a>.</p>
 <div class="alert note">
 <ul>
-<li><p>Каждая коллекция состоит только из одного первичного поля. После его установки при создании коллекции вы не сможете изменить первичное поле или изменить его свойства.</p></li>
-<li><p>Каждая коллекция может иметь только один ключ разбиения. После его установки при создании коллекции ключ разбиения изменить нельзя.</p></li>
+<li><p>Each collection consists of only one primary field. Once set during collection creation, you cannot change the primary field or alter its properties.</p></li>
+<li><p>Each collection can have only one partition key. Once set during collection creation, you cannot change the partition key.</p></li>
 </ul>
 <ul>
-<li>Начиная с версии Milvus 3.0.6, для поля <a href="/docs/ru/array-of-structs.md">StructArray</a> или одного из путей к его подполям, например <code translate="no">chunks[text]</code>, можно изменять только <code translate="no">mmap.enabled</code>, <code translate="no">field.description</code> и <code translate="no">warmup</code>. Другие свойства, такие как <code translate="no">max_capacity</code> и <code translate="no">max_length</code>, отклоняются. Родительское поле и его подполя хранятся вместе, и свойства <code translate="no">mmap.enabled</code> и <code translate="no">warmup</code> вступают в силу для общего хранилища, если они включены хотя бы в одном из них: отключение одного из этих свойств только в подполе не вступает в силу, пока оно включено в родительском поле или в одном из родственных подполей. Кроме того, параметр « <code translate="no">warmup</code> », установленный в значение « <code translate="no">disable</code> », не пропускает все операции чтения: данные, необходимые для выполнения запроса, такие как смещения элементов, по-прежнему считываются.</li>
+<li>Starting in Milvus 3.0.6, for a <a href="/docs/ru/array-of-structs.md">StructArray</a> field or one of its subfield paths, such as <code translate="no">chunks[text]</code>, you can alter only <code translate="no">mmap.enabled</code>, <code translate="no">field.description</code>, and <code translate="no">warmup</code>. Other properties, such as <code translate="no">max_capacity</code> and <code translate="no">max_length</code>, are rejected. The parent field and its subfields are stored together, and <code translate="no">mmap.enabled</code> and <code translate="no">warmup</code> take effect on the shared storage when enabled on any of them: disabling one of these properties on a subfield alone does not take effect while the parent field or a sibling subfield still has it enabled. Also, <code translate="no">warmup</code> set to <code translate="no">disable</code> does not skip all reads: data required for query execution, such as element offsets, is still read.</li>
 </ul>
 </div>
-<h2 id="Alter-VarChar-field" class="common-anchor-header">Изменение поля VarChar<button data-href="#Alter-VarChar-field" class="anchor-icon" translate="no">
+<h2 id="Alter-VarChar-field" class="common-anchor-header">Alter VarChar field<button data-href="#Alter-VarChar-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -46,17 +46,17 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Поле VarChar имеет свойство <code translate="no">max_length</code>, которое определяет максимальное количество байтов, разрешенное для каждого значения поля. Вы можете изменить свойство <code translate="no">max_length</code>.</p>
-<p>В следующем примере предполагается, что коллекция имеет поле VarChar с именем <code translate="no">varchar</code>, и задается его свойство <code translate="no">max_length</code>.</p>
+    </button></h2><p>A VarChar field has a property named <code translate="no">max_length</code>, which defines the maximum number of bytes allowed for each field value. You can change the <code translate="no">max_length</code> property.</p>
+<p>The following example assumes the collection has a VarChar field named <code translate="no">varchar</code> and sets its <code translate="no">max_length</code> property.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -197,7 +197,7 @@ curl --request POST \
     }
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Alter-ARRAY-field" class="common-anchor-header">Изменение поля ARRAY<button data-href="#Alter-ARRAY-field" class="anchor-icon" translate="no">
+<h2 id="Alter-ARRAY-field" class="common-anchor-header">Alter ARRAY field<button data-href="#Alter-ARRAY-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -212,17 +212,17 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Поле массива имеет два свойства: <code translate="no">element_type</code> и <code translate="no">max_capacity</code>. Первое определяет тип данных элементов массива, а второе ограничивает максимальное количество элементов в массиве. Можно изменять только свойство <code translate="no">max_capacity</code>.</p>
-<p>В следующем примере предполагается, что коллекция имеет поле массива с именем <code translate="no">array</code>, и задается его свойство <code translate="no">max_capacity</code>.</p>
+    </button></h2><p>An array field has two properties, namely <code translate="no">element_type</code> and <code translate="no">max_capacity</code>. The former determines the data type of the elements in an array, while the latter constrains the maximum number of elements in the array. You can change the <code translate="no">max_capacity</code> property only.</p>
+<p>The following example assumes the collection has an array field named <code translate="no">array</code> and sets its <code translate="no">max_capacity</code> property.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.alter_collection_field(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,
@@ -309,7 +309,7 @@ curl --request POST \
     }
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Alter-field-level-mmap-settings" class="common-anchor-header">Изменение настроек mmap на уровне полей<button data-href="#Alter-field-level-mmap-settings" class="anchor-icon" translate="no">
+<h2 id="Alter-field-level-mmap-settings" class="common-anchor-header">Alter field-level mmap settings<button data-href="#Alter-field-level-mmap-settings" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -324,17 +324,17 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Отображение памяти (Mmap) обеспечивает прямой доступ к памяти для больших файлов на диске, позволяя Milvus хранить индексы и данные как в памяти, так и на жестких дисках. Такой подход помогает оптимизировать политику размещения данных на основе частоты доступа, расширяя емкость хранилища для коллекций без ущерба для производительности поиска.</p>
-<p>В следующем примере предполагается, что в коллекции имеется поле с именем « <code translate="no">doc_chunk</code> », и задается его свойство « <code translate="no">mmap_enabled</code> ».</p>
+    </button></h2><p>Memory mapping (Mmap) enables direct memory access to large files on disk, allowing Milvus to store indexes and data in both memory and hard drives. This approach helps optimize data placement policy based on access frequency, expanding storage capacity for collections without impacting search performance.</p>
+<p>The following example assumes the collection has a field named <code translate="no">doc_chunk</code> and sets its <code translate="no">mmap_enabled</code> property.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.alter_collection_field(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,

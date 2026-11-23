@@ -1,13 +1,13 @@
 ---
 id: removepunct-filter.md
-title: Remover PontuaçãoCompatible with Milvus 2.5.11+
+title: Remove PunctCompatible with Milvus 2.5.11+
 summary: >-
-  O filtro «removepunct» remove tokens que contenham sinais de pontuação ou
-  espaços em branco. No caso de tokenizadores que mantêm a pontuação no interior
-  das palavras, este filtro remove o token afetado na íntegra.
+  The removepunct filter removes tokens that contain punctuation or whitespace.
+  With tokenizers that retain punctuation inside words, it removes the entire
+  affected token.
 beta: Milvus 2.5.11+
 ---
-<h1 id="Remove-Punct" class="common-anchor-header">Remover Pontuação<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.5.11+</span><button data-href="#Remove-Punct" class="anchor-icon" translate="no">
+<h1 id="Remove-Punct" class="common-anchor-header">Remove Punct<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.5.11+</span><button data-href="#Remove-Punct" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -22,11 +22,12 @@ beta: Milvus 2.5.11+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>O filtro « <code translate="no">removepunct</code> » remove tokens que contenham pontuação ou espaços em branco do fluxo de tokens. Utilize-o quando pretender um processamento de texto mais limpo, que se concentre em palavras de conteúdo significativas em vez de sinais de pontuação.</p>
+    </button></h1><p>The <code translate="no">removepunct</code> filter removes tokens that contain punctuation or whitespace from the token stream. Use it when you want cleaner text processing that focuses on meaningful content words rather than punctuation marks.</p>
 <div class="alert note">
-<p>Este filtro é mais eficaz com os tokenizadores « <code translate="no">jieba</code> », « <code translate="no">lindera</code> » e « <code translate="no">icu</code> », que preservam a pontuação como tokens separados (por exemplo, « <code translate="no">&quot;Hello!&quot;</code> » → « <code translate="no">[&quot;Hello&quot;, &quot;!&quot;]</code> »). O tokenizador <code translate="no">standard</code> descarta a pontuação durante a tokenização. O tokenizador <code translate="no">whitespace</code> preserva a pontuação, incluindo a pontuação dentro de um token. Quando combinado com <code translate="no">whitespace</code>, <code translate="no">removepunct</code> remove o token na íntegra se este contiver pontuação ou espaços em branco; não retira caracteres individuais do token.</p>
+<p>This filter is most effective with <code translate="no">jieba</code>, <code translate="no">lindera</code>, and <code translate="no">icu</code> tokenizers, which preserve punctuation as separate tokens (e.g., <code translate="no">&quot;Hello!&quot;</code> → <code translate="no">[&quot;Hello&quot;, &quot;!&quot;]</code>). The <code translate="no">standard</code> tokenizer discards punctuation during tokenization. The <code translate="no">whitespace</code> tokenizer preserves punctuation, including punctuation within a token. When combined with <code translate="no">whitespace</code>, <code translate="no">removepunct</code> removes the entire token if it contains punctuation or whitespace; it does not strip individual characters from the token.</p>
+<p>Some tokenizers keep punctuation inside a single token. For example, <code translate="no">icu</code> tokenizes <code translate="no">don't</code>, <code translate="no">3.5kg</code>, and <code translate="no">u.s.a</code> into single tokens that contain punctuation, and <code translate="no">removepunct</code> removes them entirely, making the corresponding terms unsearchable. To remove only tokens made entirely of punctuation and whitespace while keeping such tokens, use the <a href="/docs/pt/regex-filter.md">regex</a> filter with an expression that requires at least one non-punctuation, non-whitespace character, such as <code translate="no">{&quot;type&quot;: &quot;regex&quot;, &quot;expr&quot;: &quot;[^\\s\\p{P}]&quot;}</code>.</p>
 </div>
-<h2 id="Configuration" class="common-anchor-header">Configuração<button data-href="#Configuration" class="anchor-icon" translate="no">
+<h2 id="Configuration" class="common-anchor-header">Configuration<button data-href="#Configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -41,16 +42,16 @@ beta: Milvus 2.5.11+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>O filtro « <code translate="no">removepunct</code> » está integrado no Milvus. Para o utilizar, basta especificar o seu nome na secção « <code translate="no">filter</code> » dentro de « <code translate="no">analyzer_params</code> ».</p>
+    </button></h2><p>The <code translate="no">removepunct</code> filter is built into Milvus. To use it, simply specify its name in the <code translate="no">filter</code> section within <code translate="no">analyzer_params</code>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;jieba&quot;</span>,
@@ -98,9 +99,9 @@ analyzerParams=<span class="hljs-string">&#x27;{
   ]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>O filtro « <code translate="no">removepunct</code> » opera sobre os termos gerados pelo tokenizador, pelo que deve ser utilizado em combinação com um tokenizador.</p>
-<p>Após definir os « <code translate="no">analyzer_params</code> », pode aplicá-los a um campo « <code translate="no">VARCHAR</code> » ao definir um esquema de coleção. Isto permite que o Milvus processe o texto nesse campo utilizando o analisador especificado para uma tokenização e filtragem eficientes. Para mais detalhes, consulte <a href="/docs/pt/analyzer-overview.md#Example-use">o Exemplo de utilização</a>.</p>
-<h2 id="Examples" class="common-anchor-header">Exemplos<button data-href="#Examples" class="anchor-icon" translate="no">
+<p>The <code translate="no">removepunct</code> filter operates on the terms generated by the tokenizer, so it must be used in combination with a tokenizer.</p>
+<p>After defining <code translate="no">analyzer_params</code>, you can apply them to a <code translate="no">VARCHAR</code> field when defining a collection schema. This allows Milvus to process the text in that field using the specified analyzer for efficient tokenization and filtering. For details, refer to <a href="/docs/pt/analyzer-overview.md#Example-use">Example use</a>.</p>
+<h2 id="Examples" class="common-anchor-header">Examples<button data-href="#Examples" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -115,8 +116,8 @@ analyzerParams=<span class="hljs-string">&#x27;{
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Antes de aplicar a configuração do analisador ao esquema da sua coleção, verifique o seu comportamento utilizando o método <code translate="no">run_analyzer</code>.</p>
-<h3 id="Analyzer-configuration" class="common-anchor-header">Configuração do analisador<button data-href="#Analyzer-configuration" class="anchor-icon" translate="no">
+    </button></h2><p>Before applying the analyzer configuration to your collection schema, verify its behavior using the <code translate="no">run_analyzer</code> method.</p>
+<h3 id="Analyzer-configuration" class="common-anchor-header">Analyzer configuration<button data-href="#Analyzer-configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -132,14 +133,14 @@ analyzerParams=<span class="hljs-string">&#x27;{
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;icu&quot;</span>,
@@ -187,7 +188,7 @@ analyzerParams=<span class="hljs-string">&#x27;{
   ]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Verification-using-runanalyzer" class="common-anchor-header">Verificação utilizando <code translate="no">run_analyzer</code><button data-href="#Verification-using-runanalyzer" class="anchor-icon" translate="no">
+<h3 id="Verification-using-runanalyzer" class="common-anchor-header">Verification using <code translate="no">run_analyzer</code><button data-href="#Verification-using-runanalyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -203,14 +204,14 @@ analyzerParams=<span class="hljs-string">&#x27;{
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> (
     MilvusClient,
@@ -372,7 +373,7 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
     &quot;text&quot;: [&quot;Привет! Как дела?&quot;]
   }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Expected-output" class="common-anchor-header">Resultado esperado<button data-href="#Expected-output" class="anchor-icon" translate="no">
+<h3 id="Expected-output" class="common-anchor-header">Expected output<button data-href="#Expected-output" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"

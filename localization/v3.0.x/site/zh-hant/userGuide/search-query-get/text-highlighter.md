@@ -2,9 +2,10 @@
 id: text-highlighter.md
 title: Text HighlighterCompatible with Milvus 2.6.8+
 summary: >-
-  Milvus
-  中的「標示器」會透過將匹配的術語包覆在可自訂的標籤中，來對文字欄位中的匹配術語進行標註。此標示功能有助於說明文件為何與查詢結果匹配、提升結果的可讀性，並支援在搜尋及
-  RAG 應用程式中進行豐富的呈現效果。
+  The Highlighter in Milvus annotates matched terms in text fields by wrapping
+  them with customizable tags. Highlighting helps explain why a document
+  matches, improves result readability, and supports rich rendering in search
+  and RAG applications.
 beta: Milvus 2.6.8+
 ---
 <h1 id="Text-Highlighter" class="common-anchor-header">Text Highlighter<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.8+</span><button data-href="#Text-Highlighter" class="anchor-icon" translate="no">

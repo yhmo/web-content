@@ -2,10 +2,10 @@
 id: install_cluster-helm-gpu.md
 label: Cluster (Helm)
 related_key: Kubernetes
-summary: Scopri come installare un cluster Milvus su Kubernetes.
-title: Eseguire Milvus con supporto GPU utilizzando Helm Chart
+summary: Learn how to install Milvus cluster on Kubernetes.
+title: Run Milvus with GPU Support Using Helm Chart
 ---
-<h1 id="Run-Milvus-with-GPU-Support-Using-Helm-Chart" class="common-anchor-header">Eseguire Milvus con supporto GPU utilizzando Helm Chart<button data-href="#Run-Milvus-with-GPU-Support-Using-Helm-Chart" class="anchor-icon" translate="no">
+<h1 id="Run-Milvus-with-GPU-Support-Using-Helm-Chart" class="common-anchor-header">Run Milvus with GPU Support Using Helm Chart<button data-href="#Run-Milvus-with-GPU-Support-Using-Helm-Chart" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,8 +20,8 @@ title: Eseguire Milvus con supporto GPU utilizzando Helm Chart
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Questa pagina illustra come avviare un'istanza di Milvus con supporto GPU utilizzando Helm Chart.</p>
-<h2 id="Overview" class="common-anchor-header">Panoramica<button data-href="#Overview" class="anchor-icon" translate="no">
+    </button></h1><p>This page illustrates how to start a Milvus instance with GPU support using Helm Chart.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -36,8 +36,8 @@ title: Eseguire Milvus con supporto GPU utilizzando Helm Chart
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Helm utilizza un formato di pacchettizzazione denominato "chart". Un chart è un insieme di file che descrivono un set correlato di risorse Kubernetes. Milvus fornisce una serie di chart per aiutarti a distribuire le dipendenze e i componenti di Milvus. <a href="https://artifacthub.io/packages/helm/milvus-helm/milvus">Il chart Helm di Milvus</a> è una soluzione che avvia la distribuzione di Milvus su un cluster Kubernetes (K8s) utilizzando il gestore di pacchetti Helm.</p>
-<h2 id="Prerequisites" class="common-anchor-header">Prerequisiti<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+    </button></h2><p>Helm uses a packaging format called charts. A chart is a collection of files that describe a related set of Kubernetes resources. Milvus provides a set of charts to help you deploy Milvus dependencies and components. <a href="https://artifacthub.io/packages/helm/milvus-helm/milvus">Milvus Helm Chart</a> is a solution that bootstraps Milvus deployment on a Kubernetes (K8s) cluster using the Helm package manager.</p>
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -53,20 +53,20 @@ title: Eseguire Milvus con supporto GPU utilizzando Helm Chart
         ></path>
       </svg>
     </button></h2><ul>
-<li><p><a href="https://helm.sh/docs/intro/install/">Installare la CLI di Helm</a>.</p></li>
-<li><p><a href="/docs/it/prerequisite-gpu.md#How-can-I-start-a-K8s-cluster-with-GPU-worker-nodes">Creare un cluster K8s con nodi worker dotati di GPU</a>.</p></li>
-<li><p>Installare una <a href="https://kubernetes.io/docs/tasks/administer-cluster/change-default-storage-class/">StorageClass</a>. È possibile verificare la StorageClass installata come segue.</p>
+<li><p><a href="https://helm.sh/docs/intro/install/">Install Helm CLI</a>.</p></li>
+<li><p><a href="/docs/it/prerequisite-gpu.md#How-can-I-start-a-K8s-cluster-with-GPU-worker-nodes">Create a K8s cluster with GPU worker nodes</a>.</p></li>
+<li><p>Install a <a href="https://kubernetes.io/docs/tasks/administer-cluster/change-default-storage-class/">StorageClass</a>. You can check the installed StorageClass as follows.</p>
 <pre><code translate="no" class="language-bash">$ kubectl get sc
 
 NAME                  PROVISIONER                  RECLAIMPOLICY    VOLUMEBIINDINGMODE    ALLOWVOLUMEEXPANSION     AGE
 standard (default)    k8s.io/minikube-hostpath     Delete           Immediate             <span class="hljs-literal">false</span> 
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>Verifica <a href="/docs/it/prerequisite-gpu.md">i requisiti hardware e software</a> prima dell'installazione.</p></li>
+<li><p>Check <a href="/docs/it/prerequisite-gpu.md">the hardware and software requirements</a> before installation.</p></li>
 </ul>
 <div class="alert note">
-<p>Se si riscontrano problemi durante il download dell'immagine, contattarci all'indirizzo <a href="mailto:community@zilliz.com">community@zilliz.com</a> fornendo i dettagli del problema e forniremo l'assistenza necessaria.</p>
+<p>If you encounter any issues pulling the image, contact us at <a href="mailto:community@zilliz.com">community@zilliz.com</a> with details about the problem, and we’ll provide you with the necessary support.</p>
 </div>
-<h2 id="Install-Helm-Chart-for-Milvus" class="common-anchor-header">Installare Helm Chart per Milvus<button data-href="#Install-Helm-Chart-for-Milvus" class="anchor-icon" translate="no">
+<h2 id="Install-Helm-Chart-for-Milvus" class="common-anchor-header">Install Helm Chart for Milvus<button data-href="#Install-Helm-Chart-for-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -81,27 +81,27 @@ standard (default)    k8s.io/minikube-hostpath     Delete           Immediate   
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Helm è un gestore di pacchetti K8s che consente di distribuire rapidamente Milvus.</p>
+    </button></h2><p>Helm is a K8s package manager that can help you deploy Milvus quickly.</p>
 <ol>
-<li>Aggiungere il repository Helm di Milvus.</li>
+<li>Add Milvus Helm repository.</li>
 </ol>
 <pre><code translate="no">$ helm repo <span class="hljs-keyword">add</span> milvus https:<span class="hljs-comment">//zilliztech.github.io/milvus-helm/</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>Il repository Helm Chart di Milvus all'indirizzo <code translate="no">https://milvus-io.github.io/milvus-helm/</code> è stato archiviato; è possibile ottenere ulteriori aggiornamenti da <code translate="no">https://zilliztech.github.io/milvus-helm/</code> come segue:</p>
+<p>The Milvus Helm Charts repo at <code translate="no">https://milvus-io.github.io/milvus-helm/</code> has been archived and you can get further updates from <code translate="no">https://zilliztech.github.io/milvus-helm/</code> as follows:</p>
 <pre><code translate="no" class="language-shell">helm repo add zilliztech https://zilliztech.github.io/milvus-helm
 helm repo update
 <span class="hljs-meta prompt_"># </span><span class="language-bash">upgrade existing helm release</span>
 helm upgrade my-release zilliztech/milvus
 <button class="copy-code-btn"></button></code></pre>
-<p>Il repository archiviato è ancora disponibile per i chart fino alla versione 4.0.31. Per le versioni successive, utilizzare invece il nuovo repository.</p>
+<p>The archived repo is still available for the charts up to 4.0.31. For later releases, use the new repo instead.</p>
 </div>
 <ol start="2">
-<li>Aggiornare i chart localmente.</li>
+<li>Update charts locally.</li>
 </ol>
 <pre><code translate="no"><span class="hljs-variable">$ </span>helm repo update
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Start-Milvus" class="common-anchor-header">Avvia Milvus<button data-href="#Start-Milvus" class="anchor-icon" translate="no">
+<h2 id="Start-Milvus" class="common-anchor-header">Start Milvus<button data-href="#Start-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -116,10 +116,10 @@ helm upgrade my-release zilliztech/milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Una volta installato il chart Helm, è possibile avviare Milvus su Kubernetes. In questa sezione, vi guideremo attraverso i passaggi necessari per avviare Milvus con il supporto GPU.</p>
-<p>È necessario avviare Milvus con Helm specificando il nome della release, il chart e i parametri che si intende modificare. In questa guida utilizziamo <code translate="no">my-release</code> come nome della release. Per utilizzare un nome di release diverso, sostituire <code translate="no">my-release</code> nei comandi seguenti con quello che si sta utilizzando.</p>
-<p>Milvus consente di assegnare uno o più dispositivi GPU a Milvus.</p>
-<h3 id="1-Assign-a-single-GPU-device" class="common-anchor-header">1. Assegnare un singolo dispositivo GPU<button data-href="#1-Assign-a-single-GPU-device" class="anchor-icon" translate="no">
+    </button></h2><p>Once you have installed the Helm chart, you can start Milvus on Kubernetes. In this section, we will guide you through the steps to start Milvus with GPU support.</p>
+<p>You should start Milvus with Helm by specifying the release name, the chart, and the parameters you expect to change. In this guide, we use <code translate="no">my-release</code> as the release name. To use a different release name, replace <code translate="no">my-release</code> in the following commands with the one you are using.</p>
+<p>Milvus allows you to assign one or more GPU devices to Milvus.</p>
+<h3 id="1-Assign-a-single-GPU-device" class="common-anchor-header">1. Assign a single GPU device<button data-href="#1-Assign-a-single-GPU-device" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -134,9 +134,9 @@ helm upgrade my-release zilliztech/milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Milvus con supporto GPU consente di assegnare uno o più dispositivi GPU.</p>
+    </button></h3><p>Milvus with GPU support allows you to assign one or more GPU devices.</p>
 <ul>
-<li><p>Cluster Milvus</p>
+<li><p>Milvus cluster</p>
 <pre><code translate="no" class="language-bash"><span class="hljs-built_in">cat</span> &lt;&lt;<span class="hljs-string">EOF &gt; custom-values.yaml
 dataNode:
   resources:
@@ -167,7 +167,7 @@ EOF</span>
 <pre><code translate="no" class="language-bash">$ helm install my-release milvus/milvus --<span class="hljs-built_in">set</span> cluster.enabled=<span class="hljs-literal">false</span> --<span class="hljs-built_in">set</span> etcd.replicaCount=1 --<span class="hljs-built_in">set</span> minio.mode=standalone --<span class="hljs-built_in">set</span> pulsarv3.enabled=<span class="hljs-literal">false</span> -f custom-values.yaml
 <button class="copy-code-btn"></button></code></pre></li>
 </ul>
-<h3 id="2-Assign-multiple-GPU-devices" class="common-anchor-header">2. Assegnazione di più dispositivi GPU<button data-href="#2-Assign-multiple-GPU-devices" class="anchor-icon" translate="no">
+<h3 id="2-Assign-multiple-GPU-devices" class="common-anchor-header">2. Assign multiple GPU devices<button data-href="#2-Assign-multiple-GPU-devices" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -182,9 +182,9 @@ EOF</span>
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Oltre a un singolo dispositivo GPU, è possibile assegnare a Milvus anche più dispositivi GPU.</p>
+    </button></h3><p>In addition to a single GPU device, you can also assign multiple GPU devices to Milvus.</p>
 <ul>
-<li><p>Cluster Milvus</p>
+<li><p>Milvus cluster</p>
 <pre><code translate="no" class="language-bash"><span class="hljs-built_in">cat</span> &lt;&lt;<span class="hljs-string">EOF &gt; custom-values.yaml
 dataNode:
   resources:
@@ -200,7 +200,7 @@ queryNode:
       nvidia.com/gpu: &quot;2&quot;
 EOF</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Nella configurazione sopra riportata sono disponibili quattro CPU e ogni dataNode e queryNode utilizza due GPU. Per assegnare GPU diverse al dataNode e al queryNode, è possibile modificare la configurazione di conseguenza impostando ` <code translate="no">extraEnv</code> ` nel file di configurazione come segue:</p>
+<p>In the configuration above, there are four CPUs available, and each dataNode and queryNode uses two GPUs. To assign different GPUs to the dataNode and the queryNode, you can modify the configuration accordingly by setting <code translate="no">extraEnv</code> in the configuration file as follows:</p>
 <pre><code translate="no" class="language-bash"><span class="hljs-built_in">cat</span> &lt;&lt;<span class="hljs-string">EOF &gt; custom-values.yaml
 dataNode:
   resources:
@@ -226,11 +226,11 @@ EOF</span>
 <button class="copy-code-btn"></button></code></pre>
   <div class="alert note">
     <ul>
-      <li>Il nome della versione deve contenere solo lettere, numeri e trattini. I punti non sono consentiti nel nome della versione.</li>
-      <li>La riga di comando predefinita installa la versione cluster di Milvus durante l’installazione di Milvus con Helm. Sono necessarie ulteriori impostazioni durante l’installazione di Milvus in modalità standalone.</li>
-      <li>In base alla <a href="https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-25">guida alla migrazione delle API deprecate di Kubernetes</a>, la versione API <b>policy/v1beta1</b> di PodDisruptionBudget non è più supportata a partire dalla v1.25. Si consiglia di migrare i manifest e i client API per utilizzare invece la versione API <b>policy/v1</b>. <br/>Come soluzione alternativa per gli utenti che utilizzano ancora la versione API <b>policy/v1beta1</b> di PodDisruptionBudget su Kubernetes v1.25 e versioni successive, è possibile eseguire il seguente comando per installare Milvus:<br/>
-     <code translate="no">helm install my-release milvus/milvus --set pulsar.bookkeeper.pdb.usePolicy=false,pulsar.broker.pdb.usePolicy=false,pulsar.proxy.pdb.usePolicy=false,pulsar.zookeeper.pdb.usePolicy=false</code></li> 
-      <li>Per ulteriori informazioni, consultare <a href="https://artifacthub.io/packages/helm/milvus/milvus">Milvus Helm Chart</a> e <a href="https://helm.sh/docs/">Helm</a>.</li>
+      <li>The release name should only contain letters, numbers and dashes. Dots are not allowed in the release name.</li>
+      <li>The default command line installs cluster version of Milvus while installing Milvus with Helm. Further setting is needed while installing Milvus standalone.</li>
+      <li>According to the <a href="https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-25">deprecated API migration guide of Kuberenetes</a>, the <b>policy/v1beta1</b> API version of PodDisruptionBudget is not longer served as of v1.25. You are suggested to migrate manifests and API clients to use the <b>policy/v1</b> API version instead. <br/>As a workaround for users who still use the <b>policy/v1beta1</b> API version of PodDisruptionBudget on Kuberenetes v1.25 and later, you can instead run the following command to install Milvus:<br/>
+      <code translate="no">helm install my-release milvus/milvus --set pulsar.bookkeeper.pdb.usePolicy=false,pulsar.broker.pdb.usePolicy=false,pulsar.proxy.pdb.usePolicy=false,pulsar.zookeeper.pdb.usePolicy=false</code></li> 
+      <li>See <a href="https://artifacthub.io/packages/helm/milvus/milvus">Milvus Helm Chart</a> and <a href="https://helm.sh/docs/">Helm</a> for more information.</li>
     </ul>
   </div>
 </li>
@@ -250,7 +250,7 @@ queryNode:
       nvidia.com/gpu: &quot;2&quot;
 EOF</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Nella configurazione sopra riportata, sono disponibili quattro CPU e ogni dataNode e queryNode utilizza due GPU. Per assegnare GPU diverse al dataNode e al queryNode, è possibile modificare la configurazione di conseguenza impostando extraEnv nel file di configurazione come segue:</p>
+<p>In the configuration above, there are four CPUs available, and each dataNode and queryNode uses two GPUs. To assign different GPUs to the dataNode and the queryNode, you can modify the configuration accordingly by setting extraEnv in the configuration file as follows:</p>
 <pre><code translate="no" class="language-bash"><span class="hljs-built_in">cat</span> &lt;&lt;<span class="hljs-string">EOF &gt; custom-values.yaml
 dataNode:
   resources:
@@ -275,7 +275,7 @@ EOF</span>
 <pre><code translate="no" class="language-bash">$ helm install my-release milvus/milvus --<span class="hljs-built_in">set</span> cluster.enabled=<span class="hljs-literal">false</span> --<span class="hljs-built_in">set</span> etcd.replicaCount=1 --<span class="hljs-built_in">set</span> minio.mode=standalone --<span class="hljs-built_in">set</span> pulsarv3.enabled=<span class="hljs-literal">false</span> -f custom-values.yaml
 <button class="copy-code-btn"></button></code></pre></li>
 </ul>
-<h3 id="2-Check-Milvus-status" class="common-anchor-header">2. Verifica dello stato di Milvus<button data-href="#2-Check-Milvus-status" class="anchor-icon" translate="no">
+<h3 id="2-Check-Milvus-status" class="common-anchor-header">2. Check Milvus status<button data-href="#2-Check-Milvus-status" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -290,12 +290,12 @@ EOF</span>
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Eseguire il seguente comando per verificare lo stato di Milvus:</p>
+    </button></h3><p>Run the following command to check Milvus status:</p>
 <pre><code translate="no" class="language-bash">$ kubectl get pods
 <button class="copy-code-btn"></button></code></pre>
-<p>Dopo l’avvio di Milvus, la colonna « <code translate="no">READY</code> » (Stato del cluster) visualizza « <code translate="no">1/1</code> » per tutti i pod.</p>
+<p>After Milvus starts, the <code translate="no">READY</code> column displays <code translate="no">1/1</code> for all pods.</p>
 <ul>
-<li><p>Cluster Milvus</p>
+<li><p>Milvus cluster</p>
 <pre><code translate="no" class="language-shell">NAME                                             READY  STATUS   RESTARTS  AGE
 my-release-etcd-0                                  1/1     Running     0             3m24s
 my-release-etcd-1                                  1/1     Running     0             3m24s
@@ -330,7 +330,7 @@ my-release-milvus-standalone-54c4f88cb9-f84pf      1/1     Running     0        
 my-release-minio-5564fbbddc-mz7f5                  1/1     Running     0          30s
 <button class="copy-code-btn"></button></code></pre></li>
 </ul>
-<h3 id="3-Forward-a-local-port-to-Milvus" class="common-anchor-header">3. Reindirizzare una porta locale a Milvus<button data-href="#3-Forward-a-local-port-to-Milvus" class="anchor-icon" translate="no">
+<h3 id="3-Forward-a-local-port-to-Milvus" class="common-anchor-header">3. Forward a local port to Milvus<button data-href="#3-Forward-a-local-port-to-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -345,22 +345,22 @@ my-release-minio-5564fbbddc-mz7f5                  1/1     Running     0        
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Verifica su quale porta locale è in ascolto il server Milvus. Sostituisci il nome del pod con il tuo.</p>
+    </button></h3><p>Verify which local port the Milvus server is listening on. Replace the pod name with your own.</p>
 <pre><code translate="no" class="language-bash">$ kubectl get pod my-release-milvus-proxy-6bd7f5587-ds2xv --template
 =<span class="hljs-string">&#x27;{{(index (index .spec.containers 0).ports 0).containerPort}}{{&quot;\n&quot;}}&#x27;</span>
 19530
 <button class="copy-code-btn"></button></code></pre>
-<p>Quindi, eseguire il seguente comando per inoltrare una porta locale alla porta su cui è in ascolto Milvus.</p>
+<p>Then, run the following command to forward a local port to the port at which Milvus serves.</p>
 <pre><code translate="no" class="language-bash">$ kubectl port-forward service/my-release-milvus 27017:19530
 Forwarding from 127.0.0.1:27017 -&gt; 19530
 <button class="copy-code-btn"></button></code></pre>
-<p>Facoltativamente, è possibile utilizzare <code translate="no">:19530</code> al posto di <code translate="no">27017:19530</code> nel comando sopra riportato per consentire a <code translate="no">kubectl</code> di allocare una porta locale automaticamente, in modo da evitare di dover gestire eventuali conflitti di porta.</p>
-<p>Per impostazione predefinita, il port forwarding di kubectl ascolta solo su <code translate="no">localhost</code>. Utilizza il flag <code translate="no">address</code> se desideri che Milvus ascolti sull'indirizzo IP selezionato o su tutti gli indirizzi IP. Il comando seguente imposta il port forwarding in modo che ascolti su tutti gli indirizzi IP della macchina host.</p>
+<p>Optionally, you can use <code translate="no">:19530</code> instead of <code translate="no">27017:19530</code> in the above command to let <code translate="no">kubectl</code> allocate a local port for you so that you don’t have to manage port conflicts.</p>
+<p>By default, kubectl’s port-forwarding only listens on <code translate="no">localhost</code>. Use the <code translate="no">address</code> flag if you want Milvus to listen on the selected or all IP addresses. The following command makes port-forward listen on all IP addresses on the host machine.</p>
 <pre><code translate="no" class="language-bash">$ kubectl port-forward --address 0.0.0.0 service/my-release-milvus 27017:19530
 Forwarding from 0.0.0.0:27017 -&gt; 19530
 <button class="copy-code-btn"></button></code></pre>
-<p>Ora è possibile connettersi a Milvus utilizzando la porta inoltrata.</p>
-<h2 id="Access-Milvus-WebUI" class="common-anchor-header">Accedere all’interfaccia utente web di Milvus<button data-href="#Access-Milvus-WebUI" class="anchor-icon" translate="no">
+<p>Now, you can connect to Milvus using the forwarded port.</p>
+<h2 id="Access-Milvus-WebUI" class="common-anchor-header">Access Milvus WebUI<button data-href="#Access-Milvus-WebUI" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -375,13 +375,13 @@ Forwarding from 0.0.0.0:27017 -&gt; 19530
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus include uno strumento GUI integrato denominato Milvus WebUI, a cui è possibile accedere tramite il browser. Milvus WebUI migliora l’osservabilità del sistema grazie a un’interfaccia semplice e intuitiva. È possibile utilizzare Milvus WebUI per monitorare le statistiche e le metriche dei componenti e delle dipendenze di Milvus, verificare i dettagli del database e delle raccolte ed elencare le configurazioni dettagliate di Milvus. Per ulteriori dettagli su Milvus WebUI, consultare <a href="/docs/it/milvus-webui.md">Milvus WebUI</a></p>
-<p>Per abilitare l’accesso a Milvus WebUI, è necessario effettuare il port forwarding del pod proxy su una porta locale.</p>
+    </button></h2><p>Milvus ships with a built-in GUI tool called Milvus WebUI that you can access through your browser. Milvus Web UI enhances system observability with a simple and intuitive interface. You can use Milvus Web UI to observe the statistics and metrics of the components and dependencies of Milvus, check database and collection details, and list detailed Milvus configurations. For details about Milvus Web UI, see <a href="/docs/it/milvus-webui.md">Milvus WebUI</a></p>
+<p>To enable the access to the Milvus Web UI, you need to port-forward the proxy pod to a local port.</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">kubectl port-forward --address 0.0.0.0 service/my-release-milvus 27018:9091</span>
 Forwarding from 0.0.0.0:27018 -&gt; 9091
 <button class="copy-code-btn"></button></code></pre>
-<p>Ora è possibile accedere a Milvus Web UI all'indirizzo <code translate="no">http://localhost:27018</code>.</p>
-<h2 id="Uninstall-Milvus" class="common-anchor-header">Disinstallazione di Milvus<button data-href="#Uninstall-Milvus" class="anchor-icon" translate="no">
+<p>Now, you can access Milvus Web UI at <code translate="no">http://localhost:27018</code>.</p>
+<h2 id="Uninstall-Milvus" class="common-anchor-header">Uninstall Milvus<button data-href="#Uninstall-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -396,13 +396,13 @@ Forwarding from 0.0.0.0:27018 -&gt; 9091
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Eseguire il seguente comando per disinstallare Milvus.</p>
+    </button></h2><p>Run the following command to uninstall Milvus.</p>
 <pre><code translate="no" class="language-bash">$ helm uninstall my-release
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>Storage V3 è disabilitato per impostazione predefinita. Abilitarlo prima di utilizzare le funzionalità che dipendono da esso. Per i requisiti e le considerazioni sulla compatibilità, consultare <a href="/docs/it/storage-v3.md">Storage V3</a>.</p>
+<p>Storage V3 is disabled by default. Enable it before using features that depend on it. For requirements and compatibility considerations, see <a href="/docs/it/storage-v3.md">Storage V3</a>.</p>
 </div>
-<h2 id="Whats-next" class="common-anchor-header">Prossimi passi<button data-href="#Whats-next" class="anchor-icon" translate="no">
+<h2 id="Whats-next" class="common-anchor-header">What’s next<button data-href="#Whats-next" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -417,29 +417,29 @@ Forwarding from 0.0.0.0:27018 -&gt; 9091
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Una volta installato Milvus, è possibile:</p>
+    </button></h2><p>Having installed Milvus, you can:</p>
 <ul>
-<li><p>Consultare <a href="/docs/it/quickstart.md">la Guida rapida</a> per scoprire cosa può fare Milvus.</p></li>
-<li><p>Imparare le operazioni di base di Milvus:</p>
+<li><p>Check <a href="/docs/it/quickstart.md">Quickstart</a> to see what Milvus can do.</p></li>
+<li><p>Learn the basic operations of Milvus:</p>
 <ul>
-<li><a href="/docs/it/manage_databases.md">Gestire i database</a></li>
-<li><a href="/docs/it/manage-collections.md">Gestire le collezioni</a></li>
-<li><a href="/docs/it/manage-partitions.md">Gestire le partizioni</a></li>
-<li><a href="/docs/it/insert-update-delete.md">Inserimento, aggiornamento e cancellazione</a></li>
-<li><a href="/docs/it/single-vector-search.md">Ricerca su singolo vettore</a></li>
-<li><a href="/docs/it/multi-vector-search.md">Ricerca ibrida</a></li>
+<li><a href="/docs/it/manage_databases.md">Manage Databases</a></li>
+<li><a href="/docs/it/manage-collections.md">Manage Collections</a></li>
+<li><a href="/docs/it/manage-partitions.md">Manage Partitions</a></li>
+<li><a href="/docs/it/insert-update-delete.md">Insert, Upsert & Delete</a></li>
+<li><a href="/docs/it/single-vector-search.md">Single-Vector Search</a></li>
+<li><a href="/docs/it/multi-vector-search.md">Hybrid Search</a></li>
 </ul></li>
-<li><p><a href="/docs/it/upgrade_milvus_cluster-helm.md">Eseguire l'aggiornamento di Milvus utilizzando Helm Chart</a>.</p></li>
-<li><p><a href="/docs/it/scaleout.md">Scalare il cluster Milvus</a>.</p></li>
-<li><p>Distribuisci il tuo cluster Milvus su cloud:</p>
+<li><p><a href="/docs/it/upgrade_milvus_cluster-helm.md">Upgrade Milvus Using Helm Chart</a>.</p></li>
+<li><p><a href="/docs/it/scaleout.md">Scale your Milvus cluster</a>.</p></li>
+<li><p>Deploy your Milvu cluster on clouds:</p>
 <ul>
 <li><a href="/docs/it/eks.md">Amazon EKS</a></li>
 <li><a href="/docs/it/gcp.md">Google Cloud</a></li>
 <li><a href="/docs/it/azure.md">Microsoft Azure</a></li>
 </ul></li>
-<li><p>Scopri <a href="/docs/it/milvus-webui.md">Milvus WebUI</a>, un'interfaccia web intuitiva per il monitoraggio e la gestione di Milvus.</p></li>
-<li><p>Scopri <a href="/docs/it/milvus_backup_overview.md">Milvus Backup</a>, uno strumento open source per il backup dei dati di Milvus.</p></li>
-<li><p>Scopri <a href="/docs/it/birdwatcher_overview.md">Birdwatcher</a>, uno strumento open source per il debug di Milvus e gli aggiornamenti dinamici della configurazione.</p></li>
-<li><p>Scopri <a href="https://github.com/zilliztech/attu">Attu</a>, uno strumento GUI open source per una gestione intuitiva di Milvus.</p></li>
-<li><p><a href="/docs/it/monitor.md">Monitora Milvus con Prometheus</a>.</p></li>
+<li><p>Explore <a href="/docs/it/milvus-webui.md">Milvus WebUI</a>, an intuitive web interface for Milvus observability and management.</p></li>
+<li><p>Explore <a href="/docs/it/milvus_backup_overview.md">Milvus Backup</a>, an open-source tool for Milvus data backups.</p></li>
+<li><p>Explore <a href="/docs/it/birdwatcher_overview.md">Birdwatcher</a>, an open-source tool for debugging Milvus and dynamic configuration updates.</p></li>
+<li><p>Explore <a href="https://github.com/zilliztech/attu">Attu</a>, an open-source GUI tool for intuitive Milvus management.</p></li>
+<li><p><a href="/docs/it/monitor.md">Monitor Milvus with Prometheus</a>.</p></li>
 </ul>

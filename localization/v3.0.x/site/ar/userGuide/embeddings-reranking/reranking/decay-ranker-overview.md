@@ -1,13 +1,14 @@
 ---
 id: decay-ranker-overview.md
-title: نظرة عامة على Decay RankerCompatible with Milvus 2.6.x
+title: Decay Ranker OverviewCompatible with Milvus 2.6.x
 summary: >-
-  في البحث المتجهي التقليدي، يتم ترتيب النتائج بناءً على تشابه المتجهات فقط — أي
-  مدى تطابق المتجهات في الفضاء الرياضي. لكن في التطبيقات العملية، غالبًا ما
-  يعتمد ما يجعل المحتوى ذا صلة حقيقية على عوامل تتجاوز مجرد التشابه الدلالي.
+  In traditional vector search, results are ranked purely by vector
+  similarity—how closely vectors match in mathematical space. But in real-world
+  applications, what makes content truly relevant often depends on more than
+  just semantic similarity.
 beta: Milvus 2.6.x
 ---
-<h1 id="Decay-Ranker-Overview" class="common-anchor-header">نظرة عامة على Decay Ranker<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#Decay-Ranker-Overview" class="anchor-icon" translate="no">
+<h1 id="Decay-Ranker-Overview" class="common-anchor-header">Decay Ranker Overview<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#Decay-Ranker-Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -22,16 +23,16 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>في البحث المتجهي التقليدي، يتم ترتيب النتائج بناءً على تشابه المتجهات فقط — أي مدى تطابق المتجهات في الفضاء الرياضي. لكن في التطبيقات الواقعية، غالبًا ما يعتمد ما يجعل المحتوى ذا صلة حقيقية على أكثر من مجرد التشابه الدلالي.</p>
-<p>تأمل هذه السيناريوهات اليومية:</p>
+    </button></h1><p>In traditional vector search, results are ranked purely by vector similarity—how closely vectors match in mathematical space. But in real-world applications, what makes content truly relevant often depends on more than just semantic similarity.</p>
+<p>Consider these everyday scenarios:</p>
 <ul>
-<li><p>بحث إخباري حيث يجب أن يحتل مقال الأمس مرتبة أعلى من مقال مشابه نُشر قبل ثلاث سنوات</p></li>
-<li><p>أداة البحث عن المطاعم التي تعطي الأولوية للمطاعم التي تبعد 5 دقائق على تلك التي تتطلب 30 دقيقة بالسيارة</p></li>
-<li><p>منصة للتجارة الإلكترونية تبرز المنتجات الشائعة حتى لو كانت أقل تشابهاً بقليل مع استعلام البحث</p></li>
+<li><p>A news search where yesterday’s article should rank higher than a similar article from three years ago</p></li>
+<li><p>A restaurant finder that prioritizes venues 5 minutes away over those requiring a 30-minute drive</p></li>
+<li><p>An e-commerce platform that boosts trending products even when they’re slightly less similar to the search query</p></li>
 </ul>
-<p>تشترك جميع هذه السيناريوهات في حاجة مشتركة: تحقيق التوازن بين تشابه المتجهات وعوامل رقمية أخرى مثل الوقت أو المسافة أو الشعبية.</p>
-<p>تعالج أدوات ترتيب التناقص في Milvus هذه الحاجة من خلال تعديل تصنيفات البحث بناءً على قيم الحقول الرقمية. فهي تتيح لك تحقيق التوازن بين تشابه المتجهات و«حداثة» المعلومات أو «قربها» أو الخصائص الرقمية الأخرى لبياناتك، مما يخلق تجارب بحث أكثر بديهية وذات صلة بالسياق.</p>
-<h2 id="Usage-notes" class="common-anchor-header">ملاحظات حول الاستخدام<button data-href="#Usage-notes" class="anchor-icon" translate="no">
+<p>These scenarios all share a common need: balancing vector similarity with other numeric factors like time, distance, or popularity.</p>
+<p>Decay rankers in Milvus address this need by adjusting search rankings based on numeric field values. They allow you to balance vector similarity with “freshness,” “nearness,” or other numeric properties of your data, creating more intuitive and contextually relevant search experiences.</p>
+<h2 id="Usage-notes" class="common-anchor-header">Usage notes<button data-href="#Usage-notes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -47,17 +48,17 @@ beta: Milvus 2.6.x
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>لا يمكن استخدام الترتيب التنازلي مع عمليات البحث المجمعة.</p></li>
-<li><p>يجب أن يكون الحقل المستخدم لترتيب التناقص رقميًا (<code translate="no">INT8</code> ، <code translate="no">INT16</code> ، <code translate="no">INT32</code> ، <code translate="no">INT64</code> ، <code translate="no">FLOAT</code> ، أو <code translate="no">DOUBLE</code>).</p></li>
-<li><p>لا يمكن لكل أداة تصنيف التضاؤل استخدام سوى حقل رقمي واحد.</p></li>
-<li><p><strong>اتساق وحدة الوقت</strong>: عند استخدام ترتيب التناقص القائم على الوقت، يجب أن تتطابق وحدات المعلمات <code translate="no">origin</code> و <code translate="no">scale</code> و <code translate="no">offset</code> مع الوحدات المستخدمة في بيانات المجموعة:</p>
+<li><p>Decay ranking cannot be used with grouping searches.</p></li>
+<li><p>The field used for decay ranking must be numeric (<code translate="no">INT8</code>, <code translate="no">INT16</code>, <code translate="no">INT32</code>, <code translate="no">INT64</code>, <code translate="no">FLOAT</code>, or <code translate="no">DOUBLE</code>).</p></li>
+<li><p>Each decay ranker can only use one numeric field.</p></li>
+<li><p><strong>Time unit consistency</strong>: When using time-based decay ranking, the units for <code translate="no">origin</code>, <code translate="no">scale</code>, and <code translate="no">offset</code> parameters must match the units used in your collection data:</p>
 <ul>
-<li><p>إذا كانت المجموعة تخزن الطوابع الزمنية <strong>بالثواني</strong>، فاستخدم الثواني لجميع المعلمات</p></li>
-<li><p>إذا كانت المجموعة تخزن الطوابع الزمنية <strong>بالمللي ثانية</strong>، فاستخدم المللي ثانية لجميع المعلمات</p></li>
-<li><p>إذا كانت المجموعة تخزن الطوابع الزمنية <strong>بالميكروثانية،</strong> فاستخدم الميكروثانية لجميع المعلمات</p></li>
+<li><p>If your collection stores timestamps in <strong>seconds</strong>, use seconds for all parameters</p></li>
+<li><p>If your collection stores timestamps in <strong>milliseconds</strong>, use milliseconds for all parameters</p></li>
+<li><p>If your collection stores timestamps in <strong>microseconds</strong>, use microseconds for all parameters</p></li>
 </ul></li>
 </ul>
-<h2 id="How-it-works" class="common-anchor-header">كيفية العمل<button data-href="#How-it-works" class="anchor-icon" translate="no">
+<h2 id="How-it-works" class="common-anchor-header">How it works<button data-href="#How-it-works" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -72,8 +73,8 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يعزز ترتيب التضاؤل البحث المتجه التقليدي من خلال دمج عوامل رقمية مثل الوقت أو المسافة الجغرافية في عملية الترتيب. تتبع العملية بأكملها المراحل التالية:</p>
-<h3 id="Stage-1-Calculate-normalized-similarity-scores" class="common-anchor-header">المرحلة 1: حساب درجات التشابه المعيارية<button data-href="#Stage-1-Calculate-normalized-similarity-scores" class="anchor-icon" translate="no">
+    </button></h2><p>Decay ranking enhances traditional vector search by incorporating numeric factors like time or geo distance into the ranking process. The entire process follows these stages:</p>
+<h3 id="Stage-1-Calculate-normalized-similarity-scores" class="common-anchor-header">Stage 1: Calculate normalized similarity scores<button data-href="#Stage-1-Calculate-normalized-similarity-scores" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -88,15 +89,15 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>أولاً، يقوم Milvus بحساب درجات تشابه المتجهات وتوحيدها لضمان مقارنة متسقة:</p>
+    </button></h3><p>First, Milvus calculates and normalizes vector similarity scores to ensure consistent comparison:</p>
 <ul>
-<li><p>بالنسبة لمقاييس المسافة <strong>L2</strong> <strong>وJACCARD</strong> (حيث تشير القيم الأقل إلى تشابه أعلى):</p>
+<li><p>For <strong>L2</strong> and <strong>JACCARD</strong> distance metrics (where lower values indicate higher similarity):</p>
 <pre><code translate="no" class="language-plaintext">normalized_score = 1.0 - (2 × arctan(score))/π
 <button class="copy-code-btn"></button></code></pre>
-<p>يؤدي ذلك إلى تحويل المسافات إلى درجات تشابه تتراوح بين 0 و1، حيث كلما ارتفعت الدرجة كان ذلك أفضل.</p></li>
-<li><p>بالنسبة لمقاييس <strong>IP</strong> <strong>وCOSINE</strong> <strong>وBM25</strong> (حيث تشير الدرجات الأعلى بالفعل إلى تطابقات أفضل): تُستخدم الدرجات مباشرةً دون تطبيع.</p></li>
+<p>This transforms distances into similarity scores between 0-1, where higher is better.</p></li>
+<li><p>For <strong>IP</strong>, <strong>COSINE</strong>, and <strong>BM25</strong> metrics (where higher scores already indicate better matches): Scores are used directly without normalization.</p></li>
 </ul>
-<h3 id="Stage-2-Calculate-decay-scores" class="common-anchor-header">المرحلة 2: حساب درجات التناقص<button data-href="#Stage-2-Calculate-decay-scores" class="anchor-icon" translate="no">
+<h3 id="Stage-2-Calculate-decay-scores" class="common-anchor-header">Stage 2: Calculate decay scores<button data-href="#Stage-2-Calculate-decay-scores" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -111,13 +112,13 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>بعد ذلك، يحسب Milvus درجة التناقص استنادًا إلى القيمة الرقمية للحقل (مثل الطابع الزمني أو المسافة) باستخدام أداة ترتيب التناقص التي اخترتها:</p>
+    </button></h3><p>Next, Milvus calculates a decay score based on the numeric field value (like timestamp or distance) using your selected decay ranker:</p>
 <ul>
-<li><p>يقوم كل مُصنِّف تضاؤل بتحويل القيم الرقمية الأولية إلى درجات صلة مُعَدَّلة تتراوح بين 0 و1</p></li>
-<li><p>تمثل درجة التناقص مدى صلة العنصر بناءً على «مسافته» عن النقطة المثالية</p></li>
+<li><p>Each decay ranker transforms raw numeric values into normalized relevance scores between 0-1</p></li>
+<li><p>The decay score represents how relevant an item is based on its “distance” from the ideal point</p></li>
 </ul>
-<p>تختلف صيغة الحساب المحددة باختلاف نوع أداة ترتيب التناقص. للحصول على تفاصيل حول كيفية حساب درجة التناقص، راجع الصفحات المخصصة لـ <a href="/docs/ar/gaussian-decay.md#Formula">«التناقص الغاوسي</a>» <a href="/docs/ar/exponential-decay.md#Formula">و«التناقص الأسي</a>» <a href="/docs/ar/linear-decay.md#Formula">و«التناقص الخطي</a>».</p>
-<h3 id="Stage-3-Compute-final-scores" class="common-anchor-header">المرحلة 3: حساب الدرجات النهائية<button data-href="#Stage-3-Compute-final-scores" class="anchor-icon" translate="no">
+<p>The specific calculation formula varies depending on the decay ranker type. For details on how to calculate a decay score, refer to the dedicated pages for <a href="/docs/ar/gaussian-decay.md#Formula">Gaussian Decay</a>, <a href="/docs/ar/exponential-decay.md#Formula">Exponential Decay</a>, <a href="/docs/ar/linear-decay.md#Formula">Linear Decay</a>.</p>
+<h3 id="Stage-3-Compute-final-scores" class="common-anchor-header">Stage 3: Compute final scores<button data-href="#Stage-3-Compute-final-scores" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -132,14 +133,14 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>أخيرًا، يجمع Milvus بين درجة التشابه المعيارية ودرجة التناقص لإنتاج درجة الترتيب النهائية:</p>
+    </button></h3><p>Finally, Milvus combines the normalized similarity score and decay score to produce the final ranking score:</p>
 <pre><code translate="no" class="language-plaintext">final_score = normalized_similarity_score × decay_score
 <button class="copy-code-btn"></button></code></pre>
-<p>في حالات البحث المختلط (الذي يجمع بين حقول متجهات متعددة)، يأخذ Milvus أعلى درجة تشابه معيارية بين طلبات البحث:</p>
+<p>In cases of hybrid search (combining multiple vector fields), Milvus takes the maximum normalized similarity score among search requests:</p>
 <pre><code translate="no" class="language-plaintext">final_score = max([normalized_score₁, normalized_score₂, ..., normalized_scoreₙ]) × decay_score
 <button class="copy-code-btn"></button></code></pre>
-<p>على سبيل المثال، إذا حصلت ورقة بحثية على 0.82 من تشابه المتجهات و0.91 من استرجاع النص القائم على BM25 في بحث هجين، يستخدم Milvus 0.91 كدرجة تشابه أساسية قبل تطبيق عامل التناقص.</p>
-<h3 id="Decay-ranking-in-action" class="common-anchor-header">تصنيف التناقص في الواقع العملي<button data-href="#Decay-ranking-in-action" class="anchor-icon" translate="no">
+<p>For example, if a research paper scores 0.82 from vector similarity and 0.91 from BM25-based text retrieval in a hybrid search, Milvus uses 0.91 as the base similarity score before applying the decay factor.</p>
+<h3 id="Decay-ranking-in-action" class="common-anchor-header">Decay ranking in action<button data-href="#Decay-ranking-in-action" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -154,64 +155,64 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>دعونا نرى ترتيب التناقص في سيناريو عملي — البحث عن <strong>«أوراق بحثية في مجال الذكاء الاصطناعي»</strong> مع التناقص القائم على الوقت:</p>
+    </button></h3><p>Let’s see decay ranking in a practical scenario—searching for <strong>“AI research papers”</strong> with time-based decay:</p>
 <div class="alert note">
-<p>في هذا المثال، تعكس درجات التناقص كيف تتضاءل الصلة بالموضوع بمرور الوقت — حيث تحصل الأوراق البحثية الأحدث على درجات أقرب إلى 1.0، بينما تحصل الأوراق الأقدم على درجات أقل. يتم حساب هذه القيم باستخدام أداة ترتيب تناقص محددة. لمزيد من التفاصيل، راجع <a href="/docs/ar/decay-ranker-overview.md#Choose-the-right-decay-ranker">«اختيار أداة ترتيب التناقص المناسبة</a>».</p>
+<p>In this example, decay scores reflect how relevance diminishes with time—newer papers receive scores closer to 1.0, older papers receive lower scores. These values are calculated using a specific decay ranker. For details, refer to <a href="/docs/ar/decay-ranker-overview.md#Choose-the-right-decay-ranker">Choose the right decay ranker</a>.</p>
 </div>
 <table>
    <tr>
-     <th><p>الورقة البحثية</p></th>
-     <th><p>تشابه المتجهات</p></th>
-     <th><p>درجة التشابه المعيارية</p></th>
-     <th><p>تاريخ النشر</p></th>
-     <th><p>درجة التناقص</p></th>
-     <th><p>الدرجة النهائية</p></th>
-     <th><p>الترتيب النهائي</p></th>
+     <th><p>Paper</p></th>
+     <th><p>Vector Similarity</p></th>
+     <th><p>Normalized Similarity Score</p></th>
+     <th><p>Publication Date</p></th>
+     <th><p>Decay Score</p></th>
+     <th><p>Final Score</p></th>
+     <th><p>Final Rank</p></th>
    </tr>
    <tr>
-     <td><p>الورقة أ</p></td>
-     <td><p>مرتفع</p></td>
+     <td><p>Paper A</p></td>
+     <td><p>High</p></td>
      <td><p>0.85 (<code translate="no">COSINE</code>)</p></td>
-     <td><p>قبل أسبوعين</p></td>
+     <td><p>2 weeks ago</p></td>
      <td><p>0.80</p></td>
      <td><p>0.68</p></td>
      <td>2</td>
    </tr>
    <tr>
-     <td><p>الورقة ب</p></td>
-     <td><p>مرتفع جدًا</p></td>
+     <td><p>Paper B</p></td>
+     <td><p>Very High</p></td>
      <td><p>0.92 (<code translate="no">COSINE</code>)</p></td>
-     <td><p>قبل 6 أشهر</p></td>
+     <td><p>6 months ago</p></td>
      <td><p>0.45</p></td>
      <td><p>0.41</p></td>
      <td>4</td>
    </tr>
    <tr>
-     <td><p>الورقة C</p></td>
-     <td><p>متوسط</p></td>
+     <td><p>Paper C</p></td>
+     <td><p>Medium</p></td>
      <td><p>0.75 (<code translate="no">COSINE</code>)</p></td>
-     <td><p>قبل يوم واحد</p></td>
+     <td><p>1 day ago</p></td>
      <td><p>0.98</p></td>
      <td><p>0.74</p></td>
      <td>1</td>
    </tr>
    <tr>
-     <td><p>الورقة د</p></td>
-     <td><p>متوسط-مرتفع</p></td>
+     <td><p>Paper D</p></td>
+     <td><p>Medium-High</p></td>
      <td><p>0.76 (<code translate="no">COSINE</code>)</p></td>
-     <td><p>قبل 3 أسابيع</p></td>
+     <td><p>3 weeks ago</p></td>
      <td><p>0.70</p></td>
      <td><p>0.53</p></td>
      <td>3</td>
    </tr>
 </table>
-<p>بدون إعادة الترتيب حسب التناقص، كانت الورقة ب ستحتل المرتبة الأعلى بناءً على التشابه المتجهي البحت (0.92). ومع ذلك، عند تطبيق إعادة الترتيب حسب التناقص:</p>
+<p>Without decay reranking, Paper B would rank highest based on pure vector similarity (0.92). However, with decay reranking applied:</p>
 <ul>
-<li><p>تقفز الورقة C إلى المرتبة الأولى على الرغم من تشابهها المتوسط لأنها حديثة جدًا (نُشرت أمس)</p></li>
-<li><p>تنخفض الورقة «ب» إلى المرتبة الرابعة على الرغم من تشابهها الممتاز لأنها قديمة نسبيًا</p></li>
-<li><p>تستخدم الورقة د تشابه COSINE، لذا تُستخدم درجتها البالغة 0.76 مباشرةً قبل تطبيق الترتيب التنازلي</p></li>
+<li><p>Paper C jumps to position #1 despite medium similarity because it’s very recent (published yesterday)</p></li>
+<li><p>Paper B drops to position #4 despite excellent similarity because it’s relatively old</p></li>
+<li><p>Paper D uses COSINE similarity, so its score of 0.76 is used directly before applying decay</p></li>
 </ul>
-<h2 id="Choose-the-right-decay-ranker" class="common-anchor-header">اختر أداة إعادة الترتيب بالتناقص المناسبة<button data-href="#Choose-the-right-decay-ranker" class="anchor-icon" translate="no">
+<h2 id="Choose-the-right-decay-ranker" class="common-anchor-header">Choose the right decay ranker<button data-href="#Choose-the-right-decay-ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -226,40 +227,40 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يقدم Milvus أدوات ترتيب بالتناقص مميزة - <code translate="no">gauss</code> ، <code translate="no">exp</code> ، <code translate="no">linear</code> ، كل منها مصمم لحالات استخدام محددة:</p>
+    </button></h2><p>Milvus offers distinct decay rankers - <code translate="no">gauss</code>, <code translate="no">exp</code>, <code translate="no">linear</code>, each designed for specific use cases:</p>
 <table>
    <tr>
-     <th><p>أداة تصنيف التناقص</p></th>
-     <th><p>الخصائص</p></th>
-     <th><p>حالات الاستخدام المثالية</p></th>
-     <th><p>سيناريو مثال</p></th>
+     <th><p>Decay Ranker</p></th>
+     <th><p>Characteristics</p></th>
+     <th><p>Ideal Use Cases</p></th>
+     <th><p>Example Scenario</p></th>
    </tr>
    <tr>
-     <td><p>غاوسي (<code translate="no">gauss</code>)</p></td>
-     <td><p>انخفاض تدريجي يبدو طبيعيًا ويمتد بشكل معتدل</p></td>
-     <td><ul><li><p>عمليات البحث العامة التي تتطلب نتائج متوازنة</p></li><li><p>التطبيقات التي يكون لدى المستخدمين فيها إحساس بديهي بالمسافة</p></li><li><p>عندما لا ينبغي أن تؤثر المسافة المعتدلة سلبًا بشكل كبير على النتائج</p></li></ul></td>
-     <td><p>في البحث عن مطعم، تظل الأماكن عالية الجودة التي تبعد 3 كيلومترات قابلة للاكتشاف، على الرغم من ترتيبها في مرتبة أدنى من الخيارات القريبة</p></td>
+     <td><p>Gaussian (<code translate="no">gauss</code>)</p></td>
+     <td><p>Natural-feeling gradual decline that extends moderately</p></td>
+     <td><ul><li><p>General searches requiring balanced results</p></li><li><p>Applications where users have an intuitive sense of distance</p></li><li><p>When moderate distance shouldn't severely penalize results</p></li></ul></td>
+     <td><p>In a restaurant search, quality venues 3 km away remain discoverable, though ranked lower than nearby options</p></td>
    </tr>
    <tr>
-     <td><p>أسي (<code translate="no">exp</code>)</p></td>
-     <td><p>ينخفض بسرعة في البداية لكنه يحافظ على ذيل طويل</p></td>
-     <td><ul><li><p>موجزات الأخبار التي يُعد فيها الحداثة عاملاً حاسماً</p></li><li><p>وسائل التواصل الاجتماعي حيث يجب أن يهيمن المحتوى الجديد</p></li><li><p>عندما يُفضل القرب بشدة، لكن يجب أن تظل العناصر البعيدة الاستثنائية مرئية</p></li></ul></td>
-     <td><p>في تطبيق الأخبار، تحتل أخبار الأمس مرتبة أعلى بكثير من المحتوى الذي يعود إلى أسبوع مضى، لكن المقالات القديمة ذات الصلة الوثيقة بالموضوع قد تظهر مع ذلك</p></td>
+     <td><p>Exponential (<code translate="no">exp</code>)</p></td>
+     <td><p>Rapidly decreases at first but maintains a long tail</p></td>
+     <td><ul><li><p>News feeds where recency is critical</p></li><li><p>Social media where fresh content should dominate</p></li><li><p>When proximity is strongly preferred but exceptional distant items should remain visible</p></li></ul></td>
+     <td><p>In a news app, yesterday's stories rank much higher than week-old content, but highly relevant older articles can still appear</p></td>
    </tr>
    <tr>
-     <td><p>خطي (<code translate="no">linear</code>)</p></td>
-     <td><p>انخفاض متسق ويمكن التنبؤ به مع حد فاصل واضح</p></td>
-     <td><ul><li><p>التطبيقات ذات الحدود الطبيعية</p></li><li><p>الخدمات ذات حدود المسافة</p></li><li><p>المحتوى الذي له تواريخ انتهاء الصلاحية أو عتبات واضحة</p></li></ul></td>
-     <td><p>في أداة البحث عن الأحداث، لا تظهر الأحداث التي تتجاوز فترة أسبوعين في المستقبل على الإطلاق</p></td>
+     <td><p>Linear (<code translate="no">linear</code>)</p></td>
+     <td><p>Consistent, predictable decline with a clear cutoff</p></td>
+     <td><ul><li><p>Applications with natural boundaries</p></li><li><p>Services with distance limits</p></li><li><p>Content with expiration dates or clear thresholds</p></li></ul></td>
+     <td><p>In an event finder, events beyond a two-week future window simply don't appear at all</p></td>
    </tr>
 </table>
-<p>للحصول على معلومات تفصيلية حول كيفية حساب كل مصنف تضاؤل للنتائج وأنماط التضاؤل المحددة، يرجى الرجوع إلى الوثائق المخصصة:</p>
+<p>For detailed information about how each decay ranker calculates scores and specific decline patterns, refer to the dedicated documentation:</p>
 <ul>
-<li><p><a href="/docs/ar/gaussian-decay.md">التناقص الغاوسي</a></p></li>
-<li><p><a href="/docs/ar/exponential-decay.md">التناقص الأسي</a></p></li>
-<li><p><a href="/docs/ar/linear-decay.md">التناقص الخطي</a></p></li>
+<li><p><a href="/docs/ar/gaussian-decay.md">Gaussian Decay</a></p></li>
+<li><p><a href="/docs/ar/exponential-decay.md">Exponential Decay</a></p></li>
+<li><p><a href="/docs/ar/linear-decay.md">Linear Decay</a></p></li>
 </ul>
-<h2 id="Implementation-example" class="common-anchor-header">مثال على التنفيذ<button data-href="#Implementation-example" class="anchor-icon" translate="no">
+<h2 id="Implementation-example" class="common-anchor-header">Implementation example<button data-href="#Implementation-example" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -274,11 +275,11 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يمكن تطبيق مصنفات التناقص على كل من عمليات البحث المتجهي القياسي والبحث الهجين في Milvus. فيما يلي مقتطفات الكود الرئيسية لتنفيذ هذه الميزة.</p>
+    </button></h2><p>Decay rankers can be applied to both standard vector search and hybrid search operations in Milvus. Below are the key code snippets for implementing this feature.</p>
 <div class="alert note">
-<p>قبل استخدام دوال التناقص، يجب أولاً إنشاء مجموعة تحتوي على الحقول الرقمية المناسبة (مثل الطوابع الزمنية والمسافات وما إلى ذلك) التي ستُستخدم في حسابات التناقص. للاطلاع على أمثلة عملية كاملة تشمل إعداد المجموعة وتعريف المخطط وإدراج البيانات، راجع <a href="/docs/ar/tutorial-implement-a-time-based-ranking-in-milvus.md">البرنامج التعليمي: تنفيذ الترتيب القائم على الوقت في Milvus</a>.</p>
+<p>Before using decay functions, you must first create a collection with appropriate numeric fields (like timestamps, distances, etc.) that will be used for decay calculations. For complete working examples including collection setup, schema definition, and data insertion, refer to <a href="/docs/ar/tutorial-implement-a-time-based-ranking-in-milvus.md">Tutorial: Implement Time-based Ranking in Milvus</a>.</p>
 </div>
-<h3 id="Create-a-decay-ranker" class="common-anchor-header">إنشاء أداة ترتيب التناقص<button data-href="#Create-a-decay-ranker" class="anchor-icon" translate="no">
+<h3 id="Create-a-decay-ranker" class="common-anchor-header">Create a decay ranker<button data-href="#Create-a-decay-ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -293,16 +294,16 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>لتنفيذ الترتيب التنازلي، قم أولاً بتعريف كائن « <code translate="no">Function</code> » (مصنف التناقص) بالتكوين المناسب:</p>
+    </button></h3><p>To implement decay ranking, first define a <code translate="no">Function</code> object with the appropriate configuration:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> Function, FunctionType
 <span class="hljs-keyword">import</span> datetime
@@ -406,71 +407,110 @@ rerank-&gt;<span class="hljs-built_in">SetDecay</span>(<span class="hljs-number"
     .WithOffset(<span class="hljs-number">24</span> * <span class="hljs-number">60</span> * <span class="hljs-number">60</span>)                    <span class="hljs-comment">// 1 day no-decay zone (must match collection data unit)</span>
     .WithDecay(<span class="hljs-number">0.5f</span>);                            <span class="hljs-comment">// Half score at scale distance</span>
 <button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
+<pre><code translate="no" class="language-bash"><span class="hljs-built_in">export</span> CLUSTER_ENDPOINT=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>
+<span class="hljs-built_in">export</span> TOKEN=<span class="hljs-string">&quot;root:Milvus&quot;</span>
+
+curl --request POST \
+--url <span class="hljs-string">&quot;<span class="hljs-variable">${CLUSTER_ENDPOINT}</span>/v2/vectordb/collections/create&quot;</span> \
+--header <span class="hljs-string">&quot;Authorization: Bearer <span class="hljs-variable">${TOKEN}</span>&quot;</span> \
+--header <span class="hljs-string">&quot;Content-Type: application/json&quot;</span> \
+--header <span class="hljs-string">&quot;Request-Timeout: 10&quot;</span> \
+-d <span class="hljs-string">&#x27;{
+    &quot;collectionName&quot;: &quot;your_collection&quot;,
+    &quot;schema&quot;: {
+        &quot;autoID&quot;: false,
+        &quot;enableDynamicField&quot;: false,
+        &quot;fields&quot;: [
+            {
+                &quot;fieldName&quot;: &quot;id&quot;,
+                &quot;dataType&quot;: &quot;Int64&quot;,
+                &quot;isPrimary&quot;: true
+            },
+            {
+                &quot;fieldName&quot;: &quot;document&quot;,
+                &quot;dataType&quot;: &quot;VarChar&quot;,
+                &quot;elementTypeParams&quot;: {
+                    &quot;max_length&quot;: 65535
+                }
+            },
+            {
+                &quot;fieldName&quot;: &quot;timestamp&quot;,
+                &quot;dataType&quot;: &quot;Int64&quot;
+            },
+            {
+                &quot;fieldName&quot;: &quot;vector_field&quot;,
+                &quot;dataType&quot;: &quot;FloatVector&quot;,
+                &quot;elementTypeParams&quot;: {
+                    &quot;dim&quot;: 768
+                }
+            }
+        ]
+    }
+}&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
 <table>
    <tr>
-     <th><p>المعلمة</p></th>
-     <th><p>مطلوب؟</p></th>
-     <th><p>الوصف</p></th>
-     <th><p>القيمة/المثال</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Required?</p></th>
+     <th><p>Description</p></th>
+     <th><p>Value/Example</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">name</code></p></td>
-     <td><p>نعم</p></td>
-     <td><p>معرف الدالة الخاص بك الذي يُستخدم عند تنفيذ عمليات البحث. اختر اسمًا وصفياً مناسباً لحالة الاستخدام الخاصة بك.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Identifier for your function used when executing searches. Choose a descriptive name relevant to your use case.</p></td>
      <td><p><code translate="no">"time_decay"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">input_field_names</code></p></td>
-     <td><p>نعم</p></td>
-     <td><p>حقل رقمي لحساب درجة التلاشي. يحدد سمة البيانات التي سيتم استخدامها لحساب التلاشي (على سبيل المثال، الطوابع الزمنية للتلاشي المستند إلى الوقت، والإحداثيات للتلاشي المستند إلى الموقع). </p><p>يجب أن يكون حقلًا في مجموعتك يحتوي على قيم رقمية ذات صلة. يدعم INT8/16/32/64 وFLOAT وDOUBLE.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Numeric field for decay score calculation. Determines which data attribute will be used for calculating decay (e.g., timestamps for time-based decay, coordinates for location-based decay). </p><p>Must be a field in your collection that contains relevant numeric values. Supports INT8/16/32/64, FLOAT, DOUBLE.</p></td>
      <td><p><code translate="no">["timestamp"]</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">function_type</code></p></td>
-     <td><p>نعم</p></td>
-     <td><p>يحدد نوع الدالة التي يتم إنشاؤها.</p><p>يجب تعيينه على « <code translate="no">RERANK</code> » لجميع أدوات ترتيب التلاشي.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Specifies the type of function being created.</p><p>Must be set to <code translate="no">RERANK</code> for all decay rankers.</p></td>
      <td><p><code translate="no">FunctionType.RERANK</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.reranker</code></p></td>
-     <td><p>نعم</p></td>
-     <td><p>يحدد طريقة إعادة الترتيب المطلوب استخدامها.</p><p>يجب ضبطه على " <code translate="no">"decay"</code> " لتمكين وظيفة ترتيب التناقص.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Specifies the reranking method to use.</p><p>Must be set to <code translate="no">"decay"</code> to enable decay ranking functionality.</p></td>
      <td><p><code translate="no">"decay"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.function</code></p></td>
-     <td><p>نعم</p></td>
-     <td><p>يحدد أداة ترتيب التناقص الرياضية التي سيتم تطبيقها. يحدد شكل منحنى انخفاض الصلة.</p><p>انظر قسم <a href="/docs/ar/decay-ranker-overview.md#Choose-the-right-decay-ranker">«اختيار أداة الترتيب التناقصي المناسبة»</a> للحصول على إرشادات حول اختيار الدالة المناسبة.</p></td>
-     <td><p><code translate="no">"gauss"</code>، أو <code translate="no">"exp"</code> ، أو <code translate="no">"linear"</code></p></td>
+     <td><p>Yes</p></td>
+     <td><p>Specifies which mathematical decay ranker to apply. Determines the curve shape of relevance decline.</p><p>See <a href="/docs/ar/decay-ranker-overview.md#Choose-the-right-decay-ranker">Choose the right decay ranker</a> section for guidance on selecting the appropriate function.</p></td>
+     <td><p><code translate="no">"gauss"</code>, <code translate="no">"exp"</code>, or <code translate="no">"linear"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.origin</code></p></td>
-     <td><p>نعم</p></td>
-     <td><p>نقطة مرجعية تُحسب منها درجة التناقص. تحصل العناصر التي تبلغ هذه القيمة على أقصى درجات الصلة.</p><p>بالنسبة للتناقص القائم على الوقت، يجب أن تتطابق وحدة الوقت مع بيانات مجموعتك.</p></td>
-     <td><ul><li><p>بالنسبة للطوابع الزمنية: الوقت الحالي (على سبيل المثال، <code translate="no">int(time.time())</code>)</p></li><li><p>بالنسبة للموقع الجغرافي: الإحداثيات الحالية للمستخدم</p></li></ul></td>
+     <td><p>Yes</p></td>
+     <td><p>Reference point from which decay score is calculated. Items at this value receive maximum relevance scores.</p><p>For time-based decay, the time unit must match your collection data.</p></td>
+     <td><ul><li><p>For timestamps: current time (e.g., <code translate="no">int(time.time())</code>)</p></li><li><p>For geolocation: user's current coordinates</p></li></ul></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.scale</code></p></td>
-     <td><p>نعم</p></td>
-     <td><p>المسافة أو الوقت الذي تنخفض عنده الصلة إلى القيمة <code translate="no">decay</code>. يتحكم في مدى سرعة انخفاض الصلة.</p><p>بالنسبة للتناقص القائم على الوقت، يجب أن تتطابق وحدة الوقت مع بيانات المجموعة الخاصة بك.</p><p>تؤدي القيم الأكبر إلى انخفاض تدريجي في الصلة؛ بينما تؤدي القيم الأصغر إلى انخفاض أكثر حدة.</p></td>
-     <td><ul><li><p>بالنسبة للوقت: الفترة بالثواني (على سبيل المثال، <code translate="no">7 * 24 * 60 * 60</code> لمدة 7 أيام)</p></li><li><p>بالنسبة للمسافة: بالمتر (على سبيل المثال، <code translate="no">5000</code> لمسافة 5 كم)</p></li></ul></td>
+     <td><p>Yes</p></td>
+     <td><p>Distance or time at which relevance drops to the <code translate="no">decay</code> value. Controls how quickly relevance declines.</p><p>For time-based decay, the time unit must match your collection data.</p><p>Larger values create a more gradual decline in relevance; smaller values create a steeper decline.</p></td>
+     <td><ul><li><p>For time: period in seconds (e.g., <code translate="no">7 * 24 * 60 * 60</code> for 7 days)</p></li><li><p>For distance: meters (e.g., <code translate="no">5000</code> for 5km)</p></li></ul></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.offset</code></p></td>
-     <td><p>لا</p></td>
-     <td><p>يُنشئ "منطقة خالية من التناقص" حول <code translate="no">origin</code> حيث تحتفظ العناصر بدرجاتها الكاملة (درجة التناقص = 1.0).</p><p>بالنسبة للتناقص القائم على الوقت، يجب أن تتطابق وحدة الوقت مع بيانات المجموعة الخاصة بك.</p><p>تحتفظ العناصر الواقعة ضمن هذا النطاق من <code translate="no">origin</code> بأقصى درجة من الصلة.</p></td>
-     <td><ul><li><p>بالنسبة للوقت: الفترة بالثواني (على سبيل المثال، <code translate="no">24 * 60 * 60</code> لمدة يوم واحد)</p></li><li><p>بالنسبة للمسافة: بالمتر (على سبيل المثال، <code translate="no">500</code> لمسافة 500 متر)</p></li></ul></td>
+     <td><p>No</p></td>
+     <td><p>Creates a "no-decay zone" around the <code translate="no">origin</code> where items maintain full scores (decay score = 1.0).</p><p>For time-based decay, the time unit must match your collection data.</p><p>Items within this range of the <code translate="no">origin</code> maintain maximum relevance.</p></td>
+     <td><ul><li><p>For time: period in seconds (e.g., <code translate="no">24 * 60 * 60</code> for 1 day)</p></li><li><p>For distance: meters (e.g., <code translate="no">500</code> for 500m)</p></li></ul></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.decay</code></p></td>
-     <td><p>لا</p></td>
-     <td><p>قيمة النتيجة عند مسافة « <code translate="no">scale</code> »، تتحكم في انحدار المنحنى. تؤدي القيم الأقل إلى منحنيات انخفاض أكثر انحدارًا؛ بينما تؤدي القيم الأعلى إلى منحنيات انخفاض أكثر تدريجيّة.</p><p>يجب أن تكون القيمة بين 0 و 1.</p></td>
-     <td><p><code translate="no">0.5</code> (الافتراضي)</p></td>
+     <td><p>No</p></td>
+     <td><p>Score value at the <code translate="no">scale</code> distance, controls curve steepness. Lower values create steeper decline curves; higher values create more gradual decline curves.</p><p>Must be between 0 and 1.</p></td>
+     <td><p><code translate="no">0.5</code> (default)</p></td>
    </tr>
 </table>
-<h3 id="Apply-to-standard-vector-search" class="common-anchor-header">تطبيق على البحث المتجه القياسي<button data-href="#Apply-to-standard-vector-search" class="anchor-icon" translate="no">
+<h3 id="Apply-to-standard-vector-search" class="common-anchor-header">Apply to standard vector search<button data-href="#Apply-to-standard-vector-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -485,16 +525,16 @@ rerank-&gt;<span class="hljs-built_in">SetDecay</span>(<span class="hljs-number"
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>بعد تعريف مُصنِّف التناقص الخاص بك، يمكنك تطبيقه أثناء عمليات البحث عن طريق تمريره إلى المعلمة <code translate="no">ranker</code>:</p>
+    </button></h3><p>After defining your decay ranker, you can apply it during search operations by passing it to the <code translate="no">ranker</code> parameter:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Use the decay function in standard vector search</span>
 results = milvus_client.search(
@@ -536,16 +576,18 @@ results = milvus_client.search(
 functionScore := entity.NewFunctionScore().AddFunction(rerank)
 
 resultSets, err := client.Search(ctx, milvusclient.NewSearchOption(
-    collection_name, <span class="hljs-comment">// collection name</span>
+    collectionName, <span class="hljs-comment">// collection name</span>
     <span class="hljs-number">10</span>,              <span class="hljs-comment">// limit</span>
-    []entity.Vector{your_query_vector}, <span class="hljs-comment">// query vector</span>
+    []entity.Vector{entity.FloatVector(yourQueryVector)}, <span class="hljs-comment">// query vector</span>
 ).WithANNSField(<span class="hljs-string">&quot;vector_field&quot;</span>).
     WithFunctionScore(functionScore).
     WithOutputFields(<span class="hljs-string">&quot;document&quot;</span>, <span class="hljs-string">&quot;timestamp&quot;</span>))
 <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
     fmt.Println(err.Error())
-    <span class="hljs-comment">// handle error</span>
+    <span class="hljs-keyword">return</span>
 }
+
+fmt.Println(resultSets)
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-rust"><span class="hljs-keyword">use</span> milvus::v2::prelude::*;
 
@@ -616,5 +658,47 @@ SearchResp results = <span class="hljs-keyword">await</span> client.SearchAsync(
     }
 });
 <button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
+<pre><code translate="no" class="language-bash"><span class="hljs-built_in">export</span> CLUSTER_ENDPOINT=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>
+<span class="hljs-built_in">export</span> TOKEN=<span class="hljs-string">&quot;root:Milvus&quot;</span>
+
+<span class="hljs-comment"># The ranker configuration is passed with the search request</span>
+<span class="hljs-built_in">export</span> rankerFunction=<span class="hljs-string">&#x27;{
+    &quot;name&quot;: &quot;time_decay&quot;,
+    &quot;type&quot;: &quot;Rerank&quot;,
+    &quot;inputFieldNames&quot;: [
+        &quot;timestamp&quot;
+    ],
+    &quot;outputFieldNames&quot;: [],
+    &quot;params&quot;: {
+        &quot;reranker&quot;: &quot;decay&quot;,
+        &quot;function&quot;: &quot;gauss&quot;,
+        &quot;origin&quot;: 1735689600,
+        &quot;scale&quot;: 604800,
+        &quot;offset&quot;: 86400,
+        &quot;decay&quot;: 0.5
+    }
+}&#x27;</span>
+
+<span class="hljs-comment"># A query vector matching the collection dimension</span>
+<span class="hljs-built_in">export</span> QUERY_VECTOR=$(jq -n <span class="hljs-string">&#x27;[range(768) | 0.01]&#x27;</span>)
+
+request=$(jq -n \
+--argjson vec <span class="hljs-string">&quot;<span class="hljs-variable">$QUERY_VECTOR</span>&quot;</span> \
+--argjson fn <span class="hljs-string">&quot;<span class="hljs-variable">$rankerFunction</span>&quot;</span> \
+<span class="hljs-string">&#x27;{
+    collectionName: &quot;your_collection&quot;,
+    data: [$vec],
+    annsField: &quot;vector_field&quot;,
+    limit: 10,
+    outputFields: [&quot;document&quot;, &quot;timestamp&quot;],
+    consistencyLevel: &quot;Strong&quot;,
+    functionScore: {functions: [$fn]}
+}&#x27;</span>)
+
+curl --request POST \
+--url <span class="hljs-string">&quot;<span class="hljs-variable">${CLUSTER_ENDPOINT}</span>/v2/vectordb/entities/search&quot;</span> \
+--header <span class="hljs-string">&quot;Authorization: Bearer <span class="hljs-variable">${TOKEN}</span>&quot;</span> \
+--header <span class="hljs-string">&quot;Content-Type: application/json&quot;</span> \
+--header <span class="hljs-string">&quot;Request-Timeout: 10&quot;</span> \
+-d <span class="hljs-string">&quot;<span class="hljs-variable">$request</span>&quot;</span>
 <button class="copy-code-btn"></button></code></pre>

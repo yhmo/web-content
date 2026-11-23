@@ -1,9 +1,9 @@
 ---
 id: milvus_lite.md
-summary: Milvus Lite를 시작해 보세요.
-title: Milvus Lite를 로컬에서 실행하기
+summary: Get started with Milvus Lite.
+title: Run Milvus Lite Locally
 ---
-<h1 id="Run-Milvus-Lite-Locally" class="common-anchor-header">Milvus Lite를 로컬에서 실행하기<button data-href="#Run-Milvus-Lite-Locally" class="anchor-icon" translate="no">
+<h1 id="Run-Milvus-Lite-Locally" class="common-anchor-header">Run Milvus Lite Locally<button data-href="#Run-Milvus-Lite-Locally" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,8 +18,8 @@ title: Milvus Lite를 로컬에서 실행하기
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>이 페이지에서는 Milvus Lite를 사용하여 Milvus를 로컬에서 실행하는 방법을 설명합니다. Milvus Lite는 벡터 임베딩 및 유사도 검색 기능을 통해 AI 애플리케이션을 지원하는 오픈소스 벡터 데이터베이스인 <a href="https://github.com/milvus-io/milvus">Milvus의</a> 경량 버전입니다.</p>
-<h2 id="Overview" class="common-anchor-header">개요<button data-href="#Overview" class="anchor-icon" translate="no">
+    </button></h1><p>This page illustrates how to run Milvus locally with Milvus Lite. Milvus Lite is the lightweight version of <a href="https://github.com/milvus-io/milvus">Milvus</a>, an open-source vector database that powers AI applications with vector embeddings and similarity search.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -34,15 +34,15 @@ title: Milvus Lite를 로컬에서 실행하기
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus Lite는 Python 애플리케이션에 임포트하여 Milvus의 핵심 벡터 검색 기능을 제공할 수 있습니다. Milvus Lite는 이미 <a href="https://github.com/milvus-io/pymilvus">Milvus의 Python SDK에</a> 포함되어 있습니다. ` <code translate="no">pip install pymilvus</code>` 명령어를 통해 간편하게 배포할 수 있습니다.</p>
-<p>Milvus Lite를 사용하면 단 몇 분 만에 벡터 유사도 검색 기능을 갖춘 AI 애플리케이션 개발을 시작할 수 있습니다! Milvus Lite는 다음 환경에서 실행하기에 적합합니다:</p>
+    </button></h2><p>Milvus Lite can be imported into your Python application, providing the core vector search functionality of Milvus. Milvus Lite is already included in the <a href="https://github.com/milvus-io/pymilvus">Python SDK of Milvus</a>. It can be simply deployed with <code translate="no">pip install pymilvus</code>.</p>
+<p>With Milvus Lite, you can start building an AI application with vector similarity search within minutes! Milvus Lite is good for running in the following environment:</p>
 <ul>
 <li>Jupyter Notebook / Google Colab</li>
-<li>노트북</li>
-<li>엣지 디바이스</li>
+<li>Laptops</li>
+<li>Edge Devices</li>
 </ul>
-<p>Milvus Lite는 Milvus Standalone 및 Distributed와 동일한 API를 공유하며, 벡터 데이터 저장 및 관리, 벡터 CRUD 작업, 스파스 및 덴스 벡터 검색, 메타데이터 필터링, 다중 벡터 및 하이브리드 검색과 같은 대부분의 기능을 지원합니다. 이 모든 기능을 통해 엣지 디바이스부터 클라우드 클러스터에 이르기까지 다양한 유형의 환경에서 일관된 사용자 경험을 제공하며, 규모에 상관없이 다양한 사용 사례에 적합합니다. 동일한 클라이언트 측 코드를 사용하여 노트북이나 Jupyter Notebook에서 Milvus Lite로, Docker 컨테이너에서 Milvus Standalone으로, 또는 프로덕션 환경에서 수십억 개의 벡터를 처리하는 대규모 Kubernetes 클러스터에서 Milvus Distributed로 GenAI 앱을 실행할 수 있습니다.</p>
-<h2 id="Prerequisites" class="common-anchor-header">필수 조건<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+<p>Milvus Lite shares the same API with Milvus Standalone and Distributed, and covers most of the features such as vector data persistence and management, vector CRUD operations, sparse and dense vector search, metadata filtering, multi-vector and hybrid_search. Together, they provide a consistent experience across different types of environments, from edge devices to clusters in cloud, fitting use cases of different size. With the same client-side code, you can run GenAI apps with Milvus Lite on a laptop or Jupyter Notebook, or Milvus Standalone on Docker container, or Milvus Distributed on massive scale Kubernetes cluster serving billions of vectors in production.</p>
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -57,13 +57,13 @@ title: Milvus Lite를 로컬에서 실행하기
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus Lite는 현재 다음 환경을 지원합니다:</p>
+    </button></h2><p>Milvus Lite currently supports the following environmnets:</p>
 <ul>
-<li>Ubuntu 20.04 이상 (x86_64 및 arm64)</li>
-<li>MacOS 11.0 이상 (Apple Silicon M1/M2 및 x86_64)</li>
+<li>Ubuntu >= 20.04 (x86_64 and arm64)</li>
+<li>MacOS >= 11.0 (Apple Silicon M1/M2 and x86_64)</li>
 </ul>
-<p>Milvus Lite는 소규모 벡터 검색 사용 사례에만 적합하다는 점에 유의하시기 바랍니다. 대규모 사용 사례의 경우 <a href="https://milvus.io/docs/install-overview.md#Milvus-Standalone">Milvus Standalone</a> 또는 <a href="https://milvus.io/docs/install-overview.md#Milvus-Distributed">Milvus Distributed를</a> 사용하는 것을 권장합니다. 또한 <a href="https://zilliz.com/cloud">Zilliz Cloud</a>에서 제공하는 완전 관리형 Milvus를 고려해 볼 수도 있습니다.</p>
-<h2 id="Set-up-Milvus-Lite" class="common-anchor-header">Milvus Lite 설정<button data-href="#Set-up-Milvus-Lite" class="anchor-icon" translate="no">
+<p>Please note that Milvus Lite is only suitable for small scale vector search use cases. For a large scale use case, we recommend using <a href="https://milvus.io/docs/install-overview.md#Milvus-Standalone">Milvus Standalone</a> or <a href="https://milvus.io/docs/install-overview.md#Milvus-Distributed">Milvus Distributed</a>. You can also consider the fully-managed Milvus on <a href="https://zilliz.com/cloud">Zilliz Cloud</a>.</p>
+<h2 id="Set-up-Milvus-Lite" class="common-anchor-header">Set up Milvus Lite<button data-href="#Set-up-Milvus-Lite" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -80,9 +80,9 @@ title: Milvus Lite를 로컬에서 실행하기
       </svg>
     </button></h2><pre><code translate="no" class="language-shell">pip install -U pymilvus[milvus-lite]
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">pymilvus</code> 를 사용하는 것을 권장합니다. <code translate="no">-U</code> 를 사용하여 <code translate="no">pip install</code> 를 실행하면 최신 버전으로 강제 업데이트되며, <code translate="no">milvus-lite</code> 가 자동으로 설치됩니다.</p>
-<p><code translate="no">milvus-lite</code> 패키지를 명시적으로 설치하려는 경우, 또는 <code translate="no">milvus-lite</code> 의 이전 버전을 설치한 상태에서 업데이트를 원하는 경우, <code translate="no">pip install -U milvus-lite</code> 명령어를 실행하면 됩니다.</p>
-<h2 id="Connect-to-Milvus-Lite" class="common-anchor-header">Milvus Lite에 연결하기<button data-href="#Connect-to-Milvus-Lite" class="anchor-icon" translate="no">
+<p>We recommend using <code translate="no">pymilvus</code>. You can <code translate="no">pip install</code> with <code translate="no">-U</code> to force update to the latest version and <code translate="no">milvus-lite</code> will be automatically installed.</p>
+<p>If you want to explicitly install <code translate="no">milvus-lite</code> package, or you have installed an older version of <code translate="no">milvus-lite</code> and would like to update it, you can do <code translate="no">pip install -U milvus-lite</code>.</p>
+<h2 id="Connect-to-Milvus-Lite" class="common-anchor-header">Connect to Milvus Lite<button data-href="#Connect-to-Milvus-Lite" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -97,16 +97,16 @@ title: Milvus Lite를 로컬에서 실행하기
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">pymilvus</code> 에서 MilvusClient의 uri 매개변수로 로컬 파일 이름을 지정하면 Milvus Lite가 사용됩니다.</p>
+    </button></h2><p>In <code translate="no">pymilvus</code>, specify a local file name as uri parameter of MilvusClient will use Milvus Lite.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 client = MilvusClient(<span class="hljs-string">&quot;./milvus_demo.db&quot;</span>)
 <button class="copy-code-btn"></button></code></pre>
-<p>위의 코드 스니펫을 실행하면 현재 폴더에 <strong>milvus_demo.</strong> db라는 데이터베이스 파일이 생성됩니다.</p>
+<p>After running the above code snippet, a database file named <strong>milvus_demo.db</strong> will be generated in the current folder.</p>
 <blockquote>
-<p><strong><em>참고:</em></strong> 동일한 API가 Milvus Standalone, Milvus Distributed 및 Zilliz Cloud에도 적용된다는 점에 유의하십시오. 유일한 차이점은 로컬 파일 이름을 원격 서버 엔드포인트 및 자격 증명으로 대체해야 한다는 것입니다. 예:
+<p><strong><em>NOTE:</em></strong>  Note that the same API also applies to Milvus Standalone, Milvus Distributed and Zilliz Cloud, the only difference is to replace local file name to remote server endpoint and credentials, e.g.
 <code translate="no">client = MilvusClient(uri=&quot;http://localhost:19530&quot;, token=&quot;username:password&quot;)</code>.</p>
 </blockquote>
-<h2 id="Examples" class="common-anchor-header">예제<button data-href="#Examples" class="anchor-icon" translate="no">
+<h2 id="Examples" class="common-anchor-header">Examples<button data-href="#Examples" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -121,7 +121,8 @@ client = MilvusClient(<span class="hljs-string">&quot;./milvus_demo.db&quot;</sp
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>다음은 Milvus Lite를 사용하여 텍스트 검색을 수행하는 방법을 보여주는 간단한 데모입니다. Milvus Lite를 활용하여 <a href="https://github.com/milvus-io/bootcamp/blob/master/tutorials/quickstart/build_RAG_with_milvus.ipynb">RAG</a>, <a href="https://github.com/milvus-io/bootcamp/blob/master/tutorials/quickstart/image_search_with_milvus.ipynb">이미지 검색과</a> 같은 애플리케이션을 구축하거나, <a href="https://github.com/milvus-io/bootcamp/blob/master/integration/rag_with_milvus_and_langchain.ipynb">LangChain</a> 및 <a href="https://github.com/milvus-io/bootcamp/blob/master/integration/rag_with_milvus_and_llamaindex.ipynb">LlamaIndex와</a> 같은 인기 있는 RAG 프레임워크에서 Milvus Lite를 사용하는 방법에 대한 더 포괄적인 <a href="https://github.com/milvus-io/bootcamp/tree/master/bootcamp/tutorials">예제도</a> 마련되어 있습니다!</p>
+    </button></h2><p>Following is a simple demo showing how to use Milvus Lite for text search. There are more comprehensive <a href="https://github.com/milvus-io/bootcamp/tree/master/bootcamp/tutorials">examples</a> for using Milvus Lite to build applications
+such as <a href="https://github.com/milvus-io/bootcamp/blob/master/tutorials/quickstart/build_RAG_with_milvus.ipynb">RAG</a>, <a href="https://github.com/milvus-io/bootcamp/blob/master/tutorials/quickstart/image_search_with_milvus.ipynb">image search</a>, and using Milvus Lite in popular RAG framework such as <a href="https://github.com/milvus-io/bootcamp/blob/master/integration/rag_with_milvus_and_langchain.ipynb">LangChain</a> and <a href="https://github.com/milvus-io/bootcamp/blob/master/integration/rag_with_milvus_and_llamaindex.ipynb">LlamaIndex</a>!</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 <span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
 
@@ -171,7 +172,7 @@ res = client.delete(
 )
 <span class="hljs-built_in">print</span>(res)
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Limits" class="common-anchor-header">제한 사항<button data-href="#Limits" class="anchor-icon" translate="no">
+<h2 id="Limits" class="common-anchor-header">Limits<button data-href="#Limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -186,8 +187,8 @@ res = client.delete(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus Lite를 실행할 때 일부 기능이 지원되지 않는다는 점에 유의하십시오. 다음 표는 Milvus Lite의 사용 제한 사항을 요약한 것입니다.</p>
-<h3 id="Collection" class="common-anchor-header">컬렉션<button data-href="#Collection" class="anchor-icon" translate="no">
+    </button></h2><p>When running Milvus Lite, note that some features are not supported. The following tables summarize the usage limits on Milvus Lite.</p>
+<h3 id="Collection" class="common-anchor-header">Collection<button data-href="#Collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -204,10 +205,10 @@ res = client.delete(
       </svg>
     </button></h3><table>
 <thead>
-<tr><th>메서드 / 매개변수</th><th>Milvus Lite에서 지원됨</th></tr>
+<tr><th>Method / Parameter</th><th>Supported in Milvus Lite</th></tr>
 </thead>
 <tbody>
-<tr><td><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Collections/create_collection.md">create_collection()</a></td><td>매개변수가 제한된 상태로 지원</td></tr>
+<tr><td><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Collections/create_collection.md">create_collection()</a></td><td>Support with limited parameters</td></tr>
 <tr><td><code translate="no">collection_name</code></td><td>Y</td></tr>
 <tr><td><code translate="no">dimension</code></td><td>Y</td></tr>
 <tr><td><code translate="no">primary_field_name</code></td><td>Y</td></tr>
@@ -221,23 +222,23 @@ res = client.delete(
 <tr><td><code translate="no">num_shards</code></td><td>N</td></tr>
 <tr><td><code translate="no">partition_key_field</code></td><td>N</td></tr>
 <tr><td><code translate="no">num_partitions</code></td><td>N</td></tr>
-<tr><td><code translate="no">consistency_level</code></td><td>N ( <code translate="no">Strong</code> 만 지원합니다. 그 외의 모든 구성은 <code translate="no">Strong</code> 로 간주됩니다.)</td></tr>
-<tr><td><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Collections/get_collection_stats.md">get_collection_stats()</a></td><td>컬렉션 통계 정보를 가져오는 기능을 지원합니다.</td></tr>
+<tr><td><code translate="no">consistency_level</code></td><td>N (Only supports <code translate="no">Strong</code>; Any configuration will be treated as <code translate="no">Strong</code>.)</td></tr>
+<tr><td><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Collections/get_collection_stats.md">get_collection_stats()</a></td><td>Supports getting collection statistics.</td></tr>
 <tr><td><code translate="no">collection_name</code></td><td>Y</td></tr>
 <tr><td><code translate="no">timeout</code></td><td>Y</td></tr>
-<tr><td><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Collections/describe_collection.md">describe_collection()</a></td><td><code translate="no">num_shards</code>, <code translate="no">consistency_level</code> 및 <code translate="no">collection_id</code> 는 유효하지 않습니다.</td></tr>
+<tr><td><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Collections/describe_collection.md">describe_collection()</a></td><td><code translate="no">num_shards</code>, <code translate="no">consistency_level</code>, and <code translate="no">collection_id</code> in response are invalid.</td></tr>
 <tr><td><code translate="no">timeout</code></td><td>Y</td></tr>
-<tr><td><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Collections/has_collection.md">has_collection()</a></td><td>컬렉션이 존재하는지 확인하는 기능을 지원합니다.</td></tr>
-<tr><td><code translate="no">collection_name</code></td><td>Yhas_collection()컬렉션이 있는지 확인하는 기능을 지원합니다.</td></tr>
-<tr><td><code translate="no">timeout</code></td><td>Ylist_collections()</td></tr>
-<tr><td><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Collections/list_collections.md">list_collections()</a></td><td>모든 컬렉션을 나열할 수 있습니다.</td></tr>
-<tr><td><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Collections/drop_collection.md">drop_collection()</a></td><td>컬렉션을 삭제할 수 있습니다.</td></tr>
+<tr><td><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Collections/has_collection.md">has_collection()</a></td><td>Supports checking if a collection exists.</td></tr>
 <tr><td><code translate="no">collection_name</code></td><td>Y</td></tr>
 <tr><td><code translate="no">timeout</code></td><td>Y</td></tr>
-<tr><td><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Collections/rename_collection.md">rename_collection()</a></td><td>컬렉션 이름 변경은 지원되지 않습니다.</td></tr>
+<tr><td><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Collections/list_collections.md">list_collections()</a></td><td>Supports listing all collections.</td></tr>
+<tr><td><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Collections/drop_collection.md">drop_collection()</a></td><td>Supports dropping a collection.</td></tr>
+<tr><td><code translate="no">collection_name</code></td><td>Y</td></tr>
+<tr><td><code translate="no">timeout</code></td><td>Y</td></tr>
+<tr><td><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Collections/rename_collection.md">rename_collection()</a></td><td>Renaming a collection is not supported.</td></tr>
 </tbody>
 </table>
-<h3 id="Field--Schema" class="common-anchor-header">필드 및 스키마<button data-href="#Field--Schema" class="anchor-icon" translate="no">
+<h3 id="Field--Schema" class="common-anchor-header">Field & Schema<button data-href="#Field--Schema" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -254,15 +255,15 @@ res = client.delete(
       </svg>
     </button></h3><table>
 <thead>
-<tr><th>메서드 / 매개변수</th><th>Milvus Lite에서 지원됨</th></tr>
+<tr><th>Method / Parameter</th><th>Supported in Milvus Lite</th></tr>
 </thead>
 <tbody>
-<tr><td><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Collections/create_schema.md">create_schema()</a></td><td>제한된 매개변수로 지원</td></tr>
+<tr><td><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Collections/create_schema.md">create_schema()</a></td><td>Support with limited parameters</td></tr>
 <tr><td><code translate="no">auto_id</code></td><td>Y</td></tr>
 <tr><td><code translate="no">enable_dynamic_field</code></td><td>Y</td></tr>
 <tr><td><code translate="no">primary_field</code></td><td>Y</td></tr>
-<tr><td><code translate="no">partition_key_field</code></td><td>아니요</td></tr>
-<tr><td><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/CollectionSchema/add_field.md">add_field()</a></td><td>제한된 매개변수를 지원하는 경우</td></tr>
+<tr><td><code translate="no">partition_key_field</code></td><td>N</td></tr>
+<tr><td><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/CollectionSchema/add_field.md">add_field()</a></td><td>Support with limited parameters</td></tr>
 <tr><td><code translate="no">field_name</code></td><td>Y</td></tr>
 <tr><td><code translate="no">datatype</code></td><td>Y</td></tr>
 <tr><td><code translate="no">is_primary</code></td><td>Y</td></tr>
@@ -273,7 +274,7 @@ res = client.delete(
 <tr><td><code translate="no">is_partition_key</code></td><td>N</td></tr>
 </tbody>
 </table>
-<h3 id="Insert--Search" class="common-anchor-header">삽입 및 검색<button data-href="#Insert--Search" class="anchor-icon" translate="no">
+<h3 id="Insert--Search" class="common-anchor-header">Insert & Search<button data-href="#Insert--Search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -290,10 +291,10 @@ res = client.delete(
       </svg>
     </button></h3><table>
 <thead>
-<tr><th>메서드 / 매개변수</th><th>Milvus Lite에서 지원됨</th></tr>
+<tr><th>Method / Parameter</th><th>Supported in Milvus Lite</th></tr>
 </thead>
 <tbody>
-<tr><td><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Vector/search.md">search()</a></td><td>제한된 매개변수 지원</td></tr>
+<tr><td><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Vector/search.md">search()</a></td><td>Support with limited parameters</td></tr>
 <tr><td><code translate="no">collection_name</code></td><td>Y</td></tr>
 <tr><td><code translate="no">data</code></td><td>Y</td></tr>
 <tr><td><code translate="no">filter</code></td><td>Y</td></tr>
@@ -303,38 +304,38 @@ res = client.delete(
 <tr><td><code translate="no">timeout</code></td><td>Y</td></tr>
 <tr><td><code translate="no">partition_names</code></td><td>N</td></tr>
 <tr><td><code translate="no">anns_field</code></td><td>Y</td></tr>
-<tr><td><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Vector/query.md">query()</a></td><td>제한된 매개변수를 지원하는 기능</td></tr>
+<tr><td><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Vector/query.md">query()</a></td><td>Support with limited parameters</td></tr>
 <tr><td><code translate="no">collection_name</code></td><td>Y</td></tr>
 <tr><td><code translate="no">filter</code></td><td>Y</td></tr>
 <tr><td><code translate="no">output_fields</code></td><td>Y</td></tr>
 <tr><td><code translate="no">timeout</code></td><td>Y</td></tr>
 <tr><td><code translate="no">ids</code></td><td>Y</td></tr>
 <tr><td><code translate="no">partition_names</code></td><td>N</td></tr>
-<tr><td><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Vector/get.md">get()</a></td><td>제한된 매개변수를 지원하는 경우</td></tr>
+<tr><td><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Vector/get.md">get()</a></td><td>Support with limited parameters</td></tr>
 <tr><td><code translate="no">collection_name</code></td><td>Y</td></tr>
 <tr><td><code translate="no">ids</code></td><td>Y</td></tr>
 <tr><td><code translate="no">output_fields</code></td><td>Y</td></tr>
 <tr><td><code translate="no">timeout</code></td><td>Y</td></tr>
-<tr><td><code translate="no">partition_names</code></td><td>아니요</td></tr>
-<tr><td><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Vector/delete.md">delete()</a></td><td>제한된 매개변수를 지원하는 경우</td></tr>
+<tr><td><code translate="no">partition_names</code></td><td>N</td></tr>
+<tr><td><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Vector/delete.md">delete()</a></td><td>Support with limited parameters</td></tr>
 <tr><td><code translate="no">collection_name</code></td><td>Y</td></tr>
 <tr><td><code translate="no">ids</code></td><td>Y</td></tr>
 <tr><td><code translate="no">timeout</code></td><td>Y</td></tr>
 <tr><td><code translate="no">filter</code></td><td>Y</td></tr>
-<tr><td><code translate="no">partition_name</code></td><td>아니요</td></tr>
-<tr><td><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Vector/insert.md">insert()</a></td><td>제한된 매개변수를 지원하는 경우</td></tr>
+<tr><td><code translate="no">partition_name</code></td><td>N</td></tr>
+<tr><td><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Vector/insert.md">insert()</a></td><td>Support with limited parameters</td></tr>
 <tr><td><code translate="no">collection_name</code></td><td>Y</td></tr>
 <tr><td><code translate="no">data</code></td><td>Y</td></tr>
 <tr><td><code translate="no">timeout</code></td><td>Y</td></tr>
-<tr><td><code translate="no">partition_name</code></td><td>아니요</td></tr>
-<tr><td><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Vector/upsert.md">upsert()</a></td><td>제한된 매개변수에 대한 지원</td></tr>
+<tr><td><code translate="no">partition_name</code></td><td>N</td></tr>
+<tr><td><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Vector/upsert.md">upsert()</a></td><td>Support with limited parameters</td></tr>
 <tr><td><code translate="no">collection_name</code></td><td>Y</td></tr>
 <tr><td><code translate="no">data</code></td><td>Y</td></tr>
 <tr><td><code translate="no">timeout</code></td><td>Y</td></tr>
-<tr><td><code translate="no">partition_name</code></td><td>아니요</td></tr>
+<tr><td><code translate="no">partition_name</code></td><td>N</td></tr>
 </tbody>
 </table>
-<h3 id="Load--Release" class="common-anchor-header">로드 및 해제<button data-href="#Load--Release" class="anchor-icon" translate="no">
+<h3 id="Load--Release" class="common-anchor-header">Load & Release<button data-href="#Load--Release" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -351,7 +352,7 @@ res = client.delete(
       </svg>
     </button></h3><table>
 <thead>
-<tr><th>메서드 / 매개변수</th><th>Milvus Lite에서 지원됨</th></tr>
+<tr><th>Method / Parameter</th><th>Supported in Milvus Lite</th></tr>
 </thead>
 <tbody>
 <tr><td><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Management/load_collection.md">load_collection()</a></td><td>Y</td></tr>
@@ -360,12 +361,12 @@ res = client.delete(
 <tr><td><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Management/release_collection.md">release_collection()</a></td><td>Y</td></tr>
 <tr><td><code translate="no">collection_name</code></td><td>Y</td></tr>
 <tr><td><code translate="no">timeout</code></td><td>Y</td></tr>
-<tr><td><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Management/get_load_state.md">get_load_state()</a></td><td>로드 상태 조회는 지원되지 않습니다.</td></tr>
-<tr><td><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Management/refresh_load.md">refresh_load()</a></td><td>로드된 컬렉션에서 언로드된 데이터를 다시 로드하는 기능은 지원되지 않습니다.</td></tr>
+<tr><td><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Management/get_load_state.md">get_load_state()</a></td><td>Getting load status is not supported.</td></tr>
+<tr><td><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Management/refresh_load.md">refresh_load()</a></td><td>Loading the unloaded data of a loaded collection is not supported.</td></tr>
 <tr><td><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Client/close.md">close()</a></td><td>Y</td></tr>
 </tbody>
 </table>
-<h3 id="Index" class="common-anchor-header">인덱스<button data-href="#Index" class="anchor-icon" translate="no">
+<h3 id="Index" class="common-anchor-header">Index<button data-href="#Index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -382,26 +383,26 @@ res = client.delete(
       </svg>
     </button></h3><table>
 <thead>
-<tr><th>메서드 / 매개변수</th><th>Milvus Lite에서 지원됨</th></tr>
+<tr><th>Method / Parameter</th><th>Supported in Milvus Lite</th></tr>
 </thead>
 <tbody>
-<tr><td><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Collections/list_collections.md">list_indexes()</a></td><td>인덱스 나열 기능이 지원됩니다.</td></tr>
+<tr><td><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Collections/list_collections.md">list_indexes()</a></td><td>Listing indexes is supported.</td></tr>
 <tr><td><code translate="no">collection_name</code></td><td>Y</td></tr>
 <tr><td><code translate="no">field_name</code></td><td>Y</td></tr>
-<tr><td><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Management/create_index.md">create_index()</a></td><td><code translate="no">FLAT</code> 인덱스 유형만 지원합니다.</td></tr>
+<tr><td><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Management/create_index.md">create_index()</a></td><td>Only supports <code translate="no">FLAT</code> index type.</td></tr>
 <tr><td><code translate="no">index_params</code></td><td>Y</td></tr>
 <tr><td><code translate="no">timeout</code></td><td>Y</td></tr>
-<tr><td><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Management/drop_index.md">drop_index()</a></td><td>인덱스 삭제가 지원됩니다.</td></tr>
+<tr><td><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Management/drop_index.md">drop_index()</a></td><td>Dropping indexes is supported.</td></tr>
 <tr><td><code translate="no">collection_name</code></td><td>Y</td></tr>
 <tr><td><code translate="no">index_name</code></td><td>Y</td></tr>
 <tr><td><code translate="no">timeout</code></td><td>Y</td></tr>
-<tr><td><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Management/describe_index.md">describe_index()</a></td><td>인덱스 설명 기능이 지원됩니다.</td></tr>
+<tr><td><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Management/describe_index.md">describe_index()</a></td><td>Describing indexes is supported.</td></tr>
 <tr><td><code translate="no">collection_name</code></td><td>Y</td></tr>
 <tr><td><code translate="no">index_name</code></td><td>Y</td></tr>
 <tr><td><code translate="no">timeout</code></td><td>Y</td></tr>
 </tbody>
 </table>
-<h3 id="Vector-Index-Types" class="common-anchor-header">벡터 인덱스 유형<button data-href="#Vector-Index-Types" class="anchor-icon" translate="no">
+<h3 id="Vector-Index-Types" class="common-anchor-header">Vector Index Types<button data-href="#Vector-Index-Types" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -416,8 +417,8 @@ res = client.delete(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Milvus Lite는 <a href="https://milvus.io/docs/index.md?tab=floating#FLAT">FLAT</a> 인덱스 유형만 지원합니다. 컬렉션에 지정된 인덱스 유형과 관계없이 FLAT 유형을 사용합니다.</p>
-<h3 id="Search-Features" class="common-anchor-header">검색 기능<button data-href="#Search-Features" class="anchor-icon" translate="no">
+    </button></h3><p>Milvus Lite only supports <a href="https://milvus.io/docs/index.md?tab=floating#FLAT">FLAT</a> index type. It uses FLAT type regardless of the specified index type in collection.</p>
+<h3 id="Search-Features" class="common-anchor-header">Search Features<button data-href="#Search-Features" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -432,8 +433,8 @@ res = client.delete(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Milvus Lite는 스파스 벡터, 멀티 벡터, 하이브리드 검색을 지원합니다.</p>
-<h3 id="Partition" class="common-anchor-header">파티션<button data-href="#Partition" class="anchor-icon" translate="no">
+    </button></h3><p>Milvus Lite supports Sparse Vector, Multi-vector, Hybrid Search.</p>
+<h3 id="Partition" class="common-anchor-header">Partition<button data-href="#Partition" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -448,8 +449,8 @@ res = client.delete(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Milvus Lite는 파티션 및 파티션 관련 메서드를 지원하지 않습니다.</p>
-<h3 id="Users--Roles" class="common-anchor-header">사용자 및 역할<button data-href="#Users--Roles" class="anchor-icon" translate="no">
+    </button></h3><p>Milvus Lite does not support partitions and partition-related methods.</p>
+<h3 id="Users--Roles" class="common-anchor-header">Users & Roles<button data-href="#Users--Roles" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -464,8 +465,8 @@ res = client.delete(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Milvus Lite는 사용자 및 역할과 관련된 메서드를 지원하지 않습니다.</p>
-<h3 id="Alias" class="common-anchor-header">별칭<button data-href="#Alias" class="anchor-icon" translate="no">
+    </button></h3><p>Milvus Lite does not support users and roles and related methods.</p>
+<h3 id="Alias" class="common-anchor-header">Alias<button data-href="#Alias" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -480,8 +481,8 @@ res = client.delete(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Milvus Lite는 별칭 및 별칭 관련 메서드를 지원하지 않습니다.</p>
-<h2 id="Migrating-data-from-Milvus-Lite" class="common-anchor-header">Milvus Lite에서 데이터 마이그레이션<button data-href="#Migrating-data-from-Milvus-Lite" class="anchor-icon" translate="no">
+    </button></h3><p>Milvus Lite does not support aliases and alias-related methods.</p>
+<h2 id="Migrating-data-from-Milvus-Lite" class="common-anchor-header">Migrating data from Milvus Lite<button data-href="#Migrating-data-from-Milvus-Lite" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -496,8 +497,8 @@ res = client.delete(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus Lite에 저장된 모든 데이터는 Docker 기반 Milvus Standalone, K8s 기반 Milvus Distributed, <a href="https://zilliz.com/cloud">Zilliz Cloud</a>의 완전 관리형 Milvus 등 다른 유형의 Milvus 배포 환경으로 쉽게 내보내고 불러올 수 있습니다.</p>
-<p>Milvus Lite는 데이터를 JSON 파일로 덤프할 수 있는 명령줄 도구를 제공하며, 이 파일은 <a href="https://github.com/milvus-io/milvus">milvus</a> 및 <a href="https://zilliz.com/cloud">Zilliz Cloud</a>(Milvus를 위한 완전 관리형 클라우드 서비스)로 가져올 수 있습니다. milvus-lite 명령은 milvus-lite 파이썬 패키지와 함께 설치됩니다.</p>
+    </button></h2><p>All data stored in Milvus Lite can be easily exported and loaded into other types of Milvus deployment, such as Milvus Standalone on Docker, Milvus Distributed on K8s, or fully-managed Milvus on <a href="https://zilliz.com/cloud">Zilliz Cloud</a>.</p>
+<p>Milvus Lite provides a command line tool that can dump data into a json file, which can be imported into <a href="https://github.com/milvus-io/milvus">milvus</a> and <a href="https://zilliz.com/cloud">Zilliz Cloud</a>(the fully managed cloud service for Milvus). The milvus-lite command will be installed together with milvus-lite python package</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">Install</span>
 pip install -U &quot;pymilvus[bulk_writer]&quot;
 
@@ -513,15 +514,15 @@ optional arguments:
                         collection that need to be dumped
   -p PATH, --path PATH  dump file storage dir
 <button class="copy-code-btn"></button></code></pre>
-<p>다음 예제는 <code translate="no">./milvus_demo.db</code> (Milvus Lite 데이터베이스 파일)에 저장된 <code translate="no">demo_collection</code> 컬렉션의 모든 데이터를 덤프하는 방법입니다.</p>
-<p>데이터 내보내기 방법:</p>
+<p>The following example dumps all data from <code translate="no">demo_collection</code> collection that’s stored in <code translate="no">./milvus_demo.db</code> (Milvus Lite database file)</p>
+<p>To export data:</p>
 <pre><code translate="no" class="language-shell">milvus-lite dump -d ./milvus_demo.db -c demo_collection -p ./data_dir
 <span class="hljs-meta prompt_"># </span><span class="language-bash">./milvus_demo.db: milvus lite db file</span>
 <span class="hljs-meta prompt_"># </span><span class="language-bash">demo_collection: collection that need to be dumped</span>
 <span class="hljs-meta prompt_">#</span><span class="language-bash">./data_dir : dump file storage <span class="hljs-built_in">dir</span></span>
 <button class="copy-code-btn"></button></code></pre>
-<p>덤프 파일을 사용하여 <a href="https://docs.zilliz.com/docs/data-import">‘데이터 가져오기(Data Import</a>)’를 통해 Zilliz Cloud로 데이터를 업로드하거나, <a href="https://milvus.io/docs/import-data.md">‘대량 삽입(Bulk Insert)’을</a> 통해 Milvus 서버로 데이터를 업로드할 수 있습니다.</p>
-<h2 id="Whats-next" class="common-anchor-header">다음 단계<button data-href="#Whats-next" class="anchor-icon" translate="no">
+<p>With the dump file, you can upload data to Zilliz Cloud via <a href="https://docs.zilliz.com/docs/data-import">Data Import</a>, or upload data to Milvus servers via <a href="https://milvus.io/docs/import-data.md">Bulk Insert</a>.</p>
+<h2 id="Whats-next" class="common-anchor-header">What’s next<button data-href="#Whats-next" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -536,28 +537,28 @@ optional arguments:
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus Lite에 연결한 후에는 다음을 수행할 수 있습니다:</p>
+    </button></h2><p>Having connected to Milvus Lite, you can:</p>
 <ul>
-<li><p>'빠른 시작( <a href="/docs/ko/v2.6.x/quickstart.md">Quickstart</a> )'을 확인하여 Milvus의 기능을 살펴보세요.</p></li>
-<li><p>Milvus의 기본 조작 방법을 알아보세요:</p>
+<li><p>Check <a href="/docs/ko/v2.6.x/quickstart.md">Quickstart</a> to see what Milvus can do.</p></li>
+<li><p>Learn the basic operations of Milvus:</p>
 <ul>
-<li><a href="/docs/ko/v2.6.x/manage_databases.md">데이터베이스 관리</a></li>
-<li><a href="/docs/ko/v2.6.x/manage-collections.md">컬렉션 관리</a></li>
-<li><a href="/docs/ko/v2.6.x/manage-partitions.md">파티션 관리</a></li>
-<li><a href="/docs/ko/v2.6.x/insert-update-delete.md">삽입, 업서트 및 삭제</a></li>
-<li><a href="/docs/ko/v2.6.x/single-vector-search.md">단일 벡터 검색</a></li>
-<li><a href="/docs/ko/v2.6.x/multi-vector-search.md">하이브리드 검색</a></li>
+<li><a href="/docs/ko/v2.6.x/manage_databases.md">Manage Databases</a></li>
+<li><a href="/docs/ko/v2.6.x/manage-collections.md">Manage Collections</a></li>
+<li><a href="/docs/ko/v2.6.x/manage-partitions.md">Manage Partitions</a></li>
+<li><a href="/docs/ko/v2.6.x/insert-update-delete.md">Insert, Upsert & Delete</a></li>
+<li><a href="/docs/ko/v2.6.x/single-vector-search.md">Single-Vector Search</a></li>
+<li><a href="/docs/ko/v2.6.x/multi-vector-search.md">Hybrid Search</a></li>
 </ul></li>
-<li><p><a href="/docs/ko/v2.6.x/upgrade_milvus_cluster-helm.md">Helm 차트를 사용하여 Milvus 업그레이드하기</a>.</p></li>
-<li><p><a href="/docs/ko/v2.6.x/scaleout.md">Milvus 클러스터 확장</a>.</p></li>
-<li><p>클라우드에 Milvus 클러스터 배포:</p>
+<li><p><a href="/docs/ko/v2.6.x/upgrade_milvus_cluster-helm.md">Upgrade Milvus Using Helm Chart</a>.</p></li>
+<li><p><a href="/docs/ko/v2.6.x/scaleout.md">Scale your Milvus cluster</a>.</p></li>
+<li><p>Deploy your Milvus cluster on clouds:</p>
 <ul>
 <li><a href="/docs/ko/v2.6.x/eks.md">Amazon EKS</a></li>
 <li><a href="/docs/ko/v2.6.x/gcp.md">Google Cloud</a></li>
 <li><a href="/docs/ko/v2.6.x/azure.md">Microsoft Azure</a></li>
 </ul></li>
-<li><p>Milvus 데이터 백업을 위한 오픈소스 도구인 <a href="/docs/ko/v2.6.x/milvus_backup_overview.md">Milvus Backup을</a> 살펴보세요.</p></li>
-<li><p>Milvus 디버깅 및 동적 구성 업데이트를 위한 오픈소스 도구인 <a href="/docs/ko/v2.6.x/birdwatcher_overview.md">Birdwatcher를</a> 살펴보세요.</p></li>
-<li><p>직관적인 Milvus 관리를 위한 오픈 소스 GUI 도구인 <a href="https://github.com/zilliztech/attu">Attu를</a> 살펴보세요.</p></li>
-<li><p><a href="/docs/ko/v2.6.x/monitor.md">Prometheus를 사용하여 Milvus를 모니터링하세요</a>.</p></li>
+<li><p>Explore <a href="/docs/ko/v2.6.x/milvus_backup_overview.md">Milvus Backup</a>, an open-source tool for Milvus data backups.</p></li>
+<li><p>Explore <a href="/docs/ko/v2.6.x/birdwatcher_overview.md">Birdwatcher</a>, an open-source tool for debugging Milvus and dynamic configuration updates.</p></li>
+<li><p>Explore <a href="https://github.com/zilliztech/attu">Attu</a>, an open-source GUI tool for intuitive Milvus management.</p></li>
+<li><p><a href="/docs/ko/v2.6.x/monitor.md">Monitor Milvus with Prometheus</a>.</p></li>
 </ul>

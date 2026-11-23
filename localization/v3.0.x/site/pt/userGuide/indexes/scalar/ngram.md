@@ -2,12 +2,8 @@
 id: ngram.md
 title: NGRAM
 summary: >-
-  O índice NGRAM acelera as consultas LIKE e os filtros de expressões regulares
-  elegíveis em campos VARCHAR ou em percursos JSON específicos dentro de campos
-  JSON. Antes de criar o índice, o texto é dividido em subcadeias curtas e
-  sobrepostas de comprimento fixo n, conhecidas como n-gramas. No momento da
-  consulta, estes n-gramas reduzem o conjunto de entidades candidatas antes de a
-  condição de filtragem original ser verificada.
+  Use NGRAM for LIKE and eligible regex filters on VARCHAR fields and JSON
+  string paths.
 ---
 <h1 id="NGRAM" class="common-anchor-header">NGRAM<button data-href="#NGRAM" class="anchor-icon" translate="no">
       <svg translate="no"
@@ -24,19 +20,77 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>O índice « <code translate="no">NGRAM</code> » no Milvus acelera as consultas « <code translate="no">LIKE</code> » e os filtros regex elegíveis em campos « <code translate="no">VARCHAR</code> » ou em percursos JSON específicos dentro de campos « <code translate="no">JSON</code> ». Antes de criar o índice, o Milvus divide o texto em subcadeias curtas e sobrepostas de comprimento fixo <em>n</em>, conhecidas como <em>n-grams</em>. Por exemplo, com <em>n = 3</em>, a palavra <em>«Milvus»</em> é dividida em 3-gramas: <em>«Mil»</em>, <em>«ilv»</em>, <em>«lvu»</em> e <em>«vus».</em> Estes n-gramas são depois armazenados num índice invertido que mapeia cada grama para os IDs dos documentos em que aparece. No momento da consulta, este índice permite que o Milvus restrinja rapidamente a pesquisa a um pequeno conjunto de candidatos antes de verificar a condição de filtragem original.</p>
-<p>Utilize-o quando precisar de uma filtragem rápida por prefixo, sufixo, infixo, caracteres curinga ou expressões regulares elegíveis, tais como:</p>
-<ul>
-<li><p><code translate="no">name LIKE &quot;data%&quot;</code></p></li>
-<li><p><code translate="no">title LIKE &quot;%vector%&quot;</code></p></li>
-<li><p><code translate="no">path LIKE &quot;%json&quot;</code></p></li>
-<li><p><code translate="no">message =~ &quot;error.*timeout&quot;</code></p></li>
-<li><p><code translate="no">url =~ &quot;/api/v[0-9]+/users&quot;</code></p></li>
-</ul>
+    </button></h1><p><code translate="no">NGRAM</code> accelerates LIKE and eligible regex filters on <code translate="no">VARCHAR</code> fields and JSON string paths. It uses character sequences to narrow matching entities; some patterns require checking the original values.</p>
+<p>Use it for prefix, suffix, substring, wildcard, or regex filters with usable literal text, such as <code translate="no">title LIKE &quot;%vector%&quot;</code> or <code translate="no">message =~ &quot;error.*timeout&quot;</code>. For syntax, see <a href="/docs/pt/pattern-matching.md">Pattern Matching</a>.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
+      <svg translate="no"
+        aria-hidden="true"
+        focusable="false"
+        height="20"
+        version="1.1"
+        viewBox="0 0 16 16"
+        width="16"
+      >
+        <path
+          fill="#0092E4"
+          fill-rule="evenodd"
+          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+        ></path>
+      </svg>
+    </button></h2><h3 id="Supported-data-types" class="common-anchor-header">Supported data types<button data-href="#Supported-data-types" class="anchor-icon" translate="no">
+      <svg translate="no"
+        aria-hidden="true"
+        focusable="false"
+        height="20"
+        version="1.1"
+        viewBox="0 0 16 16"
+        width="16"
+      >
+        <path
+          fill="#0092E4"
+          fill-rule="evenodd"
+          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+        ></path>
+      </svg>
+    </button></h3><p><code translate="no">VARCHAR</code> fields and JSON paths cast to <code translate="no">VARCHAR</code>. JSON paths require <code translate="no">json_path</code> and <code translate="no">json_cast_type</code>; see <a href="/docs/pt/json-indexing.md">JSON Indexing</a>.</p>
+<p><a id="Queries-accelerated-by-NGRAM"></a></p>
+<p><a id="Supported-filters"></a></p>
+<p><a id="Filter-expression-examples"></a></p>
+<h3 id="Filter-acceleration" class="common-anchor-header">Filter acceleration<button data-href="#Filter-acceleration" class="anchor-icon" translate="no">
+      <svg translate="no"
+        aria-hidden="true"
+        focusable="false"
+        height="20"
+        version="1.1"
+        viewBox="0 0 16 16"
+        width="16"
+      >
+        <path
+          fill="#0092E4"
+          fill-rule="evenodd"
+          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+        ></path>
+      </svg>
+    </button></h3><p>The query must target the indexed field or JSON path. The examples illustrate each pattern; acceleration depends on the conditions in the last column:</p>
+<table>
+<thead>
+<tr><th>Pattern</th><th>Example expression</th><th>Acceleration conditions and behavior</th></tr>
+</thead>
+<tbody>
+<tr><td>Prefix or suffix literal</td><td><code translate="no">text LIKE &quot;database%&quot;</code> or <code translate="no">text LIKE &quot;%database&quot;</code></td><td>Requires at least <code translate="no">min_gram</code> characters; finds candidates, then checks original values.</td></tr>
+<tr><td>Substring literal</td><td><code translate="no">text LIKE &quot;%database%&quot;</code></td><td>Requires at least <code translate="no">min_gram</code> characters. Returns exact matches within <code translate="no">[min_gram, max_gram]</code>; longer literals produce candidates for rechecking.</td></tr>
+<tr><td>General LIKE</td><td><code translate="no">text LIKE &quot;%st%um%&quot;</code></td><td>Finds candidates when each non-empty literal fragment meets <code translate="no">min_gram</code>, then checks original values.</td></tr>
+<tr><td>Regex</td><td><code translate="no">text =~ &quot;error.*timeout&quot;</code></td><td>Finds candidates when suitable literals can be extracted, then checks the full regex.</td></tr>
+</tbody>
+</table>
+<p>For an indexed JSON string path, use the path in the expression, such as <code translate="no">json_field[&quot;body&quot;] LIKE &quot;%database%&quot;</code>. See <a href="/docs/pt/pattern-matching.md#Common-LIKE-patterns">Pattern Matching</a> for LIKE examples and <a href="/docs/pt/pattern-matching.md#Common-regex-patterns">regex examples</a>.</p>
+<p>Without suitable literals, Milvus scans the data. <code translate="no">NGRAM</code> provides pattern lookup, not direct equality, membership, or range lookup. These rules apply after <a href="/docs/pt/pattern-matching.md#Accelerate-pattern-matching-with-indexes">query-planning simplifications</a>.</p>
 <div class="alert note">
-<p>Para obter detalhes sobre a sintaxe de expressões de filtragem « <code translate="no">LIKE</code> » e de expressões regulares, consulte <a href="/docs/pt/pattern-matching.md">«Correspondência de Padrões</a>».</p>
+<blockquote>
+<p>These are index capabilities, not limits on valid filter expressions. See <a href="/docs/pt/scalar_index.md#Filter-execution">Scalar Index</a> for shared lookup constraints. For <code translate="no">AND</code>, <code translate="no">OR</code>, <code translate="no">NOT</code>, and NULL tests (<code translate="no">IS NULL</code>, <code translate="no">IS NOT NULL</code>), see <a href="/docs/pt/basic-operators.md">Basic Operators</a>.</p>
+</blockquote>
 </div>
-<h2 id="How-it-works" class="common-anchor-header">Como funciona<button data-href="#How-it-works" class="anchor-icon" translate="no">
+<h3 id="Usage-notes" class="common-anchor-header">Usage notes<button data-href="#Usage-notes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -51,14 +105,11 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><details></p>
-<p><summary>Expanda para ver como o NGRAM funciona</summary></p>
-<p>O Milvus implementa o índice de <code translate="no">NGRAM</code> num processo de duas fases:</p>
-<ol>
-<li><p><strong>Criação do índice</strong>: Gere n-gramas para cada documento e crie um índice invertido durante a importação.</p></li>
-<li><p><strong>Acelerar consultas</strong>: Utilize o índice para filtrar até um pequeno conjunto de candidatos e, em seguida, verifique as correspondências exatas.</p></li>
-</ol>
-<h3 id="Phase-1-Build-the-index" class="common-anchor-header">Fase 1: Construir o índice<button data-href="#Phase-1-Build-the-index" class="anchor-icon" translate="no">
+    </button></h3><p>N-gram decomposition is character-based, language-agnostic, and includes whitespace and punctuation. It preserves case. Wider gram ranges produce more grams and larger indexes; consider <a href="/docs/pt/mmap.md">mmap</a> for large posting lists when memory is tight.</p>
+<div class="alert note">
+<p>Regex patterns without fixed literals, such as <code translate="no">[a-z]+</code>, can fall back to scanning. Case-insensitive patterns with <code translate="no">(?i)</code> may also skip <code translate="no">NGRAM</code> optimization. Candidate verification uses the full RE2 pattern, preserving the regex’s match results.</p>
+</div>
+<h3 id="Memory-considerations" class="common-anchor-header">Memory considerations<button data-href="#Memory-considerations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -73,48 +124,15 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Durante a importação de dados, o Milvus cria o índice NGRAM através de duas etapas principais:</p>
-<ol>
-<li><p><strong>Decompor o texto em n-gramas</strong>: o Milvus desliza uma janela de <em>n</em> ao longo de cada cadeia de caracteres no campo de destino e extrai subcadeias sobrepostas, ou <em>n-gramas</em>. O comprimento destas subcadeias situa-se dentro de um intervalo configurável, <code translate="no">[min_gram, max_gram]</code>.</p>
-<ul>
-<li><p><code translate="no">min_gram</code>: O n-gram mais curto a gerar. Isto também define o comprimento mínimo da subcadeia de caracteres da consulta que pode beneficiar do índice.</p></li>
-<li><p><code translate="no">max_gram</code>: O n-gram mais longo a gerar. No momento da consulta, é também utilizado como o tamanho máximo da janela ao dividir cadeias de consulta longas.</p></li>
-</ul>
-<p>Por exemplo, com <code translate="no">min_gram=2</code> e <code translate="no">max_gram=3</code>, a cadeia de caracteres <code translate="no">&quot;AI database&quot;</code> é dividida da seguinte forma:</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/build-ngram-index.png" alt="Build Ngram Index" class="doc-image" id="build-ngram-index" /> 
-   <span>Criar índice de n-gramas</span>
-  
- </span></p>
-<ul>
-<li><p><strong>2-gramas:</strong> <code translate="no">AI</code>, <code translate="no">I_</code>, <code translate="no">_d</code>, <code translate="no">da</code>, <code translate="no">at</code>, …</p></li>
-<li><p><strong>3-gramas:</strong> <code translate="no">AI_</code>, <code translate="no">I_d</code>, <code translate="no">_da</code>, <code translate="no">dat</code>, <code translate="no">ata</code>, …</p></li>
-</ul>
-<p><div class="alert note"></p>
-<ul>
-<li><p>Para um intervalo <code translate="no">[min_gram, max_gram]</code>, o Milvus gera todos os n-gramas para cada comprimento entre os dois valores (inclusive). Por exemplo, com <code translate="no">[2,4]</code> e a palavra <code translate="no">&quot;text&quot;</code>, o Milvus gera:</p></li>
-<li><p><strong>2-gramas:</strong> <code translate="no">te</code>, <code translate="no">ex</code>, <code translate="no">xt</code></p></li>
-<li><p><strong>3-gramas:</strong> <code translate="no">tex</code>, <code translate="no">ext</code></p></li>
-<li><p><strong>4-gramas:</strong> <code translate="no">text</code></p></li>
-<li><p>A decomposição em N-gramas é baseada em caracteres e independente do idioma. Por exemplo, em chinês, « <code translate="no">&quot;向量数据库&quot;</code> » com « <code translate="no">min_gram = 2</code> » é decomposto em: « <code translate="no">&quot;向量&quot;</code> », « <code translate="no">&quot;量数&quot;</code> », « <code translate="no">&quot;数据&quot;</code> », « <code translate="no">&quot;据库&quot;</code> ».</p></li>
-<li><p>Os espaços e a pontuação são tratados como caracteres durante a decomposição.</p></li>
-<li><p>A decomposição preserva as maiúsculas e minúsculas originais, e a correspondência distingue maiúsculas de minúsculas. Por exemplo, <code translate="no">&quot;Database&quot;</code> e <code translate="no">&quot;database&quot;</code> gerarão n-gramas diferentes e exigem uma correspondência exata de maiúsculas e minúsculas durante as consultas.</p></li>
-</ul>
-<p></div></p></li>
-<li><p><strong>Criar um índice invertido</strong>: É criado um <strong>índice invertido</strong> que mapeia cada n-grama gerado para uma lista dos IDs dos documentos que o contêm.</p>
-<p>Por exemplo, se o 2-gram <code translate="no">&quot;AI&quot;</code> aparecer em documentos com os IDs 1, 5, 6, 8 e 9, o índice regista <code translate="no">{&quot;AI&quot;: [1, 5, 6, 8, 9]}</code>. Este índice é então utilizado no momento da consulta para restringir rapidamente o âmbito da pesquisa.</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/build-ngram-index-2.png" alt="Build Ngram Index 2" class="doc-image" id="build-ngram-index-2" /> 
-   <span>Criar Índice de N-gram 2</span>
-  
- </span></p>
-<p><div class="alert note"></p>
-<p>Um intervalo mais amplo de « <code translate="no">[min_gram, max_gram]</code> » cria mais n-gramas e listas de mapeamento maiores. Se a memória for limitada, considere o modo mmap para listas de postagem muito grandes. Para mais detalhes, consulte <a href="/docs/pt/mmap.md">«Utilizar mmap</a>».</p>
-<p></div></p></li>
-</ol>
-<h3 id="Phase-2-Accelerate-queries" class="common-anchor-header">Fase 2: Acelerar as consultas<button data-href="#Phase-2-Accelerate-queries" class="anchor-icon" translate="no">
+    </button></h3><p>For a rough loaded-memory estimate, use <code translate="no">S</code> bytes, where <code translate="no">S</code> is the built index size before storage compression. Obtain <code translate="no">S</code> by building on representative data; raw text size is not a substitute. Gram ranges and data distribution affect the built size.</p>
+<p>These rough estimates cover loaded index memory with memory mapping disabled. Calculate them per segment, then sum across loaded segments and replicas.</p>
+<div class="alert note">
+<blockquote>
+<p>Allow extra memory for loaded field data, vector indexes, collection and index overhead, and temporary allocations. Validate with representative data and queries; arrays, JSON, older index formats, and memory mapping require separate measurement.</p>
+</blockquote>
+</div>
+<p><a id="How-it-works"></a></p>
+<h3 id="How-NGRAM-works" class="common-anchor-header">How NGRAM works<button data-href="#How-NGRAM-works" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -129,27 +147,42 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Quando um filtro « <code translate="no">LIKE</code> » ou um filtro regex elegível é executado, o Milvus utiliza o índice NGRAM para acelerar a consulta através dos seguintes passos:</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/accelerate-queries.png" alt="Accelerate Queries" class="doc-image" id="accelerate-queries" /> 
-   <span>Acelerar consultas</span>
-  
- </span></p>
-<ol>
-<li><p><strong>Extrair o termo da consulta:</strong> A subcadeia contígua sem caracteres curinga é extraída da expressão « <code translate="no">LIKE</code> » (por exemplo, « <code translate="no">&quot;%database%&quot;</code> » torna-se « <code translate="no">&quot;database&quot;</code> »). Para filtros regex, o Milvus extrai subcadeias literais fixas do padrão regex sempre que possível. Por exemplo, « <code translate="no">message =~ &quot;error.*timeout&quot;</code> » contém os literais « <code translate="no">error</code> » e « <code translate="no">timeout</code> ».</p></li>
-<li><p><strong>Decompor o termo de consulta:</strong> O termo de consulta é decomposto em <em>n-gramas</em> com base no seu comprimento (<code translate="no">L</code>) e nas definições <code translate="no">min_gram</code> e <code translate="no">max_gram</code>.</p>
+    </button></h3><p><a id="Phase-1-Build-the-index"></a>
+<a id="Phase-2-Accelerate-queries"></a></p>
+<p><details>
+<summary><strong>View the build and query process</strong></summary></p>
+<p>An n-gram is an overlapping sequence of characters. With <code translate="no">n=3</code>, <code translate="no">&quot;Milvus&quot;</code> produces <code translate="no">&quot;Mil&quot;</code>, <code translate="no">&quot;ilv&quot;</code>, <code translate="no">&quot;lvu&quot;</code>, and <code translate="no">&quot;vus&quot;</code>.</p>
+<p><strong>Phase 1: Build the index</strong></p>
+<p>For each string, generate grams of every length from <code translate="no">min_gram</code> through <code translate="no">max_gram</code>, inclusive. With <code translate="no">min_gram=2</code> and <code translate="no">max_gram=3</code>, <code translate="no">&quot;AI database&quot;</code> produces 2-grams such as <code translate="no">AI</code>, <code translate="no">I_</code>, <code translate="no">_d</code>, and <code translate="no">da</code>, and 3-grams such as <code translate="no">AI_</code>, <code translate="no">I_d</code>, <code translate="no">_da</code>, and <code translate="no">dat</code>. Here, <code translate="no">_</code> represents a space:</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/build-ngram-index.png" alt="Build Ngram Index" class="doc-image" id="build-ngram-index" />
+    <span>Build Ngram Index</span>
+  </span>
+</p>
+<p>Map each gram to the entity IDs containing it. For example, if <code translate="no">&quot;AI&quot;</code> occurs in entities 1, 5, 6, 8, and 9, store <code translate="no">{&quot;AI&quot;: [1, 5, 6, 8, 9]}</code>:</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/build-ngram-index-2.png" alt="Build Ngram Index 2" class="doc-image" id="build-ngram-index-2" />
+    <span>Build Ngram Index 2</span>
+  </span>
+</p>
+<p><strong>Phase 2: Accelerate queries</strong></p>
+<p>Extract literal text from the LIKE or eligible regex pattern. For example, <code translate="no">&quot;%database%&quot;</code> yields <code translate="no">database</code>, and <code translate="no">&quot;error.*timeout&quot;</code> contains <code translate="no">error</code> and <code translate="no">timeout</code>. For a literal of length <code translate="no">L</code>:</p>
 <ul>
-<li><p>Se <code translate="no">L &lt; min_gram</code>, o índice não pode ser utilizado e a consulta recorre a uma pesquisa completa.</p></li>
-<li><p>Se <code translate="no">min_gram ≤ L ≤ max_gram</code>, o termo de consulta na íntegra é tratado como um único n-gram, não sendo necessária qualquer decomposição adicional.</p></li>
-<li><p>Se <code translate="no">L &gt; max_gram</code>, o termo da consulta é dividido em gramas sobrepostas utilizando um tamanho de janela igual a <code translate="no">max_gram</code>.</p></li>
+<li>If <code translate="no">L &lt; min_gram</code>, the literal cannot use the index.</li>
+<li>If <code translate="no">min_gram ≤ L ≤ max_gram</code>, look up the literal as one gram.</li>
+<li>If <code translate="no">L &gt; max_gram</code>, split it into overlapping <code translate="no">max_gram</code>-length grams.</li>
 </ul>
-<p>Por exemplo, se o parâmetro « <code translate="no">max_gram</code> » estiver definido como « <code translate="no">3</code> » e o termo de consulta for « <code translate="no">&quot;database&quot;</code> », que tem um comprimento de <strong>8</strong>, este é decomposto em subcadeias de 3-grams como « <code translate="no">&quot;dat&quot;</code> », « <code translate="no">&quot;ata&quot;</code> », « <code translate="no">&quot;tab&quot;</code> » e assim por diante.</p></li>
-<li><p><strong>Procurar cada gram e intersecção</strong>: O Milvus procura cada um dos grams da consulta no índice invertido e, em seguida, cruza as listas de IDs de documentos resultantes para encontrar um pequeno conjunto de documentos candidatos. Estes candidatos contêm todos os grams da consulta.</p></li>
-<li><p><strong>Verificar e devolver resultados:</strong> O filtro original « <code translate="no">LIKE</code> » ou regex é então aplicado como verificação final apenas ao pequeno conjunto de candidatos, para encontrar as correspondências exatas.</p></li>
-</ol>
+<p>Intersect the grams’ entity lists to find candidates, then apply the original filter when rechecking is required. A simple substring literal within <code translate="no">[min_gram, max_gram]</code> returns exact matches without rechecking:</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/accelerate-queries.png" alt="Accelerate Queries" class="doc-image" id="accelerate-queries" />
+    <span>Accelerate Queries</span>
+  </span>
+</p>
 <p></details></p>
-<h2 id="Create-an-NGRAM-index" class="common-anchor-header">Criar um índice NGRAM<button data-href="#Create-an-NGRAM-index" class="anchor-icon" translate="no">
+<h2 id="Create-an-NGRAM-index" class="common-anchor-header">Create an NGRAM index<button data-href="#Create-an-NGRAM-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -164,8 +197,18 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Pode criar um índice NGRAM num campo « <code translate="no">VARCHAR</code> » ou num caminho específico dentro de um campo « <code translate="no">JSON</code> ».</p>
-<h3 id="Example-1-Create-on-a-VARCHAR-field" class="common-anchor-header">Exemplo 1: Criar num campo VARCHAR<button data-href="#Example-1-Create-on-a-VARCHAR-field" class="anchor-icon" translate="no">
+    </button></h2><p>You can create an NGRAM index on a <code translate="no">VARCHAR</code> field or on a specific path inside a <code translate="no">JSON</code> field. Specify both <code translate="no">min_gram</code> and <code translate="no">max_gram</code> as positive integers, with <code translate="no">min_gram &lt;= max_gram</code>.</p>
+<p>The parameters control the indexed character sequences. Rebuild the index to change them:</p>
+<table>
+<thead>
+<tr><th>Parameter</th><th>Meaning</th></tr>
+</thead>
+<tbody>
+<tr><td><code translate="no">min_gram</code></td><td>Minimum sequence length in characters. It also sets the minimum literal length that can use the index.</td></tr>
+<tr><td><code translate="no">max_gram</code></td><td>Maximum sequence length in characters. Longer query literals are split into overlapping sequences of this length.</td></tr>
+</tbody>
+</table>
+<h3 id="Example-1-Create-on-a-VARCHAR-field" class="common-anchor-header">Example 1: Create on a VARCHAR field<button data-href="#Example-1-Create-on-a-VARCHAR-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -180,15 +223,15 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Para um campo « <code translate="no">VARCHAR</code> », basta especificar o « <code translate="no">field_name</code> » e configurar « <code translate="no">min_gram</code> » e « <code translate="no">max_gram</code> ».</p>
+    </button></h3><p>For a <code translate="no">VARCHAR</code> field, you simply specify the <code translate="no">field_name</code> and configure <code translate="no">min_gram</code> and <code translate="no">max_gram</code>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -340,8 +383,8 @@ curl --request POST \
     ]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Esta configuração gera 2-gramas e 3-gramas para cada cadeia de caracteres em <code translate="no">text</code> e armazena-os no índice invertido.</p>
-<h3 id="Example-2-Create-on-a-JSON-path" class="common-anchor-header">Exemplo 2: Criar num caminho JSON<button data-href="#Example-2-Create-on-a-JSON-path" class="anchor-icon" translate="no">
+<p>This configuration generates 2-grams and 3-grams for each string in <code translate="no">text</code> and stores them in the inverted index.</p>
+<h3 id="Example-2-Create-on-a-JSON-path" class="common-anchor-header">Example 2: Create on a JSON path<button data-href="#Example-2-Create-on-a-JSON-path" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -356,19 +399,15 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Para um campo <code translate="no">JSON</code>, além das definições de gramas, deve também especificar:</p>
-<ul>
-<li><p><code translate="no">params.json_path</code> – o caminho JSON que aponta para o valor que pretende indexar.</p></li>
-<li><p><code translate="no">params.json_cast_type</code> – deve ser <code translate="no">&quot;varchar&quot;</code> (sem distinção entre maiúsculas e minúsculas), porque a indexação NGRAM opera sobre cadeias de caracteres.</p></li>
-</ul>
+    </button></h3><p>For a JSON path, use a <code translate="no">VARCHAR</code> cast (case-insensitive) and the gram settings below. See <a href="/docs/pt/json-indexing.md#Index-requirements">JSON Indexing</a> for path and cast requirements.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Assume you have defined a JSON field named &quot;json_field&quot; in your collection schema, with a JSON path named &quot;body&quot;</span>
 
@@ -496,14 +535,8 @@ status = client-&gt;<span class="hljs-built_in">CreateIndex</span>(create_reques
     ]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Neste exemplo:</p>
-<ul>
-<li><p>Apenas o valor em <code translate="no">json_field[&quot;body&quot;]</code> é indexado.</p></li>
-<li><p>O valor é convertido para <code translate="no">VARCHAR</code> antes da tokenização n-gram.</p></li>
-<li><p>O Milvus gera subcadeias com comprimento entre 2 e 4 e armazena-as no índice invertido.</p></li>
-</ul>
-<p>Para mais informações sobre como indexar um campo JSON, consulte <a href="/docs/pt/json-indexing.md">Indexação JSON</a>.</p>
-<h2 id="Queries-accelerated-by-NGRAM" class="common-anchor-header">Consultas aceleradas pelo NGRAM<button data-href="#Queries-accelerated-by-NGRAM" class="anchor-icon" translate="no">
+<p>This indexes <code translate="no">json_field[&quot;body&quot;]</code> as a <code translate="no">VARCHAR</code> value using substrings of length 2 to 4. For other path options, see <a href="/docs/pt/json-indexing.md">JSON Indexing</a>.</p>
+<h2 id="Drop-an-index" class="common-anchor-header">Drop an index<button data-href="#Drop-an-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -518,257 +551,20 @@ status = client-&gt;<span class="hljs-built_in">CreateIndex</span>(create_reques
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Para que o índice NGRAM seja aplicado:</p>
-<ul>
-<li><p>A consulta deve ter como alvo um campo « <code translate="no">VARCHAR</code> » (ou caminho JSON) que possua um índice « <code translate="no">NGRAM</code> ».</p></li>
-<li><p>A parte literal do padrão « <code translate="no">LIKE</code> » deve ter, pelo menos, <code translate="no">min_gram</code> caracteres.</p>
-<p><em>(Por exemplo, se o termo de consulta mais curto esperado tiver 2 caracteres, defina min_gram=2 ao criar o índice.)</em></p></li>
-</ul>
-<p>Tipos de consulta suportados:</p>
-<ul>
-<li><p><strong>Correspondência de prefixo</strong></p>
-<p><div class="multipleCode">
-<a href="#python">Python</a>
-<a href="#java">Java</a>
-<a href="#go">Go</a>
-<a href="#rust">Rust</a>
-<a href="#cpp">C++</a>
-<a href="#javascript">NodeJS</a>
-<a href="#bash">cURL</a>
-</div></p>
-<pre><code translate="no" class="language-python"><span class="hljs-comment"># Match any string that starts with the substring &quot;database&quot;</span>
-<span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;text LIKE &quot;database%&quot;&#x27;</span>
-<button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-java"><span class="hljs-comment">// Match any string that starts with the substring &quot;database&quot;</span>
-<span class="hljs-type">String</span> <span class="hljs-variable">filter</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;text LIKE \&quot;database%\&quot;&quot;</span>;
-<button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-go"><span class="hljs-comment">// Match any string that starts with the substring &quot;database&quot;</span>
-filter := <span class="hljs-string">&quot;text LIKE \&quot;database%\&quot;&quot;</span>
-<button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-rust"><span class="hljs-comment">// Match any string that starts with the substring &quot;database&quot;</span>
-<span class="hljs-keyword">let</span> <span class="hljs-variable">filter</span> = <span class="hljs-string">&quot;text LIKE \&quot;database%\&quot;&quot;</span>;
-<button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-cpp"><span class="hljs-comment">// Match any string that starts with the substring &quot;database&quot;</span>
-<span class="hljs-type">const</span> <span class="hljs-keyword">auto</span> filter = <span class="hljs-string">R&quot;(text LIKE &quot;database%&quot;)&quot;</span>;
-<button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-javascript"><span class="hljs-comment">// Match any string that starts with the substring &quot;database&quot;</span>
-<span class="hljs-keyword">const</span> filter = <span class="hljs-string">&#x27;text LIKE &quot;database%&quot;&#x27;</span>;
-<button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-bash"><span class="hljs-comment"># Match any string that starts with the substring &quot;database&quot;</span>
-<span class="hljs-comment"># Use this filter expression in the &quot;filter&quot; field of the query/search request:</span>
-<span class="hljs-comment"># &quot;filter&quot;: &quot;text LIKE \&quot;database%\&quot;&quot;</span>
-<button class="copy-code-btn"></button></code></pre></li>
-<li><p><strong>Correspondência de sufixo</strong></p>
-<p><div class="multipleCode">
-<a href="#python">Python</a>
-<a href="#java">Java</a>
-<a href="#go">Go</a>
-<a href="#rust">Rust</a>
-<a href="#cpp">C++</a>
-<a href="#javascript">NodeJS</a>
-<a href="#bash">cURL</a>
-</div></p>
-<pre><code translate="no" class="language-python"><span class="hljs-comment"># Match any string that ends with the substring &quot;database&quot;</span>
-<span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;text LIKE &quot;%database&quot;&#x27;</span>
-<button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-java"><span class="hljs-comment">// Match any string that ends with the substring &quot;database&quot;</span>
-<span class="hljs-type">String</span> <span class="hljs-variable">filter</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;text LIKE \&quot;%database\&quot;&quot;</span>;
-<button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-go"><span class="hljs-comment">// Match any string that ends with the substring &quot;database&quot;</span>
-filter := <span class="hljs-string">&quot;text LIKE \&quot;%database\&quot;&quot;</span>
-<button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-rust"><span class="hljs-comment">// Match any string that ends with the substring &quot;database&quot;</span>
-<span class="hljs-keyword">let</span> <span class="hljs-variable">filter</span> = <span class="hljs-string">&quot;text LIKE \&quot;%database\&quot;&quot;</span>;
-<button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-cpp"><span class="hljs-comment">// Match any string that ends with the substring &quot;database&quot;</span>
-<span class="hljs-type">const</span> <span class="hljs-keyword">auto</span> filter = <span class="hljs-string">R&quot;(text LIKE &quot;%database&quot;)&quot;</span>;
-<button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-javascript"><span class="hljs-comment">// Match any string that ends with the substring &quot;database&quot;</span>
-<span class="hljs-keyword">const</span> filter = <span class="hljs-string">&#x27;text LIKE &quot;%database&quot;&#x27;</span>;
-<button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-bash"><span class="hljs-comment"># Match any string that ends with the substring &quot;database&quot;</span>
-<span class="hljs-comment"># Use this filter expression in the &quot;filter&quot; field of the query/search request:</span>
-<span class="hljs-comment"># &quot;filter&quot;: &quot;text LIKE \&quot;%database\&quot;&quot;</span>
-<button class="copy-code-btn"></button></code></pre></li>
-<li><p><strong>Correspondência de infixo</strong></p>
-<p><div class="multipleCode">
-<a href="#python">Python</a>
-<a href="#java">Java</a>
-<a href="#go">Go</a>
-<a href="#rust">Rust</a>
-<a href="#cpp">C++</a>
-<a href="#javascript">NodeJS</a>
-<a href="#bash">cURL</a>
-</div></p>
-<pre><code translate="no" class="language-python"><span class="hljs-comment"># Match any string that contains the substring &quot;database&quot; anywhere</span>
-<span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;text LIKE &quot;%database%&quot;&#x27;</span>
-<button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-java"><span class="hljs-comment">// Match any string that contains the substring &quot;database&quot; anywhere</span>
-<span class="hljs-type">String</span> <span class="hljs-variable">filter</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;text LIKE \&quot;%database%\&quot;&quot;</span>;
-<button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-go"><span class="hljs-comment">// Match any string that contains the substring &quot;database&quot; anywhere</span>
-filter := <span class="hljs-string">&quot;text LIKE \&quot;%database%\&quot;&quot;</span>
-<button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-rust"><span class="hljs-comment">// Match any string that contains the substring &quot;database&quot; anywhere</span>
-<span class="hljs-keyword">let</span> <span class="hljs-variable">filter</span> = <span class="hljs-string">&quot;text LIKE \&quot;%database%\&quot;&quot;</span>;
-<button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-cpp"><span class="hljs-comment">// Match any string that contains the substring &quot;database&quot; anywhere</span>
-<span class="hljs-type">const</span> <span class="hljs-keyword">auto</span> filter = <span class="hljs-string">R&quot;(text LIKE &quot;%database%&quot;)&quot;</span>;
-<button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-javascript"><span class="hljs-comment">// Match any string that contains the substring &quot;database&quot; anywhere</span>
-<span class="hljs-keyword">const</span> filter = <span class="hljs-string">&#x27;text LIKE &quot;%database%&quot;&#x27;</span>;
-<button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-bash"><span class="hljs-comment"># Match any string that contains the substring &quot;database&quot; anywhere</span>
-<span class="hljs-comment"># Use this filter expression in the &quot;filter&quot; field of the query/search request:</span>
-<span class="hljs-comment"># &quot;filter&quot;: &quot;text LIKE \&quot;%database%\&quot;&quot;</span>
-<button class="copy-code-btn"></button></code></pre></li>
-<li><p><strong>Correspondência com caracteres curinga</strong></p>
-<p>O Milvus suporta tanto a correspondência com caracteres curinga ( <code translate="no">%</code>, ou seja, zero ou mais caracteres) como a correspondência com caracteres curinga ( <code translate="no">_</code>, ou seja, exatamente um caractere).</p>
-<p><div class="multipleCode">
-<a href="#python">Python</a>
-<a href="#java">Java</a>
-<a href="#go">Go</a>
-<a href="#rust">Rust</a>
-<a href="#cpp">C++</a>
-<a href="#javascript">NodeJS</a>
-<a href="#bash">cURL</a>
-</div></p>
-<pre><code translate="no" class="language-python"><span class="hljs-comment"># Match any string where &quot;st&quot; appears first, and &quot;um&quot; appears later in the text</span>
-<span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;text LIKE &quot;%st%um%&quot;&#x27;</span>
-<button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-java"><span class="hljs-comment">// Match any string where &quot;st&quot; appears first, and &quot;um&quot; appears later in the text</span>
-<span class="hljs-type">String</span> <span class="hljs-variable">filter</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;text LIKE \&quot;%st%um%\&quot;&quot;</span>;
-<button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-go"><span class="hljs-comment">// Match any string where &quot;st&quot; appears first, and &quot;um&quot; appears later in the text</span>
-filter := <span class="hljs-string">&quot;text LIKE \&quot;%st%um%\&quot;&quot;</span>
-<button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-rust"><span class="hljs-comment">// Match any string where &quot;st&quot; appears first, and &quot;um&quot; appears later in the text</span>
-<span class="hljs-keyword">let</span> <span class="hljs-variable">filter</span> = <span class="hljs-string">&quot;text LIKE \&quot;%st%um%\&quot;&quot;</span>;
-<button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-cpp"><span class="hljs-comment">// Match any string where &quot;st&quot; appears first, and &quot;um&quot; appears later in the text</span>
-<span class="hljs-type">const</span> <span class="hljs-keyword">auto</span> filter = <span class="hljs-string">R&quot;(text LIKE &quot;%st%um%&quot;)&quot;</span>;
-<button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-javascript"><span class="hljs-comment">// Match any string where &quot;st&quot; appears first, and &quot;um&quot; appears later in the text</span>
-<span class="hljs-keyword">const</span> filter = <span class="hljs-string">&#x27;text LIKE &quot;%st%um%&quot;&#x27;</span>;
-<button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-bash"><span class="hljs-comment"># Match any string where &quot;st&quot; appears first, and &quot;um&quot; appears later in the text</span>
-<span class="hljs-comment"># Use this filter expression in the &quot;filter&quot; field of the query/search request:</span>
-<span class="hljs-comment"># &quot;filter&quot;: &quot;text LIKE \&quot;%st%um%\&quot;&quot;</span>
-<button class="copy-code-btn"></button></code></pre></li>
-<li><p><strong>Consultas de caminho JSON</strong></p>
-<p><div class="multipleCode">
-<a href="#python">Python</a>
-<a href="#java">Java</a>
-<a href="#go">Go</a>
-<a href="#rust">Rust</a>
-<a href="#cpp">C++</a>
-<a href="#javascript">NodeJS</a>
-<a href="#bash">cURL</a>
-</div></p>
-<pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;json_field[&quot;body&quot;] LIKE &quot;%database%&quot;&#x27;</span>
-<button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-java"><span class="hljs-type">String</span> <span class="hljs-variable">filter</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;json_field[\&quot;body\&quot;] LIKE \&quot;%database%\&quot;&quot;</span>;
-<button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-go">filter := <span class="hljs-string">&quot;json_field[\&quot;body\&quot;] LIKE \&quot;%database%\&quot;&quot;</span>
-<button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-rust"><span class="hljs-keyword">let</span> <span class="hljs-variable">filter</span> = <span class="hljs-string">&quot;json_field[\&quot;body\&quot;] LIKE \&quot;%database%\&quot;&quot;</span>;
-<button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-cpp"><span class="hljs-type">const</span> <span class="hljs-keyword">auto</span> filter = <span class="hljs-string">R&quot;(json_field[&quot;body&quot;] LIKE &quot;%database%&quot;)&quot;</span>;
-<button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-javascript"><span class="hljs-keyword">const</span> filter = <span class="hljs-string">&#x27;json_field[&quot;body&quot;] LIKE &quot;%database%&quot;&#x27;</span>;
-<button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-bash"><span class="hljs-comment"># Use this filter expression in the &quot;filter&quot; field of the query/search request:</span>
-<span class="hljs-comment"># &quot;filter&quot;: &quot;json_field[\&quot;body\&quot;] LIKE \&quot;%database%\&quot;&quot;</span>
-<button class="copy-code-btn"></button></code></pre></li>
-<li><p><strong>Filtro de expressões regulares</strong></p>
-<p><div class="multipleCode">
-<a href="#python">Python</a>
-<a href="#java">Java</a>
-<a href="#go">Go</a>
-<a href="#rust">Rust</a>
-<a href="#cpp">C++</a>
-<a href="#javascript">NodeJS</a>
-<a href="#bash">cURL</a>
-</div></p>
-<pre><code translate="no" class="language-python"><span class="hljs-comment"># Match log messages that contain &quot;error&quot; followed later by &quot;timeout&quot;</span>
-<span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;text =~ &quot;error.*timeout&quot;&#x27;</span>
-<button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-java"><span class="hljs-comment">// Match log messages that contain &quot;error&quot; followed later by &quot;timeout&quot;</span>
-<span class="hljs-type">String</span> <span class="hljs-variable">filter</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;text =~ \&quot;error.*timeout\&quot;&quot;</span>;
-<button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-go"><span class="hljs-comment">// Match log messages that contain &quot;error&quot; followed later by &quot;timeout&quot;</span>
-filter := <span class="hljs-string">&quot;text =~ \&quot;error.*timeout\&quot;&quot;</span>
-<button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-rust"><span class="hljs-comment">// Match log messages that contain &quot;error&quot; followed later by &quot;timeout&quot;</span>
-<span class="hljs-keyword">let</span> <span class="hljs-variable">filter</span> = <span class="hljs-string">&quot;text =~ \&quot;error.*timeout\&quot;&quot;</span>;
-<button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-cpp"><span class="hljs-comment">// Match log messages that contain &quot;error&quot; followed later by &quot;timeout&quot;</span>
-<span class="hljs-type">const</span> <span class="hljs-keyword">auto</span> filter = <span class="hljs-string">R&quot;(text =~ &quot;error.*timeout&quot;)&quot;</span>;
-<button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-javascript"><span class="hljs-comment">// Match log messages that contain &quot;error&quot; followed later by &quot;timeout&quot;</span>
-<span class="hljs-keyword">const</span> filter = <span class="hljs-string">&#x27;text =~ &quot;error.*timeout&quot;&#x27;</span>;
-<button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-bash"><span class="hljs-comment"># Match log messages that contain &quot;error&quot; followed later by &quot;timeout&quot;</span>
-<span class="hljs-comment"># Use this filter expression in the &quot;filter&quot; field of the query/search request:</span>
-<span class="hljs-comment"># &quot;filter&quot;: &quot;text =~ \&quot;error.*timeout\&quot;&quot;</span>
-<button class="copy-code-btn"></button></code></pre></li>
-<li><p><strong>Filtro de expressões regulares num caminho JSON</strong></p>
-<p><div class="multipleCode">
-<a href="#python">Python</a>
-<a href="#java">Java</a>
-<a href="#go">Go</a>
-<a href="#rust">Rust</a>
-<a href="#cpp">C++</a>
-<a href="#javascript">NodeJS</a>
-<a href="#bash">cURL</a>
-</div></p>
-<pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;json_field[&quot;body&quot;] =~ &quot;error.*timeout&quot;&#x27;</span>
-<button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-java"><span class="hljs-type">String</span> <span class="hljs-variable">filter</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;json_field[\&quot;body\&quot;] =~ \&quot;error.*timeout\&quot;&quot;</span>;
-<button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-go">filter := <span class="hljs-string">&quot;json_field[\&quot;body\&quot;] =~ \&quot;error.*timeout\&quot;&quot;</span>
-<button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-rust"><span class="hljs-keyword">let</span> <span class="hljs-variable">filter</span> = <span class="hljs-string">&quot;json_field[\&quot;body\&quot;] =~ \&quot;error.*timeout\&quot;&quot;</span>;
-<button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-cpp"><span class="hljs-type">const</span> <span class="hljs-keyword">auto</span> filter = <span class="hljs-string">R&quot;(json_field[&quot;body&quot;] =~ &quot;error.*timeout&quot;)&quot;</span>;
-<button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-javascript"><span class="hljs-keyword">const</span> filter = <span class="hljs-string">&#x27;json_field[&quot;body&quot;] =~ &quot;error.*timeout&quot;&#x27;</span>;
-<button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-bash"><span class="hljs-comment"># Use this filter expression in the &quot;filter&quot; field of the query/search request:</span>
-<span class="hljs-comment"># &quot;filter&quot;: &quot;json_field[\&quot;body\&quot;] =~ \&quot;error.*timeout\&quot;&quot;</span>
-<button class="copy-code-btn"></button></code></pre></li>
-</ul>
-<p>Para mais informações sobre a sintaxe das expressões de filtro, consulte <a href="/docs/pt/pattern-matching.md">Correspondência de padrões</a>.</p>
-<h2 id="Drop-an-index" class="common-anchor-header">Eliminar um índice<button data-href="#Drop-an-index" class="anchor-icon" translate="no">
-      <svg translate="no"
-        aria-hidden="true"
-        focusable="false"
-        height="20"
-        version="1.1"
-        viewBox="0 0 16 16"
-        width="16"
-      >
-        <path
-          fill="#0092E4"
-          fill-rule="evenodd"
-          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
-        ></path>
-      </svg>
-    </button></h2><p>Utilize o método ` <code translate="no">drop_index()</code> ` para remover um índice existente de uma coleção.</p>
+    </button></h2><p>Use the <code translate="no">drop_index()</code> method to remove an existing index from a collection.</p>
 <div class="alert note">
-<ul>
-<li><p>Na <strong>v2.6.3</strong> ou anterior, é necessário libertar a coleção antes de eliminar um índice escalar.</p></li>
-<li><p>A partir <strong>da v2.6.4</strong> ou posterior, pode eliminar um índice escalar diretamente assim que este já não for necessário — não é necessário libertar a coleção primeiro.</p></li>
-</ul>
+<blockquote>
+<p>For release requirements when dropping a scalar index, see <a href="/docs/pt/scalar_index.md#Drop-index-compatibility">Scalar Index</a>.</p>
+</blockquote>
 </div>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.drop_index(
     collection_name=<span class="hljs-string">&quot;Documents&quot;</span>,   <span class="hljs-comment"># Name of the collection</span>
@@ -819,7 +615,7 @@ err = cli.DropIndex(ctx, milvusclient.NewDropIndexOption(<span class="hljs-strin
     &quot;indexName&quot;: &quot;ngram_index&quot;
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Usage-notes" class="common-anchor-header">Notas de utilização<button data-href="#Usage-notes" class="anchor-icon" translate="no">
+<h2 id="Best-practices" class="common-anchor-header">Best practices<button data-href="#Best-practices" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -835,38 +631,14 @@ err = cli.DropIndex(ctx, milvusclient.NewDropIndexOption(<span class="hljs-strin
         ></path>
       </svg>
     </button></h2><ul>
-<li><p><strong>Tipos de campo</strong>: Suportado nos campos « <code translate="no">VARCHAR</code> » e « <code translate="no">JSON</code> ». Para JSON, forneça tanto « <code translate="no">params.json_path</code> » como « <code translate="no">params.json_cast_type=&quot;varchar&quot;</code> ».</p></li>
-<li><p><strong>Aceleração de expressões regulares</strong>: <code translate="no">NGRAM</code> acelera os filtros de expressões regulares apenas quando o Milvus consegue extrair subcadeias literais fixas do padrão de expressão regular. Padrões como <code translate="no">[a-z]+</code> podem recorrer à análise por varredura, uma vez que não contêm literais fixos.</p></li>
-<li><p><strong>Expressões regulares insensíveis a maiúsculas e minúsculas</strong>: São suportados padrões de expressões regulares com <code translate="no">(?i)</code>, mas podem ignorar a otimização <code translate="no">NGRAM</code>, uma vez que o índice preserva as maiúsculas e minúsculas originais.</p></li>
-<li><p><strong>Etapa de verificação</strong>: Para filtros de expressões regulares, o <code translate="no">NGRAM</code> produz candidatos e o Milvus verifica-os com o padrão completo de expressão regular RE2, pelo que a aceleração do índice não altera os resultados da correspondência.</p></li>
-<li><p><strong>Unicode</strong>: A decomposição NGRAM é baseada em caracteres e independente do idioma, incluindo espaços em branco e pontuação.</p></li>
-<li><p><strong>Compromisso espaço-tempo</strong>: Intervalos de gram mais amplos <code translate="no">[min_gram, max_gram]</code> produzem mais grams e índices maiores. Se a memória for limitada, considere o modo <code translate="no">mmap</code> para listas de postagem grandes. Para mais informações, consulte <a href="/docs/pt/mmap.md">«Utilizar mmap</a>».</p></li>
-<li><p><strong>Imutabilidade</strong>: <code translate="no">min_gram</code> e <code translate="no">max_gram</code> não podem ser alterados no local — reconstrua o índice para os ajustar.</p></li>
-</ul>
-<h2 id="Best-practices" class="common-anchor-header">Melhores práticas<button data-href="#Best-practices" class="anchor-icon" translate="no">
-      <svg translate="no"
-        aria-hidden="true"
-        focusable="false"
-        height="20"
-        version="1.1"
-        viewBox="0 0 16 16"
-        width="16"
-      >
-        <path
-          fill="#0092E4"
-          fill-rule="evenodd"
-          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
-        ></path>
-      </svg>
-    </button></h2><ul>
-<li><p><strong>Escolha « <code translate="no">min_gram</code> » e « <code translate="no">max_gram</code> » de forma a corresponder ao comportamento da pesquisa</strong></p>
+<li><p><strong>Choose <code translate="no">min_gram</code> and <code translate="no">max_gram</code> to match search behavior</strong></p>
 <ul>
-<li><p>Comece com <code translate="no">min_gram=2</code> e <code translate="no">max_gram=3</code>.</p></li>
-<li><p>Defina ` <code translate="no">min_gram</code> ` como o literal mais curto que espera que os utilizadores digitem.</p></li>
-<li><p>Defina <code translate="no">max_gram</code> próximo do comprimento típico de subcadeias significativas; um valor maior de <code translate="no">max_gram</code> melhora a filtragem, mas aumenta o espaço ocupado.</p></li>
+<li><p>Start with <code translate="no">min_gram=2</code>, <code translate="no">max_gram=3</code>.</p></li>
+<li><p>Set <code translate="no">min_gram</code> to the shortest literal you expect users to type.</p></li>
+<li><p>Set <code translate="no">max_gram</code> near the typical length of meaningful substrings; larger <code translate="no">max_gram</code> improves filtering but increases space.</p></li>
 </ul></li>
-<li><p><strong>Evite gramas de baixa seletividade</strong></p>
-<p>Padrões altamente repetitivos (por exemplo, <code translate="no">&quot;aaaaaa&quot;</code>) proporcionam uma filtragem fraca e podem resultar em ganhos limitados.</p></li>
-<li><p><strong>Normalize de forma consistente</strong></p>
-<p>Aplique a mesma normalização ao texto importado e aos literais de consulta (por exemplo, converter para minúsculas, remover caracteres à esquerda e à direita) se o seu caso de utilização assim o exigir.</p></li>
+<li><p><strong>Avoid low-selectivity grams</strong></p>
+<p>Highly repetitive patterns (e.g., <code translate="no">&quot;aaaaaa&quot;</code>) provide weak filtering and may yield limited gains.</p></li>
+<li><p><strong>Normalize consistently</strong></p>
+<p>Apply the same normalization to ingested text and query literals (e.g., lowercasing, trimming) if your use case needs it.</p></li>
 </ul>

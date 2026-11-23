@@ -1,14 +1,13 @@
 ---
 id: manage-collections.md
-title: Penjelasan tentang Koleksi
+title: Collection Explained
 summary: >-
-  Di Milvus, Anda dapat membuat beberapa koleksi untuk mengelola data Anda,
-  serta memasukkan data tersebut sebagai entitas ke dalam koleksi-koleksi
-  tersebut. Koleksi dan entitas mirip dengan tabel dan baris data dalam basis
-  data relasional. Halaman ini akan membantu Anda memahami tentang koleksi dan
-  konsep-konsep terkait.
+  On Milvus, you can create multiple collections to manage your data, and insert
+  your data as entities into the collections. Collection and entity are similar
+  to tables and records in relational databases. This page helps you to learn
+  about the collection and related concepts.
 ---
-<h1 id="Collection-Explained" class="common-anchor-header">Penjelasan tentang Koleksi<button data-href="#Collection-Explained" class="anchor-icon" translate="no">
+<h1 id="Collection-Explained" class="common-anchor-header">Collection Explained<button data-href="#Collection-Explained" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -23,8 +22,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Di Milvus, Anda dapat membuat beberapa koleksi untuk mengelola data Anda, dan memasukkan data Anda sebagai entitas ke dalam koleksi tersebut. Koleksi dan entitas mirip dengan tabel dan catatan dalam basis data relasional. Halaman ini membantu Anda mempelajari tentang koleksi dan konsep-konsep terkait.</p>
-<h2 id="Collection" class="common-anchor-header">Koleksi<button data-href="#Collection" class="anchor-icon" translate="no">
+    </button></h1><p>On Milvus, you can create multiple collections to manage your data, and insert your data as entities into the collections. Collection and entity are similar to tables and records in relational databases. This page helps you to learn about the collection and related concepts.</p>
+<h2 id="Collection" class="common-anchor-header">Collection<button data-href="#Collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -39,15 +38,15 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Koleksi adalah tabel dua dimensi dengan kolom tetap dan baris yang bervariasi. Setiap kolom mewakili sebuah bidang, dan setiap baris mewakili sebuah entitas.</p>
-<p>Bagan berikut menunjukkan koleksi dengan delapan kolom dan enam entitas.</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/collection-explained.png" alt="Collection Explained" class="doc-image" id="collection-explained" /> 
-   <span>Penjelasan tentang Koleksi</span>
-  
- </span></p>
-<h2 id="Schema-and-Fields" class="common-anchor-header">Skema dan Bidang<button data-href="#Schema-and-Fields" class="anchor-icon" translate="no">
+    </button></h2><p>A collection is a two-dimensional table with fixed columns and variant rows. Each column represents a field, and each row represents an entity.</p>
+<p>The following chart shows a collection with eight columns and six entities.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/collection-explained.png" alt="Collection Explained" class="doc-image" id="collection-explained" />
+    <span>Collection Explained</span>
+  </span>
+</p>
+<h2 id="Schema-and-Fields" class="common-anchor-header">Schema and Fields<button data-href="#Schema-and-Fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -62,15 +61,15 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Saat mendeskripsikan suatu objek, kita biasanya menyebutkan atribut-atributnya, seperti ukuran, berat, dan posisi. Anda dapat menggunakan atribut-atribut ini sebagai bidang dalam koleksi. Setiap bidang memiliki berbagai sifat pembatas, seperti tipe data dan dimensi bidang vektor. Anda dapat membentuk skema koleksi dengan membuat bidang-bidang tersebut dan menentukan urutannya. Untuk jenis data yang mungkin berlaku, lihat <a href="/docs/id/schema.md">Penjelasan Skema</a>.</p>
-<p>Anda harus menyertakan semua bidang yang ditentukan skema dalam entitas yang akan disisipkan. Untuk menjadikan beberapa di antaranya opsional, pertimbangkan untuk mengaktifkan bidang dinamis. Untuk detailnya, lihat Penjelasan <a href="/docs/id/enable-dynamic-field.md">Bidang Dinamis</a>.</p>
+    </button></h2><p>When describing an object, we usually mention its attributes, such as size, weight, and position. You can use these attributes as fields in a collection. Each field has various constraining properties, such as the data type and the dimensionality of a vector field. You can form a collection schema by creating the fields and defining their order. For possible applicable data types, refer to <a href="/docs/id/schema.md">Schema Explained</a>.</p>
+<p>You should include all schema-defined fields in the entities to insert. To make some of them optional, consider enabling dynamic field. For details, refer to <a href="/docs/id/enable-dynamic-field.md">Dynamic Field</a>.</p>
 <ul>
-<li><p><strong>Menjadikan bidang dapat bernilai null atau menetapkan nilai default</strong></p>
-<p>Untuk detail tentang cara menjadikan bidang dapat bernilai null atau menetapkan nilai default, lihat " <a href="/docs/id/nullable-and-default.md">Nullable &amp; Default</a>".</p></li>
-<li><p><strong>Mengaktifkan bidang dinamis</strong></p>
-<p>Untuk detail tentang cara mengaktifkan dan menggunakan bidang dinamis, lihat <a href="/docs/id/enable-dynamic-field.md">Bidang Dinamis</a>.</p></li>
+<li><p><strong>Making them nullable or setting default values</strong></p>
+<p>For details on how to make a field nullable or set the default value, refer to <a href="/docs/id/nullable-and-default.md">Nullable & Default</a>.</p></li>
+<li><p><strong>Enabling dynamic field</strong></p>
+<p>For details on how to enable and use the dynamic field, refer to <a href="/docs/id/enable-dynamic-field.md">Dynamic Field</a>.</p></li>
 </ul>
-<h2 id="Primary-key-and-AutoId" class="common-anchor-header">Kunci utama dan AutoId<button data-href="#Primary-key-and-AutoId" class="anchor-icon" translate="no">
+<h2 id="Primary-key-and-AutoId" class="common-anchor-header">Primary key and AutoId<button data-href="#Primary-key-and-AutoId" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -85,11 +84,11 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Mirip dengan kolom utama dalam basis data relasional, sebuah koleksi memiliki kolom utama untuk membedakan suatu entitas dari entitas lainnya. Setiap nilai dalam kolom utama bersifat unik secara global dan sesuai dengan satu entitas tertentu.</p>
-<p>Seperti yang ditunjukkan pada bagan di atas, bidang bernama <strong>id</strong> berfungsi sebagai bidang utama, dan ID pertama <strong>0</strong> sesuai dengan entitas berjudul <em>The Mortality Rate of Coronavirus is Not Important</em>. Tidak akan ada entitas lain yang memiliki bidang utama bernilai 0.</p>
-<p>Kolom utama hanya menerima bilangan bulat atau string. Saat menyisipkan entitas, Anda harus menyertakan nilai kolom utama secara default. Namun, jika Anda telah mengaktifkan <strong>AutoId</strong> saat pembuatan koleksi, Milvus akan menghasilkan nilai-nilai tersebut saat penyisipan data. Dalam hal ini, jangan sertakan nilai kolom utama pada entitas yang akan disisipkan.</p>
-<p>Untuk informasi lebih lanjut, silakan lihat <a href="/docs/id/primary-field.md">Bidang Utama &amp; AutoId</a>.</p>
-<h2 id="Index" class="common-anchor-header">Indeks<button data-href="#Index" class="anchor-icon" translate="no">
+    </button></h2><p>Similar to the primary field in a relational database, a collection has a primary field to distinguish an entity from others. Each value in the primary field is globally unique and corresponds to one specific entity.</p>
+<p>As shown in the above chart, the field named <strong>id</strong> serves as the primary field, and the first ID <strong>0</strong> corresponds to an entity titled <em>The Mortality Rate of Coronavirus is Not Important</em>. There will not be any other entity that has the primary field of 0.</p>
+<p>A primary field accepts only integers or strings. When inserting entities, you should include the primary field values by default. However, if you have enabled <strong>AutoId</strong> upon collection creation, Milvus will generate those values upon data insertion. In such a case, exclude the primary field values from the entities to be inserted.</p>
+<p>For more information, please refer to <a href="/docs/id/primary-field.md">Primary Field & AutoId</a>.</p>
+<h2 id="Index" class="common-anchor-header">Index<button data-href="#Index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -104,8 +103,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Membuat indeks pada bidang tertentu meningkatkan efisiensi pencarian. Anda disarankan untuk membuat indeks untuk semua bidang yang diandalkan oleh layanan Anda, di antaranya indeks pada bidang vektor wajib dibuat.</p>
-<h2 id="Entity" class="common-anchor-header">Entitas<button data-href="#Entity" class="anchor-icon" translate="no">
+    </button></h2><p>Creating indexes on specific fields improves search efficiency. You are advised to create indexes for all the fields your service relies on, among which indexes on vector fields are mandatory.</p>
+<h2 id="Entity" class="common-anchor-header">Entity<button data-href="#Entity" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -120,10 +119,10 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Entitas adalah catatan data yang memiliki kumpulan bidang yang sama dalam sebuah koleksi. Nilai-nilai di semua bidang pada baris yang sama membentuk sebuah entitas.</p>
-<p>Anda dapat menyisipkan entitas sebanyak yang Anda butuhkan ke dalam sebuah koleksi. Namun, seiring bertambahnya jumlah entitas, ukuran memori yang dibutuhkan juga akan meningkat, sehingga memengaruhi kinerja pencarian.</p>
-<p>Untuk informasi lebih lanjut, lihat <a href="/docs/id/schema.md">Penjelasan Skema</a>.</p>
-<h2 id="Load-and-Release" class="common-anchor-header">Memuat dan Melepaskan<button data-href="#Load-and-Release" class="anchor-icon" translate="no">
+    </button></h2><p>Entities are data records that share the same set of fields in a collection. The values in all fields of the same row comprise an entity.</p>
+<p>You can insert as many entities as you need into a collection. However, as the number of entities mounts, the memory size it takes also increases, affecting search performance.</p>
+<p>For more information, refer to <a href="/docs/id/schema.md">Schema Explained</a>.</p>
+<h2 id="Load-and-Release" class="common-anchor-header">Load and Release<button data-href="#Load-and-Release" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -138,10 +137,10 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Memuat koleksi merupakan prasyarat untuk melakukan pencarian kesamaan dan kueri dalam koleksi. Saat Anda memuat koleksi, Milvus memuat semua file indeks dan data mentah di setiap bidang ke dalam memori untuk respons yang cepat terhadap pencarian dan kueri.</p>
-<p>Pencarian dan kueri merupakan operasi yang intensif memori. Untuk menghemat sumber daya, disarankan untuk melepaskan koleksi yang saat ini tidak digunakan.</p>
-<p>Untuk detail lebih lanjut, lihat <a href="/docs/id/load-and-release.md">Memuat &amp; Melepaskan</a>.</p>
-<h2 id="Search-and-Query" class="common-anchor-header">Pencarian dan Kueri<button data-href="#Search-and-Query" class="anchor-icon" translate="no">
+    </button></h2><p>Loading a collection is the prerequisite to conducting similarity searches and queries in collections. When you load a collection, Milvus loads all index files and the raw data in each field into memory for fast response to searches and queries.</p>
+<p>Searches and queries are memory-intensive operations. To save the cost, you are advised to release the collections that are currently not in use.</p>
+<p>For more details, refer to <a href="/docs/id/load-and-release.md">Load & Release</a>.</p>
+<h2 id="Search-and-Query" class="common-anchor-header">Search and Query<button data-href="#Search-and-Query" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -156,28 +155,27 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Setelah Anda membuat indeks dan memuat koleksi, Anda dapat memulai pencarian kesamaan dengan memasukkan satu atau beberapa vektor kueri. Misalnya, saat menerima representasi vektor kueri Anda yang disertakan dalam permintaan pencarian, Milvus menggunakan jenis metrik yang ditentukan untuk mengukur kesamaan antara vektor kueri dan vektor-vektor dalam koleksi target sebelum mengembalikan hasil yang secara semantik mirip dengan kueri.</p>
-<p>Anda juga dapat menyertakan penyaringan metadata dalam pencarian dan kueri untuk meningkatkan relevansi hasil. Perhatikan bahwa, kondisi penyaringan metadata wajib dalam kueri tetapi opsional dalam pencarian.</p>
-<p>Untuk detail mengenai jenis metrik yang berlaku, lihat <a href="/docs/id/metric.md">Jenis Metrik</a>.</p>
-<p>Untuk informasi lebih lanjut tentang pencarian dan kueri, lihat artikel-artikel di bab Pencarian &amp; Peringkat Ulang, di antaranya, fitur-fitur dasarnya adalah:</p>
+    </button></h2><p>Once you create indexes and load the collection, you can start a similarity search by feeding one or several query vectors. For example, when receiving the vector representation of your query carried in a search request, Milvus uses the specified metric type to measure the similarity between the query vector and those in the target collection before returning those that are semantically similar to the query.</p>
+<p>You can also include metadata filtering within searches and queries to improve the relevancy of the results. Note that, metadata filtering conditions are mandatory in queries but optional in searches.</p>
+<p>For details on applicable metric types, refer to <a href="/docs/id/metric.md">Metric Types</a>.</p>
+<p>For more information about searches and queries, refer to the articles in the Search & Rerank chapter, among which, basic features are:</p>
 <ul>
-<li><p><a href="/docs/id/single-vector-search.md">Pencarian ANN Dasar</a></p></li>
-<li><p><a href="/docs/id/filtered-search.md">Pencarian yang Disaring</a></p></li>
-<li><p><a href="/docs/id/range-search.md">Pencarian Rentang</a></p></li>
-<li><p><a href="/docs/id/grouping-search.md">Pencarian Berkelompok</a></p></li>
-<li><p><a href="/docs/id/multi-vector-search.md">Pencarian Hibrida</a></p></li>
-<li><p><a href="/docs/id/with-iterators.md">Iterator Pencarian</a></p></li>
-<li><p><a href="/docs/id/get-and-scalar-query.md">Kueri</a></p></li>
-<li><p><a href="/docs/id/full-text-search.md">Pencarian Teks Lengkap</a></p></li>
-<li><p><a href="/docs/id/keyword-match.md">Pencocokan Teks</a></p></li>
+<li><p><a href="/docs/id/single-vector-search.md">Basic ANN Search</a></p></li>
+<li><p><a href="/docs/id/filtered-search.md">Filtered Search</a></p></li>
+<li><p><a href="/docs/id/range-search.md">Range Search</a></p></li>
+<li><p><a href="/docs/id/grouping-search.md">Grouping Search</a></p></li>
+<li><p><a href="/docs/id/multi-vector-search.md">Hybrid Search</a></p></li>
+<li><p><a href="/docs/id/with-iterators.md">Search Iterator</a></p></li>
+<li><p><a href="/docs/id/get-and-scalar-query.md">Query</a></p></li>
+<li><p><a href="/docs/id/full-text-search.md">Full Text Search</a></p></li>
+<li><p><a href="/docs/id/keyword-match.md">Text Match</a></p></li>
 </ul>
-<p>Selain itu, Milvus juga menyediakan peningkatan untuk meningkatkan kinerja dan efisiensi pencarian. Fitur-fitur ini dinonaktifkan secara default, dan Anda dapat mengaktifkan serta menggunakannya sesuai dengan kebutuhan layanan Anda. Fitur-fitur tersebut adalah</p>
+<p>In addition, Milvus also provides enhancements to improve search performance and efficiency. They are disabled by default, and you can enable and use them according to your service requirements. They are</p>
 <ul>
-<li><p><a href="/docs/id/use-partition-key.md">Gunakan Kunci Partisi</a></p></li>
-<li><p><a href="/docs/id/mmap.md">Gunakan mmap</a></p></li>
-<li><p><a href="/docs/id/clustering-compaction.md">Pengelompokan Pemadatan</a></p></li>
+<li><p><a href="/docs/id/use-partition-key.md">Use Partition Key</a></p></li>
+<li><p><a href="/docs/id/mmap.md">Use mmap</a></p></li>
 </ul>
-<h2 id="Partition" class="common-anchor-header">Partisi<button data-href="#Partition" class="anchor-icon" translate="no">
+<h2 id="Partition" class="common-anchor-header">Partition<button data-href="#Partition" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -192,9 +190,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Partisi adalah himpunan bagian dari sebuah koleksi, yang memiliki kumpulan bidang yang sama dengan koleksi induknya, dan masing-masing berisi himpunan bagian dari entitas.</p>
-<p>Dengan mengalokasikan entitas ke partisi yang berbeda, Anda dapat membuat kelompok entitas. Anda dapat melakukan pencarian dan kueri di partisi tertentu agar Milvus mengabaikan entitas di partisi lain, serta meningkatkan efisiensi pencarian.</p>
-<p>Untuk detailnya, lihat <a href="/docs/id/manage-partitions.md">Mengelola Partisi</a>.</p>
+    </button></h2><p>Partitions are subsets of a collection, which share the same field set with its parent collection, each containing a subset of entities.</p>
+<p>By allocating entities into different partitions, you can create entity groups. You can conduct searches and queries in specific partitions to have Milvus ignore entities in other partitions, and improve search efficiency.</p>
+<p>For details, refer to <a href="/docs/id/manage-partitions.md">Manage Partitions</a>.</p>
 <h2 id="Shard" class="common-anchor-header">Shard<button data-href="#Shard" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -210,8 +208,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Shard adalah potongan horizontal dari sebuah koleksi. Setiap shard sesuai dengan saluran input data. Setiap koleksi memiliki shard secara default. Anda dapat menetapkan jumlah shard yang sesuai saat membuat koleksi berdasarkan throughput yang diharapkan dan volume data yang akan dimasukkan ke dalam koleksi.</p>
-<p>Untuk detail tentang cara mengatur jumlah shard, lihat <a href="/docs/id/create-collection.md">Buat Koleksi</a>.</p>
+    </button></h2><p>Shards are horizontal slices of a collection. Each shard corresponds to a data input channel. Every collection has a shard by default. You can set the appropriate number of shards when creating a collection based on the expected throughput and the volume of the data to insert into the collection.</p>
+<p>For details on how to set the shard number, refer to <a href="/docs/id/create-collection.md">Create Collection</a>.</p>
 <h2 id="Alias" class="common-anchor-header">Alias<button data-href="#Alias" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -227,9 +225,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Anda dapat membuat alias untuk koleksi Anda. Sebuah koleksi dapat memiliki beberapa alias, tetapi koleksi tidak dapat berbagi alias yang sama. Saat menerima permintaan terhadap sebuah koleksi, Milvus mencari koleksi tersebut berdasarkan nama yang diberikan. Jika koleksi dengan nama yang diberikan tidak ada, Milvus akan terus mencari nama tersebut sebagai alias. Anda dapat menggunakan alias koleksi untuk menyesuaikan kode Anda dengan berbagai skenario.</p>
-<p>Untuk detail lebih lanjut, lihat " <a href="/docs/id/manage-aliases.md">Kelola Alias</a>".</p>
-<h2 id="Function" class="common-anchor-header">Fungsi<button data-href="#Function" class="anchor-icon" translate="no">
+    </button></h2><p>You can create aliases for your collections. A collection can have several aliases, but collections cannot share an alias. Upon receiving a request against a collection, Milvus locates the collection based on the provided name. If the collection by the provided name does not exist, Milvus continues locating the provided name as an alias. You can use collection aliases to adapt your code to different scenarios.</p>
+<p>For more details, refer to <a href="/docs/id/manage-aliases.md">Manage Aliases</a>.</p>
+<h2 id="Function" class="common-anchor-header">Function<button data-href="#Function" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -244,8 +242,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Anda dapat menetapkan fungsi agar Milvus dapat menghasilkan bidang saat pembuatan koleksi. Misalnya, fungsi pencarian teks lengkap menggunakan fungsi yang ditentukan pengguna untuk menghasilkan bidang vektor jarang dari bidang varchar tertentu. Untuk informasi lebih lanjut tentang pencarian teks lengkap, lihat <a href="/docs/id/full-text-search.md">Pencarian Teks Lengkap</a>.</p>
-<h2 id="Consistency-Level" class="common-anchor-header">Tingkat Konsistensi<button data-href="#Consistency-Level" class="anchor-icon" translate="no">
+    </button></h2><p>You can set functions for Milvus to derive fields upon collection creation. For example, the full-text search function uses the user-defined function to derive a sparse vector field from a specific varchar field. For more information on full-text search, refer to <a href="/docs/id/full-text-search.md">Full Text Search</a>.</p>
+<h2 id="Consistency-Level" class="common-anchor-header">Consistency Level<button data-href="#Consistency-Level" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -260,5 +258,5 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Sistem basis data terdistribusi biasanya menggunakan tingkat konsistensi untuk mendefinisikan kesamaan data di seluruh node data dan replika. Anda dapat menetapkan tingkat konsistensi yang berbeda saat membuat koleksi atau melakukan pencarian kesamaan di dalam koleksi. Tingkat konsistensi yang berlaku adalah <strong>Strong</strong>, <strong>Bounded Staleness</strong>, <strong>Session</strong>, dan <strong>Eventually</strong>.</p>
-<p>Untuk detail mengenai tingkat konsistensi ini, lihat <a href="/docs/id/tune_consistency.md">Tingkat Konsistensi</a>.</p>
+    </button></h2><p>Distributed database systems usually use the consistency level to define the data sameness across data nodes and replicas. You can set separate consistency levels when you create a collection or conduct similarity searches within the collection. The applicable consistency levels are <strong>Strong</strong>, <strong>Bounded Staleness</strong>, <strong>Session</strong>, and <strong>Eventually</strong>.</p>
+<p>For details on these consistency levels, refer to <a href="/docs/id/tune_consistency.md">Consistency Level</a>.</p>

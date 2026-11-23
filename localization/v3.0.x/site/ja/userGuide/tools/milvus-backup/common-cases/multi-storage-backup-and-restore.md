@@ -1,10 +1,14 @@
 ---
 id: multi-storage-backup-and-restore.md
-summary: このトピックでは、あるMilvusインスタンスからコレクションをバックアップし、別のMilvusインスタンスに復元する手順について詳しく説明します。
-title: S3環境間のインスタンス間移行Compatible with Milvus Backup 0.5.x
+summary: >-
+  This topic details the process of backing up a collection from one Milvus
+  instance and restoring it to another
+title: >-
+  Migrate Between Instances Across S3 EnvironmentsCompatible with Milvus Backup
+  0.5.x
 beta: Milvus Backup 0.5.x
 ---
-<h1 id="Migrate-Between-Instances-Across-S3-Environments" class="common-anchor-header">S3環境間のインスタンス間移行<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus Backup 0.5.x</span><button data-href="#Migrate-Between-Instances-Across-S3-Environments" class="anchor-icon" translate="no">
+<h1 id="Migrate-Between-Instances-Across-S3-Environments" class="common-anchor-header">Migrate Between Instances Across S3 Environments<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus Backup 0.5.x</span><button data-href="#Migrate-Between-Instances-Across-S3-Environments" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -19,11 +23,11 @@ beta: Milvus Backup 0.5.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>現在のワークフローについては、<a href="/docs/ja/milvus_backup_0_6_cli.md">CLIガイド</a>を参照するか、<a href="/docs/ja/milvus_backup_upgrade.md">0.5.xからアップグレードしてください</a>。サポートされているMilvusサーバーのバージョンについては、<a href="/docs/ja/milvus_backup_overview.md#Compatibility-matrix">互換性マトリックス</a>を確認してください。</p>
-<p>このトピックでは、ある
-Milvusインスタンスからコレクションをバックアップし、別のインスタンスに復元する手順について詳しく説明します。各インスタンスでは
-異なるオブジェクトストレージが使用されます。</p>
-<h2 id="Overview" class="common-anchor-header">概要<button data-href="#Overview" class="anchor-icon" translate="no">
+    </button></h1><p>For current workflows, see the <a href="/docs/ja/milvus_backup_0_6_cli.md">CLI guide</a> or <a href="/docs/ja/milvus_backup_upgrade.md">upgrade from 0.5.x</a>. Check the <a href="/docs/ja/milvus_backup_overview.md#Compatibility-matrix">compatibility matrix</a> for supported Milvus server versions.</p>
+<p>This topic details the process of backing up a collection from one
+Milvus instance and restoring it to another, with each instance using
+different object storage.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -38,25 +42,25 @@ Milvusインスタンスからコレクションをバックアップし、別�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>以下の図は、異なるオブジェクトストレージを使用した
-バックアップおよび復元プロセスを示しています。</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/multi-storage-backup-and-restore.png" alt="multi-storage-backup-and-restore.png" class="doc-image" id="multi-storage-backup-and-restore.png" /> 
-   <span>multi-storage-backup-and-restore.png</span>
-  
- </span></p>
-<p><code translate="no">milvus_A</code> と<code translate="no">milvus_B</code> の 2 つの Milvus インスタンスがあり、それぞれが
-異なるオブジェクトストレージを利用していると仮定します。この例では、
-以下のタスクを完了することを目標とします。</p>
+    </button></h2><p>The diagram below illustrates the backup and restore process using
+different object storage.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/multi-storage-backup-and-restore.png" alt="multi-storage-backup-and-restore.png" class="doc-image" id="multi-storage-backup-and-restore.png" />
+    <span>multi-storage-backup-and-restore.png</span>
+  </span>
+</p>
+<p>Assume we have two Milvus instances, <code translate="no">milvus_A</code> and <code translate="no">milvus_B</code>, utilizing
+different object storage. In this example, our goal is to complete the
+following tasks:</p>
 <ol>
-<li><p><code translate="no">milvus_A</code> のオブジェクトストレージ内の<code translate="no">bucket_A</code> において、コレクション<code translate="no">coll</code> の
-バックアップ（my_backup）を作成する。</p></li>
-<li><p>バックアップ「my_backup」を、<code translate="no">milvus_B</code> のオブジェクトストレージ内の<code translate="no">bucket_B</code> に転送する。</p></li>
+<li><p>Create a backup (my_backup) for collection <code translate="no">coll</code> in <code translate="no">bucket_A</code> of
+<code translate="no">milvus_A</code>'s object storage.</p></li>
+<li><p>Transfer the backup my_backup to <code translate="no">bucket_B</code> of <code translate="no">milvus_B</code>'s object storage.</p></li>
 </ol>
-<p><code translate="no">bucket_B</code> 内で、バックアップから復元し、復元されたコレクションに
-coll_bak という名前を付けます。</p>
-<h2 id="Prerequisites" class="common-anchor-header">前提条件<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+<p>In <code translate="no">bucket_B</code>, restore from the backup and name the restored collection
+coll_bak.</p>
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -72,12 +76,12 @@ coll_bak という名前を付けます。</p>
         ></path>
       </svg>
     </button></h2><ul>
-<li><p><a href="/docs/ja/milvus_backup_cli.md#Obtain-Milvus-Backup">0.5.x CLI ガイド</a>に従って、<strong>Milvus Backup 0.5.16</strong>をインストールしてください。</p></li>
-<li><p>Milvus オブジェクトストレージの設定方法について理解しておいてください。
-詳細については、「<a href="https://milvus.io/docs/deploy_s3.md">オブジェクト
-ストレージ</a>」を参照してください。</p></li>
+<li><p>Install <strong>Milvus Backup 0.5.16</strong> using the <a href="/docs/ja/milvus_backup_cli.md#Obtain-Milvus-Backup">0.5.x CLI guide</a>.</p></li>
+<li><p>Familiarize yourself with configuring Milvus object storage settings.
+For details, refer to <a href="https://milvus.io/docs/deploy_s3.md">Object
+Storage</a>.</p></li>
 </ul>
-<h2 id="Back-up-a-collection-from-milvusA" class="common-anchor-header">milvus_A からコレクションをバックアップする<button data-href="#Back-up-a-collection-from-milvusA" class="anchor-icon" translate="no">
+<h2 id="Back-up-a-collection-from-milvusA" class="common-anchor-header">Back up a collection from milvus_A<button data-href="#Back-up-a-collection-from-milvusA" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -92,7 +96,7 @@ coll_bak という名前を付けます。</p>
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Step-1-Prepare-configuration" class="common-anchor-header">ステップ 1: 設定の準備<button data-href="#Step-1-Prepare-configuration" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Step-1-Prepare-configuration" class="common-anchor-header">Step 1: Prepare configuration<button data-href="#Step-1-Prepare-configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -107,19 +111,20 @@ coll_bak という名前を付けます。</p>
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>milvus-backup プロジェクトのディレクトリに移動し、<code translate="no">configs</code> という名前のディレクトリを作成します。<code translate="no">milvus-backup</code> を含むディレクトリから、以下のコマンドを実行します：</p>
+    </button></h3><p>Go to the directory of the milvus-backup project and create a directory
+named <code translate="no">configs</code>. Run the following commands from the directory containing <code translate="no">milvus-backup</code>:</p>
 <pre><code translate="no" class="language-shell">mkdir -p configs
 <button class="copy-code-btn"></button></code></pre>
-<p>バックアップ設定ファイル `<code translate="no">backup.yaml</code>` をダウンロードします：</p>
+<p>Download the backup config file <code translate="no">backup.yaml</code>:</p>
 <pre><code translate="no" class="language-shell">wget -O configs/backup.yaml https://raw.githubusercontent.com/zilliztech/milvus-backup/v0.5.16/configs/backup.yaml
 <button class="copy-code-btn"></button></code></pre>
-<p>ファイル構造は次のようになります：</p>
+<p>The file structure looks like this:</p>
 <pre><code translate="no">├── configs
 │   └── backup.yaml
 ├── milvus-backup
 └── README.md
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Step-2-Edit-configuration-file" class="common-anchor-header">ステップ 2: 設定ファイルの編集<button data-href="#Step-2-Edit-configuration-file" class="anchor-icon" translate="no">
+<h3 id="Step-2-Edit-configuration-file" class="common-anchor-header">Step 2: Edit configuration file<button data-href="#Step-2-Edit-configuration-file" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -134,11 +139,11 @@ coll_bak という名前を付けます。</p>
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>以下の YAML は、ダウンロードした v1 ファイル内で編集すべきフィールドを示しています。その他の必須設定はそのままにしておいてください。<code translate="no">milvus.address</code> および<code translate="no">milvus.port</code> を、バックアップまたは復元対象のインスタンスに指定してください。<code translate="no">minio.backupAddress</code> 、<code translate="no">minio.backupPort</code> 、<code translate="no">minio.backupStorageType</code> をバックアップ先として設定し、<code translate="no">backup.gcPause.address</code> をソースの Milvus 管理エンドポイント（デフォルトはポート 9091）として設定してください。例示されているアドレス、バケット名、パス、認証情報はすべて、ご自身のデプロイ設定に置き換えてください。</p>
-<p><code translate="no">backup.yaml</code> ファイルを変更し、milvus_A に対して適切な設定を行ってください：
+    </button></h3><p>The YAML below shows fields to edit in the downloaded v1 file. Keep the other required settings. Point <code translate="no">milvus.address</code> and <code translate="no">milvus.port</code> to the instance being backed up or restored. Set <code translate="no">minio.backupAddress</code>, <code translate="no">minio.backupPort</code>, and <code translate="no">minio.backupStorageType</code> to the backup destination, and <code translate="no">backup.gcPause.address</code> to the source Milvus management endpoint (port 9091 by default). Replace all example addresses, bucket names, paths, and credentials with your deployment settings.</p>
+<p>Modify the <code translate="no">backup.yaml</code> file to set the appropriate configurations for
 milvus_A:</p>
 <ul>
-<li><p>接続設定</p>
+<li><p>Connection configs</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-comment"># milvus proxy address, compatible to milvus.yaml</span>
 <span class="hljs-attr">milvus:</span>
   <span class="hljs-attr">address:</span> <span class="hljs-string">milvus_A</span>
@@ -151,11 +156,11 @@ milvus_A:</p>
   <span class="hljs-attr">password:</span> <span class="hljs-string">&quot;Milvus&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
 <ul>
-<li><p><code translate="no">milvus.address</code>: milvus_A サーバーの IP アドレスまたはホスト名。</p></li>
-<li><p><code translate="no">milvus.port</code>: Milvus サーバーがリスニングしている TCP ポート（デフォルトは
-19530）。</p></li>
+<li><p><code translate="no">milvus.address</code>: IP address or hostname of the milvus_A server.</p></li>
+<li><p><code translate="no">milvus.port</code>: TCP port on which Milvus server is listening (default
+19530).</p></li>
 </ul></li>
-<li><p>ストレージ設定（MinIO/S3設定）</p>
+<li><p>Storage configs (MinIO/S3 settings)</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-comment"># Related configuration of minio, which is responsible for data persistence for Milvus.</span>
 <span class="hljs-attr">minio:</span>
   <span class="hljs-comment"># cloudProvider: &quot;minio&quot; # deprecated use storageType instead</span>
@@ -179,12 +184,12 @@ milvus_A:</p>
   <span class="hljs-attr">backupBucketName:</span> <span class="hljs-string">&quot;bucket_A&quot;</span> <span class="hljs-comment"># Bucket name to store backup data. Backup data will store to backupBucketName/backupRootPath</span>
   <span class="hljs-attr">backupRootPath:</span> <span class="hljs-string">&quot;backup&quot;</span> <span class="hljs-comment"># Rootpath to store backup data. Backup data will store to backupBucketName/backupRootPath</span>
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p><code translate="no">minio.bucketName</code>: milvus_A でのデータ保存に使用するバケット名。この例では、<code translate="no">bucket_A</code> に設定します。</p></li>
-<li><p><code translate="no">minio.rootPath</code>: milvus_A からのデータが保存されるバケット内のルートパス。この例では、<code translate="no">files</code> に設定します。</p></li>
-<li><p><code translate="no">minio.backupBucketName</code>: バックアップの保存に使用するバケット名。この例では、<code translate="no">bucket_A</code> に設定します。</p></li>
-<li><p><code translate="no">minio.backupRootPath</code>:<code translate="no">milvus_B</code> 内の、バックアップファイルの保存用に指定されたバケット内のルートパス。この例では、<code translate="no">backup</code> に設定します。</p></li>
+<li><p><code translate="no">minio.bucketName</code>: Name of the bucket used for data storage in milvus_A. In this example, set to <code translate="no">bucket_A</code>.</p></li>
+<li><p><code translate="no">minio.rootPath</code>: Root path within the bucket where data from milvus_A is stored. In this example, set to <code translate="no">files</code>.</p></li>
+<li><p><code translate="no">minio.backupBucketName</code>: Name of the bucket used for backup storage. In this example, set to <code translate="no">bucket_A</code>.</p></li>
+<li><p><code translate="no">minio.backupRootPath</code>: Root path within the bucket designated for storing backup files in <code translate="no">milvus_B</code>. In this example, set to <code translate="no">backup</code>.</p></li>
 </ul>
-<h3 id="Step-3-Create-backup" class="common-anchor-header">ステップ 3: バックアップの作成<button data-href="#Step-3-Create-backup" class="anchor-icon" translate="no">
+<h3 id="Step-3-Create-backup" class="common-anchor-header">Step 3: Create backup<button data-href="#Step-3-Create-backup" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -199,12 +204,12 @@ milvus_A:</p>
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>backup.yaml を保存したら、<code translate="no">my_backup</code> という名前のバックアップを作成します：</p>
+    </button></h3><p>Once backup.yaml is saved, create a backup named <code translate="no">my_backup</code>:</p>
 <pre><code translate="no" class="language-shell">./milvus-backup create -c coll -n my_backup --config configs/backup.yaml
 <button class="copy-code-btn"></button></code></pre>
-<p>このコマンドにより、<code translate="no">milvus_A</code> のオブジェクト
-ストレージに「<code translate="no">bucket_A/backup/my_backup</code> 」という名前のバックアップが作成されます。</p>
-<h2 id="Manually-transfer-the-backup-to-milvusB" class="common-anchor-header">バックアップを milvus_B に手動で転送します<button data-href="#Manually-transfer-the-backup-to-milvusB" class="anchor-icon" translate="no">
+<p>This command creates the backup <code translate="no">bucket_A/backup/my_backup</code> in the object
+storage of <code translate="no">milvus_A</code>.</p>
+<h2 id="Manually-transfer-the-backup-to-milvusB" class="common-anchor-header">Manually transfer the backup to milvus_B<button data-href="#Manually-transfer-the-backup-to-milvusB" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -219,43 +224,44 @@ milvus_A:</p>
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">milvus_A</code> と<code translate="no">milvus_B</code> は異なるオブジェクトストレージを使用しているため、
-milvus_A のストレージからバックアップを手動でダウンロードし、
-<code translate="no">milvus_B</code> のストレージにアップロードする必要があります。</p>
-<p><strong>MinIOコンソールの使用</strong></p>
+    </button></h2><p>Since <code translate="no">milvus_A</code> and <code translate="no">milvus_B</code> use different object storage, you need to
+manually download the backup from milvus_A’s storage and upload it to
+<code translate="no">milvus_B</code>'s storage.</p>
+<p><strong>Using MinIO console</strong></p>
 <ol>
-<li><p>MinIOコンソールにログインします。</p></li>
-<li><p>milvus_Aのminio.addressで指定されているバケットを探します。</p></li>
-<li><p>そのバケット内のバックアップファイルを選択します。</p></li>
-<li><p><strong>[Download</strong>] をクリックして、ファイルを自分のマシンにダウンロードします。</p></li>
+<li><p>Log into the MinIO console.</p></li>
+<li><p>Locate the bucket specified in minio.address for milvus_A.</p></li>
+<li><p>Select the backup files in the bucket.</p></li>
+<li><p>Click <strong>Download</strong> to download the files to your machine.</p></li>
 </ol>
-<p><strong>mc クライアントの使用</strong></p>
-<p>あるいは、<a href="https://min.io/docs/minio/linux/reference/minio-mc.html#mc-install">mc
-クライアント</a>を使用してバックアップファイルをダウンロードすることもできます:</p>
+<p><strong>Using the mc client</strong></p>
+<p>Alternatively, you can use the <a href="https://min.io/docs/minio/linux/reference/minio-mc.html#mc-install">mc
+client</a> to download the backup files:</p>
 <ol>
-<li>MinIOホストを設定します：</li>
+<li>Configure a MinIO host:</li>
 </ol>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">configure a Minio host</span>
 mc alias set my_minio https://&lt;minio_endpoint&gt; &lt;accessKey&gt; &lt;secretKey&gt;
 <button class="copy-code-btn"></button></code></pre>
 <ol start="2">
-<li>利用可能なバケットを一覧表示します：</li>
+<li>List the available buckets:</li>
 </ol>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">List the available buckets</span>
 mc ls my_minio
 <button class="copy-code-btn"></button></code></pre>
 <ol start="3">
-<li>バケットを再帰的にダウンロードする:</li>
+<li>Download a bucket recursively:</li>
 </ol>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">Download a bucket recursively</span>
 mc cp --recursive my_minio/&lt;your-bucket-path&gt; &lt;local_dir_path&gt;
 <button class="copy-code-btn"></button></code></pre>
-<p>バックアップファイルのダウンロードが完了したら、将来の復元のために、<code translate="no">milvus_B</code> が使用するオブジェクト
-ストレージにそれらをアップロードできます。あるいは、
-バックアップ<a href="https://cloud.zilliz.com/">をZilliz Cloudに</a>アップロードして、
-データを含むマネージドベクトルデータベースを作成することもできます。詳細については、<a href="https://zilliz.com/doc/migrate_from_milvus-2x">「MilvusからZilliz
-Cloudへの移行」</a>を参照してください。</p>
-<h2 id="Restore-from-the-backup-to-milvusB" class="common-anchor-header">バックアップから milvus_B へ復元する<button data-href="#Restore-from-the-backup-to-milvusB" class="anchor-icon" translate="no">
+<p>Once the backup files are downloaded, you can upload them to the object
+storage used by <code translate="no">milvus_B</code> for future restoration. Alternatively, you can
+upload the backup to <a href="https://cloud.zilliz.com/">Zilliz Cloud</a> to create
+a managed vector database with your data. For details, refer to <a href="https://zilliz.com/doc/migrate_from_milvus-2x">Migrate
+from Milvus to Zilliz
+Cloud</a>.</p>
+<h2 id="Restore-from-the-backup-to-milvusB" class="common-anchor-header">Restore from the backup to milvus_B<button data-href="#Restore-from-the-backup-to-milvusB" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -270,7 +276,7 @@ Cloudへの移行」</a>を参照してください。</p>
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Step-1-Configure-restoration-settings" class="common-anchor-header">ステップ 1: 復元設定の構成<button data-href="#Step-1-Configure-restoration-settings" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Step-1-Configure-restoration-settings" class="common-anchor-header">Step 1: Configure restoration settings<button data-href="#Step-1-Configure-restoration-settings" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -285,9 +291,9 @@ Cloudへの移行」</a>を参照してください。</p>
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>手順
-2 を繰り返し、<code translate="no">milvus_B</code> への復元用に設定を変更します。その際、<code translate="no">minio.bucketName</code> が<code translate="no">bucket_B</code> に設定されていることを確認してください。</p>
-<p>以下に設定例を示します：</p>
+    </button></h3><p>Repeat step
+2 to modify configs for restoration to <code translate="no">milvus_B</code>, ensuring <code translate="no">minio.bucketName</code> is set to <code translate="no">bucket_B</code>.</p>
+<p>Here’s a sample configuration:</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-comment"># milvus proxy address, compatible to milvus.yaml</span>
 <span class="hljs-attr">milvus:</span>
   <span class="hljs-attr">address:</span> <span class="hljs-string">milvus_B</span>
@@ -322,7 +328,7 @@ Cloudへの移行」</a>を参照してください。</p>
   <span class="hljs-attr">backupBucketName:</span> <span class="hljs-string">&quot;bucket_B&quot;</span> <span class="hljs-comment"># Bucket name to store backup data. Backup data will store to backupBucketName/backupRootPath</span>
   <span class="hljs-attr">backupRootPath:</span> <span class="hljs-string">&quot;backup&quot;</span> <span class="hljs-comment"># Rootpath to store backup data. Backup data will store to backupBucketName/backupRootPath</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Step-2-Restore-from-the-backup" class="common-anchor-header">手順 2: バックアップからの復元<button data-href="#Step-2-Restore-from-the-backup" class="anchor-icon" translate="no">
+<h3 id="Step-2-Restore-from-the-backup" class="common-anchor-header">Step 2: Restore from the backup<button data-href="#Step-2-Restore-from-the-backup" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -337,9 +343,10 @@ Cloudへの移行」</a>を参照してください。</p>
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>バックアップを<code translate="no">milvus_B</code> に復元します：</p>
+    </button></h3><p>Restore the backup to <code translate="no">milvus_B</code>:</p>
 <pre><code translate="no" class="language-shell">./milvus-backup restore -c coll -n my_backup -s _bak --config configs/backup.yaml
 <button class="copy-code-btn"></button></code></pre>
-<p>このコマンドは、ターゲットインスタンスで設定されたストレージルート<code translate="no">bucket_B/files</code> を使用して、<code translate="no">milvus_B</code> 内のオブジェクトストレージに、<code translate="no">milvus_B</code> 内の「coll_bak」という名前の新しいコレクションにバックアップを復元します。</p>
-<p>Backup 0.5.16 では、非推奨となった `<code translate="no">-c</code> ` オプションは、<code translate="no">_bak</code> が適用される前に、バックアップ内のコレクション名を選択します。0.6.0 の<code translate="no">--filter</code> への置き換えでは、代わりにターゲット名を使用します。詳細は<a href="/docs/ja/milvus_backup_upgrade.md#Update-CLI-commands">「CLI コマンドの更新</a>」を参照してください。</p>
-<p>復元後、<code translate="no">coll_bak</code> が存在することを確認し、必要に応じて適切なベクトルインデックスを作成し、そのエンティティ数、代表値、および検索結果を、バックアップ前に取得したベースラインと比較してください。コマンドが正常に実行されただけでは、データの検証は完了しません。</p>
+<p>This command restores the backup into a new collection named coll_bak in
+<code translate="no">milvus_B</code>, using the target instance’s configured storage root <code translate="no">bucket_B/files</code> within <code translate="no">milvus_B</code>'s object storage.</p>
+<p>In Backup 0.5.16, the deprecated <code translate="no">-c</code> option selects the collection name in the backup, before <code translate="no">_bak</code> is applied. The 0.6.0 <code translate="no">--filter</code> replacement uses the target name instead; see <a href="/docs/ja/milvus_backup_upgrade.md#Update-CLI-commands">Update CLI commands</a>.</p>
+<p>After restoring, confirm that <code translate="no">coll_bak</code> exists, create an appropriate vector index if needed, and compare its entity count, representative values, and search results against a baseline captured before backup. A successful command alone does not verify the data.</p>

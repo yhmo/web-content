@@ -2,8 +2,8 @@
 id: get-and-scalar-query.md
 title: Query
 summary: >-
-  استخدم كل من «Query» و«Get» و«QueryIterator» لاسترداد الكيانات، وتصفية
-  البيانات الوصفية، وفرز نتائج الاستعلام، وتجميع القيم العددية في Milvus.
+  Use Query, Get, and QueryIterator to retrieve entities, filter metadata, sort
+  query results, and aggregate scalar values in Milvus.
 ---
 <h1 id="Query" class="common-anchor-header">Query<button data-href="#Query" class="anchor-icon" translate="no">
       <svg translate="no"

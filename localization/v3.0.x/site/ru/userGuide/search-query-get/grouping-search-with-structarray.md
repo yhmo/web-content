@@ -1,15 +1,13 @@
 ---
 id: grouping-search-with-structarray.md
-title: Группировка результатов поиска с помощью StructArray
+title: Grouping Search with StructArray
 summary: >-
-  Используйте эту страницу для группировки результатов поиска на уровне
-  элементов StructArray по родительскому объекту. Поиск на уровне элементов
-  может возвращать несколько результатов из одного и того же объекта, если
-  несколько элементов Struct соответствуют запросу. Группировка сворачивает эти
-  результаты на уровне элементов, так что каждый родительский объект
-  отображается не более одного раза.
+  Use this page to group StructArray element-level search results by the parent
+  entity. Element-level search can return multiple hits from the same entity
+  when several Struct elements match the query. Grouping collapses those element
+  hits so each parent entity appears at most once.
 ---
-<h1 id="Grouping-Search-with-StructArray" class="common-anchor-header">Группировка результатов поиска с помощью StructArray<button data-href="#Grouping-Search-with-StructArray" class="anchor-icon" translate="no">
+<h1 id="Grouping-Search-with-StructArray" class="common-anchor-header">Grouping Search with StructArray<button data-href="#Grouping-Search-with-StructArray" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -24,11 +22,11 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Используйте эту страницу для группировки результатов поиска на уровне элементов StructArray по родительскому объекту. Поиск на уровне элементов может возвращать несколько результатов из одного и того же объекта, если несколько элементов Struct соответствуют запросу. Группировка сворачивает эти результаты на уровне элементов, так что каждый родительский объект появляется не более одного раза.</p>
-<p>На этой странице используется коллекция « <code translate="no">tech_articles</code> » из раздела <a href="/docs/ru/create-structarray-field.md">«Создание поля StructArray</a>». Коллекция содержит поле StructArray с именем « <code translate="no">chunks</code> ». Поле вектора « <code translate="no">chunks[emb]</code> » индексируется для поиска на уровне элементов с использованием стандартной векторной метрики.</p>
-<p>В примерах используется размер группы по умолчанию, равный единице.</p>
-<p>Перед запуском этих примеров создайте коллекцию, вставьте примерные данные, создайте необходимые векторные индексы и загрузите коллекцию. Для полей, показанных здесь, используйте 4-мерные векторы. Каждый блок кода предполагает наличие соединения и переменных из предыдущих примеров на том же языке, если они не определены заново.</p>
-<h2 id="How-grouping-applies-to-StructArray" class="common-anchor-header">Как группировка применяется к StructArray<button data-href="#How-grouping-applies-to-StructArray" class="anchor-icon" translate="no">
+    </button></h1><p>Use this page to group StructArray element-level search results by the parent entity. Element-level search can return multiple hits from the same entity when several Struct elements match the query. Grouping collapses those element hits so each parent entity appears at most once.</p>
+<p>This page uses the <code translate="no">tech_articles</code> collection from <a href="/docs/ru/create-structarray-field.md">Create a StructArray Field</a>. The collection has a StructArray field named <code translate="no">chunks</code>. The <code translate="no">chunks[emb]</code> vector subfield is indexed for element-level search with a regular vector metric.</p>
+<p>The examples use the default group size of one.</p>
+<p>Before running these examples, create the collection, insert the example data, create the required vector indexes, and load the collection. Use 4-dimensional vectors for the fields shown here. Each code block assumes the connection and variables from the preceding examples in the same language unless it defines them again.</p>
+<h2 id="How-grouping-applies-to-StructArray" class="common-anchor-header">How grouping applies to StructArray<button data-href="#How-grouping-applies-to-StructArray" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -45,18 +43,18 @@ summary: >-
       </svg>
     </button></h2><table>
 <thead>
-<tr><th>Режим поиска</th><th>Поведение группировки</th><th>Поведение результатов</th></tr>
+<tr><th>Search mode</th><th>Grouping behavior</th><th>Result behavior</th></tr>
 </thead>
 <tbody>
-<tr><td>Поиск в EmbeddingList</td><td>Не поддерживается.</td><td>Не применимо.</td></tr>
-<tr><td>Поиск на уровне элементов</td><td>Поддерживается путем группировки по первичному ключу.</td><td>Возвращается не более одного результата на каждую родительскую сущность. Метаданные на уровне элементов сохраняются, поэтому индекс или смещение выбранного элемента могут быть возвращены при предоставлении доступа через API или SDK.</td></tr>
-<tr><td>Гибридный поиск</td><td>Поддерживается только в том случае, если все подзапросы нацелены на векторные поля на уровне элементов в рамках одного и того же поля StructArray.</td><td>Внутренние поиски на уровне элементов группируются по первичному ключу перед обработкой окончательного результата.</td></tr>
+<tr><td>EmbeddingList search</td><td>Not supported.</td><td>Not applicable.</td></tr>
+<tr><td>Element-level search</td><td>Supported by grouping on the primary key.</td><td>Returns at most one result per parent entity. Element-level metadata is preserved, so the selected element index or offset can be returned when exposed by the API or SDK.</td></tr>
+<tr><td>Hybrid search</td><td>Supported only when all sub-searches target element-level vector fields under the same StructArray field.</td><td>Element-level sub-searches are grouped by primary key before final result handling.</td></tr>
 </tbody>
 </table>
 <div class="alert note">
-<p>Используйте группировку, если поиск на уровне элементов без группировки возвращает слишком много дубликатов родительских сущностей. Если вы хотите, чтобы каждый совпадающий элемент Struct рассматривался как отдельный результат, используйте <a href="/docs/ru/basic-vector-search-with-structarray.md">базовый векторный поиск с StructArray</a> без параметра ` <code translate="no">group_by_field</code>`.</p>
+<p>Use grouping when ungrouped element-level search returns too many duplicate parent entities. If you want every matching Struct element as an individual hit, use <a href="/docs/ru/basic-vector-search-with-structarray.md">Basic Vector Search with StructArray</a> without <code translate="no">group_by_field</code>.</p>
 </div>
-<h2 id="Before-you-begin" class="common-anchor-header">Прежде чем начать<button data-href="#Before-you-begin" class="anchor-icon" translate="no">
+<h2 id="Before-you-begin" class="common-anchor-header">Before you begin<button data-href="#Before-you-begin" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -71,20 +69,20 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Перед запуском группированного поиска подготовьте коллекцию, данные и индексы.</p>
+    </button></h2><p>Prepare the collection, data, and indexes before running grouping search.</p>
 <table>
 <thead>
-<tr><th>Требования</th><th>Подробности</th></tr>
+<tr><th>Requirement</th><th>Details</th></tr>
 </thead>
 <tbody>
-<tr><td>Векторное подполе на уровне элементов</td><td>Используйте векторное подполе StructArray, например <code translate="no">chunks[emb]</code>, индексированное с помощью обычной векторной метрики.</td></tr>
-<tr><td>Обычный векторный запрос</td><td>Используйте вектор обычного запроса, а не <code translate="no">EmbeddingList</code>.</td></tr>
-<tr><td>Группировка по первичному ключу</td><td>Используйте первичный ключ коллекции в виде <code translate="no">group_by_field</code>, например <code translate="no">doc_id</code>.</td></tr>
-<tr><td>Отсутствие параметров диапазона</td><td>Не сочетайте поиск с группировкой с параметрами поиска по диапазону, такими как <code translate="no">radius</code> или <code translate="no">range_filter</code>.</td></tr>
+<tr><td>Element-level vector subfield</td><td>Use a StructArray vector subfield such as <code translate="no">chunks[emb]</code>, indexed with a regular vector metric.</td></tr>
+<tr><td>Regular vector query</td><td>Use a regular query vector, not an <code translate="no">EmbeddingList</code>.</td></tr>
+<tr><td>Primary key grouping</td><td>Use the collection primary key as <code translate="no">group_by_field</code>, such as <code translate="no">doc_id</code>.</td></tr>
+<tr><td>No range parameters</td><td>Do not combine grouping search with range-search parameters such as <code translate="no">radius</code> or <code translate="no">range_filter</code>.</td></tr>
 </tbody>
 </table>
-<p>Информацию о настройке индекса см. в разделе <a href="/docs/ru/index-structarray-fields.md">«Поля StructArray индекса</a>».</p>
-<h2 id="Run-grouped-element-level-search" class="common-anchor-header">Выполнение группированного поиска на уровне элементов<button data-href="#Run-grouped-element-level-search" class="anchor-icon" translate="no">
+<p>For index setup, see <a href="/docs/ru/index-structarray-fields.md">Index StructArray Fields</a>.</p>
+<h2 id="Run-grouped-element-level-search" class="common-anchor-header">Run grouped element-level search<button data-href="#Run-grouped-element-level-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -99,16 +97,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>В следующем примере сначала выполняется поиск по отдельным фрагментам, а затем найденные элементы группируются по первичному ключу родительского объекта.</p>
+    </button></h2><p>The following example searches individual chunks first, then groups the element hits by the parent entity’s primary key.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -358,8 +356,8 @@ curl --request POST \
     &quot;outputFields&quot;: [&quot;doc_id&quot;, &quot;title&quot;, &quot;chunks[text]&quot;, &quot;chunks[section]&quot;, &quot;chunks[page]&quot;, &quot;chunks[quality_score]&quot;]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Без группировки один и тот же элемент « <code translate="no">doc_id</code> » может появляться несколько раз, если запросу соответствуют несколько фрагментов. С помощью параметра « <code translate="no">group_by_field=&quot;doc_id&quot;</code> » каждый родительский объект появляется не более одного раза. Группировка сохраняет метаданные на уровне элементов, поэтому сгруппированный результат по-прежнему может включать выбранный индекс или смещение элемента Struct, если API или SDK предоставляют эту информацию.</p>
-<h2 id="Add-scalar-filters" class="common-anchor-header">Добавление скалярных фильтров<button data-href="#Add-scalar-filters" class="anchor-icon" translate="no">
+<p>Without grouping, the same <code translate="no">doc_id</code> can appear multiple times if several chunks match the query. With <code translate="no">group_by_field=&quot;doc_id&quot;</code>, each parent entity appears at most once. Grouping preserves element-level metadata, so the grouped result can still include the selected Struct element index or offset when the API or SDK exposes it.</p>
+<h2 id="Add-scalar-filters" class="common-anchor-header">Add scalar filters<button data-href="#Add-scalar-filters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -374,16 +372,16 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Вы можете комбинировать поиск с группировкой и скалярную фильтрацию StructArray. Используйте <code translate="no">element_filter</code>, когда скалярное условие должно ограничивать, какие элементы Struct участвуют в векторном поиске на уровне элементов.</p>
+    </button></h2><p>You can combine grouping search with StructArray scalar filtering. Use <code translate="no">element_filter</code> when the scalar condition should constrain which Struct elements participate in element-level vector search.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">query_vector = [<span class="hljs-number">0.19</span>, <span class="hljs-number">0.24</span>, <span class="hljs-number">0.30</span>, <span class="hljs-number">0.37</span>]
 
@@ -583,8 +581,8 @@ SearchResp results = <span class="hljs-keyword">await</span> client.SearchAsync(
     &quot;outputFields&quot;: [&quot;doc_id&quot;, &quot;title&quot;, &quot;category&quot;, &quot;chunks[text]&quot;, &quot;chunks[section]&quot;, &quot;chunks[quality_score]&quot;]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Предикат верхнего уровня выбирает подходящие объекты. Предикат <code translate="no">element_filter</code> ограничивает векторный поиск на уровне элементов только соответствующими элементами Struct. Затем группировка сворачивает совпадающие элементы по первичному ключу.</p>
-<h2 id="Use-grouping-in-hybrid-search" class="common-anchor-header">Использование группировки в гибридном поиске<button data-href="#Use-grouping-in-hybrid-search" class="anchor-icon" translate="no">
+<p>The top-level predicate selects candidate entities. The <code translate="no">element_filter</code> predicate restricts element-level vector search to matching Struct elements. Grouping then collapses matching element hits by the primary key.</p>
+<h2 id="Use-grouping-in-hybrid-search" class="common-anchor-header">Use grouping in hybrid search<button data-href="#Use-grouping-in-hybrid-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -599,15 +597,15 @@ SearchResp results = <span class="hljs-keyword">await</span> client.SearchAsync(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Гибридная группировка с StructArray является функцией на уровне элементов. Она поддерживается только в том случае, если все подпоиски нацелены на векторные поля на уровне элементов в рамках одного и того же поля StructArray. Не используйте запросы на уровне EmbeddingList в гибридном поиске по StructArray с группировкой.</p>
-<p>В следующем примере предполагается, что поле StructArray « <code translate="no">chunks</code> » имеет два подполя векторного типа на уровне элементов: « <code translate="no">chunks[emb]</code> » и « <code translate="no">chunks[code_emb]</code> », и оба индексируются с помощью « <code translate="no">COSINE</code> ». Определите и заполните дополнительное 4-мерное подполе « <code translate="no">code_emb</code> » при создании коллекции; оно не включено в базовую схему, ссылка на которую приведена выше.</p>
+    </button></h2><p>Hybrid grouping with StructArray is an element-level feature. It is supported only when all sub-searches target element-level vector fields under the same StructArray field. Do not use EmbeddingList-level requests in a grouped StructArray hybrid search.</p>
+<p>The following example assumes the <code translate="no">chunks</code> StructArray field has two element-level vector subfields, <code translate="no">chunks[emb]</code> and <code translate="no">chunks[code_emb]</code>, and both are indexed with <code translate="no">COSINE</code>. Define and populate the additional 4-dimensional <code translate="no">code_emb</code> subfield when creating the collection; it is not included in the base schema linked above.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> AnnSearchRequest, RRFRanker
 
@@ -824,9 +822,9 @@ SearchResp results = <span class="hljs-keyword">await</span> client.HybridSearch
     &quot;outputFields&quot;: [&quot;doc_id&quot;, &quot;title&quot;, &quot;chunks[text]&quot;, &quot;chunks[section]&quot;]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Исходный код клиента на Go, поставляемый с Milvus 3.0.2, не предоставляет доступ к окончательной гибридной группировке через <code translate="no">NewHybridSearchOption</code>. Установка параметра <code translate="no">WithGroupByField</code> в каждом подзапросе не настраивает окончательную гибридную группировку. NodeJS 3.0.6 также опускает параметр верхнего уровня <code translate="no">group_by_field</code> из параметров гибридного ранжирования. Для данного примера используйте один из API, указанных выше.</p>
-<p>В данном примере оба подзапроса нацелены на векторные поля на уровне элементов в рамках одного и того же поля StructArray — <code translate="no">chunks</code>. Гибридный поиск не поддерживает группировку на уровне элементов, если в запросе смешаны обычные векторные поля, разные поля StructArray или запросы на уровне EmbeddingList.</p>
-<h2 id="Interpret-grouped-results" class="common-anchor-header">Интерпретация сгруппированных результатов<button data-href="#Interpret-grouped-results" class="anchor-icon" translate="no">
+<p>The Go client source shipped with Milvus 3.0.2 does not expose final hybrid grouping through <code translate="no">NewHybridSearchOption</code>. Setting <code translate="no">WithGroupByField</code> on each sub-request does not configure final hybrid grouping. NodeJS 3.0.6 also omits the top-level <code translate="no">group_by_field</code> from hybrid rank parameters. Use one of the APIs shown above for this example.</p>
+<p>In this example, both sub-requests target element-level vector fields under the same StructArray field, <code translate="no">chunks</code>. A hybrid search does not support element-level group-by if it mixes normal vector fields, different StructArray fields, or EmbeddingList-level requests.</p>
+<h2 id="Interpret-grouped-results" class="common-anchor-header">Interpret grouped results<button data-href="#Interpret-grouped-results" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -843,17 +841,17 @@ SearchResp results = <span class="hljs-keyword">await</span> client.HybridSearch
       </svg>
     </button></h2><table>
 <thead>
-<tr><th>Элемент результата</th><th>Значение</th></tr>
+<tr><th>Result item</th><th>Meaning</th></tr>
 </thead>
 <tbody>
-<tr><td>Первичный ключ (в этих примерах — `<code translate="no">doc_id</code> `)</td><td>Первичный ключ сгруппированной родительской сущности.</td></tr>
-<tr><td><code translate="no">distance</code> или оценка</td><td>Оценка или расстояние выбранного элемента Struct для данной родительской сущности.</td></tr>
-<tr><td><code translate="no">offset</code></td><td>Позиция выбранного элемента Struct с нулевой базой при возвращении.</td></tr>
-<tr><td>Повторяющиеся первичные ключи</td><td>Не ожидаются при группировке по первичному ключу.</td></tr>
-<tr><td><code translate="no">limit</code></td><td>Применимо к сгруппированным результатам родительских сущностей.</td></tr>
+<tr><td>Primary key (<code translate="no">doc_id</code> in these examples)</td><td>Primary key of the grouped parent entity.</td></tr>
+<tr><td><code translate="no">distance</code> or score</td><td>Score or distance of the selected Struct element for that parent entity.</td></tr>
+<tr><td><code translate="no">offset</code></td><td>Zero-based position of the selected Struct element when returned.</td></tr>
+<tr><td>Repeated primary keys</td><td>Not expected when grouping by the primary key.</td></tr>
+<tr><td><code translate="no">limit</code></td><td>Applies to grouped parent-entity results.</td></tr>
 </tbody>
 </table>
-<h2 id="Limitations" class="common-anchor-header">Ограничения<button data-href="#Limitations" class="anchor-icon" translate="no">
+<h2 id="Limitations" class="common-anchor-header">Limitations<button data-href="#Limitations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -869,14 +867,14 @@ SearchResp results = <span class="hljs-keyword">await</span> client.HybridSearch
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>Поиск с группировкой применяется только к векторному поиску StructArray на уровне элементов. Поиск EmbeddingList и гибридный поиск на уровне EmbeddingList не поддерживают группировку.</p></li>
-<li><p>Используйте первичный ключ в виде <code translate="no">group_by_field</code>. Группировка на уровне элементов StructArray не является универсальной группировкой по произвольным скалярным полям.</p></li>
-<li><p>Не сочетайте поиск с группировкой с поиском по диапазону.</p></li>
-<li><p>Не используйте запрос « <code translate="no">EmbeddingList</code> » или метрику « <code translate="no">MAX_SIM*</code> » для группированного поиска.</p></li>
-<li><p>Гибридная группировка поддерживается только в том случае, если все подзапросы нацелены на векторные поля на уровне элементов в рамках одного и того же поля StructArray.</p></li>
-<li><p>Гибридная группировка не поддерживается, если гибридный поиск сочетает обычное векторное поле, другое поле StructArray или запрос на уровне EmbeddingList.</p></li>
+<li><p>Grouping search applies only to element-level StructArray vector search. EmbeddingList search and EmbeddingList-level hybrid search do not support group-by.</p></li>
+<li><p>Use the primary key as <code translate="no">group_by_field</code>. StructArray element-level grouping is not a general-purpose group-by over arbitrary scalar fields.</p></li>
+<li><p>Do not combine grouping search with range search.</p></li>
+<li><p>Do not use an <code translate="no">EmbeddingList</code> query or a <code translate="no">MAX_SIM*</code> metric for grouping search.</p></li>
+<li><p>Hybrid grouping is supported only when all sub-searches target element-level vector fields under the same StructArray field.</p></li>
+<li><p>Hybrid grouping is not supported when the hybrid search mixes a normal vector field, a different StructArray field, or an EmbeddingList-level request.</p></li>
 </ul>
-<h2 id="Common-mistakes" class="common-anchor-header">Распространенные ошибки<button data-href="#Common-mistakes" class="anchor-icon" translate="no">
+<h2 id="Common-mistakes" class="common-anchor-header">Common mistakes<button data-href="#Common-mistakes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -892,14 +890,14 @@ SearchResp results = <span class="hljs-keyword">await</span> client.HybridSearch
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>Использование группировки с <code translate="no">chunks[emb_list_vector]</code>, которая предназначена для поиска по EmbeddingList.</p></li>
-<li><p>Группировка по скалярному полю, не являющемуся первичным ключом.</p></li>
-<li><p>Группировка по нескольким полям. Группировка StructArray на уровне элементов поддерживает только группировку по первичному ключу.</p></li>
-<li><p>Ожидание того, что сгруппированные результаты будут представлять каждый найденный элемент Struct. Группировка возвращает не более одного результата на каждую родительскую сущность.</p></li>
-<li><p>Предположение, что группированный поиск на уровне элементов пересчитывает оценку <code translate="no">MAX_SIM*</code> в стиле EmbeddingList. Группировка сворачивает совпадения на уровне элементов; она не изменяет модель оценки.</p></li>
-<li><p>Объединение <code translate="no">group_by_field</code> с <code translate="no">radius</code> или <code translate="no">range_filter</code>.</p></li>
+<li><p>Using grouping with <code translate="no">chunks[emb_list_vector]</code>, which is intended for EmbeddingList search.</p></li>
+<li><p>Grouping by a non-primary-key scalar field.</p></li>
+<li><p>Grouping by multiple fields. Element-level StructArray grouping supports only primary-key grouping.</p></li>
+<li><p>Expecting grouped results to represent every matched Struct element. Grouping returns at most one result per parent entity.</p></li>
+<li><p>Assuming grouped element-level search recomputes an EmbeddingList-style <code translate="no">MAX_SIM*</code> score. Grouping collapses element-level hits; it does not change the scoring model.</p></li>
+<li><p>Combining <code translate="no">group_by_field</code> with <code translate="no">radius</code> or <code translate="no">range_filter</code>.</p></li>
 </ul>
-<h2 id="Next-steps" class="common-anchor-header">Следующие шаги<button data-href="#Next-steps" class="anchor-icon" translate="no">
+<h2 id="Next-steps" class="common-anchor-header">Next steps<button data-href="#Next-steps" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -915,8 +913,8 @@ SearchResp results = <span class="hljs-keyword">await</span> client.HybridSearch
         ></path>
       </svg>
     </button></h2><ol>
-<li><p>Чтобы сначала изучить поиск на уровне элементов без группировки, ознакомьтесь с разделом <a href="/docs/ru/basic-vector-search-with-structarray.md">«Базовый векторный поиск с использованием StructArray</a>».</p></li>
-<li><p>Чтобы добавить скалярные фильтры к группированному поиску, ознакомьтесь с разделом <a href="/docs/ru/filtered-search-with-structarray.md">«Фильтрованный поиск с StructArray</a>».</p></li>
-<li><p>Чтобы использовать границы оценки или расстояния вместо группировки, ознакомьтесь с разделом <a href="/docs/ru/range-search-with-structarray.md">«Поиск по диапазону с StructArray</a>».</p></li>
-<li><p>Чтобы ознакомиться с ограничениями поиска с использованием StructArray, прочтите раздел <a href="/docs/ru/structarray-limits.md">«Ограничения StructArray</a>».</p></li>
+<li><p>To learn ungrouped element-level search first, read <a href="/docs/ru/basic-vector-search-with-structarray.md">Basic Vector Search with StructArray</a>.</p></li>
+<li><p>To add scalar filters to grouped search, read <a href="/docs/ru/filtered-search-with-structarray.md">Filtered Search with StructArray</a>.</p></li>
+<li><p>To use score or distance boundaries instead of grouping, read <a href="/docs/ru/range-search-with-structarray.md">Range Search with StructArray</a>.</p></li>
+<li><p>To check StructArray search limits, read <a href="/docs/ru/structarray-limits.md">StructArray Limits</a>.</p></li>
 </ol>

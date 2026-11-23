@@ -1,14 +1,13 @@
 ---
 id: basic-vector-search-with-structarray.md
-title: Recherche vectorielle de base avec StructArray
+title: Basic Vector Search with StructArray
 summary: >-
-  Cette page vous permet d'effectuer une recherche vectorielle sur les
-  sous-champs vectoriels d'un champ StructArray. StructArray prend en charge
-  deux modes de recherche vectorielle de base : la recherche « EmbeddingList »,
-  qui évalue une liste d'embeddings stockée dans chaque entité, et la recherche
-  au niveau des éléments, qui explore chaque élément Struct indépendamment.
+  Use this page to run vector search on vector subfields inside a StructArray
+  field. StructArray supports two basic vector search modes: EmbeddingList
+  search, which scores an embedding list stored in each entity, and
+  element-level search, which searches each Struct element independently.
 ---
-<h1 id="Basic-Vector-Search-with-StructArray" class="common-anchor-header">Recherche vectorielle de base avec StructArray<button data-href="#Basic-Vector-Search-with-StructArray" class="anchor-icon" translate="no">
+<h1 id="Basic-Vector-Search-with-StructArray" class="common-anchor-header">Basic Vector Search with StructArray<button data-href="#Basic-Vector-Search-with-StructArray" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -23,9 +22,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Utilisez cette page pour effectuer une recherche vectorielle sur les sous-champs vectoriels d'un champ StructArray. StructArray prend en charge deux modes de recherche vectorielle de base : la recherche EmbeddingList, qui évalue une liste d'embeddings stockée dans chaque entité, et la recherche au niveau des éléments, qui explore chaque élément Struct indépendamment.</p>
-<p>Cette page utilise la collection « <code translate="no">tech_articles</code> » issue de la section <a href="/docs/fr/create-structarray-field.md">« Créer un champ StructArray</a> ». Cette collection comporte un champ StructArray nommé « <code translate="no">chunks</code> ». Chaque bloc contient du texte, des métadonnées scalaires, un sous-champ vectoriel nommé « <code translate="no">emb_list_vector</code> » avec un index pour la recherche EmbeddingList, et un sous-champ vectoriel nommé « <code translate="no">emb</code> » avec un index pour la recherche au niveau des éléments.</p>
-<h2 id="Before-you-begin" class="common-anchor-header">Avant de commencer<button data-href="#Before-you-begin" class="anchor-icon" translate="no">
+    </button></h1><p>Use this page to run vector search on vector subfields inside a StructArray field. StructArray supports two basic vector search modes: EmbeddingList search, which scores an embedding list stored in each entity, and element-level search, which searches each Struct element independently.</p>
+<p>This page uses the <code translate="no">tech_articles</code> collection from <a href="/docs/fr/create-structarray-field.md">Create a StructArray Field</a>. The collection has a StructArray field named <code translate="no">chunks</code>. Each chunk contains text, scalar metadata, a vector subfield named <code translate="no">emb_list_vector</code> with an index for EmbeddingList search, and a vector subfield named <code translate="no">emb</code> with an index for element-level search.</p>
+<h2 id="Before-you-begin" class="common-anchor-header">Before you begin<button data-href="#Before-you-begin" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -40,23 +39,23 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Assurez-vous que le schéma de la collection, les données et les index sont déjà prêts. Les vecteurs d’exemple comportent quatre dimensions. Chaque exemple de recherche initialise un client et attend que <code translate="no">tech_articles</code> se charge avant de lancer la recherche. Pour cURL, installez <code translate="no">jq</code> afin de vérifier la réponse relative à l’état de chargement.</p>
+    </button></h2><p>Make sure the collection schema, data, and indexes are already prepared. The example vectors have four dimensions. Each search example initializes a client and waits for <code translate="no">tech_articles</code> to load before searching. For cURL, install <code translate="no">jq</code> to check the load-state response.</p>
 <table>
 <thead>
-<tr><th>Prérequis</th><th>Où le préparer</th></tr>
+<tr><th>Requirement</th><th>Where to prepare it</th></tr>
 </thead>
 <tbody>
-<tr><td>Créez un champ StructArray, tel que <code translate="no">chunks</code>.</td><td><a href="/docs/fr/create-structarray-field.md">Créer un champ StructArray</a></td></tr>
-<tr><td>Insérez des entités dont le champ « <code translate="no">chunks</code> » contient des objets Struct.</td><td><a href="/docs/fr/insert-data-into-structarray-fields.md">Insérer des données dans les champs StructArray</a></td></tr>
-<tr><td>Créez un index « <code translate="no">MAX_SIM*</code> » sur « <code translate="no">chunks[emb_list_vector]</code> » pour la recherche dans EmbeddingList.</td><td><a href="/docs/fr/index-structarray-fields.md">Indexer les champs StructArray</a></td></tr>
-<tr><td>Créer un index métrique vectoriel standard sur « <code translate="no">chunks[emb]</code> » pour la recherche au niveau des éléments.</td><td><a href="/docs/fr/index-structarray-fields.md">Indexer les champs StructArray</a></td></tr>
+<tr><td>Create a StructArray field, such as <code translate="no">chunks</code>.</td><td><a href="/docs/fr/create-structarray-field.md">Create a StructArray Field</a></td></tr>
+<tr><td>Insert entities whose <code translate="no">chunks</code> field contains Struct objects.</td><td><a href="/docs/fr/insert-data-into-structarray-fields.md">Insert Data into StructArray Fields</a></td></tr>
+<tr><td>Create a <code translate="no">MAX_SIM*</code> index on <code translate="no">chunks[emb_list_vector]</code> for EmbeddingList search.</td><td><a href="/docs/fr/index-structarray-fields.md">Index StructArray Fields</a></td></tr>
+<tr><td>Create a regular vector-metric index on <code translate="no">chunks[emb]</code> for element-level search.</td><td><a href="/docs/fr/index-structarray-fields.md">Index StructArray Fields</a></td></tr>
 </tbody>
 </table>
 <div class="alert note">
-<p>Avertissement</p>
-<p>Un champ vectoriel ou un sous-champ vectoriel n'accepte qu'un seul index. Si vous avez besoin à la fois de la recherche EmbeddingList et de la recherche au niveau des éléments, créez deux sous-champs vectoriels distincts. Sur cette page, <code translate="no">chunks[emb_list_vector]</code> est indexé pour la recherche EmbeddingList, et <code translate="no">chunks[emb]</code> est indexé pour la recherche au niveau des éléments.</p>
+<p>Warning</p>
+<p>A vector field or vector subfield accepts only one index. If you need both EmbeddingList search and element-level search, create two separate vector subfields. In this page, <code translate="no">chunks[emb_list_vector]</code> is indexed for EmbeddingList search, and <code translate="no">chunks[emb]</code> is indexed for element-level search.</p>
 </div>
-<h2 id="Choose-a-search-mode" class="common-anchor-header">Choisissez un mode de recherche<button data-href="#Choose-a-search-mode" class="anchor-icon" translate="no">
+<h2 id="Choose-a-search-mode" class="common-anchor-header">Choose a search mode<button data-href="#Choose-a-search-mode" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -73,19 +72,19 @@ summary: >-
       </svg>
     </button></h2><table>
 <thead>
-<tr><th>Aspect</th><th>Recherche dans EmbeddingList</th><th>Recherche au niveau des éléments</th></tr>
+<tr><th>Aspect</th><th>EmbeddingList search</th><th>Element-level search</th></tr>
 </thead>
 <tbody>
-<tr><td>Sous-champ cible</td><td><code translate="no">chunks[emb_list_vector]</code></td><td><code translate="no">chunks[emb]</code></td></tr>
-<tr><td>Données de requête</td><td>Une liste d'embeddings contenant un ou plusieurs vecteurs.</td><td>Un vecteur standard.</td></tr>
-<tr><td>Famille de métriques</td><td><code translate="no">MAX_SIM*</code>, telle que <code translate="no">MAX_SIM_COSINE</code>.</td><td>Des métriques vectorielles classiques, telles que <code translate="no">COSINE</code>, <code translate="no">IP</code> ou <code translate="no">L2</code>.</td></tr>
-<tr><td>Ce que représente un résultat</td><td>Une entité correspondante dont le sous-champ vectoriel StructArray est similaire à la liste d’embeddings de la requête.</td><td>Un élément Struct correspondant à l’intérieur du champ StructArray.</td></tr>
-<tr><td>Granularité des résultats</td><td>Niveau de l'entité.</td><td>Niveau de l'élément Struct.</td></tr>
-<tr><td>Décalage</td><td>Sans objet.</td><td>Identifie la position (à partir de zéro) de l’élément Struct correspondant lors de son renvoi.</td></tr>
-<tr><td>Utilisation typique</td><td>ColBERT, ColPali et autres modèles de recherche à interaction tardive.</td><td>Récupération au niveau des segments, des passages, des extraits, des fragments ou des faits.</td></tr>
+<tr><td>Target subfield</td><td><code translate="no">chunks[emb_list_vector]</code></td><td><code translate="no">chunks[emb]</code></td></tr>
+<tr><td>Query data</td><td>An embedding list that contains one or more vectors.</td><td>A regular vector.</td></tr>
+<tr><td>Metric family</td><td><code translate="no">MAX_SIM*</code>, such as <code translate="no">MAX_SIM_COSINE</code>.</td><td>Regular vector metrics, such as <code translate="no">COSINE</code>, <code translate="no">IP</code>, or <code translate="no">L2</code>.</td></tr>
+<tr><td>What one hit represents</td><td>A matched entity whose StructArray vector subfield is similar to the query embedding list.</td><td>A matched Struct element inside the StructArray field.</td></tr>
+<tr><td>Result granularity</td><td>Entity level.</td><td>Struct element level.</td></tr>
+<tr><td>Offset</td><td>Not applicable.</td><td>Identifies the zero-based position of the matched Struct element when returned.</td></tr>
+<tr><td>Typical use</td><td>ColBERT, ColPali, and other late-interaction retrieval patterns.</td><td>Chunk-level, passage-level, clip-level, patch-level, or fact-level retrieval.</td></tr>
 </tbody>
 </table>
-<h2 id="Run-EmbeddingList-search" class="common-anchor-header">Lancer une recherche EmbeddingList<button data-href="#Run-EmbeddingList-search" class="anchor-icon" translate="no">
+<h2 id="Run-EmbeddingList-search" class="common-anchor-header">Run EmbeddingList search<button data-href="#Run-EmbeddingList-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -100,16 +99,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Utilisez la recherche EmbeddingList lorsque la requête elle-même contient plusieurs vecteurs et que le sous-champ vectoriel StructArray cible est indexé à l’aide d’une métrique de type « <code translate="no">MAX_SIM*</code> ». Le résultat correspond à une correspondance au niveau de l’entité.</p>
+    </button></h2><p>Use EmbeddingList search when the query itself contains multiple vectors and the target StructArray vector subfield is indexed with a <code translate="no">MAX_SIM*</code> metric. The result is an entity-level match.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 <span class="hljs-keyword">from</span> pymilvus.client.embedding_list <span class="hljs-keyword">import</span> EmbeddingList
@@ -434,11 +433,11 @@ curl --request POST \
     ]
   }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Dans ce mode de recherche, l’ <code translate="no">limit</code> contrôle le nombre d’entités renvoyées pour chaque requête. Le résultat peut inclure des sous-champs StructArray, mais le résultat de la recherche correspond à l’entité parente correspondante plutôt qu’à un élément Struct spécifique.</p>
+<p>In this search mode, <code translate="no">limit</code> controls how many entities are returned for each query. The output can include StructArray subfields, but the hit itself represents the matched parent entity rather than one specific Struct element.</p>
 <div class="alert note">
-<p>Pour un guide complet de type ColBERT ou ColPali, consultez la section « <a href="/docs/fr/search-with-embedding-lists.md">Recherche avec des listes d’embeddings</a> ». Cette page ne traite que du comportement de base de la recherche StructArray.</p>
+<p>For a full ColBERT or ColPali-style walkthrough, see <a href="/docs/fr/search-with-embedding-lists.md">Search with Embedding Lists</a>. This page only covers the basic StructArray search behavior.</p>
 </div>
-<h2 id="Run-element-level-search" class="common-anchor-header">Lancer une recherche au niveau des éléments<button data-href="#Run-element-level-search" class="anchor-icon" translate="no">
+<h2 id="Run-element-level-search" class="common-anchor-header">Run element-level search<button data-href="#Run-element-level-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -453,16 +452,16 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Utilisez la recherche au niveau des éléments lorsque chaque élément Struct doit participer indépendamment à la recherche vectorielle. La requête est un vecteur standard, et le sous-champ vectoriel cible doit être indexé à l’aide d’une métrique vectorielle standard.</p>
+    </button></h2><p>Use element-level search when each Struct element should participate in vector search independently. The query is a regular vector, and the target vector subfield must be indexed with a regular vector metric.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -778,8 +777,8 @@ curl --request POST \
     ]
   }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Dans la recherche au niveau des éléments, chaque résultat correspond à un élément Struct correspondant. La valeur ` <code translate="no">offset</code> ` correspond à la position (à partir de zéro) de cet élément dans le champ StructArray. Une même entité peut apparaître plusieurs fois si plusieurs éléments Struct correspondent à la requête. La valeur ` <code translate="no">limit</code> ` s'applique aux éléments trouvés, et non aux entités parentes uniques.</p>
-<h2 id="Interpret-results" class="common-anchor-header">Interprétation des résultats<button data-href="#Interpret-results" class="anchor-icon" translate="no">
+<p>In element-level search, each hit represents a matched Struct element. The <code translate="no">offset</code> value is the zero-based position of that element in the StructArray field. The same entity can appear more than once if more than one Struct element matches the query. The <code translate="no">limit</code> value applies to element hits, not unique parent entities.</p>
+<h2 id="Interpret-results" class="common-anchor-header">Interpret results<button data-href="#Interpret-results" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -796,18 +795,18 @@ curl --request POST \
       </svg>
     </button></h2><table>
 <thead>
-<tr><th>Élément de résultat</th><th>Recherche dans EmbeddingList</th><th>Recherche au niveau des éléments</th></tr>
+<tr><th>Result item</th><th>EmbeddingList search</th><th>Element-level search</th></tr>
 </thead>
 <tbody>
-<tr><td>Clé primaire (<code translate="no">doc_id</code> dans ce schéma)</td><td>Clé primaire de l'entité correspondante.</td><td>Clé primaire de l’entité contenant l’élément Struct correspondant.</td></tr>
-<tr><td><code translate="no">distance</code> ou score</td><td>Score ou distance entre la liste d’embeddings de la requête et la liste d’embeddings stockée.</td><td>Score ou distance entre le vecteur de la requête et le vecteur de l'élément Struct correspondant.</td></tr>
-<tr><td><code translate="no">offset</code></td><td>Sans objet.</td><td>Position (à partir de zéro) de l’élément Struct correspondant lors de son renvoi.</td></tr>
-<tr><td>Clés primaires répétées</td><td>Ce n’est pas prévu pour une requête unique, car les résultats sont au niveau de l’entité.</td><td>Possible, car plusieurs éléments Struct d’une même entité peuvent correspondre.</td></tr>
-<tr><td>Champs de sortie StructArray demandés</td><td>Renvoyés à partir de l’entité correspondante.</td><td>Renvoyés avec la forme de résultat au niveau des éléments prise en charge par l’API et le SDK cibles.</td></tr>
+<tr><td>Primary key (<code translate="no">doc_id</code> in this schema)</td><td>Primary key of the matched entity.</td><td>Primary key of the entity that contains the matched Struct element.</td></tr>
+<tr><td><code translate="no">distance</code> or score</td><td>Score or distance between the query embedding list and the stored embedding list.</td><td>Score or distance between the query vector and the matched Struct element vector.</td></tr>
+<tr><td><code translate="no">offset</code></td><td>Not applicable.</td><td>Zero-based position of the matched Struct element when returned.</td></tr>
+<tr><td>Repeated primary keys</td><td>Not expected for a single query because results are entity-level.</td><td>Possible, because multiple Struct elements in the same entity can match.</td></tr>
+<tr><td>Requested StructArray output fields</td><td>Returned from the matched entity.</td><td>Returned with the element-level hit shape supported by the target API and SDK.</td></tr>
 </tbody>
 </table>
-<p>Les exemples Python utilisent PyMilvus 3.0.2 et accèdent à la clé primaire via son nom de schéma, <code translate="no">doc_id</code>. Les accesseurs de résultats varient selon le SDK. Le client Go/v3.0.0 n’expose pas les décalages d’éléments dans <code translate="no">ResultSet</code>; les autres exemples affichent les décalages uniquement via l’interface de résultats prise en charge par leur SDK.</p>
-<h2 id="Common-mistakes" class="common-anchor-header">Erreurs courantes<button data-href="#Common-mistakes" class="anchor-icon" translate="no">
+<p>The Python examples use PyMilvus 3.0.2 and access the primary key by its schema name, <code translate="no">doc_id</code>. Result accessors differ by SDK. Go client/v3.0.0 does not expose element offsets in <code translate="no">ResultSet</code>; other examples display offsets only through their SDK’s supported result interface.</p>
+<h2 id="Common-mistakes" class="common-anchor-header">Common mistakes<button data-href="#Common-mistakes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -823,14 +822,14 @@ curl --request POST \
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>Utilisation de ` <code translate="no">chunks.emb</code> ` au lieu de la syntaxe requise pour le chemin d’accès au sous-champ : ` <code translate="no">chunks[emb]</code>`.</p></li>
-<li><p>Utilisation d’une requête EmbeddingList sur un sous-champ vectoriel indexé avec une métrique vectorielle standard.</p></li>
-<li><p>Utilisation d’une requête vectorielle standard sur un sous-champ vectoriel indexé avec une métrique de type « <code translate="no">MAX_SIM*</code> ».</p></li>
-<li><p>S’attendre à ce qu’une recherche au niveau des éléments ( <code translate="no">limit</code> ) renvoie autant d’entités parentes uniques. Elle renvoie des résultats au niveau des éléments.</p></li>
-<li><p>S’attendre à ce qu’une recherche EmbeddingList renvoie un décalage d’élément spécifique. Elle renvoie des correspondances au niveau de l’entité.</p></li>
-<li><p>Réutilisation d’un même sous-champ vectoriel pour les deux modes de recherche. Utilisez des sous-champs vectoriels distincts, car chaque sous-champ vectoriel n’accepte qu’un seul index.</p></li>
+<li><p>Using <code translate="no">chunks.emb</code> instead of the required subfield path syntax <code translate="no">chunks[emb]</code>.</p></li>
+<li><p>Using an EmbeddingList query against a vector subfield indexed with a regular vector metric.</p></li>
+<li><p>Using a regular vector query against a vector subfield indexed with a <code translate="no">MAX_SIM*</code> metric.</p></li>
+<li><p>Expecting element-level search <code translate="no">limit</code> to return that many unique parent entities. It returns element hits.</p></li>
+<li><p>Expecting EmbeddingList search to return one specific element offset. It returns entity-level matches.</p></li>
+<li><p>Reusing one vector subfield for both search modes. Use separate vector subfields because each vector subfield accepts only one index.</p></li>
 </ul>
-<h2 id="Next-steps" class="common-anchor-header">Étapes suivantes<button data-href="#Next-steps" class="anchor-icon" translate="no">
+<h2 id="Next-steps" class="common-anchor-header">Next steps<button data-href="#Next-steps" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -846,9 +845,9 @@ curl --request POST \
         ></path>
       </svg>
     </button></h2><ol>
-<li><p>Pour restreindre la recherche au niveau des éléments à l’aide de conditions scalaires, consultez la section « <a href="/docs/fr/filtered-search-with-structarray.md">Recherche filtrée avec StructArray</a> ».</p></li>
-<li><p>Pour effectuer une recherche par score ou par limites de distance, consultez la section « <a href="/docs/fr/range-search-with-structarray.md">Recherche par plage avec StructArray</a> ».</p></li>
-<li><p>Pour renvoyer au maximum un résultat par entité parente après une recherche au niveau des éléments, consultez la section « <a href="/docs/fr/grouping-search-with-structarray.md">Recherche groupée avec StructArray</a> ».</p></li>
-<li><p>Pour combiner la recherche StructArray avec d’autres recherches vectorielles, consultez la section « <a href="/docs/fr/hybrid-search-with-structarray.md">Recherche hybride avec StructArray</a> ».</p></li>
-<li><p>Pour connaître les types de données, les métriques, les filtres et les limites spécifiques à chaque version pris en charge, consultez la section « <a href="/docs/fr/structarray-limits.md">Limites de StructArray</a> ».</p></li>
+<li><p>To restrict element-level search by scalar conditions, read <a href="/docs/fr/filtered-search-with-structarray.md">Filtered Search with StructArray</a>.</p></li>
+<li><p>To search by score or distance boundaries, read <a href="/docs/fr/range-search-with-structarray.md">Range Search with StructArray</a>.</p></li>
+<li><p>To return at most one result per parent entity after element-level search, read <a href="/docs/fr/grouping-search-with-structarray.md">Grouping Search with StructArray</a>.</p></li>
+<li><p>To combine StructArray search with other vector searches, read <a href="/docs/fr/hybrid-search-with-structarray.md">Hybrid Search with StructArray</a>.</p></li>
+<li><p>To review supported data types, metrics, filters, and version-specific limits, read <a href="/docs/fr/structarray-limits.md">StructArray Limits</a>.</p></li>
 </ol>

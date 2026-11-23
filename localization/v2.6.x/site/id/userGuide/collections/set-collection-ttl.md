@@ -1,15 +1,13 @@
 ---
 id: set-collection-ttl.md
-title: Menetapkan TTL Koleksi
+title: Set Collection TTL
 summary: >-
-  Setelah data dimasukkan ke dalam sebuah koleksi, data tersebut akan tetap
-  tersimpan di sana secara default. Namun, dalam beberapa situasi, Anda mungkin
-  ingin menghapus atau membersihkan data setelah jangka waktu tertentu. Dalam
-  kasus seperti itu, Anda dapat mengonfigurasi properti Time-to-Live (TTL)
-  koleksi tersebut sehingga Milvus secara otomatis menghapus data tersebut
-  setelah masa berlaku TTL berakhir.
+  Once data is inserted into a collection, it remains there by default. However,
+  in some scenarios, you may want to remove or clean up data after a certain
+  period. In such cases, you can configure the collection’s Time-to-Live (TTL)
+  property so that Milvus automatically deletes the data once the TTL expires.
 ---
-<h1 id="Set-Collection-TTL" class="common-anchor-header">Menetapkan TTL Koleksi<button data-href="#Set-Collection-TTL" class="anchor-icon" translate="no">
+<h1 id="Set-Collection-TTL" class="common-anchor-header">Set Collection TTL<button data-href="#Set-Collection-TTL" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -24,8 +22,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Setelah data dimasukkan ke dalam koleksi, data tersebut akan tetap tersimpan di sana secara default. Namun, dalam beberapa skenario, Anda mungkin ingin menghapus atau membersihkan data setelah jangka waktu tertentu. Dalam kasus seperti itu, Anda dapat mengonfigurasi properti Time-to-Live (TTL) koleksi tersebut sehingga Milvus secara otomatis menghapus data setelah TTL berakhir.</p>
-<h2 id="Overview" class="common-anchor-header">Gambaran Umum<button data-href="#Overview" class="anchor-icon" translate="no">
+    </button></h1><p>Once data is inserted into a collection, it remains there by default. However, in some scenarios, you may want to remove or clean up data after a certain period. In such cases, you can configure the collection’s Time-to-Live (TTL) property so that Milvus automatically deletes the data once the TTL expires.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -40,16 +38,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Time-to-Live (TTL) umumnya digunakan dalam basis data untuk skenario di mana data hanya boleh tetap valid atau dapat diakses selama periode tertentu setelah dimasukkan atau dimodifikasi. Setelah itu, data dapat dihapus secara otomatis.</p>
-<p>Misalnya, jika Anda mengimpor data setiap hari tetapi hanya perlu menyimpan catatan selama 14 hari, Anda dapat mengonfigurasi Milvus untuk secara otomatis menghapus data yang lebih lama dari itu dengan mengatur TTL koleksi menjadi <strong>14 × 24 × 3600 = 1.209.600</strong> detik. Hal ini memastikan bahwa hanya data dari 14 hari terakhir yang tetap tersimpan dalam koleksi.</p>
+    </button></h2><p>Time-to-Live (TTL) is commonly used in databases for scenarios where data should only remain valid or accessible for a certain period after any insertion or modification. Then, the data can be automatically removed.</p>
+<p>For instance, if you ingest data daily but only need to retain records for 14 days, you can configure Milvus to automatically remove any data older than that by setting the collection’s TTL to <strong>14 × 24 × 3600 = 1209600</strong> seconds. This ensures that only the most recent 14 days’ worth of data remain in the collection.</p>
 <div class="alert note">
-<p>Entitas yang telah kedaluwarsa tidak akan muncul dalam hasil pencarian atau kueri apa pun. Namun, entitas tersebut mungkin tetap berada di penyimpanan hingga pemadatan data berikutnya, yang seharusnya dilakukan dalam 24 jam ke depan.</p>
-<p>Anda dapat mengontrol kapan pemadatan data akan dipicu dengan mengatur item konfigurasi ` <code translate="no">dataCoord.compaction.expiry.tolerance</code> ` di berkas konfigurasi Milvus Anda.</p>
-<p>Item konfigurasi ini secara default bernilai ` <code translate="no">-1</code>`, yang berarti interval kompresi data yang ada akan diterapkan. Namun, jika Anda mengubah nilainya menjadi bilangan bulat positif, seperti ` <code translate="no">12</code>`, kompresi data akan dipicu sejumlah jam yang ditentukan setelah entitas-entitas tersebut kedaluwarsa.</p>
+<p>Expired entities will not appear in any search or query results. However, they may stay in the storage until the subsequent data compaction, which should be carried out within the next 24 hours.</p>
+<p>You can control when to trigger the data compaction by setting the <code translate="no">dataCoord.compaction.expiry.tolerance</code> configuration item in your Milvus configuration file.</p>
+<p>This configuration item defaults to <code translate="no">-1</code>, indicating that the existing data compaction interval applies. However, when you change its value to a positive integer, like <code translate="no">12</code>, data compaction will be triggered the specified number of hours after any entities become expired.</p>
 </div>
-<p>Properti TTL dalam koleksi Milvus ditentukan sebagai bilangan bulat dalam satuan detik. Setelah ditetapkan, data apa pun yang melampaui TTL-nya akan secara otomatis dihapus dari koleksi.</p>
-<p>Entitas yang kedaluwarsa akan disaring dari hasil pencarian dan kueri segera setelah TTL berakhir. Namun, penghapusan data yang mendasarinya dari penyimpanan bersifat asinkron: pemulihan ruang penyimpanan bergantung pada proses pengumpulan sampah (GC) dan pemadatan, yang terjadi pada interval yang tidak dapat diprediksi.</p>
-<h2 id="Set-TTL" class="common-anchor-header">Menetapkan TTL<button data-href="#Set-TTL" class="anchor-icon" translate="no">
+<p>The TTL property in a Milvus collection is specified as an integer in seconds. Once set, any data that surpasses its TTL will be automatically deleted from the collection.</p>
+<p>Expired entities are filtered out of search and query results as soon as the TTL elapses. Removing the underlying data from storage, however, is asynchronous: reclaiming it depends on the garbage collection (GC) and compaction processes, which occur at non-deterministic intervals.</p>
+<h2 id="Set-TTL" class="common-anchor-header">Set TTL<button data-href="#Set-TTL" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -64,12 +62,12 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Anda dapat mengatur properti TTL saat Anda</p>
+    </button></h2><p>You can set the TTL property when you</p>
 <ul>
-<li><p><a href="/docs/id/v2.6.x/set-collection-ttl.md#Set-TTL-when-creating-a-collection">Membuat koleksi.</a></p></li>
-<li><p><a href="/docs/id/v2.6.x/set-collection-ttl.md#Set-TTL-for-an-existing-collection">Mengubah properti TTL dari koleksi yang sudah ada.</a></p></li>
+<li><p><a href="/docs/id/v2.6.x/set-collection-ttl.md#Set-TTL-when-creating-a-collection">Create a collection.</a></p></li>
+<li><p><a href="/docs/id/v2.6.x/set-collection-ttl.md#Set-TTL-for-an-existing-collection">Alter the TTL property of an existing collection.</a></p></li>
 </ul>
-<h3 id="Set-TTL-when-creating-a-collection" class="common-anchor-header">Menetapkan TTL saat membuat koleksi<button data-href="#Set-TTL-when-creating-a-collection" class="anchor-icon" translate="no">
+<h3 id="Set-TTL-when-creating-a-collection" class="common-anchor-header">Set TTL when creating a collection<button data-href="#Set-TTL-when-creating-a-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -84,13 +82,13 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Potongan kode berikut menunjukkan cara mengatur properti TTL saat Anda membuat koleksi.</p>
+    </button></h3><p>The following code snippet demonstrates how to set the TTL property when you create a collection.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -150,7 +148,7 @@ curl --request POST \
     \&quot;params\&quot;: <span class="hljs-variable">$params</span>
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Set-TTL-for-an-existing-collection" class="common-anchor-header">Menetapkan TTL untuk koleksi yang sudah ada<button data-href="#Set-TTL-for-an-existing-collection" class="anchor-icon" translate="no">
+<h3 id="Set-TTL-for-an-existing-collection" class="common-anchor-header">Set TTL for an existing collection<button data-href="#Set-TTL-for-an-existing-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -165,13 +163,13 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Potongan kode berikut menunjukkan cara mengubah properti TTL pada koleksi yang sudah ada.</p>
+    </button></h3><p>The following code snippet demonstrates how to alter the TTL property in an existing collection.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.alter_collection_properties(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,
@@ -214,7 +212,7 @@ client.alterCollection(alterCollectionReq);
     }
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Drop-TTL-setting" class="common-anchor-header">Menghapus pengaturan TTL<button data-href="#Drop-TTL-setting" class="anchor-icon" translate="no">
+<h2 id="Drop-TTL-setting" class="common-anchor-header">Drop TTL setting<button data-href="#Drop-TTL-setting" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -229,13 +227,13 @@ client.alterCollection(alterCollectionReq);
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Jika Anda memutuskan untuk menyimpan data dalam koleksi tanpa batas waktu, Anda cukup menghapus pengaturan TTL dari koleksi tersebut.</p>
+    </button></h2><p>If you decide to keep the data in a collection indefinitely, you can simply drop the TTL setting from that collection.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.drop_collection_properties(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,

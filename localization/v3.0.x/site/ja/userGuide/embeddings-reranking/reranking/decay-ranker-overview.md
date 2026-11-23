@@ -1,11 +1,14 @@
 ---
 id: decay-ranker-overview.md
-title: Decay Rankerの概要Compatible with Milvus 2.6.x
+title: Decay Ranker OverviewCompatible with Milvus 2.6.x
 summary: >-
-  従来のベクトル検索では、結果は純粋にベクトルの類似度、つまり数学的な空間においてベクトルがどれほど一致しているかによってランク付けされます。しかし、実際のアプリケーションでは、コンテンツの関連性を真に決定づける要素は、単なる意味的な類似度だけにとどまらないことがよくあります。
+  In traditional vector search, results are ranked purely by vector
+  similarity—how closely vectors match in mathematical space. But in real-world
+  applications, what makes content truly relevant often depends on more than
+  just semantic similarity.
 beta: Milvus 2.6.x
 ---
-<h1 id="Decay-Ranker-Overview" class="common-anchor-header">Decay Rankerの概要<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#Decay-Ranker-Overview" class="anchor-icon" translate="no">
+<h1 id="Decay-Ranker-Overview" class="common-anchor-header">Decay Ranker Overview<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#Decay-Ranker-Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,16 +23,16 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>従来のベクトル検索では、結果は純粋にベクトルの類似度、つまり数学的な空間においてベクトルがどれほど一致しているかによってランク付けされます。しかし、実際のアプリケーションでは、コンテンツの関連性を真に決定づける要素は、単なる意味的な類似度だけにとどまらないことがよくあります。</p>
-<p>次のような日常的なシナリオを考えてみてください：</p>
+    </button></h1><p>In traditional vector search, results are ranked purely by vector similarity—how closely vectors match in mathematical space. But in real-world applications, what makes content truly relevant often depends on more than just semantic similarity.</p>
+<p>Consider these everyday scenarios:</p>
 <ul>
-<li><p>昨日の記事が、3年前の類似記事よりも上位に表示されるべきニュース検索</p></li>
-<li><p>車で30分かかる店よりも、徒歩5分の店を優先表示するレストラン検索</p></li>
-<li><p>検索クエリとの類似度がわずかに低い場合でも、トレンドの商品を優先表示するECプラットフォーム</p></li>
+<li><p>A news search where yesterday’s article should rank higher than a similar article from three years ago</p></li>
+<li><p>A restaurant finder that prioritizes venues 5 minutes away over those requiring a 30-minute drive</p></li>
+<li><p>An e-commerce platform that boosts trending products even when they’re slightly less similar to the search query</p></li>
 </ul>
-<p>これらのシナリオにはすべて、ベクトル類似性と、時間、距離、人気度といった他の数値的要因とのバランスを取るという共通のニーズがあります。</p>
-<p>Milvusの「Decay rankers」は、数値フィールドの値に基づいて検索順位を調整することで、このニーズに対応します。これにより、ベクトル類似度と「鮮度」、「近さ」、あるいはデータのその他の数値的特性とのバランスを取ることができ、より直感的で文脈に即した検索体験を実現します。</p>
-<h2 id="Usage-notes" class="common-anchor-header">使用上の注意<button data-href="#Usage-notes" class="anchor-icon" translate="no">
+<p>These scenarios all share a common need: balancing vector similarity with other numeric factors like time, distance, or popularity.</p>
+<p>Decay rankers in Milvus address this need by adjusting search rankings based on numeric field values. They allow you to balance vector similarity with “freshness,” “nearness,” or other numeric properties of your data, creating more intuitive and contextually relevant search experiences.</p>
+<h2 id="Usage-notes" class="common-anchor-header">Usage notes<button data-href="#Usage-notes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -45,17 +48,17 @@ beta: Milvus 2.6.x
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>デケイ・ランキングは、グループ化検索では使用できません。</p></li>
-<li><p>ディケイ・ランカーに使用するフィールドは、数値型（<code translate="no">INT8</code> 、<code translate="no">INT16</code> 、<code translate="no">INT32</code> 、<code translate="no">INT64</code> 、<code translate="no">FLOAT</code> 、または<code translate="no">DOUBLE</code> ）でなければなりません。</p></li>
-<li><p>各減衰ランカーは、1つの数値フィールドのみを使用できます。</p></li>
-<li><p><strong>時間単位の一貫性</strong>：時間ベースの減衰ランキングを使用する場合、<code translate="no">origin</code> 、<code translate="no">scale</code> 、および<code translate="no">offset</code> パラメータの単位は、コレクションデータで使用されている単位と一致している必要があります：</p>
+<li><p>Decay ranking cannot be used with grouping searches.</p></li>
+<li><p>The field used for decay ranking must be numeric (<code translate="no">INT8</code>, <code translate="no">INT16</code>, <code translate="no">INT32</code>, <code translate="no">INT64</code>, <code translate="no">FLOAT</code>, or <code translate="no">DOUBLE</code>).</p></li>
+<li><p>Each decay ranker can only use one numeric field.</p></li>
+<li><p><strong>Time unit consistency</strong>: When using time-based decay ranking, the units for <code translate="no">origin</code>, <code translate="no">scale</code>, and <code translate="no">offset</code> parameters must match the units used in your collection data:</p>
 <ul>
-<li><p>コレクションでタイムスタンプを<strong>秒単位</strong>で保存している場合は、すべてのパラメータに秒単位を使用してください</p></li>
-<li><p>コレクションでタイムスタンプを<strong>ミリ秒</strong>単位で保存している場合は、すべてのパラメータでミリ秒を使用してください</p></li>
-<li><p>コレクションでタイムスタンプを<strong>マイクロ秒</strong>単位で保存している場合は、すべてのパラメータでマイクロ秒単位を使用してください</p></li>
+<li><p>If your collection stores timestamps in <strong>seconds</strong>, use seconds for all parameters</p></li>
+<li><p>If your collection stores timestamps in <strong>milliseconds</strong>, use milliseconds for all parameters</p></li>
+<li><p>If your collection stores timestamps in <strong>microseconds</strong>, use microseconds for all parameters</p></li>
 </ul></li>
 </ul>
-<h2 id="How-it-works" class="common-anchor-header">仕組み<button data-href="#How-it-works" class="anchor-icon" translate="no">
+<h2 id="How-it-works" class="common-anchor-header">How it works<button data-href="#How-it-works" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -70,8 +73,8 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>ディケイ・ランキングは、時間や地理的距離などの数値的要素をランキング処理に組み込むことで、従来のベクトル検索機能を強化します。全体のプロセスは以下の段階に従います：</p>
-<h3 id="Stage-1-Calculate-normalized-similarity-scores" class="common-anchor-header">段階 1: 正規化された類似度スコアの算出<button data-href="#Stage-1-Calculate-normalized-similarity-scores" class="anchor-icon" translate="no">
+    </button></h2><p>Decay ranking enhances traditional vector search by incorporating numeric factors like time or geo distance into the ranking process. The entire process follows these stages:</p>
+<h3 id="Stage-1-Calculate-normalized-similarity-scores" class="common-anchor-header">Stage 1: Calculate normalized similarity scores<button data-href="#Stage-1-Calculate-normalized-similarity-scores" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -86,15 +89,15 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>まず、Milvusは一貫した比較を行うために、ベクトル類似度スコアを計算し、正規化します：</p>
+    </button></h3><p>First, Milvus calculates and normalizes vector similarity scores to ensure consistent comparison:</p>
 <ul>
-<li><p><strong>L2</strong>および<strong>JACCARD</strong>距離メトリックの場合（値が小さいほど類似度が高いことを示す）：</p>
+<li><p>For <strong>L2</strong> and <strong>JACCARD</strong> distance metrics (where lower values indicate higher similarity):</p>
 <pre><code translate="no" class="language-plaintext">normalized_score = 1.0 - (2 × arctan(score))/π
 <button class="copy-code-btn"></button></code></pre>
-<p>これにより、距離は0～1の範囲の類似度スコアに変換され、値が高いほど類似度が高いことを示します。</p></li>
-<li><p><strong>IP</strong>、<strong>COSINE</strong>、および<strong>BM25</strong>メトリクス（スコアが高いほど一致度が高いことを示す）の場合：スコアは正規化せずに直接使用されます。</p></li>
+<p>This transforms distances into similarity scores between 0-1, where higher is better.</p></li>
+<li><p>For <strong>IP</strong>, <strong>COSINE</strong>, and <strong>BM25</strong> metrics (where higher scores already indicate better matches): Scores are used directly without normalization.</p></li>
 </ul>
-<h3 id="Stage-2-Calculate-decay-scores" class="common-anchor-header">ステージ2：減衰スコアの算出<button data-href="#Stage-2-Calculate-decay-scores" class="anchor-icon" translate="no">
+<h3 id="Stage-2-Calculate-decay-scores" class="common-anchor-header">Stage 2: Calculate decay scores<button data-href="#Stage-2-Calculate-decay-scores" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -109,13 +112,13 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>次に、Milvusは、選択したディケイ・ランカーを使用して、数値フィールド値（タイムスタンプや距離など）に基づいてディケイスコアを算出します：</p>
+    </button></h3><p>Next, Milvus calculates a decay score based on the numeric field value (like timestamp or distance) using your selected decay ranker:</p>
 <ul>
-<li><p>各ディケイ・ランカーは、生の数値を0～1の範囲の正規化された関連性スコアに変換します。</p></li>
-<li><p>減衰スコアは、理想点からの「距離」に基づいて、そのアイテムがどれほど関連性が高いかを表します。</p></li>
+<li><p>Each decay ranker transforms raw numeric values into normalized relevance scores between 0-1</p></li>
+<li><p>The decay score represents how relevant an item is based on its “distance” from the ideal point</p></li>
 </ul>
-<p>具体的な計算式は、減衰ランカーの種類によって異なります。減衰スコアの計算方法の詳細については、<a href="/docs/ja/gaussian-decay.md#Formula">ガウス減衰</a>、<a href="/docs/ja/exponential-decay.md#Formula">指数減衰</a>、<a href="/docs/ja/linear-decay.md#Formula">線形減衰の</a>各専用ページを参照してください。</p>
-<h3 id="Stage-3-Compute-final-scores" class="common-anchor-header">ステージ3：最終スコアの算出<button data-href="#Stage-3-Compute-final-scores" class="anchor-icon" translate="no">
+<p>The specific calculation formula varies depending on the decay ranker type. For details on how to calculate a decay score, refer to the dedicated pages for <a href="/docs/ja/gaussian-decay.md#Formula">Gaussian Decay</a>, <a href="/docs/ja/exponential-decay.md#Formula">Exponential Decay</a>, <a href="/docs/ja/linear-decay.md#Formula">Linear Decay</a>.</p>
+<h3 id="Stage-3-Compute-final-scores" class="common-anchor-header">Stage 3: Compute final scores<button data-href="#Stage-3-Compute-final-scores" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -130,14 +133,14 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>最後に、Milvusは正規化された類似度スコアと減衰スコアを組み合わせて、最終的なランキングスコアを算出します：</p>
+    </button></h3><p>Finally, Milvus combines the normalized similarity score and decay score to produce the final ranking score:</p>
 <pre><code translate="no" class="language-plaintext">final_score = normalized_similarity_score × decay_score
 <button class="copy-code-btn"></button></code></pre>
-<p>ハイブリッド検索（複数のベクトルフィールドを組み合わせた検索）の場合、Milvusは検索リクエストの中で最大の正規化類似度スコアを採用します：</p>
+<p>In cases of hybrid search (combining multiple vector fields), Milvus takes the maximum normalized similarity score among search requests:</p>
 <pre><code translate="no" class="language-plaintext">final_score = max([normalized_score₁, normalized_score₂, ..., normalized_scoreₙ]) × decay_score
 <button class="copy-code-btn"></button></code></pre>
-<p>例えば、ハイブリッド検索において、ある研究論文がベクトル類似度で0.82、BM25ベースのテキスト検索で0.91のスコアを獲得した場合、Milvusは減衰係数を適用する前に、0.91を基本類似度スコアとして使用します。</p>
-<h3 id="Decay-ranking-in-action" class="common-anchor-header">減衰ランキングの実例<button data-href="#Decay-ranking-in-action" class="anchor-icon" translate="no">
+<p>For example, if a research paper scores 0.82 from vector similarity and 0.91 from BM25-based text retrieval in a hybrid search, Milvus uses 0.91 as the base similarity score before applying the decay factor.</p>
+<h3 id="Decay-ranking-in-action" class="common-anchor-header">Decay ranking in action<button data-href="#Decay-ranking-in-action" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -152,64 +155,64 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>時間ベースの減衰を適用して<strong>「AI 研究論文」</strong>を検索するという実用的なシナリオで、減衰ランキングを見てみましょう：</p>
+    </button></h3><p>Let’s see decay ranking in a practical scenario—searching for <strong>“AI research papers”</strong> with time-based decay:</p>
 <div class="alert note">
-<p>この例では、減衰スコアは関連性が時間の経過とともに低下する様子を反映しています。つまり、新しい論文ほど1.0に近いスコアが与えられ、古い論文ほど低いスコアが与えられます。これらの値は、特定の減衰ランカーを使用して計算されます。詳細については、<a href="/docs/ja/decay-ranker-overview.md#Choose-the-right-decay-ranker">「適切な減衰ランカーの選択</a>」を参照してください。</p>
+<p>In this example, decay scores reflect how relevance diminishes with time—newer papers receive scores closer to 1.0, older papers receive lower scores. These values are calculated using a specific decay ranker. For details, refer to <a href="/docs/ja/decay-ranker-overview.md#Choose-the-right-decay-ranker">Choose the right decay ranker</a>.</p>
 </div>
 <table>
    <tr>
-     <th><p>論文</p></th>
-     <th><p>ベクトル類似度</p></th>
-     <th><p>正規化された類似度スコア</p></th>
-     <th><p>公開日</p></th>
-     <th><p>減衰スコア</p></th>
-     <th><p>最終スコア</p></th>
-     <th><p>最終順位</p></th>
+     <th><p>Paper</p></th>
+     <th><p>Vector Similarity</p></th>
+     <th><p>Normalized Similarity Score</p></th>
+     <th><p>Publication Date</p></th>
+     <th><p>Decay Score</p></th>
+     <th><p>Final Score</p></th>
+     <th><p>Final Rank</p></th>
    </tr>
    <tr>
-     <td><p>論文A</p></td>
-     <td><p>高</p></td>
+     <td><p>Paper A</p></td>
+     <td><p>High</p></td>
      <td><p>0.85 (<code translate="no">COSINE</code>)</p></td>
-     <td><p>2週間前</p></td>
+     <td><p>2 weeks ago</p></td>
      <td><p>0.80</p></td>
      <td><p>0.68</p></td>
      <td>2</td>
    </tr>
    <tr>
-     <td><p>ペーパーB</p></td>
-     <td><p>非常に高い</p></td>
+     <td><p>Paper B</p></td>
+     <td><p>Very High</p></td>
      <td><p>0.92 (<code translate="no">COSINE</code>)</p></td>
-     <td><p>6ヶ月前</p></td>
+     <td><p>6 months ago</p></td>
      <td><p>0.45</p></td>
      <td><p>0.41</p></td>
      <td>4</td>
    </tr>
    <tr>
-     <td><p>論文C</p></td>
-     <td><p>中</p></td>
+     <td><p>Paper C</p></td>
+     <td><p>Medium</p></td>
      <td><p>0.75 (<code translate="no">COSINE</code>)</p></td>
-     <td><p>1日前</p></td>
+     <td><p>1 day ago</p></td>
      <td><p>0.98</p></td>
      <td><p>0.74</p></td>
      <td>1</td>
    </tr>
    <tr>
-     <td><p>論文D</p></td>
-     <td><p>中～高</p></td>
+     <td><p>Paper D</p></td>
+     <td><p>Medium-High</p></td>
      <td><p>0.76 (<code translate="no">COSINE</code>)</p></td>
-     <td><p>3週間前</p></td>
+     <td><p>3 weeks ago</p></td>
      <td><p>0.70</p></td>
      <td><p>0.53</p></td>
      <td>3</td>
    </tr>
 </table>
-<p>減衰再ランク付けを行わなければ、純粋なベクトル類似度（0.92）に基づいて論文Bが最高位となる。しかし、減衰再ランク付けを適用すると：</p>
+<p>Without decay reranking, Paper B would rank highest based on pure vector similarity (0.92). However, with decay reranking applied:</p>
 <ul>
-<li><p>論文Cは、類似度が中程度であるにもかかわらず、ごく最近（昨日）発表されたため、1位に躍り出ます</p></li>
-<li><p>論文Bは、類似度が非常に高いにもかかわらず、比較的古いという理由で4位に順位を下げた</p></li>
-<li><p>論文DはCOSINE類似度を使用しているため、減衰を適用する前にそのスコア0.76が直接使用される</p></li>
+<li><p>Paper C jumps to position #1 despite medium similarity because it’s very recent (published yesterday)</p></li>
+<li><p>Paper B drops to position #4 despite excellent similarity because it’s relatively old</p></li>
+<li><p>Paper D uses COSINE similarity, so its score of 0.76 is used directly before applying decay</p></li>
 </ul>
-<h2 id="Choose-the-right-decay-ranker" class="common-anchor-header">適切なデケイ・ランカーを選択する<button data-href="#Choose-the-right-decay-ranker" class="anchor-icon" translate="no">
+<h2 id="Choose-the-right-decay-ranker" class="common-anchor-header">Choose the right decay ranker<button data-href="#Choose-the-right-decay-ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -224,40 +227,40 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvusは、<code translate="no">gauss</code> 、<code translate="no">exp</code> 、<code translate="no">linear</code> といった、それぞれ特定のユースケース向けに設計された独自のディケイ・ランカーを提供しています：</p>
+    </button></h2><p>Milvus offers distinct decay rankers - <code translate="no">gauss</code>, <code translate="no">exp</code>, <code translate="no">linear</code>, each designed for specific use cases:</p>
 <table>
    <tr>
-     <th><p>減衰ランカー</p></th>
-     <th><p>特徴</p></th>
-     <th><p>理想的なユースケース</p></th>
-     <th><p>使用例</p></th>
+     <th><p>Decay Ranker</p></th>
+     <th><p>Characteristics</p></th>
+     <th><p>Ideal Use Cases</p></th>
+     <th><p>Example Scenario</p></th>
    </tr>
    <tr>
-     <td><p>ガウス型 (<code translate="no">gauss</code>)</p></td>
-     <td><p>適度に長く続く、自然な感じの緩やかな減少</p></td>
-     <td><ul><li><p>バランスの取れた結果が求められる一般的な検索</p></li><li><p>ユーザーが距離を直感的に把握できる用途</p></li><li><p>適度な距離であっても、検索結果に過度なペナルティが課されるべきではない場合</p></li></ul></td>
-     <td><p>レストラン検索において、3 km 離れた質の高い店舗も、近隣の選択肢よりは順位が低くなるものの、検索結果に表示される</p></td>
+     <td><p>Gaussian (<code translate="no">gauss</code>)</p></td>
+     <td><p>Natural-feeling gradual decline that extends moderately</p></td>
+     <td><ul><li><p>General searches requiring balanced results</p></li><li><p>Applications where users have an intuitive sense of distance</p></li><li><p>When moderate distance shouldn't severely penalize results</p></li></ul></td>
+     <td><p>In a restaurant search, quality venues 3 km away remain discoverable, though ranked lower than nearby options</p></td>
    </tr>
    <tr>
-     <td><p>指数関数的（<code translate="no">exp</code> ）</p></td>
-     <td><p>最初は急速に減少するが、ロングテールは維持される</p></td>
-     <td><ul><li><p>最新性が重要なニュースフィード</p></li><li><p>最新のコンテンツが主流となるべきソーシャルメディア</p></li><li><p>近さが強く重視されるが、例外的に優れた遠方の項目も表示され続けるべき場合</p></li></ul></td>
-     <td><p>ニュースアプリでは、昨日の記事は1週間前のコンテンツよりもはるかに上位にランク付けされますが、関連性の高い古い記事も表示されることがあります</p></td>
+     <td><p>Exponential (<code translate="no">exp</code>)</p></td>
+     <td><p>Rapidly decreases at first but maintains a long tail</p></td>
+     <td><ul><li><p>News feeds where recency is critical</p></li><li><p>Social media where fresh content should dominate</p></li><li><p>When proximity is strongly preferred but exceptional distant items should remain visible</p></li></ul></td>
+     <td><p>In a news app, yesterday's stories rank much higher than week-old content, but highly relevant older articles can still appear</p></td>
    </tr>
    <tr>
-     <td><p>線形（<code translate="no">linear</code> ）</p></td>
-     <td><p>明確なカットオフを伴う、一貫性のある予測可能な減少</p></td>
-     <td><ul><li><p>自然な境界を持つアプリケーション</p></li><li><p>距離制限のあるサービス</p></li><li><p>有効期限や明確な閾値があるコンテンツ</p></li></ul></td>
-     <td><p>イベント検索ツールでは、2週間先の期間を超えるイベントは一切表示されません</p></td>
+     <td><p>Linear (<code translate="no">linear</code>)</p></td>
+     <td><p>Consistent, predictable decline with a clear cutoff</p></td>
+     <td><ul><li><p>Applications with natural boundaries</p></li><li><p>Services with distance limits</p></li><li><p>Content with expiration dates or clear thresholds</p></li></ul></td>
+     <td><p>In an event finder, events beyond a two-week future window simply don't appear at all</p></td>
    </tr>
 </table>
-<p>各減衰ランカーによるスコアの算出方法や具体的な減少パターンに関する詳細については、専用のドキュメントを参照してください：</p>
+<p>For detailed information about how each decay ranker calculates scores and specific decline patterns, refer to the dedicated documentation:</p>
 <ul>
-<li><p><a href="/docs/ja/gaussian-decay.md">ガウス減衰</a></p></li>
-<li><p><a href="/docs/ja/exponential-decay.md">指数関数的減衰</a></p></li>
-<li><p><a href="/docs/ja/linear-decay.md">線形減衰</a></p></li>
+<li><p><a href="/docs/ja/gaussian-decay.md">Gaussian Decay</a></p></li>
+<li><p><a href="/docs/ja/exponential-decay.md">Exponential Decay</a></p></li>
+<li><p><a href="/docs/ja/linear-decay.md">Linear Decay</a></p></li>
 </ul>
-<h2 id="Implementation-example" class="common-anchor-header">実装例<button data-href="#Implementation-example" class="anchor-icon" translate="no">
+<h2 id="Implementation-example" class="common-anchor-header">Implementation example<button data-href="#Implementation-example" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -272,11 +275,11 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>減衰ランカーは、Milvus の標準ベクトル検索およびハイブリッド検索の両方に適用できます。以下に、この機能を実装するための主要なコードスニペットを示します。</p>
+    </button></h2><p>Decay rankers can be applied to both standard vector search and hybrid search operations in Milvus. Below are the key code snippets for implementing this feature.</p>
 <div class="alert note">
-<p>減衰関数を使用する前に、まず減衰計算に使用する適切な数値フィールド（タイムスタンプ、距離など）を含むコレクションを作成する必要があります。コレクションの設定、スキーマの定義、データの挿入を含む完全な動作例については、<a href="/docs/ja/tutorial-implement-a-time-based-ranking-in-milvus.md">「チュートリアル：Milvusでの時間ベースのランキングの実装」</a>を参照してください。</p>
+<p>Before using decay functions, you must first create a collection with appropriate numeric fields (like timestamps, distances, etc.) that will be used for decay calculations. For complete working examples including collection setup, schema definition, and data insertion, refer to <a href="/docs/ja/tutorial-implement-a-time-based-ranking-in-milvus.md">Tutorial: Implement Time-based Ranking in Milvus</a>.</p>
 </div>
-<h3 id="Create-a-decay-ranker" class="common-anchor-header">減衰ランカーの作成<button data-href="#Create-a-decay-ranker" class="anchor-icon" translate="no">
+<h3 id="Create-a-decay-ranker" class="common-anchor-header">Create a decay ranker<button data-href="#Create-a-decay-ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -291,16 +294,16 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>ディケイ・ランカーを実装するには、まず適切な設定で<code translate="no">Function</code> オブジェクトを定義します：</p>
+    </button></h3><p>To implement decay ranking, first define a <code translate="no">Function</code> object with the appropriate configuration:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> Function, FunctionType
 <span class="hljs-keyword">import</span> datetime
@@ -404,71 +407,110 @@ rerank-&gt;<span class="hljs-built_in">SetDecay</span>(<span class="hljs-number"
     .WithOffset(<span class="hljs-number">24</span> * <span class="hljs-number">60</span> * <span class="hljs-number">60</span>)                    <span class="hljs-comment">// 1 day no-decay zone (must match collection data unit)</span>
     .WithDecay(<span class="hljs-number">0.5f</span>);                            <span class="hljs-comment">// Half score at scale distance</span>
 <button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
+<pre><code translate="no" class="language-bash"><span class="hljs-built_in">export</span> CLUSTER_ENDPOINT=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>
+<span class="hljs-built_in">export</span> TOKEN=<span class="hljs-string">&quot;root:Milvus&quot;</span>
+
+curl --request POST \
+--url <span class="hljs-string">&quot;<span class="hljs-variable">${CLUSTER_ENDPOINT}</span>/v2/vectordb/collections/create&quot;</span> \
+--header <span class="hljs-string">&quot;Authorization: Bearer <span class="hljs-variable">${TOKEN}</span>&quot;</span> \
+--header <span class="hljs-string">&quot;Content-Type: application/json&quot;</span> \
+--header <span class="hljs-string">&quot;Request-Timeout: 10&quot;</span> \
+-d <span class="hljs-string">&#x27;{
+    &quot;collectionName&quot;: &quot;your_collection&quot;,
+    &quot;schema&quot;: {
+        &quot;autoID&quot;: false,
+        &quot;enableDynamicField&quot;: false,
+        &quot;fields&quot;: [
+            {
+                &quot;fieldName&quot;: &quot;id&quot;,
+                &quot;dataType&quot;: &quot;Int64&quot;,
+                &quot;isPrimary&quot;: true
+            },
+            {
+                &quot;fieldName&quot;: &quot;document&quot;,
+                &quot;dataType&quot;: &quot;VarChar&quot;,
+                &quot;elementTypeParams&quot;: {
+                    &quot;max_length&quot;: 65535
+                }
+            },
+            {
+                &quot;fieldName&quot;: &quot;timestamp&quot;,
+                &quot;dataType&quot;: &quot;Int64&quot;
+            },
+            {
+                &quot;fieldName&quot;: &quot;vector_field&quot;,
+                &quot;dataType&quot;: &quot;FloatVector&quot;,
+                &quot;elementTypeParams&quot;: {
+                    &quot;dim&quot;: 768
+                }
+            }
+        ]
+    }
+}&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
 <table>
    <tr>
-     <th><p>パラメータ</p></th>
-     <th><p>必須？</p></th>
-     <th><p>説明</p></th>
-     <th><p>値/例</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Required?</p></th>
+     <th><p>Description</p></th>
+     <th><p>Value/Example</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">name</code></p></td>
-     <td><p>はい</p></td>
-     <td><p>検索の実行時に使用される、関数の識別子。ユースケースに関連した、わかりやすい名前を選択してください。</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Identifier for your function used when executing searches. Choose a descriptive name relevant to your use case.</p></td>
      <td><p><code translate="no">"time_decay"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">input_field_names</code></p></td>
-     <td><p>はい</p></td>
-     <td><p>減衰スコアの計算に使用する数値フィールド。減衰の計算にどのデータ属性を使用するかを決定します（例：時間ベースの減衰の場合はタイムスタンプ、位置情報ベースの減衰の場合は座標）。 </p><p>コレクション内のフィールドであり、関連する数値値を含む必要があります。INT8/16/32/64、FLOAT、DOUBLEをサポートしています。</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Numeric field for decay score calculation. Determines which data attribute will be used for calculating decay (e.g., timestamps for time-based decay, coordinates for location-based decay). </p><p>Must be a field in your collection that contains relevant numeric values. Supports INT8/16/32/64, FLOAT, DOUBLE.</p></td>
      <td><p><code translate="no">["timestamp"]</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">function_type</code></p></td>
-     <td><p>はい</p></td>
-     <td><p>作成する関数のタイプを指定します。</p><p>すべての減衰ランカーについて、<code translate="no">RERANK</code> に設定する必要があります。</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Specifies the type of function being created.</p><p>Must be set to <code translate="no">RERANK</code> for all decay rankers.</p></td>
      <td><p><code translate="no">FunctionType.RERANK</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.reranker</code></p></td>
-     <td><p>はい</p></td>
-     <td><p>使用する再ランク付け方法を指定します。</p><p>ディケイ・ランキング機能を有効にするには、<code translate="no">"decay"</code> に設定する必要があります。</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Specifies the reranking method to use.</p><p>Must be set to <code translate="no">"decay"</code> to enable decay ranking functionality.</p></td>
      <td><p><code translate="no">"decay"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.function</code></p></td>
-     <td><p>はい</p></td>
-     <td><p>適用する数学的減衰ランカーを指定します。関連性の低下を示す曲線の形状を決定します。</p><p>適切な関数の選択方法については、「<a href="/docs/ja/decay-ranker-overview.md#Choose-the-right-decay-ranker">適切な減衰ランカーの選択</a>」のセクションを参照してください。</p></td>
-     <td><p><code translate="no">"gauss"</code>、<code translate="no">"exp"</code> 、または<code translate="no">"linear"</code></p></td>
+     <td><p>Yes</p></td>
+     <td><p>Specifies which mathematical decay ranker to apply. Determines the curve shape of relevance decline.</p><p>See <a href="/docs/ja/decay-ranker-overview.md#Choose-the-right-decay-ranker">Choose the right decay ranker</a> section for guidance on selecting the appropriate function.</p></td>
+     <td><p><code translate="no">"gauss"</code>, <code translate="no">"exp"</code>, or <code translate="no">"linear"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.origin</code></p></td>
-     <td><p>はい</p></td>
-     <td><p>減衰スコアの計算元となる基準点。この値を持つ項目には、関連性スコアが最大値として付与されます。</p><p>時間ベースの減衰の場合、時間単位はコレクションのデータと一致している必要があります。</p></td>
-     <td><ul><li><p>タイムスタンプの場合：現在の時刻（例：<code translate="no">int(time.time())</code> ）</p></li><li><p>位置情報の場合：ユーザーの現在の座標</p></li></ul></td>
+     <td><p>Yes</p></td>
+     <td><p>Reference point from which decay score is calculated. Items at this value receive maximum relevance scores.</p><p>For time-based decay, the time unit must match your collection data.</p></td>
+     <td><ul><li><p>For timestamps: current time (e.g., <code translate="no">int(time.time())</code>)</p></li><li><p>For geolocation: user's current coordinates</p></li></ul></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.scale</code></p></td>
-     <td><p>はい</p></td>
-     <td><p>関連性が<code translate="no">decay</code> の値まで低下する距離または時間。関連性が低下する速度を制御します。</p><p>時間ベースの減衰の場合、時間単位は収集データと一致している必要があります。</p><p>値が大きいほど関連性の低下は緩やかになり、値が小さいほど低下は急になります。</p></td>
-     <td><ul><li><p>時間の場合：秒単位の期間（例：<code translate="no">7 * 24 * 60 * 60</code> = 7 日）</p></li><li><p>距離の場合：メートル（例：<code translate="no">5000</code> for 5km）</p></li></ul></td>
+     <td><p>Yes</p></td>
+     <td><p>Distance or time at which relevance drops to the <code translate="no">decay</code> value. Controls how quickly relevance declines.</p><p>For time-based decay, the time unit must match your collection data.</p><p>Larger values create a more gradual decline in relevance; smaller values create a steeper decline.</p></td>
+     <td><ul><li><p>For time: period in seconds (e.g., <code translate="no">7 * 24 * 60 * 60</code> for 7 days)</p></li><li><p>For distance: meters (e.g., <code translate="no">5000</code> for 5km)</p></li></ul></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.offset</code></p></td>
-     <td><p>いいえ</p></td>
-     <td><p><code translate="no">origin</code> の周囲に「減衰なしゾーン」を作成し、そのゾーン内のアイテムはフルスコア（減衰スコア = 1.0）を維持します。</p><p>時間ベースの減衰の場合、時間単位はコレクションのデータと一致している必要があります。</p><p><code translate="no">origin</code> からこの範囲内にあるアイテムは、最大の関連性を維持します。</p></td>
-     <td><ul><li><p>時間の場合：秒単位の期間（例：<code translate="no">24 * 60 * 60</code> for 1 day）</p></li><li><p>距離の場合：メートル（例：<code translate="no">500</code> for 500m）</p></li></ul></td>
+     <td><p>No</p></td>
+     <td><p>Creates a "no-decay zone" around the <code translate="no">origin</code> where items maintain full scores (decay score = 1.0).</p><p>For time-based decay, the time unit must match your collection data.</p><p>Items within this range of the <code translate="no">origin</code> maintain maximum relevance.</p></td>
+     <td><ul><li><p>For time: period in seconds (e.g., <code translate="no">24 * 60 * 60</code> for 1 day)</p></li><li><p>For distance: meters (e.g., <code translate="no">500</code> for 500m)</p></li></ul></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.decay</code></p></td>
-     <td><p>なし</p></td>
-     <td><p><code translate="no">scale</code> の距離におけるスコア値。曲線の傾きを制御します。値が小さいほど曲線の傾きは急になり、値が大きいほど曲線の傾きは緩やかになります。</p><p>0 から 1 の間の値でなければなりません。</p></td>
-     <td><p><code translate="no">0.5</code> （デフォルト）</p></td>
+     <td><p>No</p></td>
+     <td><p>Score value at the <code translate="no">scale</code> distance, controls curve steepness. Lower values create steeper decline curves; higher values create more gradual decline curves.</p><p>Must be between 0 and 1.</p></td>
+     <td><p><code translate="no">0.5</code> (default)</p></td>
    </tr>
 </table>
-<h3 id="Apply-to-standard-vector-search" class="common-anchor-header">標準ベクトル検索に適用<button data-href="#Apply-to-standard-vector-search" class="anchor-icon" translate="no">
+<h3 id="Apply-to-standard-vector-search" class="common-anchor-header">Apply to standard vector search<button data-href="#Apply-to-standard-vector-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -483,16 +525,16 @@ rerank-&gt;<span class="hljs-built_in">SetDecay</span>(<span class="hljs-number"
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>減衰ランカーを定義したら、<code translate="no">ranker</code> パラメータに指定することで、検索操作中にそれを適用できます:</p>
+    </button></h3><p>After defining your decay ranker, you can apply it during search operations by passing it to the <code translate="no">ranker</code> parameter:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Use the decay function in standard vector search</span>
 results = milvus_client.search(
@@ -534,16 +576,18 @@ results = milvus_client.search(
 functionScore := entity.NewFunctionScore().AddFunction(rerank)
 
 resultSets, err := client.Search(ctx, milvusclient.NewSearchOption(
-    collection_name, <span class="hljs-comment">// collection name</span>
+    collectionName, <span class="hljs-comment">// collection name</span>
     <span class="hljs-number">10</span>,              <span class="hljs-comment">// limit</span>
-    []entity.Vector{your_query_vector}, <span class="hljs-comment">// query vector</span>
+    []entity.Vector{entity.FloatVector(yourQueryVector)}, <span class="hljs-comment">// query vector</span>
 ).WithANNSField(<span class="hljs-string">&quot;vector_field&quot;</span>).
     WithFunctionScore(functionScore).
     WithOutputFields(<span class="hljs-string">&quot;document&quot;</span>, <span class="hljs-string">&quot;timestamp&quot;</span>))
 <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
     fmt.Println(err.Error())
-    <span class="hljs-comment">// handle error</span>
+    <span class="hljs-keyword">return</span>
 }
+
+fmt.Println(resultSets)
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-rust"><span class="hljs-keyword">use</span> milvus::v2::prelude::*;
 
@@ -614,5 +658,47 @@ SearchResp results = <span class="hljs-keyword">await</span> client.SearchAsync(
     }
 });
 <button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
+<pre><code translate="no" class="language-bash"><span class="hljs-built_in">export</span> CLUSTER_ENDPOINT=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>
+<span class="hljs-built_in">export</span> TOKEN=<span class="hljs-string">&quot;root:Milvus&quot;</span>
+
+<span class="hljs-comment"># The ranker configuration is passed with the search request</span>
+<span class="hljs-built_in">export</span> rankerFunction=<span class="hljs-string">&#x27;{
+    &quot;name&quot;: &quot;time_decay&quot;,
+    &quot;type&quot;: &quot;Rerank&quot;,
+    &quot;inputFieldNames&quot;: [
+        &quot;timestamp&quot;
+    ],
+    &quot;outputFieldNames&quot;: [],
+    &quot;params&quot;: {
+        &quot;reranker&quot;: &quot;decay&quot;,
+        &quot;function&quot;: &quot;gauss&quot;,
+        &quot;origin&quot;: 1735689600,
+        &quot;scale&quot;: 604800,
+        &quot;offset&quot;: 86400,
+        &quot;decay&quot;: 0.5
+    }
+}&#x27;</span>
+
+<span class="hljs-comment"># A query vector matching the collection dimension</span>
+<span class="hljs-built_in">export</span> QUERY_VECTOR=$(jq -n <span class="hljs-string">&#x27;[range(768) | 0.01]&#x27;</span>)
+
+request=$(jq -n \
+--argjson vec <span class="hljs-string">&quot;<span class="hljs-variable">$QUERY_VECTOR</span>&quot;</span> \
+--argjson fn <span class="hljs-string">&quot;<span class="hljs-variable">$rankerFunction</span>&quot;</span> \
+<span class="hljs-string">&#x27;{
+    collectionName: &quot;your_collection&quot;,
+    data: [$vec],
+    annsField: &quot;vector_field&quot;,
+    limit: 10,
+    outputFields: [&quot;document&quot;, &quot;timestamp&quot;],
+    consistencyLevel: &quot;Strong&quot;,
+    functionScore: {functions: [$fn]}
+}&#x27;</span>)
+
+curl --request POST \
+--url <span class="hljs-string">&quot;<span class="hljs-variable">${CLUSTER_ENDPOINT}</span>/v2/vectordb/entities/search&quot;</span> \
+--header <span class="hljs-string">&quot;Authorization: Bearer <span class="hljs-variable">${TOKEN}</span>&quot;</span> \
+--header <span class="hljs-string">&quot;Content-Type: application/json&quot;</span> \
+--header <span class="hljs-string">&quot;Request-Timeout: 10&quot;</span> \
+-d <span class="hljs-string">&quot;<span class="hljs-variable">$request</span>&quot;</span>
 <button class="copy-code-btn"></button></code></pre>

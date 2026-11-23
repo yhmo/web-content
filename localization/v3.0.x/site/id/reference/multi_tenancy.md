@@ -1,12 +1,11 @@
 ---
 id: multi_tenancy.md
-title: Menerapkan Multi-tenancy
+title: Implement Multi-tenancy
 summary: >-
-  Di Milvus, multi-tenancy berarti beberapa pelanggan atau tim—yang disebut
-  sebagai tenant—berbagi kluster yang sama sambil tetap mempertahankan
-  lingkungan data yang terisolasi.
+  In Milvus, multi-tenancy means multiple customers or teams—referred to as
+  tenants— share the same cluster while maintaining isolated data environments.
 ---
-<h1 id="Implement-Multi-tenancy" class="common-anchor-header">Menerapkan Multi-tenancy<button data-href="#Implement-Multi-tenancy" class="anchor-icon" translate="no">
+<h1 id="Implement-Multi-tenancy" class="common-anchor-header">Implement Multi-tenancy<button data-href="#Implement-Multi-tenancy" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -21,9 +20,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Di Milvus, multi-tenancy berarti beberapa pelanggan atau tim— <strong>yang</strong>disebut sebagai <strong>tenant</strong>—berbagi kluster yang sama sambil tetap mempertahankan lingkungan data yang terisolasi.</p>
-<p>Milvus mendukung empat strategi multi-tenancy, yang masing-masing menawarkan keseimbangan berbeda antara skalabilitas, isolasi data, dan fleksibilitas. Panduan ini akan memandu Anda melalui setiap opsi, membantu Anda memilih strategi yang paling sesuai untuk kasus penggunaan Anda.</p>
-<h2 id="Multi-tenancy-strategies" class="common-anchor-header">Strategi multi-tenancy<button data-href="#Multi-tenancy-strategies" class="anchor-icon" translate="no">
+    </button></h1><p>In Milvus, multi-tenancy means multiple customers or teams—referred to as <strong>tenants</strong>— share the same cluster while maintaining isolated data environments.</p>
+<p>Milvus supports four multi-tenancy strategies, each offering a different trade-off between scalability, data isolation, and flexibility. This guide walks you through each option, helping you choose the most suitable strategy for your use case.</p>
+<h2 id="Multi-tenancy-strategies" class="common-anchor-header">Multi-tenancy strategies<button data-href="#Multi-tenancy-strategies" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -38,8 +37,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus mendukung multi-tenancy pada empat tingkatan: <strong>Database</strong>, <strong>Koleksi</strong>, <strong>Partisi</strong>, dan <strong>Kunci Partisi</strong>.</p>
-<h3 id="Database-level-multi-tenancy" class="common-anchor-header">Multi-tenancy tingkat database<button data-href="#Database-level-multi-tenancy" class="anchor-icon" translate="no">
+    </button></h2><p>Milvus supports multi-tenancy at four levels: <strong>Database</strong>, <strong>Collection</strong>, <strong>Partition</strong>, and <strong>Partition Key</strong>.</p>
+<h3 id="Database-level-multi-tenancy" class="common-anchor-header">Database-level multi-tenancy<button data-href="#Database-level-multi-tenancy" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -54,20 +53,20 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Dengan multi-tenancy tingkat database, setiap penyewa menerima <a href="/docs/id/manage_databases.md">database</a> yang sesuai yang berisi satu atau lebih koleksi.</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/database-level-multi-tenancy.png" alt="Database Level Multi Tenancy" class="doc-image" id="database-level-multi-tenancy" /> 
-   <span>Multi-tenancy Tingkat Database</span>
-  
- </span></p>
+    </button></h3><p>With database-level multi-tenancy, each tenant receives a corresponding <a href="/docs/id/manage_databases.md">database</a> containing one or more collections.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/database-level-multi-tenancy.png" alt="Database Level Multi Tenancy" class="doc-image" id="database-level-multi-tenancy" />
+    <span>Database Level Multi Tenancy</span>
+  </span>
+</p>
 <ul>
-<li><p><strong>Skalabilitas</strong>: Strategi multi-tenancy tingkat database secara default mendukung maksimal 64 penyewa.</p></li>
-<li><p><strong>Isolasi data</strong>: Data di setiap basis data sepenuhnya terpisah, sehingga menawarkan isolasi data tingkat perusahaan yang ideal untuk lingkungan yang diatur oleh regulasi atau pelanggan dengan kebutuhan kepatuhan yang ketat.</p></li>
-<li><p><strong>Fleksibilitas</strong>: Setiap basis data dapat memiliki koleksi dengan skema yang berbeda, sehingga menawarkan pengorganisasian data yang sangat fleksibel dan memungkinkan setiap penyewa memiliki skema datanya sendiri.</p></li>
-<li><p><strong>Lainnya</strong>: Strategi ini juga mendukung RBAC, yang memungkinkan kontrol terperinci atas akses pengguna per penyewa. Selain itu, Anda dapat secara fleksibel memuat atau melepaskan data untuk penyewa tertentu guna mengelola data aktif dan tidak aktif secara efektif.</p></li>
+<li><p><strong>Scalability</strong>: The database-level multi-tenancy strategy  supports a maximum of 64 tenants by default.</p></li>
+<li><p><strong>Data isolation</strong>: The data in each database is fully separated, offering enterprise-grade data isolation ideal for regulated environments or customers with strict compliance needs.</p></li>
+<li><p><strong>Flexibility</strong>: Each database can have collections with different schemas, offering highly flexible data organization and allowing each tenant to have its own data schema.</p></li>
+<li><p><strong>Others</strong>: This strategy also supports RBAC, enabling fine-grained control over user access per tenant. Additionally, you can flexibly load or release data for specific tenants to manage hot and cold data effectively.</p></li>
 </ul>
-<h3 id="Collection-level-multi-tenancy" class="common-anchor-header">Multi-tenant di tingkat koleksi<button data-href="#Collection-level-multi-tenancy" class="anchor-icon" translate="no">
+<h3 id="Collection-level-multi-tenancy" class="common-anchor-header">Collection-level multi-tenancy<button data-href="#Collection-level-multi-tenancy" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -82,20 +81,20 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Dengan multi-tenancy tingkat koleksi, setiap penyewa diberi satu <a href="/docs/id/manage-collections.md">koleksi</a>, sehingga menawarkan isolasi data yang kuat.</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/collection-level-multi-tenancy.png" alt="Collection Level Multi Tenancy" class="doc-image" id="collection-level-multi-tenancy" /> 
-   <span>Multi-tenancy tingkat koleksi</span>
-  
- </span></p>
+    </button></h3><p>With collection-level multi-tenancy, each tenant is assigned a <a href="/docs/id/manage-collections.md">collection</a>, offering strong data isolation.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/collection-level-multi-tenancy.png" alt="Collection Level Multi Tenancy" class="doc-image" id="collection-level-multi-tenancy" />
+    <span>Collection Level Multi Tenancy</span>
+  </span>
+</p>
 <ul>
-<li><p><strong>Skalabilitas</strong>: Karena sebuah cluster dapat menampung hingga 65.536 koleksi secara default, strategi ini dapat mengakomodasi jumlah penyewa yang sama di dalam cluster tersebut.</p></li>
-<li><p><strong>Isolasi data</strong>: Koleksi-koleksi tersebut terisolasi secara fisik satu sama lain. Strategi ini memberikan isolasi data yang kuat.</p></li>
-<li><p><strong>Fleksibilitas</strong>: Strategi ini memungkinkan setiap koleksi memiliki skema sendiri, sehingga dapat mengakomodasi penyewa dengan skema data yang berbeda-beda.</p></li>
-<li><p><strong>Lainnya</strong>: Strategi ini juga mendukung RBAC, sehingga memungkinkan kontrol akses yang terperinci terhadap penyewa. Selain itu, Anda dapat secara fleksibel memuat atau melepaskan data untuk penyewa tertentu guna mengelola data aktif dan tidak aktif secara efektif.</p></li>
+<li><p><strong>Scalability</strong>: Since a cluster can hold up to 65,536 collections by default, this strategy can accommodate the same number of tenants within the cluster.</p></li>
+<li><p><strong>Data isolation</strong>: Collections are physically isolated from one another. This strategy provides strong data isolation.</p></li>
+<li><p><strong>Flexibility</strong>: This strategy allows each collection to have its own schema, accommodating tenants with different data schemas.</p></li>
+<li><p><strong>Others</strong>: This strategy also supports RBAC, allowing for granular access control over tenants. Additionally, you can flexibly load or release data for specific tenants to manage hot and cold data effectively.</p></li>
 </ul>
-<h3 id="Partition-level-multi-tenancy" class="common-anchor-header">Multi-tenancy tingkat partisi<button data-href="#Partition-level-multi-tenancy" class="anchor-icon" translate="no">
+<h3 id="Partition-level-multi-tenancy" class="common-anchor-header">Partition-level multi-tenancy<button data-href="#Partition-level-multi-tenancy" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -110,20 +109,20 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Dalam multi-tenancy tingkat partisi, setiap penyewa ditugaskan ke <a href="/docs/id/manage-partitions.md">partisi</a> yang dibuat secara manual di dalam koleksi bersama.</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/partition-level-multi-tenancy.png" alt="Partition Level Multi Tenancy" class="doc-image" id="partition-level-multi-tenancy" /> 
-   <span>Multi-tenancy Tingkat Partisi</span>
-  
- </span></p>
+    </button></h3><p>In partition-level multi-tenancy, each tenant is assigned to a manually created <a href="/docs/id/manage-partitions.md">partition</a> within a shared collection.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/partition-level-multi-tenancy.png" alt="Partition Level Multi Tenancy" class="doc-image" id="partition-level-multi-tenancy" />
+    <span>Partition Level Multi Tenancy</span>
+  </span>
+</p>
 <ul>
-<li><p><strong>Skalabilitas</strong>: Satu koleksi dapat menampung hingga 1.024 partisi per koleksi, sehingga memungkinkan jumlah penyewa yang sama di dalamnya.</p></li>
-<li><p><strong>Isolasi data</strong>: Data setiap penyewa dipisahkan secara fisik oleh partisi.</p></li>
-<li><p><strong>Fleksibilitas</strong>: Strategi ini mengharuskan semua penyewa menggunakan skema data yang sama. Selain itu, partisi harus dibuat secara manual.</p></li>
-<li><p><strong>Lainnya</strong>: RBAC tidak didukung pada tingkat partisi. Penyewa dapat diquery baik secara individual maupun melintasi beberapa partisi, yang membuat pendekatan ini sangat cocok untuk skenario yang melibatkan kueri agregat atau analitik melintasi segmen penyewa. Selain itu, Anda dapat secara fleksibel memuat atau melepaskan data untuk penyewa tertentu guna mengelola data panas dan dingin secara efektif.</p></li>
+<li><p><strong>Scalability</strong>: A collection can hold up to 1,024 partitions per collection, allowing for the same number of tenants within it.</p></li>
+<li><p><strong>Data isolation</strong>: The data of each tenant is physically separated by partitions.</p></li>
+<li><p><strong>Flexibility</strong>: This strategy requires all tenants to share the same data schema. And partitions need to be manually created.</p></li>
+<li><p><strong>Others</strong>: RBAC is not supported on the partition level. Tenants can be queried either individually or across multiple partitions, which makes this approach well-suited for scenarios involving aggregated queries or analytics across tenant segments. Additionally, you can flexibly load or release data for specific tenants to manage hot and cold data effectively.</p></li>
 </ul>
-<h3 id="Partition-key-level-multi-tenancy" class="common-anchor-header">Multi-tenancy tingkat kunci partisi<button data-href="#Partition-key-level-multi-tenancy" class="anchor-icon" translate="no">
+<h3 id="Partition-key-level-multi-tenancy" class="common-anchor-header">Partition key-level multi-tenancy<button data-href="#Partition-key-level-multi-tenancy" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -138,23 +137,23 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Dengan strategi ini, semua penyewa berbagi satu koleksi dan skema, tetapi data setiap penyewa secara otomatis dialihkan ke 16 partisi yang terisolasi secara fisik berdasarkan nilai <a href="/docs/id/use-partition-key.md">kunci partisi</a>. Meskipun setiap partisi fisik dapat berisi beberapa penyewa, data dari penyewa yang berbeda tetap terpisah secara logis.</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/partition-key-level-multi-tenancy.png" alt="Partition Key Level Multi Tenancy" class="doc-image" id="partition-key-level-multi-tenancy" /> 
-   <span>Multi-tenancy Tingkat Kunci Partisi</span>
-  
- </span></p>
+    </button></h3><p>With this strategy, all tenants share a single collection and schema, but each tenant’s data is automatically routed into 16 physically isolated partitions based on the <a href="/docs/id/use-partition-key.md">partition key</a> value. Although each physical partition can contain multiple tenants, the data from different tenants remains logically separated.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/partition-key-level-multi-tenancy.png" alt="Partition Key Level Multi Tenancy" class="doc-image" id="partition-key-level-multi-tenancy" />
+    <span>Partition Key Level Multi Tenancy</span>
+  </span>
+</p>
 <ul>
-<li><p><strong>Skalabilitas</strong>: Strategi tingkat kunci partisi menawarkan pendekatan yang paling skalabel, mendukung jutaan penyewa.</p></li>
-<li><p><strong>Isolasi data</strong>: Strategi ini menawarkan isolasi data yang relatif lemah karena beberapa penyewa dapat berbagi partisi fisik.</p></li>
-<li><p><strong>Fleksibilitas</strong>: Karena semua penyewa harus berbagi skema data yang sama, strategi ini menawarkan fleksibilitas data yang terbatas.</p></li>
-<li><p><strong>Lain-lain</strong>: RBAC tidak didukung pada tingkat kunci partisi. Penyewa dapat di-query baik secara individual maupun melintasi beberapa partisi, yang membuat pendekatan ini sangat cocok untuk skenario yang melibatkan kueri agregat atau analitik melintasi segmen penyewa.</p></li>
+<li><p><strong>Scalability</strong>: The partition key-level strategy offers the most scalable approach, supporting millions of tenants.</p></li>
+<li><p><strong>Data isolation</strong>: This strategy offers relatively weak data isolation because multiple tenants can share a physical partition.</p></li>
+<li><p><strong>Flexibility</strong>: Since all tenants must share the same data schema, this strategy offers limited data flexibility.</p></li>
+<li><p><strong>Others</strong>: RBAC is not supported on the partition-key level. Tenants can be queried either individually or across multiple partitions, which makes this approach well-suited for scenarios involving aggregated queries or analytics across tenant segments.</p></li>
 </ul>
 <div class="alert note">
-<p>Kami menyarankan Anda membuat indeks skalar pada bidang kunci partisi. Karena setiap partisi fisik menampung beberapa penyewa, Milvus mengevaluasi filter penyewa terhadap setiap entitas di partisi yang dicari, dan tanpa indeks, ini akan menjadi pemindaian penuh. Untuk detailnya, lihat <a href="/docs/id/use-partition-key.md#Index-Partition-Key">Indeks Kunci Partisi</a>.</p>
+<p>We recommend that you create a scalar index on the partition key field. Because each physical partition holds multiple tenants, Milvus evaluates the tenant filter against every entity in the searched partitions, and without an index this is a full scan. For details, refer to <a href="/docs/id/use-partition-key.md#Index-Partition-Key">Index Partition Key</a>.</p>
 </div>
-<h2 id="Choosing-the-right-multi-tenancy-strategy" class="common-anchor-header">Memilih Strategi Multi-Tenancy yang Tepat<button data-href="#Choosing-the-right-multi-tenancy-strategy" class="anchor-icon" translate="no">
+<h2 id="Choosing-the-right-multi-tenancy-strategy" class="common-anchor-header">Choosing the right multi-tenancy strategy<button data-href="#Choosing-the-right-multi-tenancy-strategy" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -169,77 +168,77 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Tabel di bawah ini menyajikan perbandingan komprehensif antara empat tingkat strategi multi-tenancy.</p>
+    </button></h2><p>The table below offers a comprehensive comparison between the four levels of multi-tenancy strategies.</p>
 <table>
    <tr>
      <th></th>
-     <th><p><strong>Tingkat basis data</strong></p></th>
-     <th><p><strong>Tingkat Koleksi</strong></p></th>
-     <th><p><strong>Tingkat partisi</strong></p></th>
-     <th><p><strong>Tingkat kunci partisi</strong></p></th>
+     <th><p><strong>Database-level</strong></p></th>
+     <th><p><strong>Collection-level</strong></p></th>
+     <th><p><strong>Partition-level</strong></p></th>
+     <th><p><strong>Partition key-level</strong></p></th>
    </tr>
    <tr>
-     <td><p><strong>Isolasi Data</strong></p></td>
-     <td><p>Fisik</p></td>
-     <td><p>Fisik</p></td>
-     <td><p>Fisik</p></td>
-     <td><p>Fisik + Logis</p></td>
+     <td><p><strong>Data Isolation</strong></p></td>
+     <td><p>Physical</p></td>
+     <td><p>Physical</p></td>
+     <td><p>Physical</p></td>
+     <td><p>Physical + Logical</p></td>
    </tr>
    <tr>
-     <td><p><strong>Jumlah penyewa maksimum</strong></p></td>
-     <td><p>Secara default, 64. Anda dapat menaikkannya dengan mengubah parameter ` <code translate="no">maxDatabaseNum</code> ` di berkas konfigurasi `Milvus.yaml`. </p></td>
-     <td><p>Secara default, 65.536. Anda dapat menaikkannya dengan mengubah parameter ` <code translate="no">maxCollectionNum</code> ` di berkas konfigurasi `Milvus.yaml`.</p></td>
-     <td><p>Hingga 1.024 per koleksi. </p></td>
-     <td><p>Jutaan</p></td>
+     <td><p><strong>Max. number of tenants</strong></p></td>
+     <td><p>By default, 64. You can increase it by modifying the <code translate="no">maxDatabaseNum</code> parameter in the Milvus.yaml configuration file. </p></td>
+     <td><p>By default, 65,536. You can increase it by modifying the <code translate="no">maxCollectionNum</code> parameter in the Milvus.yaml configuration file.</p></td>
+     <td><p>Up to 1,024 per collection. </p></td>
+     <td><p>Millions</p></td>
    </tr>
    <tr>
-     <td><p><strong>Fleksibilitas skema data</strong></p></td>
-     <td><p>Tinggi</p></td>
-     <td><p>Sedang</p></td>
-     <td><p>Rendah</p></td>
-     <td><p>Rendah</p></td>
+     <td><p><strong>Data schema flexibility</strong></p></td>
+     <td><p>High</p></td>
+     <td><p>Medium</p></td>
+     <td><p>Low</p></td>
+     <td><p>Low</p></td>
    </tr>
    <tr>
-     <td><p><strong>Dukungan RBAC</strong></p></td>
-     <td><p>Ya</p></td>
-     <td><p>Ya</p></td>
-     <td><p>Tidak</p></td>
-     <td><p>Tidak</p></td>
+     <td><p><strong>RBAC support</strong></p></td>
+     <td><p>Yes</p></td>
+     <td><p>Yes</p></td>
+     <td><p>No</p></td>
+     <td><p>No</p></td>
    </tr>
    <tr>
-     <td><p><strong>Kinerja pencarian</strong></p></td>
-     <td><p>Baik</p></td>
-     <td><p>Baik</p></td>
-     <td><p>Sedang</p></td>
-     <td><p>Sedang</p></td>
+     <td><p><strong>Search performance</strong></p></td>
+     <td><p>Strong</p></td>
+     <td><p>Strong</p></td>
+     <td><p>Medium</p></td>
+     <td><p>Medium</p></td>
    </tr>
    <tr>
-     <td><p><strong>Dukungan pencarian lintas penyewa</strong></p></td>
-     <td><p>Tidak</p></td>
-     <td><p>Tidak</p></td>
-     <td><p>Ya</p></td>
-     <td><p>Ya</p></td>
+     <td><p><strong>Cross-tenant search support</strong></p></td>
+     <td><p>No</p></td>
+     <td><p>No</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Yes</p></td>
    </tr>
    <tr>
-     <td><p><strong>Dukungan untuk penanganan data aktif dan tidak aktif yang efektif</strong></p></td>
-     <td><p>Ya</p></td>
-     <td><p>Ya</p></td>
-     <td><p>Ya</p></td>
-     <td><p>Tidak Saat ini, strategi tingkat kunci partisi belum didukung.</p></td>
+     <td><p><strong>Support for effective handling of hot and cold data</strong></p></td>
+     <td><p>Yes</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Yes</p></td>
+     <td><p>No Currently, not supported for the partition key-level strategy.</p></td>
    </tr>
 </table>
-<p>Ada beberapa faktor yang perlu dipertimbangkan saat Anda memilih strategi multi-tenancy di Milvus.</p>
+<p>There are several factors to consider when you choose the multi-tenancy strategy in Milvus.</p>
 <ol>
-<li><p><strong>Skalabilitas:</strong> Kunci Partisi &gt; Partisi &gt; Koleksi &gt; Database</p>
-<p>Jika Anda memperkirakan akan mendukung jumlah penyewa yang sangat besar (jutaan atau lebih), gunakan strategi tingkat kunci partisi.</p></li>
-<li><p><strong>Persyaratan isolasi data yang ketat</strong>: Database = Koleksi &gt; Partisi &gt; Kunci Partisi</p>
-<p>Pilih strategi tingkat database, koleksi, atau partisi jika Anda memiliki persyaratan isolasi data fisik yang ketat.</p></li>
-<li><p><strong>Skema data yang fleksibel untuk data setiap penyewa:</strong> Database &gt; Koleksi &gt; Partisi = Kunci Partisi</p>
-<p>Strategi tingkat database dan tingkat koleksi memberikan fleksibilitas penuh dalam skema data. Jika struktur data penyewa Anda berbeda-beda, pilih multi-tenancy tingkat database atau tingkat koleksi.</p></li>
-<li><p><strong>Lain-lain</strong></p>
+<li><p><strong>Scalability:</strong> Partition Key > Partition > Collection > Database</p>
+<p>If you expect to support a very large number of tenants (millions or more), use the partition key-level strategy.</p></li>
+<li><p><strong>Strong data isolation requirements</strong>: Database = Collection > Partition > Partition Key</p>
+<p>Choose database, collection, or partition-level strategies if you have strict physical data isolation requirements.</p></li>
+<li><p><strong>Flexible data schema for each tenant’s data:</strong> Database > Collection > Partition = Partition Key</p>
+<p>Database-level and collection-level strategies provide full flexibility in data schemas. If your tenants’ data structures are different, choose database-level or collection-level multi-tenancy.</p></li>
+<li><p><strong>Others</strong></p>
 <ol>
-<li><p><strong>Kinerja:</strong> Kinerja pencarian ditentukan oleh berbagai faktor, termasuk indeks, parameter pencarian, dan konfigurasi mesin. Milvus juga mendukung penyetelan kinerja. Disarankan untuk menguji kinerja aktual sebelum Anda memilih strategi multi-tenancy.</p></li>
-<li><p><strong>Penanganan data panas dan dingin yang efektif</strong>: Saat ini, strategi tingkat database, tingkat koleksi, dan tingkat partisi semuanya mendukung penanganan data panas dan dingin.</p></li>
-<li><p><strong>Pencarian lintas penyewa</strong>: Hanya strategi tingkat partisi dan tingkat kunci partisi yang mendukung kueri lintas penyewa.</p></li>
+<li><p><strong>Performance:</strong> Search performance is determined by various factors, including indexes, search parameters, and machine configurations. Milvus also support performance-tuning. It is recommended to test the actual performance before you select a multi-tenancy strategy.</p></li>
+<li><p><strong>Effective handling of hot and cold data</strong>: Currently, the database-level, collection-level, and partition-level strategies all support hot and cold data handling.</p></li>
+<li><p><strong>Cross-tenant searches</strong>: Only the partition-level and partition-key-level strategies support cross-tenant queries.</p></li>
 </ol></li>
 </ol>

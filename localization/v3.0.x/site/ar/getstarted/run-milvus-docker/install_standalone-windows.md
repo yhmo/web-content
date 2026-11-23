@@ -2,12 +2,10 @@
 id: install_standalone-windows.md
 label: Docker
 related_key: Docker
-summary: >-
-  تعرف على كيفية تثبيت Milvus بشكل مستقل باستخدام Docker Desktop لنظام التشغيل
-  Windows.
-title: تشغيل Milvus في Docker (ويندوز)
+summary: Learn how to install Milvus standalone with Docker Desktop for Windows.
+title: Run Milvus in Docker (Windows)
 ---
-<h1 id="Run-Milvus-in-Docker-Windows" class="common-anchor-header">تشغيل Milvus في Docker (ويندوز)<button data-href="#Run-Milvus-in-Docker-Windows" class="anchor-icon" translate="no">
+<h1 id="Run-Milvus-in-Docker-Windows" class="common-anchor-header">Run Milvus in Docker (Windows)<button data-href="#Run-Milvus-in-Docker-Windows" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -23,10 +21,10 @@ title: تشغيل Milvus في Docker (ويندوز)
         ></path>
       </svg>
     </button></h1><blockquote>
-<p>بشكل افتراضي، يعمل هذا النشر على تشغيل <strong>Woodpecker</strong> (نظام الملفات المحلي) كقائمة انتظار الرسائل الخاصة به، لذا لا توجد حاجة إلى خدمة خارجية لقائمة انتظار الرسائل. انظر <a href="/docs/ar/woodpecker.md">Woodpecker</a>.</p>
+<p>By default, this deployment runs <strong>Woodpecker</strong> (local filesystem) as its message queue, so no external message-queue service is required. See <a href="/docs/ar/woodpecker.md">Woodpecker</a>.</p>
 </blockquote>
-<p>توضح هذه الصفحة كيفية تشغيل Milvus على نظام Windows باستخدام Docker Desktop مع الخلفية WSL 2 وحاويات Linux.</p>
-<h2 id="Prerequisites" class="common-anchor-header">المتطلبات الأساسية<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+<p>This page demonstrates how to run Milvus on Windows using Docker Desktop with the WSL 2 backend and Linux containers.</p>
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -42,17 +40,17 @@ title: تشغيل Milvus في Docker (ويندوز)
         ></path>
       </svg>
     </button></h2><ul>
-<li><a href="https://docs.docker.com/desktop/setup/install/windows-install/">قم بتثبيت Docker Desktop</a> وتأكد من استيفاء متطلبات Windows والأجهزة الخاصة به.</li>
-<li><a href="https://learn.microsoft.com/en-us/windows/wsl/install#install-wsl-command">قم بتثبيت Windows Subsystem for Linux 2 (WSL 2)</a>.</li>
-<li>قم بتشغيل Docker Desktop، وقم بتمكين <strong>خيار «استخدام المحرك المستند إلى WSL 2</strong>»، وحدد حاويات Linux. بالنسبة للأوامر التي يتم تشغيلها داخل توزيع WSL، قم أيضًا بتمكين هذا التوزيع ضمن <strong>«الإعدادات»</strong> &gt; <strong>«الموارد</strong> » &gt; <strong>«تكامل WSL</strong>». انظر <a href="https://docs.docker.com/desktop/features/wsl/">الخلفية WSL 2 لـ Docker Desktop</a>.</li>
+<li><a href="https://docs.docker.com/desktop/setup/install/windows-install/">Install Docker Desktop</a> and meet its Windows and hardware requirements.</li>
+<li><a href="https://learn.microsoft.com/en-us/windows/wsl/install#install-wsl-command">Install Windows Subsystem for Linux 2 (WSL 2)</a>.</li>
+<li>Start Docker Desktop, enable <strong>Use the WSL 2 based engine</strong>, and select Linux containers. For commands run inside a WSL distribution, also enable that distribution under <strong>Settings</strong> > <strong>Resources</strong> > <strong>WSL Integration</strong>. See <a href="https://docs.docker.com/desktop/features/wsl/">Docker Desktop WSL 2 backend</a>.</li>
 </ul>
-<p>قم بإجراء الفحوصات التالية في PowerShell أو موجه أوامر Windows قبل تنزيل ملفات Milvus:</p>
+<p>Run the following checks in PowerShell or Windows Command Prompt before downloading the Milvus files:</p>
 <pre><code translate="no" class="language-powershell">wsl --version
 docker info --format &quot;{{.OSType}}&quot;
 docker compose version
 </code></pre>
-<p>يجب أن يكون نوع نظام التشغيل Docker هو " <code translate="no">linux</code>". تستخدم أمثلة Compose المكون الإضافي " <code translate="no">docker compose</code> " (الإصدار 2 أو الأحدث)، وليس الأمر القديم " <code translate="no">docker-compose</code> " الإصدار 1.</p>
-<h2 id="Run-Milvus-in-Docker" class="common-anchor-header">تشغيل Milvus في Docker<button data-href="#Run-Milvus-in-Docker" class="anchor-icon" translate="no">
+<p>The Docker OS type must be <code translate="no">linux</code>. The Compose examples use the <code translate="no">docker compose</code> plugin (V2 or later), not the legacy <code translate="no">docker-compose</code> V1 command.</p>
+<h2 id="Run-Milvus-in-Docker" class="common-anchor-header">Run Milvus in Docker<button data-href="#Run-Milvus-in-Docker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -67,9 +65,9 @@ docker compose version
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>اختر أحد المحطات الطرفية التالية. قم بتشغيل الأوامر في دليل عمل قابل للكتابة؛ حيث يقوم البرنامج النصي بتخزين ملفات التكوين ودليل <code translate="no">volumes</code> هناك.</p>
-<p>يتم تنزيل البرنامج النصي من فرع Milvus <code translate="no">master</code>. يتم تعريف علامة صورة Docker الخاصة به في البرنامج النصي وقد تختلف عن الإصدار v3.0.5. لنشر هذا الإصدار بالضبط، استخدم تكوين Docker Compose المحدد الإصدار أدناه.</p>
-<h3 id="From-PowerShell" class="common-anchor-header">من PowerShell<button data-href="#From-PowerShell" class="anchor-icon" translate="no">
+    </button></h2><p>Choose one of the following terminals. Run the commands in a writable working directory; the script stores configuration files and the <code translate="no">volumes</code> directory there.</p>
+<p>The script is downloaded from the Milvus <code translate="no">master</code> branch. Its Docker image tag is defined in the script and can differ from v3.0.5. To deploy that exact release, use the versioned Docker Compose configuration below.</p>
+<h3 id="From-PowerShell" class="common-anchor-header">From PowerShell<button data-href="#From-PowerShell" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -84,12 +82,12 @@ docker compose version
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>قم بتنزيل البرنامج النصي، ثم قم بتشغيل Milvus:</p>
+    </button></h3><p>Download the script, then start Milvus:</p>
 <pre><code translate="no" class="language-powershell">Invoke-WebRequest -Uri &quot;https://raw.githubusercontent.com/milvus-io/milvus/master/scripts/standalone_embed.bat&quot; -OutFile standalone.bat
 .\standalone.bat start
 </code></pre>
-<p>يتطلب PowerShell البادئة <code translate="no">.\</code> لتشغيل البرنامج النصي من دليل العمل.</p>
-<h3 id="From-Windows-Command-Prompt" class="common-anchor-header">من موجه أوامر Windows<button data-href="#From-Windows-Command-Prompt" class="anchor-icon" translate="no">
+<p>PowerShell requires the <code translate="no">.\</code> prefix to run a script from the working directory.</p>
+<h3 id="From-Windows-Command-Prompt" class="common-anchor-header">From Windows Command Prompt<button data-href="#From-Windows-Command-Prompt" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -104,23 +102,23 @@ docker compose version
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>استخدم <code translate="no">curl.exe</code> لتنزيل البرنامج النصي؛ حيث إن <code translate="no">Invoke-WebRequest</code> هو أمر PowerShell ولا يعمل في موجه الأوامر:</p>
+    </button></h3><p>Use <code translate="no">curl.exe</code> to download the script; <code translate="no">Invoke-WebRequest</code> is a PowerShell command and does not run in Command Prompt:</p>
 <pre><code translate="no" class="language-bat">curl.exe -fL &quot;https://raw.githubusercontent.com/milvus-io/milvus/master/scripts/standalone_embed.bat&quot; -o standalone.bat
 standalone.bat start
 </code></pre>
-<p>بعد تشغيل أي من تسلسل أوامر Windows التالية:</p>
+<p>After running either Windows command sequence:</p>
 <ul>
-<li>تعمل حاوية Docker المسماة <strong>milvus-standalone</strong> على المنفذ <strong>19530</strong>.</li>
-<li>يعمل etcd المدمج في نفس الحاوية على المنفذ <strong>2379</strong>. ويُربط ملف التكوين الخاص به بملف <strong>embedEtcd.yaml</strong> الموجود في دليل العمل.</li>
-<li>يخزن Milvus البيانات في مجلد <strong>volumes/milvus</strong> في دليل العمل.</li>
-<li>توجد تعليلات التكوين في <strong>ملف user.yaml</strong> الموجود في دليل العمل. أعد تشغيل الحاوية بعد تغييرها.</li>
+<li>A Docker container named <strong>milvus-standalone</strong> serves port <strong>19530</strong>.</li>
+<li>Embedded etcd runs in the same container on port <strong>2379</strong>. Its configuration file maps to <strong>embedEtcd.yaml</strong> in the working directory.</li>
+<li>Milvus stores data in <strong>volumes/milvus</strong> in the working directory.</li>
+<li>Configuration overrides belong in <strong>user.yaml</strong> in the working directory. Restart the container after changing them.</li>
 </ul>
-<p>تحقق من حالة الصورة والحاوية في أي من المحطات الطرفية:</p>
+<p>Check the image and container status in either terminal:</p>
 <pre><code translate="no" class="language-powershell">docker inspect --format &quot;{{.Config.Image}}&quot; milvus-standalone
 docker ps --filter name=milvus-standalone
 </code></pre>
-<p>لإيقاف Milvus من PowerShell، قم بتشغيل الأمر « <code translate="no">.\standalone.bat stop</code> »؛ ومن موجه الأوامر، قم بتشغيل الأمر « <code translate="no">standalone.bat stop</code> ». يقوم الأمر « <code translate="no">delete</code> » بإزالة كل من الحاوية والبيانات المخزنة فيها. قم بعمل نسخة احتياطية من البيانات قبل استخدامها.</p>
-<h3 id="From-WSL-2" class="common-anchor-header">من WSL 2<button data-href="#From-WSL-2" class="anchor-icon" translate="no">
+<p>To stop Milvus from PowerShell, run <code translate="no">.\standalone.bat stop</code>; from Command Prompt, run <code translate="no">standalone.bat stop</code>. The <code translate="no">delete</code> command removes both the container and its stored data. Back up the data before using it.</p>
+<h3 id="From-WSL-2" class="common-anchor-header">From WSL 2<button data-href="#From-WSL-2" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -135,15 +133,15 @@ docker ps --filter name=milvus-standalone
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>افتح توزيع WSL المثبت لديك من محطة Windows:</p>
+    </button></h3><p>Open your installed WSL distribution from a Windows terminal:</p>
 <pre><code translate="no" class="language-powershell">wsl
 </code></pre>
-<p>في محطة WSL، قم بتنزيل البرنامج النصي لـ Linux وقم بتشغيل Milvus مرة واحدة:</p>
+<p>In the WSL terminal, download the Linux script and start Milvus once:</p>
 <pre><code translate="no" class="language-bash">curl -sfL https://raw.githubusercontent.com/milvus-io/milvus/master/scripts/standalone_embed.sh -o standalone_embed.sh
 bash standalone_embed.sh start
 <button class="copy-code-btn"></button></code></pre>
-<p>لإيقاف Milvus، قم بتشغيل الأمر <code translate="no">bash standalone_embed.sh stop</code>. يقوم الأمر <code translate="no">bash standalone_embed.sh delete</code> بإزالة الحاوية والتكوين والبيانات؛ قم بعمل نسخة احتياطية من البيانات قبل استخدامها.</p>
-<h2 id="Run-Milvus-with-Docker-Compose" class="common-anchor-header">تشغيل Milvus باستخدام Docker Compose<button data-href="#Run-Milvus-with-Docker-Compose" class="anchor-icon" translate="no">
+<p>To stop Milvus, run <code translate="no">bash standalone_embed.sh stop</code>. The <code translate="no">bash standalone_embed.sh delete</code> command removes the container, configuration, and data; back up the data before using it.</p>
+<h2 id="Run-Milvus-with-Docker-Compose" class="common-anchor-header">Run Milvus with Docker Compose<button data-href="#Run-Milvus-with-Docker-Compose" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -158,8 +156,8 @@ bash standalone_embed.sh start
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>استخدم التكوين المرفق بالإصدار v3.0.5. قم بتشغيل تسلسل الأوامر الخاص بمحطة العمل الخاصة بك فقط.</p>
-<h3 id="From-PowerShell" class="common-anchor-header">من PowerShell<button data-href="#From-PowerShell" class="anchor-icon" translate="no">
+    </button></h2><p>Use the configuration attached to release v3.0.5. Run only the command sequence for your terminal.</p>
+<h3 id="From-PowerShell" class="common-anchor-header">From PowerShell<button data-href="#From-PowerShell" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -174,12 +172,12 @@ bash standalone_embed.sh start
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>قم بتنزيل التكوين وابدأ تشغيل Milvus:</p>
+    </button></h3><p>Download the configuration and start Milvus:</p>
 <pre><code translate="no" class="language-powershell">Invoke-WebRequest -Uri &quot;https://github.com/milvus-io/milvus/releases/download/v3.0.5/milvus-standalone-docker-compose.yaml&quot; -OutFile docker-compose.yml
 docker compose up -d
 docker compose ps
 </code></pre>
-<h3 id="From-Windows-Command-Prompt" class="common-anchor-header">من موجه أوامر Windows<button data-href="#From-Windows-Command-Prompt" class="anchor-icon" translate="no">
+<h3 id="From-Windows-Command-Prompt" class="common-anchor-header">From Windows Command Prompt<button data-href="#From-Windows-Command-Prompt" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -194,12 +192,12 @@ docker compose ps
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>قم بتنزيل ملف التكوين وابدأ تشغيل Milvus:</p>
+    </button></h3><p>Download the configuration and start Milvus:</p>
 <pre><code translate="no" class="language-bat">curl.exe -fL &quot;https://github.com/milvus-io/milvus/releases/download/v3.0.5/milvus-standalone-docker-compose.yaml&quot; -o docker-compose.yml
 docker compose up -d
 docker compose ps
 </code></pre>
-<h3 id="From-WSL-2" class="common-anchor-header">من WSL 2<button data-href="#From-WSL-2" class="anchor-icon" translate="no">
+<h3 id="From-WSL-2" class="common-anchor-header">From WSL 2<button data-href="#From-WSL-2" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -214,13 +212,13 @@ docker compose ps
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>افتح توزيع WSL الخاص بك، ثم قم بتشغيل أوامر Linux التالية:</p>
+    </button></h3><p>Open your WSL distribution, then run the Linux commands:</p>
 <pre><code translate="no" class="language-bash">wget https://github.com/milvus-io/milvus/releases/download/v3.0.5/milvus-standalone-docker-compose.yaml -O docker-compose.yml
 docker compose up -d
 docker compose ps
 <button class="copy-code-btn"></button></code></pre>
-<p>يبدأ التكوين تشغيل ثلاث حاويات طويلة الأمد: <strong>milvus-standalone</strong> و <strong>milvus-minio</strong> و <strong>milvus-etcd</strong>. كما يقوم بتشغيل خدمة <code translate="no">milvus-volume-init</code> لمرة واحدة لإعداد ملكية دليل البيانات. يتم تعيين بياناتها إلى <strong>volumes/milvus</strong> و <strong>volumes/minio</strong> و <strong>volumes/etcd</strong> في دليل العمل. يُتيح MinIO المنفذين <strong>9000</strong> <strong>و9001</strong>؛ بينما يُتيح Milvus المنفذين <strong>19530</strong> <strong>و9091</strong>. للاطلاع على أوامر التكوين ودورة الحياة، راجع <a href="/docs/ar/install_standalone-docker-compose.md">«تشغيل Milvus باستخدام Docker Compose</a>».</p>
-<h2 id="FAQs" class="common-anchor-header">الأسئلة الشائعة<button data-href="#FAQs" class="anchor-icon" translate="no">
+<p>The configuration starts three long-running containers: <strong>milvus-standalone</strong>, <strong>milvus-minio</strong>, and <strong>milvus-etcd</strong>. It also runs the one-shot <code translate="no">milvus-volume-init</code> service to prepare data-directory ownership. Their data maps to <strong>volumes/milvus</strong>, <strong>volumes/minio</strong>, and <strong>volumes/etcd</strong> in the working directory. MinIO exposes ports <strong>9000</strong> and <strong>9001</strong>; Milvus exposes ports <strong>19530</strong> and <strong>9091</strong>. For configuration and lifecycle commands, see <a href="/docs/ar/install_standalone-docker-compose.md">Run Milvus with Docker Compose</a>.</p>
+<h2 id="FAQs" class="common-anchor-header">FAQs<button data-href="#FAQs" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -235,7 +233,7 @@ docker compose ps
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="How-can-I-deal-with-the-Docker-Engine-stopped-error" class="common-anchor-header">كيف يمكنني التعامل مع خطأ « <code translate="no">Docker Engine stopped</code> »؟<button data-href="#How-can-I-deal-with-the-Docker-Engine-stopped-error" class="anchor-icon" translate="no">
+    </button></h2><h3 id="How-can-I-deal-with-the-Docker-Engine-stopped-error" class="common-anchor-header">How can I deal with the <code translate="no">Docker Engine stopped</code> error?<button data-href="#How-can-I-deal-with-the-Docker-Engine-stopped-error" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -250,21 +248,21 @@ docker compose ps
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>يستخدم Milvus حاويات Linux. تحقق من Docker Desktop ووحدة WSL 2 الخلفية الخاصة به قبل إعادة محاولة التثبيت:</p>
+    </button></h3><p>Milvus uses Linux containers. Check Docker Desktop and its WSL 2 backend before retrying the installation:</p>
 <ol>
-<li><p>قم بتمكين المحاكاة الافتراضية للأجهزة في BIOS/UEFI إذا أظهر <strong>«مدير المهام»</strong> &gt; <strong>«الأداء»</strong> أنها معطلة. راجع <a href="https://docs.docker.com/desktop/setup/install/windows-install/#system-requirements">متطلبات Docker Desktop لنظام Windows</a>.</p></li>
-<li><p>ابدأ تشغيل Docker Desktop من قائمة «ابدأ» في Windows وانتظر حتى يتم تشغيل محركه. قد تكون امتيازات المسؤول مطلوبة لتثبيت أو تحديث WSL أو لأوضاع تثبيت Docker Desktop محددة؛ وهي ليست متطلبًا عامًا لتشغيل حاويات Linux باستخدام الخلفية WSL 2.</p></li>
-<li><p>تحقق من WSL من محطة Windows. إذا كان يحتاج إلى تحديث، فقم بتشغيل أمر التحديث باستخدام الامتيازات التي يطلبها Windows:</p>
+<li><p>Enable hardware virtualization in BIOS/UEFI if <strong>Task Manager</strong> > <strong>Performance</strong> shows it is disabled. See the <a href="https://docs.docker.com/desktop/setup/install/windows-install/#system-requirements">Docker Desktop Windows requirements</a>.</p></li>
+<li><p>Start Docker Desktop from the Windows Start menu and wait for its engine to run. Administrator privileges may be required to install or update WSL or for specific Docker Desktop installation modes; they are not a general requirement for running Linux containers with the WSL 2 backend.</p></li>
+<li><p>Check WSL from a Windows terminal. If it needs an update, run the update command with the privileges requested by Windows:</p>
 <pre><code translate="no" class="language-powershell">wsl --version
 wsl --update
 </code></pre></li>
-<li><p>قم بتمكين <strong>استخدام المحرك المستند إلى WSL 2</strong> في Docker Desktop. إذا كانت قائمة Docker تعرض خ <strong>يار «التبديل إلى حاويات Linux</strong>»، فحدد هذا الخيار. لا تقم بالتبديل إلى حاويات Windows لاستكشاف أخطاء صورة Milvus Linux وإصلاحها.</p></li>
-<li><p>قم بتشغيل الفحص التالي في محطة العمل التي تستخدمها للتثبيت:</p>
+<li><p>Enable <strong>Use the WSL 2 based engine</strong> in Docker Desktop. If the Docker menu offers <strong>Switch to Linux containers</strong>, select it. Do not switch to Windows containers to troubleshoot a Milvus Linux image.</p></li>
+<li><p>Run the following check in the terminal you use for installation:</p>
 <pre><code translate="no" class="language-powershell">docker info --format &quot;{{.OSType}}&quot;
 </code></pre>
-<p>يجب أن يُرجع النتيجة « <code translate="no">linux</code> ». إذا تعذر الاتصال بالخدمة الخلفية، فاتبع <a href="https://docs.docker.com/desktop/troubleshoot-and-support/troubleshoot/">إرشادات استكشاف الأخطاء وإصلاحها في Docker Desktop</a> قبل إعادة تشغيل البرنامج النصي لـ Milvus. لا يُثبت تشغيل « <code translate="no">com.docker.service</code> » وحده أن محرك Linux الخاص بـ WSL 2 قيد التشغيل.</p></li>
+<p>It must return <code translate="no">linux</code>. If it cannot connect to the daemon, follow <a href="https://docs.docker.com/desktop/troubleshoot-and-support/troubleshoot/">Docker Desktop troubleshooting</a> before rerunning the Milvus script. Starting <code translate="no">com.docker.service</code> alone does not establish that the WSL 2 Linux engine is running.</p></li>
 </ol>
-<h3 id="How-can-I-deal-with-WSL-related-issues-while-deploying-Milvus" class="common-anchor-header">كيف يمكنني التعامل مع المشكلات المتعلقة بـ WSL أثناء نشر Milvus؟<button data-href="#How-can-I-deal-with-WSL-related-issues-while-deploying-Milvus" class="anchor-icon" translate="no">
+<h3 id="How-can-I-deal-with-WSL-related-issues-while-deploying-Milvus" class="common-anchor-header">How can I deal with WSL-related issues while deploying Milvus?<button data-href="#How-can-I-deal-with-WSL-related-issues-while-deploying-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -279,24 +277,24 @@ wsl --update
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>إذا واجهت مشكلات متعلقة بـ WSL أثناء تشغيل Milvus من WSL 2، فقد تحتاج إلى التحقق مما إذا كنت قد قمت بتكوين Docker Desktop لاستخدام المحرك القائم على WSL 2 على النحو التالي:</p>
+    </button></h3><p>If you have encountered WSL-related issues while running Milvus from WSL 2, you may need to check whether you have configured Docker Desktop to use the WSL 2-based engine as follows:</p>
 <ol>
-<li><p>تأكد من تحديد خيار «استخدام المحرك القائم على WSL 2» في <strong>«الإعدادات»</strong> &gt; <strong>«عام</strong>».</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/docker-desktop-wsl-01.png" alt="Use the WSL 2 based engine in Docker Desktop Settings" class="doc-image" id="use-the-wsl-2-based-engine-in-docker-desktop-settings" /> 
-   <span>استخدام المحرك القائم على WSL 2 في إعدادات Docker Desktop</span>
-  
- </span></p></li>
-<li><p>اختر من توزيعات WSL 2 المثبتة لديك تلك التي تريد تمكين تكامل Docker عليها بالانتقال إلى: <strong>الإعدادات</strong> &gt; <strong>الموارد</strong> &gt; <strong>تكامل WSL</strong>.</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/docker-desktop-wsl-02.png" alt="Select WSL 2 distributions in Docker Desktop Settings" class="doc-image" id="select-wsl-2-distributions-in-docker-desktop-settings" /> 
-   <span>تحديد توزيعات WSL 2 في إعدادات Docker Desktop</span>
-  
- </span></p></li>
+<li><p>Ensure that “Use the WSL 2 based engine” is checked in <strong>Settings</strong> > <strong>General</strong>.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/docker-desktop-wsl-01.png" alt="Use the WSL 2 based engine in Docker Desktop Settings" class="doc-image" id="use-the-wsl-2-based-engine-in-docker-desktop-settings" />
+    <span>Use the WSL 2 based engine in Docker Desktop Settings</span>
+  </span>
+</p></li>
+<li><p>Select from your installed WSL 2 distributions which you want to enable Docker integration on by going to: <strong>Settings</strong> > <strong>Resources</strong> > <strong>WSL Integration</strong>.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/docker-desktop-wsl-02.png" alt="Select WSL 2 distributions in Docker Desktop Settings" class="doc-image" id="select-wsl-2-distributions-in-docker-desktop-settings" />
+    <span>Select WSL 2 distributions in Docker Desktop Settings</span>
+  </span>
+</p></li>
 </ol>
-<h3 id="How-can-I-deal-with-the-volume-related-errors-prompted-during-Milvus-startup-that-reads-Read-config-failed" class="common-anchor-header">كيف يمكنني التعامل مع الأخطاء المتعلقة بحجم التخزين التي تظهر أثناء بدء تشغيل Milvus والتي تنص على « <code translate="no">Read config failed</code> »؟<button data-href="#How-can-I-deal-with-the-volume-related-errors-prompted-during-Milvus-startup-that-reads-Read-config-failed" class="anchor-icon" translate="no">
+<h3 id="How-can-I-deal-with-the-volume-related-errors-prompted-during-Milvus-startup-that-reads-Read-config-failed" class="common-anchor-header">How can I deal with the volume-related errors prompted during Milvus startup that reads <code translate="no">Read config failed</code>?<button data-href="#How-can-I-deal-with-the-volume-related-errors-prompted-during-Milvus-startup-that-reads-Read-config-failed" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -311,23 +309,23 @@ wsl --update
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/milvus-read-config-fails-01.png" alt="Read config failed error prompt in Milvus startup" class="doc-image" id="read-config-failed-error-prompt-in-milvus-startup" /> 
-   <span>رسالة الخطأ «فشل قراءة التكوين» عند بدء تشغيل Milvus</span>
-  
- </span></p>
-<p>للتعامل مع الخطأ الذي يظهر أثناء بدء تشغيل Milvus والذي ينص على «فشل قراءة التكوين»، تحتاج إلى التحقق مما إذا كان وحدة التخزين المثبتة في حاوية Milvus صحيحة. إذا كانت وحدة التخزين مثبتة بشكل صحيح في الحاوية، يمكنك استخدام الأمر <code translate="no">docker exec</code> للدخول إلى الحاوية وإدراج مجلد <strong>/milvus/configs</strong> كما يلي:</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/milvus-read-config-fails-02.png" alt="List Milvus config files" class="doc-image" id="list-milvus-config-files" /> 
-   <span>عرض ملفات تكوين Milvus</span>
-  
- </span></p>
+    </button></h3><p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/milvus-read-config-fails-01.png" alt="Read config failed error prompt in Milvus startup" class="doc-image" id="read-config-failed-error-prompt-in-milvus-startup" />
+    <span>Read config failed error prompt in Milvus startup</span>
+  </span>
+</p>
+<p>To deal with the error prompted during Milvus startup that reads “Read config failed,” you need to check whether the volume mounted into the Milvus container is correct. If the volume is correctly mounted into the container, you can use the <code translate="no">docker exec</code> command to go into the container and list the <strong>/milvus/configs</strong> folder as follows:</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/milvus-read-config-fails-02.png" alt="List Milvus config files" class="doc-image" id="list-milvus-config-files" />
+    <span>List Milvus config files</span>
+  </span>
+</p>
 <div class="alert note">
-<p>يتم تعطيل Storage V3 افتراضيًا. قم بتمكينه قبل استخدام الميزات التي تعتمد عليه. للاطلاع على المتطلبات واعتبارات التوافق، راجع <a href="/docs/ar/storage-v3.md">Storage V3</a>.</p>
+<p>Storage V3 is disabled by default. Enable it before using features that depend on it. For requirements and compatibility considerations, see <a href="/docs/ar/storage-v3.md">Storage V3</a>.</p>
 </div>
-<h2 id="Whats-next" class="common-anchor-header">الخطوة التالية<button data-href="#Whats-next" class="anchor-icon" translate="no">
+<h2 id="Whats-next" class="common-anchor-header">What’s next<button data-href="#Whats-next" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -342,30 +340,30 @@ wsl --update
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>بعد تثبيت Milvus في Docker، اتبع مسار <strong>«استخدام خادم Milvus موجود</strong> » في <a href="/docs/ar/quickstart.md">«البدء السريع»</a> وقم بتوصيل SDK بـ <code translate="no">http://localhost:19530</code>. لا يحتاج مسار الخادم هذا إلى Milvus Lite؛ حيث سيقوم كتلة الاتصال المحلية <code translate="no">.db</code> بتشغيل قاعدة بيانات محلية منفصلة بدلاً من استخدام هذه الحاوية.</p>
-<p>يمكنك أيضًا:</p>
+    </button></h2><p>Having installed Milvus in Docker, follow the <strong>Use an existing Milvus server</strong> path in <a href="/docs/ar/quickstart.md">Quickstart</a> and connect the SDK to <code translate="no">http://localhost:19530</code>. This server path does not need Milvus Lite; the local <code translate="no">.db</code> connection block would start a separate local database instead of using this container.</p>
+<p>You can also:</p>
 <ul>
-<li><p>راجع «البدء السريع» ( <a href="/docs/ar/quickstart.md">Quickstart</a> ) لمعرفة ما يمكن لـ Milvus القيام به.</p></li>
-<li><p>تعلم العمليات الأساسية لـ Milvus:</p>
+<li><p>Check <a href="/docs/ar/quickstart.md">Quickstart</a> to see what Milvus can do.</p></li>
+<li><p>Learn the basic operations of Milvus:</p>
 <ul>
-<li><a href="/docs/ar/manage_databases.md">إدارة قواعد البيانات</a></li>
-<li><a href="/docs/ar/manage-collections.md">إدارة المجموعات</a></li>
-<li><a href="/docs/ar/manage-partitions.md">إدارة الأقسام</a></li>
-<li><a href="/docs/ar/insert-update-delete.md">الإدراج والتحديث والحذف</a></li>
-<li><a href="/docs/ar/single-vector-search.md">البحث أحادي المتجه</a></li>
-<li><a href="/docs/ar/multi-vector-search.md">البحث المختلط</a></li>
+<li><a href="/docs/ar/manage_databases.md">Manage Databases</a></li>
+<li><a href="/docs/ar/manage-collections.md">Manage Collections</a></li>
+<li><a href="/docs/ar/manage-partitions.md">Manage Partitions</a></li>
+<li><a href="/docs/ar/insert-update-delete.md">Insert, Upsert & Delete</a></li>
+<li><a href="/docs/ar/single-vector-search.md">Single-Vector Search</a></li>
+<li><a href="/docs/ar/multi-vector-search.md">Hybrid Search</a></li>
 </ul></li>
-<li><p>بالنسبة لعمليات النشر باستخدام Compose، اتبع <a href="/docs/ar/upgrade_milvus_standalone-docker.md">إرشادات ترقية Milvus Standalone باستخدام Docker Compose؛</a> وتحقق من صحة الإجراء في بيئتك قبل الترقية.</p></li>
-<li><p><a href="/docs/ar/scaleout.md">قم بتوسيع نطاق مجموعة Milvus الخاصة بك</a>.</p></li>
-<li><p>انشر مجموعة Milvus الخاصة بك على السحابة:</p>
+<li><p>For Compose deployments, follow <a href="/docs/ar/upgrade_milvus_standalone-docker.md">Upgrade Milvus Standalone with Docker Compose</a>; validate the procedure in your environment before upgrading.</p></li>
+<li><p><a href="/docs/ar/scaleout.md">Scale your Milvus cluster</a>.</p></li>
+<li><p>Deploy your Milvu cluster on clouds:</p>
 <ul>
 <li><a href="/docs/ar/eks.md">Amazon EKS</a></li>
 <li><a href="/docs/ar/gcp.md">Google Cloud</a></li>
 <li><a href="/docs/ar/azure.md">Microsoft Azure</a></li>
 </ul></li>
-<li><p>استكشف <a href="/docs/ar/milvus-webui.md">Milvus WebUI،</a> وهي واجهة ويب سهلة الاستخدام لمراقبة وإدارة Milvus.</p></li>
-<li><p>اكتشف <a href="/docs/ar/milvus_backup_overview.md">Milvus Backup</a>، وهي أداة مفتوحة المصدر لنسخ بيانات Milvus احتياطيًا.</p></li>
-<li><p>اكتشف <a href="/docs/ar/birdwatcher_overview.md">Birdwatcher،</a> وهي أداة مفتوحة المصدر لتصحيح أخطاء Milvus وتحديثات التكوين الديناميكية.</p></li>
-<li><p>اكتشف <a href="https://github.com/zilliztech/attu">Attu،</a> وهي أداة واجهة مستخدم رسومية مفتوحة المصدر لإدارة Milvus بطريقة بديهية.</p></li>
-<li><p><a href="/docs/ar/monitor.md">راقب Milvus باستخدام Prometheus</a>.</p></li>
+<li><p>Explore <a href="/docs/ar/milvus-webui.md">Milvus WebUI</a>, an intuitive web interface for Milvus observability and management.</p></li>
+<li><p>Explore <a href="/docs/ar/milvus_backup_overview.md">Milvus Backup</a>, an open-source tool for Milvus data backups.</p></li>
+<li><p>Explore <a href="/docs/ar/birdwatcher_overview.md">Birdwatcher</a>, an open-source tool for debugging Milvus and dynamic configuration updates.</p></li>
+<li><p>Explore <a href="https://github.com/zilliztech/attu">Attu</a>, an open-source GUI tool for intuitive Milvus management.</p></li>
+<li><p><a href="/docs/ar/monitor.md">Monitor Milvus with Prometheus</a>.</p></li>
 </ul>

@@ -1,12 +1,14 @@
 ---
 id: add-fields-to-an-existing-collection.md
-title: 기존 컬렉션에 필드 추가Compatible with Milvus 2.6.x
+title: Add Fields to an Existing CollectionCompatible with Milvus 2.6.x
 summary: >-
-  Milvus를 사용하면 기존 컬렉션에 새 필드를 동적으로 추가할 수 있으므로 애플리케이션 요구 사항의 변화에 따라 데이터 스키마를 쉽게
-  발전시킬 수 있습니다. 이 가이드는 실제 예제를 사용하여 다양한 시나리오에서 필드를 추가하는 방법을 보여줍니다.
+  Milvus allows you to dynamically add new fields to existing collections,
+  making it easy to evolve your data schema as your application needs change.
+  This guide shows you how to add fields in different scenarios using practical
+  examples.
 beta: Milvus 2.6.x
 ---
-<h1 id="Add-Fields-to-an-Existing-Collection" class="common-anchor-header">기존 컬렉션에 필드 추가<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#Add-Fields-to-an-Existing-Collection" class="anchor-icon" translate="no">
+<h1 id="Add-Fields-to-an-Existing-Collection" class="common-anchor-header">Add Fields to an Existing Collection<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#Add-Fields-to-an-Existing-Collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -21,8 +23,8 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Milvus를 사용하면 기존 컬렉션에 새 필드를 동적으로 추가할 수 있으므로 애플리케이션 요구 사항의 변화에 따라 데이터 스키마를 쉽게 발전시킬 수 있습니다. 이 가이드는 실제 예제를 사용하여 다양한 시나리오에서 필드를 추가하는 방법을 보여줍니다.</p>
-<h2 id="Considerations" class="common-anchor-header">고려 사항<button data-href="#Considerations" class="anchor-icon" translate="no">
+    </button></h1><p>Milvus allows you to dynamically add new fields to existing collections, making it easy to evolve your data schema as your application needs change. This guide shows you how to add fields in different scenarios using practical examples.</p>
+<h2 id="Considerations" class="common-anchor-header">Considerations<button data-href="#Considerations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,16 +39,16 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>컬렉션에 필드를 추가하기 전에 다음과 같은 중요한 사항을 염두에 두세요:</p>
+    </button></h2><p>Before adding fields to your collection, keep these important points in mind:</p>
 <ul>
-<li><p>스칼라 필드(<code translate="no">INT64</code>, <code translate="no">VARCHAR</code>, <code translate="no">FLOAT</code>, <code translate="no">DOUBLE</code> 등)를 추가할 수 있습니다. 벡터 필드는 기존 컬렉션에 추가할 수 없습니다.</p></li>
-<li><p>새 필드에 대한 값이 없는 기존 엔티티를 수용하려면 새 필드를 null 가능(nullable=True)으로 설정해야 합니다.</p></li>
-<li><p>로드된 컬렉션에 필드를 추가하면 메모리 사용량이 증가합니다.</p></li>
-<li><p>컬렉션당 총 필드 수에는 최대 제한이 있습니다. 자세한 내용은 <a href="/docs/ko/v2.6.x/limitations.md#Number-of-resources-in-a-collection">밀버스 제한을</a> 참조하세요.</p></li>
-<li><p>필드 이름은 정적 필드 중에서 고유해야 합니다.</p></li>
-<li><p>원래 <code translate="no">enable_dynamic_field=True</code> 으로 만들지 않은 컬렉션에는 동적 필드 기능을 활성화하기 위해 <code translate="no">$meta</code> 필드를 추가할 수 없습니다.</p></li>
+<li><p>You can add scalar fields (<code translate="no">INT64</code>, <code translate="no">VARCHAR</code>, <code translate="no">FLOAT</code>, <code translate="no">DOUBLE</code>, etc.). Vector fields cannot be added to existing collections.</p></li>
+<li><p>New fields must be nullable (nullable=True) to accommodate existing entities that don’t have values for the new field.</p></li>
+<li><p>Adding fields to loaded collections increases memory usage.</p></li>
+<li><p>There’s a maximum limit on total fields per collection. For details, refer to <a href="/docs/ko/v2.6.x/limitations.md#Number-of-resources-in-a-collection">Milvus Limits</a>.</p></li>
+<li><p>Field names must be unique among static fields.</p></li>
+<li><p>You cannot add a <code translate="no">$meta</code> field to enable dynamic field functionality for collections that weren’t originally created with <code translate="no">enable_dynamic_field=True</code>.</p></li>
 </ul>
-<h2 id="Prerequisites" class="common-anchor-header">전제 조건<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -61,16 +63,16 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>이 가이드에서는 다음이 있다고 가정합니다:</p>
+    </button></h2><p>This guide assumes you have:</p>
 <ul>
-<li><p>실행 중인 Milvus 인스턴스</p></li>
-<li><p>Milvus SDK 설치</p></li>
-<li><p>기존 컬렉션</p></li>
+<li><p>A running Milvus instance</p></li>
+<li><p>Milvus SDK installed</p></li>
+<li><p>An existing collection</p></li>
 </ul>
 <div class="alert note">
-<p>컬렉션 생성 및 기본 작업은 컬렉션 <a href="/docs/ko/v2.6.x/create-collection.md">만들기를</a> 참조하세요.</p>
+<p>Refer to our <a href="/docs/ko/v2.6.x/create-collection.md">Create Collection</a> for collection creation and basic operations.</p>
 </div>
-<h2 id="Basic-usage" class="common-anchor-header">기본 사용법<button data-href="#Basic-usage" class="anchor-icon" translate="no">
+<h2 id="Basic-usage" class="common-anchor-header">Basic usage<button data-href="#Basic-usage" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -86,7 +88,12 @@ beta: Milvus 2.6.x
         ></path>
       </svg>
     </button></h2><div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
 
 <span class="hljs-comment"># Connect to your Milvus server</span>
@@ -113,7 +120,7 @@ client = MilvusClient(
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <span class="hljs-built_in">export</span> CLUSTER_ENDPOINT=<span class="hljs-string">&quot;localhost:19530&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Scenario-1-Quickly-add-nullable-fields" class="common-anchor-header">시나리오 1: null 가능한 필드를 빠르게 추가하기<button data-href="#Scenario-1-Quickly-add-nullable-fields" class="anchor-icon" translate="no">
+<h2 id="Scenario-1-Quickly-add-nullable-fields" class="common-anchor-header">Scenario 1: Quickly add nullable fields<button data-href="#Scenario-1-Quickly-add-nullable-fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -128,9 +135,14 @@ client = MilvusClient(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>컬렉션을 확장하는 가장 간단한 방법은 null 가능한 필드를 추가하는 것입니다. 이 방법은 데이터에 새 속성을 빠르게 추가해야 할 때 적합합니다.</p>
+    </button></h2><p>The simplest way to extend your collection is by adding nullable fields. This is perfect when you need to quickly add new attributes to your data.</p>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Add a nullable field to an existing collection</span>
 <span class="hljs-comment"># This operation:</span>
 <span class="hljs-comment"># - Returns almost immediately (non-blocking)</span>
@@ -178,15 +190,20 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
     }
   }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>예상되는 동작:</p>
+<p>Expected behavior:</p>
 <ul>
-<li><p><strong>기존 엔티티는</strong> 새 필드에 대해 NULL을 갖습니다.</p></li>
-<li><p><strong>새 엔티티는</strong> NULL 또는 실제 값을 가질 수 있습니다.</p></li>
-<li><p>내부 스키마 동기화로 인해 최소한의 지연으로 거의 즉시<strong>필드 가용성</strong> 발생</p></li>
-<li><p>짧은 동기화 기간 후<strong>즉시 쿼리 가능</strong> </p></li>
+<li><p><strong>Existing entities</strong> will have NULL for the new field</p></li>
+<li><p><strong>New entities</strong> can have either NULL or actual values</p></li>
+<li><p><strong>Field availability</strong> occurs almost immediately with minimal delay due to internal schema synchronization</p></li>
+<li><p><strong>Queryable immediately</strong> after the brief synchronization period</p></li>
 </ul>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Example query result</span>
 {
     <span class="hljs-string">&#x27;id&#x27;</span>: <span class="hljs-number">1</span>, 
@@ -210,7 +227,7 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
   <span class="hljs-string">&quot;cost&quot;</span>: 0
 }
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Scenario-2-Add-fields-with-default-values" class="common-anchor-header">시나리오 2: 기본값이 있는 필드 추가하기<button data-href="#Scenario-2-Add-fields-with-default-values" class="anchor-icon" translate="no">
+<h2 id="Scenario-2-Add-fields-with-default-values" class="common-anchor-header">Scenario 2: Add fields with default values<button data-href="#Scenario-2-Add-fields-with-default-values" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -225,9 +242,14 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>기존 엔티티가 NULL 대신 의미 있는 초기값을 갖도록 하려면 기본값을 지정하세요.</p>
+    </button></h2><p>When you want existing entities to have a meaningful initial value instead of NULL, specify default values.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Add a field with default value</span>
 <span class="hljs-comment"># This operation:</span>
 <span class="hljs-comment"># - Sets the default value for all existing entities</span>
@@ -281,15 +303,20 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
     }
   }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>예상되는 동작:</p>
+<p>Expected behavior:</p>
 <ul>
-<li><p><strong>기존 엔티티는</strong> 새로 추가된 필드에 대해 기본값(<code translate="no">&quot;standard&quot;</code>)을 갖습니다.</p></li>
-<li><p><strong>새 엔티티는</strong> 기본값을 재정의하거나 값이 제공되지 않은 경우 기본값을 사용할 수 있습니다.</p></li>
-<li><p>최소한의 지연으로 거의 즉시<strong>필드 가용성</strong> 발생</p></li>
-<li><p>짧은 동기화 기간 후<strong>즉시 쿼리 가능</strong> </p></li>
+<li><p><strong>Existing entities</strong> will have the default value (<code translate="no">&quot;standard&quot;</code>) for the newly added field</p></li>
+<li><p><strong>New entities</strong> can override the default value or use it if no value is provided</p></li>
+<li><p><strong>Field availability</strong> occurs almost immediately with minimal delay</p></li>
+<li><p><strong>Queryable immediately</strong> after the brief synchronization period</p></li>
 </ul>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Example query result</span>
 {
     <span class="hljs-string">&#x27;id&#x27;</span>: <span class="hljs-number">1</span>,
@@ -326,7 +353,7 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Can-I-enable-dynamic-schema-functionality-by-adding-a-meta-field" class="common-anchor-header"><code translate="no">$meta</code> 필드를 추가하여 동적 스키마 기능을 활성화할 수 있나요?<button data-href="#Can-I-enable-dynamic-schema-functionality-by-adding-a-meta-field" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Can-I-enable-dynamic-schema-functionality-by-adding-a-meta-field" class="common-anchor-header">Can I enable dynamic schema functionality by adding a <code translate="no">$meta</code> field?<button data-href="#Can-I-enable-dynamic-schema-functionality-by-adding-a-meta-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -341,9 +368,14 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>아니요, <code translate="no">add_collection_field</code> 을 사용하여 <code translate="no">$meta</code> 필드를 추가하여 동적 필드 기능을 활성화할 수 없습니다. 예를 들어 아래 코드는 작동하지 않습니다:</p>
+    </button></h3><p>No, you cannot use <code translate="no">add_collection_field</code> to add a <code translate="no">$meta</code> field to enable dynamic field functionality. For example, the code below will not work:</p>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># ❌ This is NOT supported</span>
 client.add_collection_field(
     collection_name=<span class="hljs-string">&quot;existing_collection&quot;</span>,
@@ -384,12 +416,12 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
     }
   }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>동적 스키마 기능을 사용하려면 다음과 같이 하세요:</p>
+<p>To enable dynamic schema functionality:</p>
 <ul>
-<li><p><strong>새 컬렉션을</strong> 만듭니다: 컬렉션을 만들 때 <code translate="no">enable_dynamic_field</code> 을 True로 설정합니다. 자세한 내용은 <a href="/docs/ko/v2.6.x/create-collection.md#Create-Schema">컬렉션 만들기를</a> 참조하세요.</p></li>
-<li><p><strong>기존 컬렉션을</strong> 참조하세요: 컬렉션 수준 속성 <code translate="no">dynamicfield.enabled</code> 을 True로 설정합니다. 자세한 내용은 <a href="/docs/ko/v2.6.x/modify-collection.md#Example-4-Enable-dynamic-field">컬렉션 수정을</a> 참조하세요.</p></li>
+<li><p><strong>New collection</strong>: Set <code translate="no">enable_dynamic_field</code> to True when creating the collection. For details, refer to <a href="/docs/ko/v2.6.x/create-collection.md#Create-Schema">Create Collection</a></p></li>
+<li><p><strong>Existing collection</strong>: Set the collection-level property <code translate="no">dynamicfield.enabled</code> to True. For details, refer to <a href="/docs/ko/v2.6.x/modify-collection.md#Example-4-Enable-dynamic-field">Modify Collection</a>.</p></li>
 </ul>
-<h3 id="What-happens-when-I-add-a-field-with-the-same-name-as-a-dynamic-field-key" class="common-anchor-header">동적 필드 키와 이름이 같은 필드를 추가하면 어떻게 되나요?<button data-href="#What-happens-when-I-add-a-field-with-the-same-name-as-a-dynamic-field-key" class="anchor-icon" translate="no">
+<h3 id="What-happens-when-I-add-a-field-with-the-same-name-as-a-dynamic-field-key" class="common-anchor-header">What happens when I add a field with the same name as a dynamic field key?<button data-href="#What-happens-when-I-add-a-field-with-the-same-name-as-a-dynamic-field-key" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -404,11 +436,16 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>컬렉션에 동적 필드가 활성화되어 있는 경우(<code translate="no">$meta</code> 있음) 기존 동적 필드 키와 이름이 같은 정적 필드를 추가할 수 있습니다. 새 정적 필드는 동적 필드 키를 가리지만 원래 동적 데이터는 그대로 유지됩니다.</p>
-<p>필드 이름에서 발생할 수 있는 충돌을 방지하려면 실제로 추가하기 전에 기존 필드 및 동적 필드 키를 참조하여 추가할 필드 이름을 고려하세요.</p>
-<p><strong>예시 시나리오:</strong></p>
+    </button></h3><p>When your collection has dynamic field enabled (<code translate="no">$meta</code> exists), you can add static fields that have the same name as existing dynamic field keys. The new static field will mask the dynamic field key, but the original dynamic data is preserved.</p>
+<p>To avoid possible conflicts in field names, consider the name for the field to add by referring to existing fields and dynamic field keys before actually adding it.</p>
+<p><strong>Example scenario:</strong></p>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Original collection with dynamic field enabled</span>
 <span class="hljs-comment"># Insert data with dynamic field keys</span>
 data = [{
@@ -557,16 +594,21 @@ curl -X POST <span class="hljs-string">&quot;http://<span class="hljs-variable">
     }]
   }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>예상되는 동작:</p>
+<p>Expected behavior:</p>
 <ul>
-<li><p><strong>기존 엔티티는</strong> 새 정적 필드에 대해 NULL을 갖습니다. <code translate="no">extra_info</code></p></li>
-<li><p><strong>새 엔티티는</strong> 정적 필드의 데이터 유형(<code translate="no">INT64</code>)을 사용해야 합니다.</p></li>
-<li><p><strong>원래 동적 필드 키 값은</strong> 보존되며 <code translate="no">$meta</code> 구문을 통해 액세스할 수 있습니다.</p></li>
-<li><p>정적<strong>필드는</strong> 일반 쿼리에서<strong>동적 필드 키를 마스킹합니다</strong>.</p></li>
+<li><p><strong>Existing entities</strong> will have NULL for the new static field <code translate="no">extra_info</code></p></li>
+<li><p><strong>New entities</strong> must use the static field’s data type (<code translate="no">INT64</code>)</p></li>
+<li><p><strong>Original dynamic field key values</strong> are preserved and accessible via <code translate="no">$meta</code> syntax</p></li>
+<li><p><strong>The static field masks the dynamic field key</strong> in normal queries</p></li>
 </ul>
-<p><strong>정적 및 동적 값 모두 액세스</strong></p>
+<p><strong>Accessing both static and dynamic values:</strong></p>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># 1. Query static field only (dynamic field key is masked)</span>
 results = client.query(
     collection_name=<span class="hljs-string">&quot;product_catalog&quot;</span>,
@@ -667,7 +709,7 @@ curl -X POST <span class="hljs-string">&quot;http://<span class="hljs-variable">
     \&quot;outputFields\&quot;: [\&quot;extra_info\&quot;]
   }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="How-long-does-it-take-for-a-new-field-to-become-available" class="common-anchor-header">새 필드를 사용할 수 있게 되는 데 얼마나 걸리나요?<button data-href="#How-long-does-it-take-for-a-new-field-to-become-available" class="anchor-icon" translate="no">
+<h3 id="How-long-does-it-take-for-a-new-field-to-become-available" class="common-anchor-header">How long does it take for a new field to become available?<button data-href="#How-long-does-it-take-for-a-new-field-to-become-available" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -682,4 +724,4 @@ curl -X POST <span class="hljs-string">&quot;http://<span class="hljs-variable">
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>추가된 필드는 거의 즉시 사용할 수 있게 되지만, 내부 스키마 변경이 Milvus 클러스터 전체에 브로드캐스팅되는 과정에서 잠시 지연될 수 있습니다. 이 동기화를 통해 모든 노드가 새 필드와 관련된 쿼리를 처리하기 전에 스키마 업데이트를 인지할 수 있습니다.</p>
+    </button></h3><p>Added fields become available almost immediately, but there may be a brief delay due to internal schema change broadcasting across the Milvus cluster. This synchronization ensures all nodes are aware of the schema update before processing queries involving the new field.</p>

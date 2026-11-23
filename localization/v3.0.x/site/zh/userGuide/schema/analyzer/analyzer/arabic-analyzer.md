@@ -1,10 +1,12 @@
 ---
 id: arabic-analyzer.md
-title: 阿拉伯语Compatible with Milvus 3.0.0+
-summary: 内置的阿拉伯语分析器通过规范化字母变体和数字、对词干进行处理以及移除阿拉伯语停用词来处理阿拉伯语文本。
+title: ArabicCompatible with Milvus 3.0.0+
+summary: >-
+  The built-in Arabic analyzer processes Arabic text by normalizing letter
+  variants and digits, stemming terms, and removing Arabic stop words.
 beta: Milvus 3.0.0+
 ---
-<h1 id="Arabic" class="common-anchor-header">阿拉伯语<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.0+</span><button data-href="#Arabic" class="anchor-icon" translate="no">
+<h1 id="Arabic" class="common-anchor-header">Arabic<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.0+</span><button data-href="#Arabic" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -19,8 +21,8 @@ beta: Milvus 3.0.0+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p><code translate="no">arabic</code> 分析器是专为阿拉伯语文本设计的内置分析器。当您需要 Milvus 对阿拉伯语字母变体进行规范化处理、去除标点符号和 Tatweel、转换阿拉伯-印度数字、应用阿拉伯语词干提取以及去除阿拉伯语停用词时，请使用此分析器。</p>
-<h2 id="Configuration" class="common-anchor-header">配置<button data-href="#Configuration" class="anchor-icon" translate="no">
+    </button></h1><p>The <code translate="no">arabic</code> analyzer is a built-in analyzer for Arabic text. Use this analyzer when you need Milvus to normalize Arabic letter variants, remove diacritics and Tatweel, convert Arabic-Indic digits, apply Arabic stemming, and remove Arabic stop words.</p>
+<h2 id="Configuration" class="common-anchor-header">Configuration<button data-href="#Configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -35,35 +37,35 @@ beta: Milvus 3.0.0+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>内置分析器是 Milvus 提供的分析器模板。要使用内置分析器，请将 `<code translate="no">type</code> ` 设置为 `<code translate="no">analyzer_params</code>` 中预定义的分析器名称。</p>
-<p>要使用内置的阿拉伯语分析器，请将 `<code translate="no">type</code> ` 设置为 `<code translate="no">arabic</code>`：</p>
+    </button></h2><p>Built-in analyzers are Milvus-provided analyzer templates. To use a built-in analyzer, set <code translate="no">type</code> to a predefined analyzer name in <code translate="no">analyzer_params</code>.</p>
+<p>To use the built-in Arabic analyzer, set <code translate="no">type</code> to <code translate="no">arabic</code>:</p>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;arabic&quot;</span>,
 }
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">arabic</code> 分析器支持以下可选参数：</p>
+<p>The <code translate="no">arabic</code> analyzer accepts the following optional parameter:</p>
 <table>
    <tr>
-     <th><p>参数</p></th>
-     <th><p>类型</p></th>
-     <th><p>默认值</p></th>
-     <th><p>描述</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Type</p></th>
+     <th><p>Default</p></th>
+     <th><p>Description</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">stop_words</code></p></td>
      <td><p><code translate="no">list[str]</code></p></td>
      <td><p><code translate="no">_arabic_</code></p></td>
-     <td><p>要从分词过程中移除的额外停用词列表。默认情况下，<code translate="no">arabic</code> 分析器使用内置的<code translate="no">_arabic_</code> 词典。要查看默认词典，请参阅 Milvus<a href="https://github.com/milvus-io/milvus/blob/1945ba399b4552fd0fd0b131f7c735ddde21e71c/internal/core/thirdparty/tantivy/tantivy-binding/src/analyzer/filter/stop_words/arabic.txt">阿拉伯语停用词列表</a>。该列表源自 Apache Lucene<a href="https://github.com/apache/lucene/blob/main/lucene/analysis/common/src/resources/org/apache/lucene/analysis/ar/stopwords.txt">阿拉伯语停用词文件</a>。</p></td>
+     <td><p>A list of additional stop words to remove from tokenization. By default, the <code translate="no">arabic</code> analyzer uses the built-in <code translate="no">_arabic_</code> dictionary. To inspect the default dictionary, refer to the Milvus <a href="https://github.com/milvus-io/milvus/blob/1945ba399b4552fd0fd0b131f7c735ddde21e71c/internal/core/thirdparty/tantivy/tantivy-binding/src/analyzer/filter/stop_words/arabic.txt">Arabic stop-word list</a>. The list is sourced from the Apache Lucene <a href="https://github.com/apache/lucene/blob/main/lucene/analysis/common/src/resources/org/apache/lucene/analysis/ar/stopwords.txt">Arabic stopwords file</a>.</p></td>
    </tr>
 </table>
-<p>要添加自定义停用词，请包含<code translate="no">stop_words</code> ：</p>
+<p>To add custom stop words, include <code translate="no">stop_words</code>:</p>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;arabic&quot;</span>,
     <span class="hljs-string">&quot;stop_words&quot;</span>: [<span class="hljs-string">&quot;ميلفوس&quot;</span>],
 }
 <button class="copy-code-btn"></button></code></pre>
-<p>Milvus 会在内置的<code translate="no">_arabic_</code> 词典基础上应用自定义停用词。</p>
-<p>内置的 `<code translate="no">arabic</code> ` 分析器等同于以下自定义分析器配置：</p>
+<p>Milvus applies custom stop words in addition to the built-in <code translate="no">_arabic_</code> dictionary.</p>
+<p>The built-in <code translate="no">arabic</code> analyzer is equivalent to the following custom analyzer configuration:</p>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>,
     <span class="hljs-string">&quot;filter&quot;</span>: [
@@ -81,16 +83,16 @@ beta: Milvus 3.0.0+
     ],
 }
 <button class="copy-code-btn"></button></code></pre>
-<p>该分析器执行以下处理步骤：</p>
+<p>This analyzer applies the following processing steps:</p>
 <ul>
-<li><strong>分词</strong>：使用<code translate="no">standard</code> 分词器将文本拆分为词元。</li>
-<li><strong>数字规范化</strong>：使用<code translate="no">decimaldigit</code> 过滤器将阿拉伯-印度数字及其他Unicode十进制数字转换为ASCII数字。</li>
-<li><strong>阿拉伯语规范化</strong>：使用<code translate="no">arabic_normalization</code> 过滤器对Alef变体、Teh Marbuta和Alef Maksura进行规范化处理，并去除Harakat和Tatweel。</li>
-<li><strong>词干提取</strong>：使用<code translate="no">stemmer</code> 过滤器，并将<code translate="no">language</code> 设置为<code translate="no">arabic</code> 。</li>
-<li><strong>停用词去除</strong>：使用<code translate="no">stop</code> 过滤器，并采用内置的<code translate="no">_arabic_</code> 词典。</li>
+<li><strong>Tokenization</strong>: Uses the <code translate="no">standard</code> tokenizer to split text into tokens.</li>
+<li><strong>Digit normalization</strong>: Uses the <code translate="no">decimaldigit</code> filter to convert Arabic-Indic and other Unicode decimal digits to ASCII digits.</li>
+<li><strong>Arabic normalization</strong>: Uses the <code translate="no">arabic_normalization</code> filter to normalize Alef variants, Teh Marbuta, and Alef Maksura, and remove Harakat and Tatweel.</li>
+<li><strong>Stemming</strong>: Uses the <code translate="no">stemmer</code> filter with <code translate="no">language</code> set to <code translate="no">arabic</code>.</li>
+<li><strong>Stop-word removal</strong>: Uses the <code translate="no">stop</code> filter with the built-in <code translate="no">_arabic_</code> dictionary.</li>
 </ul>
-<p>定义<code translate="no">analyzer_params</code> 后，您可以在定义Collection Schema时将该分析器应用于<code translate="no">VARCHAR</code> 字段。有关详细信息，请参阅<a href="/docs/zh/analyzer-overview.md#Example-use">“使用示例”</a>。</p>
-<h2 id="Examples" class="common-anchor-header">示例<button data-href="#Examples" class="anchor-icon" translate="no">
+<p>After defining <code translate="no">analyzer_params</code>, you can apply the analyzer to a <code translate="no">VARCHAR</code> field when defining a collection schema. For details, refer to <a href="/docs/zh/analyzer-overview.md#Example-use">Example use</a>.</p>
+<h2 id="Examples" class="common-anchor-header">Examples<button data-href="#Examples" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -105,8 +107,8 @@ beta: Milvus 3.0.0+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>在将分析器配置应用于 Collection Schema 之前，请使用 `<code translate="no">run_analyzer</code> ` 方法验证其行为。</p>
-<h3 id="Analyzer-configuration" class="common-anchor-header">分析器配置<button data-href="#Analyzer-configuration" class="anchor-icon" translate="no">
+    </button></h2><p>Before applying the analyzer configuration to your collection schema, verify its behavior using the <code translate="no">run_analyzer</code> method.</p>
+<h3 id="Analyzer-configuration" class="common-anchor-header">Analyzer configuration<button data-href="#Analyzer-configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -125,7 +127,7 @@ beta: Milvus 3.0.0+
     <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;arabic&quot;</span>,
 }
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Verification-using-runanalyzer" class="common-anchor-header">使用<code translate="no">run_analyzer</code><button data-href="#Verification-using-runanalyzer" class="anchor-icon" translate="no">
+<h3 id="Verification-using-runanalyzer" class="common-anchor-header">Verification using <code translate="no">run_analyzer</code><button data-href="#Verification-using-runanalyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -149,7 +151,7 @@ sample_text = <span class="hljs-string">&quot;كِتَابٌ عـــربي ١٢
 result = client.run_analyzer(sample_text, analyzer_params)
 <span class="hljs-built_in">print</span>(result)
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Expected-output" class="common-anchor-header">预期输出<button data-href="#Expected-output" class="anchor-icon" translate="no">
+<h3 id="Expected-output" class="common-anchor-header">Expected output<button data-href="#Expected-output" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"

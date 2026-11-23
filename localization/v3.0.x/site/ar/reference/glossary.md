@@ -1,8 +1,8 @@
 ---
 id: glossary.md
-title: المصطلحات
+title: Terminology
 ---
-<h1 id="Terminology" class="common-anchor-header">المصطلحات<button data-href="#Terminology" class="anchor-icon" translate="no">
+<h1 id="Terminology" class="common-anchor-header">Terminology<button data-href="#Terminology" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -32,8 +32,8 @@ title: المصطلحات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>AutoID هي سمة للحقل الأساسي تحدد ما إذا كان سيتم تمكين ميزة AutoIncrement للحقل الأساسي أم لا. يتم تعريف قيمة AutoID استنادًا إلى طابع زمني. لمزيد من المعلومات، راجع <a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Collections/create_schema.md">create_schema</a>.</p>
-<h2 id="Auto-Index" class="common-anchor-header">الفهرس التلقائي<button data-href="#Auto-Index" class="anchor-icon" translate="no">
+    </button></h2><p>AutoID is an attribute of the primary field that determines whether to enable AutoIncrement for the primary field. The value of AutoID is defined based on a timestamp. For more information, refer to <a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Collections/create_schema.md">create_schema</a>.</p>
+<h2 id="Auto-Index" class="common-anchor-header">Auto Index<button data-href="#Auto-Index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -48,7 +48,7 @@ title: المصطلحات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يقرر Milvus تلقائيًا نوع الفهرس والمعلمات الأكثر ملاءمة لحقل معين استنادًا إلى البيانات التجريبية. ويعد هذا الحل مثاليًّا للحالات التي لا تحتاج فيها إلى التحكم في معلمات الفهرس المحددة. لمزيد من المعلومات، راجع <a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Management/add_index.md">add_index</a>.</p>
+    </button></h2><p>Milvus automatically decides the most appropriate index type and params for a specific field based on empirical data. This is ideal for situations when you do not need to control the specific index params. For more information, refer to <a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Management/add_index.md">add_index</a>.</p>
 <h2 id="Attu" class="common-anchor-header">Attu<button data-href="#Attu" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -64,7 +64,7 @@ title: المصطلحات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><a href="https://github.com/zilliztech/attu">Attu</a> هي أداة إدارة شاملة لـ Milvus تقلل بشكل كبير من تعقيد وتكلفة إدارة النظام.</p>
+    </button></h2><p><a href="https://github.com/zilliztech/attu">Attu</a> is an all-in-one administration tool for Milvus that significantly reduces the complexity and cost of managing the system.</p>
 <h2 id="Birdwatcher" class="common-anchor-header">Birdwatcher<button data-href="#Birdwatcher" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -80,7 +80,7 @@ title: المصطلحات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><a href="/docs/ar/birdwatcher_overview.md">Birdwatcher</a> هي أداة تصحيح أخطاء لـ Milvus تتصل بـ etcd، مما يتيح لك مراقبة حالة خادم Milvus وإجراء التعديلات في الوقت الفعلي. كما أنها تدعم النسخ الاحتياطي لملفات etcd، مما يساعد المطورين في استكشاف الأخطاء وإصلاحها.</p>
+    </button></h2><p><a href="/docs/ar/birdwatcher_overview.md">Birdwatcher</a> is a debugging tool for Milvus that connects to etcd, allowing you to monitor the status of the Milvus server and make adjustments in real-time. It also supports etcd file backups, aiding developers in troubleshooting.</p>
 <h2 id="Bulk-Writer" class="common-anchor-header">Bulk Writer<button data-href="#Bulk-Writer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -96,7 +96,7 @@ title: المصطلحات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/DataImport/LocalBulkWriter/LocalBulkWriter.md">Bulk Writer</a> هي أداة لمعالجة البيانات مقدمة من حزم SDK الخاصة بـ Milvus (مثل PyMilvus و Java SDK)، وهي مصممة لتحويل مجموعات البيانات الأولية إلى تنسيق متوافق مع Milvus من أجل الاستيراد الفعال.</p>
+    </button></h2><p><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/DataImport/LocalBulkWriter/LocalBulkWriter.md">Bulk Writer</a> is a data processing tool provided by Milvus SDKs (e.g. PyMilvus, Java SDK) , designed to convert raw datasets into a format compatible with Milvus for efficient importing.</p>
 <h2 id="Bulk-Insert" class="common-anchor-header">Bulk Insert<button data-href="#Bulk-Insert" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -112,7 +112,7 @@ title: المصطلحات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/ORM/utility/do_bulk_insert.md">Bulk Insert</a> هي واجهة برمجة تطبيقات (API) تعزز أداء الكتابة من خلال السماح باستيراد ملفات متعددة في طلب واحد، مما يحسّن العمليات مع مجموعات البيانات الكبيرة.</p>
+    </button></h2><p><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/ORM/utility/do_bulk_insert.md">Bulk Insert</a> is an API that enhances writing performance by allowing multiple files to be imported in a single request, optimizing operations with large datasets.</p>
 <h2 id="Cardinal" class="common-anchor-header">Cardinal<button data-href="#Cardinal" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -128,7 +128,7 @@ title: المصطلحات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Cardinal، الذي طورته Zilliz Cloud، هو خوارزمية بحث متجهة متطورة توفر جودة وأداء بحث لا مثيل لهما. بفضل تصميمه المبتكر والتحسينات الشاملة، يتفوق Cardinal على Knowhere بعدة أضعاف إلى درجة كبيرة، مع التعامل بشكل تكيفي مع سيناريوهات الإنتاج المتنوعة، مثل أحجام K المتغيرة، والتصفية العالية، وتوزيعات البيانات المختلفة، وما إلى ذلك.</p>
+    </button></h2><p>Cardinal, developed by Zilliz Cloud, is a cutter-edge vector search algorithm that delivers unparalleled search quality and performance. With its innovative design and extensive optimizations, Cardinal outperforms Knowhere by several times to an order of magnitude while adaptively handling diverse production scenarios, such as varying K sizes, high filtering, different data distributions, and so on.</p>
 <h2 id="Channel" class="common-anchor-header">Channel<button data-href="#Channel" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -144,8 +144,8 @@ title: المصطلحات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يستخدم Milvus نوعين من القنوات، <a href="#pchannel">PChannel</a> و <a href="#vchannel">VChannel،</a> كجزء من بنية خدمة البث الخاصة به. يتوافق كل PChannel مع دفق WAL يديره <a href="/docs/ar/woodpecker_architecture.md">Woodpecker</a>، بينما يتوافق كل VChannel مع شارد في مجموعة. تدير خدمة البث هذه القنوات لضمان اتساق البيانات واستعادة الأعطال.</p>
-<h2 id="Collection" class="common-anchor-header">المجموعة<button data-href="#Collection" class="anchor-icon" translate="no">
+    </button></h2><p>Milvus utilizes two types of channels, <a href="#pchannel">PChannel</a> and <a href="#vchannel">VChannel</a>, as part of its streaming service architecture. Each PChannel corresponds to a WAL stream managed by <a href="/docs/ar/woodpecker_architecture.md">Woodpecker</a>, while each VChannel corresponds to a shard in a collection. The streaming service manages these channels to ensure data consistency and fault recovery.</p>
+<h2 id="Collection" class="common-anchor-header">Collection<button data-href="#Collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -160,8 +160,8 @@ title: المصطلحات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>في Milvus، تعادل المجموعة جدولًا في نظام إدارة قواعد البيانات العلائقية (RDBMS). المجموعات هي كائنات منطقية رئيسية تُستخدم لتخزين الكيانات وإدارتها. لمزيد من المعلومات، راجع <a href="/docs/ar/manage-collections.md">إدارة المجموعات</a>.</p>
-<h2 id="Dependency" class="common-anchor-header">التبعية<button data-href="#Dependency" class="anchor-icon" translate="no">
+    </button></h2><p>In Milvus, a collection is equivalent to a table in a relational database management system (RDBMS). Collections are major logical objects used to store and manage entities. For more information, refer to <a href="/docs/ar/manage-collections.md">Manage Collections</a>.</p>
+<h2 id="Dependency" class="common-anchor-header">Dependency<button data-href="#Dependency" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -176,8 +176,8 @@ title: المصطلحات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>التبعية هي برنامج يعتمد عليه برنامج آخر ليعمل. تشمل تبعية Milvus كل من etcd (يخزن البيانات الوصفية)، وMinIO أو S3 (تخزين الكائنات)، وقائمة انتظار الرسائل مثل Woodpecker (يدير سجلات اللقطات). لمزيد من المعلومات، راجع <a href="https://milvus.io/docs/data-infra-integration-overview.md">«البنية التحتية للبيانات</a>».</p>
-<h2 id="Dynamic-schema" class="common-anchor-header">المخطط الديناميكي<button data-href="#Dynamic-schema" class="anchor-icon" translate="no">
+    </button></h2><p>A dependency is a program that another program relies on to work. Milvus’ dependencies include etcd (stores meta data), MinIO or S3 (object storage), and a message queue such as Woodpecker (manages snapshot logs). For more information, refer to <a href="https://milvus.io/docs/data-infra-integration-overview.md">Data Infrastructure</a>.</p>
+<h2 id="Dynamic-schema" class="common-anchor-header">Dynamic schema<button data-href="#Dynamic-schema" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -192,8 +192,8 @@ title: المصطلحات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يتيح لك المخطط الديناميكي إدراج كيانات ذات حقول جديدة في مجموعة دون تعديل المخطط الحالي. وهذا يعني أنه يمكنك إدراج البيانات دون معرفة المخطط الكامل للمجموعة، كما يمكنك تضمين حقول لم يتم تعريفها بعد. يمكنك تمكين هذه الإمكانية الخالية من المخطط عن طريق تمكين الحقل الديناميكي عند إنشاء مجموعة. لمزيد من المعلومات، راجع <a href="/docs/ar/enable-dynamic-field.md">«تمكين الحقل الديناميكي</a>».</p>
-<h2 id="Embeddings" class="common-anchor-header">التضمينات<button data-href="#Embeddings" class="anchor-icon" translate="no">
+    </button></h2><p>Dynamic schema allows you to insert entities with new fields into a collection without modifying the existing schema. This means that you can insert data without knowing the full schema of a collection and can include fields that are not yet defined. You can enable this schema-free capability by enableing the dynamic field when creating a collection. For more information, refer to <a href="/docs/ar/enable-dynamic-field.md">Enable Dynamic Field</a>.</p>
+<h2 id="Embeddings" class="common-anchor-header">Embeddings<button data-href="#Embeddings" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -208,8 +208,8 @@ title: المصطلحات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يقدم Milvus وظائف تضمين مدمجة تعمل مع مزودي خدمات التضمين الشائعين. قبل إنشاء مجموعة في Milvus، يمكنك استخدام هذه الوظائف لإنشاء تضمينات لمجموعات البيانات الخاصة بك، مما يبسط عملية إعداد البيانات وعمليات البحث المتجهية. لإنشاء تضمينات عملية، راجع <a href="https://github.com/milvus-io/bootcamp/blob/master/bootcamp/model/embedding_functions.ipynb">استخدام نموذج PyMilvus لإنشاء تضمينات نصية</a>.</p>
-<h2 id="Entity" class="common-anchor-header">الكيان<button data-href="#Entity" class="anchor-icon" translate="no">
+    </button></h2><p>Milvus offers built-in embedding functions that work with popular embedding providers. Before creating a collection in Milvus, you can use these functions to generate embeddings for your datasets, streamlining the process of preparing data and vector searches. To create embeddings in action, refer to <a href="https://github.com/milvus-io/bootcamp/blob/master/bootcamp/model/embedding_functions.ipynb">Using PyMilvus’s Model To Generate Text Embeddings</a>.</p>
+<h2 id="Entity" class="common-anchor-header">Entity<button data-href="#Entity" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -224,9 +224,9 @@ title: المصطلحات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يتكون الكيان من مجموعة من الحقول التي تمثل كائنات في العالم الحقيقي. يتم تمثيل كل كيان في Milvus بمفتاح أساسي فريد.</p>
-<p>يمكنك تخصيص المفاتيح الأساسية. إذا لم تقم بالتكوين يدويًّا، فسيقوم Milvus تلقائيًّا بتعيين المفتاح الأساسي للكيانات. إذا اخترت تخصيص المفتاح الأساسي، فلاحظ أن Milvus لا يدعم إزالة التكرار من المفاتيح الأساسية في الوقت الحالي. لذلك، قد توجد مفاتيح أساسية مكررة في نفس المجموعة. لمزيد من المعلومات، راجع <a href="/docs/ar/insert-update-delete.md#Insert-entities">«إدراج الكيانات</a>».</p>
-<h2 id="Field" class="common-anchor-header">الحقل<button data-href="#Field" class="anchor-icon" translate="no">
+    </button></h2><p>An entity consists of a group of fields that represent real-world objects. Each entity in Milvus is represented by a unique primary key.</p>
+<p>You can customize primary keys. If you do not configure manually, Milvus automatically assigns the primary key to entities. If you choose to customize the primary key, note that Milvus does not support primary key de-duplication for now. Therefore, there can be duplicate primary keys in the same collection. For more information, refer to <a href="/docs/ar/insert-update-delete.md#Insert-entities">Insert Entities</a>.</p>
+<h2 id="Field" class="common-anchor-header">Field<button data-href="#Field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -241,8 +241,8 @@ title: المصطلحات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>الحقل في مجموعة Milvus يعادل عمودًا في جدول في نظام إدارة قواعد البيانات العلائقية (RDBMS). يمكن أن تكون الحقول إما حقولًا قياسية للبيانات المنظمة (مثل الأرقام والسلاسل)، أو حقولًا متجهة لتضمين المتجهات.</p>
-<h2 id="Filter" class="common-anchor-header">التصفية<button data-href="#Filter" class="anchor-icon" translate="no">
+    </button></h2><p>A field in a Milvus collection is equivalent to a column of table in a RDBMS. Fields can be either scalar fields for structured data (e.g., numbers, strings), or vector fields for embedding vectors.</p>
+<h2 id="Filter" class="common-anchor-header">Filter<button data-href="#Filter" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -257,8 +257,8 @@ title: المصطلحات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يدعم Milvus التصفية القياسية عن طريق البحث باستخدام المسندات، مما يتيح لك تحديد <a href="https://milvus.io/docs/boolean.md">شروط التصفية</a> ضمن الاستعلامات وعمليات البحث لتحسين النتائج.</p>
-<h2 id="Filtered-search" class="common-anchor-header">البحث المُصفى<button data-href="#Filtered-search" class="anchor-icon" translate="no">
+    </button></h2><p>Milvus supports scalar filtering by searching with predicates, allowing you to define <a href="https://milvus.io/docs/boolean.md">filter conditions</a> within queries and searches to refine results.</p>
+<h2 id="Filtered-search" class="common-anchor-header">Filtered search<button data-href="#Filtered-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -273,8 +273,8 @@ title: المصطلحات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يطبق البحث المُصفى عوامل تصفية قياسية على عمليات البحث المتجهة، مما يتيح لك تحسين نتائج البحث بناءً على معايير محددة. لمزيد من المعلومات، راجع <a href="/docs/ar/single-vector-search.md#Filtered-search">البحث المُصفى</a>.</p>
-<h2 id="Hybrid-search" class="common-anchor-header">البحث الهجين<button data-href="#Hybrid-search" class="anchor-icon" translate="no">
+    </button></h2><p>Filtered search applies scalar filters to vector searches, allowing you to refine the search results based on specific criteria. For more information, refer to <a href="/docs/ar/single-vector-search.md#Filtered-search">Filtered search</a>.</p>
+<h2 id="Hybrid-search" class="common-anchor-header">Hybrid search<button data-href="#Hybrid-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -289,8 +289,8 @@ title: المصطلحات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/ORM/Collection/hybrid_search.md">البحث الهجين</a> هو واجهة برمجة تطبيقات (API) للبحث الهجين منذ إصدار Milvus 2.4.0. يمكنك البحث في حقول متجهة متعددة ودمجها. بالنسبة للبحث المتجه المقترن بتصفية الحقول القياسية، يُشار إليه باسم "البحث المُصفى". لمزيد من المعلومات، راجع <a href="/docs/ar/multi-vector-search.md">البحث الهجين</a>.</p>
-<h2 id="Index" class="common-anchor-header">الفهرس<button data-href="#Index" class="anchor-icon" translate="no">
+    </button></h2><p><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/ORM/Collection/hybrid_search.md">Hybrid Search</a> is an API for hybrid search since Milvus 2.4.0. You can search multiple vector fields and fusion them. For a vector search combined with scalar field filtering, it is referred to as "filtered search". For more information, refer to <a href="/docs/ar/multi-vector-search.md">Hybrid Search</a>.</p>
+<h2 id="Index" class="common-anchor-header">Index<button data-href="#Index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -305,8 +305,8 @@ title: المصطلحات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>الفهرس المتجه هو بنية بيانات أعيد تنظيمها مستمدة من البيانات الأولية، ويمكنها تسريع عملية البحث عن تشابه المتجهات بشكل كبير. يدعم Milvus مجموعة واسعة من أنواع الفهارس لكل من الحقول المتجهة والحقول القياسية. لمزيد من المعلومات، راجع <a href="https://milvus.io/docs/index.md">أنواع الفهارس المتجهة</a>.</p>
-<h2 id="Kafka-Milvus-Connector" class="common-anchor-header">موصل Kafka-Milvus<button data-href="#Kafka-Milvus-Connector" class="anchor-icon" translate="no">
+    </button></h2><p>A vector index is a reorganized data structure derived from raw data that can greatly accelerate the process of vector similarity search. Milvus supports a wide range of index types for both vector fields and scalar fields. For more information, refer to <a href="https://milvus.io/docs/index.md">Vector index types</a>.</p>
+<h2 id="Kafka-Milvus-Connector" class="common-anchor-header">Kafka-Milvus Connector<button data-href="#Kafka-Milvus-Connector" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -321,7 +321,7 @@ title: المصطلحات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يشير<a href="https://github.com/zilliztech/kafka-connect-milvus">موصل Kafka-Milvus</a> إلى موصل مستقبل Kafka لـ Milvus. ويتيح لك بث البيانات المتجهة من Kafka إلى Milvus.</p>
+    </button></h2><p><a href="https://github.com/zilliztech/kafka-connect-milvus">Kafka-Milvus Connector</a> refers to a Kafka sink connector for Milvus. It allows you to stream vector data from Kafka to Milvus.</p>
 <h2 id="Knowhere" class="common-anchor-header">Knowhere<button data-href="#Knowhere" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -337,10 +337,10 @@ title: المصطلحات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><a href="https://milvus.io/docs/knowhere.md#Knowhere">Knowhere</a> هو محرك التنفيذ المتجه الأساسي لـ Milvus الذي يضم عدة مكتبات للبحث عن تشابه المتجهات، بما في ذلك Faiss وHnswlib وAnnoy. كما تم تصميم Knowhere لدعم الحوسبة غير المتجانسة. فهو يتحكم في الأجهزة (CPU أو GPU) التي يتم عليها تنفيذ بناء الفهرس وطلبات البحث. ومن هنا جاء اسم Knowhere - معرفة مكان تنفيذ العمليات.</p>
+    </button></h2><p><a href="https://milvus.io/docs/knowhere.md#Knowhere">Knowhere</a> is the core vector execution engine of Milvus which incorporates several vector similarity search libraries including Faiss, Hnswlib, and Annoy. Knowhere is also designed to support heterogeneous computing. It controls on which hardware (CPU or GPU) to execute index building and search requests. This is how Knowhere gets its name - knowing where to execute the operations.</p>
 <!-- ## Log broker
 <p>The <a href="https://milvus.io/docs/four_layers.md#Log-broker">log broker</a> is a publish-subscribe system that supports playback. It is responsible for streaming data persistence, execution of reliable asynchronous queries, event notification, and return of query results. It also ensures integrity of the incremental data when the worker nodes recover from system breakdown. --></p>
-<h2 id="Log-snapshot" class="common-anchor-header">لقطة السجل<button data-href="#Log-snapshot" class="anchor-icon" translate="no">
+<h2 id="Log-snapshot" class="common-anchor-header">Log snapshot<button data-href="#Log-snapshot" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -355,12 +355,12 @@ title: المصطلحات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>لقطة السجل هي سجل ثنائي، وهي وحدة أصغر في المقطع تسجل وتعالج التحديثات والتغييرات التي يتم إجراؤها على البيانات في Milvus. يتم الاحتفاظ بالبيانات من المقطع في سجلات ثنائية متعددة. هناك ثلاثة أنواع من السجلات الثنائية في Milvus: InsertBinlog وDeleteBinlog وDDLBinlog. لمزيد من المعلومات، راجع <a href="https://milvus.io/docs/four_layers.md#Meta-storage">تخزين الميتا</a>.</p>
+    </button></h2><p>A log snapshot is a binary log, a smaller unit in segment that records and handles the updates and changes made to data in Milvus. Data from a segment is persisted in multiple binlogs. There are three types of binlogs in Milvus: InsertBinlog, DeleteBinlog, and DDLBinlog. For more information, refer to <a href="https://milvus.io/docs/four_layers.md#Meta-storage">Meta storage</a>.</p>
 <!-- ## Log subscriber
 <p>Log subscribers subscribe to the log sequence to update the local data and provide services in the form of read-only copies. --></p>
 <!-- ## Message storage
 <p>Message storage is the log storage engine of Milvus. Milvus supports Kafka or Pulsa as message storage. For more information, refer to <a href="https://milvus.io/docs/message_storage_operator.md#Configure-Message-Storage-with-Milvus-Operator">Configure Message Storage</a>. --></p>
-<h2 id="Metric-type" class="common-anchor-header">نوع المقياس<button data-href="#Metric-type" class="anchor-icon" translate="no">
+<h2 id="Metric-type" class="common-anchor-header">Metric type<button data-href="#Metric-type" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -375,7 +375,7 @@ title: المصطلحات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>تُستخدم أنواع مقاييس التشابه لقياس أوجه التشابه بين المتجهات. حاليًا، يدعم Milvus المسافة الأوقليدية (L2)، والمنتج الداخلي (IP)، وتشابه جيب التمام (COSINE)، وأنواع المقاييس الثنائية. يمكنك اختيار نوع المقياس الأنسب بناءً على السيناريو الخاص بك. لمزيد من المعلومات، راجع <a href="https://milvus.io/docs/metric.md">مقاييس التشابه</a>.</p>
+    </button></h2><p>Similarity metric types are used to measure similarities between vectors. Currently, Milvus supports Euclidean distance (L2), Inner product (IP), Cosine similarity (COSINE), and binary metric types. You can choose the most appropriate metric type based on your scenario. For more information, refer to <a href="https://milvus.io/docs/metric.md">Similarity Metrics</a>.</p>
 <h2 id="MemoryBuffer" class="common-anchor-header">MemoryBuffer<button data-href="#MemoryBuffer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -391,7 +391,7 @@ title: المصطلحات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>MemoryBuffer هو وضع نشر خفيف الوزن لـ Woodpecker يقوم بتخزين عمليات الكتابة الواردة مؤقتًا في الذاكرة وتفريغها بشكل دوري إلى تخزين الكائنات السحابي. هذا الوضع هو الأنسب لأحمال العمل التي تعتمد بشكل كبير على المعالجة المجمعة في عمليات النشر الصغيرة الحجم أو بيئات الإنتاج التي تعطي الأولوية للبساطة على الأداء. لمزيد من المعلومات، راجع <a href="/docs/ar/woodpecker_architecture.md">بنية Woodpecker</a>.</p>
+    </button></h2><p>MemoryBuffer is a lightweight deployment mode of Woodpecker that temporarily buffers incoming writes in memory and periodically flushes them to cloud object storage. This mode is best suited for batch-heavy workloads in smaller-scale deployments or production environments that prioritize simplicity over performance. For more information, refer to <a href="/docs/ar/woodpecker_architecture.md">Woodpecker Architecture</a>.</p>
 <h2 id="Mmap" class="common-anchor-header">Mmap<button data-href="#Mmap" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -407,8 +407,8 @@ title: المصطلحات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>تتيح الملفات المعينة في الذاكرة معالجة البيانات بكفاءة من خلال تعيين محتويات الملفات مباشرةً في الذاكرة. ويكون هذا مفيدًا بشكل خاص عندما تكون الذاكرة محدودة ولا يمكن تحميل جميع البيانات. يمكن لهذه التقنية زيادة سعة البيانات والحفاظ على الأداء إلى حد ما. ومع ذلك، إذا تجاوزت البيانات سعة الذاكرة بشكل كبير، فقد تنخفض سرعات البحث والاستعلام بشكل ملحوظ. لمزيد من المعلومات، راجع <a href="https://milvus.io/docs/mmap.md">«تخزين البيانات المدعوم بـ MMap</a>».</p>
-<h2 id="Milvus-Backup" class="common-anchor-header">النسخ الاحتياطي في Milvus<button data-href="#Milvus-Backup" class="anchor-icon" translate="no">
+    </button></h2><p>Memory-mapped files enable efficient data handling by mapping file contents directly into memory. This is especially useful when memory is limited and loading all data is not possible. This technique can boost data capacity and maintain performance to a point. However, if the data greatly exceeds memory capacity, search and query speeds could significantly decrease. For more information, refer to <a href="https://milvus.io/docs/mmap.md">MMap-enabled Data Storage</a>.</p>
+<h2 id="Milvus-Backup" class="common-anchor-header">Milvus Backup<button data-href="#Milvus-Backup" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -423,7 +423,7 @@ title: المصطلحات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><a href="https://milvus.io/docs/milvus_backup_overview.md#Milvus-Backup">Milvus Backup</a> هي أداة لإنشاء نسخ من البيانات، والتي يمكن استخدامها لاستعادة النسخة الأصلية بعد حدوث فقدان للبيانات.</p>
+    </button></h2><p><a href="https://milvus.io/docs/milvus_backup_overview.md#Milvus-Backup">Milvus Backup</a> is a tool for creating copies of data, which can be used to restore the original after a data loss event.</p>
 <h2 id="Milvus-CDC" class="common-anchor-header">Milvus CDC<button data-href="#Milvus-CDC" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -439,8 +439,8 @@ title: المصطلحات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><a href="https://milvus.io/docs/milvus_cdc_overview.md">Milvus CDC</a> (التقاط تغييرات البيانات) هي أداة تُستخدم لنسخ تغييرات البيانات من مجموعة Milvus إلى أخرى من أجل الاستعادة بعد الكوارث في النظام الأساسي والاحتياطي.</p>
-<h2 id="Milvus-CLI" class="common-anchor-header">واجهة سطر الأوامر Milvus<button data-href="#Milvus-CLI" class="anchor-icon" translate="no">
+    </button></h2><p><a href="https://milvus.io/docs/milvus_cdc_overview.md">Milvus CDC</a> (change data capture) is a tool used to replicate data changes from one Milvus cluster to another for primary-standby disaster recovery.</p>
+<h2 id="Milvus-CLI" class="common-anchor-header">Milvus CLI<button data-href="#Milvus-CLI" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -455,7 +455,7 @@ title: المصطلحات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><a href="https://milvus.io/docs/cli_overview.md">واجهة سطر الأوامر Milvus</a> (CLI) هي أداة سطر أوامر تدعم الاتصال بقاعدة البيانات، وعمليات البيانات، واستيراد وتصدير البيانات. استنادًا إلى <a href="https://github.com/milvus-io/pymilvus">Milvus Python SDK،</a> تتيح هذه الأداة تنفيذ الأوامر عبر محطة طرفية باستخدام مطالبات سطر الأوامر التفاعلية.</p>
+    </button></h2><p><a href="https://milvus.io/docs/cli_overview.md">Milvus Command-Line Interface</a> (CLI) is a command-line tool that supports database connection, data operations, and import and export of data. Based on <a href="https://github.com/milvus-io/pymilvus">Milvus Python SDK</a>, it allows the execution of commands through a terminal using interactive command-line prompts.</p>
 <h2 id="Milvus-Migration" class="common-anchor-header">Milvus Migration<button data-href="#Milvus-Migration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -471,8 +471,8 @@ title: المصطلحات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><a href="https://github.com/zilliztech/milvus-migration/">Milvus Migration</a> هي أداة مفتوحة المصدر مصممة لتسهيل ترحيل البيانات بسهولة من مصادر بيانات متنوعة إلى Milvus 2.x.</p>
-<h2 id="Milvus-cluster" class="common-anchor-header">مجموعة Milvus<button data-href="#Milvus-cluster" class="anchor-icon" translate="no">
+    </button></h2><p><a href="https://github.com/zilliztech/milvus-migration/">Milvus Migration</a> is an open-source tool designed to facilitate the easy migration of data from various data sources into Milvus 2.x.</p>
+<h2 id="Milvus-cluster" class="common-anchor-header">Milvus cluster<button data-href="#Milvus-cluster" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -487,8 +487,8 @@ title: المصطلحات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>في <a href="https://milvus.io/docs/install_cluster-milvusoperator.md">نشر</a> Milvus <a href="https://milvus.io/docs/install_cluster-milvusoperator.md">على شكل مجموعة</a> ، يتم توفير الخدمات من قبل مجموعة من العقد لتحقيق التوافر العالي وسهولة التوسع.</p>
-<h2 id="Milvus-standalone" class="common-anchor-header">Milvus المستقل<button data-href="#Milvus-standalone" class="anchor-icon" translate="no">
+    </button></h2><p>In <a href="https://milvus.io/docs/install_cluster-milvusoperator.md">cluster deployment</a> of Milvus, services are provided by a group of nodes to achieve high availability and easy scalability.</p>
+<h2 id="Milvus-standalone" class="common-anchor-header">Milvus standalone<button data-href="#Milvus-standalone" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -503,8 +503,8 @@ title: المصطلحات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>في <a href="https://milvus.io/docs/install_standalone-docker.md">النشر المستقل</a> لـ Milvus، تُنفذ جميع العمليات، بما في ذلك إدخال البيانات وبناء الفهرس والبحث عن تشابه المتجهات، في عملية واحدة.</p>
-<h2 id="Multi-Vector" class="common-anchor-header">متعدد المتجهات<button data-href="#Multi-Vector" class="anchor-icon" translate="no">
+    </button></h2><p>In <a href="https://milvus.io/docs/install_standalone-docker.md">standalone deployment</a> of Milvus, all operations including data insertion, index building, and vector similarity search are completed in one single process.</p>
+<h2 id="Multi-Vector" class="common-anchor-header">Multi-Vector<button data-href="#Multi-Vector" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -519,8 +519,8 @@ title: المصطلحات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يدعم Milvus حقول متجهات متعددة في مجموعة واحدة منذ الإصدار 2.4.0. لمزيد من المعلومات، راجع <a href="/docs/ar/multi-vector-search.md">البحث الهجين</a>.</p>
-<h2 id="Partition" class="common-anchor-header">القسم<button data-href="#Partition" class="anchor-icon" translate="no">
+    </button></h2><p>Milvus supports multiple vector fields in one collection since 2.4.0. For more information, refer to <a href="/docs/ar/multi-vector-search.md">Hybrid Search</a>.</p>
+<h2 id="Partition" class="common-anchor-header">Partition<button data-href="#Partition" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -535,8 +535,8 @@ title: المصطلحات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>القسم هو تقسيم للمجموعة. يدعم Milvus تقسيم بيانات المجموعة إلى أجزاء متعددة على وحدة التخزين الفعلية. تسمى هذه العملية بالتقسيم، ويمكن أن يحتوي كل قسم على شرائح متعددة. لمزيد من المعلومات، راجع <a href="https://milvus.io/docs/manage-partitions.md#Manage-Partitions">إدارة الأقسام</a>.</p>
-<h2 id="Partition-key" class="common-anchor-header">مفتاح التقسيم<button data-href="#Partition-key" class="anchor-icon" translate="no">
+    </button></h2><p>A partition is a division of a collection. Milvus supports dividing collection data into multiple parts on physical storage. This process is called partitioning, and each partition can contain multiple segments. For more information, refer to <a href="https://milvus.io/docs/manage-partitions.md#Manage-Partitions">Manage Partitions</a>.</p>
+<h2 id="Partition-key" class="common-anchor-header">Partition key<button data-href="#Partition-key" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -551,7 +551,7 @@ title: المصطلحات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>تتيح سمة مفتاح التقسيم الخاصة بحقل ما فصل الكيانات إلى أقسام متميزة بناءً على قيم مفتاح التقسيم الخاصة بها. يضمن هذا التجميع تخزين الكيانات التي تشترك في نفس قيمة المفتاح معًا، مما قد يسرع عمليات البحث من خلال السماح للنظام بتجاوز الأقسام غير ذات الصلة أثناء الاستعلامات التي يتم تصفيتها بواسطة حقل مفتاح التقسيم. لمزيد من المعلومات، راجع <a href="https://milvus.io/docs/use-partition-key.md#Use-Partition-Key">استخدام مفتاح التقسيم</a>.</p>
+    </button></h2><p>The partition key attribute of a field enables the segregation of entities into distinct partitions based on their partition key values. This grouping ensures that entities sharing the same key value are stored together, which can speed up search operations by allowing the system to bypass irrelevant partitions during queries filtered by the partition key field. For more information, refer to <a href="https://milvus.io/docs/use-partition-key.md#Use-Partition-Key">Use Partition Key</a>.</p>
 <h2 id="PChannel" class="common-anchor-header">PChannel<button data-href="#PChannel" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -567,7 +567,7 @@ title: المصطلحات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>PChannel هي اختصار لـ «القناة المادية». يتوافق كل PChannel مع دفق WAL يديره Woodpecker. بشكل افتراضي، سيتم تخصيص مجموعة من PChannels لتخزين السجلات التي تسجل عمليات إدراج البيانات وحذفها وتحديثها عند بدء تشغيل مجموعة Milvus. لمزيد من المعلومات، راجع <a href="/docs/ar/streaming_service.md">«خدمة البث</a>».</p>
+    </button></h2><p>PChannel stands for physical channel. Each PChannel corresponds to a WAL stream managed by Woodpecker. By default, a group of PChannels will be assigned to store logs that record data insertion, deletion, and update when the Milvus cluster is started. For more information, refer to <a href="/docs/ar/streaming_service.md">Streaming Service</a>.</p>
 <h2 id="PyMilvus" class="common-anchor-header">PyMilvus<button data-href="#PyMilvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -583,8 +583,8 @@ title: المصطلحات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>PyMilvus هو SDK لـ Milvus بلغة Python. كود المصدر مفتوح المصدر ومستضاف على <a href="https://github.com/milvus-io/pymilvus">GitHub</a>. لديك المرونة في اختيار MilvusClient (الإصدار الجديد من SDK لـ Python) أو وحدة ORM الأصلية للتواصل مع Milvus.</p>
-<h2 id="Query" class="common-anchor-header">الاستعلام<button data-href="#Query" class="anchor-icon" translate="no">
+    </button></h2><p>PyMilvus is a Python SDK of Milvus. Its source code is open-sourced and hosted on <a href="https://github.com/milvus-io/pymilvus">GitHub</a>. You have the flexibility to choose MilvusClient (new version Python SDK) or the original ORM module to talk with Milvus.</p>
+<h2 id="Query" class="common-anchor-header">Query<button data-href="#Query" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -599,7 +599,7 @@ title: المصطلحات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Vector/query.md">Query</a> هي واجهة برمجة تطبيقات (API) تقوم بالتصفية القياسية باستخدام تعبير منطقي محدد كمرشح. لمزيد من المعلومات، راجع <a href="https://milvus.io/docs/get-and-scalar-query.md#Use-Basic-Operators">Get &amp; Scalar Query</a>.</p>
+    </button></h2><p><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Vector/query.md">Query</a> is an API that conducts scalar filtering with a specified boolean expression as filter. For more information, refer to <a href="https://milvus.io/docs/get-and-scalar-query.md#Use-Basic-Operators">Get & Scalar Query</a>.</p>
 <h2 id="QuorumBuffer" class="common-anchor-header">QuorumBuffer<button data-href="#QuorumBuffer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -615,8 +615,8 @@ title: المصطلحات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>QuorumBuffer هو وضع نشر لـ Woodpecker مصمم لأحمال العمل ذات التردد العالي والحساسة للكمون، والتي تتطلب استجابة في الوقت الفعلي وتحملًا قويًا للأعطال. يعمل كمخزن مؤقت للكتابة عالي السرعة مع عمليات كتابة كووروم بثلاث نسخ متماثلة، مما يضمن اتساقًا قويًا وتوافرًا عاليًا. لمزيد من المعلومات، راجع <a href="/docs/ar/woodpecker_architecture.md">بنية Woodpecker</a>.</p>
-<h2 id="Range-search" class="common-anchor-header">البحث عن النطاق<button data-href="#Range-search" class="anchor-icon" translate="no">
+    </button></h2><p>QuorumBuffer is a deployment mode of Woodpecker designed for latency-sensitive, high-frequency read/write workloads requiring both real-time responsiveness and strong fault tolerance. It functions as a high-speed write buffer with three-replica quorum writes, ensuring strong consistency and high availability. For more information, refer to <a href="/docs/ar/woodpecker_architecture.md">Woodpecker Architecture</a>.</p>
+<h2 id="Range-search" class="common-anchor-header">Range search<button data-href="#Range-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -631,8 +631,8 @@ title: المصطلحات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يتيح لك البحث عن النطاق العثور على المتجهات التي تقع ضمن مسافة محددة من متجه البحث الخاص بك. لمزيد من المعلومات، راجع <a href="https://milvus.io/docs/single-vector-search.md#Range-search">البحث</a> عن <a href="https://milvus.io/docs/single-vector-search.md#Range-search">النطاق</a>.</p>
-<h2 id="Schema" class="common-anchor-header">المخطط<button data-href="#Schema" class="anchor-icon" translate="no">
+    </button></h2><p>Range search allows you to find vectors that lie within a specified distance from your search vector. For more information, refer to <a href="https://milvus.io/docs/single-vector-search.md#Range-search">Range search</a>.</p>
+<h2 id="Schema" class="common-anchor-header">Schema<button data-href="#Schema" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -647,8 +647,8 @@ title: المصطلحات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>المخطط هو المعلومات الوصفية التي تحدد نوع البيانات وخصائصها. لكل مجموعة مخطط خاص بها يحدد جميع حقول المجموعة، وتمكين التخصيص التلقائي للمعرف (المفتاح الأساسي)، ووصف المجموعة. كما يتم تضمين مخططات الحقول في مخططات المجموعات، والتي تحدد اسم الحقل ونوع البيانات وخصائصه الأخرى. لمزيد من المعلومات، راجع <a href="https://milvus.io/docs/schema.md#Manage-Schema">«إدارة المخطط</a>».</p>
-<h2 id="Search" class="common-anchor-header">البحث<button data-href="#Search" class="anchor-icon" translate="no">
+    </button></h2><p>Schema is the meta information that defines the data type and data property. Each collection has its own collection schema that defines all the fields of a collection, automatic ID (primary key) allocation enablement, and collection description. Field schemas are also included in collection schemas, which defines the name, data type, and other properties of a field. For more information, refer to <a href="https://milvus.io/docs/schema.md#Manage-Schema">Manage Schema</a>.</p>
+<h2 id="Search" class="common-anchor-header">Search<button data-href="#Search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -663,8 +663,8 @@ title: المصطلحات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Vector/search.md">البحث</a> هو واجهة برمجة تطبيقات (API) تُجري عملية بحث عن تشابه المتجهات، وتتطلب بيانات متجهة لتنفيذها. لمزيد من المعلومات، راجع <a href="https://milvus.io/docs/single-vector-search.md">«البحث عن متجه واحد</a>».</p>
-<h2 id="Segment" class="common-anchor-header">الشريحة<button data-href="#Segment" class="anchor-icon" translate="no">
+    </button></h2><p><a href="https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Vector/search.md">Search</a> is an API that performs an operation to conduct a vector similarity search, requiring vector data for its execution. For more information, refer to <a href="https://milvus.io/docs/single-vector-search.md">Single-Vector Search</a>.</p>
+<h2 id="Segment" class="common-anchor-header">Segment<button data-href="#Segment" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -679,9 +679,9 @@ title: المصطلحات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>الشريحة هي ملف بيانات يتم إنشاؤه تلقائيًا لتخزين البيانات التي تم إدخالها. قد تحتوي المجموعة على شرائح متعددة، ويمكن أن تحتوي كل شريحة على العديد من الكيانات. أثناء البحث عن تشابه المتجهات، يفحص Milvus كل شريحة لتجميع نتائج البحث.</p>
-<p>هناك نوعان من المقاطع: المقاطع المتنامية والمقاطع المختومة. يستمر المقطع المتنامي في جمع البيانات الجديدة حتى يصل إلى عتبة معينة أو حد زمني محدد، وبعد ذلك يصبح مختومًا. بمجرد إغلاقه، لا يقبل المقطع أي بيانات جديدة ويتم نقله إلى تخزين الكائنات. وفي الوقت نفسه، يتم توجيه البيانات الواردة إلى شريحة متنامية جديدة. ويتم تشغيل الانتقال من الشريحة المتنامية إلى الشريحة المختومة إما بالوصول إلى الحد المحدد مسبقًا للكيانات أو بتجاوز المدة القصوى المسموح بها في حالة النمو. لمزيد من المعلومات، راجع <a href="https://milvus.io/docs/replica.md#Design-Details">تفاصيل التصميم</a>.</p>
-<h2 id="Spark-Milvus-Connector" class="common-anchor-header">موصل Spark-Milvus<button data-href="#Spark-Milvus-Connector" class="anchor-icon" translate="no">
+    </button></h2><p>A segment is an automatically created data file that stores inserted data. A collection may contain multiple segments, and each segment can hold numerous entities. During a vector similarity search, Milvus examines each segment to compile search results.</p>
+<p>There are two types of segments: growing and sealed. A growing segment continues to collect new data until it hits a specific threshold or time limit, after which it becomes sealed. Once sealed, a segment no longer accepts new data and is transferred to object storage. Meanwhile, incoming data is routed to a new growing segment. The transition from a growing to a sealed segment is triggered either by reaching the predefined entity limit or by exceeding the maximum allowed duration in the growing state. For more information, refer to <a href="https://milvus.io/docs/replica.md#Design-Details">Design Details</a>.</p>
+<h2 id="Spark-Milvus-Connector" class="common-anchor-header">Spark-Milvus Connector<button data-href="#Spark-Milvus-Connector" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -696,8 +696,8 @@ title: المصطلحات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يوفر<a href="https://github.com/zilliztech/spark-milvus">موصل Spark-Milvus</a> تكاملاً سلسًا بين Apache Spark وMilvus، حيث يجمع بين ميزات معالجة البيانات والتعلم الآلي (ML) في Apache Spark وقدرات تخزين البيانات المتجهة والبحث في Milvus.</p>
-<h2 id="Shard" class="common-anchor-header">الشظية<button data-href="#Shard" class="anchor-icon" translate="no">
+    </button></h2><p><a href="https://github.com/zilliztech/spark-milvus">Spark-Milvus Connector</a> provides seamless integration between Apache Spark and Milvus, combining the data processing and machine learning (ML) features of Apache Spark with the vector data storage and search capabilities of Milvus.</p>
+<h2 id="Shard" class="common-anchor-header">Shard<button data-href="#Shard" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -712,9 +712,9 @@ title: المصطلحات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يعزز Milvus أداء كتابة البيانات من خلال توزيع عمليات الكتابة عبر عدة عقد باستخدام الشاردات، التي يتم تنظيمها بناءً على تجزئة المفاتيح الأساسية. ويستفيد هذا من قدرات الحوسبة المتوازية للمجموعة.</p>
-<p><em>يعمل التقسيم على تقليل حمل القراءة من خلال تحديد اسم القسم، بينما يعمل التجزئة على توزيع حمل الكتابة بين خوادم متعددة.</em></p>
-<h2 id="Sparse-vector" class="common-anchor-header">المتجهات المتفرقة<button data-href="#Sparse-vector" class="anchor-icon" translate="no">
+    </button></h2><p>Milvus enhances data write performance by distributing write operations across multiple nodes using shards, which are organized based on the hashing of primary keys. This leverages the cluster’s parallel computing capabilities.</p>
+<p><em>Partitioning works to reduce read load by specifying a partition name, while sharding spreads write load among multiple servers.</em></p>
+<h2 id="Sparse-vector" class="common-anchor-header">Sparse vector<button data-href="#Sparse-vector" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -729,8 +729,8 @@ title: المصطلحات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>تمثل المتجهات المتفرقة الكلمات أو العبارات باستخدام تضمينات متجهة حيث تكون معظم العناصر صفرية، مع وجود عنصر واحد فقط غير صفري يشير إلى وجود كلمة معينة. تتفوق نماذج المتجهات المتفرقة، مثل SPLADEv2، على النماذج الكثيفة في البحث عن المعرفة خارج المجال، والوعي بالكلمات المفتاحية، وقابلية التفسير. لمزيد من المعلومات، راجع <a href="https://milvus.io/docs/sparse_vector.md#Sparse-Vector">«المتجهات المتفرقة</a>».</p>
-<h2 id="Streaming-Service" class="common-anchor-header">خدمة البث<button data-href="#Streaming-Service" class="anchor-icon" translate="no">
+    </button></h2><p>Sparse vectors represent words or phrases using vector embeddings where most elements are zero, with only one non-zero element indicating the presence of a specific word. Sparse vector models, such as SPLADEv2, outperform dense models in out-of-domain knowledge search, keyword-awareness, and interpretability. For more information, refer to <a href="https://milvus.io/docs/sparse_vector.md#Sparse-Vector">Sparse Vectors</a>.</p>
+<h2 id="Streaming-Service" class="common-anchor-header">Streaming Service<button data-href="#Streaming-Service" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -745,8 +745,8 @@ title: المصطلحات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>خدمة البث هي مفهوم لوحدة نظام البث الداخلية في Milvus، والتي تم بناؤها حول سجل الكتابة المسبقة (WAL) لدعم مختلف الوظائف المتعلقة بالبث. وتشمل هذه الوظائف استيعاب/الاشتراك في بيانات البث، واستعادة حالة الكتلة بعد الأعطال، وتحويل بيانات البث إلى بيانات تاريخية، واستعلامات البيانات المتزايدة. تتألف الخدمة من مكونات منسق البث، وعنقود عقد البث، وعميل البث. لمزيد من المعلومات، راجع <a href="/docs/ar/streaming_service.md">خدمة البث</a>.</p>
-<h2 id="Unstructured-data" class="common-anchor-header">البيانات غير المنظمة<button data-href="#Unstructured-data" class="anchor-icon" translate="no">
+    </button></h2><p>The Streaming Service is a concept for Milvus internal streaming system module, built around the Write-Ahead Log (WAL) to support various streaming-related functions. These include streaming data ingestion/subscription, fault recovery of cluster state, conversion of streaming data into historical data, and growing data queries. The service is composed of Streaming Coordinator, Streaming Node Cluster, and Streaming Client components. For more information, refer to <a href="/docs/ar/streaming_service.md">Streaming Service</a>.</p>
+<h2 id="Unstructured-data" class="common-anchor-header">Unstructured data<button data-href="#Unstructured-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -761,7 +761,7 @@ title: المصطلحات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>البيانات غير المنظمة، بما في ذلك الصور والفيديو والصوت واللغة الطبيعية، هي معلومات لا تتبع نموذجًا أو أسلوب تنظيم محددًا مسبقًا. يمثل هذا النوع من البيانات حوالي 80٪ من البيانات في العالم، ويمكن تحويله إلى متجهات باستخدام نماذج مختلفة من الذكاء الاصطناعي (AI) والتعلم الآلي (ML).</p>
+    </button></h2><p>Unstructured data, including images, video, audio, and natural language, is information that does not follow a predefined model or manner of organization. This data type accounts for around 80% of the world’s data, and can be converted into vectors using various artificial intelligence (AI) and ML models.</p>
 <h2 id="VChannel" class="common-anchor-header">VChannel<button data-href="#VChannel" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -777,8 +777,8 @@ title: المصطلحات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>VChannel هي اختصار لـ «القناة الافتراضية». تمثل كل قناة VChannel جزءًا (shard) في مجموعة. سيتم تخصيص مجموعة من قنوات VChannel لكل مجموعة لتسجيل عمليات إدراج البيانات وحذفها وتحديثها. يتم فصل قنوات VChannel منطقيًا، لكنها تتشارك الموارد فعليًّا من خلال خدمة البث. لمزيد من المعلومات، راجع <a href="/docs/ar/streaming_service.md">خدمة البث</a>.</p>
-<h2 id="Vector" class="common-anchor-header">المتجه<button data-href="#Vector" class="anchor-icon" translate="no">
+    </button></h2><p>VChannel stands for virtual channel. Each VChannel represents a shard in a collection. Each collection will be assigned a group of VChannels for recording data insertion, deletion, and update. VChannels are logically separated but physically share resources through the streaming service. For more information, refer to <a href="/docs/ar/streaming_service.md">Streaming Service</a>.</p>
+<h2 id="Vector" class="common-anchor-header">Vector<button data-href="#Vector" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -793,8 +793,8 @@ title: المصطلحات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>المتجه المدمج هو تجريد ميزات للبيانات غير المنظمة، مثل رسائل البريد الإلكتروني وبيانات مستشعرات إنترنت الأشياء وصور Instagram وهياكل البروتينات وغيرها. من الناحية الرياضية، المتجه المدمج هو مصفوفة من الأرقام العائمة أو الثنائيات. تُستخدم تقنيات التضمين الحديثة لتحويل البيانات غير المنظمة إلى متجهات تضمين. يدعم Milvus كلاً من المتجهات الكثيفة والمتفرقة منذ الإصدار 2.4.0.</p>
-<h2 id="WAL-Storage" class="common-anchor-header">تخزين WAL<button data-href="#WAL-Storage" class="anchor-icon" translate="no">
+    </button></h2><p>An embedding vector is a feature abstraction of unstructured data, such as emails, IoT sensor data, Instagram photos, protein structures, and more. Mathematically speaking, an embedding vector is an array of floating-point numbers or binaries. Modern embedding techniques are used to convert unstructured data to embedding vectors. Milvus support both dense and sparse vector since 2.4.0.</p>
+<h2 id="WAL-Storage" class="common-anchor-header">WAL Storage<button data-href="#WAL-Storage" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -809,7 +809,7 @@ title: المصطلحات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يُعد تخزين سجل الكتابة المسبقة (WAL) أساس متانة البيانات واتساقها في الأنظمة الموزعة. قبل تثبيت أي تغيير، يتم تسجيله أولاً في سجل — مما يضمن أنه في حالة حدوث عطل، يمكنك الاستعادة من النقطة التي توقفت عندها بالضبط. يستخدم Milvus Woodpecker كنظام تخزين WAL الخاص به، والذي يدعم كل من وضعي MemoryBuffer وQuorumBuffer. لمزيد من المعلومات، راجع <a href="/docs/ar/woodpecker_architecture.md">بنية Woodpecker</a>.</p>
+    </button></h2><p>Write-Ahead Log (WAL) storage is the foundation of data durability and consistency in distributed systems. Before any change is committed, it’s first recorded in a log—ensuring that, in the event of a failure, you can recover exactly where you left off. Milvus uses Woodpecker as its WAL storage system, which supports both MemoryBuffer and QuorumBuffer modes. For more information, refer to <a href="/docs/ar/woodpecker_architecture.md">Woodpecker Architecture</a>.</p>
 <h2 id="Woodpecker" class="common-anchor-header">Woodpecker<button data-href="#Woodpecker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -825,7 +825,7 @@ title: المصطلحات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Woodpecker هو نظام WAL سحابي أصلي في Milvus 2.6 يحل محل Kafka وPulsar. بفضل بنية بدون أقراص ووضعين للنشر (MemoryBuffer وQuorumBuffer)، يوفر هذا النظام إنتاجية عالية وتكاليف تشغيل منخفضة وقابلية توسع سلسة على تخزين الكائنات. لمزيد من المعلومات، راجع <a href="/docs/ar/woodpecker_architecture.md">«بنية Woodpecker</a>».</p>
+    </button></h2><p>Woodpecker is a cloud-native WAL system in Milvus 2.6 that replaces Kafka and Pulsar. With a zero-disk architecture and two deployment modes (MemoryBuffer and QuorumBuffer), it delivers high throughput, low operational overhead, and seamless scalability on object storage. For more information, refer to <a href="/docs/ar/woodpecker_architecture.md">Woodpecker Architecture</a>.</p>
 <h2 id="Zilliz-Cloud" class="common-anchor-header">Zilliz Cloud<button data-href="#Zilliz-Cloud" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -841,4 +841,4 @@ title: المصطلحات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus مُدار بالكامل على <a href="https://zilliz.com/">Zilliz Cloud،</a> مع المزيد من الميزات المؤسسية والأداء المُحسّن للغاية.</p>
+    </button></h2><p>Fully-managed Milvus on <a href="https://zilliz.com/">Zilliz Cloud</a>, with more enterprise features and highly optimized performance.</p>

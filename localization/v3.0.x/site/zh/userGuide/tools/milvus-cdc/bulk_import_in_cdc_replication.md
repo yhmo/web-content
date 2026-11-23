@@ -1,9 +1,11 @@
 ---
 id: bulk_import_in_cdc_replication.md
-summary: 了解如何对使用 CDC 复制的 Milvus 集群执行批量导入。
-title: CDC 复制中的批量导入
+summary: >-
+  Learn how to run a bulk import against Milvus clusters that use CDC
+  replication.
+title: Bulk Import in CDC Replication
 ---
-<h1 id="Bulk-Import-in-CDC-Replication" class="common-anchor-header">CDC 复制中的批量导入<button data-href="#Bulk-Import-in-CDC-Replication" class="anchor-icon" translate="no">
+<h1 id="Bulk-Import-in-CDC-Replication" class="common-anchor-header">Bulk Import in CDC Replication<button data-href="#Bulk-Import-in-CDC-Replication" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,10 +20,10 @@ title: CDC 复制中的批量导入
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>本指南介绍了如何针对属于 CDC 复制拓扑的 Milvus 集群执行批量导入。在复制集群中，批量导入必须使用两阶段提交（2PC），以确保导入操作在主集群和备用集群上作为单个有序点被提交。</p>
-<p>在本指南中，主集群指源 Milvus 集群，备集群指目标 Milvus 集群。</p>
-<p>开始之前，请确保各集群之间已配置好 CDC 复制。有关详细信息，请参阅《<a href="/docs/zh/set_up_cdc_replication.md">设置 CDC 复制</a>》。</p>
-<h2 id="Why-2PC-is-required" class="common-anchor-header">为何需要 2PC<button data-href="#Why-2PC-is-required" class="anchor-icon" translate="no">
+    </button></h1><p>This guide explains how to run a bulk import against Milvus clusters that are part of a CDC replication topology. In a replicating cluster, bulk import must use two-phase commit (2PC) so that the import is committed as a single, ordered point across the primary and standby clusters.</p>
+<p>In this guide, the primary cluster is the source Milvus cluster, and the standby cluster is the target Milvus cluster.</p>
+<p>Before you begin, make sure CDC replication is already configured between your clusters. For details, refer to <a href="/docs/zh/set_up_cdc_replication.md">Set Up CDC Replication</a>.</p>
+<h2 id="Why-2PC-is-required" class="common-anchor-header">Why 2PC is required<button data-href="#Why-2PC-is-required" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -36,13 +38,13 @@ title: CDC 复制中的批量导入
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>通常情况下，批量导入会在导入任务完成时自动提交，这会使导入的数据立即可见。但在 CDC 复制拓扑中，这种行为是不被允许的，因为主集群和备用集群必须在同一个逻辑点上使导入的数据可见。</p>
-<p>因此，请通过设置<code translate="no">auto_commit=false</code> ，以两阶段提交模式运行导入任务：</p>
+    </button></h2><p>A normal bulk import auto-commits when the import job finishes, which makes the imported data visible immediately. In a CDC replication topology, this behavior is not allowed because the primary and standby clusters must make the imported data visible at the same logical point.</p>
+<p>Instead, run the import in two-phase commit mode by setting <code translate="no">auto_commit=false</code>:</p>
 <ol>
-<li><p><strong>导入阶段</strong>：Milvus 在主集群上加载数据并将导入任务复制到备用集群，但导入的数据仍不可见。导入任务停留在“<code translate="no">Uncommitted</code> ”状态并进入等待状态。</p></li>
-<li><p><strong>提交阶段</strong>：您在主集群上显式提交导入任务。该提交将作为单个有序屏障复制到备用集群，因此两个集群都在同一逻辑点上使导入的数据可见。</p></li>
+<li><p><strong>Import phase</strong>: Milvus loads the data on the primary cluster and replicates the import to the standby cluster, but the imported data remains invisible. The import job stops at the <code translate="no">Uncommitted</code> state and waits.</p></li>
+<li><p><strong>Commit phase</strong>: You explicitly commit the import job on the primary cluster. The commit is replicated to the standby cluster as a single ordered fence, so both clusters make the imported data visible at the same logical point.</p></li>
 </ol>
-<h2 id="Step-1-Enable-import-in-a-replicating-cluster" class="common-anchor-header">步骤 1：在复制集群中启用导入<button data-href="#Step-1-Enable-import-in-a-replicating-cluster" class="anchor-icon" translate="no">
+<h2 id="Step-1-Enable-import-in-a-replicating-cluster" class="common-anchor-header">Step 1: Enable import in a replicating cluster<button data-href="#Step-1-Enable-import-in-a-replicating-cluster" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -57,31 +59,31 @@ title: CDC 复制中的批量导入
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>在复制集群中，导入功能默认处于禁用状态。请在主集群和备集群上将 `<code translate="no">dataCoord.import.enableInReplicatingCluster</code> ` 设置为 `<code translate="no">true</code> ` 以启用该功能。</p>
-<p>如果您使用 Milvus Operator 部署 Milvus，请在每个<code translate="no">Milvus</code> 资源的<code translate="no">spec.config</code> 中添加以下设置：</p>
+    </button></h2><p>Import in a replicating cluster is disabled by default. Enable it by setting <code translate="no">dataCoord.import.enableInReplicatingCluster</code> to <code translate="no">true</code> on both the primary and standby clusters.</p>
+<p>If you deploy Milvus with Milvus Operator, add the following setting to <code translate="no">spec.config</code> of each <code translate="no">Milvus</code> resource:</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">spec:</span>
   <span class="hljs-attr">config:</span>
     <span class="hljs-attr">dataCoord:</span>
       <span class="hljs-attr">import:</span>
         <span class="hljs-attr">enableInReplicatingCluster:</span> <span class="hljs-literal">true</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>如果您直接通过<code translate="no">milvus.yaml</code> 配置 Milvus，请添加以下设置：</p>
+<p>If you configure Milvus directly through <code translate="no">milvus.yaml</code>, add the following setting:</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">dataCoord:</span>
   <span class="hljs-attr">import:</span>
     <span class="hljs-attr">enableInReplicatingCluster:</span> <span class="hljs-literal">true</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>该设置支持热更新，因此无需完全重启即可生效。</p>
-<p>启用此设置后，复制集群仅接受包含 `<code translate="no">auto_commit=false</code>` 的导入请求。下表列出了常见的被拒绝请求：</p>
+<p>This setting is refreshable, so it can take effect without a full restart.</p>
+<p>When this setting is enabled, a replicating cluster accepts only imports with <code translate="no">auto_commit=false</code>. The following table lists common rejected requests:</p>
 <table>
 <thead>
-<tr><th>情况</th><th>错误信息</th></tr>
+<tr><th>Situation</th><th>Error message</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">dataCoord.import.enableInReplicatingCluster</code> 未启用</td><td><code translate="no">import in replicating cluster is not supported yet</code></td></tr>
-<tr><td><code translate="no">auto_commit=true</code> 已提交</td><td><code translate="no">auto_commit=true import in replicating cluster is not supported</code></td></tr>
+<tr><td><code translate="no">dataCoord.import.enableInReplicatingCluster</code> is not enabled</td><td><code translate="no">import in replicating cluster is not supported yet</code></td></tr>
+<tr><td><code translate="no">auto_commit=true</code> is submitted</td><td><code translate="no">auto_commit=true import in replicating cluster is not supported</code></td></tr>
 </tbody>
 </table>
-<h2 id="Step-2-Run-a-2PC-import" class="common-anchor-header">步骤 2：运行 2PC 导入<button data-href="#Step-2-Run-a-2PC-import" class="anchor-icon" translate="no">
+<h2 id="Step-2-Run-a-2PC-import" class="common-anchor-header">Step 2: Run a 2PC import<button data-href="#Step-2-Run-a-2PC-import" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -96,9 +98,9 @@ title: CDC 复制中的批量导入
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>请在主集群上执行所有导入调用。导入的数据和提交决策会自动复制到备用集群，因此请勿在备用集群上自行提交或确认导入操作。</p>
-<p>每个集群都会从各自的对象存储中读取导入文件。请确保待导入的文件同时存在于主集群和备用集群的对象存储中。您可以将文件上传到两个集群，或者使用两个集群均可读取的对象存储。如果备用集群上缺少文件，则该集群上的复制导入将因“对象未找到”错误而失败。</p>
-<p>以下示例使用了来自<code translate="no">pymilvus.bulk_writer</code> 的基于 REST 的导入辅助函数。<code translate="no">url</code> 中的值即为您在其他 API 调用中使用的 Milvus 地址。</p>
+    </button></h2><p>Run all import calls against the primary cluster. The imported data and the commit decision are replicated to the standby cluster automatically, so do not submit or commit the import on the standby cluster yourself.</p>
+<p>Each cluster reads the import files from its own object storage. Make sure the files to import exist in both the primary and standby object storage. You can upload the files to both clusters, or use object storage that both clusters can read. If the files are missing on the standby cluster, the replicated import fails there with an object-not-found error.</p>
+<p>The following example uses the REST-based import helpers from <code translate="no">pymilvus.bulk_writer</code>. The <code translate="no">url</code> values are the same Milvus addresses you use for other API calls.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> time
 
 <span class="hljs-keyword">from</span> pymilvus.bulk_writer <span class="hljs-keyword">import</span> bulk_import, commit_import, get_import_progress
@@ -160,7 +162,7 @@ wait_for_state(primary_url, job_id, <span class="hljs-string">&quot;Completed&qu
 wait_for_state(standby_url, job_id, <span class="hljs-string">&quot;Completed&quot;</span>)
 <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;import committed and visible on both clusters&quot;</span>)
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Why-wait-for-Uncommitted-on-both-clusters" class="common-anchor-header">为何要在两个集群上都等待<code translate="no">Uncommitted</code> <button data-href="#Why-wait-for-Uncommitted-on-both-clusters" class="anchor-icon" translate="no">
+<h3 id="Why-wait-for-Uncommitted-on-both-clusters" class="common-anchor-header">Why wait for <code translate="no">Uncommitted</code> on both clusters<button data-href="#Why-wait-for-Uncommitted-on-both-clusters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -175,8 +177,8 @@ wait_for_state(standby_url, job_id, <span class="hljs-string">&quot;Completed&qu
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>在备用集群完成导入之前进行提交不会导致数据损坏，但当提交被应用时，备用集群仍在进行数据同步。等待主集群和备用集群均报告<code translate="no">Uncommitted</code> ，可确保导入的数据已完全复制，且两个集群都已准备好共同显示该数据。</p>
-<h2 id="Step-3-Verify-the-data" class="common-anchor-header">步骤 3：验证数据<button data-href="#Step-3-Verify-the-data" class="anchor-icon" translate="no">
+    </button></h3><p>Committing before the standby cluster has finished importing does not corrupt data, but the standby cluster is still catching up when the commit is applied. Waiting until both the primary and standby clusters report <code translate="no">Uncommitted</code> confirms that the imported data has fully replicated and both clusters are ready to make it visible together.</p>
+<h2 id="Step-3-Verify-the-data" class="common-anchor-header">Step 3: Verify the data<button data-href="#Step-3-Verify-the-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -191,9 +193,9 @@ wait_for_state(standby_url, job_id, <span class="hljs-string">&quot;Completed&qu
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>当作业达到<code translate="no">Completed</code> 状态后，导入的实体在两个集群上均可见。在主集群上加载并查询该Collection，然后在备集群上运行相同的查询（无需在备集群上手动加载该Collection），并确认导入的实体在两个集群上均存在。</p>
-<p>在处于备用状态期间，备用集群为只读模式。请勿直接在备用集群上提交导入、提交或其他 DDL 或 DCL 操作。应在主集群上执行这些操作，并让 CDC 复制将其应用到备用集群。</p>
-<h2 id="FAQ" class="common-anchor-header">常见问题<button data-href="#FAQ" class="anchor-icon" translate="no">
+    </button></h2><p>After the job reaches <code translate="no">Completed</code>, the imported entities are visible on both clusters. Load and query the collection on the primary cluster, then run the same query on the standby cluster without manually loading the collection there and confirm that the imported entities are present on both clusters.</p>
+<p>The standby cluster is read-only while it remains a standby. Do not submit imports, commits, or other DDL or DCL operations directly to the standby cluster. Perform these operations on the primary cluster and let CDC replication apply them to the standby cluster.</p>
+<h2 id="FAQ" class="common-anchor-header">FAQ<button data-href="#FAQ" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -208,7 +210,7 @@ wait_for_state(standby_url, job_id, <span class="hljs-string">&quot;Completed&qu
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Which-cluster-should-I-run-the-import-and-commit-on" class="common-anchor-header">应在哪个集群上执行导入和提交操作？<button data-href="#Which-cluster-should-I-run-the-import-and-commit-on" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Which-cluster-should-I-run-the-import-and-commit-on" class="common-anchor-header">Which cluster should I run the import and commit on?<button data-href="#Which-cluster-should-I-run-the-import-and-commit-on" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -223,8 +225,8 @@ wait_for_state(standby_url, job_id, <span class="hljs-string">&quot;Completed&qu
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>请在主集群上执行导入和提交操作。备用集群将通过 CDC 复制接收导入的数据和提交操作。</p>
-<h3 id="Do-I-need-to-commit-on-the-standby-cluster" class="common-anchor-header">是否需要在备用集群上提交？<button data-href="#Do-I-need-to-commit-on-the-standby-cluster" class="anchor-icon" translate="no">
+    </button></h3><p>Run the import and commit on the primary cluster. The standby cluster receives both the imported data and the commit through CDC replication.</p>
+<h3 id="Do-I-need-to-commit-on-the-standby-cluster" class="common-anchor-header">Do I need to commit on the standby cluster?<button data-href="#Do-I-need-to-commit-on-the-standby-cluster" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -239,8 +241,8 @@ wait_for_state(standby_url, job_id, <span class="hljs-string">&quot;Completed&qu
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>不需要。在主集群上提交后，系统会将该提交作为单个有序栅栏复制到备用集群。</p>
-<h3 id="Why-does-my-import-fail-with-import-in-replicating-cluster-is-not-supported-yet" class="common-anchor-header">为什么我的导入操作会因“<code translate="no">import in replicating cluster is not supported yet</code> ”而失败？<button data-href="#Why-does-my-import-fail-with-import-in-replicating-cluster-is-not-supported-yet" class="anchor-icon" translate="no">
+    </button></h3><p>No. Committing on the primary cluster replicates the commit to the standby cluster as a single ordered fence.</p>
+<h3 id="Why-does-my-import-fail-with-import-in-replicating-cluster-is-not-supported-yet" class="common-anchor-header">Why does my import fail with <code translate="no">import in replicating cluster is not supported yet</code>?<button data-href="#Why-does-my-import-fail-with-import-in-replicating-cluster-is-not-supported-yet" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -255,8 +257,8 @@ wait_for_state(standby_url, job_id, <span class="hljs-string">&quot;Completed&qu
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">dataCoord.import.enableInReplicatingCluster</code> 该集群上未启用此功能。请在主集群和备集群上均将其设置为“<code translate="no">true</code> ”。</p>
-<h3 id="Why-does-my-import-fail-with-autocommittrue-import-in-replicating-cluster-is-not-supported" class="common-anchor-header">为什么我的导入在启用<code translate="no">auto_commit=true import in replicating cluster is not supported</code> 时会失败？<button data-href="#Why-does-my-import-fail-with-autocommittrue-import-in-replicating-cluster-is-not-supported" class="anchor-icon" translate="no">
+    </button></h3><p><code translate="no">dataCoord.import.enableInReplicatingCluster</code> is not enabled on that cluster. Set it to <code translate="no">true</code> on both the primary and standby clusters.</p>
+<h3 id="Why-does-my-import-fail-with-autocommittrue-import-in-replicating-cluster-is-not-supported" class="common-anchor-header">Why does my import fail with <code translate="no">auto_commit=true import in replicating cluster is not supported</code>?<button data-href="#Why-does-my-import-fail-with-autocommittrue-import-in-replicating-cluster-is-not-supported" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -271,4 +273,4 @@ wait_for_state(standby_url, job_id, <span class="hljs-string">&quot;Completed&qu
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>在复制集群中，仅接受使用<code translate="no">auto_commit=false</code> 的2PC导入操作。请在导入请求中设置<code translate="no">options={&quot;auto_commit&quot;: &quot;false&quot;}</code> 。</p>
+    </button></h3><p>In a replicating cluster, only 2PC imports with <code translate="no">auto_commit=false</code> are accepted. Set <code translate="no">options={&quot;auto_commit&quot;: &quot;false&quot;}</code> on the import request.</p>

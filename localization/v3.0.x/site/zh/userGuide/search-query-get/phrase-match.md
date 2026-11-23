@@ -2,8 +2,12 @@
 id: phrase-match.md
 title: Phrase MatchCompatible with Milvus 2.5.17+
 summary: >-
-  短语匹配可让您搜索包含查询词作为精确短语的文档。默认情况下，这些词必须按相同顺序出现，并且彼此紧邻。 例如，查询“robotics machine
-  learning”将匹配诸如“…典型的机器人学机器学习模型…”之类的文本，其中“robotics”、“machine”和“learning”这三个词按顺序出现，且之间没有其他词语。
+  Phrase match lets you search for documents containing your query terms as an
+  exact phrase. By default, the words must appear in the same order and directly
+  adjacent to one another. For example, a query for "robotics machine learning"
+  matches text like "…typical robotics machine learning models…", where the
+  words "robotics", "machine", and "learning" appear in sequence with no other
+  words between them.
 beta: Milvus 2.5.17+
 ---
 <h1 id="Phrase-Match" class="common-anchor-header">Phrase Match<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.5.17+</span><button data-href="#Phrase-Match" class="anchor-icon" translate="no">

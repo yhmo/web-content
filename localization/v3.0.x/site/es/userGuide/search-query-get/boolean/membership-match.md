@@ -1,13 +1,13 @@
 ---
 id: membership-match.md
-title: Emparejamiento de sociosCompatible with Milvus v3.0.2+
+title: Membership MatchCompatible with Milvus v3.0.2+
 summary: >-
-  Filtra entidades en grandes conjuntos de elementos utilizando filtros Bloom
-  compactos o mapas de bits Roaring exactos, con sintaxis, patrones de solicitud
-  del SDK, semántica de eliminación y límites operativos.
+  Filter entities against large member sets using compact Bloom filters or exact
+  Roaring bitmaps, with syntax, SDK request patterns, delete semantics, and
+  operational limits.
 beta: Milvus v3.0.2+
 ---
-<h1 id="Membership-Match" class="common-anchor-header">Emparejamiento de socios<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus v3.0.2+</span><button data-href="#Membership-Match" class="anchor-icon" translate="no">
+<h1 id="Membership-Match" class="common-anchor-header">Membership Match<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus v3.0.2+</span><button data-href="#Membership-Match" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -22,7 +22,7 @@ beta: Milvus v3.0.2+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><h2 id="Overview" class="common-anchor-header">Descripción general<button data-href="#Overview" class="anchor-icon" translate="no">
+    </button></h1><h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,22 +37,22 @@ beta: Milvus v3.0.2+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>La coincidencia de pertenencia filtra entidades comprobando si el valor de un campo escalar pertenece a un conjunto proporcionado por el llamante. El cliente crea un blob binario compacto de filtro de pertenencia y lo pasa como valor de una plantilla de expresión.</p>
-<p>Sustituye a las grandes listas de « <code translate="no">IN [...]</code> ». Un filtro « <code translate="no">IN</code> » serializa cada miembro en la solicitud, por lo que los conjuntos de miembros suficientemente grandes pueden superar el límite de recepción de gRPC del proxy. Con « <code translate="no">membership_match</code> », el proxy valida el blob y lo integra en el plan de consulta sin reconstruir una lista de miembros.</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="/docs/v3.0.x/assets/membership-match-workflow.jpg" alt="Membership Match workflow: the client builds a reusable blob, the proxy validates it, and QueryNodes evaluate it." class="doc-image" id="membership-match-workflow:-the-client-builds-a-reusable-blob,-the-proxy-validates-it,-and-querynodes-evaluate-it." /> 
-   <span>Flujo de trabajo de Membership Match: el cliente crea un blob reutilizable, el proxy lo valida y los QueryNodes lo evalúan.</span>
-  
- </span></p>
-<p>El diagrama muestra la división fija del trabajo. El cliente crea el blob una vez y lo reutiliza en todas las solicitudes; el proxy valida los límites de la envoltura y el tamaño e incorpora el blob tal cual en el plan de consulta; y los QueryNodes evalúan el plan con datos sin procesar o con un índice.</p>
-<p>El operador dispone de dos codificaciones con diferentes garantías de exactitud:</p>
+    </button></h2><p>Membership-match filters entities by testing whether a scalar field value belongs to a caller-provided set. The client builds a compact binary membership-filter blob and passes it as an expression template value.</p>
+<p>It replaces large <code translate="no">IN [...]</code> lists. An <code translate="no">IN</code> filter serializes every member into the request, so sufficiently large member sets can exceed the proxy gRPC receive limit. With <code translate="no">membership_match</code>, the proxy validates the blob and embeds it into the query plan without rebuilding a member list.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v3.0.x/assets/membership-match-workflow.jpg" alt="Membership Match workflow: the client builds a reusable blob, the proxy validates it, and QueryNodes evaluate it." class="doc-image" id="membership-match-workflow:-the-client-builds-a-reusable-blob,-the-proxy-validates-it,-and-querynodes-evaluate-it." />
+    <span>Membership Match workflow: the client builds a reusable blob, the proxy validates it, and QueryNodes evaluate it.</span>
+  </span>
+</p>
+<p>The diagram shows the fixed division of labor. The client builds the blob once and reuses it across requests; the proxy validates the envelope and size limits and embeds the blob into the query plan verbatim; and QueryNodes evaluate the plan against raw data or an index.</p>
+<p>The operator has two encodings with different correctness guarantees:</p>
 <ul>
-<li><strong>Bloom</strong> (<code translate="no">type=bloom</code>): pertenencia aproximada. Son posibles los falsos positivos; no se esperan falsos negativos con un filtro válido. Uso típico: filtros de audiencia de gran volumen o de exclusión en los que se aceptan falsos positivos ocasionales.</li>
-<li><strong>Roaring</strong> (<code translate="no">type=roaring</code>): pertenencia exacta para valores enteros. Uso típico: listas de control de acceso (ACL), visibilidad de inquilinos, filtros de cumplimiento normativo y operaciones de eliminación por conjunto de ID.</li>
+<li><strong>Bloom</strong> (<code translate="no">type=bloom</code>): Approximate membership. False positives are possible; false negatives are not expected from a valid filter. Typical use: high-volume audience or exclusion filters where occasional false positives are acceptable.</li>
+<li><strong>Roaring</strong> (<code translate="no">type=roaring</code>): Exact membership for integer values. Typical use: ACLs, tenant visibility, compliance filters, and delete-by-ID-set operations.</li>
 </ul>
-<p>No utilices la pertenencia <strong>de Bloom</strong> para decisiones de autorización ni para eliminaciones destructivas. Un falso positivo puede exponer una entidad o eliminar una entidad que no se encuentre en el conjunto previsto.</p>
-<h3 id="Operational-checklist" class="common-anchor-header">Lista de comprobación operativa<button data-href="#Operational-checklist" class="anchor-icon" translate="no">
+<p>Do not use <strong>Bloom</strong> membership for authorization decisions or destructive deletes. A false positive can expose an entity or delete an entity that is not in the intended set.</p>
+<h3 id="Operational-checklist" class="common-anchor-header">Operational checklist<button data-href="#Operational-checklist" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -68,15 +68,15 @@ beta: Milvus v3.0.2+
         ></path>
       </svg>
     </button></h3><ul>
-<li>Confirma el tipo de campo de destino y crea el blob a partir de ese mismo dominio de valores.</li>
-<li>Seleccione «Bloom» únicamente cuando los falsos positivos sean aceptables.</li>
-<li>Seleccione «Roaring» para operaciones de ACL, cumplimiento normativo, aislamiento de inquilinos y eliminación.</li>
-<li>Crea blobs grandes una sola vez y reutilízalos; no los vuelvas a crear en cada solicitud.</li>
-<li>Calcule el tamaño del blob en bytes serializados, no en número de elementos.</li>
-<li>En un clúster de versiones mixtas, finaliza la actualización progresiva (primero los proxies) antes de habilitar « <code translate="no">membership_match</code> ».</li>
-<li>Pruebe la expresión en una colección que no sea de producción antes de habilitar un flujo de trabajo destructivo.</li>
+<li>Confirm the target field type and build the blob from that same value domain.</li>
+<li>Select Bloom only when false positives are acceptable.</li>
+<li>Select Roaring for ACL, compliance, tenant isolation, and delete operations.</li>
+<li>Build large blobs once and reuse them; do not rebuild them inside every request.</li>
+<li>Budget blob size in serialized bytes, not member count.</li>
+<li>On a mixed-version cluster, finish the rolling upgrade, proxies first, before enabling <code translate="no">membership_match</code>.</li>
+<li>Test the expression against a non-production collection before enabling a destructive workflow.</li>
 </ul>
-<h2 id="Expression-syntax" class="common-anchor-header">Sintaxis de la expresión<button data-href="#Expression-syntax" class="anchor-icon" translate="no">
+<h2 id="Expression-syntax" class="common-anchor-header">Expression syntax<button data-href="#Expression-syntax" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -96,9 +96,9 @@ membership_match(&lt;field&gt;, {&lt;template&gt;}, type=roaring)
 membership_match(&lt;field&gt;, {&lt;template&gt;})
 not membership_match(&lt;field&gt;, {&lt;template&gt;}, type=bloom)
 <button class="copy-code-btn"></button></code></pre>
-<p>El segundo argumento es un marcador de posición de la plantilla. El SDK proporciona el valor del marcador de posición como un objeto ` <code translate="no">bytes</code> ` de Protobuf que contiene el blob de filtro creado por el cliente. Mantén el ` <code translate="no">type</code> ` explícito en las expresiones de producción para que el contrato de corrección previsto sea visible en el código y en los registros.</p>
-<p>El argumento <code translate="no">type</code> es opcional. Cada blob lleva un encabezado mágico autodescriptivo, <code translate="no">MBF1</code> para Bloom y <code translate="no">MRB1</code> para Roaring, y el servidor detecta el encabezado cuando se omite <code translate="no">type</code>. Un <code translate="no">type</code> explícito que entre en conflicto con el encabezado del blob se rechaza como un error de solicitud, y los encabezados desconocidos o truncados dan lugar a un estado de «fail-closed».</p>
-<h2 id="Choose-the-encoding" class="common-anchor-header">Elige la codificación<button data-href="#Choose-the-encoding" class="anchor-icon" translate="no">
+<p>The second argument is a template placeholder. The SDK supplies the placeholder value as protobuf <code translate="no">bytes</code> containing the client-built filter blob. Keep the <code translate="no">type</code> explicit in production expressions so the intended correctness contract is visible in code and logs.</p>
+<p>The <code translate="no">type</code> argument is optional. Every blob carries a self-describing magic header, <code translate="no">MBF1</code> for Bloom and <code translate="no">MRB1</code> for Roaring, and the server sniffs the header when <code translate="no">type</code> is omitted. An explicit <code translate="no">type</code> that conflicts with the blob header is rejected as a request error, and unknown or truncated headers result in a fail-closed state.</p>
+<h2 id="Choose-the-encoding" class="common-anchor-header">Choose the encoding<button data-href="#Choose-the-encoding" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -113,33 +113,33 @@ not membership_match(&lt;field&gt;, {&lt;template&gt;}, type=bloom)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Utiliza Bloom cuando sea aceptable un falso positivo. Bloom admite campos de enteros con signo (<strong>INT8/16/32/64</strong>), campos <strong>VARCHAR</strong> y rutas <strong>JSON</strong>. Un filtro Bloom no es una lista de permitidos exacta.</p>
-<p><code translate="no">fpr</code> (tasa de falsos positivos) es la probabilidad de que un filtro Bloom señale un valor como miembro cuando dicho valor nunca se ha insertado: <code translate="no">fpr=0.005</code> significa que, aproximadamente, uno de cada 200 valores que no son miembros se señala erróneamente como presente. Una fpr más baja produce un blob más grande.</p>
-<p>Utiliza <strong>«Roaring»</strong> cuando todas las coincidencias deban ser exactas. <strong>«Roaring»</strong> solo acepta campos de enteros con signo; los miembros se amplían en signo a <strong>INT64</strong> antes de la serialización, por lo que un INT8 -1 y un INT64 -1 son el mismo miembro. No lo utilices para UUID u otros campos de cadena.</p>
+    </button></h2><p>Use Bloom when a false positive is acceptable. Bloom accepts signed integer fields (<strong>INT8</strong>/<strong>16</strong>/<strong>32</strong>/<strong>64</strong>), <strong>VARCHAR</strong> fields, and <strong>JSON</strong> paths. A Bloom filter is not an exact allow-list.</p>
+<p><code translate="no">fpr</code> (false-positive rate) is the probability that a Bloom filter reports a value as a member when the value was never inserted: <code translate="no">fpr=0.005</code> means roughly one non-member value in 200 is wrongly reported as present. A lower fpr produces a larger blob.</p>
+<p>Use <strong>Roaring</strong> when every match must be exact. <strong>Roaring</strong> accepts signed integer fields only; members are sign-extended to <strong>INT64</strong> before serialization, so an INT8 -1 and an INT64 -1 are the same member. Do not use it for UUID or other string fields.</p>
 <table>
 <thead>
-<tr><th>Dimensión</th><th>Bloom (type=bloom)</th><th>Roaring (type=roaring)</th></tr>
+<tr><th>Dimension</th><th>Bloom (type=bloom)</th><th>Roaring (type=roaring)</th></tr>
 </thead>
 <tbody>
-<tr><td>Precisión</td><td>Aproximada; posibles falsos positivos; sin falsos negativos</td><td>Exacto; sin falsos positivos ni falsos negativos</td></tr>
-<tr><td>Campos</td><td>INT8/16/32/64, VARCHAR, rutas JSON</td><td>Solo INT8/16/32/64 con signo</td></tr>
-<tr><td>Tamaño del blob</td><td>Número de miembros y FPR; unos 11 bits por miembro con un FPR de 0,005; cuerpo en forma de potencia de dos</td><td>Distribución de valores; los conjuntos densos se comprimen a tamaños mucho menores; los valores aleatorios de 64 bits alcanzan el límite máximo del contenedor de 262 144</td></tr>
-<tr><td>Eliminación</td><td>Rechazado en el momento del análisis sintáctico</td><td>Permitido</td></tr>
-<tr><td>Uso típico</td><td>Filtros de audiencia y exclusión</td><td>ACL, cumplimiento normativo, aislamiento de inquilinos, eliminación por conjunto de ID</td></tr>
+<tr><td>Precision</td><td>Approximate; false positives possible; no false negatives</td><td>Exact; no false positives and no false negatives</td></tr>
+<tr><td>Fields</td><td>INT8/16/32/64, VARCHAR, JSON paths</td><td>Signed INT8/16/32/64 only</td></tr>
+<tr><td>Blob size</td><td>Member count and FPR; about 11 bits per member at FPR 0.005; power-of-two body</td><td>Value distribution; dense sets compress to far smaller sizes; random 64-bit values hit the 262,144 high-container cap</td></tr>
+<tr><td>Delete</td><td>Rejected at parse time</td><td>Allowed</td></tr>
+<tr><td>Typical use</td><td>Audience and exclusion filters</td><td>ACL, compliance, tenant isolation, delete by ID set</td></tr>
 </tbody>
 </table>
-<p>Las rutas<strong>JSON</strong> son de tipado estricto, fila por fila: una cadena <strong>JSON</strong> se evalúa como un valor <strong>VARCHAR</strong>, un entero <strong>JSON</strong> como un valor <strong>INT64</strong>, y un doble <strong>JSON</strong> nunca coincide con un miembro entero, a diferencia del « <code translate="no">IN</code> » exacto, donde 5,0 es igual a 5. Si tus escritores codifican los enteros como flotantes, normalízalos al escribirlos o utiliza un campo escalar tipado.</p>
-<p>Para cualquiera de las dos codificaciones, crea el conjunto de miembros a partir del mismo dominio de valores que el campo de destino. No construyas un filtro Bloom a partir de la cadena « <code translate="no">&quot;10086&quot;</code> » y lo apliques a un campo « <code translate="no">INT64</code> ». La cabecera del blob registra los dominios de valores insertados, y el proxy rechaza un blob con un dominio incorrecto con un error de parámetro, en lugar de realizar una coincidencia silenciosa sin resultado. Reutiliza un blob ya creado en todas las solicitudes en lugar de volver a crearlo para cada consulta.</p>
-<p>Para conjuntos de unos pocos miles de elementos o menos, la codificación simple « <code translate="no">IN</code> » sigue siendo la opción más sencilla. El servidor no elige entre <strong>IN</strong>, <strong>Bloom</strong> y <strong>Roaring</strong>. La selección de la codificación es responsabilidad del solicitante.</p>
-<p>Para elegir una codificación:</p>
+<p><strong>JSON</strong> paths are strictly typed, row by row: a <strong>JSON</strong> string is probed as a <strong>VARCHAR</strong> value, a <strong>JSON</strong> integer as an <strong>INT64</strong> value, and a <strong>JSON</strong> double never matches an integer member, unlike the exact <code translate="no">IN</code>, where 5.0 equals 5. If your writers float-encode integers, normalize them on write or use a typed scalar field.</p>
+<p>For either encoding, build the member set from the same value domain as the target field. Do not build a Bloom filter from the string <code translate="no">&quot;10086&quot;</code> and apply it to an <code translate="no">INT64</code> field. The blob header records the inserted value domains, and a wrong-domain blob is rejected by the proxy with a parameter error instead of silently matching nothing. Reuse a built blob across requests rather than rebuilding it for each query.</p>
+<p>For sets of a few thousand members or fewer, plain <code translate="no">IN</code> remains the simplest option. The server does not choose between <strong>IN</strong>, <strong>Bloom</strong>, and <strong>Roaring</strong>. Selecting the encoding is the caller’s responsibility.</p>
+<p>To choose an encoding:</p>
 <ol>
-<li>Determina si la carga de trabajo tolera falsos positivos. Si no es así, <strong>Bloom</strong> nunca es una opción.</li>
-<li>Para una pertenencia exacta, utiliza <strong>Roaring</strong> con un campo de entero con signo. Los valores densos o agrupados se comprimen en los blobs más pequeños.</li>
-<li>Comprueba los límites de tamaño. Los valores aleatorios uniformes de 64 bits pueden superar el límite máximo de 262 144 del contenedor o los límites de tamaño. Si es así, utiliza una lista <strong>IN</strong> tradicional que se ajuste a los límites de la solicitud.</li>
-<li>Para la pertenencia exacta en campos no enteros, utilice <strong>«IN</strong>». No existe una codificación de pertenencia exacta para estos campos.</li>
+<li>Determine whether the workload tolerates false positives. If it does not, <strong>Bloom</strong> is never an option.</li>
+<li>For exact membership, use <strong>Roaring</strong> with a signed integer field. Dense or clustered values compress to the smallest blobs.</li>
+<li>Check the size limits. Uniformly random 64-bit values may exceed the 262,144 high-container cap or the size limits. If they do, use a traditional <strong>IN</strong> list that fits the request limits.</li>
+<li>For exact membership on non-integer fields, use <strong>IN</strong>. There is no exact membership encoding for these fields.</li>
 </ol>
-<p>La coincidencia de pertenencia no está disponible a través de la API HTTP RESTful. Los parámetros de las plantillas de expresión HTTP solo aceptan valores booleanos, numéricos, de cadena y de matriz; no existe un tipo binario <code translate="no">bytes</code> para el blob. Utiliza un SDK basado en gRPC para pasar blobs de pertenencia.</p>
-<h2 id="SDK-request-patterns" class="common-anchor-header">Patrones de solicitud del SDK<button data-href="#SDK-request-patterns" class="anchor-icon" translate="no">
+<p>Membership-match is not available over the RESTful HTTP API. HTTP expression template parameters accept only bool, number, string, and array values; there is no binary <code translate="no">bytes</code> type for the blob. Use a gRPC-based SDK to pass membership blobs.</p>
+<h2 id="SDK-request-patterns" class="common-anchor-header">SDK request patterns<button data-href="#SDK-request-patterns" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -154,12 +154,12 @@ not membership_match(&lt;field&gt;, {&lt;template&gt;}, type=bloom)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Los siguientes fragmentos de código se centran en la creación de blobs de pertenencia y en su transmisión como parámetros de plantillas de filtro. Se da por supuesto que las colecciones y los campos ya existen y están cargados, que los clientes del SDK están conectados y que los vectores de consulta, las listas de miembros y otras variables a las que se hace referencia están definidas. Se omite la configuración de la colección y el andamiaje completo de la aplicación.</p>
+    </button></h2><p>The following snippets focus on building membership blobs and passing them as filter template parameters. They assume that the collections and fields already exist and are loaded, the SDK clients are connected, and query vectors, member lists, and other referenced variables are defined. Collection setup and complete application scaffolding are omitted.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#go">   Go</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
+    <a href="#python">Python</a>
+    <a href="#go">Go</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, build_bloom_filter, build_roaring_bitmap
 
@@ -197,7 +197,7 @@ query := milvusclient.NewQueryOption(<span class="hljs-string">&quot;docs&quot;<
   <span class="hljs-attr">exprValues</span>: { <span class="hljs-attr">members</span>: bloomBlob } });
 <span class="hljs-keyword">const</span> roaringBlob = <span class="hljs-title function_">buildRoaringBitmap</span>(integerIds);
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Delete-with-Roaring" class="common-anchor-header">Eliminación con Roaring<button data-href="#Delete-with-Roaring" class="anchor-icon" translate="no">
+<h2 id="Delete-with-Roaring" class="common-anchor-header">Delete with Roaring<button data-href="#Delete-with-Roaring" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -212,12 +212,12 @@ query := milvusclient.NewQueryOption(<span class="hljs-string">&quot;docs&quot;<
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Utiliza un blob <strong>Roaring</strong> exacto al eliminar entidades seleccionadas por un conjunto externo de ID enteros. Revisa el conjunto de miembros y el tipo de campo de la colección antes de ejecutar la eliminación. No utilices Bloom: la pertenencia aproximada no es un predicado de eliminación seguro, y las formas de Bloom se rechazan en las expresiones de eliminación en el momento del análisis sintáctico.</p>
+    </button></h2><p>Use an exact <strong>Roaring</strong> blob when deleting entities selected by an external integer-ID set. Review the member set and collection field type before issuing the delete. Do not use Bloom: approximate membership is not a safe delete predicate, and Bloom forms are rejected in Delete expressions at parse time.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#go">   Go</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
+    <a href="#python">Python</a>
+    <a href="#go">Go</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
 </div>
 <pre><code translate="no" class="language-python">roaring_blob = build_roaring_bitmap([<span class="hljs-number">1001</span>, <span class="hljs-number">1002</span>, <span class="hljs-number">1003</span>])
 client.delete(collection_name=<span class="hljs-string">&quot;docs&quot;</span>, <span class="hljs-built_in">filter</span>=<span class="hljs-string">&quot;membership_match(id, {members}, type=roaring)&quot;</span>,
@@ -239,25 +239,25 @@ _, err = client.Delete(ctx, milvusclient.NewDeleteOption(<span class="hljs-strin
   <span class="hljs-attr">filter</span>: <span class="hljs-string">&#x27;membership_match(id, {members}, type=roaring)&#x27;</span>,
   <span class="hljs-attr">exprValues</span>: { <span class="hljs-attr">members</span>: roaringBlob } });
 <button class="copy-code-btn"></button></code></pre>
-<p>La semántica de eliminación sigue una coincidencia exacta de tres valores:</p>
+<p>Delete semantics follow exact, three-valued matching:</p>
 <table>
 <thead>
-<tr><th>Valor del campo</th><th>membership_match(…)</th><th>no membership_match(…)</th></tr>
+<tr><th>Field value</th><th>membership_match(…)</th><th>not membership_match(…)</th></tr>
 </thead>
 <tbody>
-<tr><td>NULL</td><td>sin coincidencia (NULL)</td><td>sin coincidencia (NULL)</td></tr>
-<tr><td>en el conjunto de miembros</td><td>coincidencia</td><td>sin coincidencia</td></tr>
-<tr><td>fuera del conjunto</td><td>sin coincidencia</td><td>coincide</td></tr>
+<tr><td>NULL</td><td>no match (NULL)</td><td>no match (NULL)</td></tr>
+<tr><td>in member set</td><td>match</td><td>no match</td></tr>
+<tr><td>outside the set</td><td>no match</td><td>match</td></tr>
 </tbody>
 </table>
-<p>La tabla se lee fila por fila: un «Delete» con « <code translate="no">membership_match</code> » elimina las entidades incluidas en el conjunto, un «Delete» con « <code translate="no">not membership_match</code> » elimina las entidades fuera del conjunto, y las entidades NULL se conservan en ambas polaridades.</p>
+<p>The table reads row by row: a Delete with <code translate="no">membership_match</code> removes the in-set entities, a Delete with <code translate="no">not membership_match</code> removes the outside-set entities, and NULL entities survive both polarities.</p>
 <ul>
-<li>Las entidades con un valor de campo NULL nunca se eliminan, sea cual sea la polaridad.</li>
-<li>Un mapa de bits vacío no elimina nada. « <code translate="no">not membership_match(&lt;field&gt;, {&lt;empty&gt;}, type=roaring)</code> » elimina todas las entidades con un valor de campo distinto de NULL, es decir, el complemento exacto, que puede ser un conjunto grande por diseño.</li>
-<li><code translate="no">not membership_match</code> es el complemento exacto del conjunto de miembros sobre las entidades no NULL, no una aproximación.</li>
+<li>Entities with a NULL field value are never deleted, under either polarity.</li>
+<li>An empty bitmap deletes nothing. <code translate="no">not membership_match(&lt;field&gt;, {&lt;empty&gt;}, type=roaring)</code> deletes every entity with a non-NULL field value, the exact complement, which may be a large set by design.</li>
+<li><code translate="no">not membership_match</code> is the exact complement of the member set over non-NULL entities, not an approximation.</li>
 </ul>
-<p>En segmentos sellados cargados solo por índice, sin datos escalares sin procesar, la evaluación utiliza una búsqueda inversa acotada cuando el índice lo admite. Cuando no se dispone ni de datos de campo sin procesar ni de un índice válido, la solicitud falla con « <code translate="no">FieldNotLoaded</code> » en lugar de devolver entidades sin filtrar.</p>
-<h2 id="Operational-limits" class="common-anchor-header">Límites operativos<button data-href="#Operational-limits" class="anchor-icon" translate="no">
+<p>On sealed segments loaded index-only, without raw scalar data, evaluation uses a bounded reverse lookup when the index supports it. When neither raw field data nor a qualifying index is available, the request fails with <code translate="no">FieldNotLoaded</code> instead of returning unfiltered entities.</p>
+<h2 id="Operational-limits" class="common-anchor-header">Operational limits<button data-href="#Operational-limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -274,22 +274,22 @@ _, err = client.Delete(ctx, milvusclient.NewDeleteOption(<span class="hljs-strin
       </svg>
     </button></h2><table>
 <thead>
-<tr><th>Configuración</th><th>Por defecto</th><th>Configurable</th><th>Lo que limita</th></tr>
+<tr><th>Setting</th><th>Default</th><th>Configurable</th><th>What it bounds</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">proxy.maxMembershipFilterSize</code></td><td>64 MiB</td><td><code translate="no">milvus.yaml</code> proxy</td><td>un cuerpo de blob</td></tr>
-<tr><td><code translate="no">proxy.maxMembershipFilterPlanSize</code></td><td>128 MiB</td><td><code translate="no">milvus.yaml</code> proxy</td><td>agregado por solicitud</td></tr>
-<tr><td><code translate="no">proxy.grpc.serverMaxRecvSize</code></td><td>128 MiB</td><td><code translate="no">milvus.yaml</code> proxy</td><td>solicitud completa</td></tr>
-<tr><td>Límite máximo de contenedores de Roaring</td><td>262 144</td><td>corregido en el código</td><td>por filtro</td></tr>
-<tr><td>Estimación de memoria descodificada de Roaring</td><td>64 MiB</td><td>fijo en el código</td><td>por filtro</td></tr>
-<tr><td>Límite del formato MBF1</td><td>128 MiB</td><td>fijado en el código</td><td>límite máximo del formato blob</td></tr>
-<tr><td>Bloom <code translate="no">fpr</code></td><td>0,005</td><td>generador de cliente</td><td>objetivo de falsos positivos</td></tr>
+<tr><td><code translate="no">proxy.maxMembershipFilterSize</code></td><td>64 MiB</td><td><code translate="no">milvus.yaml</code> proxy</td><td>one blob body</td></tr>
+<tr><td><code translate="no">proxy.maxMembershipFilterPlanSize</code></td><td>128 MiB</td><td><code translate="no">milvus.yaml</code> proxy</td><td>per-request aggregate</td></tr>
+<tr><td><code translate="no">proxy.grpc.serverMaxRecvSize</code></td><td>128 MiB</td><td><code translate="no">milvus.yaml</code> proxy</td><td>whole request</td></tr>
+<tr><td>Roaring high-container cap</td><td>262,144</td><td>fixed in code</td><td>per filter</td></tr>
+<tr><td>Roaring decoded-memory estimate</td><td>64 MiB</td><td>fixed in code</td><td>per filter</td></tr>
+<tr><td>MBF1 format cap</td><td>128 MiB</td><td>fixed in code</td><td>blob format ceiling</td></tr>
+<tr><td>Bloom <code translate="no">fpr</code></td><td>0.005</td><td>client builder</td><td>false-positive target</td></tr>
 </tbody>
 </table>
-<p>Los ajustes de « <code translate="no">proxy.*</code> » (Límite de formato de Roaring y MBF1) forman parte de la configuración del servidor Milvus: los establece el operador del clúster en <code translate="no">milvus.yaml</code>, en la sección « <code translate="no">proxy</code> », y no se pueden ajustar por solicitud o por expresión en el momento del filtrado. Las admisiones <strong>«Roaring»</strong> y el límite del formato MBF1 están fijados en la implementación y no se pueden configurar en ningún sitio. La fila « <code translate="no">fpr</code> » es el único control del lado del cliente: se elige al crear el blob, con un rango aceptado de 0,0001 a 0,05.</p>
-<p>El cuerpo del blob admite como máximo unos 48,6 millones de miembros INT64 con el fpr predeterminado, a lo que hay que añadir la cabecera fija de 32 bytes permitida. El presupuesto para toda la solicitud cubre el tamaño serializado agregado de los planes que contienen miembros, más el tamaño estimado descodificado agregado de los filtros Roaring; las subsolicitudes de HybridSearch y los filtros de puntuación lo comparten. Los cuerpos de los blobs Bloom son potencias de dos: un recuento de miembros que supere ligeramente el límite de un nivel duplica el tamaño del blob, y un fpr ligeramente superior suele encajar en el nivel inmediatamente inferior. Cuando el proxy rechaza un blob Bloom de tamaño excesivo, el error sugiere un « <code translate="no">fpr</code> » que se ajusta a los requisitos.</p>
+<p>The <code translate="no">proxy.*</code> settings are Milvus server configuration: they are set by the cluster operator in <code translate="no">milvus.yaml</code> under the <code translate="no">proxy</code> section and cannot be adjusted per request or per expression at filtering time. The <strong>Roaring</strong> admissions and the MBF1 format cap are fixed in the implementation and cannot be configured anywhere. The <code translate="no">fpr</code> row is the only client-side control: it is chosen when the blob is built, with an accepted range of 0.0001 to 0.05.</p>
+<p>The blob body maximum admits about 48.6 million INT64 members at the default fpr, with the fixed 32-byte envelope header allowed on top. The request-wide budget covers the aggregate serialized size of membership-bearing plans plus the aggregate estimated decoded size of Roaring filters, and HybridSearch sub-requests and scorer filters share it. Bloom bodies are powers of two: a member count just past a tier boundary doubles the blob, and a slightly higher fpr often fits the next tier down. When the proxy rejects an oversized Bloom blob, the error suggests an <code translate="no">fpr</code> that fits.</p>
 <ul>
-<li>Los resultados de la expresión de pertenencia no se almacenan en caché entre solicitudes.</li>
-<li>Los clústeres de versiones mixtas fallan en modo cerrado: los QueryNodes que ejecutan código más antiguo rechazan los planes que contienen nodos de plan de pertenencia. Actualiza primero los proxies y, a continuación, completa la actualización progresiva antes de habilitar el operador.</li>
-<li>Los registros del servidor ocultan los bytes de los blobs. El texto de la expresión contiene únicamente el nombre de la plantilla; la carga útil binaria se transmite fuera de banda en los valores de la plantilla.</li>
+<li>Membership expression results are not cached across requests.</li>
+<li>Mixed-version clusters fail closed: QueryNodes running older code reject plans that contain membership plan nodes. Upgrade the proxies first, then complete the rolling upgrade before enabling the operator.</li>
+<li>Server logs redact blob bytes. The expression text contains only the template name; the binary payload is transmitted out of band in the template values.</li>
 </ul>

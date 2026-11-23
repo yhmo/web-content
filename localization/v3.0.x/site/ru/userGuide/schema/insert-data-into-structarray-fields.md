@@ -2,11 +2,10 @@
 id: insert-data-into-structarray-fields.md
 title: Insert Data into StructArray Fields
 summary: >-
-  Вставьте данные в поле StructArray, если каждая сущность содержит
-  упорядоченный список структурированных элементов. В полезной нагрузке вставки
-  поле StructArray представляется в виде массива объектов. Каждый объект
-  представляет один элемент Struct и использует имена подполей Struct,
-  определённые в схеме коллекции.
+  Insert data into a StructArray field when each entity contains an ordered list
+  of structured elements. In the insert payload, a StructArray field is
+  represented as an array of objects. Each object represents one Struct element
+  and uses the Struct subfield names defined in the collection schema.
 ---
 <h1 id="Insert-Data-into-StructArray-Fields" class="common-anchor-header">Insert Data into StructArray Fields<button data-href="#Insert-Data-into-StructArray-Fields" class="anchor-icon" translate="no">
       <svg translate="no"

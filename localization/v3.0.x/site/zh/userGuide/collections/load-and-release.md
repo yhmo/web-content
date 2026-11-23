@@ -1,9 +1,12 @@
 ---
 id: load-and-release.md
-title: 加载与释放
-summary: 加载Collection是进行相似性搜索和在Collection中查询的前提条件。本页重点介绍加载和释放Collection的操作步骤。
+title: Load & Release
+summary: >-
+  Loading a collection is the prerequisite to conducting similarity searches and
+  queries in collections. This page focuses on the procedures for loading and
+  releasing a collection.
 ---
-<h1 id="Load--Release" class="common-anchor-header">加载与释放<button data-href="#Load--Release" class="anchor-icon" translate="no">
+<h1 id="Load--Release" class="common-anchor-header">Load & Release<button data-href="#Load--Release" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,8 +21,8 @@ summary: 加载Collection是进行相似性搜索和在Collection中查询的前
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>加载Collection是进行Collection内相似性搜索和查询的前提条件。本页面重点介绍加载和释放Collection的操作流程。</p>
-<h2 id="Prerequisites" class="common-anchor-header">先决条件<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+    </button></h1><p>Loading a collection is the prerequisite to conducting similarity searches and queries in collections. This page focuses on the procedures for loading and releasing a collection.</p>
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -34,9 +37,9 @@ summary: 加载Collection是进行相似性搜索和在Collection中查询的前
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>在加载Collection之前，请确认以下事项：</p>
+    </button></h2><p>Before loading a collection, verify the following:</p>
 <ul>
-<li>您至少已对所有向量字段进行了索引，并可选地对某些标量字段进行了索引。</li>
+<li>You have at least indexed all vector fields, and optionally certain scalar fields.</li>
 </ul>
 <h2 id="Load-Collection" class="common-anchor-header">Load Collection<button data-href="#Load-Collection" class="anchor-icon" translate="no">
       <svg translate="no"
@@ -53,17 +56,17 @@ summary: 加载Collection是进行相似性搜索和在Collection中查询的前
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>当您加载 Collection 时，Milvus 会将所有字段的索引文件和原始数据加载到内存中，以便快速响应搜索和查询。在 Collection 加载之后插入的实体会自动被索引并加载。</p>
-<p>以下代码片段演示了如何加载Collection。</p>
+    </button></h2><p>When you load a collection, Milvus loads the index files and the raw data of all fields into memory for rapid response to searches and queries. Entities inserted after a collection load are automatically indexed and loaded.</p>
+<p>The following code snippets demonstrate how to load a collection.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -312,7 +315,7 @@ curl --request POST \
 <span class="hljs-comment">#     }</span>
 <span class="hljs-comment"># }</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Load-Specific-Fields" class="common-anchor-header">加载特定字段<button data-href="#Load-Specific-Fields" class="anchor-icon" translate="no">
+<h2 id="Load-Specific-Fields" class="common-anchor-header">Load Specific Fields<button data-href="#Load-Specific-Fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -327,20 +330,20 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus 仅加载与搜索和查询相关的字段，从而减少内存占用并提升搜索性能。</p>
+    </button></h2><p>Milvus can load only the fields involved in searches and queries, reducing memory usage and improving search performance.</p>
 <div class="alert note">
-<p>部分Collection加载功能目前处于测试阶段，不建议在生产环境中使用。</p>
+<p>Partial collection loading is currently in beta and not recommended for production use.</p>
 </div>
-<p>以下代码片段假设您已创建了一个名为<strong>my_collection 的</strong> Collection，且该 Collection 中包含两个名为<strong>my_id</strong>和<strong>my_vector</strong>的字段。</p>
+<p>The following code snippet assumes that you have created a collection named <strong>my_collection</strong>, and there are two fields named <strong>my_id</strong> and <strong>my_vector</strong> in the collection.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.load_collection(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,
@@ -486,9 +489,9 @@ Console.WriteLine(res.State);
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># The RESTful API does not expose partial collection loading.</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>如果您选择加载特定字段，请注意：只有包含在 `<code translate="no">load_fields</code> ` 中的字段才能在搜索和查询中用作过滤条件和输出字段。您应始终在 `<code translate="no">load_fields</code>` 中包含主字段的名称以及至少一个向量字段。</p>
-<p>您还可以使用<code translate="no">skip_load_dynamic_field</code> 来确定是否加载 Dynamic Field。 Dynamic Field 是一个名为<strong>$meta</strong>的保留 JSON 字段，它以键值对的形式保存所有未在 Schema 中定义的字段及其值。加载 Dynamic Field 时，该字段中的所有键都会被加载，并可用于过滤和输出。如果 Dynamic Field 中的所有键均不参与元数据过滤和输出，请将<code translate="no">skip_load_dynamic_field</code> 设置为<code translate="no">True</code> 。</p>
-<p>若要在Collection加载完成后加载更多字段，您需要先释放该Collection，以避免因索引变更而引发的潜在错误。</p>
+<p>If you choose to load specific fields, it is worth noting that only the fields included in <code translate="no">load_fields</code> can be used as filters and output fields in searches and queries. You should always include the names of the primary field and at least one vector field in <code translate="no">load_fields</code>.</p>
+<p>You can also use <code translate="no">skip_load_dynamic_field</code> to determine whether to load the dynamic field. The dynamic field is a reserved JSON field named <strong>$meta</strong> and saves all non-schema-defined fields and their values in key-value pairs. When loading the dynamic field, all keys in the fields are loaded and available for filtering and output. If all keys in the dynamic field are not involved in metadata filtering and output, set <code translate="no">skip_load_dynamic_field</code> to <code translate="no">True</code>.</p>
+<p>To load more fields after the collection load, you need to release the collection first to avoid possible errors prompted because of index changes.</p>
 <h2 id="Release-Collection" class="common-anchor-header">Release Collection<button data-href="#Release-Collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -504,17 +507,17 @@ Console.WriteLine(res.State);
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>搜索和查询是内存密集型操作。为节省资源，建议释放当前未使用的 Collections。</p>
-<p>以下代码片段演示了如何释放Collection。</p>
+    </button></h2><p>Searches and queries are memory-intensive operations. To save the cost, you are advised to release the collections that are currently not in use.</p>
+<p>The following code snippet demonstrates how to release a collection.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># 8. Release the collection</span>
 client.release_collection(

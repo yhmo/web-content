@@ -2,10 +2,9 @@
 id: lindera-tokenizer.md
 title: Lindera
 summary: >-
-  Tokenizer Lindera melakukan analisis morfologis berbasis kamus. Tokenizer ini
-  dirancang untuk bahasa Jepang dan Korea—bahasa-bahasa di mana kata-kata tidak
-  dipisahkan oleh spasi dan penanda tata bahasa (partikel) melekat langsung pada
-  kata-kata.
+  The lindera tokenizer performs dictionary-based morphological analysis. It is
+  designed for Japanese and Korean—languages where words are not separated by
+  spaces and grammatical markers (particles) attach directly to words.
 ---
 <h1 id="Lindera" class="common-anchor-header">Lindera<button data-href="#Lindera" class="anchor-icon" translate="no">
       <svg translate="no"
@@ -22,11 +21,11 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Tokenizer <code translate="no">lindera</code> melakukan analisis morfologis berbasis kamus. Tokenizer ini dirancang untuk bahasa Jepang dan Korea—bahasa-bahasa di mana kata-kata tidak dipisahkan oleh spasi dan penanda tata bahasa (partikel) melekat langsung pada kata-kata.</p>
+    </button></h1><p>The <code translate="no">lindera</code> tokenizer performs dictionary-based morphological analysis. It is designed for Japanese and Korean—languages where words are not separated by spaces and grammatical markers (particles) attach directly to words.</p>
 <div class="alert note">
-<p><strong>Untuk teks bahasa Tionghoa</strong>: Meskipun <code translate="no">lindera</code> mendukung bahasa Tionghoa melalui kamus <code translate="no">cc-cedict</code>, kami menyarankan untuk menggunakan <a href="/docs/id/jieba-tokenizer.md"><code translate="no">jieba</code></a> tokenizer ini. Jieba dirancang khusus untuk segmentasi kata dalam bahasa Mandarin dan memberikan hasil yang lebih baik.</p>
+<p><strong>For Chinese text</strong>: While <code translate="no">lindera</code> supports Chinese via the <code translate="no">cc-cedict</code> dictionary, we recommend using the <a href="/docs/id/jieba-tokenizer.md"><code translate="no">jieba</code></a> tokenizer instead. Jieba is specifically designed for Chinese word segmentation and provides better results.</p>
 </div>
-<h2 id="Overview" class="common-anchor-header">Gambaran Umum<button data-href="#Overview" class="anchor-icon" translate="no">
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -41,38 +40,38 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Bahasa Jepang dan Korea adalah bahasa aglutinatif: penanda tata bahasa yang disebut partikel melekat langsung pada kata benda, membentuk berbagai kombinasi. Contohnya:</p>
+    </button></h2><p>Japanese and Korean are agglutinative languages: grammatical markers called particles attach directly to nouns, forming numerous combinations. For example:</p>
 <table>
    <tr>
-     <th><p>Bahasa</p></th>
-     <th><p>Kata dasar</p></th>
-     <th><p>+ Partikel</p></th>
-     <th><p>= Bentuk gabungan</p></th>
-     <th><p>Arti</p></th>
+     <th><p>Language</p></th>
+     <th><p>Root word</p></th>
+     <th><p>+ Particle</p></th>
+     <th><p>= Combined form</p></th>
+     <th><p>Meaning</p></th>
    </tr>
    <tr>
-     <td><p>Bahasa Korea</p></td>
+     <td><p>Korean</p></td>
      <td><p>서울 (Seoul)</p></td>
-     <td><p>di</p></td>
-     <td><p>di Seoul</p></td>
-     <td><p>di Seoul</p></td>
+     <td><p>에서</p></td>
+     <td><p>서울에서</p></td>
+     <td><p>in Seoul</p></td>
    </tr>
    <tr>
-     <td><p>Jepang</p></td>
-     <td><p>Tokyo</p></td>
-     <td><p>di</p></td>
-     <td><p>di Tokyo</p></td>
-     <td><p>ke Tokyo</p></td>
+     <td><p>Japanese</p></td>
+     <td><p>東京 (Tokyo)</p></td>
+     <td><p>に</p></td>
+     <td><p>東京に</p></td>
+     <td><p>to Tokyo</p></td>
    </tr>
 </table>
-<p>Tokenizer " <code translate="no">lindera</code> ":</p>
+<p>The <code translate="no">lindera</code> tokenizer:</p>
 <ol>
-<li><p><strong>Memecah teks</strong> menjadi morfem-morfem individual (kata dan partikel)</p></li>
-<li><p><strong>Menandai setiap token</strong> dengan informasi bagian kata (POS) dari kamus</p></li>
-<li><p><strong>Menerapkan filter</strong> untuk menghapus token yang tidak diinginkan (misalnya, partikel, tanda baca)</p></li>
+<li><p><strong>Segments text</strong> into individual morphemes (words and particles)</p></li>
+<li><p><strong>Tags each token</strong> with part-of-speech (POS) information from the dictionary</p></li>
+<li><p><strong>Applies filters</strong> to remove unwanted tokens (e.g., particles, punctuation)</p></li>
 </ol>
-<p>Proses dua tahap ini—segmentasi diikuti dengan penyaringan berdasarkan POS—memungkinkan kontrol yang tepat atas token mana yang diindeks untuk pencarian.</p>
-<h2 id="Prerequisites" class="common-anchor-header">Prasyarat<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+<p>This two-stage process—segmentation followed by POS-based filtering—enables precise control over which tokens are indexed for search.</p>
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -87,51 +86,51 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus 2.6 dan versi selanjutnya sudah menyertakan semua kamus yang telah dikompilasi sebelumnya dalam rilis resminya.</p>
+    </button></h2><p>Milvus 2.6 and later include all dictionaries pre-compiled in the official release.</p>
 <p><details>
-<summary>Milvus 2.5.x: Kompilasi Milvus dengan kamus</summary></p>
-<p>Untuk Milvus 2.5.x, Anda perlu mengkompilasi Milvus dengan kamus-kamus tertentu yang diaktifkan. Semua kamus harus disertakan secara eksplisit selama proses kompilasi.</p>
-<p>Untuk mengaktifkan kamus tertentu, sertakan kamus tersebut dalam perintah kompilasi:</p>
+<summary>Milvus 2.5.x: Compile Milvus with dictionaries</summary></p>
+<p>For Milvus 2.5.x, you need to compile Milvus with specific dictionaries enabled. All dictionaries must be explicitly included during compilation.</p>
+<p>To enable specific dictionaries, include them in the compilation command:</p>
 <pre><code translate="no" class="language-bash">make milvus TANTIVY_FEATURES=lindera-ipadic,lindera-ko-dic
 <button class="copy-code-btn"></button></code></pre>
-<p>Daftar lengkap kamus yang tersedia:</p>
+<p>The complete list of available dictionaries:</p>
 <table>
    <tr>
-     <th><p><strong>Kamus</strong></p></th>
-     <th><p><strong>Bahasa</strong></p></th>
-     <th><p><strong>Deskripsi</strong></p></th>
+     <th><p><strong>Dictionary</strong></p></th>
+     <th><p><strong>Language</strong></p></th>
+     <th><p><strong>Description</strong></p></th>
    </tr>
    <tr>
      <td><p>lindera-ko-dic</p></td>
-     <td><p>Korea</p></td>
-     <td><p>Kamus morfologi bahasa Korea (<a href="https://bitbucket.org/eunjeon/mecab-ko-dic">MeCab Ko-dic</a>)</p></td>
+     <td><p>Korean</p></td>
+     <td><p>Korean morphological dictionary (<a href="https://bitbucket.org/eunjeon/mecab-ko-dic">MeCab Ko-dic</a>)</p></td>
    </tr>
    <tr>
      <td><p>lindera-ipadic</p></td>
-     <td><p>Bahasa Jepang</p></td>
-     <td><p>Kamus morfologi standar (<a href="https://taku910.github.io/mecab/">MeCab IPADIC</a>)</p></td>
+     <td><p>Japanese</p></td>
+     <td><p>Standard morphological dictionary (<a href="https://taku910.github.io/mecab/">MeCab IPADIC</a>)</p></td>
    </tr>
    <tr>
      <td><p>lindera-ipadic-neologd</p></td>
-     <td><p>Bahasa Jepang</p></td>
-     <td><p>Kamus yang diperluas dengan kata-kata baru dan nama diri (<a href="https://github.com/neologd/mecab-ipadic-neologd">IPADIC NEologd</a>)</p></td>
+     <td><p>Japanese</p></td>
+     <td><p>Extended dictionary with new words and proper nouns (<a href="https://github.com/neologd/mecab-ipadic-neologd">IPADIC NEologd</a>)</p></td>
    </tr>
    <tr>
      <td><p>lindera-unidic</p></td>
-     <td><p>Bahasa Jepang</p></td>
-     <td><p>Kamus standar akademis (<a href="https://clrd.ninjal.ac.jp/unidic/">UniDic</a>)</p></td>
+     <td><p>Japanese</p></td>
+     <td><p>Academic standard dictionary (<a href="https://clrd.ninjal.ac.jp/unidic/">UniDic</a>)</p></td>
    </tr>
    <tr>
      <td><p>lindera-cc-cedict</p></td>
-     <td><p>Bahasa Tionghoa</p></td>
-     <td><p>Kamus Bahasa Mandarin-Inggris yang dikelola oleh komunitas (<a href="https://cc-cedict.org/wiki/">CC-CEDICT</a>)</p></td>
+     <td><p>Chinese</p></td>
+     <td><p>Community-maintained Chinese-English dictionary (<a href="https://cc-cedict.org/wiki/">CC-CEDICT</a>)</p></td>
    </tr>
 </table>
-<p>Misalnya, untuk mengaktifkan semua kamus:</p>
+<p>For example, to enable all dictionaries:</p>
 <pre><code translate="no" class="language-bash">make milvus TANTIVY_FEATURES=lindera-ipadic,lindera-ipadic-neologd,lindera-unidic,lindera-ko-dic,lindera-cc-cedict
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<h2 id="Configuration" class="common-anchor-header">Konfigurasi<button data-href="#Configuration" class="anchor-icon" translate="no">
+<h2 id="Configuration" class="common-anchor-header">Configuration<button data-href="#Configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -146,16 +145,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Untuk mengonfigurasi penganalisis menggunakan tokenizer <code translate="no">lindera</code>, atur <code translate="no">tokenizer.type</code> menjadi <code translate="no">lindera</code>, pilih kamus dengan <code translate="no">dict_kind</code>, dan terapkan filter secara opsional.</p>
+    </button></h2><p>To configure an analyzer using the <code translate="no">lindera</code> tokenizer, set <code translate="no">tokenizer.type</code> to <code translate="no">lindera</code>, choose a dictionary with <code translate="no">dict_kind</code>, and optionally apply filters.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: {
@@ -276,23 +275,23 @@ curl --request POST \
 <table>
    <tr>
      <th><p>Parameter</p></th>
-     <th><p>Deskripsi</p></th>
+     <th><p>Description</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">type</code></p></td>
-     <td><p>Jenis tokenizer. Nilai ini ditetapkan secara tetap ke ` <code translate="no">"lindera"</code>`.</p></td>
+     <td><p>The type of tokenizer. This is fixed to <code translate="no">"lindera"</code>.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">dict_kind</code></p></td>
-     <td><p>Kamus yang digunakan untuk mendefinisikan kosakata. Nilai yang mungkin:</p><ul><li><p><code translate="no">ko-dic</code>: Korean - Kamus morfologi bahasa Korea (<a href="https://bitbucket.org/eunjeon/mecab-ko-dic">MeCab Ko-dic</a>)</p></li><li><p><code translate="no">ipadic</code>: Jepang - Kamus morfologi standar (<a href="https://taku910.github.io/mecab/">MeCab IPADIC</a>)</p></li><li><p><code translate="no">ipadic-neologd</code>: Bahasa Jepang dengan kamus neologisme (diperluas) - Mencakup kata-kata baru dan nama diri (<a href="https://github.com/neologd/mecab-ipadic-neologd">IPADIC NEologd</a>)</p></li><li><p><code translate="no">unidic</code>: UniDic Jepang (diperluas) - Kamus standar akademis dengan informasi linguistik terperinci (<a href="https://clrd.ninjal.ac.jp/unidic/">UniDic</a>)</p></li><li><p><code translate="no">cc-cedict</code>: Bahasa Mandarin (tradisional/sederhana) - Kamus Bahasa Mandarin-Inggris yang dikelola oleh komunitas (<a href="https://cc-cedict.org/wiki/">CC-CEDICT</a>)</p></li></ul></td>
+     <td><p>A dictionary used to define vocabulary. Possible values:</p><ul><li><p><code translate="no">ko-dic</code>: Korean - Korean morphological dictionary (<a href="https://bitbucket.org/eunjeon/mecab-ko-dic">MeCab Ko-dic</a>)</p></li><li><p><code translate="no">ipadic</code>: Japanese - Standard morphological dictionary (<a href="https://taku910.github.io/mecab/">MeCab IPADIC</a>)</p></li><li><p><code translate="no">ipadic-neologd</code>: Japanese with neologism dictionary (extended) - Includes new words and proper nouns (<a href="https://github.com/neologd/mecab-ipadic-neologd">IPADIC NEologd</a>)</p></li><li><p><code translate="no">unidic</code>: Japanese UniDic (extended) - Academic standard dictionary with detailed linguistic information (<a href="https://clrd.ninjal.ac.jp/unidic/">UniDic</a>)</p></li><li><p><code translate="no">cc-cedict</code>: Mandarin Chinese (traditional/simplified) - Community-maintained Chinese-English dictionary (<a href="https://cc-cedict.org/wiki/">CC-CEDICT</a>)</p></li></ul></td>
    </tr>
    <tr>
      <td><p><code translate="no">filter</code></p></td>
-     <td><p>Daftar filter tingkat tokenizer yang akan diterapkan setelah segmentasi. Setiap filter adalah objek dengan:</p><ul><li><p><code translate="no">kind</code>: Jenis filter. Nilai yang didukung:</p><ul><li><p><code translate="no">korean_stop_tags</code>: Menghapus token yang sesuai dengan tag POS bahasa Korea yang ditentukan.</p></li><li><p><code translate="no">japanese_stop_tags</code>: Menghapus token yang sesuai dengan tag POS bahasa Jepang yang ditentukan.</p></li></ul></li><li><p><code translate="no">tags</code>: Daftar tag POS yang akan disaring. Tag yang tersedia bergantung pada <code translate="no">kind</code>:</p><ul><li><p>Untuk <code translate="no">korean_stop_tags</code>: Gunakan kode tag yang tepat (misalnya, <code translate="no">JKS</code>, <code translate="no">JKO</code>, <code translate="no">SF</code>). Tag bahasa Korea memerlukan pencocokan yang tepat. Untuk daftar lengkap berdasarkan kumpulan tag Sejong, lihat <a href="https://docs.rs/lindera/latest/src/lindera/token_filter/korean_stop_tags.rs.html">sumber tag stop bahasa Korea Lindera</a>.</p></li><li><p>Untuk <code translate="no">japanese_stop_tags</code>: Gunakan kode tag yang tepat (misalnya, <code translate="no">助詞,格助詞</code>, <code translate="no">助詞,係助詞</code>, <code translate="no">助動詞</code>). Tag bahasa Jepang memerlukan pencocokan yang tepat. Untuk daftar lengkap (IPADIC), lihat <a href="https://github.com/taku910/mecab/blob/master/mecab-ipadic/pos-id.def">referensi tag POS bahasa Jepang</a>.</p></li></ul></li></ul></td>
+     <td><p>A list of tokenizer-level filters to apply after segmentation. Each filter is an object with:</p><ul><li><p><code translate="no">kind</code>: The filter type. Supported values:</p><ul><li><p><code translate="no">korean_stop_tags</code>: Remove tokens matching specified Korean POS tags.</p></li><li><p><code translate="no">japanese_stop_tags</code>: Remove tokens matching specified Japanese POS tags.</p></li></ul></li><li><p><code translate="no">tags</code>: A list of POS tags to filter out. The available tags depend on the <code translate="no">kind</code>:</p><ul><li><p>For <code translate="no">korean_stop_tags</code>: Use exact tag codes (e.g., <code translate="no">JKS</code>, <code translate="no">JKO</code>, <code translate="no">SF</code>). Korean tags require exact matching. For the complete list based on the Sejong tagset, see the <a href="https://docs.rs/lindera/latest/src/lindera/token_filter/korean_stop_tags.rs.html">Lindera Korean stop tags source</a>.</p></li><li><p>For <code translate="no">japanese_stop_tags</code>: Use exact tag codes (e.g., <code translate="no">助詞,格助詞</code>, <code translate="no">助詞,係助詞</code>, <code translate="no">助動詞</code>). Japanese tags require exact matching. For the complete list (IPADIC), see <a href="https://github.com/taku910/mecab/blob/master/mecab-ipadic/pos-id.def">Japanese POS tags reference</a>.</p></li></ul></li></ul></td>
    </tr>
 </table>
-<p>Setelah mendefinisikan <code translate="no">analyzer_params</code>, Anda dapat menerapkannya ke bidang <code translate="no">VARCHAR</code> saat mendefinisikan skema koleksi. Hal ini memungkinkan Milvus memproses teks di bidang tersebut menggunakan penganalisis yang ditentukan untuk tokenisasi dan penyaringan yang efisien. Untuk detailnya, lihat <a href="/docs/id/analyzer-overview.md#Example-use">Contoh penggunaan</a>.</p>
-<h2 id="Examples" class="common-anchor-header">Contoh<button data-href="#Examples" class="anchor-icon" translate="no">
+<p>After defining <code translate="no">analyzer_params</code>, you can apply them to a <code translate="no">VARCHAR</code> field when defining a collection schema. This allows Milvus to process the text in that field using the specified analyzer for efficient tokenization and filtering. For details, refer to <a href="/docs/id/analyzer-overview.md#Example-use">Example use</a>.</p>
+<h2 id="Examples" class="common-anchor-header">Examples<button data-href="#Examples" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -307,8 +306,8 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Sebelum menerapkan konfigurasi penganalisis ke skema koleksi Anda, verifikasi perilakunya menggunakan metode ` <code translate="no">run_analyzer</code> `.</p>
-<h3 id="Korean-example" class="common-anchor-header">Contoh dalam bahasa Korea<button data-href="#Korean-example" class="anchor-icon" translate="no">
+    </button></h2><p>Before applying the analyzer configuration to your collection schema, verify its behavior using the <code translate="no">run_analyzer</code> method.</p>
+<h3 id="Korean-example" class="common-anchor-header">Korean example<button data-href="#Korean-example" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -324,14 +323,14 @@ curl --request POST \
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -597,11 +596,11 @@ curl --request POST \
     &quot;text&quot;: [&quot;서울에서 맛있는 음식을 먹었습니다&quot;]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>Hasil yang diharapkan</strong>:</p>
+<p><strong>Expected output</strong>:</p>
 <pre><code translate="no" class="language-plaintext">[&#x27;서울&#x27;, &#x27;맛있&#x27;, &#x27;음식&#x27;, &#x27;먹&#x27;, &#x27;습니다&#x27;]
 <button class="copy-code-btn"></button></code></pre>
-<p>Tanpa ` <code translate="no">korean_stop_tags</code>`, keluaran akan mencakup partikel seperti ` <code translate="no">에서</code> ` (in), ` <code translate="no">는</code> ` (penanda topik), dan ` <code translate="no">을</code> ` (penanda objek), yang umumnya tidak berguna untuk pencarian.</p>
-<h3 id="Japanese-example" class="common-anchor-header">Contoh dalam bahasa Jepang<button data-href="#Japanese-example" class="anchor-icon" translate="no">
+<p>Without <code translate="no">korean_stop_tags</code>, the output would include particles like <code translate="no">에서</code> (in), <code translate="no">는</code> (topic marker), and <code translate="no">을</code> (object marker), which are typically not useful for search.</p>
+<h3 id="Japanese-example" class="common-anchor-header">Japanese example<button data-href="#Japanese-example" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -617,14 +616,14 @@ curl --request POST \
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -867,7 +866,7 @@ curl --request POST \
     &quot;text&quot;: [&quot;東京スカイツリーの最寄り駅はとうきょうスカイツリー駅です&quot;]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>Hasil yang diharapkan:</strong></p>
+<p><strong>Expected output:</strong></p>
 <pre><code translate="no" class="language-plaintext">[&#x27;東京&#x27;, &#x27;スカイ&#x27;, &#x27;ツリー&#x27;, &#x27;最寄り駅&#x27;, &#x27;とう&#x27;, &#x27;きょう&#x27;, &#x27;スカイ&#x27;, &#x27;ツリー&#x27;, &#x27;駅&#x27;]
 <button class="copy-code-btn"></button></code></pre>
-<p>Tanpa ` <code translate="no">japanese_stop_tags</code>`, hasil keluaran akan mencakup partikel seperti ` <code translate="no">の</code> ` (posesif), ` <code translate="no">は</code> ` (penanda topik), dan ` <code translate="no">です</code> ` (kopula).</p>
+<p>Without <code translate="no">japanese_stop_tags</code>, the output would include particles like <code translate="no">の</code> (possessive), <code translate="no">は</code> (topic marker), and <code translate="no">です</code> (copula).</p>

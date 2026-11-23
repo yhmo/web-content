@@ -2,11 +2,10 @@
 id: hnsw.md
 title: HNSW
 summary: >-
-  Indeks HNSW adalah algoritma pengindeksan berbasis graf yang dapat
-  meningkatkan kinerja saat melakukan pencarian pada vektor floating-point
-  berdimensi tinggi. Algoritma ini menawarkan akurasi pencarian yang sangat baik
-  dan latensi rendah, namun membutuhkan penggunaan memori yang besar untuk
-  mempertahankan struktur graf hierarkisnya.
+  The HNSW index is a graph-based indexing algorithm that can improve
+  performance when searching for high-dimensional floating vectors. It offers
+  excellent search accuracy and low latency, while it requires high memory
+  overhead to maintain its hierarchical graph structure.
 ---
 <h1 id="HNSW" class="common-anchor-header">HNSW<button data-href="#HNSW" class="anchor-icon" translate="no">
       <svg translate="no"
@@ -23,8 +22,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Indeks <strong>HNSW</strong> adalah algoritma pengindeksan <strong>berbasis graf</strong> yang dapat meningkatkan kinerja saat mencari vektor floating-point berdimensi tinggi. Algoritma ini menawarkan akurasi pencarian <strong>yang sangat baik</strong> dan latensi <strong>rendah</strong>, namun membutuhkan penggunaan memori <strong>yang tinggi</strong> untuk mempertahankan struktur graf hierarkisnya.</p>
-<h2 id="Overview" class="common-anchor-header">Gambaran Umum<button data-href="#Overview" class="anchor-icon" translate="no">
+    </button></h1><p>The <strong>HNSW</strong> index is a <strong>graph-based</strong> indexing algorithm that can improve performance when searching for high-dimensional floating vectors. It offers <strong>excellent</strong> search accuracy and <strong>low</strong> latency, while it requires <strong>high</strong> memory overhead to maintain its hierarchical graph structure.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -39,29 +38,29 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Algoritma Hierarchical Navigable Small World (HNSW) membangun grafik berlapis-lapis, mirip seperti peta dengan tingkat zoom yang berbeda-beda. <strong>Lapisan terbawah</strong> berisi semua titik data, sedangkan <strong>lapisan atas</strong> terdiri dari himpunan bagian titik data yang diambil dari lapisan bawah.</p>
-<p>Dalam hierarki ini, setiap lapisan berisi simpul yang mewakili titik data, yang dihubungkan oleh tepi yang menunjukkan kedekatannya. Lapisan yang lebih tinggi memungkinkan lompatan jarak jauh untuk dengan cepat mendekati target, sedangkan lapisan yang lebih rendah memungkinkan pencarian yang lebih terperinci untuk hasil yang paling akurat.</p>
-<p>Begini cara kerjanya:</p>
+    </button></h2><p>The Hierarchical Navigable Small World (HNSW) algorithm builds a multi-layered graph, kind of like a map with different zoom levels. The <strong>bottom layer</strong> contains all the data points, while the <strong>upper layers</strong> consist of a subset of data points sampled from the lower layer.</p>
+<p>In this hierarchy, each layer contains nodes representing data points, connected by edges that indicate their proximity. The higher layers provide long-distance jumps to quickly get close to the target, while the lower layers enable a fine-grained search for the most accurate results.</p>
+<p>Here’s how it works:</p>
 <ol>
-<li><p><strong>Titik masuk</strong>: Pencarian dimulai dari titik masuk tetap di lapisan teratas, yang merupakan simpul yang telah ditentukan sebelumnya dalam grafik.</p></li>
-<li><p><strong>Pencarian serakah</strong>: Algoritma ini secara serakah berpindah ke tetangga terdekat di lapisan saat ini hingga tidak dapat lagi mendekati vektor kueri. Lapisan atas berfungsi sebagai alat navigasi, bertindak sebagai filter kasar untuk menemukan titik masuk potensial bagi pencarian yang lebih mendetail di lapisan bawah.</p></li>
-<li><p><strong>Penurunan lapisan</strong>: Setelah titik <strong>minimum lokal</strong> tercapai di lapisan saat ini, algoritma melompat ke lapisan yang lebih rendah, menggunakan koneksi yang telah ditetapkan sebelumnya, dan mengulangi pencarian rakus.</p></li>
-<li><p><strong>Penyempurnaan</strong><strong>akhir</strong>: Proses ini berlanjut hingga lapisan terbawah tercapai, di mana langkah penyempurnaan akhir mengidentifikasi tetangga terdekat.</p></li>
+<li><p><strong>Entry point</strong>: The search starts at a fixed entry point at the top layer, which is a pre-determined node in the graph.</p></li>
+<li><p><strong>Greedy search</strong>: The algorithm greedily moves to the closest neighbor at the current layer until it cannot get any closer to the query vector. The upper layers serve a navigational purpose, acting as a coarse filter to locate potential entry points for the finer search at the lower levels.</p></li>
+<li><p><strong>Layer descend</strong>: Once a <strong>local minimum</strong> is reached at the current layer, the algorithm jumps down to the lower layer, using a pre-established connection, and repeats the greedy search.</p></li>
+<li><p><strong>Final</strong> <strong>refinement</strong>: This process continues until the bottom layer is reached, where a final refinement step identifies the nearest neighbors.</p></li>
 </ol>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/hnsw.png" alt="HNSW" class="doc-image" id="hnsw" /> 
-   <span>HNSW</span>
-  
- </span></p>
-<p>Kinerja HNSW bergantung pada beberapa parameter kunci yang mengontrol baik struktur graf maupun perilaku pencarian. Parameter-parameter tersebut meliputi:</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/hnsw.png" alt="HNSW" class="doc-image" id="hnsw" />
+    <span>HNSW</span>
+  </span>
+</p>
+<p>The performance of HNSW depends on several key parameters that control both the structure of the graph and the search behavior. These include:</p>
 <ul>
-<li><p><code translate="no">M</code>: Jumlah maksimum tepi atau koneksi yang dapat dimiliki setiap simpul dalam graf pada setiap tingkat hierarki. Nilai <code translate="no">M</code> yang lebih tinggi menghasilkan graf yang lebih padat serta meningkatkan recall dan akurasi karena pencarian memiliki lebih banyak jalur untuk dieksplorasi, yang juga menghabiskan lebih banyak memori dan memperlambat waktu penyisipan akibat koneksi tambahan. Seperti yang ditunjukkan pada gambar di atas, <strong>M = 5</strong> menunjukkan bahwa setiap simpul dalam graf HNSW terhubung langsung dengan maksimal 5 simpul lainnya. Hal ini menciptakan struktur graf yang cukup padat di mana simpul-simpul memiliki beberapa jalur untuk mencapai simpul lainnya.</p></li>
-<li><p><code translate="no">efConstruction</code>: Jumlah kandidat yang dipertimbangkan selama pembuatan indeks. Nilai <code translate="no">efConstruction</code> yang lebih tinggi umumnya menghasilkan graf dengan kualitas lebih baik, tetapi membutuhkan waktu lebih lama untuk dibuat.</p></li>
-<li><p><code translate="no">ef</code>: Jumlah tetangga yang dievaluasi selama proses pencarian. Meningkatkan nilai ` <code translate="no">ef</code> ` meningkatkan kemungkinan menemukan tetangga terdekat, tetapi memperlambat proses pencarian.</p></li>
+<li><p><code translate="no">M</code>: The maximum number of edges or connections each node can have in the graph at each level of the hierarchy. A higher <code translate="no">M</code> results in a denser graph and increases recall and accuracy as the search has more pathways to explore, which also consumes more memory and slows down insertion time due to additional connections. As shown in the image above, <strong>M = 5</strong> indicates that each node in the HNSW graph is directly connected to a maximum of 5 other nodes. This creates a moderately dense graph structure where nodes have multiple pathways to reach other nodes.</p></li>
+<li><p><code translate="no">efConstruction</code>: The number of candidates considered during index construction. A higher <code translate="no">efConstruction</code> generally results in a better quality graph but requires more time to build.</p></li>
+<li><p><code translate="no">ef</code>: The number of neighbors evaluated during a search. Increasing <code translate="no">ef</code> improves the likelihood of finding the nearest neighbors but slows down the search process.</p></li>
 </ul>
-<p>Untuk detail tentang cara menyesuaikan pengaturan ini sesuai kebutuhan Anda, lihat <a href="/docs/id/hnsw.md#Index-params">Parameter indeks</a>.</p>
-<h2 id="Build-index" class="common-anchor-header">Buat indeks<button data-href="#Build-index" class="anchor-icon" translate="no">
+<p>For details on how to adjust these settings to suit your needs, refer to <a href="/docs/id/hnsw.md#Index-params">Index params</a>.</p>
+<h2 id="Build-index" class="common-anchor-header">Build index<button data-href="#Build-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -76,8 +75,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Contoh ini menggunakan <code translate="no">MilvusClient</code> yang terhubung bernama <code translate="no">client</code> dan koleksi yang sudah ada bernama <code translate="no">your_collection_name</code>. Koleksi tersebut memiliki bidang <code translate="no">FLOAT_VECTOR</code> lima dimensi bernama <code translate="no">your_vector_field_name</code>. Lihat <a href="/docs/id/install-pymilvus.md">Install Milvus Python SDK</a> untuk kompatibilitas SDK dan <a href="/docs/id/create-collection.md">Create Collection</a> untuk skema serta pengaturan koneksi. Ganti nama bidang dan dimensi kueri secara bersamaan saat menyesuaikan contoh ini dengan embeddings Anda.</p>
-<p>Tentukan parameter indeks dengan ` <code translate="no">add_index()</code>`, lalu buat indeks dengan ` <code translate="no">create_index()</code>`.</p>
+    </button></h2><p>This example uses a connected <code translate="no">MilvusClient</code> named <code translate="no">client</code> and an existing collection named <code translate="no">your_collection_name</code>. The collection has a five-dimensional <code translate="no">FLOAT_VECTOR</code> field named <code translate="no">your_vector_field_name</code>. See <a href="/docs/id/install-pymilvus.md">Install Milvus Python SDK</a> for SDK compatibility and <a href="/docs/id/create-collection.md">Create Collection</a> for the schema and connection setup. Replace the field name and query dimension together when adapting the example to your embeddings.</p>
+<p>Define the index parameters with <code translate="no">add_index()</code>, then build the index with <code translate="no">create_index()</code>.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 <span class="hljs-comment"># Prepare index building params</span>
@@ -99,19 +98,19 @@ client.create_index(
     index_params=index_params
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>Dalam konfigurasi ini:</p>
+<p>In this configuration:</p>
 <ul>
-<li><p><code translate="no">index_type</code>: Jenis indeks yang akan dibuat. Dalam contoh ini, tetapkan nilainya ke <code translate="no">HNSW</code>.</p></li>
-<li><p><code translate="no">metric_type</code>: Metode yang digunakan untuk menghitung jarak antar vektor. Nilai yang didukung meliputi <code translate="no">COSINE</code>, <code translate="no">L2</code>, dan <code translate="no">IP</code>. Untuk detailnya, lihat <a href="/docs/id/metric.md">Jenis Metrik</a>.</p></li>
-<li><p><code translate="no">params</code>: Opsi konfigurasi tambahan untuk membangun indeks.</p>
+<li><p><code translate="no">index_type</code>: The type of index to be built. In this example, set the value to <code translate="no">HNSW</code>.</p></li>
+<li><p><code translate="no">metric_type</code>: The method used to calculate the distance between vectors. Supported values include <code translate="no">COSINE</code>, <code translate="no">L2</code>, and <code translate="no">IP</code>. For details, refer to <a href="/docs/id/metric.md">Metric Types</a>.</p></li>
+<li><p><code translate="no">params</code>: Additional configuration options for building the index.</p>
 <ul>
-<li><p><code translate="no">M</code>: Jumlah maksimum tetangga yang dapat dihubungkan oleh setiap node.</p></li>
-<li><p><code translate="no">efConstruction</code>: Jumlah tetangga potensial yang dipertimbangkan untuk koneksi selama pembuatan indeks.</p></li>
+<li><p><code translate="no">M</code>: Maximum number of neighbors each node can connect to.</p></li>
+<li><p><code translate="no">efConstruction</code>: Number of candidate neighbors considered for connection during index construction.</p></li>
 </ul>
-<p>Contoh ini menetapkan ` <code translate="no">M=64</code> ` dan ` <code translate="no">efConstruction=100</code> ` sebagai pengaturan penyesuaian. Untuk nilai default dan rentang yang diterima, lihat <a href="/docs/id/hnsw.md#Index-building-params">Parameter Pembuatan Indeks</a>.</p></li>
+<p>The example sets <code translate="no">M=64</code> and <code translate="no">efConstruction=100</code> as tuning overrides. For defaults and accepted ranges, see <a href="/docs/id/hnsw.md#Index-building-params">Index building params</a>.</p></li>
 </ul>
-<p>Untuk membuat koleksi dan indeksnya secara bersamaan, berikan parameter indeks ke <code translate="no">create_collection()</code>. Untuk detailnya, lihat <a href="/docs/id/create-collection.md">Membuat Koleksi</a>.</p>
-<h2 id="Search-on-index" class="common-anchor-header">Pencarian pada indeks<button data-href="#Search-on-index" class="anchor-icon" translate="no">
+<p>To create a collection and its index together, pass the index parameters to <code translate="no">create_collection()</code>. For details, see <a href="/docs/id/create-collection.md">Create Collection</a>.</p>
+<h2 id="Search-on-index" class="common-anchor-header">Search on index<button data-href="#Search-on-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -126,7 +125,7 @@ client.create_index(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Setelah membangun indeks dan menyisipkan entitas, muat koleksi dan lakukan pencarian pada bidang vektornya. Untuk pencarian kNN biasa, atur ` <code translate="no">ef</code> ` setidaknya ke ` <code translate="no">limit</code>`.</p>
+    </button></h2><p>After building the index and inserting entities, load the collection and search its vector field. For ordinary kNN searches, set <code translate="no">ef</code> to at least <code translate="no">limit</code>.</p>
 <pre><code translate="no" class="language-python">search_params = {
     <span class="hljs-string">&quot;params&quot;</span>: {
         <span class="hljs-string">&quot;ef&quot;</span>: <span class="hljs-number">10</span>, <span class="hljs-comment"># Number of neighbors to consider during the search</span>
@@ -143,15 +142,15 @@ res = client.search(
     search_params=search_params
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>Dalam konfigurasi ini:</p>
+<p>In this configuration:</p>
 <ul>
-<li><p><code translate="no">params</code>: Opsi konfigurasi tambahan untuk pencarian pada indeks.</p>
+<li><p><code translate="no">params</code>: Additional configuration options for searching on the index.</p>
 <ul>
-<li><code translate="no">ef</code>: Jumlah tetangga yang akan dipertimbangkan selama pencarian.</li>
+<li><code translate="no">ef</code>: Number of neighbors to consider during a search.</li>
 </ul>
-<p>Untuk mempelajari lebih lanjut tentang parameter pencarian yang tersedia untuk indeks ` <code translate="no">HNSW</code> `, lihat <a href="/docs/id/hnsw.md#Index-specific-search-params">Parameter pencarian khusus indeks</a>.</p></li>
+<p>To learn more search parameters available for the <code translate="no">HNSW</code> index, refer to <a href="/docs/id/hnsw.md#Index-specific-search-params">Index-specific search params</a>.</p></li>
 </ul>
-<h2 id="Index-params" class="common-anchor-header">Parameter indeks<button data-href="#Index-params" class="anchor-icon" translate="no">
+<h2 id="Index-params" class="common-anchor-header">Index params<button data-href="#Index-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -166,8 +165,8 @@ res = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Tabel di bawah ini mencantumkan parameter untuk pembuatan indeks dan pencarian. Pengaturan server dapat menggantikan nilai default untuk parameter yang Anda lewati.</p>
-<h3 id="Index-building-params" class="common-anchor-header">Parameter pembuatan indeks<button data-href="#Index-building-params" class="anchor-icon" translate="no">
+    </button></h2><p>The tables below list the parameters for index building and search. Server settings can override the defaults for parameters you omit.</p>
+<h3 id="Index-building-params" class="common-anchor-header">Index building params<button data-href="#Index-building-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -182,28 +181,28 @@ res = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Tabel berikut mencantumkan parameter yang dapat dikonfigurasi di <code translate="no">params</code> saat <a href="/docs/id/hnsw.md#Build-index">membangun indeks</a>.</p>
+    </button></h3><p>The following table lists the parameters that can be configured in <code translate="no">params</code> when <a href="/docs/id/hnsw.md#Build-index">building an index</a>.</p>
 <table>
    <tr>
      <th><p>Parameter</p></th>
-     <th><p>Deskripsi</p></th>
-     <th><p>Rentang Nilai</p></th>
-     <th><p>Saran Penyesuaian</p></th>
+     <th><p>Description</p></th>
+     <th><p>Value Range</p></th>
+     <th><p>Tuning Suggestion</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">M</code></p></td>
-     <td><p>Jumlah maksimum koneksi (atau tepi) yang dapat dimiliki setiap simpul dalam grafik, termasuk tepi keluar dan masuk. Parameter ini secara langsung memengaruhi pembuatan indeks dan pencarian.</p></td>
-     <td><p><strong>Tipe</strong>: Bilangan Bulat <strong>Rentang</strong>: [2, 2048]</p><p><strong>Nilai default</strong>: <code translate="no">30</code> (hingga 30 tepi keluar dan 30 tepi masuk per simpul)</p></td>
-     <td><p>Nilai <code translate="no">M</code> yang lebih besar umumnya menghasilkan <strong>akurasi yang lebih tinggi</strong>, tetapi <strong>meningkatkan beban memori</strong> dan <strong>memperlambat proses pembuatan indeks serta pencarian</strong>. Pertimbangkan untuk meningkatkan <code translate="no">M</code> untuk dataset berdimensi tinggi atau ketika tingkat recall yang tinggi sangat penting.</p><p>Pertimbangkan untuk menurunkan nilai ` <code translate="no">M</code> ` jika penggunaan memori dan kecepatan pencarian menjadi prioritas utama.</p><p>Dalam kebanyakan kasus, kami menyarankan Anda menetapkan nilai dalam rentang ini: [5, 100].</p></td>
+     <td><p>Maximum number of connections （or edges) each node can have in the graph, including both outgoing and incoming edges. This parameter directly affects both index construction and search.</p></td>
+     <td><p><strong>Type</strong>: Integer <strong>Range</strong>: [2, 2048]</p><p><strong>Default value</strong>: <code translate="no">30</code> (up to 30 outgoing and 30 incoming edges per node)</p></td>
+     <td><p>A larger <code translate="no">M</code> generally leads to <strong>higher accuracy</strong> but <strong>increases memory overhead</strong> and <strong>slows down both index building and search</strong>. Consider increasing <code translate="no">M</code> for datasets with high dimensionality or when high recall is crucial.</p><p>Consider decreasing <code translate="no">M</code> when memory usage and search speed are primary concerns.</p><p>In most cases, we recommend you set a value within this range: [5, 100].</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">efConstruction</code></p></td>
-     <td><p>Jumlah tetangga kandidat yang dipertimbangkan untuk koneksi selama pembuatan indeks. Kumpulan kandidat yang lebih besar dievaluasi untuk setiap elemen baru, tetapi jumlah maksimum koneksi yang benar-benar terbentuk tetap dibatasi oleh <code translate="no">M</code>.</p></td>
-     <td><p><strong>Tipe</strong>: Bilangan Bulat <strong>Rentang</strong>: [1, <em>int_max</em>]</p><p><strong>Nilai default</strong>: <code translate="no">360</code></p></td>
-     <td><p>Nilai ` <code translate="no">efConstruction</code> ` yang lebih tinggi biasanya menghasilkan <strong>indeks</strong> yang <strong>lebih akurat</strong>, karena lebih banyak koneksi potensial dieksplorasi. Namun, hal ini juga menyebabkan <strong>waktu pembuatan indeks yang lebih lama dan penggunaan memori yang lebih tinggi</strong> selama proses pembuatan. Pertimbangkan untuk meningkatkan ` <code translate="no">efConstruction</code> ` guna meningkatkan akurasi, terutama dalam skenario di mana waktu pembuatan indeks kurang kritis.</p><p>Pertimbangkan untuk menurunkan nilai ` <code translate="no">efConstruction</code> ` guna mempercepat proses pembuatan indeks jika keterbatasan sumber daya menjadi masalah.</p><p>Dalam kebanyakan kasus, kami menyarankan Anda menetapkan nilai dalam rentang ini: [50, 500].</p></td>
+     <td><p>Number of candidate neighbors considered for connection during index construction. A larger pool of candidates is evaluated for each new element, but the maximum number of connections actually established is still limited by <code translate="no">M</code>.</p></td>
+     <td><p><strong>Type</strong>: Integer <strong>Range</strong>: [1, <em>int_max</em>]</p><p><strong>Default value</strong>: <code translate="no">360</code></p></td>
+     <td><p>A higher <code translate="no">efConstruction</code> typically results in a <strong>more accurate index</strong>, as more potential connections are explored. However, this also leads to <strong>longer indexing time and increased memory usage</strong> during construction. Consider increasing <code translate="no">efConstruction</code> for improved accuracy, especially in scenarios where indexing time is less critical.</p><p>Consider decreasing <code translate="no">efConstruction</code> to speed up index construction when resource constraints are a concern.</p><p>In most cases, we recommend you set a value within this range: [50, 500].</p></td>
    </tr>
 </table>
-<h3 id="Index-specific-search-params" class="common-anchor-header">Parameter pencarian khusus indeks<button data-href="#Index-specific-search-params" class="anchor-icon" translate="no">
+<h3 id="Index-specific-search-params" class="common-anchor-header">Index-specific search params<button data-href="#Index-specific-search-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -218,22 +217,22 @@ res = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Tabel berikut mencantumkan parameter yang dapat dikonfigurasi di <code translate="no">search_params.params</code> saat <a href="/docs/id/hnsw.md#Search-on-index">melakukan pencarian pada indeks</a>.</p>
+    </button></h3><p>The following table lists the parameters that can be configured in <code translate="no">search_params.params</code> when <a href="/docs/id/hnsw.md#Search-on-index">searching on the index</a>.</p>
 <table>
    <tr>
      <th><p>Parameter</p></th>
-     <th><p>Deskripsi</p></th>
-     <th><p>Rentang Nilai</p></th>
-     <th><p>Saran Penyesuaian</p></th>
+     <th><p>Description</p></th>
+     <th><p>Value Range</p></th>
+     <th><p>Tuning Suggestion</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">ef</code></p></td>
-     <td><p>Mengontrol cakupan pencarian selama proses pengambilan tetangga terdekat. Parameter ini menentukan berapa banyak simpul yang dikunjungi dan dievaluasi sebagai calon tetangga terdekat.  Parameter ini hanya memengaruhi proses pencarian dan berlaku secara eksklusif pada lapisan terbawah graf.</p></td>
-     <td><p><strong>Tipe</strong>: Bilangan Bulat <strong>Rentang</strong>: [1, <em>int_max</em>]</p><p><strong>Nilai default</strong>: <code translate="no">max(limit, 16)</code> untuk pencarian kNN biasa; <code translate="no">512</code> untuk pencarian rentang.</p><p>Untuk pencarian kNN biasa, nilai <code translate="no">ef</code> yang ditentukan secara eksplisit harus lebih besar dari atau sama dengan <code translate="no">limit</code> (jumlah tetangga terdekat yang akan dikembalikan).</p></td>
-     <td><p>Nilai <code translate="no">ef</code> yang lebih besar umumnya menghasilkan <strong>akurasi pencarian yang lebih tinggi</strong> karena lebih banyak tetangga potensial dipertimbangkan. Namun, hal ini juga <strong>meningkatkan waktu pencarian</strong>. Pertimbangkan untuk meningkatkan <code translate="no">ef</code> ketika mencapai recall yang tinggi sangat penting dan kecepatan pencarian bukanlah prioritas utama.</p><p>Pertimbangkan untuk menurunkan nilai ` <code translate="no">ef</code> ` guna memprioritaskan kecepatan pencarian, terutama dalam skenario di mana penurunan akurasi yang sedikit dapat diterima.</p><p>Dalam kebanyakan kasus, kami menyarankan Anda menetapkan nilai dalam rentang ini: [K, 10K].</p></td>
+     <td><p>Controls the breadth of search during nearest neighbor retrieval. It determines how many nodes are visited and evaluated as potential nearest neighbors.  This parameter affects only the search process and applies exclusively to the bottom layer of the graph.</p></td>
+     <td><p><strong>Type</strong>: Integer <strong>Range</strong>: [1, <em>int_max</em>]</p><p><strong>Default value</strong>: <code translate="no">max(limit, 16)</code> for ordinary kNN search; <code translate="no">512</code> for range search.</p><p>For ordinary kNN search, an explicit <code translate="no">ef</code> must be greater than or equal to <code translate="no">limit</code> (the number of nearest neighbors to return).</p></td>
+     <td><p>A larger <code translate="no">ef</code> generally leads to <strong>higher search accuracy</strong> as more potential neighbors are considered. However, this also <strong>increases search time</strong>. Consider increasing <code translate="no">ef</code> when achieving high recall is critical and search speed is less of a concern.</p><p>Consider decreasing <code translate="no">ef</code> to prioritize faster searches, especially in scenarios where a slight reduction in accuracy is acceptable.</p><p>In most cases, we recommend you set a value within this range: [K, 10K].</p></td>
    </tr>
 </table>
-<h2 id="Evaluate-the-trade-offs" class="common-anchor-header">Evaluasi trade-off<button data-href="#Evaluate-the-trade-offs" class="anchor-icon" translate="no">
+<h2 id="Evaluate-the-trade-offs" class="common-anchor-header">Evaluate the trade-offs<button data-href="#Evaluate-the-trade-offs" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -248,11 +247,11 @@ res = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Gunakan data dan kueri yang representatif untuk memilih parameter, bukan menganggap nilai contoh sebagai nilai default produksi:</p>
+    </button></h2><p>Use representative data and queries to choose parameters rather than treating the example values as production defaults:</p>
 <ol>
-<li>Tetapkan model embedding, metrik, ` <code translate="no">limit</code>`, dan <a href="/docs/id/filtered-search.md">kondisi filter</a> apa pun. Hitung tetangga terdekat yang tepat untuk kueri dan entitas yang memenuhi syarat yang sama, misalnya dengan indeks <a href="/docs/id/flat.md">FLAT</a>, untuk mengukur recall.</li>
-<li>Lakukan penyapuan terhadap nilai ` <code translate="no">ef</code> ` pada waktu pencarian pada tingkat konkurensi target Anda. Catat nilai recall, throughput, dan latensi ekor secara bersamaan. Meningkatkan nilai ` <code translate="no">ef</code> ` tidak memerlukan pembuatan ulang indeks.</li>
-<li>Jika penyetelan saat pencarian tidak dapat memenuhi target, bandingkan indeks yang dibangun ulang dengan nilai <code translate="no">M</code> dan <code translate="no">efConstruction</code> yang berbeda. Catat waktu pembuatan indeks dan penggunaan memori serta kinerja kueri.</li>
-<li>Sertakan strategi pemuatan dan status cache dalam pengujian. Saat menggunakan <a href="/docs/id/tiered-storage-overview.md">Tiered Storage</a>, ukur kueri yang mengambil data yang tidak tersimpan dalam cache secara terpisah dari kueri cache hangat.</li>
+<li>Fix the embedding model, metric, <code translate="no">limit</code>, and any <a href="/docs/id/filtered-search.md">filter conditions</a>. Compute exact nearest neighbors for the same queries and eligible entities, for example with a <a href="/docs/id/flat.md">FLAT</a> index, to measure recall.</li>
+<li>Sweep the search-time <code translate="no">ef</code> at your target concurrency. Record recall, throughput, and tail latency together. Increasing <code translate="no">ef</code> does not require rebuilding the index.</li>
+<li>If search-time tuning cannot meet the target, compare rebuilt indexes with different <code translate="no">M</code> and <code translate="no">efConstruction</code>. Record index build time and memory use as well as query performance.</li>
+<li>Include the loading strategy and cache state in the test. When using <a href="/docs/id/tiered-storage-overview.md">Tiered Storage</a>, measure queries that fetch uncached data separately from warm-cache queries.</li>
 </ol>
-<p>Untuk batasan memori atau target recall dan latensi yang berbeda, bandingkan alternatif-alternatif yang <a href="/docs/id/index-explained.md">dijelaskan</a> dalam <a href="/docs/id/index-explained.md">"Index Explained</a>".</p>
+<p>For memory constraints or a different recall and latency target, compare the alternatives in <a href="/docs/id/index-explained.md">Index Explained</a>.</p>

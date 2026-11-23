@@ -2,10 +2,10 @@
 id: install_standalone-docker.md
 label: Docker
 related_key: Docker
-summary: 'Узнайте, как установить автономную версию Milvus с помощью Docker.'
-title: Запуск Milvus в Docker (Linux)
+summary: Learn how to install Milvus standalone with Docker.
+title: Run Milvus in Docker (Linux)
 ---
-<h1 id="Run-Milvus-in-Docker-Linux" class="common-anchor-header">Запуск Milvus в Docker (Linux)<button data-href="#Run-Milvus-in-Docker-Linux" class="anchor-icon" translate="no">
+<h1 id="Run-Milvus-in-Docker-Linux" class="common-anchor-header">Run Milvus in Docker (Linux)<button data-href="#Run-Milvus-in-Docker-Linux" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,8 +20,8 @@ title: Запуск Milvus в Docker (Linux)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>На этой странице описано, как запустить экземпляр Milvus в Docker.</p>
-<h2 id="Prerequisites" class="common-anchor-header">Необходимые условия<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+    </button></h1><p>This page illustrates how to launch a Milvus instance in Docker.</p>
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,10 +37,10 @@ title: Запуск Milvus в Docker (Linux)
         ></path>
       </svg>
     </button></h2><ul>
-<li><a href="https://docs.docker.com/get-docker/">Установите Docker</a>.</li>
-<li>Перед установкой<a href="/docs/ru/prerequisite-docker.md">проверьте требования к аппаратному и программному обеспечению</a>.</li>
+<li><a href="https://docs.docker.com/get-docker/">Install Docker</a>.</li>
+<li><a href="/docs/ru/prerequisite-docker.md">Check the requirements for hardware and software</a> prior to your installation.</li>
 </ul>
-<h2 id="Install-Milvus-in-Docker" class="common-anchor-header">Установка Milvus в Docker<button data-href="#Install-Milvus-in-Docker" class="anchor-icon" translate="no">
+<h2 id="Install-Milvus-in-Docker" class="common-anchor-header">Install Milvus in Docker<button data-href="#Install-Milvus-in-Docker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -55,7 +55,7 @@ title: Запуск Milvus в Docker (Linux)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus предоставляет скрипт для установки в виде контейнера Docker. Скрипт доступен в <a href="https://raw.githubusercontent.com/milvus-io/milvus/master/scripts/standalone_embed.sh">репозитории Milvus</a>. Перед началом нового развертывания загрузите и ознакомьтесь со скриптом:</p>
+    </button></h2><p>Milvus provides an installation script to install it as a Docker container. The script is available in the <a href="https://raw.githubusercontent.com/milvus-io/milvus/master/scripts/standalone_embed.sh">Milvus repository</a>. Download and inspect the script before starting a new deployment:</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">Download the installation script</span>
 <span class="hljs-meta prompt_">$ </span><span class="language-bash">curl -sfL https://raw.githubusercontent.com/milvus-io/milvus/master/scripts/standalone_embed.sh -o standalone_embed.sh</span>
 <span class="hljs-meta prompt_">
@@ -66,25 +66,25 @@ title: Запуск Milvus в Docker (Linux)
 <span class="hljs-meta prompt_">$ </span><span class="language-bash">bash standalone_embed.sh start</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>Скрипт загружается из ветки Milvus « <code translate="no">master</code> ». Тег образа Docker указан в скрипте и может отличаться от v3.0.5. Чтобы установить именно этот выпуск, воспользуйтесь конфигурацией с указанием версии, описанной в разделе <a href="/docs/ru/install_standalone-docker-compose.md">«Запуск Milvus с помощью Docker Compose</a>».</p>
-<p>При этом развертывании с помощью Docker <strong>Woodpecker</strong> работает с <strong>локальной файловой системой</strong> в качестве бэкэнда WAL, поэтому внешний сервис очереди сообщений не требуется. См. раздел <a href="/docs/ru/woodpecker.md">«Woodpecker</a>».</p>
-<p>Если вы хотите использовать <a href="/docs/ru/milvus_backup_overview.md">Backup</a> в автономном режиме развертывания, рекомендуется использовать метод развертывания с помощью <a href="/docs/ru/install_standalone-docker-compose.md">Docker Compose</a>.</p>
-<p>Если у вас возникнут проблемы с загрузкой образа, свяжитесь с нами по адресу <a href="mailto:community@zilliz.com">community@zilliz.com</a>, указав подробности проблемы, и мы предоставим вам необходимую поддержку.</p>
+<p>The script is downloaded from the Milvus <code translate="no">master</code> branch. Its Docker image tag is defined in the script and can differ from v3.0.5. To install that exact release, use the versioned configuration in <a href="/docs/ru/install_standalone-docker-compose.md">Run Milvus with Docker Compose</a>.</p>
+<p>This Docker deployment runs <strong>Woodpecker</strong> with the <strong>local filesystem</strong> as its WAL backend, so no external message-queue service is required. See <a href="/docs/ru/woodpecker.md">Woodpecker</a>.</p>
+<p>If you want to use <a href="/docs/ru/milvus_backup_overview.md">Backup</a> in standalone deployment mode, it is recommended to use the <a href="/docs/ru/install_standalone-docker-compose.md">Docker Compose</a> deployment method.</p>
+<p>If you encounter any issues pulling the image, contact us at <a href="mailto:community@zilliz.com">community@zilliz.com</a> with details about the problem, and we’ll provide you with the necessary support.</p>
 </div>
-<p>После запуска скрипта установки:</p>
+<p>After running the installation script:</p>
 <ul>
-<li>Контейнер Docker с именем milvus-standalone запущен на порту <strong>19530</strong>.</li>
-<li>Вместе с Milvus в том же контейнере установлен встроенный etcd, работающий на порту <strong>2379</strong>. Его файл конфигурации сопоставлен файлу <strong>embedEtcd.yaml</strong> в текущей папке.</li>
-<li>Чтобы изменить конфигурацию Milvus по умолчанию, добавьте свои настройки в файл <strong>user.yaml</strong> в текущей папке, а затем перезапустите службу.</li>
-<li>Том данных Milvus сопоставлен папке <strong>volumes/milvus</strong> в текущей папке.</li>
+<li>A docker container named milvus-standalone has been started at port <strong>19530</strong>.</li>
+<li>An embed etcd is installed along with Milvus in the same container and serves at port <strong>2379</strong>. Its configuration file is mapped to <strong>embedEtcd.yaml</strong> in the current folder.</li>
+<li>To change the default Milvus configuration, add your settings to the <strong>user.yaml</strong> file in the current folder and then restart the service.</li>
+<li>The Milvus data volume is mapped to <strong>volumes/milvus</strong> in the current folder.</li>
 </ul>
-<p>Проверьте актуальный образ и состояние работоспособности:</p>
+<p>Verify the actual image and health status:</p>
 <pre><code translate="no" class="language-bash">docker inspect --format <span class="hljs-string">&#x27;{{.Config.Image}}&#x27;</span> milvus-standalone
 docker inspect --format <span class="hljs-string">&#x27;{{.State.Health.Status}}&#x27;</span> milvus-standalone
 <button class="copy-code-btn"></button></code></pre>
-<p>Дождитесь появления сообщения « <code translate="no">healthy</code> », прежде чем приступать к выполнению <a href="/docs/ru/quickstart.md">инструк</a>ций <a href="/docs/ru/quickstart.md">из раздела «Быстрый старт</a>». При использовании этого сервера подключите SDK к <code translate="no">http://localhost:19530</code>; локальный URI <code translate="no">.db</code> запускает Milvus Lite.</p>
-<p>Вы можете перейти в веб-интерфейс Milvus по адресу <code translate="no">http://127.0.0.1:9091/webui/</code>, чтобы узнать больше о вашем экземпляре Milvus. Подробности см. в разделе <a href="/docs/ru/milvus-webui.md">«Веб-интерфейс Milvus</a>».</p>
-<h2 id="Optional-Update-Milvus-configurations" class="common-anchor-header">(Необязательно) Обновление настроек Milvus<button data-href="#Optional-Update-Milvus-configurations" class="anchor-icon" translate="no">
+<p>Wait for <code translate="no">healthy</code> before following <a href="/docs/ru/quickstart.md">Quickstart</a>. When using this server, connect the SDK to <code translate="no">http://localhost:19530</code>; a local <code translate="no">.db</code> URI starts Milvus Lite instead.</p>
+<p>You can access Milvus WebUI at <code translate="no">http://127.0.0.1:9091/webui/</code> to learn more about the your Milvus instance. For details, refer to <a href="/docs/ru/milvus-webui.md">Milvus WebUI</a>.</p>
+<h2 id="Optional-Update-Milvus-configurations" class="common-anchor-header">(Optional) Update Milvus configurations<button data-href="#Optional-Update-Milvus-configurations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -99,18 +99,18 @@ docker inspect --format <span class="hljs-string">&#x27;{{.State.Health.Status}}
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Вы можете изменить настройки Milvus в файле <strong>user.yaml</strong>, расположенном в текущей папке. Например, чтобы изменить адрес <code translate="no">proxy.healthCheckTimeout</code> на <code translate="no">1000</code> ms, можно отредактировать файл следующим образом:</p>
+    </button></h2><p>You can modify the Milvus configurations in the <strong>user.yaml</strong> file in the current folder. For example, to change the <code translate="no">proxy.healthCheckTimeout</code> to <code translate="no">1000</code> ms, you can modify the file as follows:</p>
 <pre><code translate="no" class="language-shell">cat &lt;&lt; EOF &gt; user.yaml
 <span class="hljs-meta prompt_"># </span><span class="language-bash">Extra config to override default milvus.yaml</span>
 proxy:
   healthCheckTimeout: 1000 # ms, the interval that to do component healthy check
 EOF
 <button class="copy-code-btn"></button></code></pre>
-<p>Затем перезапустите службу следующим образом:</p>
+<p>Then restart the service as follows:</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">bash standalone_embed.sh restart</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Информацию о соответствующих элементах конфигурации см. в разделе <a href="/docs/ru/system_configuration.md">«Конфигурация системы</a>».</p>
-<h2 id="Upgrade-Milvus" class="common-anchor-header">Обновление Milvus<button data-href="#Upgrade-Milvus" class="anchor-icon" translate="no">
+<p>For applicable configuration items, refer to <a href="/docs/ru/system_configuration.md">System Configuration</a>.</p>
+<h2 id="Upgrade-Milvus" class="common-anchor-header">Upgrade Milvus<button data-href="#Upgrade-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -125,9 +125,9 @@ EOF
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Команда <code translate="no">upgrade</code> скрипта загружает скрипт с сайта <code translate="no">master</code> и заново создает контейнер, используя образ, выбранный этим скриптом. Она не проверяет, поддерживается ли путь от исходной версии к целевой, и может заново создать сгенерированные файлы конфигурации. Не следует рассматривать это как гарантию того, что любое старое развертывание можно безопасно обновить до версии v3.0.5.</p>
-<p>Перед обновлением создайте резервные копии метаданных, постоянных данных, файла <code translate="no">embedEtcd.yaml</code> и файла <code translate="no">user.yaml</code>. Проверьте совместимость целевой версии, очереди сообщений и хранилища, а также проверьте восстановление в тестовой среде. Для развертываний, управляемых с помощью Docker Compose, следуйте инструкциям <a href="/docs/ru/upgrade_milvus_standalone-docker.md">в</a> разделе <a href="/docs/ru/upgrade_milvus_standalone-docker.md">«Обновление автономной версии Milvus с помощью Docker Compose»</a>; не применяйте эту процедуру напрямую к контейнеру, управляемому скриптом.</p>
-<h2 id="Stop-and-delete-Milvus" class="common-anchor-header">Остановка и удаление Milvus<button data-href="#Stop-and-delete-Milvus" class="anchor-icon" translate="no">
+    </button></h2><p>The script’s <code translate="no">upgrade</code> command downloads the script from <code translate="no">master</code> and recreates the container using the image selected by that script. It does not validate a supported source-to-target version path and can recreate generated configuration files. Do not treat it as a guarantee that an arbitrary older deployment can upgrade safely to v3.0.5.</p>
+<p>Before an upgrade, back up metadata, persistent data, <code translate="no">embedEtcd.yaml</code>, and <code translate="no">user.yaml</code>. Check the target version, message queue, and storage compatibility, and validate recovery in a non-production environment. For deployments managed with Docker Compose, follow <a href="/docs/ru/upgrade_milvus_standalone-docker.md">Upgrade Milvus Standalone with Docker Compose</a>; do not apply that procedure directly to a script-managed container.</p>
+<h2 id="Stop-and-delete-Milvus" class="common-anchor-header">Stop and delete Milvus<button data-href="#Stop-and-delete-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -142,14 +142,14 @@ EOF
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Вы можете остановить и удалить этот контейнер следующим образом</p>
+    </button></h2><p>You can stop and delete this container as follows</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">Stop Milvus</span>
 <span class="hljs-meta prompt_">$ </span><span class="language-bash">bash standalone_embed.sh stop</span>
 <span class="hljs-meta prompt_">
 # </span><span class="language-bash">Delete Milvus data</span>
 <span class="hljs-meta prompt_">$ </span><span class="language-bash">bash standalone_embed.sh delete</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Optional-dependencies" class="common-anchor-header">Дополнительные зависимости<button data-href="#Optional-dependencies" class="anchor-icon" translate="no">
+<h2 id="Optional-dependencies" class="common-anchor-header">Optional dependencies<button data-href="#Optional-dependencies" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -164,16 +164,16 @@ EOF
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>По умолчанию в этом развертывании в качестве очереди сообщений используется <strong>Woodpecker</strong> (WAL в локальной файловой системе), а для метаданных — <strong>встроенный etcd</strong> — ничего больше устанавливать не требуется. Чтобы использовать другую очередь сообщений или подключить внешнее объектное хранилище / метаданные, см.:</p>
+    </button></h2><p>By default this deployment runs <strong>Woodpecker</strong> (local-filesystem WAL) as the message queue and an <strong>embedded etcd</strong> for metadata — nothing else to install. To use a different message queue or connect external object storage / metadata, see:</p>
 <ul>
-<li>Очередь сообщений: <a href="/docs/ru/woodpecker.md">Woodpecker</a> (по умолчанию) · <a href="/docs/ru/mq_pulsar.md">Pulsar</a> · <a href="/docs/ru/mq_kafka.md">Kafka</a> · <a href="/docs/ru/mq_rocksmq.md">RocksMQ</a></li>
-<li>Объектное хранилище: <a href="/docs/ru/deploy_s3.md">MinIO</a> (по умолчанию) · <a href="/docs/ru/deploy_s3.md">AWS S3</a> · <a href="/docs/ru/abs.md">Azure Blob</a> · <a href="/docs/ru/gcs.md">GCP Cloud Storage</a> · <a href="/docs/ru/deploy_s3.md">Aliyun OSS</a> · <a href="/docs/ru/deploy_s3.md">Tencent COS</a> · <a href="/docs/ru/deploy_s3.md">Huawei OBS</a> · <a href="/docs/ru/deploy_s3.md">S3-совместимое</a></li>
-<li>Метаданные: <a href="/docs/ru/deploy_etcd.md">etcd</a></li>
+<li>Message queue: <a href="/docs/ru/woodpecker.md">Woodpecker</a> (default) · <a href="/docs/ru/mq_pulsar.md">Pulsar</a> · <a href="/docs/ru/mq_kafka.md">Kafka</a> · <a href="/docs/ru/mq_rocksmq.md">RocksMQ</a></li>
+<li>Object storage: <a href="/docs/ru/deploy_s3.md">MinIO</a> (default) · <a href="/docs/ru/deploy_s3.md">AWS S3</a> · <a href="/docs/ru/abs.md">Azure Blob</a> · <a href="/docs/ru/gcs.md">GCP Cloud Storage</a> · <a href="/docs/ru/deploy_s3.md">Aliyun OSS</a> · <a href="/docs/ru/deploy_s3.md">Tencent COS</a> · <a href="/docs/ru/deploy_s3.md">Huawei OBS</a> · <a href="/docs/ru/deploy_s3.md">S3-compatible</a></li>
+<li>Metadata: <a href="/docs/ru/deploy_etcd.md">etcd</a></li>
 </ul>
 <div class="alert note">
-<p>Storage V3 по умолчанию отключен. Включите его перед использованием функций, которые от него зависят. Требования и соображения по совместимости см. в разделе <a href="/docs/ru/storage-v3.md">Storage V3</a>.</p>
+<p>Storage V3 is disabled by default. Enable it before using features that depend on it. For requirements and compatibility considerations, see <a href="/docs/ru/storage-v3.md">Storage V3</a>.</p>
 </div>
-<h2 id="Whats-next" class="common-anchor-header">Что дальше<button data-href="#Whats-next" class="anchor-icon" translate="no">
+<h2 id="Whats-next" class="common-anchor-header">What’s next<button data-href="#Whats-next" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -188,29 +188,29 @@ EOF
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Установив Milvus в Docker, вы можете:</p>
+    </button></h2><p>Having installed Milvus in Docker, you can:</p>
 <ul>
-<li><p>Ознакомьтесь с <a href="/docs/ru/quickstart.md">разделом «Быстрый старт»</a>, чтобы узнать, на что способен Milvus.</p></li>
-<li><p>Ознакомиться с основными операциями Milvus:</p>
+<li><p>Check <a href="/docs/ru/quickstart.md">Quickstart</a> to see what Milvus can do.</p></li>
+<li><p>Learn the basic operations of Milvus:</p>
 <ul>
-<li><a href="/docs/ru/manage_databases.md">Управление базами данных</a></li>
-<li><a href="/docs/ru/manage-collections.md">Управление коллекциями</a></li>
-<li><a href="/docs/ru/manage-partitions.md">Управление разделами</a></li>
-<li><a href="/docs/ru/insert-update-delete.md">Вставка, обновление и удаление</a></li>
-<li><a href="/docs/ru/single-vector-search.md">Поиск по одному вектору</a></li>
-<li><a href="/docs/ru/multi-vector-search.md">Гибридный поиск</a></li>
+<li><a href="/docs/ru/manage_databases.md">Manage Databases</a></li>
+<li><a href="/docs/ru/manage-collections.md">Manage Collections</a></li>
+<li><a href="/docs/ru/manage-partitions.md">Manage Partitions</a></li>
+<li><a href="/docs/ru/insert-update-delete.md">Insert, Upsert & Delete</a></li>
+<li><a href="/docs/ru/single-vector-search.md">Single-Vector Search</a></li>
+<li><a href="/docs/ru/multi-vector-search.md">Hybrid Search</a></li>
 </ul></li>
-<li><p>Перед сменой версии Milvus ознакомьтесь с рекомендациями по обновлению на этой странице.</p></li>
-<li><p><a href="/docs/ru/scaleout.md">Масштабируйте свой кластер Milvus</a>.</p></li>
-<li><p>Разверните кластер Milvus в облаке:</p>
+<li><p>Review the upgrade considerations on this page before changing the Milvus version.</p></li>
+<li><p><a href="/docs/ru/scaleout.md">Scale your Milvus cluster</a>.</p></li>
+<li><p>Deploy your Milvu cluster on clouds:</p>
 <ul>
 <li><a href="/docs/ru/eks.md">Amazon EKS</a></li>
 <li><a href="/docs/ru/gcp.md">Google Cloud</a></li>
 <li><a href="/docs/ru/azure.md">Microsoft Azure</a></li>
 </ul></li>
-<li><p>Ознакомьтесь с <a href="/docs/ru/milvus-webui.md">Milvus WebUI</a> — интуитивно понятным веб-интерфейсом для мониторинга и управления Milvus.</p></li>
-<li><p>Ознакомьтесь с <a href="/docs/ru/milvus_backup_overview.md">Milvus Backup</a> — инструментом с открытым исходным кодом для резервного копирования данных Milvus.</p></li>
-<li><p>Ознакомьтесь с <a href="/docs/ru/birdwatcher_overview.md">Birdwatcher</a> — инструментом с открытым исходным кодом для отладки Milvus и динамического обновления конфигурации.</p></li>
-<li><p>Познакомьтесь с <a href="https://github.com/zilliztech/attu">Attu</a> — инструментом с графическим интерфейсом с открытым исходным кодом для интуитивного управления Milvus.</p></li>
-<li><p><a href="/docs/ru/monitor.md">Мониторинг Milvus с помощью Prometheus</a>.</p></li>
+<li><p>Explore <a href="/docs/ru/milvus-webui.md">Milvus WebUI</a>, an intuitive web interface for Milvus observability and management.</p></li>
+<li><p>Explore <a href="/docs/ru/milvus_backup_overview.md">Milvus Backup</a>, an open-source tool for Milvus data backups.</p></li>
+<li><p>Explore <a href="/docs/ru/birdwatcher_overview.md">Birdwatcher</a>, an open-source tool for debugging Milvus and dynamic configuration updates.</p></li>
+<li><p>Explore <a href="https://github.com/zilliztech/attu">Attu</a>, an open-source GUI tool for intuitive Milvus management.</p></li>
+<li><p><a href="/docs/ru/monitor.md">Monitor Milvus with Prometheus</a>.</p></li>
 </ul>

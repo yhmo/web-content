@@ -3,19 +3,22 @@ id: home.md
 ---
 <div class="doc-h1-wrapper">
 <p><h1 class="title">
-Milvus 문서에 오신 것을 환영합니다!</h1></p>
+Welcome to Milvus Docs!
+</h1></p>
 <p><h2 class="sub-title">
-여기에서는 Milvus가 무엇인지, 비즈니스 요구에 따라 애플리케이션을 구축하기 위해 Milvus를 설치, 사용 및 배포하는 방법에 대해 알아보세요.</h2></p>
+Here you will learn about what Milvus is, and how to install, use, and deploy Milvus to build an application according to your business need.
+</h2></p>
 </div>
 <div class="doc-home-promotion-wrapper">
   <div class="promotion-content">
-    <h2 class="promotion-title">관리형 Milvus를 무료로 체험해 보세요!</h2>
-    <p class="promotion-desc">번거로움이 없고, Milvus를 기반으로 하며, 10배 더 빠른 Zilliz Cloud를 만나보세요.</p>
+    <h2 class="promotion-title">Try Managed Milvus For Free!</h2>
+    <p class="promotion-desc">Zilliz Cloud is hassle-free, powered by Milvus and 10x faster.</p>
   </div>
   <div class="cta-wrapper">
-   <a class="cta-global" href="https://cloud.zilliz.com/signup?utm_source=partner&utm_medium=referral&utm_campaign=2025-02-24_doc_home_milvus.io">질리즈 클라우드</a></div>
+    <a class="cta-global" href="https://cloud.zilliz.com/signup?utm_source=partner&utm_medium=referral&utm_campaign=2025-02-24_doc_home_milvus.io">Zilliz Cloud</a>
+  </div>
 </div>
-<h2 id="Get-Started" class="common-anchor-header">시작하기<button data-href="#Get-Started" class="anchor-icon" translate="no">
+<h2 id="Get-Started" class="common-anchor-header">Get Started<button data-href="#Get-Started" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -32,23 +35,30 @@ Milvus 문서에 오신 것을 환영합니다!</h1></p>
       </svg>
     </button></h2><div class="card-wrapper">
 <div class="start_card_container">
-  
-   <a href="/docs/ko/install_standalone-docker.md"> <img translate="no" src="/docs/v2.6.x/assets/home_install.svg" alt="icon" />
-   </a> <a href="/docs/ko/install_standalone-docker.md"> <p class="link-btn">Milvus 설치하기</p> </a><p>도커 컴포즈 또는 쿠버네티스를 사용하여 Milvus를 설치하는 방법을 알아보세요.</p>
+  <a href="/docs/ko/v2.6.x/install_standalone-docker.md">
+    <img translate="no" src="/docs/v2.6.x/assets/home_install.svg" alt="icon" />
+    <p class="link-btn">Install Milvus</p>
+  </a>
+  <p>Learn how to install Milvus using either Docker Compose or on Kubernetes.</p>
 </div>
 <div class="start_card_container">
-  
-   <a href="/docs/ko/quickstart.md"> <img translate="no" src="/docs/v2.6.x/assets/home_quick_start.svg" alt="icon" />
-   </a> <a href="/docs/ko/quickstart.md"> <p class="link-btn">빠른 시작</p> </a><p>샘플 코드를 사용하여 Milvus를 빠르게 실행하는 방법을 알아보세요.</p>
+  <a href="/docs/ko/v2.6.x/quickstart.md">
+    <img translate="no" src="/docs/v2.6.x/assets/home_quick_start.svg" alt="icon" />
+    <p class="link-btn">Quick Start</p>
+  </a>
+  <p>Learn how to quickly run Milvus with sample code.</p>
 </div>
 <div class="start_card_container">
-  
-   <a href="/bootcamp"> <img translate="no" src="/docs/v2.6.x/assets/home_bootcamp.svg" alt="icon" />
-   </a> <a href="/bootcamp"> <p class="link-btn">부트캠프</p> </a><p>
-  Milvus로 벡터 유사도 검색 애플리케이션을 구축하는 방법을 알아보세요.  </p>
+  <a href="/bootcamp">
+    <img translate="no" src="/docs/v2.6.x/assets/home_bootcamp.svg" alt="icon" />
+    <p class="link-btn">Bootcamp</p>
+  </a>
+  <p>
+  Learn how to build vector similarity search applications with Milvus.
+  </p>
 </div>
 </div>
-<h2 id="Recommended-articles" class="common-anchor-header">추천 문서<button data-href="#Recommended-articles" class="anchor-icon" translate="no">
+<h2 id="Recommended-articles" class="common-anchor-header">Recommended articles<button data-href="#Recommended-articles" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -65,39 +75,39 @@ Milvus 문서에 오신 것을 환영합니다!</h1></p>
       </svg>
     </button></h2><div class="doc-home-recommend-section">
 <div class="recomment-item">
-  <p>사용</p>
+  <p>Use</p>
 <ul>
-<li><a href="/docs/ko/manage-collections.md">컬렉션 관리</a></li>
-<li><a href="/docs/ko/insert-update-delete.md">삽입, 위로 올리기 및 삭제</a></li>
-<li><a href="/docs/ko/single-vector-search.md">단일 벡터 검색</a></li>
-<li><a href="/docs/ko/multi-vector-search.md">하이브리드 검색</a></li>
-<li><a href="/docs/ko/get-and-scalar-query.md">가져오기 및 스칼라 쿼리</a></li>
-<li><a href="/docs/ko/milvus_for_agents.md">AI 에이전트용 Milvus</a></li>
+<li><a href="/docs/ko/v2.6.x/manage-collections.md">Manage Collections</a></li>
+<li><a href="/docs/ko/v2.6.x/insert-update-delete.md">Insert, Upsert, and Delete</a></li>
+<li><a href="/docs/ko/v2.6.x/single-vector-search.md">Single-Vector Search</a></li>
+<li><a href="/docs/ko/v2.6.x/multi-vector-search.md">Hybrid Search</a></li>
+<li><a href="/docs/ko/v2.6.x/get-and-scalar-query.md">Get & Scalar Query</a></li>
+<li><a href="/docs/ko/v2.6.x/milvus_for_agents.md">Milvus for AI Agents</a></li>
 </ul>
 </div>
 <div class="recomment-item">
-  <p>배포</p>
+  <p>Deploy</p>
 <ul>
-<li><a href="/docs/ko/configure-docker.md">Milvus 구성</a></li>
-<li><a href="/docs/ko/deploy_s3.md">종속성 관리</a></li>
-<li><a href="/docs/ko/eks.md">클라우드에 배포</a></li>
-<li><a href="/docs/ko/scaleout.md">Milvus 클러스터 확장</a></li>
-<li><a href="/docs/ko/monitor_overview.md">모니터링 및 알림</a></li>
+<li><a href="/docs/ko/v2.6.x/configure-docker.md">Configure Milvus</a></li>
+<li><a href="/docs/ko/v2.6.x/deploy_s3.md">Manage Dependencies</a></li>
+<li><a href="/docs/ko/v2.6.x/eks.md">Deploy on Clouds</a></li>
+<li><a href="/docs/ko/v2.6.x/scaleout.md">Scale a Milvus Cluster</a></li>
+<li><a href="/docs/ko/v2.6.x/monitor_overview.md">Monitor and Alert</a></li>
 </ul>
 </div>
 <div class="recomment-item">
   <p>Learn</p>
 <ul>
-<li><a href="/docs/ko/system_configuration.md">시스템 구성</a></li>
-<li><a href="/docs/ko/architecture_overview.md">아키텍처 개요</a></li>
-<li><a href="/docs/ko/index-explained.md">인덱스 설명</a></li>
-<li><a href="/docs/ko/metric.md">유사성 메트릭</a></li>
-<li><a href="/docs/ko/glossary.md">용어집</a></li>
+<li><a href="/docs/ko/v2.6.x/system_configuration.md">System Configuration</a></li>
+<li><a href="/docs/ko/v2.6.x/architecture_overview.md">Architecture Overview</a></li>
+<li><a href="/docs/ko/v2.6.x/index-explained.md">Index Explained</a></li>
+<li><a href="/docs/ko/v2.6.x/metric.md">Similarity Metrics</a></li>
+<li><a href="/docs/ko/v2.6.x/glossary.md">Glossary</a></li>
 </ul>
 </div>
 </div>
 <div class="doc-home-what-is-new">
-<h2 id="Whats-new-in-docs" class="common-anchor-header">문서의 새로운 기능<button data-href="#Whats-new-in-docs" class="anchor-icon" translate="no">
+<h2 id="Whats-new-in-docs" class="common-anchor-header">What’s new in docs<button data-href="#Whats-new-in-docs" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -112,12 +122,12 @@ Milvus 문서에 오신 것을 환영합니다!</h1></p>
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><em>2026년 3월 - Milvus 2.6.x 업데이트</em></p>
+    </button></h2><p><em>March 2026 - Milvus 2.6.x updates</em></p>
 <ul>
-<li><a href="/docs/ko/milvus_for_agents.md">AI 에이전트용 Milvus</a> 섹션에 프롬프트 가이드가 추가되었습니다.</li>
-<li><a href="/docs/ko/google-gemini.md">Gemini 임베딩 기능</a> 사용 방법에 대한 안내가 추가되었습니다.</li>
-<li><a href="/docs/ko/primary-key-search.md">기본 키로 검색하는</a> 방법에 대한 안내를 추가했습니다.</li>
-<li>검색 결과에서 <a href="/docs/ko/text-highlighter.md">텍스트 형광펜을</a> 사용하는 방법에 대한 안내를 추가했습니다.</li>
-<li><a href="/docs/ko/geometry-field.md">지오메트리 필드</a>, <a href="/docs/ko/timestamptz-field.md">타임스탬츠 필드</a>, <a href="/docs/ko/tiered-storage-overview.md">계층형 스토리지</a> 및 <a href="/docs/ko/array-of-structs.md">구조 배열에</a> 대한 설명을 추가했습니다.</li>
+<li>Added <a href="/docs/ko/v2.6.x/milvus_for_agents.md">Milvus for AI Agents</a> section with prompt guides.</li>
+<li>Added guidance on how to use <a href="/docs/ko/v2.6.x/google-gemini.md">Gemini embedding function</a>.</li>
+<li>Added guidance on how to <a href="/docs/ko/v2.6.x/primary-key-search.md">search by primary keys</a>.</li>
+<li>Added guidance on how to use <a href="/docs/ko/v2.6.x/text-highlighter.md">text highlighter</a> in search results.</li>
+<li>Added descriptions of <a href="/docs/ko/v2.6.x/geometry-field.md">geometry field</a>, <a href="/docs/ko/v2.6.x/timestamptz-field.md">timestamptz field</a>, <a href="/docs/ko/v2.6.x/tiered-storage-overview.md">tiered storage</a>, and <a href="/docs/ko/v2.6.x/array-of-structs.md">array of structs</a>.</li>
 </ul>
 </div>

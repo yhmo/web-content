@@ -2,10 +2,11 @@
 id: create-structarray-field.md
 title: Create a StructArray Field
 summary: >-
-  قم بإنشاء حقل StructArray عندما تحتاج إحدى الكيانات إلى احتواء قائمة مرتبة من
-  العناصر المنظمة. حقل StructArray هو حقل Array يكون نوع عناصره هو Struct. يتبع
-  كل عنصر من عناصر Struct نفس المخطط، ويمكن أن يحتوي على حقول فرعية قياسية،
-  وحقول فرعية متجهة، و—ابتداءً من الإصدار Milvus 3.0.6—حقول فرعية مصفوفة قياسية.
+  Create a StructArray field when one entity needs to contain an ordered list of
+  structured elements. A StructArray field is an Array field whose element type
+  is Struct. Each Struct element follows the same schema and can contain scalar
+  subfields, vector subfields, and, starting in Milvus 3.0.6, scalar array
+  subfields.
 ---
 <h1 id="Create-a-StructArray-Field" class="common-anchor-header">Create a StructArray Field<button data-href="#Create-a-StructArray-Field" class="anchor-icon" translate="no">
       <svg translate="no"

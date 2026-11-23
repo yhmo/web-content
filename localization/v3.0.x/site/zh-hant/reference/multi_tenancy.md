@@ -1,9 +1,11 @@
 ---
 id: multi_tenancy.md
-title: 實作多租戶架構
-summary: 在 Milvus 中，多租戶（multi-tenancy）意指多個客戶或團隊（稱為「租戶」）共用同一個叢集，同時維持各自隔離的資料環境。
+title: Implement Multi-tenancy
+summary: >-
+  In Milvus, multi-tenancy means multiple customers or teams—referred to as
+  tenants— share the same cluster while maintaining isolated data environments.
 ---
-<h1 id="Implement-Multi-tenancy" class="common-anchor-header">實作多租戶架構<button data-href="#Implement-Multi-tenancy" class="anchor-icon" translate="no">
+<h1 id="Implement-Multi-tenancy" class="common-anchor-header">Implement Multi-tenancy<button data-href="#Implement-Multi-tenancy" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,9 +20,9 @@ summary: 在 Milvus 中，多租戶（multi-tenancy）意指多個客戶或團�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>在 Milvus 中，多租戶意指多個客戶或團隊（稱為「<strong>租戶</strong>」）共用同一個叢集，同時維持各自隔離的資料環境。</p>
-<p>Milvus 支援四種多租戶策略，每種策略在可擴展性、資料隔離與靈活性之間都有不同的權衡取捨。本指南將帶您逐步了解每種選項，協助您為您的使用情境選擇最適合的策略。</p>
-<h2 id="Multi-tenancy-strategies" class="common-anchor-header">多租戶策略<button data-href="#Multi-tenancy-strategies" class="anchor-icon" translate="no">
+    </button></h1><p>In Milvus, multi-tenancy means multiple customers or teams—referred to as <strong>tenants</strong>— share the same cluster while maintaining isolated data environments.</p>
+<p>Milvus supports four multi-tenancy strategies, each offering a different trade-off between scalability, data isolation, and flexibility. This guide walks you through each option, helping you choose the most suitable strategy for your use case.</p>
+<h2 id="Multi-tenancy-strategies" class="common-anchor-header">Multi-tenancy strategies<button data-href="#Multi-tenancy-strategies" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -35,8 +37,8 @@ summary: 在 Milvus 中，多租戶（multi-tenancy）意指多個客戶或團�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus 支援四種層級的多租戶架構：<strong>資料庫</strong>、<strong>集合</strong>、<strong>區隔及</strong> <strong>區隔鍵</strong>。</p>
-<h3 id="Database-level-multi-tenancy" class="common-anchor-header">資料庫層級的多租戶<button data-href="#Database-level-multi-tenancy" class="anchor-icon" translate="no">
+    </button></h2><p>Milvus supports multi-tenancy at four levels: <strong>Database</strong>, <strong>Collection</strong>, <strong>Partition</strong>, and <strong>Partition Key</strong>.</p>
+<h3 id="Database-level-multi-tenancy" class="common-anchor-header">Database-level multi-tenancy<button data-href="#Database-level-multi-tenancy" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -51,20 +53,20 @@ summary: 在 Milvus 中，多租戶（multi-tenancy）意指多個客戶或團�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>在資料庫層級的多租戶架構中，每個租戶都會獲得一個對應的<a href="/docs/zh-hant/manage_databases.md">資料庫</a>，其中包含一個或多個集合。</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/database-level-multi-tenancy.png" alt="Database Level Multi Tenancy" class="doc-image" id="database-level-multi-tenancy" /> 
-   <span>資料庫層級的多租戶</span>
-  
- </span></p>
+    </button></h3><p>With database-level multi-tenancy, each tenant receives a corresponding <a href="/docs/zh-hant/manage_databases.md">database</a> containing one or more collections.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/database-level-multi-tenancy.png" alt="Database Level Multi Tenancy" class="doc-image" id="database-level-multi-tenancy" />
+    <span>Database Level Multi Tenancy</span>
+  </span>
+</p>
 <ul>
-<li><p><strong>可擴展性</strong>：預設情況下，資料庫層級的多租戶策略最多可支援 64 個租戶。</p></li>
-<li><p><strong>資料隔離</strong>：每個資料庫中的資料完全分離，提供企業級的資料隔離，非常適合受監管的環境或具有嚴格合規需求的客戶。</p></li>
-<li><p><strong>靈活性</strong>：每個資料庫可包含具有不同資料結構的集合，提供高度靈活的資料組織方式，並允許每個租戶擁有自己的資料結構。</p></li>
-<li><p><strong>其他</strong>：此策略亦支援基於角色的存取控制（RBAC），可針對每個租戶進行細粒度的使用者存取控制。此外，您可針對特定租戶靈活載入或釋放資料，以有效管理熱資料與冷資料。</p></li>
+<li><p><strong>Scalability</strong>: The database-level multi-tenancy strategy  supports a maximum of 64 tenants by default.</p></li>
+<li><p><strong>Data isolation</strong>: The data in each database is fully separated, offering enterprise-grade data isolation ideal for regulated environments or customers with strict compliance needs.</p></li>
+<li><p><strong>Flexibility</strong>: Each database can have collections with different schemas, offering highly flexible data organization and allowing each tenant to have its own data schema.</p></li>
+<li><p><strong>Others</strong>: This strategy also supports RBAC, enabling fine-grained control over user access per tenant. Additionally, you can flexibly load or release data for specific tenants to manage hot and cold data effectively.</p></li>
 </ul>
-<h3 id="Collection-level-multi-tenancy" class="common-anchor-header">集合層級的多租戶架構<button data-href="#Collection-level-multi-tenancy" class="anchor-icon" translate="no">
+<h3 id="Collection-level-multi-tenancy" class="common-anchor-header">Collection-level multi-tenancy<button data-href="#Collection-level-multi-tenancy" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -79,20 +81,20 @@ summary: 在 Milvus 中，多租戶（multi-tenancy）意指多個客戶或團�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>透過集合層級的多租戶架構，每個租戶都會被指派<a href="/docs/zh-hant/manage-collections.md">一個集合，</a>從而提供強大的資料隔離能力。</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/collection-level-multi-tenancy.png" alt="Collection Level Multi Tenancy" class="doc-image" id="collection-level-multi-tenancy" /> 
-   <span>集合層級多租戶</span>
-  
- </span></p>
+    </button></h3><p>With collection-level multi-tenancy, each tenant is assigned a <a href="/docs/zh-hant/manage-collections.md">collection</a>, offering strong data isolation.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/collection-level-multi-tenancy.png" alt="Collection Level Multi Tenancy" class="doc-image" id="collection-level-multi-tenancy" />
+    <span>Collection Level Multi Tenancy</span>
+  </span>
+</p>
 <ul>
-<li><p><strong>可擴展性</strong>：由於叢集預設最多可容納 65,536 個集合，此策略可在叢集內容納相同數量的租戶。</p></li>
-<li><p><strong>資料隔離</strong>：各集合在物理層面上彼此隔離。此策略可提供強大的資料隔離能力。</p></li>
-<li><p><strong>靈活性</strong>：此策略允許每個集合擁有專屬的資料結構，可支援具有不同資料結構的租戶。</p></li>
-<li><p><strong>其他</strong>：此策略亦支援基於角色的存取控制（RBAC），可對租戶實施細粒度的存取控制。此外，您可針對特定租戶靈活載入或釋放資料，以有效管理熱資料與冷資料。</p></li>
+<li><p><strong>Scalability</strong>: Since a cluster can hold up to 65,536 collections by default, this strategy can accommodate the same number of tenants within the cluster.</p></li>
+<li><p><strong>Data isolation</strong>: Collections are physically isolated from one another. This strategy provides strong data isolation.</p></li>
+<li><p><strong>Flexibility</strong>: This strategy allows each collection to have its own schema, accommodating tenants with different data schemas.</p></li>
+<li><p><strong>Others</strong>: This strategy also supports RBAC, allowing for granular access control over tenants. Additionally, you can flexibly load or release data for specific tenants to manage hot and cold data effectively.</p></li>
 </ul>
-<h3 id="Partition-level-multi-tenancy" class="common-anchor-header">分區層級的多租戶架構<button data-href="#Partition-level-multi-tenancy" class="anchor-icon" translate="no">
+<h3 id="Partition-level-multi-tenancy" class="common-anchor-header">Partition-level multi-tenancy<button data-href="#Partition-level-multi-tenancy" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -107,20 +109,20 @@ summary: 在 Milvus 中，多租戶（multi-tenancy）意指多個客戶或團�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>在分區層級的多租戶架構中，每個租戶都會被指派至共用集合內一個手動建立<a href="/docs/zh-hant/manage-partitions.md">的分區</a>。</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/partition-level-multi-tenancy.png" alt="Partition Level Multi Tenancy" class="doc-image" id="partition-level-multi-tenancy" /> 
-   <span>分區層級多租戶</span>
-  
- </span></p>
+    </button></h3><p>In partition-level multi-tenancy, each tenant is assigned to a manually created <a href="/docs/zh-hant/manage-partitions.md">partition</a> within a shared collection.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/partition-level-multi-tenancy.png" alt="Partition Level Multi Tenancy" class="doc-image" id="partition-level-multi-tenancy" />
+    <span>Partition Level Multi Tenancy</span>
+  </span>
+</p>
 <ul>
-<li><p><strong>可擴展性</strong>：每個集合最多可包含 1,024 個分區，因此可容納相同數量的租戶。</p></li>
-<li><p><strong>資料隔離</strong>：各租戶的資料透過分區在物理層面上相互隔離。</p></li>
-<li><p><strong>靈活性</strong>：此策略要求所有租戶共用相同的数据模式，且分區需手動建立。</p></li>
-<li><p><strong>其他</strong>：分區層級不支援基於角色的存取控制（RBAC）。租戶資料可單獨查詢，亦可跨多個分區進行查詢，這使得此方法非常適合涉及跨租戶區段的彙總查詢或分析情境。此外，您可以靈活地為特定租戶載入或釋放資料，以有效管理熱資料與冷資料。</p></li>
+<li><p><strong>Scalability</strong>: A collection can hold up to 1,024 partitions per collection, allowing for the same number of tenants within it.</p></li>
+<li><p><strong>Data isolation</strong>: The data of each tenant is physically separated by partitions.</p></li>
+<li><p><strong>Flexibility</strong>: This strategy requires all tenants to share the same data schema. And partitions need to be manually created.</p></li>
+<li><p><strong>Others</strong>: RBAC is not supported on the partition level. Tenants can be queried either individually or across multiple partitions, which makes this approach well-suited for scenarios involving aggregated queries or analytics across tenant segments. Additionally, you can flexibly load or release data for specific tenants to manage hot and cold data effectively.</p></li>
 </ul>
-<h3 id="Partition-key-level-multi-tenancy" class="common-anchor-header">分區鍵層級的多租戶架構<button data-href="#Partition-key-level-multi-tenancy" class="anchor-icon" translate="no">
+<h3 id="Partition-key-level-multi-tenancy" class="common-anchor-header">Partition key-level multi-tenancy<button data-href="#Partition-key-level-multi-tenancy" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -135,23 +137,23 @@ summary: 在 Milvus 中，多租戶（multi-tenancy）意指多個客戶或團�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>採用此策略時，所有租戶共用單一集合與資料結構，但每個租戶的資料會根據<a href="/docs/zh-hant/use-partition-key.md">分區鍵值</a>，自動路由至 16 個物理上相互隔離的分區。雖然每個物理分區可包含多個租戶，但不同租戶的資料在邏輯上仍保持分離。</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/partition-key-level-multi-tenancy.png" alt="Partition Key Level Multi Tenancy" class="doc-image" id="partition-key-level-multi-tenancy" /> 
-   <span>分區鍵層級的多租戶架構</span>
-  
- </span></p>
+    </button></h3><p>With this strategy, all tenants share a single collection and schema, but each tenant’s data is automatically routed into 16 physically isolated partitions based on the <a href="/docs/zh-hant/use-partition-key.md">partition key</a> value. Although each physical partition can contain multiple tenants, the data from different tenants remains logically separated.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/partition-key-level-multi-tenancy.png" alt="Partition Key Level Multi Tenancy" class="doc-image" id="partition-key-level-multi-tenancy" />
+    <span>Partition Key Level Multi Tenancy</span>
+  </span>
+</p>
 <ul>
-<li><p><strong>可擴展性</strong>：分區鍵層級策略提供最具可擴展性的方案，可支援數百萬個租戶。</p></li>
-<li><p><strong>資料隔離</strong>：由於多個租戶可能共用同一個實體分區，此策略提供的資料隔離程度相對較弱。</p></li>
-<li><p><strong>靈活性</strong>：由於所有租戶必須共用相同資料結構，此策略提供的資料靈活性有限。</p></li>
-<li><p><strong>其他</strong>：分區鍵層級不支援基於角色的存取控制（RBAC）。租戶資料可單獨查詢，亦可跨多個分區進行查詢，這使得此方法非常適合涉及跨租戶區段的彙總查詢或分析的場景。</p></li>
+<li><p><strong>Scalability</strong>: The partition key-level strategy offers the most scalable approach, supporting millions of tenants.</p></li>
+<li><p><strong>Data isolation</strong>: This strategy offers relatively weak data isolation because multiple tenants can share a physical partition.</p></li>
+<li><p><strong>Flexibility</strong>: Since all tenants must share the same data schema, this strategy offers limited data flexibility.</p></li>
+<li><p><strong>Others</strong>: RBAC is not supported on the partition-key level. Tenants can be queried either individually or across multiple partitions, which makes this approach well-suited for scenarios involving aggregated queries or analytics across tenant segments.</p></li>
 </ul>
 <div class="alert note">
-<p>我們建議您在分區鍵欄位上建立標量索引。由於每個實體分區都包含多個租戶，Milvus 會針對搜尋分區中的每個實體評估租戶篩選條件；若未建立索引，此過程將進行全表掃描。詳細資訊請參閱《<a href="/docs/zh-hant/use-partition-key.md#Index-Partition-Key">索引分區鍵》</a>。</p>
+<p>We recommend that you create a scalar index on the partition key field. Because each physical partition holds multiple tenants, Milvus evaluates the tenant filter against every entity in the searched partitions, and without an index this is a full scan. For details, refer to <a href="/docs/zh-hant/use-partition-key.md#Index-Partition-Key">Index Partition Key</a>.</p>
 </div>
-<h2 id="Choosing-the-right-multi-tenancy-strategy" class="common-anchor-header">選擇合適的多租戶策略<button data-href="#Choosing-the-right-multi-tenancy-strategy" class="anchor-icon" translate="no">
+<h2 id="Choosing-the-right-multi-tenancy-strategy" class="common-anchor-header">Choosing the right multi-tenancy strategy<button data-href="#Choosing-the-right-multi-tenancy-strategy" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -166,77 +168,77 @@ summary: 在 Milvus 中，多租戶（multi-tenancy）意指多個客戶或團�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>下表針對四種層級的多租戶策略進行了全面比較。</p>
+    </button></h2><p>The table below offers a comprehensive comparison between the four levels of multi-tenancy strategies.</p>
 <table>
    <tr>
      <th></th>
-     <th><p><strong>資料庫層級</strong></p></th>
-     <th><p><strong>集合層級</strong></p></th>
-     <th><p><strong>分區層級</strong></p></th>
-     <th><p><strong>分區鍵層級</strong></p></th>
+     <th><p><strong>Database-level</strong></p></th>
+     <th><p><strong>Collection-level</strong></p></th>
+     <th><p><strong>Partition-level</strong></p></th>
+     <th><p><strong>Partition key-level</strong></p></th>
    </tr>
    <tr>
-     <td><p><strong>資料隔離</strong></p></td>
-     <td><p>物理層級</p></td>
-     <td><p>物理</p></td>
-     <td><p>實體實體</p></td>
-     <td><p>物理 + 邏輯</p></td>
+     <td><p><strong>Data Isolation</strong></p></td>
+     <td><p>Physical</p></td>
+     <td><p>Physical</p></td>
+     <td><p>Physical</p></td>
+     <td><p>Physical + Logical</p></td>
    </tr>
    <tr>
-     <td><p><strong>租戶最大數量</strong></p></td>
-     <td><p>預設為 64。您可以透過修改 Milvus.yaml 配置檔案中的<code translate="no">maxDatabaseNum</code> 參數來增加此數值。 </p></td>
-     <td><p>預設為 65,536。您可以透過修改 Milvus.yaml 配置檔案中的<code translate="no">maxCollectionNum</code> 參數來增加此數值。</p></td>
-     <td><p>每個集合最多 1,024 個。 </p></td>
-     <td><p>數百萬</p></td>
+     <td><p><strong>Max. number of tenants</strong></p></td>
+     <td><p>By default, 64. You can increase it by modifying the <code translate="no">maxDatabaseNum</code> parameter in the Milvus.yaml configuration file. </p></td>
+     <td><p>By default, 65,536. You can increase it by modifying the <code translate="no">maxCollectionNum</code> parameter in the Milvus.yaml configuration file.</p></td>
+     <td><p>Up to 1,024 per collection. </p></td>
+     <td><p>Millions</p></td>
    </tr>
    <tr>
-     <td><p><strong>資料架構的靈活性</strong></p></td>
-     <td><p>高</p></td>
-     <td><p>中等</p></td>
-     <td><p>低</p></td>
-     <td><p>低</p></td>
+     <td><p><strong>Data schema flexibility</strong></p></td>
+     <td><p>High</p></td>
+     <td><p>Medium</p></td>
+     <td><p>Low</p></td>
+     <td><p>Low</p></td>
    </tr>
    <tr>
-     <td><p><strong>是否支援 RBAC</strong></p></td>
-     <td><p>是</p></td>
-     <td><p>是</p></td>
-     <td><p>否</p></td>
-     <td><p>否</p></td>
+     <td><p><strong>RBAC support</strong></p></td>
+     <td><p>Yes</p></td>
+     <td><p>Yes</p></td>
+     <td><p>No</p></td>
+     <td><p>No</p></td>
    </tr>
    <tr>
-     <td><p><strong>搜尋效能</strong></p></td>
-     <td><p>強</p></td>
-     <td><p>強</p></td>
-     <td><p>中等</p></td>
-     <td><p>中等</p></td>
+     <td><p><strong>Search performance</strong></p></td>
+     <td><p>Strong</p></td>
+     <td><p>Strong</p></td>
+     <td><p>Medium</p></td>
+     <td><p>Medium</p></td>
    </tr>
    <tr>
-     <td><p><strong>支援跨租戶搜尋</strong></p></td>
-     <td><p>不</p></td>
-     <td><p>不</p></td>
-     <td><p>是</p></td>
-     <td><p>是</p></td>
+     <td><p><strong>Cross-tenant search support</strong></p></td>
+     <td><p>No</p></td>
+     <td><p>No</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Yes</p></td>
    </tr>
    <tr>
-     <td><p><strong>支援有效處理熱數據與冷數據</strong></p></td>
-     <td><p>是</p></td>
-     <td><p>是</p></td>
-     <td><p>是</p></td>
-     <td><p>否目前不支援分區鍵層級的策略。</p></td>
+     <td><p><strong>Support for effective handling of hot and cold data</strong></p></td>
+     <td><p>Yes</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Yes</p></td>
+     <td><p>No Currently, not supported for the partition key-level strategy.</p></td>
    </tr>
 </table>
-<p>在 Milvus 中選擇多租戶策略時，有幾個因素需要考慮。</p>
+<p>There are several factors to consider when you choose the multi-tenancy strategy in Milvus.</p>
 <ol>
-<li><p><strong>可擴展性：</strong>分區鍵 &gt; 分區 &gt; 集合 &gt; 資料庫</p>
-<p>若預期需支援極大量租戶（數百萬或更多），請使用分區鍵層級策略。</p></li>
-<li><p><strong>嚴格的資料隔離要求</strong>：資料庫 = 集合 &gt; 分區 &gt; 分區鍵</p>
-<p>若您有嚴格的物理資料隔離需求，請選擇資料庫、集合或分區層級的策略。</p></li>
-<li><p><strong>各租戶資料的靈活資料結構：</strong>資料庫 &gt; 集合 &gt; 分區 = 分區鍵</p>
-<p>資料庫層級與集合層級的策略可提供資料結構的完全彈性。若您的租戶資料結構各不相同，請選擇資料庫層級或集合層級的多租戶架構。</p></li>
-<li><p><strong>其他</strong></p>
+<li><p><strong>Scalability:</strong> Partition Key > Partition > Collection > Database</p>
+<p>If you expect to support a very large number of tenants (millions or more), use the partition key-level strategy.</p></li>
+<li><p><strong>Strong data isolation requirements</strong>: Database = Collection > Partition > Partition Key</p>
+<p>Choose database, collection, or partition-level strategies if you have strict physical data isolation requirements.</p></li>
+<li><p><strong>Flexible data schema for each tenant’s data:</strong> Database > Collection > Partition = Partition Key</p>
+<p>Database-level and collection-level strategies provide full flexibility in data schemas. If your tenants’ data structures are different, choose database-level or collection-level multi-tenancy.</p></li>
+<li><p><strong>Others</strong></p>
 <ol>
-<li><p><strong>效能：</strong>搜尋效能取決於多種因素，包括索引、搜尋參數及機器配置。Milvus 亦支援效能調校。建議在選擇多租戶策略前，先測試實際效能。</p></li>
-<li><p><strong>有效處理熱數據與冷數據</strong>：目前，資料庫層級、集合層級及分區層級策略均支援熱數據與冷<strong>數據的</strong>處理。</p></li>
-<li><p><strong>跨租戶搜尋</strong>：僅分區層級與分區鍵層級策略支援跨租戶查詢。</p></li>
+<li><p><strong>Performance:</strong> Search performance is determined by various factors, including indexes, search parameters, and machine configurations. Milvus also support performance-tuning. It is recommended to test the actual performance before you select a multi-tenancy strategy.</p></li>
+<li><p><strong>Effective handling of hot and cold data</strong>: Currently, the database-level, collection-level, and partition-level strategies all support hot and cold data handling.</p></li>
+<li><p><strong>Cross-tenant searches</strong>: Only the partition-level and partition-key-level strategies support cross-tenant queries.</p></li>
 </ol></li>
 </ol>

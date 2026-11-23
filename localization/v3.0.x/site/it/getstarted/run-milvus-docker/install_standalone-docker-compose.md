@@ -2,10 +2,10 @@
 id: install_standalone-docker-compose.md
 label: Docker Compose
 related_key: Docker Compose
-summary: Scopri come installare Milvus in modalità standalone con Docker Compose.
-title: Eseguire Milvus con Docker Compose (Linux)
+summary: Learn how to install Milvus standalone with Docker Compose.
+title: Run Milvus with Docker Compose (Linux)
 ---
-<h1 id="Run-Milvus-with-Docker-Compose-Linux" class="common-anchor-header">Eseguire Milvus con Docker Compose (Linux)<button data-href="#Run-Milvus-with-Docker-Compose-Linux" class="anchor-icon" translate="no">
+<h1 id="Run-Milvus-with-Docker-Compose-Linux" class="common-anchor-header">Run Milvus with Docker Compose (Linux)<button data-href="#Run-Milvus-with-Docker-Compose-Linux" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,8 +20,8 @@ title: Eseguire Milvus con Docker Compose (Linux)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Questa pagina illustra come avviare un'istanza di Milvus in Docker utilizzando Docker Compose.</p>
-<h2 id="Prerequisites" class="common-anchor-header">Prerequisiti<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+    </button></h1><p>This page illustrates how to launch a Milvus instance in Docker using Docker Compose.</p>
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,11 +37,11 @@ title: Eseguire Milvus con Docker Compose (Linux)
         ></path>
       </svg>
     </button></h2><ul>
-<li><a href="https://docs.docker.com/get-docker/">Installare Docker</a>.</li>
-<li>Installare il <a href="https://docs.docker.com/compose/install/linux/">plugin Docker Compose</a> (versione 2 o successive) e verificarne il funzionamento con il comando ` <code translate="no">docker compose version</code>`. Queste istruzioni utilizzano il comando ` <code translate="no">docker compose</code>`, non il comando legacy ` <code translate="no">docker-compose</code> ` (versione 1).</li>
-<li><a href="/docs/it/prerequisite-docker.md">Verificare i requisiti hardware e software</a> prima dell’installazione.</li>
+<li><a href="https://docs.docker.com/get-docker/">Install Docker</a>.</li>
+<li>Install the <a href="https://docs.docker.com/compose/install/linux/">Docker Compose plugin</a> (V2 or later) and verify it with <code translate="no">docker compose version</code>. These instructions use <code translate="no">docker compose</code>, not the legacy <code translate="no">docker-compose</code> V1 command.</li>
+<li><a href="/docs/it/prerequisite-docker.md">Check the requirements for hardware and software</a> prior to your installation.</li>
 </ul>
-<h2 id="Install-Milvus" class="common-anchor-header">Installare Milvus<button data-href="#Install-Milvus" class="anchor-icon" translate="no">
+<h2 id="Install-Milvus" class="common-anchor-header">Install Milvus<button data-href="#Install-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -56,7 +56,7 @@ title: Eseguire Milvus con Docker Compose (Linux)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus mette a disposizione un file di configurazione Docker Compose nel repository di Milvus. Scaricare la configurazione per la versione 3.0.5 e avviare una nuova distribuzione:</p>
+    </button></h2><p>Milvus provides a Docker Compose configuration file in the Milvus repository. Download the configuration for v3.0.5 and start a new deployment:</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">Download the configuration file</span>
 <span class="hljs-meta prompt_">$ </span><span class="language-bash">wget https://github.com/milvus-io/milvus/releases/download/v3.0.5/milvus-standalone-docker-compose.yaml -O docker-compose.yaml</span>
 <span class="hljs-meta prompt_">
@@ -68,29 +68,29 @@ Creating milvus-minio ... done
 Creating milvus-standalone ... done
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p><strong>Distribuzione predefinita (v3.0.5):</strong> <code translate="no">docker compose up -d</code> avvia tre container a esecuzione prolungata: <code translate="no">milvus-etcd</code> (metadati), <code translate="no">milvus-minio</code> (archiviazione a oggetti) e <code translate="no">milvus-standalone</code>. La coda dei messaggi è <strong>Woodpecker (integrata, con MinIO / archiviazione a oggetti come backend WAL)</strong>, quindi non è necessario un container separato per la coda dei messaggi.</p>
-<p>La configurazione esegue inoltre il servizio "one-shot" <code translate="no">milvus-volume-init</code> per preparare la proprietà della directory dei dati. Il servizio termina dopo aver completato tale attività.</p>
-<p><strong>Coda di messaggi predefinita in base alla versione:</strong></p>
+<p><strong>Default deployment (v3.0.5):</strong> <code translate="no">docker compose up -d</code> starts three long-running containers — <code translate="no">milvus-etcd</code> (metadata), <code translate="no">milvus-minio</code> (object storage), and <code translate="no">milvus-standalone</code>. The message queue is <strong>Woodpecker (embedded, with MinIO / object storage as its WAL backend)</strong>, so no separate message-queue container is required.</p>
+<p>The configuration also runs the one-shot <code translate="no">milvus-volume-init</code> service to prepare data-directory ownership. It exits after completing that task.</p>
+<p><strong>Message-queue default by version:</strong></p>
 <ul>
-<li><strong>2.5.x</strong> — la coda dei messaggi predefinita è <strong>RocksMQ</strong>.</li>
-<li><strong>2.6.x e successive</strong> — la coda dei messaggi predefinita è <strong>Woodpecker (integrata)</strong>.</li>
+<li><strong>2.5.x</strong> — default message queue is <strong>RocksMQ</strong>.</li>
+<li><strong>2.6.x and later</strong> — default message queue is <strong>Woodpecker (embedded)</strong>.</li>
 </ul>
-<p>Utilizzare la configurazione allegata alla versione che si intende installare. Per una distribuzione esistente, seguire le istruzioni di aggiornamento invece di sostituire la configurazione con un file di nuova installazione.</p>
+<p>Use the configuration attached to the release you intend to install. For an existing deployment, follow the upgrade instructions instead of replacing its configuration with a new-installation file.</p>
 <ul>
-<li><p>Se <code translate="no">docker compose</code> non è disponibile, installare il plugin Compose seguendo le <a href="https://docs.docker.com/compose/install/linux/">istruzioni per Docker</a>.</p></li>
-<li><p>Se si riscontrano problemi durante il download dell’immagine, contattateci all’indirizzo <a href="mailto:community@zilliz.com">community@zilliz.com</a> fornendo i dettagli del problema e vi forniremo l’assistenza necessaria.</p></li>
+<li><p>If <code translate="no">docker compose</code> is unavailable, install the Compose plugin using the <a href="https://docs.docker.com/compose/install/linux/">Docker instructions</a>.</p></li>
+<li><p>If you encounter any issues pulling the image, contact us at <a href="mailto:community@zilliz.com">community@zilliz.com</a> with details about the problem, and we’ll provide you with the necessary support.</p></li>
 </ul>
 </div>
-<p>Dopo l'avvio di Milvus,</p>
+<p>After starting up Milvus,</p>
 <ul>
-<li>i container denominati <strong>milvus-standalone</strong>, <strong>milvus-minio</strong> e <strong>milvus-etcd</strong> saranno attivi.
+<li>Containers named <strong>milvus-standalone</strong>, <strong>milvus-minio</strong>, and <strong>milvus-etcd</strong> are up.
 <ul>
-<li>Il container <strong>milvus-etcd</strong> non espone alcuna porta all’host e mappa i propri dati in <strong>volumes/etcd</strong> nella cartella corrente.</li>
-<li>Il container <strong>milvus-minio</strong> serve localmente le porte <strong>9000</strong> e <strong>9001</strong> con le credenziali di autenticazione predefinite e mappa i propri dati nella cartella <strong>volumes/minio</strong> nella directory corrente.</li>
-<li>Il container <strong>milvus-standalone</strong> serve localmente le porte <strong>19530</strong> con le impostazioni predefinite e mappa i propri dati nella <strong>cartella volumes/milvus</strong> all’interno della directory corrente.</li>
+<li>The <strong>milvus-etcd</strong> container does not expose any ports to the host and maps its data to <strong>volumes/etcd</strong> in the current folder.</li>
+<li>The <strong>milvus-minio</strong> container serves ports <strong>9000</strong> and <strong>9001</strong> locally with the default authentication credentials and maps its data to <strong>volumes/minio</strong> in the current folder.</li>
+<li>The <strong>milvus-standalone</strong> container serves ports <strong>19530</strong> locally with the default settings and maps its data to <strong>volumes/milvus</strong> in the current folder.</li>
 </ul></li>
 </ul>
-<p>È possibile verificare se i container sono attivi e in esecuzione utilizzando il seguente comando:</p>
+<p>You can check if the containers are up and running using the following command:</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">docker compose ps</span>
 
 NAME                IMAGE   COMMAND                  SERVICE      CREATED         STATUS                   PORTS
@@ -98,9 +98,9 @@ milvus-etcd         …       &quot;etcd -advertise-cli…&quot;   etcd         
 milvus-minio        …       &quot;/usr/bin/docker-ent…&quot;   minio        2 minutes ago   Up 2 minutes (healthy)   9000-9001/tcp
 milvus-standalone   …       &quot;/tini -- milvus run…&quot;   standalone   2 minutes ago   Up 2 minutes (healthy)   0.0.0.0:9091-&gt;9091/tcp, 0.0.0.0:19530-&gt;19530/tcp
 <button class="copy-code-btn"></button></code></pre>
-<p>È inoltre possibile accedere all’interfaccia web di Milvus all’indirizzo <code translate="no">http://127.0.0.1:9091/webui/</code> per ottenere ulteriori informazioni sull’istanza di Milvus in uso. Per i dettagli, consultare la documentazione relativa <a href="/docs/it/milvus-webui.md">all’interfaccia web di Milvus</a>.</p>
-<p>Per provare il server in esecuzione, seguire il percorso <strong>"Utilizza un server Milvus esistente</strong> " nella <a href="/docs/it/quickstart.md">Guida rapida</a> e connettersi a <code translate="no">http://localhost:19530</code>. Non utilizzare il blocco di connessione locale <code translate="no">.db</code>, che avvia un database Milvus Lite separato.</p>
-<h2 id="Optional-Update-Milvus-configurations" class="common-anchor-header">(Facoltativo) Aggiornamento delle configurazioni di Milvus<button data-href="#Optional-Update-Milvus-configurations" class="anchor-icon" translate="no">
+<p>You can also access Milvus WebUI at <code translate="no">http://127.0.0.1:9091/webui/</code> to learn more about the your Milvus instance. For details, refer to <a href="/docs/it/milvus-webui.md">Milvus WebUI</a>.</p>
+<p>To try the running server, follow the <strong>Use an existing Milvus server</strong> path in <a href="/docs/it/quickstart.md">Quickstart</a> and connect to <code translate="no">http://localhost:19530</code>. Do not use the local <code translate="no">.db</code> connection block, which starts a separate Milvus Lite database.</p>
+<h2 id="Optional-Update-Milvus-configurations" class="common-anchor-header">(Optional) Update Milvus configurations<button data-href="#Optional-Update-Milvus-configurations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -115,24 +115,24 @@ milvus-standalone   …       &quot;/tini -- milvus run…&quot;   standalone   
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Per aggiornare la configurazione di Milvus in base alle proprie esigenze, è necessario modificare il file <code translate="no">/milvus/configs/user.yaml</code> all’interno del container <code translate="no">milvus-standalone</code>.</p>
+    </button></h2><p>To update Milvus configuration to suit your needs, you need to modify the <code translate="no">/milvus/configs/user.yaml</code> file within the <code translate="no">milvus-standalone</code> container.</p>
 <ol>
-<li><p>Accedere al container <code translate="no">milvus-standalone</code>.</p>
+<li><p>Access the <code translate="no">milvus-standalone</code> container.</p>
 <pre><code translate="no" class="language-shell">docker exec -it milvus-standalone bash
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>Aggiungere ulteriori configurazioni per sovrascrivere quelle predefinite.
-Quanto segue presuppone che sia necessario sovrascrivere il file <code translate="no">proxy.healthCheckTimeout</code> predefinito. Per le voci di configurazione applicabili, fare riferimento a <a href="/docs/it/system_configuration.md">Configurazione di sistema</a>.</p>
+<li><p>Add extra configurations to override the default ones.
+The following assumes that you need to override the default <code translate="no">proxy.healthCheckTimeout</code>. For applicable configuration items, refer to <a href="/docs/it/system_configuration.md">System Configuration</a>.</p>
 <pre><code translate="no" class="language-shell">cat &lt;&lt; EOF &gt; /milvus/configs/user.yaml
 <span class="hljs-meta prompt_"># </span><span class="language-bash">Extra config to override default milvus.yaml</span>
 proxy:
   healthCheckTimeout: 1000 # ms, the interval that to do component healthy check
 EOF
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>Riavviare il contenitore <code translate="no">milvus-standalone</code> per applicare le modifiche.</p>
+<li><p>Restart the <code translate="no">milvus-standalone</code> container to apply the changes.</p>
 <pre><code translate="no" class="language-shell">docker restart milvus-standalone
 <button class="copy-code-btn"></button></code></pre></li>
 </ol>
-<h2 id="Stop-and-delete-Milvus" class="common-anchor-header">Arresta ed elimina Milvus<button data-href="#Stop-and-delete-Milvus" class="anchor-icon" translate="no">
+<h2 id="Stop-and-delete-Milvus" class="common-anchor-header">Stop and delete Milvus<button data-href="#Stop-and-delete-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -147,14 +147,14 @@ EOF
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>È possibile arrestare ed eliminare questo container come segue</p>
+    </button></h2><p>You can stop and delete this container as follows</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">Stop Milvus</span>
 <span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">sudo</span> docker compose down</span>
 <span class="hljs-meta prompt_">
 # </span><span class="language-bash">Delete service data</span>
 <span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">sudo</span> <span class="hljs-built_in">rm</span> -rf volumes</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Upgrade-an-existing-deployment" class="common-anchor-header">Aggiornamento di una distribuzione esistente<button data-href="#Upgrade-an-existing-deployment" class="anchor-icon" translate="no">
+<h2 id="Upgrade-an-existing-deployment" class="common-anchor-header">Upgrade an existing deployment<button data-href="#Upgrade-an-existing-deployment" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -169,15 +169,15 @@ EOF
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Per una distribuzione autonoma di Milvus 2.6.x, seguire <a href="/docs/it/upgrade_milvus_standalone-docker.md">la guida Aggiornamento di Milvus Standalone con Docker Compose</a>. Eseguire il backup dei metadati e dei dati persistenti, preservare le dipendenze e la configurazione esistenti e verificare il percorso di aggiornamento da sorgente a destinazione documentato prima di modificare l’immagine di Milvus. Non sostituire il file Compose di una distribuzione precedente con la configurazione per la nuova installazione sopra indicata.</p>
-<p><strong>Limiti delle code di messaggi</strong>: durante l’aggiornamento a Milvus v3.0.5, è necessario mantenere la scelta attuale della coda di messaggi. Il passaggio tra diversi sistemi di code di messaggi durante l’aggiornamento non è supportato. Il supporto per la modifica dei sistemi di code di messaggi sarà disponibile nelle versioni future.</p>
-<p>Milvus 2.6.x e versioni successive utilizzano Woodpecker come impostazione predefinita, mentre le distribuzioni 2.5.x utilizzano <strong>RocksMQ</strong>. Se la distribuzione che si sta aggiornando utilizza ancora RocksMQ, fissarla in <code translate="no">user.yaml</code> prima di modificare l’immagine di Milvus, in modo che l’istanza aggiornata mantenga la coda di messaggi esistente invece di avviare con la nuova impostazione predefinita:</p>
+    </button></h2><p>For a Milvus 2.6.x standalone deployment, follow <a href="/docs/it/upgrade_milvus_standalone-docker.md">Upgrade Milvus Standalone with Docker Compose</a>. Back up metadata and persistent data, preserve the existing dependencies and configuration, and validate the documented source-to-target upgrade path before changing the Milvus image. Do not replace an older deployment’s Compose file with the new-installation configuration above.</p>
+<p><strong>Message Queue limitations</strong>: When upgrading to Milvus v3.0.5, you must maintain your current message queue choice. Switching between different message queue systems during the upgrade is not supported. Support for changing message queue systems will be available in future versions.</p>
+<p>Milvus 2.6.x and later default to Woodpecker, while 2.5.x deployments default to <strong>RocksMQ</strong>. If the deployment you are upgrading still runs RocksMQ, pin it in <code translate="no">user.yaml</code> before changing the Milvus image, so the upgraded instance keeps its existing message queue instead of starting with the new default:</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-comment"># user.yaml — keep RocksMQ across the upgrade</span>
 <span class="hljs-attr">mq:</span>
   <span class="hljs-attr">type:</span> <span class="hljs-string">rocksmq</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Una volta che l’istanza aggiornata è in esecuzione sulla versione 3.0.5, è possibile passare da RocksMQ a Woodpecker utilizzando <a href="/docs/it/switch-mq-type.md">la funzione “Switch Message Queue”</a>, disponibile in Milvus 3.0 e versioni successive.</p>
-<h2 id="Optional-dependencies" class="common-anchor-header">Dipendenze opzionali<button data-href="#Optional-dependencies" class="anchor-icon" translate="no">
+<p>After the upgraded instance is running on v3.0.5, you can move from RocksMQ to Woodpecker with <a href="/docs/it/switch-mq-type.md">Switch Message Queue</a>, which is available in Milvus 3.0 and later.</p>
+<h2 id="Optional-dependencies" class="common-anchor-header">Optional dependencies<button data-href="#Optional-dependencies" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -192,16 +192,16 @@ EOF
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Questa distribuzione utilizza <strong>Woodpecker</strong> (integrato, backend WAL MinIO) per la messaggistica, <strong>etcd</strong> per i metadati e <strong>MinIO</strong> per l’archiviazione degli oggetti. Per utilizzare una coda di messaggi diversa o collegare un sistema di archiviazione oggetti/metadati esterno, consultare:</p>
+    </button></h2><p>This deployment runs <strong>Woodpecker</strong> (embedded, MinIO WAL backend) for messaging, <strong>etcd</strong> for metadata, and <strong>MinIO</strong> for object storage. To use a different message queue or connect external object storage / metadata, see:</p>
 <ul>
-<li>Coda di messaggi: <a href="/docs/it/woodpecker.md">Woodpecker</a> (predefinita) · <a href="/docs/it/mq_pulsar.md">Pulsar</a> · <a href="/docs/it/mq_kafka.md">Kafka</a> · <a href="/docs/it/mq_rocksmq.md">RocksMQ</a></li>
-<li>Archiviazione a oggetti: <a href="/docs/it/deploy_s3.md">MinIO</a> (predefinito) · <a href="/docs/it/deploy_s3.md">AWS S3</a> · <a href="/docs/it/abs.md">Azure Blob</a> · <a href="/docs/it/gcs.md">GCP Cloud Storage</a> · <a href="/docs/it/deploy_s3.md">Aliyun OSS</a> · <a href="/docs/it/deploy_s3.md">Tencent COS</a> · <a href="/docs/it/deploy_s3.md">Huawei OBS</a> · <a href="/docs/it/deploy_s3.md">Compatibile con S3</a></li>
-<li>Metadati: <a href="/docs/it/deploy_etcd.md">etcd</a></li>
+<li>Message queue: <a href="/docs/it/woodpecker.md">Woodpecker</a> (default) · <a href="/docs/it/mq_pulsar.md">Pulsar</a> · <a href="/docs/it/mq_kafka.md">Kafka</a> · <a href="/docs/it/mq_rocksmq.md">RocksMQ</a></li>
+<li>Object storage: <a href="/docs/it/deploy_s3.md">MinIO</a> (default) · <a href="/docs/it/deploy_s3.md">AWS S3</a> · <a href="/docs/it/abs.md">Azure Blob</a> · <a href="/docs/it/gcs.md">GCP Cloud Storage</a> · <a href="/docs/it/deploy_s3.md">Aliyun OSS</a> · <a href="/docs/it/deploy_s3.md">Tencent COS</a> · <a href="/docs/it/deploy_s3.md">Huawei OBS</a> · <a href="/docs/it/deploy_s3.md">S3-compatible</a></li>
+<li>Metadata: <a href="/docs/it/deploy_etcd.md">etcd</a></li>
 </ul>
 <div class="alert note">
-<p>Storage V3 è disabilitato per impostazione predefinita. Abilitalo prima di utilizzare le funzionalità che ne dipendono. Per i requisiti e le considerazioni sulla compatibilità, consulta <a href="/docs/it/storage-v3.md">Storage V3</a>.</p>
+<p>Storage V3 is disabled by default. Enable it before using features that depend on it. For requirements and compatibility considerations, see <a href="/docs/it/storage-v3.md">Storage V3</a>.</p>
 </div>
-<h2 id="Whats-next" class="common-anchor-header">Prossimi passi<button data-href="#Whats-next" class="anchor-icon" translate="no">
+<h2 id="Whats-next" class="common-anchor-header">What’s next<button data-href="#Whats-next" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -216,29 +216,29 @@ EOF
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Dopo aver installato Milvus in Docker, è possibile:</p>
+    </button></h2><p>Having installed Milvus in Docker, you can:</p>
 <ul>
-<li><p>Consultare <a href="/docs/it/quickstart.md">la Guida rapida</a> per scoprire cosa può fare Milvus.</p></li>
-<li><p>Imparare le operazioni di base di Milvus:</p>
+<li><p>Check <a href="/docs/it/quickstart.md">Quickstart</a> to see what Milvus can do.</p></li>
+<li><p>Learn the basic operations of Milvus:</p>
 <ul>
-<li><a href="/docs/it/manage_databases.md">Gestire i database</a></li>
-<li><a href="/docs/it/manage-collections.md">Gestire le raccolte</a></li>
-<li><a href="/docs/it/manage-partitions.md">Gestire le partizioni</a></li>
-<li><a href="/docs/it/insert-update-delete.md">Inserimento, aggiornamento e cancellazione</a></li>
-<li><a href="/docs/it/single-vector-search.md">Ricerca su singolo vettore</a></li>
-<li><a href="/docs/it/multi-vector-search.md">Ricerca ibrida</a></li>
+<li><a href="/docs/it/manage_databases.md">Manage Databases</a></li>
+<li><a href="/docs/it/manage-collections.md">Manage Collections</a></li>
+<li><a href="/docs/it/manage-partitions.md">Manage Partitions</a></li>
+<li><a href="/docs/it/insert-update-delete.md">Insert, Upsert & Delete</a></li>
+<li><a href="/docs/it/single-vector-search.md">Single-Vector Search</a></li>
+<li><a href="/docs/it/multi-vector-search.md">Hybrid Search</a></li>
 </ul></li>
-<li><p><a href="/docs/it/upgrade_milvus_standalone-docker.md">Esegui l'aggiornamento di Milvus Standalone con Docker Compose</a>.</p></li>
-<li><p><a href="/docs/it/scaleout.md">Scalare il proprio cluster Milvus</a>.</p></li>
-<li><p>Distribuisci il tuo cluster Milvus su cloud:</p>
+<li><p><a href="/docs/it/upgrade_milvus_standalone-docker.md">Upgrade Milvus Standalone with Docker Compose</a>.</p></li>
+<li><p><a href="/docs/it/scaleout.md">Scale your Milvus cluster</a>.</p></li>
+<li><p>Deploy your Milvus cluster on clouds:</p>
 <ul>
 <li><a href="/docs/it/eks.md">Amazon EKS</a></li>
 <li><a href="/docs/it/gcp.md">Google Cloud</a></li>
 <li><a href="/docs/it/azure.md">Microsoft Azure</a></li>
 </ul></li>
-<li><p>Scopri <a href="/docs/it/milvus-webui.md">Milvus WebUI</a>, un'interfaccia web intuitiva per il monitoraggio e la gestione di Milvus.</p></li>
-<li><p>Scopri <a href="/docs/it/milvus_backup_overview.md">Milvus Backup</a>, uno strumento open source per il backup dei dati di Milvus.</p></li>
-<li><p>Scopri <a href="/docs/it/birdwatcher_overview.md">Birdwatcher</a>, uno strumento open source per il debug di Milvus e gli aggiornamenti dinamici della configurazione.</p></li>
-<li><p>Scopri <a href="https://github.com/zilliztech/attu">Attu</a>, uno strumento GUI open source per una gestione intuitiva di Milvus.</p></li>
-<li><p><a href="/docs/it/monitor.md">Monitora Milvus con Prometheus</a>.</p></li>
+<li><p>Explore <a href="/docs/it/milvus-webui.md">Milvus WebUI</a>, an intuitive web interface for Milvus observability and management.</p></li>
+<li><p>Explore <a href="/docs/it/milvus_backup_overview.md">Milvus Backup</a>, an open-source tool for Milvus data backups.</p></li>
+<li><p>Explore <a href="/docs/it/birdwatcher_overview.md">Birdwatcher</a>, an open-source tool for debugging Milvus and dynamic configuration updates.</p></li>
+<li><p>Explore <a href="https://github.com/zilliztech/attu">Attu</a>, an open-source GUI tool for intuitive Milvus management.</p></li>
+<li><p><a href="/docs/it/monitor.md">Monitor Milvus with Prometheus</a>.</p></li>
 </ul>

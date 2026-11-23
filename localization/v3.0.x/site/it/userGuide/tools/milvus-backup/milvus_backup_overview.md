@@ -1,8 +1,8 @@
 ---
 id: milvus_backup_overview.md
 summary: >-
-  Milvus Backup offre flussi di lavoro tramite CLI e API HTTP per il backup e il
-  ripristino dei dati di Milvus.
+  Milvus Backup provides CLI and HTTP API workflows for backing up and restoring
+  Milvus data.
 title: Milvus Backup
 ---
 <h1 id="Milvus-Backup" class="common-anchor-header">Milvus Backup<button data-href="#Milvus-Backup" class="anchor-icon" translate="no">
@@ -20,9 +20,9 @@ title: Milvus Backup
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Milvus Backup esegue il backup delle raccolte Milvus e le ripristina nella stessa istanza o in un'altra. Fornisce un'interfaccia a riga di comando (CLI) e un'API HTTP.</p>
-<p>Milvus Backup <strong>0.6.0</strong> introduce i backup tramite snapshot per Milvus 3.0, uno schema di configurazione v2 con versioni e impostazioni predefinite specifiche per la creazione dei backup. Il supporto ufficiale per il backup e il ripristino di Milvus 3.0 è disponibile a partire dalla <strong>versione Milvus 3.0.1</strong>.</p>
-<h2 id="Choose-your-guide" class="common-anchor-header">Scegli la tua guida<button data-href="#Choose-your-guide" class="anchor-icon" translate="no">
+    </button></h1><p>Milvus Backup backs up Milvus collections and restores them in the same or another instance. It provides a command-line interface (CLI) and an HTTP API.</p>
+<p>Milvus Backup <strong>0.6.0</strong> adds snapshot backups for Milvus 3.0, a versioned v2 configuration schema, and purpose presets for creating backups. Official backup and restore support for Milvus 3.0 starts with <strong>Milvus 3.0.1</strong>.</p>
+<h2 id="Choose-your-guide" class="common-anchor-header">Choose your guide<button data-href="#Choose-your-guide" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,20 +37,20 @@ title: Milvus Backup
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus Backup ha una propria versione di rilascio, separata dalla versione del server Milvus. Le guide attuali coprono la serie 0.6.x; la sezione Backup 0.5.x conserva i flussi di lavoro precedenti. Le etichette nei titoli delle pagine identificano la serie di Backup applicabile. Le istruzioni di installazione e gli esempi utilizzano una versione specifica convalidata. Verifica separatamente la compatibilità tra il server Milvus di origine e quello di destinazione.</p>
+    </button></h2><p>Milvus Backup has its own release version, separate from the Milvus server version. The current guides cover the 0.6.x series; the Backup 0.5.x section preserves the earlier workflows. Page-title labels identify the applicable Backup series. Installation instructions and examples use a specific validated release. Check source and target Milvus server compatibility separately.</p>
 <table>
 <thead>
-<tr><th>Il tuo compito</th><th>Guida</th></tr>
+<tr><th>Your task</th><th>Guide</th></tr>
 </thead>
 <tbody>
-<tr><td>Continua a utilizzare Backup 0.5.x</td><td><a href="/docs/it/milvus_backup_cli.md">Comandi 0.5.x</a> e <a href="/docs/it/milvus_backup_api.md">API HTTP</a>, con esempi riferiti alla versione 0.5.16</td></tr>
-<tr><td>Aggiornare un’installazione esistente di Backup</td><td><a href="/docs/it/milvus_backup_upgrade.md">Aggiornamento dalla versione 0.5.x alla 0.6.x</a></td></tr>
-<tr><td>Installazione e utilizzo di Backup 0.6.x</td><td><a href="/docs/it/milvus_backup_0_6_cli.md">comandi e configurazione</a>, oppure <a href="/docs/it/milvus_backup_0_6_api.md">API HTTP</a></td></tr>
-<tr><td>Eseguire il backup e il ripristino di uno snapshot su Milvus 3.0.1 o versioni successive</td><td><a href="/docs/it/snapshot-backup-and-restore.md">Backup e ripristino di snapshot in un'unica istanza</a></td></tr>
+<tr><td>Continue using Backup 0.5.x</td><td><a href="/docs/it/milvus_backup_cli.md">0.5.x commands</a> and <a href="/docs/it/milvus_backup_api.md">HTTP API</a>, with examples pinned to 0.5.16</td></tr>
+<tr><td>Upgrade an existing Backup installation</td><td><a href="/docs/it/milvus_backup_upgrade.md">Upgrade from 0.5.x to 0.6.x</a></td></tr>
+<tr><td>Install and use Backup 0.6.x</td><td><a href="/docs/it/milvus_backup_0_6_cli.md">commands and configuration</a>, or <a href="/docs/it/milvus_backup_0_6_api.md">HTTP API</a></td></tr>
+<tr><td>Back up and restore a snapshot on Milvus 3.0.1 or later</td><td><a href="/docs/it/snapshot-backup-and-restore.md">Snapshot Backup and Restore in One Instance</a></td></tr>
 </tbody>
 </table>
-<p>Le guide esistenti relative a <a href="/docs/it/single-instance-backup-and-restore.md">"stessa istanza"</a>, <a href="/docs/it/shared-bucket-backup-and-restore.md">"bucket condiviso"</a>, <a href="/docs/it/cross-bucket-backup-and-restore.md">"tra bucket</a>" e <a href="/docs/it/multi-storage-backup-and-restore.md">"tra archivi</a> " mantengono la configurazione e i comandi della versione 0.5.16. Gli esempi in esse contenuti non cambiano versione quando viene pubblicata una nuova versione di Backup.</p>
-<h2 id="Prerequisites" class="common-anchor-header">Prerequisiti<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+<p>The existing <a href="/docs/it/single-instance-backup-and-restore.md">same-instance</a>, <a href="/docs/it/shared-bucket-backup-and-restore.md">shared-bucket</a>, <a href="/docs/it/cross-bucket-backup-and-restore.md">cross-bucket</a>, and <a href="/docs/it/multi-storage-backup-and-restore.md">cross-storage</a> guides retain the 0.5.16 configuration and commands. Their examples do not switch versions when a new Backup release is published.</p>
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -66,11 +66,11 @@ title: Milvus Backup
         ></path>
       </svg>
     </button></h2><ul>
-<li>Utilizzare un binario di Backup e gli esempi di configurazione della stessa versione. La <a href="/docs/it/milvus_backup_cli.md#Obtain-Milvus-Backup">guida 0.5.x</a> fa riferimento alla versione 0.5.16; la <a href="/docs/it/milvus_backup_0_6_cli.md#Obtain-Milvus-Backup">guida attuale</a> fa riferimento alla versione 0.6.0.</li>
-<li>Garantire l’accesso di rete a Milvus, al suo storage e alla destinazione del backup. Le operazioni di snapshot richiedono inoltre che il server Milvus possa raggiungere l’archivio di backup.</li>
-<li>Verificare la compatibilità del server come indicato di seguito. Go è richiesto solo in caso di compilazione dal codice sorgente: versione 1.25 o successive per Backup 0.5.16 e 1.26 o successive per la versione 0.6.0.</li>
+<li>Use a Backup binary and configuration examples from the same release. The <a href="/docs/it/milvus_backup_cli.md#Obtain-Milvus-Backup">0.5.x guide</a> pins 0.5.16; the <a href="/docs/it/milvus_backup_0_6_cli.md#Obtain-Milvus-Backup">current guide</a> pins 0.6.0.</li>
+<li>Provide network access to Milvus, its storage, and the backup destination. Snapshot operations also require the Milvus server to reach the backup store.</li>
+<li>Check server compatibility below. Go is required only when building from source: 1.25 or later for Backup 0.5.16, and 1.26 or later for 0.6.0.</li>
 </ul>
-<h2 id="Architecture" class="common-anchor-header">Architettura<button data-href="#Architecture" class="anchor-icon" translate="no">
+<h2 id="Architecture" class="common-anchor-header">Architecture<button data-href="#Architecture" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -85,27 +85,27 @@ title: Milvus Backup
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/milvus_backup_architecture.png" alt="Milvus Backup components" class="doc-image" id="milvus-backup-components" /> 
-   <span>Componenti di Milvus Backup</span>
-  
- </span></p>
-<p>Milvus Backup coordina i metadati delle raccolte e i backup dei dati tra l’istanza di Milvus e l’archivio di backup. In Backup 0.6.0, il formato selezionato determina come vengono esportati e ripristinati i dati delle raccolte:</p>
+    </button></h2><p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/milvus_backup_architecture.png" alt="Milvus Backup components" class="doc-image" id="milvus-backup-components" />
+    <span>Milvus Backup components</span>
+  </span>
+</p>
+<p>Milvus Backup coordinates collection metadata and data backups between the Milvus instance and the backup storage. In Backup 0.6.0, the selected format determines how collection data is exported and restored:</p>
 <table>
 <thead>
-<tr><th>Formato</th><th>Comportamento di backup e ripristino</th></tr>
+<tr><th>Format</th><th>Backup and restore behavior</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">snapshot</code></td><td>Milvus esporta un pacchetto di snapshot della collezione. Milvus Backup registra le informazioni del pacchetto e, durante il ripristino, importa il pacchetto tramite Milvus. Il server gestisce la struttura dei dati risultante.</td></tr>
-<tr><td><code translate="no">binlog</code></td><td>Milvus Backup copia i file di dati e i metadati delle collezioni, quindi ricrea le collezioni e importa i dati di backup durante il ripristino.</td></tr>
-<tr><td><code translate="no">auto</code></td><td>Selezionare il formato in base alle funzionalità supportate dal server. Su Milvus 3.0, viene selezionato lo snapshot.</td></tr>
+<tr><td><code translate="no">snapshot</code></td><td>Milvus exports a collection snapshot bundle. Milvus Backup records the bundle information, and restore imports the bundle through Milvus. The server manages the resulting data layout.</td></tr>
+<tr><td><code translate="no">binlog</code></td><td>Milvus Backup copies collection data files and metadata, then recreates collections and imports the backed-up data during restore.</td></tr>
+<tr><td><code translate="no">auto</code></td><td>Selects the format according to the server’s supported features. On Milvus 3.0, it selects snapshot.</td></tr>
 </tbody>
 </table>
-<p>Una directory di backup contiene i metadati e i file richiesti dal proprio formato. Conservare la directory completa durante l’archiviazione o lo spostamento. Non dare per scontato che un backup di snapshot utilizzi la struttura della directory binlog.</p>
-<p>Nella versione 0.6.0, le impostazioni predefinite di " <code translate="no">create --for</code> " configurano opzioni specifiche per lo scopo: " <code translate="no">clone</code> " mantiene il formato scelto, mentre " <code translate="no">archive</code> " e " <code translate="no">secondary</code> " richiedono il binlog. Un server secondario richiede inoltre una topologia di replica configurata; la normale migrazione tra istanze non richiede un server secondario. Vedere <a href="/docs/it/milvus_backup_0_6_cli.md#Choose-a-backup-format-or-purpose">"Scegliere un formato di backup o uno scopo</a>".</p>
-<p>La versione 0.6.0 di Backup ignora le raccolte esterne durante il backup. Il completamento con successo di un'attività non implica che i dati delle raccolte esterne siano stati inclusi.</p>
-<h2 id="Compatibility-matrix" class="common-anchor-header">Matrice di compatibilità<button data-href="#Compatibility-matrix" class="anchor-icon" translate="no">
+<p>A backup directory contains metadata and the files required by its format. Preserve the complete directory when archiving or moving it. Do not assume that a snapshot backup uses the binlog directory layout.</p>
+<p>In 0.6.0, the <code translate="no">create --for</code> presets configure purpose-specific options: <code translate="no">clone</code> keeps the chosen format, while <code translate="no">archive</code> and <code translate="no">secondary</code> require binlog. A secondary also requires a configured replication topology; ordinary migration between instances does not require a secondary. See <a href="/docs/it/milvus_backup_0_6_cli.md#Choose-a-backup-format-or-purpose">Choose a backup format or purpose</a>.</p>
+<p>Backup 0.6.0 skips external collections during backup. A successful task does not imply that external collection data was included.</p>
+<h2 id="Compatibility-matrix" class="common-anchor-header">Compatibility matrix<button data-href="#Compatibility-matrix" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -120,23 +120,23 @@ title: Milvus Backup
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><strong>Backup 0.6.0 non richiede l’aggiornamento di ogni installazione di Milvus alla versione 3.0.</strong> Supporta i flussi di lavoro basati su binlog sulle versioni supportate di Milvus 2.x. Il supporto ufficiale per il backup e il ripristino della linea Milvus 3.0 inizia con <strong>Milvus 3.0.1</strong>; l’esempio di snapshot utilizza tale linea.</p>
-<p><a href="/docs/it/milvus_backup_upgrade.md">La guida all’aggiornamento</a> è stata verificata con Backup 0.5.16 e 0.6.0 su Milvus 2.6.11, compreso il ripristino di un backup 0.5.16 tramite la versione 0.6.0. Questa combinazione testata non amplia la matrice riportata di seguito.</p>
-<p>Le versioni di Milvus di origine e di destinazione devono formare una coppia supportata. Una versione di destinazione più recente, di per sé, non garantisce la compatibilità. La seguente matrice di compatibilità storica copre Milvus 2.x, come documentato a partire da Milvus Backup 0.5.7; non garantisce la compatibilità per la migrazione da 2.x a 3.0.</p>
+    </button></h2><p><strong>Backup 0.6.0 does not require upgrading every Milvus installation to 3.0.</strong> It supports binlog workflows on supported Milvus 2.x versions. Official backup and restore support for the Milvus 3.0 line starts with <strong>Milvus 3.0.1</strong>; the snapshot example uses that line.</p>
+<p>The <a href="/docs/it/milvus_backup_upgrade.md">upgrade guide</a> was validated with Backup 0.5.16 and 0.6.0 on Milvus 2.6.11, including restoration of a 0.5.16 backup by 0.6.0. This tested combination does not expand the matrix below.</p>
+<p>The source and target Milvus versions must form a supported pair. A newer target version alone does not establish compatibility. The following legacy matrix covers Milvus 2.x, as documented since Milvus Backup 0.5.7; it does not establish 2.x-to-3.0 migration compatibility.</p>
 <table>
 <thead>
-<tr><th>Backup da ↓ / Ripristino su →</th><th>Milvus v2.2.x</th><th>Milvus v2.3.x</th><th>Milvus v2.4.x</th><th>Milvus v2.5.x</th><th>Milvus v2.6.x</th></tr>
+<tr><th>Backup From ↓ / Restore To →</th><th>Milvus v2.2.x</th><th>Milvus v2.3.x</th><th>Milvus v2.4.x</th><th>Milvus v2.5.x</th><th>Milvus v2.6.x</th></tr>
 </thead>
 <tbody>
-<tr><td>Milvus v2.2.x</td><td>No</td><td>No</td><td>Sì</td><td>Sì</td><td>Sì</td></tr>
-<tr><td>Milvus v2.3.x</td><td>No</td><td>No</td><td>Sì</td><td>Sì</td><td>Sì</td></tr>
-<tr><td>Milvus v2.4.x</td><td>No</td><td>No</td><td>Sì</td><td>Sì</td><td>Sì</td></tr>
-<tr><td>Milvus v2.5.x</td><td>No</td><td>No</td><td>No</td><td>Sì</td><td>Sì</td></tr>
-<tr><td>Milvus v2.6.x</td><td>No</td><td>No</td><td>No</td><td>No</td><td>Sì</td></tr>
+<tr><td>Milvus v2.2.x</td><td>No</td><td>No</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td>Milvus v2.3.x</td><td>No</td><td>No</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td>Milvus v2.4.x</td><td>No</td><td>No</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td>Milvus v2.5.x</td><td>No</td><td>No</td><td>No</td><td>Yes</td><td>Yes</td></tr>
+<tr><td>Milvus v2.6.x</td><td>No</td><td>No</td><td>No</td><td>No</td><td>Yes</td></tr>
 </tbody>
 </table>
-<p>Prima di eseguire una migrazione tra versioni diverse, verificare la versione di origine, la versione di destinazione e il formato di backup consultando la <a href="https://github.com/zilliztech/milvus-backup/tree/v0.6.0">documentazione relativa alla versione di Backup</a>. Queste guide non estendono la matrice legacy a combinazioni non elencate.</p>
-<h2 id="Release-notes" class="common-anchor-header">Note di rilascio<button data-href="#Release-notes" class="anchor-icon" translate="no">
+<p>Before a cross-version migration, verify the source version, target version, and backup format against the <a href="https://github.com/zilliztech/milvus-backup/tree/v0.6.0">Backup release documentation</a>. These guides do not extend the legacy matrix to unlisted combinations.</p>
+<h2 id="Release-notes" class="common-anchor-header">Release notes<button data-href="#Release-notes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"

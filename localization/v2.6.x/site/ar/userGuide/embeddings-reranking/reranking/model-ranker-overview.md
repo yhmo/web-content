@@ -1,15 +1,16 @@
 ---
 id: model-ranker-overview.md
-title: نظرة عامة على «Model Ranker»Compatible with Milvus 2.6.x
+title: Model Ranker OverviewCompatible with Milvus 2.6.x
 summary: >-
-  يعتمد البحث المتجهي التقليدي في ترتيب النتائج على التشابه الرياضي البحت — أي
-  مدى تطابق المتجهات في الفضاء عالي الأبعاد. ورغم كفاءة هذه الطريقة، فإنها
-  غالبًا ما تغفل الصلة الدلالية الحقيقية. لنفترض أنك تبحث عن «أفضل الممارسات
-  لتحسين قواعد البيانات»: قد تحصل على مستندات ذات تشابه متجهي عالٍ تذكر هذه
-  المصطلحات بشكل متكرر، لكنها لا تقدم في الواقع استراتيجيات تحسين قابلة للتطبيق.
+  Traditional vector search ranks results purely by mathematical similarity—how
+  closely vectors match in high-dimensional space. While efficient, this
+  approach often misses true semantic relevance. Consider searching for "best
+  practices for database optimization": you might receive documents with high
+  vector similarity that mention these terms frequently, but don't actually
+  provide actionable optimization strategies.
 beta: Milvus 2.6.x
 ---
-<h1 id="Model-Ranker-Overview" class="common-anchor-header">نظرة عامة على «Model Ranker»<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#Model-Ranker-Overview" class="anchor-icon" translate="no">
+<h1 id="Model-Ranker-Overview" class="common-anchor-header">Model Ranker Overview<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#Model-Ranker-Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -24,9 +25,9 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>يعمل البحث المتجهي التقليدي على ترتيب النتائج بناءً على التشابه الرياضي البحت — أي مدى تطابق المتجهات في الفضاء عالي الأبعاد. ورغم كفاءة هذه الطريقة، إلا أنها غالبًا ما تغفل الصلة الدلالية الحقيقية. لنفترض أنك تبحث عن <strong>"أفضل الممارسات لتحسين قواعد البيانات":</strong> قد تحصل على مستندات ذات تشابه متجهي عالٍ تذكر هذه المصطلحات بشكل متكرر، لكنها لا تقدم في الواقع استراتيجيات تحسين قابلة للتطبيق.</p>
-<p>يعمل «Model Ranker» على تحويل طريقة البحث في Milvus من خلال دمج نماذج لغوية متقدمة تفهم العلاقات الدلالية بين الاستعلامات والوثائق. فبدلاً من الاعتماد فقط على تشابه المتجهات، يقوم بتقييم معنى المحتوى وسياقه لتقديم نتائج أكثر ذكاءً وصلةً بالموضوع.</p>
-<h2 id="Limits" class="common-anchor-header">القيود<button data-href="#Limits" class="anchor-icon" translate="no">
+    </button></h1><p>Traditional vector search ranks results purely by mathematical similarity—how closely vectors match in high-dimensional space. While efficient, this approach often misses true semantic relevance. Consider searching for <strong>“best practices for database optimization”</strong>: you might receive documents with high vector similarity that mention these terms frequently, but don’t actually provide actionable optimization strategies.</p>
+<p>Model Ranker transforms Milvus search by integrating advanced language models that understand semantic relationships between queries and documents. Instead of relying solely on vector similarity, it evaluates content meaning and context to deliver more intelligent, relevant results.</p>
+<h2 id="Limits" class="common-anchor-header">Limits<button data-href="#Limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -42,11 +43,11 @@ beta: Milvus 2.6.x
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>لا يمكن استخدام مُصنِّفي النماذج مع عمليات البحث المجمَّعة.</p></li>
-<li><p>يجب أن تكون الحقول المستخدمة لإعادة ترتيب النماذج من النوع النصي (<code translate="no">VARCHAR</code>).</p></li>
-<li><p>يمكن لكل أداة ترتيب النماذج استخدام حقل واحد فقط من نوع <code translate="no">VARCHAR</code> في كل مرة للتقييم.</p></li>
+<li><p>Model rankers cannot be used with grouping searches.</p></li>
+<li><p>Fields used for model reranking must be text type (<code translate="no">VARCHAR</code>).</p></li>
+<li><p>Each model ranker can use only one <code translate="no">VARCHAR</code> field at a time for evaluation.</p></li>
 </ul>
-<h2 id="How-it-works" class="common-anchor-header">كيفية العمل<button data-href="#How-it-works" class="anchor-icon" translate="no">
+<h2 id="How-it-works" class="common-anchor-header">How it works<button data-href="#How-it-works" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -61,27 +62,27 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>تدمج أدوات تصنيف النماذج قدرات فهم نماذج اللغة في عملية البحث في Milvus من خلال سير عمل محدد جيدًا:</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="/docs/v2.6.x/assets/model-ranker-overview.png" alt="Model Ranker Overview" class="doc-image" id="model-ranker-overview" /> 
-   <span>نظرة عامة على أداة ترتيب النماذج</span>
-  
- </span></p>
+    </button></h2><p>Model rankers integrate language model understanding capabilities into the Milvus search process through a well-defined workflow:</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/model-ranker-overview.png" alt="Model Ranker Overview" class="doc-image" id="model-ranker-overview" />
+    <span>Model Ranker Overview</span>
+  </span>
+</p>
 <ol>
-<li><p><strong>الاستعلام الأولي</strong>: يرسل تطبيقك استعلامًا إلى Milvus</p></li>
-<li><p><strong>البحث المتجهي</strong>: يقوم Milvus بإجراء بحث متجهي قياسي لتحديد المستندات المرشحة</p></li>
-<li><p><strong>استرجاع المستندات المرشحة</strong>: يحدد النظام المجموعة الأولية من المستندات المرشحة بناءً على تشابه المتجهات</p></li>
-<li><p><strong>تقييم النموذج</strong>: تعالج وظيفة "Model Ranker" أزواج الاستعلامات والوثائق:</p>
+<li><p><strong>Initial query</strong>: Your application sends a query to Milvus</p></li>
+<li><p><strong>Vector search</strong>: Milvus performs standard vector search to identify candidate documents</p></li>
+<li><p><strong>Candidate retrieval</strong>: The system identifies the initial set of candidate documents based on vector similarity</p></li>
+<li><p><strong>Model evaluation</strong>: The Model Ranker Function processes query-document pairs:</p>
 <ul>
-<li><p>يرسل الاستعلام الأصلي والوثائق المرشحة إلى خدمة نموذج خارجية</p></li>
-<li><p>يقوم نموذج اللغة بتقييم الصلة الدلالية بين الاستعلام وكل مستند</p></li>
-<li><p>يحصل كل مستند على درجة صلة بناءً على الفهم الدلالي</p></li>
+<li><p>Sends the original query and candidate documents to an external model service</p></li>
+<li><p>The language model evaluates semantic relevance between query and each document</p></li>
+<li><p>Each document receives a relevance score based on semantic understanding</p></li>
 </ul></li>
-<li><p><strong>إعادة الترتيب الذكي</strong>: يتم إعادة ترتيب المستندات بناءً على درجات الصلة التي يولدها النموذج</p></li>
-<li><p><strong>نتائج محسّنة</strong>: يتلقى تطبيقك نتائج مرتبة حسب الصلة الدلالية بدلاً من مجرد تشابه المتجهات</p></li>
+<li><p><strong>Intelligent reranking</strong>: Documents are reordered based on model-generated relevance scores</p></li>
+<li><p><strong>Enhanced results</strong>: Your application receives results ranked by semantic relevance rather than just vector similarity</p></li>
 </ol>
-<h2 id="Choose-a-model-provider-for-your-needs" class="common-anchor-header">اختر مزود نموذج يناسب احتياجاتك<button data-href="#Choose-a-model-provider-for-your-needs" class="anchor-icon" translate="no">
+<h2 id="Choose-a-model-provider-for-your-needs" class="common-anchor-header">Choose a model provider for your needs<button data-href="#Choose-a-model-provider-for-your-needs" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -96,61 +97,61 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يدعم Milvus مزودي خدمات النماذج التاليين لإعادة الترتيب، ولكل منهم خصائص مميزة:</p>
+    </button></h2><p>Milvus supports the following model service providers for reranking, each with distinct characteristics:</p>
 <table>
    <tr>
-     <th><p>المزود</p></th>
-     <th><p>الأفضل لـ</p></th>
-     <th><p>الخصائص</p></th>
-     <th><p>مثال على حالة الاستخدام</p></th>
+     <th><p>Provider</p></th>
+     <th><p>Best For</p></th>
+     <th><p>Characteristics</p></th>
+     <th><p>Example Use Case</p></th>
    </tr>
    <tr>
      <td><p>vLLM</p></td>
-     <td><p>التطبيقات المعقدة التي تتطلب فهمًا دلاليًا عميقًا وتخصيصًا</p></td>
-     <td><ul><li><p>يدعم نماذج لغوية كبيرة متنوعة</p></li><li><p>خيارات نشر مرنة</p></li><li><p>متطلبات حسابية أعلى</p></li><li><p>إمكانيات تخصيص أكبر</p></li></ul></td>
-     <td><p>منصة بحث قانوني تنشر نماذج خاصة بالمجال تفهم المصطلحات القانونية والعلاقات بين السوابق القضائية</p></td>
+     <td><p>Complex applications requiring deep semantic understanding and customization</p></td>
+     <td><ul><li><p>Supports various large language models</p></li><li><p>Flexible deployment options</p></li><li><p>Higher computational requirements</p></li><li><p>Greater customization potential</p></li></ul></td>
+     <td><p>Legal research platform deploying domain-specific models that understand legal terminology and case law relationships</p></td>
    </tr>
    <tr>
      <td><p>TEI</p></td>
-     <td><p>تنفيذ سريع مع استخدام فعال للموارد</p></td>
-     <td><ul><li><p>خدمة خفيفة الوزن مُحسّنة لعمليات معالجة النصوص</p></li><li><p>نشر أسهل مع متطلبات موارد أقل</p></li><li><p>نماذج إعادة ترتيب مُحسّنة مسبقًا</p></li><li><p>أقل تكلفة ممكنة للبنية التحتية</p></li></ul></td>
-     <td><p>نظام إدارة المحتوى الذي يحتاج إلى قدرات إعادة ترتيب فعالة مع متطلبات قياسية</p></td>
+     <td><p>Quick implementation with efficient resource usage</p></td>
+     <td><ul><li><p>Lightweight service optimized for text operations</p></li><li><p>Easier deployment with lower resource requirements</p></li><li><p>Pre-optimized reranking models</p></li><li><p>Minimal infrastructure overhead</p></li></ul></td>
+     <td><p>Content management system needing efficient reranking capabilities with standard requirements</p></td>
    </tr>
    <tr>
      <td><p>Cohere</p></td>
-     <td><p>تطبيقات مؤسسية تضع الموثوقية وسهولة التكامل في مقدمة أولوياتها</p></td>
-     <td><ul><li><p>موثوقية وقابلية للتوسع على مستوى المؤسسات</p></li><li><p>خدمة مُدارة دون الحاجة إلى صيانة البنية التحتية</p></li><li><p>قدرات إعادة ترتيب متعددة اللغات</p></li><li><p>تحديد معدل الاستخدام ومعالجة الأخطاء مدمجان</p></li></ul></td>
-     <td><p>منصة تجارة إلكترونية تتطلب بحثًا عالي التوافر مع أداء API ثابت وكتالوجات منتجات متعددة اللغات</p></td>
+     <td><p>Enterprise applications prioritizing reliability and ease of integration</p></td>
+     <td><ul><li><p>Enterprise-grade reliability and scalability</p></li><li><p>Managed service with no infrastructure maintenance</p></li><li><p>Multilingual reranking capabilities</p></li><li><p>Built-in rate limiting and error handling</p></li></ul></td>
+     <td><p>E-commerce platform requiring high-availability search with consistent API performance and multilingual product catalogs</p></td>
    </tr>
    <tr>
      <td><p>Voyage AI</p></td>
-     <td><p>تطبيقات RAG ذات متطلبات محددة للأداء والسياق</p></td>
-     <td><ul><li><p>نماذج مدربة خصيصًا لمهام إعادة الترتيب</p></li><li><p>ضوابط اقتطاع دقيقة لأطوال المستندات المتنوعة</p></li><li><p>استدلال مُحسّن لأحمال العمل في بيئة الإنتاج</p></li><li><p>متغيرات متعددة للنماذج (rerank-2، rerank-lite، إلخ)</p></li></ul></td>
-     <td><p>قاعدة بيانات بحثية تحتوي على مستندات بأطوال متفاوتة تتطلب تحكمًا دقيقًا في الأداء وفهمًا دلاليًا متخصصًا</p></td>
+     <td><p>RAG applications with specific performance and context requirements</p></td>
+     <td><ul><li><p>Models specifically trained for reranking tasks</p></li><li><p>Granular truncation controls for diverse document lengths</p></li><li><p>Optimized inference for production workloads</p></li><li><p>Multiple model variants (rerank-2, rerank-lite, etc.)</p></li></ul></td>
+     <td><p>Research database with varying document lengths requiring fine-tuned performance control and specialized semantic understanding</p></td>
    </tr>
    <tr>
      <td><p>SiliconFlow</p></td>
-     <td><p>تطبيقات تعالج المستندات الطويلة مع إعطاء الأولوية للفعالية من حيث التكلفة</p></td>
-     <td><ul><li><p>تقسيم المستندات إلى أجزاء متقدمة مع تداخل قابل للتكوين</p></li><li><p>تقييم قائم على الأجزاء (الجزء الحاصل على أعلى تقييم يمثل المستند)</p></li><li><p>دعم نماذج إعادة الترتيب المتنوعة</p></li><li><p>فعالة من حيث التكلفة مع إصدارات نموذجية ومحترفة</p></li></ul></td>
-     <td><p>نظام بحث في الوثائق الفنية يعالج الكتيبات والأوراق الطويلة التي تتطلب تقسيمًا ذكيًا والتحكم في التداخل</p></td>
+     <td><p>Applications processing long documents with cost-effectiveness priorities</p></td>
+     <td><ul><li><p>Advanced document chunking with configurable overlap</p></li><li><p>Chunk-based scoring (highest-scoring chunk represents document)</p></li><li><p>Support for diverse reranking models</p></li><li><p>Cost-effective with standard and pro model variants</p></li></ul></td>
+     <td><p>Technical documentation search system processing lengthy manuals and papers that need intelligent segmentation and overlap control</p></td>
    </tr>
    <tr>
      <td><p>Hugging Face</p></td>
-     <td><p>تطبيقات تستخدم نماذج تشابه الجمل المستضافة من Hugging Face</p></td>
-     <td><ul><li><p>يستخدم مزود خدمة " <code translate="no">hf-inference</code> " المستضاف</p></li><li><p>يختار النماذج من Hugging Face Hub</p></li><li><p>يحسب درجة تشابه جملة واحدة لكل مرشح</p></li><li><p>تستخدم مصادقة مفتاح واجهة برمجة التطبيقات (API)</p></li></ul></td>
-     <td><p>تطبيقات البحث الدلالي التي ترغب في إعادة ترتيب النصوص المرشحة باستخدام نموذج Hugging Face دون تشغيل خدمة استدلال منفصلة</p></td>
+     <td><p>Applications using hosted Hugging Face sentence-similarity models</p></td>
+     <td><ul><li><p>Uses the hosted <code translate="no">hf-inference</code> provider</p></li><li><p>Selects models from the Hugging Face Hub</p></li><li><p>Calculates one sentence-similarity score per candidate</p></li><li><p>Uses API-key authentication</p></li></ul></td>
+     <td><p>Semantic search applications that want to rerank candidate text with a Hugging Face model without operating a separate inference service</p></td>
    </tr>
 </table>
-<p>للحصول على معلومات تفصيلية حول تنفيذ كل خدمة نموذج، يرجى الرجوع إلى الوثائق المخصصة:</p>
+<p>For detailed information about implementation of each model service, refer to the dedicated documentation:</p>
 <ul>
 <li><p><a href="/docs/ar/v2.6.x/vllm-ranker.md">vLLM Ranker</a></p></li>
 <li><p><a href="/docs/ar/v2.6.x/tei-ranker.md">TEI Ranker</a></p></li>
 <li><p><a href="/docs/ar/v2.6.x/cohere-ranker.md">Cohere Ranker</a></p></li>
 <li><p><a href="/docs/ar/v2.6.x/voyage-ai-ranker.md">Voyage AI Ranker</a></p></li>
 <li><p><a href="/docs/ar/v2.6.x/siliconflow-ranker.md">SiliconFlow Ranker</a></p></li>
-<li><p><a href="/docs/ar/v2.6.x/hugging-face-ranker.md">مُصنِّف Hugging Face</a></p></li>
+<li><p><a href="/docs/ar/v2.6.x/hugging-face-ranker.md">Hugging Face Ranker</a></p></li>
 </ul>
-<h2 id="Implementation" class="common-anchor-header">التنفيذ<button data-href="#Implementation" class="anchor-icon" translate="no">
+<h2 id="Implementation" class="common-anchor-header">Implementation<button data-href="#Implementation" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -165,14 +166,14 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>قبل تنفيذ Model Ranker، تأكد من توفر ما يلي:</p>
+    </button></h2><p>Before implementing Model Ranker, ensure you have:</p>
 <ul>
-<li><p>مجموعة Milvus تحتوي على حقل " <code translate="no">VARCHAR</code> " (التصنيف) الذي يتضمن النص المراد إعادة تصنيفه</p></li>
-<li><p>خدمة نموذج خارجية قيد التشغيل يمكن الوصول إليها من مثيل Milvus الخاص بك</p></li>
-<li><p>اتصال شبكي مناسب بين Milvus وخدمة النموذج التي اخترتها</p></li>
+<li><p>A Milvus collection with a <code translate="no">VARCHAR</code> field containing the text to be reranked</p></li>
+<li><p>A running external model service accessible to your Milvus instance</p></li>
+<li><p>Appropriate network connectivity between Milvus and your chosen model service</p></li>
 </ul>
-<p>تتكامل أدوات تصنيف النماذج بسلاسة مع كل من عمليات البحث المتجه القياسية وعمليات البحث المختلطة. يتضمن التنفيذ إنشاء كائن Function يحدد تكوين إعادة الترتيب الخاص بك وتمريره إلى عمليات البحث.</p>
-<h3 id="Create-a-model-ranker" class="common-anchor-header">إنشاء أداة تصنيف النموذج<button data-href="#Create-a-model-ranker" class="anchor-icon" translate="no">
+<p>Model rankers integrate seamlessly with both standard vector search and hybrid search operations. The implementation involves creating a Function object that defines your reranking configuration and passing it to search operations.</p>
+<h3 id="Create-a-model-ranker" class="common-anchor-header">Create a model ranker<button data-href="#Create-a-model-ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -187,13 +188,13 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>لتنفيذ إعادة ترتيب النماذج، قم أولاً بتعريف كائن Function بالتكوين المناسب. في هذا المثال، نستخدم TEI كمزود الخدمة:</p>
+    </button></h3><p>To implement model reranking, first define a Function object with the appropriate configuration. In this example, we use TEI as the service provider:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, Function, FunctionType
 
@@ -240,67 +241,67 @@ model_ranker = Function(
 <button class="copy-code-btn"></button></code></pre>
 <table>
    <tr>
-     <th><p>المعلمة</p></th>
-     <th><p>مطلوب؟</p></th>
-     <th><p>الوصف</p></th>
-     <th><p>القيمة / المثال</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Required?</p></th>
+     <th><p>Description</p></th>
+     <th><p>Value / Example</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">name</code></p></td>
-     <td><p>نعم</p></td>
-     <td><p>معرف الدالة الخاص بك الذي يُستخدم عند تنفيذ عمليات البحث.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Identifier for your function used when executing searches.</p></td>
      <td><p><code translate="no">"semantic_ranker"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">input_field_names</code></p></td>
-     <td><p>نعم</p></td>
-     <td><p>اسم حقل النص الذي سيتم استخدامه لإعادة الترتيب.</p><p>يجب أن يكون حقلًا من النوع " <code translate="no">VARCHAR</code> ".</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Name of the text field to use for reranking.</p><p>Must be a <code translate="no">VARCHAR</code> type field.</p></td>
      <td><p><code translate="no">["document"]</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">function_type</code></p></td>
-     <td><p>نعم</p></td>
-     <td><p>يحدد نوع الدالة التي يتم إنشاؤها.</p><p>يجب ضبطه على " <code translate="no">RERANK</code> " لجميع أدوات ترتيب النماذج.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Specifies the type of function being created.</p><p>Must be set to <code translate="no">RERANK</code> for all model rankers.</p></td>
      <td><p><code translate="no">FunctionType.RERANK</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params</code></p></td>
-     <td><p>نعم</p></td>
-     <td><p>قاموس يحتوي على إعدادات وظيفة إعادة الترتيب القائمة على النموذج. تختلف المعلمات (المفاتيح) المتاحة باختلاف مزود الخدمة.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>A dictionary containing configuration for the model-based reranking function. The available parameters (keys) vary depending on the service provider.</p></td>
      <td><p><code translate="no">{...}</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.reranker</code></p></td>
-     <td><p>نعم</p></td>
-     <td><p>يجب ضبطه على " <code translate="no">"model"</code> " لتمكين إعادة الترتيب باستخدام النموذج.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Must be set to <code translate="no">"model"</code> to enable model reranking.</p></td>
      <td><p><code translate="no">"model"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.provider</code></p></td>
-     <td><p>نعم</p></td>
-     <td><p>مزود خدمة النموذج الذي سيتم استخدامه لإعادة الترتيب.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>The model service provider to use for reranking.</p></td>
      <td><p><code translate="no">"tei"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.queries</code></p></td>
-     <td><p>نعم</p></td>
-     <td><p>قائمة سلاسل الاستعلام التي يستخدمها نموذج إعادة الترتيب لحساب درجات الصلة.</p><p>يجب أن يتطابق عدد سلاسل الاستعلام تمامًا مع عدد الاستعلامات في عملية البحث (حتى عند استخدام متجهات الاستعلام بدلاً من النص)، وإلا فسيتم الإبلاغ عن خطأ.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>List of query strings used by the reranking model to calculate relevance scores.</p><p>The number of query strings must match exactly the number of queries in your search operation (even when using query vectors instead of text), otherwise an error will be reported.</p></td>
      <td><p><code translate="no">["search query"]</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.endpoint</code></p></td>
-     <td><p>نعم</p></td>
-     <td><p>عنوان URL لخدمة النموذج.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>URL of the model service.</p></td>
      <td><p><code translate="no">"http://localhost:8080"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">max_client_batch_size</code></p></td>
-     <td><p>لا</p></td>
-     <td><p>الحد الأقصى لعدد المستندات التي يمكن معالجتها في دفعة واحدة. تؤدي القيم الأكبر إلى زيادة معدل الإنتاجية ولكنها تتطلب ذاكرة أكبر.</p></td>
-     <td><p><code translate="no">32</code> (الافتراضي)</p></td>
+     <td><p>No</p></td>
+     <td><p>Maximum number of documents to process in a single batch. Larger values increase throughput but require more memory.</p></td>
+     <td><p><code translate="no">32</code> (default)</p></td>
    </tr>
 </table>
-<h3 id="Apply-to-standard-vector-search" class="common-anchor-header">التطبيق على البحث المتجه القياسي<button data-href="#Apply-to-standard-vector-search" class="anchor-icon" translate="no">
+<h3 id="Apply-to-standard-vector-search" class="common-anchor-header">Apply to standard vector search<button data-href="#Apply-to-standard-vector-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -315,13 +316,13 @@ model_ranker = Function(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>بعد تعريف مُصنِّف النموذج الخاص بك، يمكنك تطبيقه أثناء عمليات البحث عن طريق تمريره إلى معلمة المُصنِّف:</p>
+    </button></h3><p>After defining your model ranker, you can apply it during search operations by passing it to the ranker parameter:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Use the model ranker in standard vector search</span>
 results = client.search(

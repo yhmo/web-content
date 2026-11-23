@@ -1,19 +1,19 @@
 ---
 id: embedding-function-overview.md
-title: نظرة عامة على وظيفة التضمينCompatible with Milvus 2.6.x
+title: Embedding Function OverviewCompatible with Milvus 2.6.x
 summary: >-
-  تتيح لك وحدة «Function» في Milvus تحويل البيانات النصية الأولية إلى تمثيلات
-  متجهة من خلال الاستدعاء التلقائي لمزودي خدمات التمثيل الخارجيين (مثل OpenAI
-  وAWS Bedrock وGoogle Vertex AI، وغيرها). بفضل وحدة الوظائف، لم تعد بحاجة إلى
-  التفاعل يدويًّا مع واجهات برمجة تطبيقات (API) التضمين — حيث يتولى Milvus
-  العملية بأكملها المتمثلة في إرسال الطلبات إلى مزودي الخدمة، واستلام التضمينات،
-  وتخزينها في مجموعاتك. بالنسبة للبحث الدلالي، ما عليك سوى توفير بيانات
-  الاستعلام الأولية، وليس متجه الاستعلام. يقوم Milvus بإنشاء متجه الاستعلام
-  باستخدام نفس النموذج الذي استخدمته للاستيعاب، ومقارنته بالمتجهات المخزنة،
-  وإرجاع النتائج الأكثر صلة.
+  The Function module in Milvus allows you to transform raw text data into
+  vector embeddings by automatically calling external embedding service
+  providers (like OpenAI, AWS Bedrock, Google Vertex AI, etc.). With the
+  Function module, you no longer need to manually interface with embedding
+  APIs—Milvus handles the entire process of sending requests to providers,
+  receiving embeddings, and storing them in your collections. For semantic
+  search, you need to provide only raw query data, not a query vector. Milvus
+  generates the query vector with the same model you used for ingestion,
+  compares it to the stored vectors, and returns the most relevant results.
 beta: Milvus 2.6.x
 ---
-<h1 id="Embedding-Function-Overview" class="common-anchor-header">نظرة عامة على وظيفة التضمين<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#Embedding-Function-Overview" class="anchor-icon" translate="no">
+<h1 id="Embedding-Function-Overview" class="common-anchor-header">Embedding Function Overview<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#Embedding-Function-Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -28,8 +28,8 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>تتيح لك وحدة الوظائف في Milvus تحويل البيانات النصية الأولية إلى تضمينات متجهة من خلال الاستدعاء التلقائي لمزودي خدمات التضمين الخارجيين (مثل OpenAI و AWS Bedrock و Google Vertex AI، إلخ). بفضل وحدة الوظائف، لم تعد بحاجة إلى التفاعل يدويًا مع واجهات برمجة تطبيقات (API) التضمين — حيث يتولى Milvus العملية بأكملها المتمثلة في إرسال الطلبات إلى مزودي الخدمة، واستلام التضمينات، وتخزينها في مجموعاتك. بالنسبة للبحث الدلالي، ما عليك سوى توفير بيانات الاستعلام الأولية، وليس متجه الاستعلام. يقوم Milvus بإنشاء متجه الاستعلام باستخدام نفس النموذج الذي استخدمته للاستيعاب، ومقارنته بالمتجهات المخزنة، وإرجاع النتائج الأكثر صلة.</p>
-<h2 id="Limits" class="common-anchor-header">القيود<button data-href="#Limits" class="anchor-icon" translate="no">
+    </button></h1><p>The Function module in Milvus allows you to transform raw text data into vector embeddings by automatically calling external embedding service providers (like OpenAI, AWS Bedrock, Google Vertex AI, etc.). With the Function module, you no longer need to manually interface with embedding APIs—Milvus handles the entire process of sending requests to providers, receiving embeddings, and storing them in your collections. For semantic search, you need to provide only raw query data, not a query vector. Milvus generates the query vector with the same model you used for ingestion, compares it to the stored vectors, and returns the most relevant results.</p>
+<h2 id="Limits" class="common-anchor-header">Limits<button data-href="#Limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -45,17 +45,17 @@ beta: Milvus 2.6.x
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>يجب أن يحتوي أي حقل إدخال تقوم وحدة Function بتضمينه دائمًا على قيمة؛ فإذا تم توفير قيمة فارغة، فستقوم الوحدة بإصدار خطأ.</p></li>
-<li><p>تقوم وحدة Function بمعالجة الحقول المحددة صراحةً في مخطط المجموعة فقط؛ ولا تقوم بإنشاء تضمينات للحقول الديناميكية.</p></li>
-<li><p>يجب أن تكون حقول الإدخال المراد تضمينها من النوع « <code translate="no">VARCHAR</code> ».</p></li>
-<li><p>يمكن لوحدة «Function» تضمين حقل إدخال إلى:</p>
+<li><p>Any input field that the Function module embeds must always contain a value; if a null is supplied, the module will throw an error.</p></li>
+<li><p>The Function module processes only fields that are explicitly defined in the collection schema; it does not generate embeddings for dynamic fields.</p></li>
+<li><p>Input fields to be embedded must be of the <code translate="no">VARCHAR</code> type.</p></li>
+<li><p>The Function module can embed an input field to:</p>
 <ul>
 <li><p><code translate="no">FLOAT_VECTOR</code></p></li>
 <li><p><code translate="no">INT8_VECTOR</code></p></li>
 </ul>
-<p>لا يتم دعم التحويلات إلى <code translate="no">BINARY_VECTOR</code> أو <code translate="no">FLOAT16_VECTOR</code> أو <code translate="no">BFLOAT16_VECTOR</code>.</p></li>
+<p>Conversions to <code translate="no">BINARY_VECTOR</code>, <code translate="no">FLOAT16_VECTOR</code>, or <code translate="no">BFLOAT16_VECTOR</code> are not supported.</p></li>
 </ul>
-<h2 id="Supported-embedding-service-providers" class="common-anchor-header">مزودي خدمات التضمين المدعومون<button data-href="#Supported-embedding-service-providers" class="anchor-icon" translate="no">
+<h2 id="Supported-embedding-service-providers" class="common-anchor-header">Supported embedding service providers<button data-href="#Supported-embedding-service-providers" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -72,73 +72,73 @@ beta: Milvus 2.6.x
       </svg>
     </button></h2><table>
    <tr>
-     <th><p>المزود</p></th>
-     <th><p>النماذج النموذجية</p></th>
-     <th><p>نوع التضمين</p></th>
-     <th><p>طريقة المصادقة</p></th>
+     <th><p>Provider</p></th>
+     <th><p>Typical Models</p></th>
+     <th><p>Embedding Type</p></th>
+     <th><p>Authentication Method</p></th>
    </tr>
    <tr>
      <td><p><a href="/docs/ar/v2.6.x/openai.md">OpenAI</a></p></td>
      <td><p>text-embedding-3-*</p></td>
      <td><p><code translate="no">FLOAT_VECTOR</code></p></td>
-     <td><p>مفتاح API</p></td>
+     <td><p>API key</p></td>
    </tr>
    <tr>
      <td><p><a href="/docs/ar/v2.6.x/azure-openai.md">Azure OpenAI</a></p></td>
-     <td><p>قائم على النشر</p></td>
+     <td><p>Deployment-based</p></td>
      <td><p><code translate="no">FLOAT_VECTOR</code></p></td>
-     <td><p>مفتاح واجهة برمجة التطبيقات</p></td>
+     <td><p>API key</p></td>
    </tr>
    <tr>
      <td><p><a href="/docs/ar/v2.6.x/dashscope.md">DashScope</a></p></td>
      <td><p>text-embedding-v3</p></td>
      <td><p><code translate="no">FLOAT_VECTOR</code></p></td>
-     <td><p>مفتاح واجهة برمجة التطبيقات</p></td>
+     <td><p>API key</p></td>
    </tr>
    <tr>
      <td><p><a href="/docs/ar/v2.6.x/bedrock.md">Bedrock</a></p></td>
      <td><p>amazon.titan-embed-text-v2</p></td>
      <td><p><code translate="no">FLOAT_VECTOR</code></p></td>
-     <td><p>زوج AK/SK</p></td>
+     <td><p>AK/SK pair</p></td>
    </tr>
    <tr>
      <td><p><a href="/docs/ar/v2.6.x/vertex-ai.md">Vertex AI</a></p></td>
      <td><p>text-embedding-005</p></td>
      <td><p><code translate="no">FLOAT_VECTOR</code></p></td>
-     <td><p>بيانات اعتماد حساب خدمة GCP بتنسيق JSON</p></td>
+     <td><p>GCP service account JSON credential</p></td>
    </tr>
    <tr>
      <td><p><a href="/docs/ar/v2.6.x/voyage-ai.md">Voyage AI</a></p></td>
-     <td><p>voyage-3، voyage-lite-02</p></td>
+     <td><p>voyage-3, voyage-lite-02</p></td>
      <td><p><code translate="no">FLOAT_VECTOR</code> / <code translate="no">INT8_VECTOR</code></p></td>
-     <td><p>مفتاح API</p></td>
+     <td><p>API key</p></td>
    </tr>
    <tr>
      <td><p><a href="/docs/ar/v2.6.x/cohere.md">Cohere</a></p></td>
      <td><p>embed-english-v3.0</p></td>
      <td><p><code translate="no">FLOAT_VECTOR</code> / <code translate="no">INT8_VECTOR</code></p></td>
-     <td><p>مفتاح واجهة برمجة التطبيقات</p></td>
+     <td><p>API key</p></td>
    </tr>
    <tr>
      <td><p><a href="/docs/ar/v2.6.x/siliconflow.md">SiliconFlow</a></p></td>
      <td><p>BAAI/bge-large-zh-v1.5</p></td>
      <td><p><code translate="no">FLOAT_VECTOR</code></p></td>
-     <td><p>مفتاح API</p></td>
+     <td><p>API key</p></td>
    </tr>
    <tr>
      <td><p><a href="/docs/ar/v2.6.x/hugging-face-tei.md">Hugging Face TEI</a></p></td>
-     <td><p>أي نموذج مدعوم بـ TEI</p></td>
+     <td><p>Any TEI-served model</p></td>
      <td><p><code translate="no">FLOAT_VECTOR</code></p></td>
-     <td><p>مفتاح API اختياري</p></td>
+     <td><p>Optional API key</p></td>
    </tr>
    <tr>
      <td><p><a href="/docs/ar/v2.6.x/hugging-face.md">Hugging Face</a></p></td>
-     <td><p>النماذج التي يتم تقديمها عبر <code translate="no">hf-inference</code> لاستخراج الميزات</p></td>
+     <td><p>Models served through <code translate="no">hf-inference</code> for feature extraction</p></td>
      <td><p><code translate="no">FLOAT_VECTOR</code></p></td>
-     <td><p>مفتاح API</p></td>
+     <td><p>API key</p></td>
    </tr>
 </table>
-<h2 id="How-it-works" class="common-anchor-header">كيفية العمل<button data-href="#How-it-works" class="anchor-icon" translate="no">
+<h2 id="How-it-works" class="common-anchor-header">How it works<button data-href="#How-it-works" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -153,22 +153,22 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يوضح الرسم البياني التالي كيفية عمل الوظيفة في Milvus.</p>
+    </button></h2><p>The following diagram shows how the Function works in Milvus.</p>
 <ol>
-<li><p><strong>النص المدخل</strong>: يقوم المستخدمون بإدخال البيانات الأولية (مثل المستندات) إلى Milvus.</p></li>
-<li><p><strong>إنشاء التضمينات</strong>: تقوم وحدة الوظيفة داخل Milvus تلقائيًا باستدعاء مزود النموذج المُهيأ لتحويل البيانات الأولية إلى تضمينات متجهة.</p></li>
-<li><p><strong>تخزين التضمينات</strong>: يتم تخزين التضمينات الناتجة في حقول متجهة محددة بشكل صريح داخل مجموعات Milvus.</p></li>
-<li><p><strong>نص الاستعلام</strong>: يقوم المستخدمون بإرسال استعلامات نصية إلى Milvus.</p></li>
-<li><p><strong>البحث الدلالي</strong>: يقوم Milvus داخليًّا بتحويل الاستعلامات إلى تضمينات متجهة، ويجري عمليات بحث عن التشابه مقابل التضمينات المخزنة، ويسترد النتائج ذات الصلة.</p></li>
-<li><p><strong>إرجاع النتائج</strong>: يعرض Milvus النتائج الأكثر مطابقة للتطبيق.</p></li>
+<li><p><strong>Input text</strong>: Users insert raw data (e.g. documents) into Milvus.</p></li>
+<li><p><strong>Generate embeddings</strong>: The Function module within Milvus automatically calls the configured model provider to convert raw data into vector embeddings.</p></li>
+<li><p><strong>Store embeddings</strong>: The resulting embeddings are stored in explicitly defined vector fields within Milvus collections.</p></li>
+<li><p><strong>Query text</strong>: Users submit text queries to Milvus.</p></li>
+<li><p><strong>Semantic search</strong>: Milvus internally converts queries to vector embeddings, conducts similarity searches against stored embeddings, and retrieves relevant results.</p></li>
+<li><p><strong>Return results</strong>: Milvus returns top-matching results to the application.</p></li>
 </ol>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="/docs/v2.6.x/assets/embedding-function-overview.png" alt="Embedding Function Overview" class="doc-image" id="embedding-function-overview" /> 
-   <span>نظرة عامة على وظيفة التضمين</span>
-  
- </span></p>
-<h2 id="Configure-credentials" class="common-anchor-header">تكوين بيانات الاعتماد<button data-href="#Configure-credentials" class="anchor-icon" translate="no">
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/embedding-function-overview.png" alt="Embedding Function Overview" class="doc-image" id="embedding-function-overview" />
+    <span>Embedding Function Overview</span>
+  </span>
+</p>
+<h2 id="Configure-credentials" class="common-anchor-header">Configure credentials<button data-href="#Configure-credentials" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -183,22 +183,22 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>قبل استخدام وظيفة التضمين مع Milvus، قم بتكوين بيانات اعتماد خدمة التضمين للوصول إلى Milvus.</p>
-<p>يتيح لك Milvus توفير بيانات اعتماد خدمة التضمين بطريقتين:</p>
+    </button></h2><p>Before using an embedding function with Milvus, configure embedding service credentials for Milvus access.</p>
+<p>Milvus lets you supply embedding service credentials in two ways:</p>
 <ul>
-<li><p><strong>ملف التكوين</strong> (<code translate="no">milvus.yaml</code>):</p>
-<p>يوضح المثال الوارد في هذا الموضوع <strong>الإعداد الموصى به</strong> باستخدام <code translate="no">milvus.yaml</code>.</p></li>
-<li><p><strong>متغيرات البيئة</strong>:</p>
-<p>للحصول على تفاصيل حول تكوين بيانات الاعتماد عبر متغيرات البيئة، راجع وثائق مزود خدمة التضمين (على سبيل المثال، <a href="/docs/ar/v2.6.x/openai.md">OpenAI</a> أو <a href="/docs/ar/v2.6.x/azure-openai.md">Azure OpenAI</a>).</p></li>
+<li><p><strong>Configuration file</strong> (<code translate="no">milvus.yaml</code>):</p>
+<p>The example in this topic demonstrates the <strong>recommended setup</strong> using <code translate="no">milvus.yaml</code>.</p></li>
+<li><p><strong>Environment variables</strong>:</p>
+<p>For details on configuring credentials via environment variables, see the embedding service provider’s documentation (for example, <a href="/docs/ar/v2.6.x/openai.md">OpenAI</a> or <a href="/docs/ar/v2.6.x/azure-openai.md">Azure OpenAI</a>).</p></li>
 </ul>
-<p>يوضح الرسم البياني التالي عملية تكوين بيانات الاعتماد عبر ملف تكوين Milvus (<code translate="no">milvus.yaml</code>) ثم استدعاء الدالة داخل Milvus.</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="/docs/v2.6.x/assets/credential-config-overflow.png" alt="Credential Config Overflow" class="doc-image" id="credential-config-overflow" /> 
-   <span>تجاوز تكوين بيانات الاعتماد</span>
-  
- </span></p>
-<h3 id="Step-1-Add-credentials-to-Milvus-configuration-file" class="common-anchor-header">الخطوة 1: إضافة بيانات الاعتماد إلى ملف تكوين Milvus<button data-href="#Step-1-Add-credentials-to-Milvus-configuration-file" class="anchor-icon" translate="no">
+<p>The following diagram shows the process of configuring credentials via Milvus configuration file (<code translate="no">milvus.yaml</code>) and then calling the Function within Milvus.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/credential-config-overflow.png" alt="Credential Config Overflow" class="doc-image" id="credential-config-overflow" />
+    <span>Credential Config Overflow</span>
+  </span>
+</p>
+<h3 id="Step-1-Add-credentials-to-Milvus-configuration-file" class="common-anchor-header">Step 1: Add credentials to Milvus configuration file<button data-href="#Step-1-Add-credentials-to-Milvus-configuration-file" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -213,7 +213,7 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>في ملف <code translate="no">milvus.yaml</code> الخاص بك، قم بتحرير كتلة <code translate="no">credential</code> بإدخال بيانات لكل مزود تحتاج إلى الوصول إليه:</p>
+    </button></h3><p>In your <code translate="no">milvus.yaml</code> file, edit the <code translate="no">credential</code> block with entries for each provider you need to access:</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-comment"># milvus.yaml credential store section</span>
 <span class="hljs-comment"># This section defines all your authentication credentials for external embedding providers</span>
 <span class="hljs-comment"># Each credential gets a unique name (e.g., aksk1, apikey1) that you&#x27;ll reference elsewhere</span>
@@ -234,7 +234,7 @@ beta: Milvus 2.6.x
   <span class="hljs-attr">gcp1:</span>                        
     <span class="hljs-attr">credential_json:</span> <span class="hljs-string">&lt;BASE64_OF_JSON&gt;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Step-2-Configure-provider-settings" class="common-anchor-header">الخطوة 2: تكوين إعدادات المزود<button data-href="#Step-2-Configure-provider-settings" class="anchor-icon" translate="no">
+<h3 id="Step-2-Configure-provider-settings" class="common-anchor-header">Step 2: Configure provider settings<button data-href="#Step-2-Configure-provider-settings" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -249,7 +249,7 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>في ملف التكوين نفسه (<code translate="no">milvus.yaml</code>)، قم بتحرير كتلة <code translate="no">function</code> لإخبار Milvus بالمفتاح الذي يجب استخدامه لتضمين استدعاءات الخدمة:</p>
+    </button></h3><p>In the same configuration file (<code translate="no">milvus.yaml</code>), edit the <code translate="no">function</code> block to tell Milvus which key to use for embedding service calls:</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">function:</span>
   <span class="hljs-attr">textEmbedding:</span>
     <span class="hljs-attr">providers:</span>
@@ -268,8 +268,8 @@ beta: Milvus 2.6.x
       <span class="hljs-attr">tei:</span>                            <span class="hljs-comment"># Built-in Tiny Embedding model</span>
         <span class="hljs-attr">enable:</span> <span class="hljs-literal">true</span>                  <span class="hljs-comment"># Whether to enable TEI model service</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>لمزيد من المعلومات حول كيفية تطبيق تكوين Milvus، راجع <a href="/docs/ar/v2.6.x/dynamic_config.md">«تكوين Milvus أثناء التشغيل</a>».</p>
-<h2 id="Use-embedding-function" class="common-anchor-header">استخدام وظيفة التضمين<button data-href="#Use-embedding-function" class="anchor-icon" translate="no">
+<p>For more information on how to apply Milvus configuration, refer to <a href="/docs/ar/v2.6.x/dynamic_config.md">Configure Milvus on the Fly</a>.</p>
+<h2 id="Use-embedding-function" class="common-anchor-header">Use embedding function<button data-href="#Use-embedding-function" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -284,8 +284,8 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>بمجرد تكوين بيانات الاعتماد في ملف تكوين Milvus الخاص بك، اتبع هذه الخطوات لتعريف وظائف التضمين واستخدامها.</p>
-<h3 id="Step-1-Define-schema-fields" class="common-anchor-header">الخطوة 1: تعريف حقول المخطط<button data-href="#Step-1-Define-schema-fields" class="anchor-icon" translate="no">
+    </button></h2><p>Once credentials are configured in your Milvus configuration file, follow these steps to define and use embedding functions.</p>
+<h3 id="Step-1-Define-schema-fields" class="common-anchor-header">Step 1: Define schema fields<button data-href="#Step-1-Define-schema-fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -300,19 +300,19 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>لاستخدام دالة التضمين، قم بإنشاء مجموعة بمخطط معين. يجب أن يتضمن هذا المخطط ثلاثة حقول أساسية على الأقل:</p>
+    </button></h3><p>To use an embedding function, create a collection with a specific schema. This schema must include at least three necessary fields:</p>
 <ul>
-<li><p><strong>الحقل الأساسي</strong> الذي يحدد بشكل فريد كل كيان في المجموعة.</p></li>
-<li><p><strong>حقل قياسي</strong> يخزن البيانات الأولية المراد تضمينها.</p></li>
-<li><p><strong>حقل متجه</strong> مخصص لتخزين التضمينات المتجهة التي ستولدها الدالة للحقل القياسي.</p></li>
+<li><p>The <strong>primary field</strong> that uniquely identifies each entity in a collection.</p></li>
+<li><p>A <strong>scalar field</strong> that stores raw data to be embedded.</p></li>
+<li><p>A <strong>vector field</strong> reserved to store vector embeddings that the function will generate for the scalar field.</p></li>
 </ul>
-<p>يحدد المثال التالي مخططًا يحتوي على حقل قياسي واحد <code translate="no">&quot;document&quot;</code> لتخزين البيانات النصية وحقل متجه واحد <code translate="no">&quot;dense&quot;</code> لتخزين التضمينات التي ستولدها وحدة «Function». تذكر ضبط بُعد المتجه (<code translate="no">dim</code>) ليتوافق مع ناتج نموذج التضمين الذي اخترته.</p>
+<p>The following example defines a schema with one scalar field <code translate="no">&quot;document&quot;</code> for storing textual data and one vector field <code translate="no">&quot;dense&quot;</code> for storing embeddings to be generated by the Function module. Remember to set the vector dimension (<code translate="no">dim</code>) to match the output of your chosen embedding model.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType, Function, FunctionType
 
@@ -344,7 +344,7 @@ schema.add_field(<span class="hljs-string">&quot;dense&quot;</span>, DataType.FL
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Step-2-Add-embedding-function-to-schema" class="common-anchor-header">الخطوة 2: إضافة وظيفة التضمين إلى المخطط<button data-href="#Step-2-Add-embedding-function-to-schema" class="anchor-icon" translate="no">
+<h3 id="Step-2-Add-embedding-function-to-schema" class="common-anchor-header">Step 2: Add embedding function to schema<button data-href="#Step-2-Add-embedding-function-to-schema" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -359,14 +359,14 @@ schema.add_field(<span class="hljs-string">&quot;dense&quot;</span>, DataType.FL
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>تقوم وحدة Function في Milvus تلقائيًا بتحويل البيانات الأولية المخزنة في حقل قياسي إلى تضمينات وتخزينها في الحقل المتجه المحدد صراحةً.</p>
-<p>يضيف المثال أدناه وحدة «Function» (<code translate="no">openai_embedding</code>) التي تحول الحقل القياسي <code translate="no">&quot;document&quot;</code> إلى تضمينات، وتخزن المتجهات الناتجة في حقل المتجهات <code translate="no">&quot;dense&quot;</code> المحدد مسبقًا.</p>
+    </button></h3><p>The Function module in Milvus automatically converts raw data stored in a scalar field into embeddings and stores them into the explicitly defined vector field.</p>
+<p>The example below adds a Function module (<code translate="no">openai_embedding</code>) that converts the scalar field <code translate="no">&quot;document&quot;</code> into embeddings, storing the resulting vectors in the <code translate="no">&quot;dense&quot;</code> vector field defined earlier.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Define embedding function (example: OpenAI provider)</span>
 text_embedding_function = Function(
@@ -397,65 +397,65 @@ schema.add_function(text_embedding_function)
 <button class="copy-code-btn"></button></code></pre>
 <table>
    <tr>
-     <th><p>المعلمة</p></th>
-     <th><p>الوصف</p></th>
-     <th><p>قيمة المثال</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Description</p></th>
+     <th><p>Example Value</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">name</code></p></td>
-     <td><p>المعرف الفريد لوظيفة التضمين داخل Milvus.</p></td>
+     <td><p>Unique identifier for the embedding function within Milvus.</p></td>
      <td><p><code translate="no">"openai_embedding"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">function_type</code></p></td>
-     <td><p>نوع الدالة المستخدمة. لتضمين النص، اضبط القيمة على <code translate="no">FunctionType.TEXTEMBEDDING</code>.</p><p><strong>ملاحظة</strong>: يقبل Milvus القيمتين <code translate="no">FunctionType.BM25</code> (لتحويل التضمين المتفرق) و <code translate="no">FunctionType.RERANK</code> (لإعادة الترتيب) لهذه المعلمة. راجع " <a href="/docs/ar/v2.6.x/full-text-search.md">البحث عن النص الكامل</a> " و <a href="/docs/ar/v2.6.x/decay-ranker-overview.md">"نظرة عامة على أداة ترتيب التضاؤل</a> " للحصول على التفاصيل.</p></td>
+     <td><p>Type of function used. For text embedding, set the value to <code translate="no">FunctionType.TEXTEMBEDDING</code>.</p><p><strong>Note</strong>: Milvus accepts <code translate="no">FunctionType.BM25</code> (for sparse-embedding transformation) and <code translate="no">FunctionType.RERANK</code> (for reranking) for this parameter. Refer to <a href="/docs/ar/v2.6.x/full-text-search.md">Full Text Search</a> and <a href="/docs/ar/v2.6.x/decay-ranker-overview.md">Decay Ranker Overview</a> for details.</p></td>
      <td><p><code translate="no">FunctionType.TEXTEMBEDDING</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">input_field_names</code></p></td>
-     <td><p>حقل عددي يحتوي على البيانات الأولية المراد تضمينها. حاليًا، لا تقبل هذه المعلمة سوى اسم حقل واحد.</p></td>
+     <td><p>Scalar field containing raw data to be embedded. Currently, this parameter accepts only one field name.</p></td>
      <td><p><code translate="no">["document"]</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">output_field_names</code></p></td>
-     <td><p>حقل متجه لتخزين عمليات التضمين التي تم إنشاؤها. حاليًا، لا تقبل هذه المعلمة سوى اسم حقل واحد.</p></td>
+     <td><p>Vector field for storing generated embeddings. Currently, this parameter accepts only one field name.</p></td>
      <td><p><code translate="no">["dense"]</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params</code></p></td>
-     <td><p>قاموس يحتوي على تكوينات التضمين. ملاحظة: تختلف المعلمات الموجودة ضمن " <code translate="no">params</code> " (تكوينات التضمين) باختلاف مزودي نماذج التضمين.</p></td>
+     <td><p>Dictionary containing embedding configurations. Note: Parameters within <code translate="no">params</code> vary depending on the embedding model providers.</p></td>
      <td><p><code translate="no">{...}</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">provider</code></p></td>
-     <td><p>مزود نموذج التضمين.</p></td>
+     <td><p>The embedding model provider.</p></td>
      <td><p><code translate="no">"openai"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">model_name</code></p></td>
-     <td><p>يحدد نموذج التضمين المطلوب استخدامه.</p></td>
+     <td><p>Specifies which embedding model to use.</p></td>
      <td><p><code translate="no">"text-embedding-3-small"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">credential</code></p></td>
-     <td><p>تسمية بيانات الاعتماد المحددة في قسم المستوى الأعلى لـ <code translate="no">credential:</code> في <code translate="no">milvus.yaml</code>. </p><ul><li><p>عند توفيرها، يسترد Milvus زوج المفاتيح المطابق أو رمز API ويوقع الطلب من جانب الخادم.</p></li><li><p>عند حذفه (<code translate="no">None</code>)، يلجأ Milvus إلى بيانات الاعتماد التي تم تكوينها صراحةً لمزود النموذج المستهدف في <code translate="no">milvus.yaml</code>.</p></li><li><p>إذا كانت التسمية غير معروفة أو كان المفتاح المشار إليه مفقودًا، يفشل الاستدعاء.</p></li></ul></td>
+     <td><p>The label of a credential defined in the top-level <code translate="no">credential:</code> section of <code translate="no">milvus.yaml</code>. </p><ul><li><p>When provided, Milvus retrieves the matching key pair or API token and signs the request on the server side.</p></li><li><p>When omitted (<code translate="no">None</code>), Milvus falls back to the credential explicitly configured for the target model provider in <code translate="no">milvus.yaml</code>.</p></li><li><p>If the label is unknown or the referenced key is missing, the call fails.</p></li></ul></td>
      <td><p><code translate="no">"apikey1"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">dim</code></p></td>
-     <td><p>عدد أبعاد التضمينات الناتجة. بالنسبة لنماذج الجيل الثالث من OpenAI، يمكنك تقصير المتجه الكامل لتقليل التكلفة وزمن الاستجابة دون فقدان كبير للمعلومات الدلالية. لمزيد من المعلومات، راجع <a href="https://openai.com/blog/new-embedding-models-and-api-updates">منشور مدونة إعلان OpenAI</a>.</p><p><strong>ملاحظة:</strong> إذا قمت بتقصير بُعد المتجه، فتأكد من أن قيمة « <code translate="no">dim</code> » المحددة في طريقة « <code translate="no">add_field</code> » الخاصة بالمخطط لحقل المتجه تتطابق مع البُعد النهائي للإخراج الخاص بوظيفة التضمين الخاصة بك.</p></td>
+     <td><p>The number of dimensions for the output embeddings. For OpenAI's third-generation models, you can shorten the full vector to reduce cost and latency without a significant loss of semantic information. For more information, refer to <a href="https://openai.com/blog/new-embedding-models-and-api-updates">OpenAI announcement blog post</a>.</p><p><strong>Note:</strong> If you shorten the vector dimension, ensure the <code translate="no">dim</code> value specified in the schema's <code translate="no">add_field</code> method for the vector field matches the final output dimension of your embedding function.</p></td>
      <td><p><code translate="no">"1536"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">user</code></p></td>
-     <td><p>معرف على مستوى المستخدم لتتبع استخدام واجهة برمجة التطبيقات (API).</p></td>
+     <td><p>A user-level identifier for tracking API usage.</p></td>
      <td><p><code translate="no">"user123"</code></p></td>
    </tr>
 </table>
 <div class="alert note">
-<p>بالنسبة للمجموعات التي تحتوي على حقول عددية متعددة تتطلب تحويل النص إلى متجه، أضف دوال منفصلة إلى مخطط المجموعة، مع التأكد من أن كل دالة لها اسم فريد وقيمة <code translate="no">output_field_names</code>.</p>
+<p>For collections with multiple scalar fields requiring text-to-vector conversion, add separate functions to the collection schema, ensuring each function has a unique name and <code translate="no">output_field_names</code> value.</p>
 </div>
-<h3 id="Step-3-Configure-index" class="common-anchor-header">الخطوة 3: تكوين الفهرس<button data-href="#Step-3-Configure-index" class="anchor-icon" translate="no">
+<h3 id="Step-3-Configure-index" class="common-anchor-header">Step 3: Configure index<button data-href="#Step-3-Configure-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -470,13 +470,13 @@ schema.add_function(text_embedding_function)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>بعد تعريف المخطط بالحقول الضرورية والدالة المدمجة، قم بإعداد الفهرس لمجموعتك. لتبسيط هذه العملية، استخدم <code translate="no">AUTOINDEX</code> كـ <code translate="no">index_type</code> ، وهو خيار يسمح لـ Milvus باختيار وتكوين نوع الفهرس الأنسب بناءً على بنية بياناتك.</p>
+    </button></h3><p>After defining the schema with necessary fields and the built-in function, set up the index for your collection. To simplify this process, use <code translate="no">AUTOINDEX</code> as the <code translate="no">index_type</code>, an option that allows Milvus to choose and configure the most suitable index type based on the structure of your data.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Prepare index parameters</span>
 index_params = client.prepare_index_params()
@@ -496,7 +496,7 @@ index_params.add_index(
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Step-4-Create-collection" class="common-anchor-header">الخطوة 4: إنشاء المجموعة<button data-href="#Step-4-Create-collection" class="anchor-icon" translate="no">
+<h3 id="Step-4-Create-collection" class="common-anchor-header">Step 4: Create collection<button data-href="#Step-4-Create-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -511,13 +511,13 @@ index_params.add_index(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>الآن قم بإنشاء المجموعة باستخدام معلمات المخطط والفهرس المحددة.</p>
+    </button></h3><p>Now create the collection using the schema and index parameters defined.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Create collection named &quot;demo&quot;</span>
 client.create_collection(
@@ -534,7 +534,7 @@ client.create_collection(
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Step-5-Insert-data" class="common-anchor-header">الخطوة 5: إدراج البيانات<button data-href="#Step-5-Insert-data" class="anchor-icon" translate="no">
+<h3 id="Step-5-Insert-data" class="common-anchor-header">Step 5: Insert data<button data-href="#Step-5-Insert-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -549,13 +549,13 @@ client.create_collection(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>بعد إعداد المجموعة والفهرس، تكون جاهزًا لإدراج البيانات الأولية. في هذه العملية، ما عليك سوى توفير النص الأولي. تقوم وحدة الوظائف التي حددناها سابقًا تلقائيًا بإنشاء المتجه المتفرق المقابل لكل إدخال نصي.</p>
+    </button></h3><p>After setting up your collection and index, you’re ready to insert your raw data. In this process, you need only to provide the raw text. The Function module we defined earlier automatically generates the corresponding sparse vector for each text entry.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Insert sample documents</span>
 client.insert(<span class="hljs-string">&#x27;demo&#x27;</span>, [
@@ -572,7 +572,7 @@ client.insert(<span class="hljs-string">&#x27;demo&#x27;</span>, [
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Step-6-Perform-vector-search" class="common-anchor-header">الخطوة 6: إجراء البحث المتجهي<button data-href="#Step-6-Perform-vector-search" class="anchor-icon" translate="no">
+<h3 id="Step-6-Perform-vector-search" class="common-anchor-header">Step 6: Perform vector search<button data-href="#Step-6-Perform-vector-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -587,13 +587,13 @@ client.insert(<span class="hljs-string">&#x27;demo&#x27;</span>, [
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>بعد إدخال البيانات، قم بإجراء بحث دلالي باستخدام نص الاستعلام الخام. يقوم Milvus تلقائيًا بتحويل استعلامك إلى متجه تضمين، واسترجاع المستندات ذات الصلة بناءً على التشابه، وإرجاع النتائج الأكثر مطابقة.</p>
+    </button></h3><p>After data insertion, perform a semantic search using raw query text. Milvus automatically converts your query into an embedding vector, retrieves relevant documents based on similarity, and returns the top-matching results.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Perform semantic search</span>
 results = client.search(
@@ -617,8 +617,8 @@ results = client.search(
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>لمزيد من المعلومات حول عمليات البحث والاستعلام، راجع <a href="/docs/ar/v2.6.x/single-vector-search.md">«البحث</a> <a href="/docs/ar/v2.6.x/get-and-scalar-query.md">والاستعلام</a> <a href="/docs/ar/v2.6.x/single-vector-search.md">الأساسي بالمتجهات</a> ».</p>
-<h2 id="FAQ" class="common-anchor-header">الأسئلة الشائعة<button data-href="#FAQ" class="anchor-icon" translate="no">
+<p>For more information about search and query operations, refer to <a href="/docs/ar/v2.6.x/single-vector-search.md">Basic Vector Search</a> and <a href="/docs/ar/v2.6.x/get-and-scalar-query.md">Query</a>.</p>
+<h2 id="FAQ" class="common-anchor-header">FAQ<button data-href="#FAQ" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -633,7 +633,7 @@ results = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Whats-the-difference-between-configuring-credentials-in-milvusyaml-vs-environment-variables" class="common-anchor-header">ما الفرق بين تكوين بيانات الاعتماد في ملف milvus.yaml ومتغيرات البيئة؟<button data-href="#Whats-the-difference-between-configuring-credentials-in-milvusyaml-vs-environment-variables" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Whats-the-difference-between-configuring-credentials-in-milvusyaml-vs-environment-variables" class="common-anchor-header">What’s the difference between configuring credentials in milvus.yaml vs environment variables?<button data-href="#Whats-the-difference-between-configuring-credentials-in-milvusyaml-vs-environment-variables" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -648,8 +648,8 @@ results = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>تعمل كلتا الطريقتين، ولكن يُنصح باستخدام ملف تعريف الهوية ( <code translate="no">milvus.yaml</code> ) لأنه يوفر إدارة مركزية لبيانات الاعتماد وتسمية متسقة لبيانات الاعتماد عبر جميع مزودي الخدمة. عند استخدام متغيرات البيئة، تختلف أسماء المتغيرات اعتمادًا على مزود خدمة التضمين، لذا يرجى الرجوع إلى الصفحة المخصصة لكل مزود لفهم أسماء متغيرات البيئة المحددة المطلوبة (على سبيل المثال، <a href="/docs/ar/v2.6.x/openai.md">OpenAI</a> أو <a href="/docs/ar/v2.6.x/azure-openai.md">Azure OpenAI</a>).</p>
-<h3 id="What-happens-if-I-dont-specify-a-credential-parameter-in-the-function-definition" class="common-anchor-header">ماذا يحدث إذا لم أحدد معلمة بيانات الاعتماد في تعريف الدالة؟<button data-href="#What-happens-if-I-dont-specify-a-credential-parameter-in-the-function-definition" class="anchor-icon" translate="no">
+    </button></h3><p>Both methods work, but using <code translate="no">milvus.yaml</code> is the recommended approach as it provides centralized credential management and consistent credential naming across all providers. When using environment variables, the variable names vary depending on the embedding service provider, so refer to each provider’s dedicated page to understand the specific environment variable names required (for example, <a href="/docs/ar/v2.6.x/openai.md">OpenAI</a> or <a href="/docs/ar/v2.6.x/azure-openai.md">Azure OpenAI</a>).</p>
+<h3 id="What-happens-if-I-dont-specify-a-credential-parameter-in-the-function-definition" class="common-anchor-header">What happens if I don’t specify a credential parameter in the function definition?<button data-href="#What-happens-if-I-dont-specify-a-credential-parameter-in-the-function-definition" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -664,13 +664,13 @@ results = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>يتبع Milvus ترتيب تحديد بيانات الاعتماد التالي:</p>
+    </button></h3><p>Milvus follows this credential resolution order:</p>
 <ol>
-<li>أولاً، يبحث عن بيانات الاعتماد الافتراضية المُعدة لذلك المزود في ملف <code translate="no">milvus.yaml</code> </li>
-<li>إذا لم تكن هناك بيانات اعتماد افتراضية في ملف milvus.yaml، فإنه يلجأ إلى متغيرات البيئة (إذا تم تكوينها)</li>
-<li>إذا لم يتم تكوين بيانات اعتماد <code translate="no">milvus.yaml</code> ولا متغيرات البيئة، فسيصدر Milvus خطأً</li>
+<li>First, it looks for the default credential configured for that provider in the <code translate="no">milvus.yaml</code> file</li>
+<li>If no default credential exists in milvus.yaml, it falls back to environment variables (if configured)</li>
+<li>If neither <code translate="no">milvus.yaml</code> credentials nor environment variables are configured, Milvus will throw an error</li>
 </ol>
-<h3 id="How-can-I-verify-that-embeddings-are-being-generated-correctly" class="common-anchor-header">كيف يمكنني التحقق من أن عمليات التضمين يتم إنشاؤها بشكل صحيح؟<button data-href="#How-can-I-verify-that-embeddings-are-being-generated-correctly" class="anchor-icon" translate="no">
+<h3 id="How-can-I-verify-that-embeddings-are-being-generated-correctly" class="common-anchor-header">How can I verify that embeddings are being generated correctly?<button data-href="#How-can-I-verify-that-embeddings-are-being-generated-correctly" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -685,13 +685,13 @@ results = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>يمكنك التحقق من ذلك عن طريق:</p>
+    </button></h3><p>You can check by:</p>
 <ol>
-<li>الاستعلام عن مجموعتك بعد الإدراج لمعرفة ما إذا كان حقل المتجهات يحتوي على بيانات</li>
-<li>التحقق من أن طول حقل المتجهات يتطابق مع الأبعاد المتوقعة</li>
-<li>إجراء بحث بسيط عن التشابه للتحقق من أن التضمينات تنتج نتائج ذات مغزى</li>
+<li>Querying your collection after insertion to see if the vector field contains data</li>
+<li>Checking the vector field length matches your expected dimensions</li>
+<li>Performing a simple similarity search to verify the embeddings produce meaningful results</li>
 </ol>
-<h3 id="When-I-perform-a-similarity-search-can-I-use-a-query-vector-rather-than-raw-text" class="common-anchor-header">عند إجراء بحث عن التشابه، هل يمكنني استخدام متجه استعلام بدلاً من النص الخام؟<button data-href="#When-I-perform-a-similarity-search-can-I-use-a-query-vector-rather-than-raw-text" class="anchor-icon" translate="no">
+<h3 id="When-I-perform-a-similarity-search-can-I-use-a-query-vector-rather-than-raw-text" class="common-anchor-header">When I perform a similarity search, can I use a query vector rather than raw text?<button data-href="#When-I-perform-a-similarity-search-can-I-use-a-query-vector-rather-than-raw-text" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -706,14 +706,14 @@ results = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>نعم، يمكنك استخدام متجهات الاستعلام المحسوبة مسبقًا بدلاً من النص الخام لإجراء بحث التشابه. في حين أن وحدة الوظيفة (Function module) تقوم تلقائيًا بتحويل استعلامات النص الخام إلى تضمينات، يمكنك أيضًا توفير بيانات متجهة مباشرةً إلى المعلمة " <code translate="no">data</code> " في عملية البحث الخاصة بك. <strong>ملاحظة</strong>: يجب أن يكون حجم أبعاد متجه الاستعلام الذي قدمته متسقًا مع حجم أبعاد التضمينات المتجهة التي أنشأتها وحدة الوظائف الخاصة بك.</p>
-<p><strong>مثال</strong>:</p>
+    </button></h3><p>Yes, you can use pre-computed query vectors instead of raw text for similarity search. While the Function module automatically converts raw text queries to embeddings, you can also directly provide vector data to the <code translate="no">data</code> parameter in your search operation. <strong>Note</strong>: The dimension size of your provided query vector must be consistent with the dimension size of the vector embeddings generated by your Function module.</p>
+<p><strong>Example</strong>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Using raw text (Function module converts automatically)</span>
 results = client.search(

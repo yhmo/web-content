@@ -1,9 +1,9 @@
 ---
 id: index_selection.md
-title: '프롬프트: Milvus 인덱스 선택'
-summary: AI 코딩 도우미가 Milvus 인덱스를 선택하고 구성하기 위한 규칙.
+title: 'Prompt: Milvus Index Selection'
+summary: Rules for AI coding assistants to choose and configure Milvus indexes.
 ---
-<h1 id="Index-Selection" class="common-anchor-header">인덱스 선택<button data-href="#Index-Selection" class="anchor-icon" translate="no">
+<h1 id="Index-Selection" class="common-anchor-header">Index Selection<button data-href="#Index-Selection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,8 +18,8 @@ summary: AI 코딩 도우미가 Milvus 인덱스를 선택하고 구성하기 �
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>AUTOINDEX, HNSW, DiskANN, IVF 및 스파스 인덱스를 포함한 Milvus 인덱스를 선택하고 튜닝하기 위한 결정 가이드 및 구성 규칙입니다. 아래의 전체 프롬프트를 AI 도구에 복사하여 이러한 규칙을 자동으로 적용하세요. 모든 프롬프트에 대한 개요는 <a href="/docs/ko/milvus_for_agents.md">AI 프롬프트를</a> 참조하세요.</p>
-<h2 id="How-to-use-this-prompt" class="common-anchor-header">이 프롬프트 사용 방법<button data-href="#How-to-use-this-prompt" class="anchor-icon" translate="no">
+    </button></h1><p>Decision guides and configuration rules for choosing and tuning Milvus indexes, including AUTOINDEX, HNSW, DiskANN, IVF, and sparse indexes. Copy the full prompt below into your AI tool to apply these rules automatically. For an overview of all prompts, see <a href="/docs/ko/milvus_for_agents.md">AI Prompts</a>.</p>
+<h2 id="How-to-use-this-prompt" class="common-anchor-header">How to use this prompt<button data-href="#How-to-use-this-prompt" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -35,12 +35,12 @@ summary: AI 코딩 도우미가 Milvus 인덱스를 선택하고 구성하기 �
         ></path>
       </svg>
     </button></h2><ol>
-<li>아래 <a href="#full-prompt">'전체 프롬프트'</a> 섹션에서 전체 프롬프트를<strong>복사하세요</strong>.</li>
-<li>AI 도구가 인식할 수 있는 위치에<strong>저장하십시오</strong>. 배치에 대한 자세한 내용은 <a href="/docs/ko/milvus_for_agents.md">환경 표를</a> 참조하십시오.</li>
-<li>AI 어시스턴트는 Milvus 코드를 생성하거나 검토할 때 이러한 규칙을 자동으로 적용합니다.</li>
+<li><strong>Copy</strong> the full prompt from the <a href="#full-prompt">Full prompt</a> section below.</li>
+<li><strong>Save</strong> it to the location your AI tool expects — see the <a href="/docs/ko/milvus_for_agents.md">environment table</a> for placement details.</li>
+<li>Your AI assistant will automatically apply these rules when generating or reviewing Milvus code.</li>
 </ol>
-<p><strong>Cursor</strong> 사용자의 경우: <a href="#full-prompt">‘전체 프롬프트’</a> 섹션에서 프롬프트를 복사하여 프로젝트 내 ` <code translate="no">.cursor/rules/</code> ` 경로에 저장하십시오.</p>
-<h2 id="Full-prompt" class="common-anchor-header">전체 프롬프트<button data-href="#Full-prompt" class="anchor-icon" translate="no">
+<p>For <strong>Cursor</strong> users: copy the prompt from the <a href="#full-prompt">Full prompt</a> section and save it under <code translate="no">.cursor/rules/</code> in your project.</p>
+<h2 id="Full-prompt" class="common-anchor-header">Full prompt<button data-href="#Full-prompt" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -241,4 +241,4 @@ Before finishing, verify:
 - [ ] Sparse vector fields use `SPARSE_INVERTED_INDEX`, not dense vector indexes
 - [ ] Index parameters are reasonable (e.g., HNSW stock defaults are M=30 and efConstruction=360; tune explicit overrides for the workload)
 <button class="copy-code-btn"></button></code></pre>
-<p>HNSW 기본값, 허용 범위 및 검색 제약 조건에 대해서는 <a href="/docs/ko/hnsw.md#Index-params">HNSW 인덱스 매개변수를</a> 참조하십시오.</p>
+<p>For HNSW defaults, accepted ranges, and search constraints, see <a href="/docs/ko/hnsw.md#Index-params">HNSW index params</a>.</p>

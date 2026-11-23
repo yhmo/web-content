@@ -1,9 +1,9 @@
 ---
 id: index_selection.md
-title: 提示：Milvus 索引选择
-summary: AI 编码助手选择和配置 Milvus 索引的规则。
+title: 'Prompt: Milvus Index Selection'
+summary: Rules for AI coding assistants to choose and configure Milvus indexes.
 ---
-<h1 id="Index-Selection" class="common-anchor-header">索引选择<button data-href="#Index-Selection" class="anchor-icon" translate="no">
+<h1 id="Index-Selection" class="common-anchor-header">Index Selection<button data-href="#Index-Selection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,8 +18,8 @@ summary: AI 编码助手选择和配置 Milvus 索引的规则。
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>关于选择和调优 Milvus 索引（包括 AUTOINDEX、HNSW、DiskANN、IVF 以及稀疏索引）的决策指南和配置规则。将下方的完整提示复制到您的 AI 工具中，即可自动应用这些规则。有关所有提示的概述，请参阅<a href="/docs/zh/milvus_for_agents.md">AI 提示</a>。</p>
-<h2 id="How-to-use-this-prompt" class="common-anchor-header">如何使用此提示<button data-href="#How-to-use-this-prompt" class="anchor-icon" translate="no">
+    </button></h1><p>Decision guides and configuration rules for choosing and tuning Milvus indexes, including AUTOINDEX, HNSW, DiskANN, IVF, and sparse indexes. Copy the full prompt below into your AI tool to apply these rules automatically. For an overview of all prompts, see <a href="/docs/zh/milvus_for_agents.md">AI Prompts</a>.</p>
+<h2 id="How-to-use-this-prompt" class="common-anchor-header">How to use this prompt<button data-href="#How-to-use-this-prompt" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -35,12 +35,12 @@ summary: AI 编码助手选择和配置 Milvus 索引的规则。
         ></path>
       </svg>
     </button></h2><ol>
-<li>从下方的<a href="#full-prompt">“完整提示</a>”部分<strong>复制</strong>完整的提示。</li>
-<li>将其<strong>保存</strong>到您的 AI 工具指定的位置——具体放置位置请参阅<a href="/docs/zh/milvus_for_agents.md">环境表</a>。</li>
-<li>您的 AI 助手在生成或审查 Milvus 代码时将自动应用这些规则。</li>
+<li><strong>Copy</strong> the full prompt from the <a href="#full-prompt">Full prompt</a> section below.</li>
+<li><strong>Save</strong> it to the location your AI tool expects — see the <a href="/docs/zh/milvus_for_agents.md">environment table</a> for placement details.</li>
+<li>Your AI assistant will automatically apply these rules when generating or reviewing Milvus code.</li>
 </ol>
-<p>针对<strong>Cursor</strong>用户：请从<a href="#full-prompt">“完整提示</a>”部分复制提示，并将其保存至项目中的 `<code translate="no">.cursor/rules/</code> ` 目录下。</p>
-<h2 id="Full-prompt" class="common-anchor-header">完整提示<button data-href="#Full-prompt" class="anchor-icon" translate="no">
+<p>For <strong>Cursor</strong> users: copy the prompt from the <a href="#full-prompt">Full prompt</a> section and save it under <code translate="no">.cursor/rules/</code> in your project.</p>
+<h2 id="Full-prompt" class="common-anchor-header">Full prompt<button data-href="#Full-prompt" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -241,4 +241,4 @@ Before finishing, verify:
 - [ ] Sparse vector fields use `SPARSE_INVERTED_INDEX`, not dense vector indexes
 - [ ] Index parameters are reasonable (e.g., HNSW stock defaults are M=30 and efConstruction=360; tune explicit overrides for the workload)
 <button class="copy-code-btn"></button></code></pre>
-<p>有关 HNSW 的默认值、允许的范围和搜索限制，请参阅<a href="/docs/zh/hnsw.md#Index-params">HNSW 索引参数</a>。</p>
+<p>For HNSW defaults, accepted ranges, and search constraints, see <a href="/docs/zh/hnsw.md#Index-params">HNSW index params</a>.</p>

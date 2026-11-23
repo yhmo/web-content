@@ -1,13 +1,13 @@
 ---
 id: search_with_jev.md
 summary: >-
-  يُجري البحث المتجهي العثور على المعلومات ذات الصلة بالاستعلام. كما يتطلب إنشاء
-  تطبيق بحث مفيد اتخاذ قرارات: أي المقاطع تجيب فعليًّا على السؤال، وما إذا كان
-  يمكن إعادة استخدام إجابة سابقة، وما إذا كان لدى الوكيل أدلة كافية لوقف عملية
-  البحث.
-title: إنشاء RAG باستخدام Milvus + PII Masker
+  Vector search finds information related to a query. Building a useful search
+  application also involves decisions: which passages actually answer the
+  question, whether an earlier answer can be reused, and whether an agent has
+  enough evidence to stop searching.
+title: Build RAG with Milvus + PII Masker
 ---
-<h1 id="Search-with-Jev-and-Milvus" class="common-anchor-header">البحث باستخدام Jev وMilvus<button data-href="#Search-with-Jev-and-Milvus" class="anchor-icon" translate="no">
+<h1 id="Search-with-Jev-and-Milvus" class="common-anchor-header">Search with Jev and Milvus<button data-href="#Search-with-Jev-and-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -22,9 +22,9 @@ title: إنشاء RAG باستخدام Milvus + PII Masker
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>يبحث البحث المتجه عن المعلومات ذات الصلة بالاستعلام. يتطلب إنشاء تطبيق بحث مفيد اتخاذ قرارات: أي المقاطع تجيب فعليًا على السؤال، وما إذا كان يمكن إعادة استخدام إجابة سابقة، وما إذا كان لدى الوكيل أدلة كافية لوقف البحث.</p>
-<p>يعالج كل من Milvus وJev أجزاء مختلفة من سير العمل هذا. يقوم <a href="https://milvus.io/">Milvus</a> بتخزين التضمينات واسترجاع السجلات المرشحة، مع استخدام مرشحات البيانات الوصفية لفرض قيود مثل إصدار المنتج أو نطاق قاعدة المعرفة. يقوم <a href="https://docs.typesafe.ai/introduction">Jev</a> بتقييم معنى النص المسترجع مقارنةً بالتعليمات. يمكن لتطبيقك استخدام أحكامه لاختيار الأدلة أو التحكم في خطوة البحث التالية.</p>
-<h2 id="What-does-Jev-do" class="common-anchor-header">ماذا يفعل Jev؟<button data-href="#What-does-Jev-do" class="anchor-icon" translate="no">
+    </button></h1><p>Vector search finds information related to a query. Building a useful search application also involves decisions: which passages actually answer the question, whether an earlier answer can be reused, and whether an agent has enough evidence to stop searching.</p>
+<p>Milvus and Jev address different parts of this workflow. <a href="https://milvus.io/">Milvus</a> stores embeddings and retrieves candidate records, with metadata filters for constraints such as product version or knowledge-base scope. <a href="https://docs.typesafe.ai/introduction">Jev</a> evaluates the meaning of the retrieved text against instructions. Your application can use its judgments to select evidence or control the next search step.</p>
+<h2 id="What-does-Jev-do" class="common-anchor-header">What does Jev do?<button data-href="#What-does-Jev-do" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -39,16 +39,16 @@ title: إنشاء RAG باستخدام Milvus + PII Masker
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يقدم طلب Jev السياق وسؤال تقييم واحد أو أكثر. وتشمل <a href="https://docs.typesafe.ai/primitives">مخرجاته المحددة</a> نوعًا من الاختيار بين خيارات ثابتة، ودرجة مرتبة، واحتمال «نعم» أو «لا». تتيح هذه المخرجات لرمز التطبيق اتخاذ قرار دون تحليل تفسير مفتوح الصيغة. ولا يزال بإمكان نموذج التوليد كتابة إجابة أو استعلام بحث متابعة عند الحاجة.</p>
-<p>على سبيل المثال، يسأل مستخدم عن كيفية تثبيت Atlas v2. يمكن لـ Milvus تقييد الاسترجاع على وثائق الإصدار v2 وإرجاع مقاطع مشابهة حول التثبيت والترقيات واستكشاف الأخطاء وإصلاحها. ثم يقوم Jev بتقييم المقاطع التي تشرح الإعداد الأولي. يقوم التطبيق بتمرير الأدلة المختارة إلى نموذج لتوليد الإجابات.</p>
-<p>المسؤوليات واضحة ومباشرة:</p>
+    </button></h2><p>A Jev request supplies context and one or more judgment questions. Its <a href="https://docs.typesafe.ai/primitives">typed outputs</a> include a choice among fixed options, an ordered score and a yes/no probability. These outputs let application code make a decision without parsing a free-form explanation. A generation model can still write an answer or a follow-up search query when needed.</p>
+<p>For example, a user asks how to install Atlas v2. Milvus can restrict retrieval to v2 documentation and return similar passages about installation, upgrades and troubleshooting. Jev then evaluates which passages explain the initial setup. The application passes the selected evidence to an answer-generating model.</p>
+<p>The responsibilities are straightforward:</p>
 <ol>
-<li><strong>الاسترجاع باستخدام Milvus:</strong> العثور على النتائج المرشحة ضمن قيود البيانات الوصفية المطلوبة.</li>
-<li><strong>التقييم باستخدام Jev:</strong> تقييم تلك الاختيارات المرشحة وفقًا للسؤال ومعيار خاص بالمهمة.</li>
-<li><strong>التنفيذ في كود التطبيق:</strong> إعادة ترتيب النتائج، وتصفية السياق، وإعادة استخدام إجابة ما، أو مواصلة البحث.</li>
+<li><strong>Retrieve with Milvus:</strong> find candidates within the required metadata constraints.</li>
+<li><strong>Judge with Jev:</strong> evaluate those candidates against the question and a task-specific criterion.</li>
+<li><strong>Act in application code:</strong> reorder results, filter context, reuse an answer or continue searching.</li>
 </ol>
-<p>تتم بعض القرارات قبل عملية الاسترجاع. يمكن لـ Jev اختيار نطاق البحث أو تقييم المستندات الواردة قبل دخولها إلى المجموعة. ويظل التحكم في الوصول والمرشحات الدقيقة من مسؤولية التطبيق.</p>
-<h2 id="Explore-the-search-scenarios" class="common-anchor-header">استكشف سيناريوهات البحث<button data-href="#Explore-the-search-scenarios" class="anchor-icon" translate="no">
+<p>Some decisions happen before retrieval. Jev can choose a search scope or assess incoming documents before they enter a collection. Access control and exact filters remain the application’s responsibility.</p>
+<h2 id="Explore-the-search-scenarios" class="common-anchor-header">Explore the search scenarios<button data-href="#Explore-the-search-scenarios" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -63,28 +63,8 @@ title: إنشاء RAG باستخدام Milvus + PII Masker
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>تحتوي <a href="https://github.com/milvus-io/bootcamp/tree/master/bootcamp/RAG/search_with_jev">مجموعة «البحث باستخدام Jev»</a> على تسعة دروس تعليمية قابلة للتنفيذ. يستخدم كل منها مجموعة بيانات اصطناعية صغيرة ويعرض السجلات المسترجعة، والتقييمات، والإجراء الناتج.</p>
-<h3 id="Select-better-evidence" class="common-anchor-header">اختر أدلة أفضل<button data-href="#Select-better-evidence" class="anchor-icon" translate="no">
-      <svg translate="no"
-        aria-hidden="true"
-        focusable="false"
-        height="20"
-        version="1.1"
-        viewBox="0 0 16 16"
-        width="16"
-      >
-        <path
-          fill="#0092E4"
-          fill-rule="evenodd"
-          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
-        ></path>
-      </svg>
-    </button></h3><ul>
-<li><a href="https://github.com/milvus-io/bootcamp/blob/master/bootcamp/RAG/search_with_jev/rerank_search_results.ipynb">إعادة ترتيب نتائج البحث</a>: إعادة ترتيب الوثائق وذكريات وكيل الترميز. قد تشبه الذكرى المتعلقة بخطأ في منفذ الكمبيوتر المحمول مشكلة في اتصال الحاوية؛ بينما تسجل الذكرى الأكثر فائدة الإصلاح الفعلي للمضيف الخاص بالحاوية.</li>
-<li><a href="https://github.com/milvus-io/bootcamp/blob/master/bootcamp/RAG/search_with_jev/filter_search_context.ipynb">تصفية السياق المسترجع</a>: التمييز بين تعليمات التثبيت الأولية ومقاطع الترقية واستكشاف الأخطاء وإصلاحها بعد أن يطبق Milvus مرشح الإصدار.</li>
-<li><a href="https://github.com/milvus-io/bootcamp/blob/master/bootcamp/RAG/search_with_jev/rerank_graph_relations.ipynb">إعادة ترتيب علاقات الرسم البياني</a>: أجب عن سؤال حول مكان ميلاد مؤلف كتاب عن طريق اختيار كل من الجسر الذي يربط بين الكتاب والمؤلف والعلاقة بين المؤلف ومكان الميلاد، ثم احتفظ بهذا الترتيب عند استرجاع المقاطع المصدرية.</li>
-</ul>
-<h3 id="Control-search-and-answer-reuse" class="common-anchor-header">التحكم في البحث وإعادة استخدام الإجابات<button data-href="#Control-search-and-answer-reuse" class="anchor-icon" translate="no">
+    </button></h2><p>The <a href="https://github.com/milvus-io/bootcamp/tree/master/bootcamp/RAG/search_with_jev">Search with Jev collection</a> contains nine runnable tutorials. Each uses a small synthetic dataset and shows the retrieved records, judgments and resulting action.</p>
+<h3 id="Select-better-evidence" class="common-anchor-header">Select better evidence<button data-href="#Select-better-evidence" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -100,11 +80,11 @@ title: إنشاء RAG باستخدام Milvus + PII Masker
         ></path>
       </svg>
     </button></h3><ul>
-<li><a href="https://github.com/milvus-io/bootcamp/blob/master/bootcamp/RAG/search_with_jev/decide_search_stopping.ipynb">تحديد متى يتوقف البحث</a>: يقترح نموذج التوليد عمليات بحث من الأدلة المتراكمة، بينما يقرر Jev ما إذا كان السؤال الأصلي قابلاً للإجابة. تشمل الأمثلة إجابة مباشرة، وسؤالاً يتطلب خطوتين، وحقيقة غير متوفرة تصل إلى حد البحث دون إجابة.</li>
-<li><a href="https://github.com/milvus-io/bootcamp/blob/master/bootcamp/RAG/search_with_jev/route_search_queries.ipynb">توجيه استعلامات البحث</a>: اختر البحث في الوثائق أو الفواتير أو الذاكرة، ثم قم بتطبيق مرشح Milvus المقابل. أما الاستعلامات خارج النطاق فتسلك مسارًا منفصلاً.</li>
-<li><a href="https://github.com/milvus-io/bootcamp/blob/master/bootcamp/RAG/search_with_jev/validate_semantic_cache.ipynb">التحقق من صحة إعادة استخدام ذاكرة التخزين المؤقت الدلالية</a>: استرجع طلبًا مشابهًا مخزّنًا في ذاكرة التخزين المؤقت، ثم تحقق مما إذا كانت إجابته تلبي أيضًا متطلبات المهمة واللغة والسياق للطلب الجديد.</li>
+<li><a href="https://github.com/milvus-io/bootcamp/blob/master/bootcamp/RAG/search_with_jev/rerank_search_results.ipynb">Rerank search results</a>: reorder documentation and coding-agent memories. A memory about a laptop port error may resemble a container connection problem; a more useful memory records the actual container-host fix.</li>
+<li><a href="https://github.com/milvus-io/bootcamp/blob/master/bootcamp/RAG/search_with_jev/filter_search_context.ipynb">Filter retrieved context</a>: distinguish initial-installation instructions from upgrade and troubleshooting passages after Milvus applies the version filter.</li>
+<li><a href="https://github.com/milvus-io/bootcamp/blob/master/bootcamp/RAG/search_with_jev/rerank_graph_relations.ipynb">Rerank graph relations</a>: answer a question about a book author’s birthplace by selecting both the book-to-author bridge and the author-to-birthplace relation, then preserve that ranking when fetching source passages.</li>
 </ul>
-<h3 id="Improve-and-inspect-the-knowledge-pipeline" class="common-anchor-header">تحسين وفحص مسار المعرفة<button data-href="#Improve-and-inspect-the-knowledge-pipeline" class="anchor-icon" translate="no">
+<h3 id="Control-search-and-answer-reuse" class="common-anchor-header">Control search and answer reuse<button data-href="#Control-search-and-answer-reuse" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -120,11 +100,11 @@ title: إنشاء RAG باستخدام Milvus + PII Masker
         ></path>
       </svg>
     </button></h3><ul>
-<li><a href="https://github.com/milvus-io/bootcamp/blob/master/bootcamp/RAG/search_with_jev/curate_search_data.ipynb">تنظيم المستندات قبل الفهرسة</a>: التمييز بين الإرشادات التشغيلية الجوهرية والمواد الترويجية أو غير المكتملة، من خلال إجراءات منفصلة للفهرسة والمراجعة والاستبعاد.</li>
-<li><a href="https://github.com/milvus-io/bootcamp/blob/master/bootcamp/RAG/search_with_jev/check_search_guardrails.ipynb">فحص المقاطع المسترجعة</a>: تحديد النص الذي يحاول إعادة توجيه المساعد، مع الاحتفاظ بالنصائح الأمنية العادية. هذه خطوة فحص إضافية، وليست ضمانًا أمنيًا.</li>
-<li><a href="https://github.com/milvus-io/bootcamp/blob/master/bootcamp/RAG/search_with_jev/evaluation_with_jev.ipynb">تقييم أدلة البحث</a>: تقييم مدى صلة المقطع بالموضوع، وما إذا كانت الأدلة كافية، وما إذا كانت الإجابة تتضمن ادعاءات غير مدعومة. تم في الأمثلة إزالة الأدلة أو إضافة عبارة غير مدعومة عن قصد لإبراز الفرق بوضوح.</li>
+<li><a href="https://github.com/milvus-io/bootcamp/blob/master/bootcamp/RAG/search_with_jev/decide_search_stopping.ipynb">Decide when to stop searching</a>: a generation model proposes searches from accumulated evidence, while Jev judges whether the original question is answerable. The examples cover a direct answer, a two-hop question and an unavailable fact that reaches the search limit without an answer.</li>
+<li><a href="https://github.com/milvus-io/bootcamp/blob/master/bootcamp/RAG/search_with_jev/route_search_queries.ipynb">Route search queries</a>: select documentation, billing or memory search, then apply the corresponding Milvus filter. An out-of-scope query takes a separate path.</li>
+<li><a href="https://github.com/milvus-io/bootcamp/blob/master/bootcamp/RAG/search_with_jev/validate_semantic_cache.ipynb">Validate semantic cache reuse</a>: retrieve a similar cached request, then check whether its answer also satisfies the new request’s task, language and context requirements.</li>
 </ul>
-<h2 id="A-ready-made-reranking-interface" class="common-anchor-header">واجهة جاهزة لإعادة الترتيب<button data-href="#A-ready-made-reranking-interface" class="anchor-icon" translate="no">
+<h3 id="Improve-and-inspect-the-knowledge-pipeline" class="common-anchor-header">Improve and inspect the knowledge pipeline<button data-href="#Improve-and-inspect-the-knowledge-pipeline" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -139,10 +119,12 @@ title: إنشاء RAG باستخدام Milvus + PII Masker
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يوفر<a href="https://github.com/milvus-io/milvus-model">نموذج Milvus</a> واجهة برمجة تطبيقات ( <code translate="no">JevRerankFunction</code>) من جانب التطبيق: قم بتمرير استعلام ونصوص المستندات المرشحة، واستقبل النتائج المُقيَّمة مع فهارسها الأصلية، مرتبة حسب الصلة. استخدم تلك الفهارس لإعادة ترتيب السجلات التي يعرضها Milvus.</p>
-<p>تم دمج <a href="https://github.com/milvus-io/milvus-model/pull/90">تكامل Jev</a>. راجع <a href="https://github.com/milvus-io/milvus-model/blob/main/src/pymilvus/model/reranker/jev.py">خيارات التنفيذ والمنشئ</a> لواجهة برمجة التطبيقات (API) الحالية. وهي تقبل <code translate="no">TYPESAFE_API_KEY</code> وتستخدم <code translate="no">jev-latest</code> كإعداد افتراضي. استخدم إصدار الحزمة الذي يتضمن هذا التكامل.</p>
-<p>يستخدم الغلاف الحالي موجه صلة قائمًا على «الادعاء والدليل». تأكد من أن هذا المعيار يناسب مهمتك. بالنسبة للأحكام المخصصة مثل توافق الذاكرة أو الإيقاف أو التوجيه، اتبع الدروس المرتبطة باستخدام واجهة برمجة التطبيقات TypeSafe مباشرةً. توضح الدروس استدعاءات واجهة برمجة التطبيقات المباشرة من كود تطبيق Python.</p>
-<h2 id="Try-it-with-Milvus" class="common-anchor-header">جربها مع Milvus<button data-href="#Try-it-with-Milvus" class="anchor-icon" translate="no">
+    </button></h3><ul>
+<li><a href="https://github.com/milvus-io/bootcamp/blob/master/bootcamp/RAG/search_with_jev/curate_search_data.ipynb">Curate documents before indexing</a>: distinguish substantive operational guidance from promotional or incomplete material, with separate index, review and exclude actions.</li>
+<li><a href="https://github.com/milvus-io/bootcamp/blob/master/bootcamp/RAG/search_with_jev/check_search_guardrails.ipynb">Screen retrieved passages</a>: identify text that tries to redirect an assistant, while retaining ordinary security advice. This is an additional screening step, not a security guarantee.</li>
+<li><a href="https://github.com/milvus-io/bootcamp/blob/master/bootcamp/RAG/search_with_jev/evaluation_with_jev.ipynb">Evaluate search evidence</a>: judge passage relevance, whether evidence is sufficient and whether an answer makes unsupported claims. The examples deliberately remove evidence or add an unsupported statement to make the distinction visible.</li>
+</ul>
+<h2 id="A-ready-made-reranking-interface" class="common-anchor-header">A ready-made reranking interface<button data-href="#A-ready-made-reranking-interface" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -157,11 +139,10 @@ title: إنشاء RAG باستخدام Milvus + PII Masker
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><a href="https://colab.research.google.com/github/milvus-io/bootcamp/blob/master/bootcamp/RAG/search_with_jev/rerank_search_results.ipynb">افتح البرنامج التعليمي الخاص بإعادة الترتيب في Colab</a> للبدء في استرجاع المرشحين وترتيبهم. للاطلاع على الإعداد المحلي وقائمة البرامج التعليمية الكاملة، راجع ملف <a href="https://github.com/milvus-io/bootcamp/blob/master/bootcamp/RAG/search_with_jev/README.md">README الخاص بالمجموعة</a>.</p>
-<p>تستخدم الأمثلة <a href="https://aistudio.google.com/apikey">مفتاح واجهة برمجة تطبيقات (API) لـ Gemini</a> للتضمينات <a href="https://console.typesafe.ai/">ومفتاح واجهة برمجة تطبيقات (API) لـ TypeSafe</a> لـ Jev. كما يستخدم البرنامج التعليمي الخاص بالبحث التفاعلي (agentic-search) Gemini لتوليد الاستعلامات والإجابات. يتم إرسال نص نموذجي إلى مزودي واجهة برمجة التطبيقات (API) هؤلاء، وقد تستهلك الاستدعاءات رصيدًا.</p>
-<p>تعمل البرامج التعليمية مع <a href="https://milvus.io/docs/milvus_lite.md">Milvus Lite</a> بشكل افتراضي وتتضمن خيارات اتصال بخادم Milvus أو <a href="https://zilliz.com/cloud">Zilliz Cloud</a>. وينطبق نفس تقسيم العمل عبر جميع عمليات النشر: يقوم Milvus باسترداد المرشحين، ويقوم التطبيق بإرسال النص ذي الصلة إلى Jev للتقييم.</p>
-<p>تعامل مع الأمثلة كنقاط انطلاق لمعاييرك وعتباتك الخاصة. لا تضمن درجة الصلة صحة الإجابة، ولا تحدد مجموعات البيانات التعليمية الصغيرة هذه دقة أو سرعة الإنتاج.</p>
-<h2 id="Explore-implementations-and-evaluation-results" class="common-anchor-header">استكشاف عمليات التنفيذ ونتائج التقييم<button data-href="#Explore-implementations-and-evaluation-results" class="anchor-icon" translate="no">
+    </button></h2><p><a href="https://github.com/milvus-io/milvus-model">Milvus Model</a> provides an application-side <code translate="no">JevRerankFunction</code>: pass a query and candidate document texts, and receive scored results with their original indices, sorted by relevance. Use those indices to reorder the records returned by Milvus.</p>
+<p>The <a href="https://github.com/milvus-io/milvus-model/pull/90">Jev integration</a> has been merged. See the <a href="https://github.com/milvus-io/milvus-model/blob/main/src/pymilvus/model/reranker/jev.py">implementation and constructor options</a> for the current API. It accepts <code translate="no">TYPESAFE_API_KEY</code> and defaults to <code translate="no">jev-latest</code>. Use a package version that includes this integration.</p>
+<p>The current wrapper uses a claim-and-evidence relevance prompt. Check that this criterion fits your task. For custom judgments such as memory compatibility, stopping or routing, follow the linked tutorials using the TypeSafe API directly. The tutorials demonstrate direct API calls from Python application code.</p>
+<h2 id="Try-it-with-Milvus" class="common-anchor-header">Try it with Milvus<button data-href="#Try-it-with-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -176,16 +157,35 @@ title: إنشاء RAG باستخدام Milvus + PII Masker
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>تطبق المشاريع مفتوحة المصدر التالية هذه الأفكار على سير عمل البحث الأكبر حجمًا. وتشرح التقارير المرتبطة بها مجموعات البيانات والمقارنات والقيود الخاصة بكل تجربة.</p>
+    </button></h2><p><a href="https://colab.research.google.com/github/milvus-io/bootcamp/blob/master/bootcamp/RAG/search_with_jev/rerank_search_results.ipynb">Open the reranking tutorial in Colab</a> to start with candidate retrieval and ranking. For local setup and the full tutorial list, see the <a href="https://github.com/milvus-io/bootcamp/blob/master/bootcamp/RAG/search_with_jev/README.md">collection README</a>.</p>
+<p>The examples use a <a href="https://aistudio.google.com/apikey">Gemini API key</a> for embeddings and a <a href="https://console.typesafe.ai/">TypeSafe API key</a> for Jev. The agentic-search tutorial also uses Gemini for query and answer generation. Sample text is sent to these API providers, and calls may consume credits.</p>
+<p>The tutorials run with <a href="https://milvus.io/docs/milvus_lite.md">Milvus Lite</a> by default and include connection options for a Milvus server or <a href="https://zilliz.com/cloud">Zilliz Cloud</a>. The same division of work applies across deployments: Milvus retrieves candidates, and the application sends the relevant text to Jev for judgment.</p>
+<p>Treat the examples as starting points for your own criteria and thresholds. A relevance score does not guarantee an answer is correct, and these small teaching datasets do not establish production accuracy or speed.</p>
+<h2 id="Explore-implementations-and-evaluation-results" class="common-anchor-header">Explore implementations and evaluation results<button data-href="#Explore-implementations-and-evaluation-results" class="anchor-icon" translate="no">
+      <svg translate="no"
+        aria-hidden="true"
+        focusable="false"
+        height="20"
+        version="1.1"
+        viewBox="0 0 16 16"
+        width="16"
+      >
+        <path
+          fill="#0092E4"
+          fill-rule="evenodd"
+          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+        ></path>
+      </svg>
+    </button></h2><p>The following open-source projects apply these ideas to larger search workflows. Their linked reports explain the datasets, comparisons and limitations of each experiment.</p>
 <table>
 <thead>
-<tr><th>المشروع</th><th>حالة استخدام البحث</th><th>عمل Jev</th></tr>
+<tr><th>Project</th><th>Search use case</th><th>Jev work</th></tr>
 </thead>
 <tbody>
-<tr><td><a href="https://github.com/zilliztech/memsearch">MemSearch</a></td><td>ذاكرة Markdown دائمة لوكلاء البرمجة</td><td><a href="https://github.com/zilliztech/memsearch/blob/main/src/memsearch/jev_reranker.py">تنفيذ Jev</a> · <a href="https://github.com/zilliztech/memsearch/blob/main/evaluation/reranking-evaluation.md">التقييم</a></td></tr>
-<tr><td><a href="https://github.com/zilliztech/vector-graph-rag">الرسم البياني المتجه RAG</a></td><td>استرجاع المتجهات والرسوم البيانية للأسئلة متعددة الخطوات</td><td><a href="https://github.com/zilliztech/vector-graph-rag/blob/main/src/vector_graph_rag/llm/jev.py">تنفيذ Jev</a> · <a href="https://github.com/zilliztech/vector-graph-rag/blob/main/evaluation/jev/README.md">التقييم</a></td></tr>
-<tr><td><a href="https://github.com/zilliztech/deep-searcher">DeepSearcher</a></td><td>البحث التكراري على المعرفة الخاصة</td><td><a href="https://github.com/zilliztech/deep-searcher/blob/master/evaluation/jev_stopping/run_full100.py">مشغل التجارب</a> · <a href="https://github.com/zilliztech/deep-searcher/blob/master/evaluation/jev_stopping/README.md">تقييم إيقاف البحث</a> (تجربة مستقلة)</td></tr>
-<tr><td><a href="https://github.com/zilliztech/GPTCache">GPTCache</a></td><td>إعادة استخدام الإجابات للطلبات المتوافقة</td><td><a href="https://github.com/zilliztech/GPTCache/blob/main/gptcache/similarity_evaluation/jev.py">تنفيذ Jev</a> · <a href="https://github.com/zilliztech/GPTCache/blob/main/examples/benchmark/reuse_compatibility/README.md">التقييم</a></td></tr>
+<tr><td><a href="https://github.com/zilliztech/memsearch">MemSearch</a></td><td>Persistent Markdown memory for coding agents</td><td><a href="https://github.com/zilliztech/memsearch/blob/main/src/memsearch/jev_reranker.py">Jev implementation</a> · <a href="https://github.com/zilliztech/memsearch/blob/main/evaluation/reranking-evaluation.md">Evaluation</a></td></tr>
+<tr><td><a href="https://github.com/zilliztech/vector-graph-rag">Vector Graph RAG</a></td><td>Vector and graph retrieval for multi-hop questions</td><td><a href="https://github.com/zilliztech/vector-graph-rag/blob/main/src/vector_graph_rag/llm/jev.py">Jev implementation</a> · <a href="https://github.com/zilliztech/vector-graph-rag/blob/main/evaluation/jev/README.md">Evaluation</a></td></tr>
+<tr><td><a href="https://github.com/zilliztech/deep-searcher">DeepSearcher</a></td><td>Iterative search over private knowledge</td><td><a href="https://github.com/zilliztech/deep-searcher/blob/master/evaluation/jev_stopping/run_full100.py">Experiment runner</a> · <a href="https://github.com/zilliztech/deep-searcher/blob/master/evaluation/jev_stopping/README.md">Search-stopping evaluation</a> (standalone experiment)</td></tr>
+<tr><td><a href="https://github.com/zilliztech/GPTCache">GPTCache</a></td><td>Reuse answers to compatible requests</td><td><a href="https://github.com/zilliztech/GPTCache/blob/main/gptcache/similarity_evaluation/jev.py">Jev implementation</a> · <a href="https://github.com/zilliztech/GPTCache/blob/main/examples/benchmark/reuse_compatibility/README.md">Evaluation</a></td></tr>
 </tbody>
 </table>
-<p>تتمثل مساهمة DeepSearcher في تجربة مستقلة لوقف البحث. تظهر روابط التنفيذ الأخرى تكاملات Jev الخاصة بمهام محددة. يجب قراءة نتائج هذه المشاريع في سياق التقييم الخاص بها، بدلاً من التعامل معها كمعيار قياس مشترك.</p>
+<p>DeepSearcher’s contribution is a standalone search-stopping experiment. The other implementation links show task-specific Jev integrations. Results from these projects should be read in their own evaluation context, rather than treated as a shared benchmark.</p>

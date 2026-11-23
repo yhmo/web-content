@@ -1,9 +1,11 @@
 ---
 id: array_data_type.md
-title: 陣列欄位
-summary: ARRAY 欄位用於儲存一組具有相同資料類型的有序元素。以下是一個關於 ARRAY 欄位如何儲存資料的範例：
+title: Array Field
+summary: >-
+  An ARRAY field stores an ordered set of elements of the same data type. Here's
+  an example of how ARRAY fields store data:
 ---
-<h1 id="Array-Field" class="common-anchor-header">陣列欄位<button data-href="#Array-Field" class="anchor-icon" translate="no">
+<h1 id="Array-Field" class="common-anchor-header">Array Field<button data-href="#Array-Field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,14 +20,14 @@ summary: ARRAY 欄位用於儲存一組具有相同資料類型的有序元素�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>ARRAY 欄位用於儲存同一資料類型的元素所組成的有序清單。</p>
-<p>以下是一個關於 ARRAY 欄位如何儲存資料的範例：</p>
+    </button></h1><p>An ARRAY field stores an ordered list of elements of the same data type.</p>
+<p>Here’s an example of how ARRAY fields store data:</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
   <span class="hljs-attr">&quot;tags&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;pop&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;rock&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;classic&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
   <span class="hljs-attr">&quot;ratings&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-number">5</span><span class="hljs-punctuation">,</span> <span class="hljs-number">4</span><span class="hljs-punctuation">,</span> <span class="hljs-number">3</span><span class="hljs-punctuation">]</span>
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Limits" class="common-anchor-header">限制<button data-href="#Limits" class="anchor-icon" translate="no">
+<h2 id="Limits" class="common-anchor-header">Limits<button data-href="#Limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -41,16 +43,17 @@ summary: ARRAY 欄位用於儲存一組具有相同資料類型的有序元素�
         ></path>
       </svg>
     </button></h2><ul>
-<li><strong>預設值</strong>：ARRAY 欄位不支援預設值。不過，您可以將 `<code translate="no">nullable</code> ` 屬性設定為 `<code translate="no">True</code> `，以允許空值。詳細資訊請參閱「<a href="/docs/zh-hant/nullable-and-default.md">可為空與預設值</a>」。</li>
+<li><strong>Default Values</strong>: ARRAY fields do not support default values. However, you can set the <code translate="no">nullable</code> attribute to <code translate="no">True</code> to allow null values. For details, refer to <a href="/docs/zh-hant/nullable-and-default.md">Nullable & Default</a>.</li>
 </ul>
 <ul>
-<li><strong>資料類型：</strong>ARRAY 欄位中的所有元素必須具有相同資料類型，該類型由<code translate="no">element_type</code> 參數定義。當<code translate="no">element_type</code> 設定為<code translate="no">VARCHAR</code> 時，您還必須指定<code translate="no">max_length</code> ，該參數定義每個陣列元素允許的最大位元組數。<code translate="no">element_type</code> 接受 Milvus 支援的任何標量資料類型，惟<code translate="no">JSON</code> 除外。若為<code translate="no">element_type=STRUCT</code> ，請使用 StructArray 欄位並提供<code translate="no">struct_schema</code> ；詳情請參閱<a href="/docs/zh-hant/create-structarray-field.md">StructArray</a>。 頂層的 ARRAY 欄位無法包含向量或嵌套陣列，且其各元素不得為 null；在 Milvus 3.0.6 及後續版本中，此類形式僅適用於 StructArray 欄位內的子欄位。</li>
+<li><strong>Data Type:</strong> All elements in an ARRAY field must share the same data type, which is defined by the <code translate="no">element_type</code> parameter. When <code translate="no">element_type</code> is set to <code translate="no">VARCHAR</code>, you must also specify <code translate="no">max_length</code>, which defines the maximum number of bytes allowed for each array element. The <code translate="no">element_type</code> accepts any scalar data type supported by Milvus, with the exception of <code translate="no">JSON</code>. For <code translate="no">element_type=STRUCT</code>, use a StructArray field and provide a <code translate="no">struct_schema</code>; for details, refer to <a href="/docs/zh-hant/create-structarray-field.md">StructArray</a>. A top-level ARRAY field cannot hold vectors or nested arrays, and its elements cannot be null individually; these forms are available only for subfields inside a StructArray field in Milvus 3.0.6 and later.</li>
 </ul>
 <ul>
-<li><p><strong>陣列容量</strong>：ARRAY 欄位的元素數量必須小於或等於建立陣列時所定義的最大容量，如<code translate="no">max_capacity</code> 所指定。該值應為<strong>1</strong>至<strong>4096</strong> 之間的整數。</p></li>
-<li><p><strong>字串處理</strong>：陣列欄位中的字串值將以原始形式儲存，不會進行語義轉義或轉換。例如，<code translate="no">'a&quot;b'</code> 、<code translate="no">&quot;a'b&quot;</code> 、<code translate="no">'a\'b'</code> 以及<code translate="no">&quot;a\&quot;b&quot;</code> 會以輸入時的形式儲存，而<code translate="no">'a'b'</code> 和<code translate="no">&quot;a&quot;b&quot;</code> 則被視為無效值。</p></li>
+<li><p><strong>Array Capacity</strong>: The number of elements in an ARRAY field must be less than or equal to the maximum capacity defined when the Array was created, as specified by <code translate="no">max_capacity</code>. The value must be greater than 0 and must not exceed <code translate="no">proxy.maxArrayCapacity</code>, which defaults to <strong>4096</strong>.</p></li>
+<li><p><strong>Text Match</strong>: <code translate="no">TEXT_MATCH</code>, <code translate="no">TEXT_MATCH_FUZZY</code>, and <code translate="no">PHRASE_MATCH</code> support only <code translate="no">VARCHAR</code> and <code translate="no">TEXT</code> fields; applying them to an ARRAY field returns an error. <code translate="no">enable_analyzer</code> and <code translate="no">enable_match</code> have no effect on ARRAY fields. For details on text match, refer to <a href="/docs/zh-hant/keyword-match.md">Text Match</a>.</p></li>
+<li><p><strong>String Handling</strong>: String values in Array fields are stored as-is, without semantic escaping or conversion. For example, <code translate="no">'a&quot;b'</code>, <code translate="no">&quot;a'b&quot;</code>, <code translate="no">'a\'b'</code>, and <code translate="no">&quot;a\&quot;b&quot;</code> are stored as entered, while <code translate="no">'a'b'</code> and <code translate="no">&quot;a&quot;b&quot;</code> are considered invalid values.</p></li>
 </ul>
-<h2 id="Add-ARRAY-field" class="common-anchor-header">新增 ARRAY 欄位<button data-href="#Add-ARRAY-field" class="anchor-icon" translate="no">
+<h2 id="Add-ARRAY-field" class="common-anchor-header">Add ARRAY field<button data-href="#Add-ARRAY-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -65,25 +68,25 @@ summary: ARRAY 欄位用於儲存一組具有相同資料類型的有序元素�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>若要在 Milvus 叢集中使用 ARRAY 欄位，請在建立集合架構時定義相關的欄位類型。此流程包含：</p>
+    </button></h2><p>To add an ARRAY field to the collection schema, set the following parameters:</p>
 <ol>
-<li><p>將 `<code translate="no">datatype</code> ` 設定為受支援的陣列資料型別，即 `<code translate="no">ARRAY</code>`。</p></li>
-<li><p>使用<code translate="no">element_type</code> 參數來指定陣列中元素的資料類型。同一陣列中的所有元素必須具有相同的資料類型。</p></li>
-<li><p>使用 `<code translate="no">max_capacity</code> ` 參數來定義陣列的最大容量，即其可容納的元素最大數量。</p></li>
+<li><p>Set the field data type to <code translate="no">ARRAY</code>.</p></li>
+<li><p>Set <code translate="no">element_type</code> to the shared data type of the elements.</p></li>
+<li><p>Set <code translate="no">max_capacity</code> to the maximum number of elements.</p></li>
 </ol>
-<p>以下是定義包含 ARRAY 欄位的集合模式的方法：</p>
+<p>Here’s how to define a collection schema that includes ARRAY fields:</p>
 <div class="alert note">
-<p>若在定義架構時設定 `<code translate="no">enable_dynamic_field=True</code> `，Milvus 允許您插入未事先定義的標量欄位。然而，此舉可能會增加查詢與管理的複雜度，進而影響效能。如需更多資訊，請參閱「<a href="/docs/zh-hant/enable-dynamic-field.md">動態欄位</a>」。</p>
+<p>To insert fields not defined in the schema, enable the <a href="/docs/zh-hant/enable-dynamic-field.md">dynamic field</a>.</p>
 </div>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Import necessary libraries</span>
 <span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
@@ -358,7 +361,7 @@ CollectionSchema schema = <span class="hljs-keyword">new</span>()
     ]
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Set-index-params" class="common-anchor-header">設定索引參數<button data-href="#Set-index-params" class="anchor-icon" translate="no">
+<h2 id="Set-index-params" class="common-anchor-header">Set index params<button data-href="#Set-index-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -373,17 +376,21 @@ CollectionSchema schema = <span class="hljs-keyword">new</span>()
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>建立索引有助於提升搜尋與查詢效能。在 Milvus 叢集中，向量欄位必須建立索引，但標量欄位則為選用。</p>
-<p>以下範例針對向量欄位 `<code translate="no">embedding</code> ` 及 ARRAY 欄位 `<code translate="no">tags</code>` 建立索引，兩者皆使用 `<code translate="no">AUTOINDEX</code> ` 索引類型。採用此類型時，Milvus 會根據資料類型自動選取最適合的索引。您亦可針對每個欄位自訂索引類型與參數。詳細資訊請參閱<a href="/docs/zh-hant/index-explained.md">《索引說明》</a>。</p>
+    </button></h2><p>Vector fields require indexes; scalar indexes are optional. This example requests <code translate="no">AUTOINDEX</code> on <code translate="no">embedding</code> and <code translate="no">tags</code>. For explicit ARRAY index choices and filter support, see <a href="#Array-index-support">Array index support</a>.</p>
+<div class="alert note">
+<blockquote>
+<p>Scalar indexes, including <code translate="no">AUTOINDEX</code>, do not support recursive ARRAY fields or arrays with nullable elements. See <a href="/docs/zh-hant/array_data_type.md#Array-index-support">Array index support</a> for ordinary-array filters and <a href="/docs/zh-hant/index-structarray-fields.md#Create-scalar-indexes">Index StructArray Fields</a> for subfield rules.</p>
+</blockquote>
+</div>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Set index params</span>
 index_params = client.prepare_index_params()
@@ -484,7 +491,34 @@ IndexParam[] indexes =
         }
     ]&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Create-collection" class="common-anchor-header">建立集合<button data-href="#Create-collection" class="anchor-icon" translate="no">
+<p><details id="Array-index-support">
+<summary><strong>Array index support: index types and accelerated filters</strong></summary></p>
+<p>Scalar indexes on an ordinary ARRAY field index its elements. Choose from the following explicit index types:</p>
+<table>
+<thead>
+<tr><th>Element type</th><th>Explicit index types</th></tr>
+</thead>
+<tbody>
+<tr><td><code translate="no">BOOL</code>, <code translate="no">INT8</code>, <code translate="no">INT16</code>, <code translate="no">INT32</code>, <code translate="no">INT64</code>, <code translate="no">VARCHAR</code></td><td><code translate="no">INVERTED</code>, <code translate="no">BITMAP</code></td></tr>
+<tr><td><code translate="no">FLOAT</code>, <code translate="no">DOUBLE</code></td><td><code translate="no">INVERTED</code></td></tr>
+</tbody>
+</table>
+<p>You can also request <code translate="no">AUTOINDEX</code>; see <a href="/docs/zh-hant/scalar_index.md#AUTOINDEX-behavior">Scalar Index</a> for the default ARRAY selections.</p>
+<p>The following filters can use eligible array indexes:</p>
+<table>
+<thead>
+<tr><th>Filter</th><th>Index behavior</th></tr>
+</thead>
+<tbody>
+<tr><td><code translate="no">ARRAY_CONTAINS</code>, <code translate="no">ARRAY_CONTAINS_ANY</code>, <code translate="no">ARRAY_CONTAINS_ALL</code></td><td><code translate="no">INVERTED</code>, <code translate="no">BITMAP</code>, or an eligible automatic selection can look up elements regardless of position.</td></tr>
+<tr><td>Whole-array <code translate="no">==</code> or <code translate="no">!=</code> on Boolean, integer, or VARCHAR arrays</td><td><code translate="no">INVERTED</code> can find candidates, then check original arrays for order and length. <code translate="no">BITMAP</code> does not serve this candidate path.</td></tr>
+<tr><td>Whole-array comparisons on floating-point arrays</td><td>Fall back to scanning.</td></tr>
+<tr><td>Element access, such as <code translate="no">tags[0]</code>, or array length</td><td>Element-membership indexing does not provide index lookup for these operations.</td></tr>
+</tbody>
+</table>
+<p>For expression syntax, see <a href="/docs/zh-hant/array-operators.md">ARRAY Operators</a>.</p>
+<p></details></p>
+<h2 id="Create-collection" class="common-anchor-header">Create collection<button data-href="#Create-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -499,16 +533,16 @@ IndexParam[] indexes =
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>定義完資料結構與索引後，請建立一個包含 ARRAY 欄位的集合。</p>
+    </button></h2><p>Once the schema and index are defined, create a collection that includes ARRAY fields.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.create_collection(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,
@@ -635,7 +669,7 @@ curl --request POST \
     &quot;collectionName&quot;: &quot;my_collection&quot;
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Insert-data" class="common-anchor-header">插入資料<button data-href="#Insert-data" class="anchor-icon" translate="no">
+<h2 id="Insert-data" class="common-anchor-header">Insert data<button data-href="#Insert-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -650,16 +684,16 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>建立集合後，即可插入包含 ARRAY 欄位的資料。</p>
+    </button></h2><p>After creating the collection, you can insert data that includes ARRAY fields.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Sample data</span>
 data = [
@@ -840,9 +874,9 @@ status = client-&gt;<span class="hljs-built_in">Insert</span>(milvus::<span clas
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>除了插入完整的陣列外，在 Milvus v2.6.17 及後續版本中，<code translate="no">ARRAY</code> 欄位亦支援<code translate="no">upsert</code> API 上的<code translate="no">ARRAY_APPEND</code> 和<code translate="no">ARRAY_REMOVE</code> 部分更新運算子。這些運算子讓您無需先擷取陣列的當前值，即可向現有陣列追加元素或移除符合條件的元素，從而避免了客戶端端的「讀取-修改-寫入」模式。 詳情請參閱「<a href="/docs/zh-hant/upsert-entities.md#Upsert-ARRAY-fields-in-merge-mode">合併模式下對 ARRAY 欄位的 Upsert</a>」。</p>
+<p>Beyond inserting full arrays, <code translate="no">ARRAY</code> fields also support the <code translate="no">ARRAY_APPEND</code> and <code translate="no">ARRAY_REMOVE</code> partial-update operators on the <code translate="no">upsert</code> API in Milvus v2.6.17 and later. These let you append elements to or remove matching elements from an existing array without first retrieving its current value, which avoids the client-side read-modify-write pattern. For details, see <a href="/docs/zh-hant/upsert-entities.md#Upsert-ARRAY-fields-in-merge-mode">Upsert ARRAY fields in merge mode</a>.</p>
 </div>
-<h2 id="Query-with-filter-expressions" class="common-anchor-header">使用篩選表達式進行查詢<button data-href="#Query-with-filter-expressions" class="anchor-icon" translate="no">
+<h2 id="Query-with-filter-expressions" class="common-anchor-header">Query with filter expressions<button data-href="#Query-with-filter-expressions" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -857,17 +891,17 @@ status = client-&gt;<span class="hljs-built_in">Insert</span>(milvus::<span clas
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>插入實體後，請使用 `<code translate="no">query</code> ` 方法來擷取符合指定篩選表達式的實體。</p>
-<p>若要擷取 `<code translate="no">tags</code> ` 不為空的實體：</p>
+    </button></h2><p>After inserting entities, use the <code translate="no">query</code> method to retrieve entities that match the specified filter expressions.</p>
+<p>To retrieve entities where the <code translate="no">tags</code> is not null:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Query entities where `tags` is not null</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;tags IS NOT NULL&#x27;</span>
@@ -974,16 +1008,16 @@ Console.WriteLine(res);
     &quot;outputFields&quot;: [&quot;tags&quot;, &quot;ratings&quot;, &quot;pk&quot;]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>若要擷取 `<code translate="no">ratings</code> ` 的第一個元素值大於 4 的實體：</p>
+<p>To retrieve entities where the value of the first element of <code translate="no">ratings</code> is greater than 4:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;ratings[0] &gt; 4&#x27;</span>
 
@@ -1090,7 +1124,7 @@ curl --request POST \
   &quot;outputFields&quot;: [&quot;tags&quot;, &quot;ratings&quot;, &quot;embedding&quot;]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Vector-search-with-filter-expressions" class="common-anchor-header">搭配篩選表達式的向量搜尋<button data-href="#Vector-search-with-filter-expressions" class="anchor-icon" translate="no">
+<h2 id="Vector-search-with-filter-expressions" class="common-anchor-header">Vector search with filter expressions<button data-href="#Vector-search-with-filter-expressions" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1105,16 +1139,16 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>除了基本的標量欄位篩選外，您還可以將向量相似度搜尋與標量欄位篩選器結合使用。例如，以下程式碼展示了如何在向量搜尋中加入標量欄位篩選器：</p>
+    </button></h2><p>Use ARRAY filters in vector search to restrict the eligible entities:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;tags[0] == &quot;pop&quot;&#x27;</span>
 
@@ -1268,4 +1302,4 @@ SearchResp searchResp = <span class="hljs-keyword">await</span> client.SearchAsy
     &quot;outputFields&quot;: [&quot;tags&quot;, &quot;ratings&quot;, &quot;embedding&quot;]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>此外，Milvus 支援進階的陣列篩選運算子，例如<code translate="no">ARRAY_CONTAINS</code> 、<code translate="no">ARRAY_CONTAINS_ALL</code> 、<code translate="no">ARRAY_CONTAINS_ANY</code> 以及<code translate="no">ARRAY_LENGTH</code> ，以進一步強化查詢能力。更多詳細資訊，請參閱「<a href="/docs/zh-hant/array-operators.md">陣列運算子</a>」。</p>
+<p>For containment and length filters, see <a href="/docs/zh-hant/array-operators.md">ARRAY Operators</a>.</p>

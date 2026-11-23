@@ -1,9 +1,9 @@
 ---
 id: drop-collection.md
-title: Abgabe von Sammelgut
-summary: 'Sie können eine Sammlung löschen, wenn sie nicht mehr benötigt wird.'
+title: Drop Collection
+summary: You can drop a collection if it is no longer needed.
 ---
-<h1 id="Drop-Collection" class="common-anchor-header">Abgabe von Sammelgut<button data-href="#Drop-Collection" class="anchor-icon" translate="no">
+<h1 id="Drop-Collection" class="common-anchor-header">Drop Collection<button data-href="#Drop-Collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,11 +18,11 @@ summary: 'Sie können eine Sammlung löschen, wenn sie nicht mehr benötigt wird
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Sie können eine Sammlung löschen, wenn sie nicht mehr benötigt wird.</p>
+    </button></h1><p>You can drop a collection if it is no longer needed.</p>
 <div class="alert note">
-<p>Im Gegensatz zum Löschen einer verwalteten Sammlung, bei dem sowohl die Sammlung als auch die Daten entfernt werden, werden beim Löschen einer externen Sammlung nur die Sammlung entfernt, während die Daten erhalten bleiben.</p>
+<p>Unlike dropping a managed collection, which removes both the collection and the data, dropping an external collection only removes the collection and keeps the data intact.</p>
 </div>
-<h2 id="Examples" class="common-anchor-header">Beispiele<button data-href="#Examples" class="anchor-icon" translate="no">
+<h2 id="Examples" class="common-anchor-header">Examples<button data-href="#Examples" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,16 +37,16 @@ summary: 'Sie können eine Sammlung löschen, wenn sie nicht mehr benötigt wird
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Die folgenden Codeausschnitte setzen voraus, dass Sie über eine Sammlung namens <strong>„my_collection“</strong> verfügen.</p>
+    </button></h2><p>The following code snippets assume that you have a collection named <strong>my_collection</strong>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#rust">   Rust</a>
- <a href="#cpp">   C++</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#csharp">   C#</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#cpp">C++</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#csharp">C#</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 

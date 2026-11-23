@@ -1,10 +1,14 @@
 ---
 id: tune_consistency.md
-title: 一貫性レベル
+title: Consistency Level
 summary: >-
-  分散ベクトルデータベースであるMilvusは、読み取りおよび書き込み操作の際に各ノードやレプリカが同一のデータにアクセスできるよう、複数の整合性レベルを提供しています。現在、サポートされている整合性レベルには「Strong」、「Bounded」、「Eventually」、「Session」があり、デフォルトでは「Bounded」が使用されます。
+  As a distributed vector database, Milvus offers multiple levels of consistency
+  to ensure that each node or replica can access the same data during read and
+  write operations. Currently, the supported levels of consistency include
+  Strong, Bounded, Eventually, and Session, with Bounded being the default level
+  of consistency used.
 ---
-<h1 id="Consistency-Level" class="common-anchor-header">一貫性レベル<button data-href="#Consistency-Level" class="anchor-icon" translate="no">
+<h1 id="Consistency-Level" class="common-anchor-header">Consistency Level<button data-href="#Consistency-Level" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -19,8 +23,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>分散ベクトルデータベースであるMilvusは、読み取りおよび書き込み操作の際に各ノードまたはレプリカが同一のデータにアクセスできるように、複数の整合性レベルを提供しています。現在、サポートされている整合性レベルには<strong>「Strong」</strong>、<strong>「Bounded」</strong>、<strong>「Eventually」</strong>、「<strong>Session</strong>」があり、デフォルトでは<strong>「Bounded」</strong>が使用されます。</p>
-<h2 id="Overview" class="common-anchor-header">概要<button data-href="#Overview" class="anchor-icon" translate="no">
+    </button></h1><p>As a distributed vector database, Milvus offers multiple levels of consistency to ensure that each node or replica can access the same data during read and write operations. Currently, the supported levels of consistency include <strong>Strong</strong>, <strong>Bounded</strong>, <strong>Eventually</strong>, and <strong>Session</strong>, with <strong>Bounded</strong> being the default level of consistency used.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -35,35 +39,35 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvusは、ストレージと演算を分離したシステムです。<strong>ストリーミングノードは</strong>、すべての書き込み操作をWrite-Ahead Log（WAL）に追加し、<strong>増え続けるデータ</strong>（WAL内にあり、まだ永続化されていないデータ）を保持します。 リカバリ処理により、成長中のデータは<strong>履歴データ</strong>（MinIOやS3などのオブジェクトストレージに永続化されたシール済みセグメント）に変換され、<strong>クエリノード</strong>によって提供されます。 各検索またはクエリリクエストは、コレクションのWALをホストするストリーミングノード上の<strong>クエリデリゲーター</strong>によって受信されます。デリゲーターはクエリプランを生成し、増大中のデータ部分をローカルで実行し、履歴データ部分を関連するクエリノードに転送し、結果をマージしてから返します。詳細については、<a href="/docs/ja/streaming_service.md">「ストリーミングサービス」</a>を参照してください。</p>
-<p>一貫性を保証するため、Milvusはすべてのメッセージに、WAL内での順序を決定するタイムスタンプ・オラクル（TSO）タイムスタンプを割り当て、データメッセージとともに同期タイムスタンプをWALに継続的に挿入します。 同期タイムスタンプ（syncTs）を受信するたびに、それは ServiceTime として記録されます。つまり、その ServiceTime より前のすべてのデータがクエリから参照可能になります。Milvus は、この ServiceTime に基づいて、一貫性と可用性に関するさまざまなユーザー要件を満たすために、保証タイムスタンプ（GuaranteeTs）を提供します。 ユーザーは、検索リクエストでGuaranteeTsを指定することにより、指定された時点以前のデータを検索範囲に含める必要があることをデリゲーターに通知できます。</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/service-time-and-guarantee-time.png" alt="Service Time And Guarantee Time" class="doc-image" id="service-time-and-guarantee-time" /> 
-   <span>ServiceTime と GuaranteeTime</span>
-  
- </span></p>
-<p>上の図に示すように、GuaranteeTsがServiceTimeより小さい場合、指定された時点以前のすべてのデータはすでに可視化されていることを意味し、検索は直ちに実行されます。GuaranteeTsがServiceTimeより大きい場合、検索はServiceTimeがGuaranteeTsを超えるまで待機してから実行されます。</p>
-<p>ユーザーは、クエリの精度とクエリのレイテンシの間でトレードオフを行う必要があります。一貫性に対する要件が高く、クエリのレイテンシに敏感でない場合は、GuaranteeTsを可能な限り大きな値に設定できます。一方、検索結果を迅速に取得したい場合で、クエリの精度に対する許容度が高い場合は、GuaranteeTsを小さい値に設定できます。</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/consistency-level-illustrated.png" alt="Consistency Level Illustrated" class="doc-image" id="consistency-level-illustrated" /> 
-   <span>一貫性レベルの解説</span>
-  
- </span></p>
-<p>Milvusは、GuaranteeTsが異なる4種類の整合性レベルを提供しています。</p>
+    </button></h2><p>Milvus is a system that separates storage and computation. <strong>Streaming Nodes</strong> append all write operations to the Write-Ahead Log (WAL) and hold the <strong>growing data</strong> — data that is still in the WAL and not yet persisted. A recovery process converts growing data into <strong>historical data</strong> (sealed segments persisted in object storage such as MinIO/S3), which is served by <strong>Query Nodes</strong>. Each search or query request is received by a <strong>Query Delegator</strong> on the Streaming Node that hosts the collection’s WAL: the delegator generates the query plan, executes the growing-data part locally, forwards the historical-data part to the relevant Query Nodes, and merges the results before returning them. For details, refer to <a href="/docs/ja/streaming_service.md">Streaming Service</a>.</p>
+<p>To provide consistency guarantees, Milvus assigns every message a Timestamp Oracle (TSO) timestamp that determines its order in the WAL, and continuously inserts synchronization timestamps into the WAL alongside the data messages. Whenever a synchronization timestamp (syncTs) is received, it is recorded as the ServiceTime, meaning that all data prior to that ServiceTime is visible to queries. Based on the ServiceTime, Milvus provides guarantee timestamps (GuaranteeTs) to meet different user requirements for consistency and availability. Users can inform the delegator of the need to include data prior to a specified point in time in the search scope by specifying GuaranteeTs in their Search requests.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/service-time-and-guarantee-time.png" alt="Service Time And Guarantee Time" class="doc-image" id="service-time-and-guarantee-time" />
+    <span>Service Time And Guarantee Time</span>
+  </span>
+</p>
+<p>As shown in the figure above, if GuaranteeTs is less than ServiceTime, it means that all data before the specified time point is already visible, allowing the search to execute immediately. When GuaranteeTs is greater than ServiceTime, the search must wait until ServiceTime exceeds GuaranteeTs before it can execute.</p>
+<p>Users need to make a trade-off between query accuracy and query latency. If users have high consistency requirements and are not sensitive to query latency, they can set GuaranteeTs to a value as large as possible; if users wish to receive search results quickly and are more tolerant of query accuracy, then GuaranteeTs can be set to a smaller value.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/consistency-level-illustrated.png" alt="Consistency Level Illustrated" class="doc-image" id="consistency-level-illustrated" />
+    <span>Consistency Level Illustrated</span>
+  </span>
+</p>
+<p>Milvus provides four types of consistency levels with different GuaranteeTs.</p>
 <ul>
 <li><p><strong>Strong</strong></p>
-<p>最新のタイムスタンプが GuaranteeTs として使用され、検索は ServiceTime が GuaranteeTs に達するまで待機してから実行されます。</p></li>
+<p>The latest timestamp is used as the GuaranteeTs, and the search has to wait until the ServiceTime meets the GuaranteeTs before executing.</p></li>
 <li><p><strong>Eventual</strong></p>
-<p>GuaranteeTs は 1 などの極めて小さな値に設定され、一貫性チェックを回避することで、検索は現在表示されているデータに対して即座に実行されます。</p></li>
+<p>The GuaranteeTs is set to an extremely small value, such as 1, to avoid consistency checks so that the search executes immediately on the currently visible data.</p></li>
 <li><p><strong>Bounded Staleness</strong></p>
-<p>GuaranteeTs は最新のタイムスタンプよりも前の時点に設定されるため、検索は、一部の最近のデータがまだ表示されていないという許容範囲内で実行されます。</p></li>
-<li><p><strong>セッション</strong></p>
-<p>クライアントがデータを挿入した最新の時点を GuaranteeTs として使用し、クライアントによって挿入されたすべてのデータを検索の対象に含めるようにします。</p></li>
+<p>The GuaranteeTs is set to a time point earlier than the latest timestamp, so that the search executes with a tolerance of certain recent data not yet being visible.</p></li>
+<li><p><strong>Session</strong></p>
+<p>The latest time point at which the client inserts data is used as the GuaranteeTs so that searches can cover all the data inserted by the client.</p></li>
 </ul>
-<p>Milvus は、デフォルトの一貫性レベルとして「Bounded Staleness」を使用します。GuaranteeTs が指定されていない場合、最新の ServiceTime が GuaranteeTs として使用されます。</p>
-<h2 id="Set-Consistency-Level" class="common-anchor-header">一貫性レベルの設定<button data-href="#Set-Consistency-Level" class="anchor-icon" translate="no">
+<p>Milvus uses Bounded Staleness as the default consistency level. If the GuaranteeTs is left unspecified, the latest ServiceTime is used as the GuaranteeTs.</p>
+<h2 id="Set-Consistency-Level" class="common-anchor-header">Set Consistency Level<button data-href="#Set-Consistency-Level" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -78,8 +82,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>コレクションの作成時、および検索やクエリの実行時に、さまざまな一貫性レベルを設定できます。</p>
-<h3 id="Set-Consistency-Level-upon-Creating-Collection" class="common-anchor-header">コレクション作成時の整合性レベルの設定<button data-href="#Set-Consistency-Level-upon-Creating-Collection" class="anchor-icon" translate="no">
+    </button></h2><p>You can set the consistency level when you create a collection, alter it after the collection is created, or override it for individual searches and queries.</p>
+<h3 id="Set-Consistency-Level-upon-Creating-Collection" class="common-anchor-header">Set Consistency Level upon Creating Collection<button data-href="#Set-Consistency-Level-upon-Creating-Collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -94,12 +98,12 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>コレクションを作成する際、そのコレクション内での検索やクエリの一貫性レベルを設定できます。以下のコード例では、一貫性レベルを「<strong>Bounded</strong>」に設定しています。</p>
+    </button></h3><p>When creating a collection, you can set the consistency level for the searches and queries within the collection. The following code example sets the consistency level to <strong>Bounded</strong>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.create_collection(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,
@@ -164,8 +168,8 @@ curl --request POST \
     \&quot;params\&quot;: <span class="hljs-variable">$params</span>
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">consistency_level</code> パラメータに指定可能な値は、<code translate="no">Strong</code> 、<code translate="no">Bounded</code> 、<code translate="no">Eventually</code> 、および<code translate="no">Session</code> です。</p>
-<h3 id="Set-Consistency-Level-in-Search" class="common-anchor-header">検索における一貫性レベルの設定<button data-href="#Set-Consistency-Level-in-Search" class="anchor-icon" translate="no">
+<p>Possible values for the <code translate="no">consistency_level</code> parameter are <code translate="no">Strong</code>, <code translate="no">Bounded</code>, <code translate="no">Eventually</code>, and <code translate="no">Session</code>.</p>
+<h3 id="Alter-the-Collection-Consistency-Level" class="common-anchor-header">Alter the Collection Consistency Level<button data-href="#Alter-the-Collection-Consistency-Level" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -180,12 +184,63 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>特定の検索の一貫性レベルはいつでも変更できます。次のコード例では、一貫性レベルを「<strong>Bounded</strong>」に戻しています。この変更は、現在の検索リクエストにのみ適用されます。</p>
+    </button></h3><p>You can change the consistency level of an existing collection by altering its <code translate="no">consistency_level</code> property. The new level applies to subsequent searches and queries on the collection that do not specify a consistency level of their own, and changing it does not require releasing the collection. The following code example alters the consistency level to <strong>Eventually</strong>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
+<pre><code translate="no" class="language-python">client.alter_collection_properties(
+    collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,
+<span class="highlighted-wrapper-line">    properties={<span class="hljs-string">&quot;consistency_level&quot;</span>: <span class="hljs-string">&quot;Eventually&quot;</span>}</span>
+)
+<button class="copy-code-btn"></button></code></pre>
+<pre><code translate="no" class="language-java"><span class="hljs-type">AlterCollectionPropertiesReq</span> <span class="hljs-variable">alterCollectionReq</span> <span class="hljs-operator">=</span> AlterCollectionPropertiesReq.builder()
+        .collectionName(<span class="hljs-string">&quot;my_collection&quot;</span>)
+<span class="highlighted-wrapper-line">        .property(<span class="hljs-string">&quot;consistency_level&quot;</span>, <span class="hljs-string">&quot;Eventually&quot;</span>)</span>
+        .build();
+client.alterCollectionProperties(alterCollectionReq);
+<button class="copy-code-btn"></button></code></pre>
+<pre><code translate="no" class="language-go">err = client.AlterCollectionProperties(ctx, milvusclient.NewAlterCollectionPropertiesOption(<span class="hljs-string">&quot;my_collection&quot;</span>).WithProperty(<span class="hljs-string">&quot;consistency_level&quot;</span>, <span class="hljs-string">&quot;Eventually&quot;</span>))
+<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+    fmt.Println(err.Error())
+    <span class="hljs-comment">// handle error</span>
+}
+<button class="copy-code-btn"></button></code></pre>
+<pre><code translate="no" class="language-bash">curl --request POST \
+--url <span class="hljs-string">&quot;<span class="hljs-variable">${CLUSTER_ENDPOINT}</span>/v2/vectordb/collections/alter_properties&quot;</span> \
+--header <span class="hljs-string">&quot;Authorization: Bearer <span class="hljs-variable">${TOKEN}</span>&quot;</span> \
+--header <span class="hljs-string">&quot;Content-Type: application/json&quot;</span> \
+--header <span class="hljs-string">&quot;Request-Timeout: 10&quot;</span> \
+-d <span class="hljs-string">&#x27;{
+    &quot;collectionName&quot;: &quot;my_collection&quot;,
+    &quot;properties&quot;: {
+        &quot;consistency_level&quot;: &quot;Eventually&quot;
+    }
+}&#x27;</span>
+<button class="copy-code-btn"></button></code></pre>
+<h3 id="Set-Consistency-Level-in-Search" class="common-anchor-header">Set Consistency Level in Search<button data-href="#Set-Consistency-Level-in-Search" class="anchor-icon" translate="no">
+      <svg translate="no"
+        aria-hidden="true"
+        focusable="false"
+        height="20"
+        version="1.1"
+        viewBox="0 0 16 16"
+        width="16"
+      >
+        <path
+          fill="#0092E4"
+          fill-rule="evenodd"
+          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+        ></path>
+      </svg>
+    </button></h3><p>You can always change the consistency level for a specific search. The following code example sets the consistency level back to the <strong>Bounded</strong>. The change applies only to the current search request.</p>
+<div class="multipleCode">
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">res = client.search(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,
@@ -230,8 +285,8 @@ curl --request POST \
     &quot;consistencyLevel&quot;: &quot;Bounded&quot;
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>このパラメータは、ハイブリッド検索や検索イテレータでも利用可能です。<code translate="no">consistency_level</code> パラメータの有効な値は、<code translate="no">Strong</code> 、<code translate="no">Bounded</code> 、<code translate="no">Eventually</code> 、および<code translate="no">Session</code> です。</p>
-<h3 id="Set-Consistency-Level-in-Query" class="common-anchor-header">クエリでの一貫性レベルの設定<button data-href="#Set-Consistency-Level-in-Query" class="anchor-icon" translate="no">
+<p>This parameter is also available in hybrid searches and the search iterator. Possible values for the <code translate="no">consistency_level</code> parameter are <code translate="no">Strong</code>, <code translate="no">Bounded</code>, <code translate="no">Eventually</code>, and <code translate="no">Session</code>.</p>
+<h3 id="Set-Consistency-Level-in-Query" class="common-anchor-header">Set Consistency Level in Query<button data-href="#Set-Consistency-Level-in-Query" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -246,12 +301,12 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>特定の検索について、いつでも一貫性レベルを変更できます。次のコード例では、一貫性レベルを「<strong>Eventually</strong>」に設定しています。この設定は、現在のクエリリクエストにのみ適用されます。</p>
+    </button></h3><p>You can always change the consistency level for a specific search. The following code example sets the consistency level to the <strong>Eventually</strong>. The setting applies only to the current query request.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">res = client.query(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,
@@ -293,4 +348,4 @@ curl --request POST \
     &quot;limit&quot;: 3
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>このパラメータは、クエリイテレータでも使用できます。<code translate="no">consistency_level</code> パラメータの有効な値は、<code translate="no">Strong</code> 、<code translate="no">Bounded</code> 、<code translate="no">Eventually</code> 、および<code translate="no">Session</code> です。</p>
+<p>This parameter is also available in the query iterator. Possible values for the <code translate="no">consistency_level</code> parameter are <code translate="no">Strong</code>, <code translate="no">Bounded</code>, <code translate="no">Eventually</code>, and <code translate="no">Session</code>.</p>

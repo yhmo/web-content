@@ -1,13 +1,13 @@
 ---
 id: manage-collections.md
-title: Объяснение понятия «коллекция»
+title: Collection Explained
 summary: >-
-  В Milvus вы можете создавать несколько коллекций для управления данными и
-  добавлять данные в виде сущностей в эти коллекции. Коллекции и сущности
-  аналогичны таблицам и записям в реляционных базах данных. Эта страница поможет
-  вам ознакомиться с коллекциями и связанными с ними понятиями.
+  On Milvus, you can create multiple collections to manage your data, and insert
+  your data as entities into the collections. Collection and entity are similar
+  to tables and records in relational databases. This page helps you to learn
+  about the collection and related concepts.
 ---
-<h1 id="Collection-Explained" class="common-anchor-header">Объяснение понятия «коллекция»<button data-href="#Collection-Explained" class="anchor-icon" translate="no">
+<h1 id="Collection-Explained" class="common-anchor-header">Collection Explained<button data-href="#Collection-Explained" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -22,8 +22,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>В Milvus вы можете создавать несколько коллекций для управления данными и вставлять данные в виде сущностей в эти коллекции. Коллекции и сущности аналогичны таблицам и записям в реляционных базах данных. Эта страница поможет вам ознакомиться с коллекциями и связанными с ними понятиями.</p>
-<h2 id="Collection" class="common-anchor-header">Коллекция<button data-href="#Collection" class="anchor-icon" translate="no">
+    </button></h1><p>On Milvus, you can create multiple collections to manage your data, and insert your data as entities into the collections. Collection and entity are similar to tables and records in relational databases. This page helps you to learn about the collection and related concepts.</p>
+<h2 id="Collection" class="common-anchor-header">Collection<button data-href="#Collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -38,15 +38,15 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Коллекция представляет собой двумерную таблицу с фиксированными столбцами и переменными строками. Каждый столбец соответствует полю, а каждая строка — сущности.</p>
-<p>На приведенной ниже диаграмме показана коллекция с восемью столбцами и шестью сущностями.</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/collection-explained.png" alt="Collection Explained" class="doc-image" id="collection-explained" /> 
-   <span>Объяснение понятия «коллекция»</span>
-  
- </span></p>
-<h2 id="Schema-and-Fields" class="common-anchor-header">Схема и поля<button data-href="#Schema-and-Fields" class="anchor-icon" translate="no">
+    </button></h2><p>A collection is a two-dimensional table with fixed columns and variant rows. Each column represents a field, and each row represents an entity.</p>
+<p>The following chart shows a collection with eight columns and six entities.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/collection-explained.png" alt="Collection Explained" class="doc-image" id="collection-explained" />
+    <span>Collection Explained</span>
+  </span>
+</p>
+<h2 id="Schema-and-Fields" class="common-anchor-header">Schema and Fields<button data-href="#Schema-and-Fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -61,15 +61,15 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>При описании объекта мы обычно упоминаем его атрибуты, такие как размер, вес и положение. Эти атрибуты можно использовать в качестве полей в коллекции. Каждое поле имеет различные ограничивающие свойства, такие как тип данных и размерность векторного поля. Схему коллекции можно сформировать, создав поля и определив их порядок. О возможных применимых типах данных см. раздел <a href="/docs/ru/schema.md">«Объяснение схемы</a>».</p>
-<p>Все поля, определенные в схеме, должны быть включены в вставляемые сущности. Чтобы сделать некоторые из них необязательными, рассмотрите возможность включения динамического поля. Подробности см. в разделе <a href="/docs/ru/enable-dynamic-field.md">«Динамическое поле</a>».</p>
+    </button></h2><p>When describing an object, we usually mention its attributes, such as size, weight, and position. You can use these attributes as fields in a collection. Each field has various constraining properties, such as the data type and the dimensionality of a vector field. You can form a collection schema by creating the fields and defining their order. For possible applicable data types, refer to <a href="/docs/ru/schema.md">Schema Explained</a>.</p>
+<p>You should include all schema-defined fields in the entities to insert. To make some of them optional, consider enabling dynamic field. For details, refer to <a href="/docs/ru/enable-dynamic-field.md">Dynamic Field</a>.</p>
 <ul>
-<li><p><strong>Сделать поля допускающими нулевые значения или задать значения по умолчанию</strong></p>
-<p>Подробнее о том, как сделать поле допускающим нулевые значения или установить значение по умолчанию, см. в разделе <a href="/docs/ru/nullable-and-default.md">«Допускающие нулевые значения и значения по умолчанию</a>».</p></li>
-<li><p><strong>Включение динамического поля</strong></p>
-<p>Подробности о том, как включить и использовать динамическое поле, см. в разделе <a href="/docs/ru/enable-dynamic-field.md">«Динамическое поле</a>».</p></li>
+<li><p><strong>Making them nullable or setting default values</strong></p>
+<p>For details on how to make a field nullable or set the default value, refer to <a href="/docs/ru/nullable-and-default.md">Nullable & Default</a>.</p></li>
+<li><p><strong>Enabling dynamic field</strong></p>
+<p>For details on how to enable and use the dynamic field, refer to <a href="/docs/ru/enable-dynamic-field.md">Dynamic Field</a>.</p></li>
 </ul>
-<h2 id="Primary-key-and-AutoId" class="common-anchor-header">Первичный ключ и AutoId<button data-href="#Primary-key-and-AutoId" class="anchor-icon" translate="no">
+<h2 id="Primary-key-and-AutoId" class="common-anchor-header">Primary key and AutoId<button data-href="#Primary-key-and-AutoId" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -84,11 +84,11 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Подобно первичному полю в реляционной базе данных, коллекция имеет первичное поле, позволяющее отличать одну сущность от других. Каждое значение в первичном поле является глобально уникальным и соответствует одной конкретной сущности.</p>
-<p>Как показано на приведенной выше схеме, поле с именем <strong>id</strong> выступает в качестве первичного, и первый идентификатор <strong>0</strong> соответствует сущности с названием <em>«Уровень смертности от коронавируса не важен</em>». Ни одна другая сущность не будет иметь первичного поля со значением 0.</p>
-<p>Первичное поле принимает только целые числа или строки. При вставке сущностей по умолчанию следует указывать значения первичного поля. Однако, если при создании коллекции была включена <strong>функция AutoId</strong>, Milvus сгенерирует эти значения при вставке данных. В таком случае исключите значения первичного поля из вставляемых сущностей.</p>
-<p>Дополнительную информацию см. в разделе <a href="/docs/ru/primary-field.md">«Первичное поле и AutoId</a>».</p>
-<h2 id="Index" class="common-anchor-header">Индекс<button data-href="#Index" class="anchor-icon" translate="no">
+    </button></h2><p>Similar to the primary field in a relational database, a collection has a primary field to distinguish an entity from others. Each value in the primary field is globally unique and corresponds to one specific entity.</p>
+<p>As shown in the above chart, the field named <strong>id</strong> serves as the primary field, and the first ID <strong>0</strong> corresponds to an entity titled <em>The Mortality Rate of Coronavirus is Not Important</em>. There will not be any other entity that has the primary field of 0.</p>
+<p>A primary field accepts only integers or strings. When inserting entities, you should include the primary field values by default. However, if you have enabled <strong>AutoId</strong> upon collection creation, Milvus will generate those values upon data insertion. In such a case, exclude the primary field values from the entities to be inserted.</p>
+<p>For more information, please refer to <a href="/docs/ru/primary-field.md">Primary Field & AutoId</a>.</p>
+<h2 id="Index" class="common-anchor-header">Index<button data-href="#Index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -103,8 +103,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Создание индексов по определенным полям повышает эффективность поиска. Рекомендуется создавать индексы для всех полей, на которых основан ваш сервис; при этом индексы по векторным полям являются обязательными.</p>
-<h2 id="Entity" class="common-anchor-header">Сущность<button data-href="#Entity" class="anchor-icon" translate="no">
+    </button></h2><p>Creating indexes on specific fields improves search efficiency. You are advised to create indexes for all the fields your service relies on, among which indexes on vector fields are mandatory.</p>
+<h2 id="Entity" class="common-anchor-header">Entity<button data-href="#Entity" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -119,10 +119,10 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Сущности — это записи данных, имеющие одинаковый набор полей в коллекции. Значения во всех полях одной строки составляют сущность.</p>
-<p>В коллекцию можно добавить столько сущностей, сколько необходимо. Однако по мере увеличения количества сущностей растёт и объём занимаемой памяти, что сказывается на производительности поиска.</p>
-<p>Дополнительную информацию см. в разделе <a href="/docs/ru/schema.md">«Объяснение схемы</a>».</p>
-<h2 id="Load-and-Release" class="common-anchor-header">Загрузка и освобождение<button data-href="#Load-and-Release" class="anchor-icon" translate="no">
+    </button></h2><p>Entities are data records that share the same set of fields in a collection. The values in all fields of the same row comprise an entity.</p>
+<p>You can insert as many entities as you need into a collection. However, as the number of entities mounts, the memory size it takes also increases, affecting search performance.</p>
+<p>For more information, refer to <a href="/docs/ru/schema.md">Schema Explained</a>.</p>
+<h2 id="Load-and-Release" class="common-anchor-header">Load and Release<button data-href="#Load-and-Release" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -137,10 +137,10 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Загрузка коллекции является обязательным условием для проведения поиска по схожести и выполнения запросов в коллекциях. При загрузке коллекции Milvus загружает в память все индексные файлы и исходные данные каждого поля для быстрого отклика на поиски и запросы.</p>
-<p>Поиск и запросы — это операции, требующие значительных ресурсов памяти. Чтобы снизить затраты, рекомендуется освобождать коллекции, которые в данный момент не используются.</p>
-<p>Подробнее см. в разделе <a href="/docs/ru/load-and-release.md">«Загрузка и освобождение</a>».</p>
-<h2 id="Search-and-Query" class="common-anchor-header">Поиск и запросы<button data-href="#Search-and-Query" class="anchor-icon" translate="no">
+    </button></h2><p>Loading a collection is the prerequisite to conducting similarity searches and queries in collections. When you load a collection, Milvus loads all index files and the raw data in each field into memory for fast response to searches and queries.</p>
+<p>Searches and queries are memory-intensive operations. To save the cost, you are advised to release the collections that are currently not in use.</p>
+<p>For more details, refer to <a href="/docs/ru/load-and-release.md">Load & Release</a>.</p>
+<h2 id="Search-and-Query" class="common-anchor-header">Search and Query<button data-href="#Search-and-Query" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -155,28 +155,27 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>После создания индексов и загрузки коллекции можно запустить поиск по схожести, указав один или несколько векторов запроса. Например, при получении векторного представления запроса, содержащегося в поисковом запросе, Milvus использует указанный тип метрики для измерения схожести между вектором запроса и векторами в целевой коллекции, после чего возвращает те из них, которые семантически схожи с запросом.</p>
-<p>Вы также можете включить фильтрацию по метаданным в поиск и запросы, чтобы повысить релевантность результатов. Обратите внимание, что условия фильтрации по метаданным являются обязательными в запросах, но необязательными в поиске.</p>
-<p>Подробнее о применимых типах метрик см. в разделе <a href="/docs/ru/metric.md">«Типы метрик</a>».</p>
-<p>Дополнительную информацию о поисках и запросах см. в статьях главы «Поиск и переранжирование», среди которых основные функции:</p>
+    </button></h2><p>Once you create indexes and load the collection, you can start a similarity search by feeding one or several query vectors. For example, when receiving the vector representation of your query carried in a search request, Milvus uses the specified metric type to measure the similarity between the query vector and those in the target collection before returning those that are semantically similar to the query.</p>
+<p>You can also include metadata filtering within searches and queries to improve the relevancy of the results. Note that, metadata filtering conditions are mandatory in queries but optional in searches.</p>
+<p>For details on applicable metric types, refer to <a href="/docs/ru/metric.md">Metric Types</a>.</p>
+<p>For more information about searches and queries, refer to the articles in the Search & Rerank chapter, among which, basic features are:</p>
 <ul>
-<li><p><a href="/docs/ru/single-vector-search.md">Базовый поиск с использованием нейронных сетей</a></p></li>
-<li><p><a href="/docs/ru/filtered-search.md">Поиск с фильтрацией</a></p></li>
-<li><p><a href="/docs/ru/range-search.md">Поиск по диапазону</a></p></li>
-<li><p><a href="/docs/ru/grouping-search.md">Групповой поиск</a></p></li>
-<li><p><a href="/docs/ru/multi-vector-search.md">Гибридный поиск</a></p></li>
-<li><p><a href="/docs/ru/with-iterators.md">Итератор поиска</a></p></li>
-<li><p><a href="/docs/ru/get-and-scalar-query.md">Запрос</a></p></li>
-<li><p><a href="/docs/ru/full-text-search.md">Полнотекстовый поиск</a></p></li>
-<li><p><a href="/docs/ru/keyword-match.md">Совпадение текста</a></p></li>
+<li><p><a href="/docs/ru/single-vector-search.md">Basic ANN Search</a></p></li>
+<li><p><a href="/docs/ru/filtered-search.md">Filtered Search</a></p></li>
+<li><p><a href="/docs/ru/range-search.md">Range Search</a></p></li>
+<li><p><a href="/docs/ru/grouping-search.md">Grouping Search</a></p></li>
+<li><p><a href="/docs/ru/multi-vector-search.md">Hybrid Search</a></p></li>
+<li><p><a href="/docs/ru/with-iterators.md">Search Iterator</a></p></li>
+<li><p><a href="/docs/ru/get-and-scalar-query.md">Query</a></p></li>
+<li><p><a href="/docs/ru/full-text-search.md">Full Text Search</a></p></li>
+<li><p><a href="/docs/ru/keyword-match.md">Text Match</a></p></li>
 </ul>
-<p>Кроме того, Milvus предоставляет расширенные функции для повышения производительности и эффективности поиска. По умолчанию они отключены, и вы можете включать и использовать их в соответствии с требованиями вашего сервиса. К ним относятся</p>
+<p>In addition, Milvus also provides enhancements to improve search performance and efficiency. They are disabled by default, and you can enable and use them according to your service requirements. They are</p>
 <ul>
-<li><p><a href="/docs/ru/use-partition-key.md">Использование ключа разбиения</a></p></li>
-<li><p><a href="/docs/ru/mmap.md">Использование mmap</a></p></li>
-<li><p><a href="/docs/ru/clustering-compaction.md">Кластеризация Уплотнение</a></p></li>
+<li><p><a href="/docs/ru/use-partition-key.md">Use Partition Key</a></p></li>
+<li><p><a href="/docs/ru/mmap.md">Use mmap</a></p></li>
 </ul>
-<h2 id="Partition" class="common-anchor-header">Раздел<button data-href="#Partition" class="anchor-icon" translate="no">
+<h2 id="Partition" class="common-anchor-header">Partition<button data-href="#Partition" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -191,10 +190,10 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Разделы — это подмножества коллекции, которые имеют тот же набор полей, что и родительская коллекция, и каждое из которых содержит подмножество сущностей.</p>
-<p>Распределяя сущности по разным разделам, можно создавать группы сущностей. Вы можете выполнять поиск и запросы в определенных разделах, чтобы Milvus игнорировал сущности в других разделах, что повышает эффективность поиска.</p>
-<p>Подробности см. в разделе <a href="/docs/ru/manage-partitions.md">«Управление разделами</a>».</p>
-<h2 id="Shard" class="common-anchor-header">Шард<button data-href="#Shard" class="anchor-icon" translate="no">
+    </button></h2><p>Partitions are subsets of a collection, which share the same field set with its parent collection, each containing a subset of entities.</p>
+<p>By allocating entities into different partitions, you can create entity groups. You can conduct searches and queries in specific partitions to have Milvus ignore entities in other partitions, and improve search efficiency.</p>
+<p>For details, refer to <a href="/docs/ru/manage-partitions.md">Manage Partitions</a>.</p>
+<h2 id="Shard" class="common-anchor-header">Shard<button data-href="#Shard" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -209,9 +208,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Шарды представляют собой горизонтальные фрагменты коллекции. Каждый шард соответствует каналу ввода данных. По умолчанию каждая коллекция имеет один шард. При создании коллекции можно задать необходимое количество шардов с учётом ожидаемой пропускной способности и объёма данных, которые будут вставлены в коллекцию.</p>
-<p>Подробнее о том, как задать количество шардов, см. в разделе <a href="/docs/ru/create-collection.md">«Создание коллекции</a>».</p>
-<h2 id="Alias" class="common-anchor-header">Псевдоним<button data-href="#Alias" class="anchor-icon" translate="no">
+    </button></h2><p>Shards are horizontal slices of a collection. Each shard corresponds to a data input channel. Every collection has a shard by default. You can set the appropriate number of shards when creating a collection based on the expected throughput and the volume of the data to insert into the collection.</p>
+<p>For details on how to set the shard number, refer to <a href="/docs/ru/create-collection.md">Create Collection</a>.</p>
+<h2 id="Alias" class="common-anchor-header">Alias<button data-href="#Alias" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -226,9 +225,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Вы можете создавать псевдонимы для своих коллекций. Коллекция может иметь несколько псевдонимов, но коллекции не могут использовать один и тот же псевдоним. При получении запроса к коллекции Milvus находит коллекцию по указанному имени. Если коллекция с указанным именем не существует, Milvus продолжает поиск, рассматривая указанное имя как псевдоним. Псевдонимы коллекций можно использовать для адаптации кода к различным сценариям.</p>
-<p>Подробнее см. в разделе <a href="/docs/ru/manage-aliases.md">«Управление псевдонимами</a>».</p>
-<h2 id="Function" class="common-anchor-header">Функция<button data-href="#Function" class="anchor-icon" translate="no">
+    </button></h2><p>You can create aliases for your collections. A collection can have several aliases, but collections cannot share an alias. Upon receiving a request against a collection, Milvus locates the collection based on the provided name. If the collection by the provided name does not exist, Milvus continues locating the provided name as an alias. You can use collection aliases to adapt your code to different scenarios.</p>
+<p>For more details, refer to <a href="/docs/ru/manage-aliases.md">Manage Aliases</a>.</p>
+<h2 id="Function" class="common-anchor-header">Function<button data-href="#Function" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -243,8 +242,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Вы можете настроить функции, с помощью которых Milvus будет выводить поля при создании коллекции. Например, функция полнотекстового поиска использует пользовательскую функцию для вывода поля разреженного вектора из конкретного поля varchar. Дополнительную информацию о полнотекстовом поиске см. в разделе <a href="/docs/ru/full-text-search.md">«Полнотекстовый поиск</a>».</p>
-<h2 id="Consistency-Level" class="common-anchor-header">Уровень согласованности<button data-href="#Consistency-Level" class="anchor-icon" translate="no">
+    </button></h2><p>You can set functions for Milvus to derive fields upon collection creation. For example, the full-text search function uses the user-defined function to derive a sparse vector field from a specific varchar field. For more information on full-text search, refer to <a href="/docs/ru/full-text-search.md">Full Text Search</a>.</p>
+<h2 id="Consistency-Level" class="common-anchor-header">Consistency Level<button data-href="#Consistency-Level" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -259,5 +258,5 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Распределенные системы баз данных обычно используют уровень согласованности для определения идентичности данных между узлами и репликами. Вы можете устанавливать отдельные уровни согласованности при создании коллекции или при выполнении поиска по схожести внутри коллекции. Доступны следующие уровни согласованности: <strong>«Сильный»</strong>, <strong>«Ограниченная устарелость</strong>», <strong>«Сессия</strong>» и <strong>«В конечном итоге</strong>».</p>
-<p>Подробнее об этих уровнях согласованности см. в разделе <a href="/docs/ru/tune_consistency.md">«Уровень согласованности</a>».</p>
+    </button></h2><p>Distributed database systems usually use the consistency level to define the data sameness across data nodes and replicas. You can set separate consistency levels when you create a collection or conduct similarity searches within the collection. The applicable consistency levels are <strong>Strong</strong>, <strong>Bounded Staleness</strong>, <strong>Session</strong>, and <strong>Eventually</strong>.</p>
+<p>For details on these consistency levels, refer to <a href="/docs/ru/tune_consistency.md">Consistency Level</a>.</p>
